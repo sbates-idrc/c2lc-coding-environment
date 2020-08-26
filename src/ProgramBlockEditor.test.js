@@ -19,6 +19,11 @@ jest.mock('./AudioManager');
 
 configure({ adapter: new Adapter()});
 
+// TODO: Add tests for the AddNode aria-label
+//       - Add at beginning of program
+//       - Add at end of program
+//       - Insert between existing steps
+
 // TODO: Mock the FocusTrapManager
 
 const defaultProgramBlockEditorProps = {

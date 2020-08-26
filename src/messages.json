@@ -44,7 +44,7 @@
         "PlayButton.run": "Run current program",
         "ProgramBlockEditor.toggleAddNodeExpandMode": "add node expanded mode",
         "ProgramBlockEditor.beginningBlock": "Add selected action {command} to the beginning of the program",
-        "ProgramBlockEditor.betweenBlocks": "Add selected action {command} to between position {prevCommand} and position {postCommand}",
+        "ProgramBlockEditor.betweenBlocks": "Add selected action {command} between position {prevCommand} and position {postCommand}",
         "ProgramBlockEditor.lastBlock": "Add selected action {command} to the end of the program",
         "ProgramBlockEditor.blocks.noCommandSelected": "Make sure an action is selected",
         "ProgramBlockEditor.command.forward": "Forward, position {index} of current program",
