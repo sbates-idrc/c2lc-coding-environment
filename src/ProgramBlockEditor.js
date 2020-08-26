@@ -277,25 +277,34 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     }
 
     makeAddNodeAriaLabel(programStepNumber: number, isEndOfProgramAddNode: boolean) {
-        if (this.commandIsSelected()) {
+        if (this.props.selectedAction != null) {
+            const selectedActionName = this.props.intl.formatMessage(
+                { id: `CommandInfo.${this.props.selectedAction}` }
+            );
             if (isEndOfProgramAddNode) {
                 return this.props.intl.formatMessage(
                     { id: 'ProgramBlockEditor.lastBlock' },
-                    { command: this.props.selectedAction }
+                    { command: selectedActionName }
                 );
             } else if (programStepNumber === 0) {
                 // The add node before the start of the program
                 return this.props.intl.formatMessage(
                     { id: 'ProgramBlockEditor.beginningBlock' },
-                    { command: this.props.selectedAction }
+                    { command: selectedActionName }
                 );
             } else {
+                const prevCommandName = this.props.intl.formatMessage(
+                    { id: `CommandInfo.${this.props.program[programStepNumber-1]}` }
+                );
+                const postCommandName = this.props.intl.formatMessage(
+                    { id: `CommandInfo.${this.props.program[programStepNumber]}` }
+                );
                 return this.props.intl.formatMessage(
                     { id: 'ProgramBlockEditor.betweenBlocks' },
                     {
-                        command: this.props.selectedAction,
-                        prevCommand: `${programStepNumber}, ${this.props.program[programStepNumber-1]}`,
-                        postCommand: `${programStepNumber+1}, ${this.props.program[programStepNumber]}`
+                        command: selectedActionName,
+                        prevCommand: `${programStepNumber}, ${prevCommandName}`,
+                        postCommand: `${programStepNumber+1}, ${postCommandName}`
                     }
                 );
             }

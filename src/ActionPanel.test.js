@@ -92,7 +92,7 @@ describe('ActionPanel options', () => {
             pressedStepIndex: pressedStepIndex
         });
         const moveToPreviousStepButton = getActionPanelOptionButtons(wrapper, 'moveToPreviousStep');
-        const expectedAriaLabel = 'Move Step 2 turn left before step 1 forward';
+        const expectedAriaLabel = 'Move Step 2 turn left before step 1 move';
         expect(moveToPreviousStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
         moveToPreviousStepButton.simulate('click');
         expect(mockMoveToPreviousStep.mock.calls.length).toBe(1);
@@ -104,7 +104,7 @@ describe('ActionPanel options', () => {
             pressedStepIndex: 0
         });
         const moveToPreviousStepButton = getActionPanelOptionButtons(wrapper, 'moveToPreviousStep');
-        const expectedAriaLabel = 'Move Step 1 forward ';
+        const expectedAriaLabel = 'Move Step 1 move ';
         expect(moveToPreviousStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
         expect(moveToPreviousStepButton.get(0).props['disabled']).toBe(true);
         moveToPreviousStepButton.simulate('click');
