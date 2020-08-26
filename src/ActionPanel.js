@@ -42,10 +42,13 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
         };
 
         if (this.props.selectedCommandName) {
+            const selectedCommandNameName = this.props.intl.formatMessage(
+                { id: `CommandInfo.${this.props.selectedCommandName}` }
+            );
             ariaLabelObj['selectedCommandName'] =
                 this.props.intl.formatMessage(
                     { id: 'ActionPanel.selectedCommandName' },
-                    { selectedCommandName: this.props.selectedCommandName }
+                    { selectedCommandName: selectedCommandNameName }
                 );
         }
 

@@ -79,7 +79,7 @@ describe('ActionPanel options', () => {
             pressedStepIndex: pressedStepIndex
         });
         const replaceCurrentStepButton = getActionPanelOptionButtons(wrapper, 'replaceCurrentStep');
-        const expectedAriaLabel = 'Replace Step 2 turn left with selected action right';
+        const expectedAriaLabel = 'Replace Step 2 turn left with selected action turn right';
         expect(replaceCurrentStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
         replaceCurrentStepButton.simulate('click');
         expect(mockReplaceHandler.mock.calls.length).toBe(1);
