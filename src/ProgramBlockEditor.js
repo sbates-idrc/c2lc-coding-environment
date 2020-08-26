@@ -375,6 +375,14 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         )
     }
 
+    getLocalizedProgram() {
+        return this.props.program.map((command) => {
+            return this.props.intl.formatMessage({
+                id: `CommandInfo.${command}`
+            });
+        }).join(', ');
+    }
+
     render() {
         const contents = this.props.program.map((command, stepNumber) => {
             return this.makeProgramBlockSection(stepNumber, command);
@@ -432,7 +440,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                 <div className='ProgramBlockEditor__footer'>
                     <div className='ProgramBlockEditor__run'>
                         <AriaDisablingButton
-                            aria-label={`${this.props.intl.formatMessage({id:'PlayButton.run'})} ${this.props.program.join(' ')}`}
+                            aria-label={`${this.props.intl.formatMessage({id:'PlayButton.run'})} ${this.getLocalizedProgram()}`}
                             className={this.props.interpreterIsRunning ?
                                 'ProgramBlockEditor__run-button ProgramBlockEditor__run-button--pressed' :
                                 'ProgramBlockEditor__run-button'}
