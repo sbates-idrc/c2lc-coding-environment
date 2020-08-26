@@ -7,3 +7,17 @@
     height: auto;
     border: 0.1rem solid #555;
 }
+
+.Scene svg {
+    overflow: visible;
+}
+
+.Scene__grid-line {
+    stroke: #DDD;
+    stroke-width: 1;
+}
+
+.Scene__grid-label {
+    fill: #555;
+    font: bold 1rem sans-serif;
+}
