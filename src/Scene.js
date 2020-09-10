@@ -18,6 +18,7 @@ class Scene extends React.Component<SceneProps, {}> {
 
     drawGrid(minX: number, minY: number, sceneWidth: number, sceneHeight: number) {
         const grid = [];
+        const cellYCoords = [];
         if (this.props.numRows === 0 || this.props.numColumns === 0) {
             return grid;
         }
@@ -35,6 +36,10 @@ class Scene extends React.Component<SceneProps, {}> {
                     x2={minX + sceneWidth}
                     y2={yOffset} />);
             }
+            cellYCoords.push({
+                y1: yOffset - this.props.gridCellWidth,
+                y2: yOffset
+            });
             grid.push(
                 <text
                     className='Scene__grid-label'
@@ -69,6 +74,30 @@ class Scene extends React.Component<SceneProps, {}> {
                     {String.fromCharCode(64+i)}
                 </text>
             )
+            for (let j=0; j<cellYCoords.length; j++) {
+                const x1 = xOffset - this.props.gridCellWidth;
+                const x2 = xOffset;
+                const y1 = cellYCoords[j].y1;
+                const y2 = cellYCoords[j].y2;
+                grid.push(
+                    <svg
+                        role='img'
+                        aria-labelledby={`cell-${j+1}${String.fromCharCode(64+i)} cell-${j+1}${String.fromCharCode(64+i)}-desc`}
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox={`${x1} ${y1} ${this.props.gridCellWidth} ${this.props.gridCellWidth}`}>
+                        <title id={`cell-${j+1}${String.fromCharCode(64+i)}`}>
+                            {`Cell ${j+1} ${String.fromCharCode(64+i)}`}
+                        </title>
+                        <desc id={`cell-${j+1}${String.fromCharCode(64+i)}-desc`}>
+                            background only
+                        </desc>
+                        <path
+                            id={`cell${j+1}${String.fromCharCode(64+i)}`}
+                            d={`M${x1} ${y1} L${x2} ${y1} L${x2} ${y2} L${x1} ${y2} Z`}
+                        />
+                    </svg>
+                )
+            }
         }
         return grid;
     }
@@ -98,9 +127,7 @@ class Scene extends React.Component<SceneProps, {}> {
         return (
             <div>
                 <span
-                    className='Scene'
-                    role='img'
-                    aria-label={this.props.intl.formatMessage({id: 'Scene'})}>
+                    className='Scene'>
                     <svg
                         xmlns='http://www.w3.org/2000/svg'
                         viewBox={`${minX} ${minY} ${width} ${height}`}>
