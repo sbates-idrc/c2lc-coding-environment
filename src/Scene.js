@@ -18,40 +18,12 @@ class Scene extends React.Component<SceneProps, {}> {
 
     drawGrid(minX: number, minY: number, sceneWidth: number, sceneHeight: number) {
         const grid = [];
-        const cellYCoords = [];
+        const cellXCoords = [];
         if (this.props.numRows === 0 || this.props.numColumns === 0) {
             return grid;
         }
         const rowLabelOffset = sceneWidth * 0.025;
         const columnLabelOffset = sceneHeight * 0.025;
-        let yOffset = minY;
-        for (let i=1;i < this.props.numRows + 1;i++) {
-            yOffset = yOffset + this.props.gridCellWidth;
-            if (i < this.props.numRows) {
-                grid.push(<line
-                    className='Scene__grid-line'
-                    key={`grid-cell-row-${i}`}
-                    x1={minX}
-                    y1={yOffset}
-                    x2={minX + sceneWidth}
-                    y2={yOffset} />);
-            }
-            cellYCoords.push({
-                y1: yOffset - this.props.gridCellWidth,
-                y2: yOffset
-            });
-            grid.push(
-                <text
-                    className='Scene__grid-label'
-                    textAnchor='end'
-                    key={`grid-cell-label-${i}`}
-                    dominantBaseline='middle'
-                    x={minX - rowLabelOffset}
-                    y={yOffset - this.props.gridCellWidth / 2}>
-                    {i}
-                </text>
-            )
-        }
         let xOffset = minX;
         for (let i=1;i < this.props.numColumns + 1;i++) {
             xOffset = xOffset + this.props.gridCellWidth;
@@ -74,25 +46,60 @@ class Scene extends React.Component<SceneProps, {}> {
                     {String.fromCharCode(64+i)}
                 </text>
             )
-            for (let j=0; j<cellYCoords.length; j++) {
-                const x1 = xOffset - this.props.gridCellWidth;
-                const x2 = xOffset;
-                const y1 = cellYCoords[j].y1;
-                const y2 = cellYCoords[j].y2;
+            cellXCoords.push({
+                x1: xOffset - this.props.gridCellWidth,
+                x2: xOffset
+            });
+        }
+        let yOffset = minY;
+        for (let i=1;i < this.props.numRows + 1;i++) {
+            yOffset = yOffset + this.props.gridCellWidth;
+            if (i < this.props.numRows) {
+                grid.push(<line
+                    className='Scene__grid-line'
+                    key={`grid-cell-row-${i}`}
+                    x1={minX}
+                    y1={yOffset}
+                    x2={minX + sceneWidth}
+                    y2={yOffset} />);
+            }
+            grid.push(
+                <text
+                    className='Scene__grid-label'
+                    textAnchor='end'
+                    key={`grid-cell-label-${i}`}
+                    dominantBaseline='middle'
+                    x={minX - rowLabelOffset}
+                    y={yOffset - this.props.gridCellWidth / 2}>
+                    {i}
+                </text>
+            )
+            for (let j=0; j<cellXCoords.length; j++) {
+                const x1 = cellXCoords[j].x1;
+                const x2 = cellXCoords[j].x2;
+                const y1 = yOffset - this.props.gridCellWidth;
+                const y2 = yOffset;
                 grid.push(
                     <svg
+                        className='Scene__grid-cell'
+                        key={`cell-${String.fromCharCode(65+j)}${i}`}
                         role='img'
-                        aria-labelledby={`cell-${j+1}${String.fromCharCode(64+i)} cell-${j+1}${String.fromCharCode(64+i)}-desc`}
-                        xmlns='http://www.w3.org/2000/svg'
-                        viewBox={`${x1} ${y1} ${this.props.gridCellWidth} ${this.props.gridCellWidth}`}>
-                        <title id={`cell-${j+1}${String.fromCharCode(64+i)}`}>
-                            {`Cell ${j+1} ${String.fromCharCode(64+i)}`}
+                        aria-labelledby={`cell-${String.fromCharCode(65+j)}${i} cell-${String.fromCharCode(65+j)}${i}-desc`}>
+                        <title id={`cell-${String.fromCharCode(65+j)}${i}`}>
+                            {`Cell ${String.fromCharCode(65+j)}${i}`}
                         </title>
-                        <desc id={`cell-${j+1}${String.fromCharCode(64+i)}-desc`}>
-                            background only
+                        <desc id={`cell-${String.fromCharCode(65+j)}${i}-desc`}>
+                            {
+                                this.props.characterState.xPos <= x2 && this.props.characterState.xPos >= x1 &&
+                                this.props.characterState.yPos <= y2 && this.props.characterState.yPos >= y1 ?
+                                this.props.intl.formatMessage({id:'Scene.robotCharacter'}) :
+                                this.props.intl.formatMessage({id:'Scene.backgroundOnly'})
+                            }
                         </desc>
                         <path
-                            id={`cell${j+1}${String.fromCharCode(64+i)}`}
+                            fill='none'
+                            stroke='none'
+                            id={`cell${String.fromCharCode(65+j)}${i}`}
                             d={`M${x1} ${y1} L${x2} ${y1} L${x2} ${y2} L${x1} ${y2} Z`}
                         />
                     </svg>
