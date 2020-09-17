@@ -15,6 +15,53 @@ type SceneProps = {
 };
 
 class Scene extends React.Component<SceneProps, {}> {
+    generateColumnHeaders(cellXCoords, minY, sceneHeight) {
+        const columnLabelOffset = sceneHeight * 0.025;
+        const columnHeaders = [];
+        for (let i=0;i < cellXCoords.length; i++) {
+            let xOffset = cellXCoords[i].x2;
+            columnHeaders.push(
+                <text
+                    role='columnheader'
+                    className='Scene__grid-label'
+                    key={`grid-cell-label-${String.fromCharCode(65+i)}`}
+                    textAnchor='middle'
+                    x={xOffset - this.props.gridCellWidth / 2}
+                    y={minY - columnLabelOffset}>
+                    {String.fromCharCode(65+i)}
+                </text>
+            )
+        }
+        return (
+            <g role='rowgroup'>
+                <g role='row'>
+                    {columnHeaders}
+                </g>
+            </g>
+        )
+    }
+
+    populateRow(cellXCoords, yOffset, rowIndex) {
+        const row = [];
+        for (let j=0; j<cellXCoords.length; j++) {
+            const x1 = cellXCoords[j].x1;
+            const x2 = cellXCoords[j].x2;
+            const y1 = yOffset - this.props.gridCellWidth;
+            const y2 = yOffset;
+            row.push(
+                <path
+                    opacity='0'
+                    aria-colindex={j+1}
+                    aria-rowindex={rowIndex}
+                    tabIndex='-1'
+                    role='gridcell'
+                    alt='grid cell'
+                    d={`M${x1} ${y1} L${x2} ${y1} L${x2} ${y2} L${x1} ${y2} Z`}
+                />
+            );
+        }
+        return row;
+    }
 
     drawGrid(minX: number, minY: number, sceneWidth: number, sceneHeight: number) {
         const grid = [];
@@ -23,7 +70,6 @@ class Scene extends React.Component<SceneProps, {}> {
             return grid;
         }
         const rowLabelOffset = sceneWidth * 0.025;
-        const columnLabelOffset = sceneHeight * 0.025;
         let xOffset = minX;
         for (let i=1;i < this.props.numColumns + 1;i++) {
             xOffset = xOffset + this.props.gridCellWidth;
@@ -36,22 +82,13 @@ class Scene extends React.Component<SceneProps, {}> {
                     x2={xOffset}
                     y2={minY + sceneHeight} />);
             }
-            grid.push(
-                <text
-                    className='Scene__grid-label'
-                    key={`grid-cell-label-${String.fromCharCode(64+i)}`}
-                    textAnchor='middle'
-                    x={xOffset - this.props.gridCellWidth / 2}
-                    y={minY - columnLabelOffset}>
-                    {String.fromCharCode(64+i)}
-                </text>
-            )
             cellXCoords.push({
                 x1: xOffset - this.props.gridCellWidth,
                 x2: xOffset
             });
         }
         let yOffset = minY;
+        grid.push(this.generateColumnHeaders(cellXCoords, minY, sceneHeight));
         for (let i=1;i < this.props.numRows + 1;i++) {
             yOffset = yOffset + this.props.gridCellWidth;
             if (i < this.props.numRows) {
@@ -64,47 +101,23 @@ class Scene extends React.Component<SceneProps, {}> {
                     y2={yOffset} />);
             }
             grid.push(
-                <text
-                    className='Scene__grid-label'
-                    textAnchor='end'
-                    key={`grid-cell-label-${i}`}
-                    dominantBaseline='middle'
-                    x={minX - rowLabelOffset}
-                    y={yOffset - this.props.gridCellWidth / 2}>
-                    {i}
-                </text>
+                <g role='rowgroup'>
+                    <g role='row'>
+                        <text
+                            scope='row'
+                            role='rowheader'
+                            className='Scene__grid-label'
+                            textAnchor='end'
+                            key={`grid-cell-label-${i}`}
+                            dominantBaseline='middle'
+                            x={minX - rowLabelOffset}
+                            y={yOffset - this.props.gridCellWidth / 2}>
+                            {i}
+                        </text>
+                        {this.populateRow(cellXCoords, yOffset, i)}
+                    </g>
+                </g>
             )
-            for (let j=0; j<cellXCoords.length; j++) {
-                const x1 = cellXCoords[j].x1;
-                const x2 = cellXCoords[j].x2;
-                const y1 = yOffset - this.props.gridCellWidth;
-                const y2 = yOffset;
-                grid.push(
-                    <svg
-                        className='Scene__grid-cell'
-                        key={`cell-${String.fromCharCode(65+j)}${i}`}
-                        role='img'
-                        aria-labelledby={`cell-${String.fromCharCode(65+j)}${i} cell-${String.fromCharCode(65+j)}${i}-desc`}>
-                        <title id={`cell-${String.fromCharCode(65+j)}${i}`}>
-                            {`Cell ${String.fromCharCode(65+j)}${i}`}
-                        </title>
-                        <desc id={`cell-${String.fromCharCode(65+j)}${i}-desc`}>
-                            {
-                                this.props.characterState.xPos <= x2 && this.props.characterState.xPos >= x1 &&
-                                this.props.characterState.yPos <= y2 && this.props.characterState.yPos >= y1 ?
-                                this.props.intl.formatMessage({id:'Scene.robotCharacter'}) :
-                                this.props.intl.formatMessage({id:'Scene.backgroundOnly'})
-                            }
-                        </desc>
-                        <path
-                            fill='none'
-                            stroke='none'
-                            id={`cell${String.fromCharCode(65+j)}${i}`}
-                            d={`M${x1} ${y1} L${x2} ${y1} L${x2} ${y2} L${x1} ${y2} Z`}
-                        />
-                    </svg>
-                )
-            }
         }
         return grid;
     }
@@ -136,6 +149,10 @@ class Scene extends React.Component<SceneProps, {}> {
                 <span
                     className='Scene'>
                     <svg
+                        aria-label='scene'
+                        role='grid'
+                        aria-colcount={this.props.numColumns}
+                        aria-rowcount={this.props.numRows}
                         xmlns='http://www.w3.org/2000/svg'
                         viewBox={`${minX} ${minY} ${width} ${height}`}>
                         <defs>
