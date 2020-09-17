@@ -80,29 +80,19 @@ class Scene extends React.Component<SceneProps, {}> {
                 const y1 = yOffset - this.props.gridCellWidth;
                 const y2 = yOffset;
                 grid.push(
-                    <svg
+                    <path
                         className='Scene__grid-cell'
                         key={`cell-${String.fromCharCode(65+j)}${i}`}
                         role='img'
-                        aria-labelledby={`cell-${String.fromCharCode(65+j)}${i} cell-${String.fromCharCode(65+j)}${i}-desc`}>
-                        <title id={`cell-${String.fromCharCode(65+j)}${i}`}>
-                            {`Cell ${String.fromCharCode(65+j)}${i}`}
-                        </title>
-                        <desc id={`cell-${String.fromCharCode(65+j)}${i}-desc`}>
-                            {
-                                this.props.characterState.xPos <= x2 && this.props.characterState.xPos >= x1 &&
-                                this.props.characterState.yPos <= y2 && this.props.characterState.yPos >= y1 ?
-                                this.props.intl.formatMessage({id:'Scene.robotCharacter'}) :
-                                this.props.intl.formatMessage({id:'Scene.backgroundOnly'})
-                            }
-                        </desc>
-                        <path
-                            fill='none'
-                            stroke='none'
-                            id={`cell${String.fromCharCode(65+j)}${i}`}
-                            d={`M${x1} ${y1} L${x2} ${y1} L${x2} ${y2} L${x1} ${y2} Z`}
-                        />
-                    </svg>
+                        aria-label={
+                            `cell-${String.fromCharCode(65+j)}${i} 
+                            ${this.props.characterState.xPos <= x2 && this.props.characterState.xPos >= x1 &&
+                            this.props.characterState.yPos <= y2 && this.props.characterState.yPos >= y1 ?
+                            this.props.intl.formatMessage({id:'Scene.robotCharacter'}) :
+                            this.props.intl.formatMessage({id:'Scene.backgroundOnly'})}`}
+                        opacity='0'
+                        d={`M${x1} ${y1} L${x2} ${y1} L${x2} ${y2} L${x1} ${y2} Z`}
+                    />
                 )
             }
         }
