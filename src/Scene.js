@@ -18,12 +18,15 @@ class Scene extends React.Component<SceneProps, {}> {
     generateColumnHeaders(cellXCoords, minY, sceneHeight) {
         const columnLabelOffset = sceneHeight * 0.025;
         const columnHeaders = [];
+        columnHeaders.push(<text role='columnheader'/>)
         for (let i=0;i < cellXCoords.length; i++) {
             let xOffset = cellXCoords[i].x2;
             columnHeaders.push(
                 <text
                     role='columnheader'
+                    aria-label={`column${String.fromCharCode(65+i)}`}
                     className='Scene__grid-label'
+                    id={`column-${String.fromCharCode(65+i)}`}
                     key={`grid-cell-label-${String.fromCharCode(65+i)}`}
                     textAnchor='middle'
                     x={xOffset - this.props.gridCellWidth / 2}
@@ -43,21 +46,26 @@ class Scene extends React.Component<SceneProps, {}> {
 
     populateRow(cellXCoords, yOffset, rowIndex) {
         const row = [];
-        for (let j=0; j<cellXCoords.length; j++) {
-            const x1 = cellXCoords[j].x1;
-            const x2 = cellXCoords[j].x2;
+        for (let i=0; i<cellXCoords.length; i++) {
+            const x1 = cellXCoords[i].x1;
+            const x2 = cellXCoords[i].x2;
             const y1 = yOffset - this.props.gridCellWidth;
             const y2 = yOffset;
             row.push(
-                <path
-                    opacity='0'
-                    aria-colindex={j+1}
-                    aria-rowindex={rowIndex}
-                    tabIndex='-1'
+                <g
                     role='gridcell'
-                    alt='grid cell'
-                    d={`M${x1} ${y1} L${x2} ${y1} L${x2} ${y2} L${x1} ${y2} Z`}
-                />
+                    aria-labelledby={`
+                        column-${String.fromCharCode(65+i)}
+                        row-${rowIndex}
+                        gridDesc-grid-${String.fromCharCode(65+i)}${rowIndex}`}>
+                    <path
+                        opacity='0'
+                        d={`M${x1} ${y1} L${x2} ${y1} L${x2} ${y2} L${x1} ${y2} Z`}
+                    />
+                    <text className='gridDesc' id={`gridDesc-grid-${String.fromCharCode(65+i)}${rowIndex}`}>
+                        background only
+                    </text>
+                </g>
             );
         }
         return row;
@@ -108,6 +116,7 @@ class Scene extends React.Component<SceneProps, {}> {
                             role='rowheader'
                             className='Scene__grid-label'
                             textAnchor='end'
+                            id={`row-${i}`}
                             key={`grid-cell-label-${i}`}
                             dominantBaseline='middle'
                             x={minX - rowLabelOffset}
