@@ -18,13 +18,12 @@ class Scene extends React.Component<SceneProps, {}> {
     generateColumnHeaders(cellXCoords, minY, sceneHeight) {
         const columnLabelOffset = sceneHeight * 0.025;
         const columnHeaders = [];
-        columnHeaders.push(<text role='columnheader'/>)
+        columnHeaders.push(<text role='gridcell' key='grid-corner'/>)
         for (let i=0;i < cellXCoords.length; i++) {
             let xOffset = cellXCoords[i].x2;
             columnHeaders.push(
                 <text
                     role='columnheader'
-                    aria-label={`column${String.fromCharCode(65+i)}`}
                     className='Scene__grid-label'
                     id={`column-${String.fromCharCode(65+i)}`}
                     key={`grid-cell-label-${String.fromCharCode(65+i)}`}
@@ -36,7 +35,7 @@ class Scene extends React.Component<SceneProps, {}> {
             )
         }
         return (
-            <g role='rowgroup'>
+            <g role='rowgroup' key={`columnHeaderRow`}>
                 <g role='row'>
                     {columnHeaders}
                 </g>
@@ -54,17 +53,18 @@ class Scene extends React.Component<SceneProps, {}> {
             row.push(
                 <g
                     role='gridcell'
-                    aria-labelledby={`
-                        column-${String.fromCharCode(65+i)}
-                        row-${rowIndex}
-                        gridDesc-grid-${String.fromCharCode(65+i)}${rowIndex}`}>
+                    key={`gridcell-${String.fromCharCode(65+i)}${rowIndex}`}
+                    aria-label={`${String.fromCharCode(65+i)}${rowIndex}`}>
                     <path
-                        opacity='0'
+                        role='img'
+                        aria-label={
+                            `${this.props.characterState.xPos <= x2 && this.props.characterState.xPos >= x1 &&
+                            this.props.characterState.yPos <= y2 && this.props.characterState.yPos >= y1 ?
+                            this.props.intl.formatMessage({id:'Scene.robotCharacter'}) :
+                            this.props.intl.formatMessage({id:'Scene.backgroundOnly'})}`}
+                        fill='transparent'
                         d={`M${x1} ${y1} L${x2} ${y1} L${x2} ${y2} L${x1} ${y2} Z`}
                     />
-                    <text className='gridDesc' id={`gridDesc-grid-${String.fromCharCode(65+i)}${rowIndex}`}>
-                        background only
-                    </text>
                 </g>
             );
         }
@@ -109,7 +109,7 @@ class Scene extends React.Component<SceneProps, {}> {
                     y2={yOffset} />);
             }
             grid.push(
-                <g role='rowgroup'>
+                <g role='rowgroup' key={`row-${i}`}>
                     <g role='row'>
                         <text
                             scope='row'
