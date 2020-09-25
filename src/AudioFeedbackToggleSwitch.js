@@ -2,13 +2,15 @@
 
 import * as React from 'react';
 import { injectIntl } from 'react-intl';
+import type {IntlShape} from 'react-intl';
+
 import ToggleSwitch from './ToggleSwitch';
 import { ReactComponent as AudioOnIcon } from './svg/AudioOn.svg';
 import { ReactComponent as AudioOffIcon } from './svg/AudioOff.svg';
 import './AudioFeedbackToggleSwitch.scss';
 
 type AudioFeedbackToggleSwitchProps = {
-    intl: any,
+    intl: IntlShape,
     value: boolean,
     onChange: (value: boolean) => void
 };

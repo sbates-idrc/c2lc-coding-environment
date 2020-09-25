@@ -5,7 +5,9 @@
     box-sizing: border-box;
     width: 100%;
     height: auto;
-    border: 0.1rem solid #555;
+    border-width: $c2lc-scene-border-width $c2lc-scene-border-width 0 $c2lc-scene-border-width;
+    border-color: $c2lc-scene-border-color;
+    border-style: $c2lc-scene-border-style;
 }
 
 .Scene svg {

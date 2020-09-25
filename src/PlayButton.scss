@@ -1,0 +1,52 @@
+@import 'variables';
+
+.PlayButton-svg {
+    fill: #000;
+    width: 1.7rem;
+    height: 1.7rem;
+}
+
+button.btn.PlayButton--disabled {
+    background-color: $c2lc-primary-button-color;
+    cursor: default;
+}
+
+button.btn.PlayButton--disabled svg {
+    fill: $c2lc-disabled-color;
+}
+
+button.btn.PlayButton {
+    margin-top: 0.5rem;
+    padding: 0.6rem 0.45rem 0.6rem 0.75rem;
+    border: 1px solid #FFF;
+    border-radius: 50%;
+    background-color: #FFF;
+}
+
+button.btn.PlayButton:not(:focus) {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+}
+
+button.btn.PlayButton.PlayButton--disabled:active:focus {
+    background-color: $c2lc-primary-button-color;
+    box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
+}
+
+button.btn.PlayButton--pressed {
+    background-color: #000;
+}
+
+button.btn.PlayButton.PlayButton--pressed.PlayButton--disabled,
+button.btn.PlayButton.PlayButton--pressed.PlayButton--disabled:active:focus {
+    background-color: $c2lc-disabled-color;
+}
+
+button.btn.PlayButton--pressed svg,
+button.btn.PlayButton--pressed.PlayButton--disabled svg {
+    fill: #FFF;
+}
+
+button.btn.PlayButton.PlayButton__run-button--disabled:active:focus {
+    background-color: $c2lc-primary-button-color;
+    box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
+}

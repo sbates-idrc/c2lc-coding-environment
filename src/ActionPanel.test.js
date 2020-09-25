@@ -143,7 +143,7 @@ test('When ActionPanel renders, auto scroll to show full ActionPanel', () => {
     const mockScrollIntoView = jest.fn();
     window.HTMLElement.prototype.scrollIntoView = mockScrollIntoView
     expect(mockScrollIntoView.mock.calls.length).toBe(0);
-    const { wrapper } = createMountActionPanel();
+    createMountActionPanel();
     expect(mockScrollIntoView.mock.calls.length).toBe(1);
     expect(mockScrollIntoView.mock.calls[0][0]).toStrictEqual({
         behavior: 'auto',

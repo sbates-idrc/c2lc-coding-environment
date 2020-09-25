@@ -22,7 +22,7 @@ export default class DashDriver implements RobotDriver {
             }).then((characteristic) => {
                 this.commandCharacteristic = characteristic;
                 resolve();
-            }).catch((error) => {
+            }).catch((error: Error) => {
                 reject(error);
             });
         });

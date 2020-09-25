@@ -5,7 +5,6 @@ import Adapter from 'enzyme-adapter-react-16';
 import { shallow, configure } from 'enzyme';
 import CommandBlock from './CommandBlock';
 import { createIntl } from 'react-intl';
-import App from './App';
 import AudioManager from './AudioManager';
 import CommandPaletteCommand from './CommandPaletteCommand';
 
@@ -19,6 +18,7 @@ function hasPressedClass(wrapper) {
 }
 
 function getAriaPressedValue(wrapper) {
+    // $FlowFixMe: The flow-typed definitions for enzyme introduce a type-checking error here.
     return wrapper.find(CommandBlock).getElement().props['aria-pressed'];
 }
 

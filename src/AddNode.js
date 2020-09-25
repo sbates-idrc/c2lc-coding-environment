@@ -20,6 +20,7 @@ const AddNode = React.forwardRef<AddNodeProps, HTMLDivElement>(
     (props, ref) => {
         const [isDragOver, setIsDragOver] = useState(false);
 
+        /* istanbul ignore next */
         const handleDragOver = (e: SyntheticDragEvent<HTMLButtonElement>) => {
             if (props.isDraggingCommand) {
                 e.preventDefault();
@@ -32,6 +33,7 @@ const AddNode = React.forwardRef<AddNodeProps, HTMLDivElement>(
             props.onClick(stepNumber);
         };
 
+        /* istanbul ignore next */
         const handleDrop = (e: SyntheticDragEvent<HTMLButtonElement>) => {
             e.preventDefault();
             if (!props.disabled) {
@@ -41,11 +43,13 @@ const AddNode = React.forwardRef<AddNodeProps, HTMLDivElement>(
             setIsDragOver(false);
         };
 
+        /* istanbul ignore next */
         const handleDragLeave = (e: SyntheticDragEvent<HTMLButtonElement>) => {
             e.preventDefault();
             setIsDragOver(false);
         };
 
+        /* istanbul ignore next */
         const addNodeClasses = classNames(
             props.isDraggingCommand && 'AddNode--is-dragging-command'
         );
@@ -64,6 +68,7 @@ const AddNode = React.forwardRef<AddNodeProps, HTMLDivElement>(
                     <AriaDisablingButton
                         className='AddNode__expanded-button'
                         data-stepnumber={props.programStepNumber}
+                        // $FlowFixMe: Use something less generic here.
                         ref={ref}
                         disabled={props.disabled}
                         aria-label={props['aria-label']}

@@ -39,6 +39,22 @@ body {
     margin-top: 4rem;
 }
 
+.App__scene-controls {
+    height: 4rem;
+    background-color: #F1F1F1;
+    border-width: 0 $c2lc-scene-border-width $c2lc-scene-border-width $c2lc-scene-border-width;
+    border-color: $c2lc-scene-border-color;
+    border-style: $c2lc-scene-border-style;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.App__playButton-container {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    justify-self: center;
+}
+
 .App__program-section {
     margin-top: 1.5rem;
 }

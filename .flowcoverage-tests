@@ -1,0 +1,10 @@
+{
+  "concurrentFiles": 1,
+  "globIncludePatterns": [
+    "src/**/*.test.js"
+  ],
+  "outputDir": "coverage/flow-tests",
+  "threshold": 92,
+  "reportTypes": "text"
+}
+

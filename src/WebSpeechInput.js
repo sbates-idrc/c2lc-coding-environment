@@ -3,11 +3,13 @@
 import SoundexTable from './SoundexTable';
 import WebSpeechEventProcessor from './WebSpeechEventProcessor';
 
+import type {SpeechRecognition, SpeechRecognitionEvent, SpeechRecognitionAlternative, SpeechRecognitionResult} from './types';
+
 type OnWordCallback = { (string): void };
 
 export default class WebSpeechInput {
     onWord: OnWordCallback;
-    speechRecognitionInstance: any;
+    speechRecognitionInstance: SpeechRecognition;
     eventProcessor: WebSpeechEventProcessor;
 
     constructor(soundexTable: SoundexTable, onWord: OnWordCallback) {
@@ -31,7 +33,7 @@ export default class WebSpeechInput {
         this.speechRecognitionInstance.stop();
     }
 
-    handleResult = (event: any) => {
+    handleResult = (event: SpeechRecognitionEvent) => {
         // this.logSpeechRecognitionEvent(event);
         const words = this.eventProcessor.processEvent(event);
         for (const word of words) {
@@ -39,16 +41,16 @@ export default class WebSpeechInput {
         }
     };
 
-    logSpeechRecognitionEvent(event: any) {
+    logSpeechRecognitionEvent(event: SpeechRecognitionEvent) {
         console.log('****');
         console.log(`resultIndex: ${event.resultIndex}`);
         console.log(`resultsLength: ${event.results.length}`);
         for (let i = 0; i < event.results.length; ++i) {
-            const result = event.results[i];
+            const result: SpeechRecognitionResult = event.results[i];
             console.log(`results[${i}].length: ${result.length}`);
-            console.log(`results[${i}].isFinal: ${result.isFinal}`);
+            console.log(`results[${i}].isFinal: ${result.isFinal.toString()}`);
             for (let j = 0; j < result.length; ++j) {
-                const alternative = result[j];
+                const alternative: SpeechRecognitionAlternative = result[j];
                 console.log(`alternative ${j}.transcript: ${alternative.transcript}`);
                 console.log(`alternative ${j}.confidence: ${alternative.confidence}`);
             }

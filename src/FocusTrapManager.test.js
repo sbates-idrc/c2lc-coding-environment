@@ -21,13 +21,8 @@ function mockSetFocusTrap(focusTrapManager, elementSelectors, returnElementSelec
 
 describe('FocusManagerProperty', () => {
     let focusTrapManager;
-    let mockKeyPressObject;
     beforeEach(() => {
         focusTrapManager = new FocusTrapManager();
-        mockKeyPressObject = {
-            keyDown: null,
-            shiftKey: false
-        };
     });
 
     test('Checking default values', () => {

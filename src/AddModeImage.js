@@ -2,11 +2,13 @@
 
 import * as React from 'react';
 import { injectIntl } from 'react-intl';
+import type {IntlShape} from 'react-intl';
+
 import { ReactComponent as AddIcon } from './svg/Add.svg';
 
 type AddModeImageProps = {
-    className: any,
-    intl: any
+    className: string,
+    intl: IntlShape
 };
 
 class AddModeImage extends React.Component<AddModeImageProps, {}> {

@@ -31,9 +31,20 @@ jobs:
         run: npm audit
       - name: NPM install (ci)
         run: npm ci
+      - name: Lint
+        run: npx eslint .
       - name: Build
         run: npm run build
       - name: Flow
         run: npx flow check
       - name: Test
-        run: npm test -- --verbose
+        run: npm test -- --verbose --coverage
+      - name: Flow Type Coverage (main)
+        run: npx flow-coverage-report --config .flowcoverage-main
+      - name: Flow Type Coverage (tests)
+        run: npx flow-coverage-report --config .flowcoverage-tests
+      - name: Archive Test Code Coverage Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test Code Coverage
+          path: coverage/

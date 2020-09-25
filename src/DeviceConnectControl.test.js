@@ -4,7 +4,6 @@ import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { shallow, configure } from 'enzyme';
 import { createIntl } from 'react-intl';
-import type {DeviceConnectionStatus} from './types';
 import messages from './messages.json';
 import DeviceConnectControl from './DeviceConnectControl';
 
@@ -57,7 +56,7 @@ test('When not connected, the status area should be empty', () => {
             onClickConnect={() => {}}/>
     );
     // There should be a single status element
-    let status = wrapper.find('[role="status"]');
+    const status = wrapper.find('[role="status"]');
     expect(status).toHaveLength(1);
     // That is empty
     expect(status.children()).toHaveLength(0);
@@ -72,10 +71,10 @@ test('When connected, the status area should have an img with the connected aria
             onClickConnect={() => {}}/>
     );
     // There should be a single status element
-    let status = wrapper.find('[role="status"]');
+    const status = wrapper.find('[role="status"]');
     expect(status).toHaveLength(1);
     // With a single img
-    let img = status.find('[role="img"]');
+    const img = status.find('[role="img"]');
     expect(img).toHaveLength(1);
     expect(img.prop('aria-label')).toBe(intl.messages['DeviceConnectControl.connected']);
     expect(img.children().hasClass('DeviceConnectControl__dash-icon--connected')).toBe(true);
@@ -90,10 +89,10 @@ test('When connecting, the status area should have an img with the connecting ar
             onClickConnect={() => {}}/>
     );
     // There should be a single status element
-    let status = wrapper.find('[role="status"]');
+    const status = wrapper.find('[role="status"]');
     expect(status).toHaveLength(1);
     // With a single img
-    let img = status.find('[role="img"]');
+    const img = status.find('[role="img"]');
     expect(img).toHaveLength(1);
     expect(img.prop('aria-label')).toBe(intl.messages['DeviceConnectControl.connecting']);
 });
