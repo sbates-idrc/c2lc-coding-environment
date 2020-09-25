@@ -149,7 +149,7 @@ describe('When the Scene renders', () => {
         expect(findGridCell(sceneWrapper).length).toBe(1);
     });
 
-    test('With numRows = 2, numColumns = 2, gridCellWidth = 6', () => {
+    test('With numRows = 2, numColumns = 2, gridCellWidth = 100', () => {
         expect.assertions(20);
         const numRows = 2;
         const numColumns = 2;
@@ -297,3 +297,21 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
         expect(robotCharacterPath.get(1).props.y2).toBe(800);
     })
 })
+
+describe('When the scene renders', () => {
+    test('the robot character should be at the center by default', () => {
+        const numRows = 3;
+        const numColumns = 3;
+        const gridCellWidth = 100;
+        const sceneWrapper = createMountScene({numRows, numColumns, gridCellWidth});
+        expect(findGridCell(sceneWrapper).get(0).props['aria-label']).toBe('Cell A1 Background only');
+        expect(findGridCell(sceneWrapper).get(1).props['aria-label']).toBe('Cell B1 Background only');
+        expect(findGridCell(sceneWrapper).get(2).props['aria-label']).toBe('Cell C1 Background only');
+        expect(findGridCell(sceneWrapper).get(3).props['aria-label']).toBe('Cell A2 Background only');
+        expect(findGridCell(sceneWrapper).get(4).props['aria-label']).toBe('Cell B2 Robot Character');
+        expect(findGridCell(sceneWrapper).get(5).props['aria-label']).toBe('Cell C2 Background only');
+        expect(findGridCell(sceneWrapper).get(6).props['aria-label']).toBe('Cell A3 Background only');
+        expect(findGridCell(sceneWrapper).get(7).props['aria-label']).toBe('Cell B3 Background only');
+        expect(findGridCell(sceneWrapper).get(8).props['aria-label']).toBe('Cell C3 Background only');
+    });
+});
