@@ -17,6 +17,16 @@ export type SceneProps = {
 };
 
 class Scene extends React.Component<SceneProps, {}> {
+    describeGridCell(x1: number, y1: number, x2: number, y2: number) {
+        if (
+            this.props.characterState.xPos <= x2 && this.props.characterState.xPos >= x1 &&
+            this.props.characterState.yPos <= y2 && this.props.characterState.yPos >= y1) {
+                return this.props.intl.formatMessage({id:'Scene.robotCharacter'})
+            }
+        else {
+            return this.props.intl.formatMessage({id:'Scene.backgroundOnly'})
+        }
+    }
 
     drawGrid(minX: number, minY: number, sceneWidth: number, sceneHeight: number) {
         const grid = [];
@@ -81,30 +91,17 @@ class Scene extends React.Component<SceneProps, {}> {
                 const x2 = cellXCoords[j].x2;
                 const y1 = yOffset - this.props.gridCellWidth;
                 const y2 = yOffset;
+                // Make sure path is not drawing over the grid lines by setting opacity equals to 0
                 grid.push(
-                    <svg
+                    <path
                         className='Scene__grid-cell'
                         key={`cell-${String.fromCharCode(65+j)}${i}`}
                         role='img'
-                        aria-labelledby={`cell-${String.fromCharCode(65+j)}${i} cell-${String.fromCharCode(65+j)}${i}-desc`}>
-                        <title id={`cell-${String.fromCharCode(65+j)}${i}`}>
-                            {`Cell ${String.fromCharCode(65+j)}${i}`}
-                        </title>
-                        <desc id={`cell-${String.fromCharCode(65+j)}${i}-desc`}>
-                            {
-                                this.props.characterState.xPos <= x2 && this.props.characterState.xPos >= x1 &&
-                                this.props.characterState.yPos <= y2 && this.props.characterState.yPos >= y1 ?
-                                this.props.intl.formatMessage({id:'Scene.robotCharacter'}) :
-                                this.props.intl.formatMessage({id:'Scene.backgroundOnly'})
-                            }
-                        </desc>
-                        <path
-                            fill='none'
-                            stroke='none'
-                            id={`cell${String.fromCharCode(65+j)}${i}`}
-                            d={`M${x1} ${y1} L${x2} ${y1} L${x2} ${y2} L${x1} ${y2} Z`}
-                        />
-                    </svg>
+                        aria-label={`Cell ${String.fromCharCode(65+j)}${i} ${this.describeGridCell(x1, y1, x2, y2)}`}
+                        opacity='0'
+                        id={`cell${String.fromCharCode(65+j)}${i}`}
+                        d={`M${x1} ${y1} L${x2} ${y1} L${x2} ${y2} L${x1} ${y2} Z`}
+                    />
                 )
             }
         }
