@@ -56,6 +56,7 @@ class Scene extends React.Component<SceneProps, {}> {
                     key={`gridcell-${String.fromCharCode(65+i)}${rowIndex}`}
                     aria-label={`${String.fromCharCode(65+i)}${rowIndex}`}>
                     <path
+                        className='Scene__grid-cell'
                         role='img'
                         aria-label={
                             `${this.props.characterState.xPos <= x2 && this.props.characterState.xPos >= x1 &&
