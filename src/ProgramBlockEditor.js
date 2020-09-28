@@ -33,15 +33,16 @@ type ProgramBlockEditorProps = {
     isDraggingCommand: boolean,
     audioManager: AudioManager,
     focusTrapManager: FocusTrapManager,
+    addNodeExpandedMode: boolean,
     onChangeProgram: (Program) => void,
-    onChangeActionPanelStepIndex: (index: ?number) => void
+    onChangeActionPanelStepIndex: (index: ?number) => void,
+    onChangeAddNodeExpandedMode: (boolean) => void
 };
 
 type ProgramBlockEditorState = {
     showConfirmDeleteAll: boolean,
     focusedActionPanelOptionName: ?string,
-    replaceIsActive: boolean,
-    addNodeExpandedMode: boolean
+    replaceIsActive: boolean
 };
 
 class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, ProgramBlockEditorState> {
@@ -61,8 +62,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         this.state = {
             showConfirmDeleteAll : false,
             focusedActionPanelOptionName: null,
-            replaceIsActive: false,
-            addNodeExpandedMode : false
+            replaceIsActive: false
         }
     }
 
@@ -112,12 +112,6 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     }
 
     // Handlers
-
-    handleChangeAddNodeExpandedMode = (isAddNodeExpandedMode: boolean) => {
-        this.setState({
-            addNodeExpandedMode: isAddNodeExpandedMode
-        });
-    };
 
     handleClickDeleteAll = () => {
         this.props.audioManager.playSound('deleteAll');
@@ -317,7 +311,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                 <AddNode
                     aria-label={this.makeAddNodeAriaLabel(programStepNumber, false)}
                     ref={ (element) => this.setAddNodeRef(programStepNumber, element) }
-                    expandedMode={this.state.addNodeExpandedMode}
+                    expandedMode={this.props.addNodeExpandedMode}
                     isDraggingCommand={this.props.isDraggingCommand}
                     programStepNumber={programStepNumber}
                     disabled={
@@ -385,8 +379,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                     <div className='ProgramBlockEditor__options'>
                         <ToggleSwitch
                             ariaLabel={this.props.intl.formatMessage({id:'ProgramBlockEditor.toggleAddNodeExpandMode'})}
-                            value={this.state.addNodeExpandedMode}
-                            onChange={this.handleChangeAddNodeExpandedMode}
+                            value={this.props.addNodeExpandedMode}
+                            onChange={this.props.onChangeAddNodeExpandedMode}
                             contentsTrue={<AddIcon />}
                             contentsFalse={<AddIcon />}
                             className='ProgramBlockEditor__add-node-toggle-switch'

@@ -33,7 +33,8 @@ type AppContext = {
 };
 
 type AppSettings = {
-    language: string
+    language: string,
+    addNodeExpandedMode: boolean
 };
 
 type AppState = {
@@ -72,7 +73,8 @@ export default class App extends React.Component<{}, AppState> {
             program: [],
             characterState: new CharacterState(0, 0, 90, []), // Begin facing East
             settings: {
-                language: 'en'
+                language: 'en',
+                addNodeExpandedMode: true
             },
             dashConnectionStatus: 'notConnected',
             activeProgramStepNum: null,
@@ -255,6 +257,12 @@ export default class App extends React.Component<{}, AppState> {
         });
     };
 
+    handleChangeAddNodeExpandedMode = (isAddNodeExpandedMode: boolean) => {
+        this.setStateSettings({
+            addNodeExpandedMode: isAddNodeExpandedMode
+        });
+    };
+
     handleRootClick = (e: SyntheticInputEvent<HTMLInputElement>) => {
         let element = e.target;
         // Walk up the document tree until we hit the top, or we find that
@@ -387,8 +395,10 @@ export default class App extends React.Component<{}, AppState> {
                                     isDraggingCommand={this.state.isDraggingCommand}
                                     audioManager={this.audioManager}
                                     focusTrapManager={this.focusTrapManager}
+                                    addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
                                     onChangeProgram={this.handleChangeProgram}
                                     onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
+                                    onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
                                 />
                             </Col>
                         </Row>

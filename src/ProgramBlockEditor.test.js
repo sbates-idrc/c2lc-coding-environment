@@ -11,6 +11,7 @@ import AriaDisablingButton from './AriaDisablingButton';
 import FocusTrapManager from './FocusTrapManager';
 import messages from './messages.json';
 import ProgramBlockEditor from './ProgramBlockEditor';
+import ToggleSwitch from './ToggleSwitch';
 
 // Mocks
 jest.mock('./AudioManager');
@@ -28,7 +29,8 @@ const defaultProgramBlockEditorProps = {
     editingDisabled: false,
     replaceIsActive: false,
     isDraggingCommand: false,
-    focusTrapManager: new FocusTrapManager()
+    focusTrapManager: new FocusTrapManager(),
+    addNodeExpandedMode: false
 };
 
 function createShallowProgramBlockEditor(props) {
@@ -46,6 +48,8 @@ function createShallowProgramBlockEditor(props) {
 
     const mockChangeProgramHandler = jest.fn();
 
+    const mockChangeAddNodeExpandedModeHandler = jest.fn();
+
     const wrapper: $FlowIgnoreType = shallow(
         React.createElement(
             ProgramBlockEditor.WrappedComponent,
@@ -55,7 +59,8 @@ function createShallowProgramBlockEditor(props) {
                 {
                     intl: intl,
                     audioManager: audioManagerInstance,
-                    onChangeProgram: mockChangeProgramHandler
+                    onChangeProgram: mockChangeProgramHandler,
+                    onChangeAddNodeExpandedMode: mockChangeAddNodeExpandedModeHandler
                 },
                 props
             )
@@ -65,7 +70,8 @@ function createShallowProgramBlockEditor(props) {
     return {
         wrapper,
         audioManagerMock,
-        mockChangeProgramHandler
+        mockChangeProgramHandler,
+        mockChangeAddNodeExpandedModeHandler
     };
 }
 
@@ -78,6 +84,7 @@ function createMountProgramBlockEditor(props) {
 
     const mockChangeProgramHandler = jest.fn();
     const mockChangeActionPanelStepIndex = jest.fn();
+    const mockChangeAddNodeExpandedModeHandler = jest.fn();
 
     const wrapper = mount(
         React.createElement(
@@ -88,7 +95,8 @@ function createMountProgramBlockEditor(props) {
                 {
                     audioManager: audioManagerInstance,
                     onChangeProgram: mockChangeProgramHandler,
-                    onChangeActionPanelStepIndex: mockChangeActionPanelStepIndex
+                    onChangeActionPanelStepIndex: mockChangeActionPanelStepIndex,
+                    onChangeAddNodeExpandedMode: mockChangeAddNodeExpandedModeHandler
                 },
                 props
             )
@@ -107,7 +115,8 @@ function createMountProgramBlockEditor(props) {
         wrapper,
         audioManagerMock,
         mockChangeProgramHandler,
-        mockChangeActionPanelStepIndex
+        mockChangeActionPanelStepIndex,
+        mockChangeAddNodeExpandedModeHandler
     };
 }
 
@@ -140,6 +149,11 @@ function getAddNodeButtonAtPosition(programBlockEditorWrapper, index: number) {
     return addNodeButton.at(0);
 }
 
+function getExpandAddNodeToggleSwitch(programBlockEditorWrapper) {
+    const toggleSwitch = programBlockEditorWrapper.find(ToggleSwitch).filter('.ProgramBlockEditor__add-node-toggle-switch');
+    return toggleSwitch.at(0);
+}
+
 describe('Program rendering', () => {
     test('Blocks should be rendered for the test program', () => {
         expect.assertions(5);
@@ -166,6 +180,29 @@ test('When a step is clicked, action panel should render next to the step', () =
         // $FlowFixMe: The flow-typed definitions for enzyme introduce a type-checking error here.
         expect(actionPanelContainer.contains(ActionPanel)).toBe(true);
     }
+});
+
+describe('The expand add node toggle switch is wired up', () => {
+    describe('Given that addNodeExpandedMode is false', () => {
+        test('Then the toggle switch should be off, and the change handler should be wired up', () => {
+            const { wrapper, mockChangeAddNodeExpandedModeHandler } = createShallowProgramBlockEditor({
+                addNodeExpandedMode: false
+            });
+            const toggleSwitch = getExpandAddNodeToggleSwitch(wrapper);
+            expect(toggleSwitch.props().value).toBe(false);
+            expect(toggleSwitch.props().onChange).toBe(mockChangeAddNodeExpandedModeHandler);
+        });
+    });
+    describe('Given that addNodeExpandedMode is true', () => {
+        test('Then the toggle switch should be on, and the change handler should be wired up', () => {
+            const { wrapper, mockChangeAddNodeExpandedModeHandler } = createShallowProgramBlockEditor({
+                addNodeExpandedMode: true
+            });
+            const toggleSwitch = getExpandAddNodeToggleSwitch(wrapper);
+            expect(toggleSwitch.props().value).toBe(true);
+            expect(toggleSwitch.props().onChange).toBe(mockChangeAddNodeExpandedModeHandler);
+        });
+    });
 });
 
 describe('Delete All button', () => {
