@@ -22,7 +22,7 @@ class Scene extends React.Component<SceneProps, {}> {
         const columnHeaders = [];
         columnHeaders.push(<text role='columnheader' key='grid-corner'/>)
         for (let i=0;i < cellXCoords.length; i++) {
-            let xOffset = cellXCoords[i].x2;
+            const xOffset = cellXCoords[i].x2;
             columnHeaders.push(
                 <text
                     role='columnheader'
