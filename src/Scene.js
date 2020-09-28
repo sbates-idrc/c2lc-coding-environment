@@ -24,6 +24,7 @@ class Scene extends React.Component<SceneProps, {}> {
             columnHeaders.push(
                 <text
                     role='columnheader'
+                    aria-colindex={i+1}
                     className='Scene__grid-label'
                     id={`column-${String.fromCharCode(65+i)}`}
                     key={`grid-cell-label-${String.fromCharCode(65+i)}`}
@@ -54,7 +55,8 @@ class Scene extends React.Component<SceneProps, {}> {
                 <g
                     role='gridcell'
                     key={`gridcell-${String.fromCharCode(65+i)}${rowIndex}`}
-                    aria-label={`${String.fromCharCode(65+i)}${rowIndex}`}>
+                    aria-describedby={`column-${String.fromCharCode(65+i)} row-${rowIndex}`}
+                    aria-colindex={i+1}>
                     <path
                         className='Scene__grid-cell'
                         role='img'
