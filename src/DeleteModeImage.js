@@ -2,11 +2,12 @@
 
 import * as React from 'react';
 import { injectIntl } from 'react-intl';
+import type {IntlShape} from 'react-intl';
 import { ReactComponent as DeleteIcon } from './svg/Delete.svg';
 
 type DeleteModeImageProps = {
     className: any,
-    intl: any
+    intl: IntlShape
 };
 
 class DeleteModeImage extends React.Component<DeleteModeImageProps, {}> {

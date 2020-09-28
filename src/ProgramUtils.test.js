@@ -18,7 +18,7 @@ test.each([
     [['foo', 'bar', 'baz'], 0, ['bar', 'baz']],
     [['foo', 'bar', 'baz'], 1, ['foo', 'baz']]
 ])('deleteStep',
-    (input, index, expected) => {
+    (input: Array<string>, index: number, expected: Array<string>) => {
         expect.assertions(2);
         const inputValues = input.slice();
         const result = ProgramUtils.deleteStep(inputValues, index);
@@ -35,7 +35,7 @@ test.each([
     [['foo'], 2, ['foo', 'fill1']],
     [['foo'], 3, ['foo', 'fill1', 'fill1']]
 ])('expandProgram',
-    (input, length, expected) => {
+    (input: Array<string>, length: number, expected: Array<string>) => {
         expect.assertions(2);
         const inputValues = input.slice();
         const result = ProgramUtils.expandProgram(inputValues, length, 'fill1');
@@ -51,7 +51,7 @@ test.each([
     [['foo'], 2, ['foo', 'fill1', 'command1']],
     [['foo', 'bar'], 1, ['foo', 'command1', 'bar']]
 ])('insert',
-    (input, index, expected) => {
+    (input: Array<string>, index: number, expected: Array<string>) => {
         expect.assertions(2);
         const inputValues = input.slice();
         const result = ProgramUtils.insert(inputValues, index, 'command1', 'fill1');
@@ -67,7 +67,7 @@ test.each([
     [['foo'], 2, ['foo', 'fill1', 'command1']],
     [['foo', 'bar', 'baz'], 1, ['foo', 'command1', 'baz']]
 ])('overwrite',
-    (input, index, expected) => {
+    (input: Array<string>, index: number, expected: Array<string>) => {
         expect.assertions(2);
         const inputValues = input.slice();
         const result = ProgramUtils.overwrite(inputValues, index, 'command1', 'fill1');
@@ -84,7 +84,7 @@ test.each([
     [['trim1', 'foo'], ['trim1', 'foo']],
     [['trim1', 'foo', 'trim1'], ['trim1', 'foo']]
 ])('trimEnd',
-    (input, expected) => {
+    (input: Array<string>, expected: Array<string>) => {
         expect.assertions(2);
         const inputValues = input.slice();
         const result = ProgramUtils.trimEnd(inputValues, 'trim1');
@@ -99,7 +99,7 @@ test.each([
     [['none', 'none', 'command1'], false],
     [['command1', 'none', 'command1'], false]
 ])('programIsEmpty',
-    (input, expected) => {
+    (input: Array<string>, expected: Array<string>) => {
         expect.assertions(1);
         const result = ProgramUtils.programIsEmpty(input);
         expect(result).toBe(expected);
@@ -113,7 +113,7 @@ test.each([
     [['command1', 'command2', 'command3'], 0, 2, ['command3', 'command2', 'command1']]
 
 ]) ('swapPosition',
-    (input, indexFrom, indexTo, expected) => {
+    (input: Array<string>, indexFrom: number, indexTo: number,  expected: Array<string>) => {
         expect.assertions(2);
         const inputValues = input.slice();
         const result = ProgramUtils.swapPosition(inputValues, indexFrom, indexTo);

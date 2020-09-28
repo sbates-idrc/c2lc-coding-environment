@@ -55,7 +55,7 @@ function swapPosition(program: Program, indexFrom: number, indexTo: number): Pro
     if (program[indexFrom] == null || program[indexTo] == null) {
         return program;
     }
-    let currentStep = program[indexFrom];
+    const currentStep = program[indexFrom];
     program[indexFrom] = program[indexTo];
     program[indexTo] = currentStep;
     return program;

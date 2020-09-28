@@ -10,11 +10,13 @@ import { ReactComponent as ArrowTurnRight } from './svg/ArrowTurnRight.svg';
 
 type CommandBlockProps = {
     commandName: string,
-    onClick: (evt: any) => void,
+    onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
     disabled: boolean,
     className?: string
 };
 
+// TODO: Revise this once there is a proper strategy for typing SVG-backed
+//       components.
 const commandBlockIconTypes = new Map<string, any>([
     ['forward', ArrowForward],
     ['left', ArrowTurnLeft],

@@ -3,7 +3,7 @@
 import soundex from 'soundex';
 
 export type SoundexPatterns = Array<{
-    pattern: Object,
+    pattern: RegExp,
     word: string
 }>;
 
@@ -55,7 +55,7 @@ export default class SoundexTable {
                     break;
             }
         }
-        const afterSoundex = soundex(inputWord);
+        const afterSoundex: string = soundex(inputWord);
         for (const entry of this.patterns) {
             if (entry.pattern.test(afterSoundex)) {
                 return entry.word;

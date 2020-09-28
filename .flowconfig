@@ -11,4 +11,6 @@
 module.name_mapper.extension='scss' -> '<PROJECT_ROOT>/SCSSModule.js.flow'
 module.name_mapper.extension='svg' -> '<PROJECT_ROOT>/SVGModule.js.flow'
 
+suppress_type=$FlowIgnoreType
+
 [strict]

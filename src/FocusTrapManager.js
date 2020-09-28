@@ -34,7 +34,7 @@ export default class FocusTrapManager {
         if (this.active) {
             if (e.key === tabKey) {
                 // Find the elements in our focus trap
-                const elements = [];
+                const elements: Array<HTMLElement> = [];
                 for (const elementSelector of this.elementSelectors) {
                     Array.prototype.push.apply(elements, document.querySelectorAll(elementSelector));
                 }

@@ -3,7 +3,6 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, shallow } from 'enzyme';
-import messages from './messages.json';
 import ToggleSwitch from './ToggleSwitch';
 
 configure({ adapter: new Adapter()});

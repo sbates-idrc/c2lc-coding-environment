@@ -100,10 +100,10 @@ describe('Given expandedMode is true and disabled is false', () => {
 });
 
 describe('Given expandedMode is true and disabled is true', () => {
-    let wrapper, mockClickHandler, mockDropHandler;
+    let wrapper;
 
     beforeEach(() => {
-        ({ wrapper, mockClickHandler, mockDropHandler } = mountAddNode({
+        ({ wrapper } = mountAddNode({
             expandedMode: true,
             disabled: true
         }));

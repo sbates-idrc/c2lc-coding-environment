@@ -117,7 +117,7 @@ test('Disabled button with className and extra props', () => {
 test('Ref is forwarded to implementation HTML button', () => {
     const buttonRef = React.createRef();
 
-    const wrapper = mount(
+    mount(
         <AriaDisablingButton
             onClick={() => {}}
             disabled={false}

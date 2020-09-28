@@ -2,10 +2,9 @@
 
 import Interpreter from './Interpreter';
 import type {CommandHandler} from './Interpreter';
-import type {InterpreterRunningState} from './Interpreter';
 
 function makeIncrement(varName: string): CommandHandler {
-    return (interpreter) => {
+    return (interpreter: Interpreter) => {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 interpreter.memory[varName] = interpreter.memory[varName] + 1;
@@ -228,7 +227,7 @@ test('Do not continue through program if stop is called', (done) => {
 test('run() Promise is rejected on first command error', (done) => {
     const mockStateChangeHandler = jest.fn();
     const interpreter = new Interpreter(mockStateChangeHandler);
-    interpreter.run(['unknown-command1', 'unknown-command2']).then(() => {}, (error) => {
+    interpreter.run(['unknown-command1', 'unknown-command2']).then(() => {}, (error: Error) => {
         expect(error.message).toBe('Unknown command: unknown-command1');
         expect(mockStateChangeHandler.mock.calls.length).toBe(2);
         expect(mockStateChangeHandler.mock.calls[0][0]).toStrictEqual({'isRunning': true, 'activeStep': 0});

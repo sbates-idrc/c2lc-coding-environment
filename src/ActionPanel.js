@@ -3,6 +3,7 @@
 import React from 'react';
 import AriaDisablingButton from './AriaDisablingButton';
 import { injectIntl } from 'react-intl';
+import type {IntlShape} from 'react-intl';
 import type { Program } from './types';
 import { ReactComponent as MovePreviousIcon } from './svg/MovePrevious.svg';
 import { ReactComponent as MoveNextIcon } from './svg/MoveNext.svg';
@@ -15,7 +16,7 @@ type ActionPanelProps = {
     selectedCommandName: ?string,
     program: Program,
     pressedStepIndex: number,
-    intl: any,
+    intl: IntlShape,
     onDelete: (index: number) => void,
     onReplace: (index: number) => void,
     onMoveToPreviousStep: (index: number) => void,
@@ -25,7 +26,7 @@ type ActionPanelProps = {
 class ActionPanel extends React.Component<ActionPanelProps, {}> {
     actionPanelRef: { current: null | HTMLDivElement };
 
-    constructor(props) {
+    constructor(props: ActionPanelProps) {
         super(props);
         this.actionPanelRef = React.createRef();
     }
@@ -33,7 +34,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
     makeStepInfoMessage() {
         const currentStepName = this.props.program[this.props.pressedStepIndex];
 
-        let ariaLabelObj = {
+        const ariaLabelObj = {
             'stepNumber': this.props.pressedStepIndex + 1,
             'stepName': this.props.intl.formatMessage({id:`CommandInfo.${currentStepName}`}),
             'selectedCommandName': '',

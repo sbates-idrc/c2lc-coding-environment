@@ -5,7 +5,6 @@ import Adapter from 'enzyme-adapter-react-16';
 import { shallow, configure } from 'enzyme';
 import { Button } from 'react-bootstrap';
 import { createIntl } from 'react-intl';
-import App from './App';
 import messages from './messages.json';
 import ConfirmDeleteAllModal from './ConfirmDeleteAllModal';
 

@@ -2,7 +2,7 @@
 
 ## Coding Conventions
 
-- Use [Flow](https://flow.org/) for static type checking
+- Use [Flow](https://flow.org/) for static type checking. If you need to add types for libraries or other content, see [our Flow typing document](README.flow-typed.md)
 - Organize CSS by React component, storing the CSS for a component in a file named `COMPONENT.css` (for example `TextEditor.css`)
 - Use [BEM](http://getbem.com/) (Block Element Modifier) to name and structure styles
 - Do instance property initialization in the constructor

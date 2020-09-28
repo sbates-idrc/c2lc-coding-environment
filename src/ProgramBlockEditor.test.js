@@ -5,13 +5,11 @@ import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount, shallow } from 'enzyme';
 import { Button } from 'react-bootstrap';
 import { createIntl, IntlProvider } from 'react-intl';
-import App from './App';
 import AudioManager from './AudioManager';
 import ActionPanel from './ActionPanel';
 import AriaDisablingButton from './AriaDisablingButton';
 import FocusTrapManager from './FocusTrapManager';
 import messages from './messages.json';
-import ConfirmDeleteAllModal from './ConfirmDeleteAllModal';
 import ProgramBlockEditor from './ProgramBlockEditor';
 
 // Mocks
@@ -29,7 +27,6 @@ const defaultProgramBlockEditorProps = {
     selectedAction: null,
     editingDisabled: false,
     replaceIsActive: false,
-    runButtonDisabled: false,
     isDraggingCommand: false,
     focusTrapManager: new FocusTrapManager()
 };
@@ -45,13 +42,11 @@ function createShallowProgramBlockEditor(props) {
     AudioManager.mockClear();
     const audioManagerInstance = new AudioManager(true);
     // $FlowFixMe: Flow doesn't know about the Jest mock API
-    const audioManagerMock = AudioManager.mock.instances[0];
+    const audioManagerMock: any = AudioManager.mock.instances[0];
 
-    const mockClickRunButtonHandler = jest.fn();
     const mockChangeProgramHandler = jest.fn();
-    const mockSetReplaceHandler = jest.fn();
 
-    const wrapper = shallow(
+    const wrapper: $FlowIgnoreType = shallow(
         React.createElement(
             ProgramBlockEditor.WrappedComponent,
             Object.assign(
@@ -60,7 +55,6 @@ function createShallowProgramBlockEditor(props) {
                 {
                     intl: intl,
                     audioManager: audioManagerInstance,
-                    onClickRunButton: mockClickRunButtonHandler,
                     onChangeProgram: mockChangeProgramHandler
                 },
                 props
@@ -71,7 +65,6 @@ function createShallowProgramBlockEditor(props) {
     return {
         wrapper,
         audioManagerMock,
-        mockClickRunButtonHandler,
         mockChangeProgramHandler
     };
 }
@@ -83,9 +76,7 @@ function createMountProgramBlockEditor(props) {
     // $FlowFixMe: Flow doesn't know about the Jest mock API
     const audioManagerMock = AudioManager.mock.instances[0];
 
-    const mockClickRunButtonHandler = jest.fn();
     const mockChangeProgramHandler = jest.fn();
-    const mockSetReplaceHandler = jest.fn();
     const mockChangeActionPanelStepIndex = jest.fn();
 
     const wrapper = mount(
@@ -96,7 +87,6 @@ function createMountProgramBlockEditor(props) {
                 defaultProgramBlockEditorProps,
                 {
                     audioManager: audioManagerInstance,
-                    onClickRunButton: mockClickRunButtonHandler,
                     onChangeProgram: mockChangeProgramHandler,
                     onChangeActionPanelStepIndex: mockChangeActionPanelStepIndex
                 },
@@ -116,7 +106,6 @@ function createMountProgramBlockEditor(props) {
     return {
         wrapper,
         audioManagerMock,
-        mockClickRunButtonHandler,
         mockChangeProgramHandler,
         mockChangeActionPanelStepIndex
     };
@@ -144,11 +133,6 @@ function getProgramBlocks(programBlockEditorWrapper) {
 
 function getProgramBlockAtPosition(programBlockEditorWrapper, index: number) {
     return getProgramBlocks(programBlockEditorWrapper).at(index);
-}
-
-function getRunButton(programBlockEditorWrapper) {
-    return programBlockEditorWrapper.find(AriaDisablingButton)
-        .filter('.ProgramBlockEditor__run-button');
 }
 
 function getAddNodeButtonAtPosition(programBlockEditorWrapper, index: number) {
@@ -179,6 +163,7 @@ test('When a step is clicked, action panel should render next to the step', () =
         expect(actionPanelStepIndex).toBe(stepNum);
         wrapper.setProps({actionPanelStepIndex});
         const actionPanelContainer = getProgramBlockWithActionPanel(wrapper).at(stepNum).childAt(1);
+        // $FlowFixMe: The flow-typed definitions for enzyme introduce a type-checking error here.
         expect(actionPanelContainer.contains(ActionPanel)).toBe(true);
     }
 });
@@ -218,6 +203,7 @@ describe('Delete program steps', () => {
             expect(actionPanelStepIndex).toBe(stepNum);
             wrapper.setProps({actionPanelStepIndex});
             const actionPanelContainer = getProgramBlockWithActionPanel(wrapper).at(stepNum).childAt(1);
+            // $FlowFixMe: The flow-typed definitions for enzyme introduce a type-checking error here.
             expect(actionPanelContainer.containsMatchingElement(ActionPanel)).toBe(true);
 
             const deleteStepButton = getActionPanelActionButtons(wrapper).at(0);
@@ -253,6 +239,7 @@ describe('Replace program steps', () => {
             expect(actionPanelStepIndex).toBe(stepNum);
             wrapper.setProps({actionPanelStepIndex});
             const actionPanelContainer = getProgramBlockWithActionPanel(wrapper).at(stepNum).childAt(1);
+            // $FlowFixMe: The flow-typed definitions for enzyme introduce a type-checking error here.
             expect(actionPanelContainer.containsMatchingElement(ActionPanel)).toBe(true);
 
             const replaceButton = getActionPanelActionButtons(wrapper).at(1);
@@ -290,6 +277,7 @@ describe('Move to previous program step', () => {
             expect(actionPanelStepIndex).toBe(stepNum);
             wrapper.setProps({actionPanelStepIndex});
             const actionPanelContainer = getProgramBlockWithActionPanel(wrapper).at(stepNum).childAt(1);
+            // $FlowFixMe: The flow-typed definitions for enzyme introduce a type-checking error here.
             expect(actionPanelContainer.containsMatchingElement(ActionPanel)).toBe(true);
 
             const moveToPreviousButton = getActionPanelActionButtons(wrapper).at(2);
@@ -329,6 +317,7 @@ describe('Move to next program step', () => {
             expect(actionPanelStepIndex).toBe(stepNum);
             wrapper.setProps({actionPanelStepIndex});
             const actionPanelContainer = getProgramBlockWithActionPanel(wrapper).at(stepNum).childAt(1);
+            // $FlowFixMe: The flow-typed definitions for enzyme introduce a type-checking error here.
             expect(actionPanelContainer.containsMatchingElement(ActionPanel)).toBe(true);
 
             const moveToNextButton = getActionPanelActionButtons(wrapper).at(3);
@@ -403,50 +392,6 @@ describe('Scroll to show the active program step', () => {
             expect(mockScrollIntoView.mock.instances[0]).toBe(getProgramBlockAtPosition(wrapper, stepNum).getDOMNode());
         }
     );
-});
-
-describe('The Run button class is changed when the program is running', () => {
-    describe('Given the program is running', () => {
-        test('Then the Run button should have the pressed class', () => {
-            expect.assertions(1);
-            const { wrapper } = createShallowProgramBlockEditor({
-                interpreterIsRunning: true
-            });
-            expect(getRunButton(wrapper).hasClass('ProgramBlockEditor__run-button--pressed')).toBe(true);
-        })
-    });
-
-    describe('Given the program is not running', () => {
-        test('Then the Run button should not have the pressed class', () => {
-            expect.assertions(1);
-            const { wrapper } = createShallowProgramBlockEditor({
-                interpreterIsRunning: false
-            });
-            expect(getRunButton(wrapper).hasClass('ProgramBlockEditor__run-button--pressed')).toBe(false);
-        })
-    });
-});
-
-describe('The Run button can be disabled', () => {
-    describe('Given runButtonDisabled is true', () => {
-        test('Then the Run button should be disabled', () => {
-            expect.assertions(1);
-            const { wrapper } = createShallowProgramBlockEditor({
-                runButtonDisabled: true
-            });
-            expect(getRunButton(wrapper).props().disabled).toBe(true);
-        })
-    });
-
-    describe('Given runButtonDisabled is false', () => {
-        test('Then the Run button should not be disabled', () => {
-            expect.assertions(1);
-            const { wrapper } = createShallowProgramBlockEditor({
-                runButtonDisabled: false
-            });
-            expect(getRunButton(wrapper).props().disabled).toBe(false);
-        })
-    });
 });
 
 test('The editor scrolls when a step is added to the end of the program', () => {
