@@ -18,13 +18,12 @@ class Scene extends React.Component<SceneProps, {}> {
     generateColumnHeaders(cellXCoords, minY, sceneHeight) {
         const columnLabelOffset = sceneHeight * 0.025;
         const columnHeaders = [];
-        columnHeaders.push(<text role='gridcell' key='grid-corner'/>)
+        columnHeaders.push(<text role='columnheader' key='grid-corner'/>)
         for (let i=0;i < cellXCoords.length; i++) {
             let xOffset = cellXCoords[i].x2;
             columnHeaders.push(
                 <text
                     role='columnheader'
-                    aria-colindex={i+1}
                     className='Scene__grid-label'
                     id={`column-${String.fromCharCode(65+i)}`}
                     key={`grid-cell-label-${String.fromCharCode(65+i)}`}
@@ -55,8 +54,7 @@ class Scene extends React.Component<SceneProps, {}> {
                 <g
                     role='gridcell'
                     key={`gridcell-${String.fromCharCode(65+i)}${rowIndex}`}
-                    aria-describedby={`column-${String.fromCharCode(65+i)} row-${rowIndex}`}
-                    aria-colindex={i+1}>
+                    aria-describedby={`column-${String.fromCharCode(65+i)} row-${rowIndex}`}>
                     <path
                         className='Scene__grid-cell'
                         role='img'
