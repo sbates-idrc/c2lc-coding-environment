@@ -24,7 +24,7 @@ class ProgramSpeedController extends React.Component<ProgramSpeedControllerProps
                         className='ProgramSpeedController__slider'
                         type='range'
                         min='1'
-                        max='5'
+                        max='9'
                         onChange={this.props.onChange} />
                 }
                 <FastIcon />
