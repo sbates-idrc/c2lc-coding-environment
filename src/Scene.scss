@@ -3,14 +3,49 @@
 // Grid for Scene-container is set in App.scss
 .Scene-container {
     height: 100%;
-    overflow: scroll;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 20px auto;
+    grid-template-rows: 20px auto;
+    position: relative;
 }
 
 .Scene {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    overflow: scroll;
     background-color: #FFF;
     display: inline-block;
     box-sizing: border-box;
+}
+
+.Scene > svg {
     width: 1430px;
+}
+
+.Scene-svg-grid-labels {
+    width: 100%;
+    overflow: visible;
+    fill: #CCE6E2;
+}
+
+.Scene-labels {
+    overflow: scroll;
+    fill: #CCE6E2;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    height: 100%;
+    position: relative;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.Scene-labels::-webkit-scrollbar {
+    display: none;
 }
 
 .Scene__grid-line {
@@ -20,7 +55,7 @@
 
 .Scene__grid-label {
     fill: #555;
-    font: bold 0.01em sans-serif;
+    font: bold 0.15rem sans-serif;
 }
 
 .Scene__path-line {

@@ -19,11 +19,13 @@ export type SceneProps = {
 class Scene extends React.Component<SceneProps, {}> {
     drawGrid() {
         const grid = [];
+        const rowLabels = [];
+        const columnLabels = [];
         if (this.props.dimensions.getWidth() === 0 ||
             this.props.dimensions.getHeight() === 0) {
             return grid;
         }
-        const rowLabelOffset = this.props.dimensions.getWidth() * 0.025;
+        // const rowLabelOffset = this.props.dimensions.getWidth() * 0.025;
         const columnLabelOffset = this.props.dimensions.getHeight() * 0.025;
         const halfGridCellWidth = 0.5;
         let yOffset = this.props.dimensions.getMinY();
@@ -38,14 +40,14 @@ class Scene extends React.Component<SceneProps, {}> {
                     x2={this.props.dimensions.getMaxX()}
                     y2={yOffset} />);
             }
-            grid.push(
+            rowLabels.push(
                 <text
                     className='Scene__grid-label'
-                    textAnchor='end'
+                    textAnchor='middle'
                     key={`grid-cell-label-${i}`}
                     dominantBaseline='middle'
-                    x={this.props.dimensions.getMinX() - rowLabelOffset}
-                    y={yOffset - halfGridCellWidth}>
+                    x={1.5}
+                    y={8.5*i - 4.5}>
                     {i}
                 </text>
             )
@@ -62,7 +64,10 @@ class Scene extends React.Component<SceneProps, {}> {
                     x2={xOffset}
                     y2={this.props.dimensions.getMaxY()} />);
             }
-            grid.push(
+            columnLabels.push(
+                <circle cx={xOffset - halfGridCellWidth} cy={this.props.dimensions.getMinY() - columnLabelOffset} r={0.2}/>
+            )
+            columnLabels.push(
                 <text
                     className='Scene__grid-label'
                     key={`grid-cell-label-${String.fromCharCode(64+i)}`}
@@ -73,7 +78,7 @@ class Scene extends React.Component<SceneProps, {}> {
                 </text>
             )
         }
-        return grid;
+        return { grid, rowLabels, columnLabels };
     }
 
     drawCharacterPath() {
@@ -185,11 +190,26 @@ class Scene extends React.Component<SceneProps, {}> {
         }
     }
 
+    handleScrollScene = (e) => {
+        if (e.target.scrollTop) {
+            document.getElementById('scene-row-header').scrollTop = e.target.scrollTop;
+        }
+    }
+
+    handleScrollRowLabel = (e) => {
+        if (e.target.scrollTop) {
+            document.getElementById('scene-grid').scrollTop = e.target.scrollTop;
+        }
+    }
+
     render() {
         const minX = this.props.dimensions.getMinX();
         const minY = this.props.dimensions.getMinY();
         const width = this.props.dimensions.getWidth();
         const height = this.props.dimensions.getHeight();
+        const grid = this.drawGrid().grid;
+        const rowLabels = this.drawGrid().rowLabels;
+        // const columnLabels = this.drawGrid().columnLabels;
 
         // Subtract 90 degrees from the character bearing as the character
         // image is drawn upright when it is facing East
@@ -197,10 +217,24 @@ class Scene extends React.Component<SceneProps, {}> {
 
         return (
             <div className='Scene-container'>
+                <div
+                    id='scene-row-header'
+                    className='Scene-labels'
+                    onScroll={this.handleScrollRowLabel}>
+                    <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox={`0 0 3 135`}>
+                        <rect x={0} y={0} width={3} height={135} />
+                        {rowLabels}
+
+                    </svg>
+                </div>
                 <span
+                    id='scene-grid'
                     className='Scene'
                     role='img'
-                    aria-label={this.generateAriaLabel()}>
+                    aria-label={this.generateAriaLabel()}
+                    onScroll={this.handleScrollScene}>
                     <svg
                         xmlns='http://www.w3.org/2000/svg'
                         viewBox={`${minX} ${minY} ${width} ${height}`}>
@@ -209,7 +243,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                 <rect x={minX} y={minY} width={width} height={height} />
                             </clipPath>
                         </defs>
-                        {this.drawGrid()}
+                        {grid}
                         <g clipPath='url(#Scene-clippath)'>
                             {this.drawCharacterPath()}
                             <Character
