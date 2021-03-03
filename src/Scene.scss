@@ -5,9 +5,16 @@
     height: 100%;
     width: 100%;
     display: grid;
-    grid-template-columns: 20px auto;
-    grid-template-rows: 20px auto;
-    position: relative;
+    grid-template-columns: 30px auto;
+    grid-template-rows: 30px auto;
+}
+
+.Scene-corner {
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    fill: #CCE6E2;
 }
 
 .Scene {
@@ -25,27 +32,45 @@
     width: 1430px;
 }
 
-.Scene-svg-grid-labels {
-    width: 100%;
-    overflow: visible;
-    fill: #CCE6E2;
-}
-
-.Scene-labels {
+.Scene-row-labels {
     overflow: scroll;
     fill: #CCE6E2;
-    grid-row-start: 1;
+    grid-row-start: 2;
     grid-row-end: 3;
     grid-column-start: 1;
     grid-column-end: 2;
-    height: 100%;
-    position: relative;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
 
-.Scene-labels::-webkit-scrollbar {
+.Scene-row-labels > svg {
+    width: 30px;
+    height: 900px;
+}
+
+.Scene-row-labels::-webkit-scrollbar {
     display: none;
+}
+
+.Scene-column-labels {
+    fill: #CCE6E2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.Scene-column-labels::-webkit-scrollbar {
+    display: none;
+}
+
+.Scene-column-labels > svg {
+    width: 1450px;
+    height: 30px;
 }
 
 .Scene__grid-line {
@@ -55,11 +80,39 @@
 
 .Scene__grid-label {
     fill: #555;
-    font: bold 0.15rem sans-serif;
+    font: bold 2.5px sans-serif;
 }
 
 .Scene__path-line {
     stroke: #222;
     stroke-width: 0.03;
     stroke-linecap: round;
+}
+
+.Scene-side {
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-column-start: 3;
+    grid-column-end: 4;
+    fill: #CCE6E2;
+}
+
+.Scene-bottom-left-corner {
+    grid-row-start: 3;
+    grid-row-end: 4;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    fill: #CCE6E2;
+}
+
+.Scene-bottom {
+    grid-row-start: 3;
+    grid-row-end: 4;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    fill: #CCE6E2;
+}
+
+.Scene-bottom > svg {
+    overflow: visible;
 }
