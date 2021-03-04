@@ -95,6 +95,14 @@ function calculateCharacterDimensions() {
 }
 
 describe('When the Scene renders', () => {
+    test('with width = 0, height = 0', () => {
+        expect.assertions(1);
+        const sceneWrapper = createMountScene({
+            dimensions: new SceneDimensions(0, 0)
+        });
+        expect(findGridLines(sceneWrapper).length).toBe(0);
+    })
+
     test('With width = 0, height = 2', () => {
         expect.assertions(1);
         const sceneWrapper = createMountScene({
@@ -433,26 +441,35 @@ describe('When Scene gets scrolled', () => {
     });
 });
 
-describe('When row header and column header gets scrolled', () => {
-    test('Scene gets scrolled too', () => {
-        //expect.assertions(4);
+describe('Scene gets scrolled', () => {
+    test('When row header gets scrolled vertically', () => {
+        expect.assertions(2);
         const sceneWrapper = createMountScene();
         const scene = findScene(sceneWrapper);
-        const columnHeader = findColumnHeader(sceneWrapper);
         const rowHeader = findRowHeader(sceneWrapper);
         scene.ref.currentTarget = {
-            scrollLeft: 0,
             scrollTop: 0
         };
-        expect(scene.ref.currentTarget.scrollLeft).toBe(0);
         expect(scene.ref.currentTarget.scrollTop).toBe(0);
-        columnHeader.ref.currentTarget = {
-            scrollLeft: 200
-        };
-        expect(scene.ref.currentTarget.scrollLeft).toBe(200);
         rowHeader.ref.currentTarget = {
             scrollTop: 200
         };
         expect(scene.ref.currentTarget.scrollTop).toBe(200);
     });
+
+    test('When column header gets scrolled horizontally', () => {
+        expect.assertions(2);
+        const sceneWrapper = createMountScene();
+        const scene = findScene(sceneWrapper);
+        const columnHeader = findColumnHeader(sceneWrapper);
+        scene.ref.currentTarget = {
+            scrollLeft: 0
+        };
+        expect(scene.ref.currentTarget.scrollLeft).toBe(0);
+        columnHeader.ref.currentTarget = {
+            scrollLeft: 200
+        };
+        expect(scene.ref.currentTarget.scrollLeft).toBe(200);
+    });
+
 });

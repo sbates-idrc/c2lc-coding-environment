@@ -23,7 +23,7 @@ class Scene extends React.Component<SceneProps, {}> {
         const columnLabels = [];
         if (this.props.dimensions.getWidth() === 0 ||
             this.props.dimensions.getHeight() === 0) {
-            return grid;
+            return { grid, rowLabels, columnLabels };
         }
         let yOffset = this.props.dimensions.getMinY();
         for (let i=1;i < this.props.dimensions.getHeight() + 1;i++) {
