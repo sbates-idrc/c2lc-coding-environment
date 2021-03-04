@@ -17,7 +17,7 @@ export type SceneProps = {
 };
 
 class Scene extends React.Component<SceneProps, {}> {
-    drawGrid() {
+    drawGrid(): any {
         const grid = [];
         const rowLabels = [];
         const columnLabels = [];
@@ -38,7 +38,12 @@ class Scene extends React.Component<SceneProps, {}> {
                     y2={yOffset} />);
             }
             rowLabels.push(
-                <circle cx={-0.7} cy={8.25*i - 4.125} r={2}/>
+                <circle
+                    className='Scene__row-decoration'
+                    key={`grid-row-decoration-${i}`}
+                    cx={-0.7}
+                    cy={8.25*i - 4.125}
+                    r={2}/>
             )
             rowLabels.push(
                 <text
@@ -66,7 +71,12 @@ class Scene extends React.Component<SceneProps, {}> {
                     y2={this.props.dimensions.getMaxY()} />);
             }
             columnLabels.push(
-                <circle cx={8.25*i - 4.125} cy={0} r={2}/>
+                <circle
+                    className='Scene__column-decoration'
+                    key={`grid-column-decoration-${i}`}
+                    cx={8.25*i - 4.125}
+                    cy={0}
+                    r={2}/>
             )
             columnLabels.push(
                 <text
@@ -191,26 +201,30 @@ class Scene extends React.Component<SceneProps, {}> {
         }
     }
 
-    handleScrollScene = (e) => {
-        clearTimeout(this.timeOut);
-        this.setState({
-            isScrolling: true
-        });
-        if (e.target.scrollTop != null || e.target.scrollLeft != null) {
-            document.getElementById('scene-row-header').scrollTop = e.target.scrollTop;
-            document.getElementById('scene-column-header').scrollLeft = e.target.scrollLeft;
+    handleScrollScene = (e: SyntheticEvent<HTMLDivElement>) => {
+        const sceneScrollTop = e.currentTarget.scrollTop;
+        const sceneScrollLeft = e.currentTarget.scrollLeft;
+        const rowHeader = document.getElementById('scene-row-header');
+        const columnHeader = document.getElementById('scene-column-header');
+        if ((sceneScrollTop != null || sceneScrollLeft != null) && rowHeader && columnHeader) {
+            rowHeader.scrollTop = sceneScrollTop;
+            columnHeader.scrollLeft = sceneScrollLeft;
         }
     }
 
-    handleScrollRowHeader = (e) => {
-        if (e.target.scrollTop) {
-            document.getElementById('scene-grid').scrollTop = e.target.scrollTop;
+    handleScrollRowHeader = (e: SyntheticEvent<HTMLDivElement>) => {
+        const rowHeaderScrollTop = e.currentTarget.scrollTop;
+        const scene = document.getElementById('scene');
+        if (rowHeaderScrollTop != null && scene != null) {
+            scene.scrollTop = rowHeaderScrollTop;
         }
     }
 
-    handleScrollColumnHeader = (e) => {
-        if (e.target.scrollLeft) {
-            document.getElementById('scene-grid').scrollLeft = e.target.scrollLeft;
+    handleScrollColumnHeader = (e: SyntheticEvent<HTMLDivElement>) => {
+        const columnHeaderScrollLeft = e.currentTarget.scrollLeft;
+        const scene = document.getElementById('scene');
+        if (columnHeaderScrollLeft != null && scene != null) {
+            scene.scrollLeft = columnHeaderScrollLeft;
         }
     }
 
@@ -228,63 +242,59 @@ class Scene extends React.Component<SceneProps, {}> {
         const characterTransform = `translate(${this.getCharacterDrawXPos()} ${this.getCharacterDrawYPos()}) rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
 
         return (
-            <div className='Scene-container'>
-                <div className='Scene-corner'>
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        viewBox={`0 0 3 3`}>
-                        <rect x={0.97} y={1.5} width={3} height={2} />
-                    </svg>
-                </div>
-                <div
-                    id='scene-row-header'
-                    className='Scene-row-labels'
-                    onScroll={this.handleScrollRowHeader}>
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        viewBox={`-2 0 3 135`}>
-                        <rect x={-1.3} y={0} width={3} height={135} />
-                        {rowLabels}
+            <React.Fragment>
+                <div className='Scene__background' />
+                <div className='Scene__container'>
+                    <div
+                        id='scene-row-header'
+                        className='Scene__row-header'
+                        onScroll={this.handleScrollRowHeader}>
+                        <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            viewBox='-2 0 3 135'>
+                            <rect x={-1.3} y={0} width={3} height={135} />
+                            {rowLabels}
 
-                    </svg>
+                        </svg>
+                    </div>
+                    <div
+                        id='scene-column-header'
+                        className='Scene__column-header'
+                        onScroll={this.handleScrollColumnHeader}>
+                        <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            viewBox='0 -2 217.5 3'>
+                            <rect x={0} y={-0.5} width={217.5} height={3} />
+                            {columnLabels}
+                        </svg>
+                    </div>
+                    <div
+                        id='scene'
+                        className='Scene'
+                        role='img'
+                        aria-label={this.generateAriaLabel()}
+                        onScroll={this.handleScrollScene}>
+                        <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            viewBox={`${minX} ${minY} ${width} ${height}`}>
+                            <defs>
+                                <clipPath id='Scene-clippath'>
+                                    <rect x={minX} y={minY} width={width} height={height} />
+                                </clipPath>
+                            </defs>
+                            {grid}
+                            <g clipPath='url(#Scene-clippath)'>
+                                {this.drawCharacterPath()}
+                                <Character
+                                    theme={this.props.theme}
+                                    transform={characterTransform}
+                                    width={0.9}
+                                />
+                            </g>
+                        </svg>
+                    </div>
                 </div>
-                <div
-                    id='scene-column-header'
-                    className='Scene-column-labels'
-                    onScroll={this.handleScrollColumnHeader}>
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        viewBox={`0 -2 217.5 3`}>
-                        <rect x={0} y={-0.5} width={217.5} height={3} />
-                        {columnLabels}
-                    </svg>
-                </div>
-                <div
-                    id='scene-grid'
-                    className='Scene'
-                    role='img'
-                    aria-label={this.generateAriaLabel()}
-                    onScroll={this.handleScrollScene}>
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        viewBox={`${minX} ${minY} ${width} ${height}`}>
-                        <defs>
-                            <clipPath id='Scene-clippath'>
-                                <rect x={minX} y={minY} width={width} height={height} />
-                            </clipPath>
-                        </defs>
-                        {grid}
-                        <g clipPath='url(#Scene-clippath)'>
-                            {this.drawCharacterPath()}
-                            <Character
-                                theme={this.props.theme}
-                                transform={characterTransform}
-                                width={0.9}
-                            />
-                        </g>
-                    </svg>
-                </div>
-            </div>
+            </React.Fragment>
         );
     }
 }
