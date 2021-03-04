@@ -1,7 +1,9 @@
 @import 'variables';
 
 // Grid for Scene-container is set in App.scss
-.Scene-container {
+.Scene__container {
+    position: relative;
+    z-index: 1;
     height: 100%;
     width: 100%;
     display: grid;
@@ -9,12 +11,14 @@
     grid-template-rows: 30px auto;
 }
 
-.Scene-corner {
-    grid-row-start: 1;
-    grid-row-end: 2;
-    grid-column-start: 1;
-    grid-column-end: 2;
-    fill: #CCE6E2;
+.Scene__background {
+    position: absolute;
+    top: 0.8rem;
+    left: 0.5rem;
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #CCE6E2;
 }
 
 .Scene {
@@ -32,7 +36,7 @@
     width: 1430px;
 }
 
-.Scene-row-labels {
+.Scene__row-header {
     overflow: scroll;
     fill: #CCE6E2;
     grid-row-start: 2;
@@ -43,16 +47,16 @@
     scrollbar-width: none;  /* Firefox */
 }
 
-.Scene-row-labels > svg {
+.Scene__row-header > svg {
     width: 30px;
     height: 900px;
 }
 
-.Scene-row-labels::-webkit-scrollbar {
+.Scene__row-header::-webkit-scrollbar {
     display: none;
 }
 
-.Scene-column-labels {
+.Scene__column-header {
     fill: #CCE6E2;
     grid-row-start: 1;
     grid-row-end: 2;
@@ -64,11 +68,11 @@
     scrollbar-width: none;  /* Firefox */
 }
 
-.Scene-column-labels::-webkit-scrollbar {
+.Scene__column-header::-webkit-scrollbar {
     display: none;
 }
 
-.Scene-column-labels > svg {
+.Scene__column-header > svg {
     width: 1450px;
     height: 30px;
 }
@@ -87,32 +91,4 @@
     stroke: #222;
     stroke-width: 0.03;
     stroke-linecap: round;
-}
-
-.Scene-side {
-    grid-row-start: 1;
-    grid-row-end: 3;
-    grid-column-start: 3;
-    grid-column-end: 4;
-    fill: #CCE6E2;
-}
-
-.Scene-bottom-left-corner {
-    grid-row-start: 3;
-    grid-row-end: 4;
-    grid-column-start: 1;
-    grid-column-end: 2;
-    fill: #CCE6E2;
-}
-
-.Scene-bottom {
-    grid-row-start: 3;
-    grid-row-end: 4;
-    grid-column-start: 1;
-    grid-column-end: 4;
-    fill: #CCE6E2;
-}
-
-.Scene-bottom > svg {
-    overflow: visible;
 }
