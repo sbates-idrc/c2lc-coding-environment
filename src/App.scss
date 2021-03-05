@@ -68,6 +68,7 @@ body {
 
 .App__scene-controls {
     position: absolute;
+    z-index: 1;
     padding: 1rem 0;
     bottom: 0;
     right: 0;
