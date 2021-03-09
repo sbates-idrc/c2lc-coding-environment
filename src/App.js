@@ -95,7 +95,7 @@ export class App extends React.Component<AppProps, AppState> {
         };
 
         // Begin facing East
-        this.startingCharacterState = new CharacterState(0, 0, 2, []);
+        this.startingCharacterState = new CharacterState(1, 1, 2, []);
 
         this.state = {
             programSequence: new ProgramSequence([], 0),
