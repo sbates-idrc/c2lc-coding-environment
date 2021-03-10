@@ -26,7 +26,7 @@ import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ShareButton from './ShareButton';
-import type { AudioManager, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
+import type { AudioManager, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName, PositionName } from './types';
 import * as Utils from './Utils';
 import './App.scss';
 import './Themes.css';
@@ -551,6 +551,58 @@ export class App extends React.Component<AppProps, AppState> {
         this.setStateSettings({ theme });
     }
 
+    handleChangeCharacterPosition = (positionName: PositionName) => {
+        const currentCharacterState = this.state.characterState;
+        switch(positionName) {
+            case 'turnLeft':
+                this.setState({
+                    characterState: currentCharacterState.turnLeft(1)
+                });
+                break;
+            case 'turnRight':
+                this.setState({
+                    characterState: currentCharacterState.turnRight(1)
+                });
+                break;
+            case 'up':
+                this.setState({
+                    characterState: currentCharacterState.moveUpPosition()
+                });
+                break;
+            case 'right':
+                this.setState({
+                    characterState: currentCharacterState.moveRightPosition()
+                });
+                break;
+            case 'down':
+                this.setState({
+                    characterState: currentCharacterState.moveDownPosition()
+                });
+                break;
+            case 'left':
+                this.setState({
+                    characterState: currentCharacterState.moveLeftPosition()
+                });
+                break;
+            default:
+                break;
+        }
+    }
+
+    handleChangeCharacterXPos = (xPos: number) => {
+        const currentCharacterState = this.state.characterState;
+        this.setState({
+            characterState: currentCharacterState.changeXPos(xPos)
+        });
+    }
+
+    handleChangeCharacterYPos = (yPos: number) => {
+        const currentCharacterState = this.state.characterState;
+        this.setState({
+            characterState: currentCharacterState.changeYPos(yPos)
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -632,6 +684,7 @@ export class App extends React.Component<AppProps, AppState> {
                     <div className='App__program-block-editor'>
                         <ProgramBlockEditor
                             actionPanelStepIndex={this.state.actionPanelStepIndex}
+                            characterState={this.state.characterState}
                             editingDisabled={this.state.runningState === 'running'}
                             programSequence={this.state.programSequence}
                             runningState={this.state.runningState}
@@ -641,6 +694,8 @@ export class App extends React.Component<AppProps, AppState> {
                             focusTrapManager={this.focusTrapManager}
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
                             theme={this.state.settings.theme}
+                            onChangeCharacterPosition={this.handleChangeCharacterPosition}
+                            onChangeCharacterPositionCoordinate={this.handleChangeCharacterPositionCoordinate}
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
