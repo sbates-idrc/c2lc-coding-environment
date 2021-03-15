@@ -14,7 +14,7 @@ configure({ adapter: new Adapter() });
 
 const defaultSceneProps = {
     dimensions: new SceneDimensions(1, 1),
-    characterState: new CharacterState(0, 0, 2, []),
+    characterState: new CharacterState(0, 0, 2, [], new SceneDimensions(1, 1)),
     theme: 'default'
 };
 
@@ -194,19 +194,12 @@ describe('The ARIA label should tell there is a character with its position', ()
         [1, 2, 4, 'Scene, 17 by 9 grid with a character at column A, row 2 facing down'],
         [1, 2, 5, 'Scene, 17 by 9 grid with a character at column A, row 2 facing lower left'],
         [1, 2, 6, 'Scene, 17 by 9 grid with a character at column A, row 2 facing left'],
-        [1, 2, 7, 'Scene, 17 by 9 grid with a character at column A, row 2 facing upper left'],
-        [   1, -10, 0, 'Scene, 17 by 9 grid with a character outside of the scene above the scene, facing up'],
-        [ 100, -10, 6, 'Scene, 17 by 9 grid with a character outside of the scene to the upper right of the scene, facing left'],
-        [ 100,   1, 0, 'Scene, 17 by 9 grid with a character outside of the scene to the right of the scene, facing up'],
-        [ 100,  10, 0, 'Scene, 17 by 9 grid with a character outside of the scene to the lower right of the scene, facing up'],
-        [   1,  10, 0, 'Scene, 17 by 9 grid with a character outside of the scene below the scene, facing up'],
-        [-100,  10, 0, 'Scene, 17 by 9 grid with a character outside of the scene to the lower left of the scene, facing up'],
-        [-100,   1, 0, 'Scene, 17 by 9 grid with a character outside of the scene to the left of the scene, facing up'],
-        [-100, -10, 0, 'Scene, 17 by 9 grid with a character outside of the scene to the upper left of the scene, facing up']
+        [1, 2, 7, 'Scene, 17 by 9 grid with a character at column A, row 2 facing upper left']
     ])('x=%f, y=%f, direction=%i', (x, y, direction, expectedLabel) => {
+        const sceneDimensions = new SceneDimensions(17, 9);
         const sceneWrapper = createMountScene({
-            dimensions: new SceneDimensions(17, 9),
-            characterState: new CharacterState(x, y, direction, [])
+            dimensions: sceneDimensions,
+            characterState: new CharacterState(x, y, direction, [], sceneDimensions)
         });
         expect(findScene(sceneWrapper).get(0).props['aria-label']).toBe(expectedLabel);
     });
@@ -231,12 +224,12 @@ describe('When the Scene renders', () => {
     });
 });
 
-describe('When the character renders, transform should apply', () => {
+describe('When the character renders, transform should apply', (sceneDimensions = new SceneDimensions(100, 100)) => {
     test('When xPos = 1, yPos = 1, direction = 2', () => {
         expect.assertions(1);
         const sceneWrapper = createMountScene({
-            dimensions: new SceneDimensions(1, 1),
-            characterState: new CharacterState(1, 1, 2, [])
+            dimensions: sceneDimensions,
+            characterState: new CharacterState(1, 1, 2, [], sceneDimensions)
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
@@ -245,8 +238,8 @@ describe('When the character renders, transform should apply', () => {
     test('When xPos = 10, yPos = 8, direction = 4', () => {
         expect.assertions(1);
         const sceneWrapper = createMountScene({
-            dimensions: new SceneDimensions(20, 20),
-            characterState: new CharacterState(10, 8, 4, [])
+            dimensions: sceneDimensions,
+            characterState: new CharacterState(10, 8, 4, [], sceneDimensions)
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
@@ -255,8 +248,8 @@ describe('When the character renders, transform should apply', () => {
     test('When xPos = 1, yPos = 9, direction = 0', () => {
         expect.assertions(1);
         const sceneWrapper = createMountScene({
-            dimensions: new SceneDimensions(20, 20),
-            characterState: new CharacterState(1, 9, 0, [])
+            dimensions: sceneDimensions,
+            characterState: new CharacterState(1, 9, 0, [], sceneDimensions)
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
@@ -264,34 +257,12 @@ describe('When the character renders, transform should apply', () => {
     });
 });
 
-describe('Draw character when out of bounds', () => {
-    test.each([
-        [  1, -2,  1  , 0.6 ], // N
-        [  6, -2,  5.4, 0.6 ], // NE
-        [  6,  1,  5.4,  1   ], // E
-        [  6,  4,  5.4,  3.4 ], // SE
-        [  1,  4,  1  ,  3.4 ], // S
-        [ -3,  4, 0.6,  3.4], // SW
-        [ -3,  1, 0.6,  1   ], // W
-        [ -3, -2, 0.6, 0.6 ]  // NW
-    ])('x=%f, y=%f, expectedDrawX=%f, expectedDrawY=%f',
-        (x, y, expectedDrawX, expectedDrawY) => {
-            const sceneWrapper = createMountScene({
-                dimensions: new SceneDimensions(5, 3),
-                characterState: new CharacterState(x, y, 2, [])
-            });
-            const character = findCharacter(sceneWrapper);
-            expect(character.get(0).props.transform)
-                .toBe(`translate(${expectedDrawX} ${expectedDrawY}) rotate(0 0 0)`);
-        }
-    );
-});
-
 describe('When the Character has a path, it is drawn on the Scene', () => {
     test('When there is no path segment', () => {
         expect.assertions(1);
+        const sceneDimensions = new SceneDimensions(1000, 1000);
         const sceneWrapper = createMountScene({
-            characterState: new CharacterState(0, 0, 2, [])
+            characterState: new CharacterState(0, 0, 2, [], sceneDimensions)
         });
         const characterPath = findCharacterPath(sceneWrapper);
         expect(characterPath.length).toBe(0);
@@ -299,8 +270,9 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
 
     test('When there is one path segment', () => {
         expect.assertions(5);
+        const sceneDimensions = new SceneDimensions(1000, 1000)
         const sceneWrapper = createMountScene({
-            characterState: new CharacterState(0, 0, 2, [{x1: 100, y1: 200, x2: 300, y2: 400}])
+            characterState: new CharacterState(0, 0, 2, [{x1: 100, y1: 200, x2: 300, y2: 400}], sceneDimensions)
         });
         const characterPath = findCharacterPath(sceneWrapper);
         expect(characterPath.length).toBe(1);
@@ -312,12 +284,13 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
 
     test('When there are two path segments', () => {
         expect.assertions(9);
+        const sceneDimensions = new SceneDimensions(1000, 1000);
         const sceneWrapper = createMountScene({
             characterState:
                 new CharacterState(0, 0, 2, [
                     {x1: 100, y1: 200, x2: 300, y2: 400},
                     {x1: 500, y1: 600, x2: 700, y2: 800}
-                ])
+                ], sceneDimensions)
         });
         const characterPath = findCharacterPath(sceneWrapper);
         expect(characterPath.length).toBe(2);

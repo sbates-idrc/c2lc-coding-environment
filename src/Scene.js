@@ -159,32 +159,6 @@ class Scene extends React.Component<SceneProps, {}> {
         }
     }
 
-    getCharacterDrawXPos() {
-        switch (this.props.dimensions.getBoundsStateX(this.props.characterState.xPos)) {
-            case 'inBounds':
-                return this.props.characterState.xPos;
-            case 'outOfBoundsAbove':
-                return this.props.dimensions.getMaxX() - 0.1;
-            case 'outOfBoundsBelow':
-                return this.props.dimensions.getMinX() + 0.1;
-            default:
-                throw new Error('Unexpected bounds type');
-        }
-    }
-
-    getCharacterDrawYPos() {
-        switch (this.props.dimensions.getBoundsStateY(this.props.characterState.yPos)) {
-            case 'inBounds':
-                return this.props.characterState.yPos;
-            case 'outOfBoundsAbove':
-                return this.props.dimensions.getMaxY() - 0.1;
-            case 'outOfBoundsBelow':
-                return this.props.dimensions.getMinY() + 0.1;
-            default:
-                throw new Error('Unexpected bounds type');
-        }
-    }
-
     render() {
         const minX = this.props.dimensions.getMinX();
         const minY = this.props.dimensions.getMinY();
@@ -193,7 +167,7 @@ class Scene extends React.Component<SceneProps, {}> {
 
         // Subtract 90 degrees from the character bearing as the character
         // image is drawn upright when it is facing East
-        const characterTransform = `translate(${this.getCharacterDrawXPos()} ${this.getCharacterDrawYPos()}) rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
+        const characterTransform = `translate(${this.props.characterState.xPos} ${this.props.characterState.yPos}) rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
 
         return (
             <div className='Scene-container'>
