@@ -1,6 +1,7 @@
 // @flow
 
 import * as C2lcMath from './C2lcMath';
+import SceneDimensions from './SceneDimensions';
 
 // Character direction is stored as eighths of a turn, as follows:
 // N:  0
@@ -24,12 +25,14 @@ export default class CharacterState {
     yPos: number; // Positive y is South
     direction: number; // Eighths of a turn, see note above
     path: Array<PathSegment>;
+    sceneDimensions: SceneDimensions;
 
-    constructor(xPos: number, yPos: number, direction: number, path: Array<PathSegment>) {
+    constructor(xPos: number, yPos: number, direction: number, path: Array<PathSegment>, sceneDimensions: SceneDimensions) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.direction = direction;
         this.path = path;
+        this.sceneDimensions = sceneDimensions;
     }
 
     getDirectionDegrees() {
@@ -92,19 +95,45 @@ export default class CharacterState {
                 throw new Error('CharacterState direction must be an integer in range 0-7 inclusive');
         }
 
+        let newYPos, newXPos = 0;
+        switch(this.sceneDimensions.getBoundsStateX(this.xPos + xOffset)) {
+            case 'outOfBoundsBelow':
+                newXPos = 1;
+                break;
+            case 'outOfBoundsAbove':
+                newXPos = this.sceneDimensions.getWidth();
+                break;
+            default:
+                newXPos = this.xPos + xOffset;
+                break;
+        }
+
+        switch(this.sceneDimensions.getBoundsStateY(this.yPos + yOffset)) {
+            case 'outOfBoundsBelow':
+                newYPos = 1;
+                break;
+            case 'outOfBoundsAbove':
+                newYPos = this.sceneDimensions.getHeight();
+                break;
+            default:
+                newYPos = this.yPos + yOffset;
+                break;
+        }
+
         const newPathSegment = {
             x1: this.xPos,
             y1: this.yPos,
-            x2: this.xPos + xOffset,
-            y2: this.yPos + yOffset
+            x2: newXPos,
+            y2: newYPos
         };
         return new CharacterState(
-            this.xPos + xOffset,
-            this.yPos + yOffset,
+            newXPos,
+            newYPos,
             this.direction,
             drawingEnabled ?
                 this.path.concat([newPathSegment]) :
-                this.path
+                this.path,
+            this.sceneDimensions
         );
     }
 
@@ -113,7 +142,8 @@ export default class CharacterState {
             this.xPos,
             this.yPos,
             C2lcMath.wrap(0, 8, this.direction - amountEighthsOfTurn),
-            this.path
+            this.path,
+            this.sceneDimensions
         );
     }
 
@@ -122,7 +152,111 @@ export default class CharacterState {
             this.xPos,
             this.yPos,
             C2lcMath.wrap(0, 8, this.direction + amountEighthsOfTurn),
-            this.path
+            this.path,
+            this.sceneDimensions
         );
+    }
+
+    moveUpPosition(): CharacterState {
+        let yPos = 0;
+        if (this.sceneDimensions.getBoundsStateY(this.yPos - 1) === 'outOfBoundsBelow') {
+            yPos = 1;
+        } else {
+            yPos = this.yPos - 1;
+        }
+        return new CharacterState(
+            this.xPos,
+            yPos,
+            this.direction,
+            this.path,
+            this.sceneDimensions
+        );
+    }
+
+    moveRightPosition(): CharacterState {
+        let xPos = 0;
+        if (this.sceneDimensions.getBoundsStateX(this.xPos + 1) === 'outOfBoundsAbove') {
+            xPos = this.sceneDimensions.getWidth();
+        } else {
+            xPos = this.xPos + 1;
+        }
+        return new CharacterState(
+            xPos,
+            this.yPos,
+            this.direction,
+            this.path,
+            this.sceneDimensions
+        );
+    }
+
+    moveDownPosition(): CharacterState {
+        let yPos = 0;
+        if (this.sceneDimensions.getBoundsStateY(this.yPos + 1) === 'outOfBoundsAbove') {
+            yPos = this.sceneDimensions.getHeight();
+        } else {
+            yPos = this.yPos + 1;
+        }
+        return new CharacterState(
+            this.xPos,
+            yPos,
+            this.direction,
+            this.path,
+            this.sceneDimensions
+        );
+    }
+
+    moveLeftPosition(): CharacterState {
+        let xPos = 0;
+        if (this.sceneDimensions.getBoundsStateY(this.xPos - 1) === 'outOfBoundsBelow') {
+            xPos = 1;
+        } else {
+            xPos = this.xPos - 1;
+        }
+        return new CharacterState(
+            xPos,
+            this.yPos,
+            this.direction,
+            this.path,
+            this.sceneDimensions
+        );
+    }
+
+    changeXPosition(columnLabel: string): CharacterState {
+        let newXPos = this.xPos;
+        if (columnLabel <= String.fromCharCode(64 + this.sceneDimensions.getWidth()) && columnLabel >='A') {
+            newXPos = columnLabel.charCodeAt(0) - 64;
+        } else if (columnLabel <= String.fromCharCode(96 + this.sceneDimensions.getWidth()) && columnLabel >='a') {
+            newXPos = columnLabel.charCodeAt(0) - 96;
+        }
+        return new CharacterState(
+            newXPos,
+            this.yPos,
+            this.direction,
+            this.path,
+            this.sceneDimensions
+        );
+    }
+
+    changeYPosition(rowLabel: number): CharacterState {
+        let newYPos = this.yPos;
+        if (rowLabel <= this.sceneDimensions.getHeight() && rowLabel >= 1) {
+            newYPos = rowLabel;
+        }
+        return new CharacterState(
+            this.xPos,
+            newYPos,
+            this.direction,
+            this.path,
+            this.sceneDimensions
+        );
+    }
+
+
+    getRowLabel(): string {
+        return `${this.yPos}`;
+    }
+
+    getColumnLabel(): string {
+        return String.fromCharCode(64 + this.xPos);
     }
 }
