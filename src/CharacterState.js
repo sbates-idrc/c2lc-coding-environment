@@ -97,6 +97,8 @@ export default class CharacterState {
 
         let newYPos, newXPos = 0;
         let turnSegment = {
+            x1: 0,
+            y1: 0,
             x2: this.xPos,
             y2: this.yPos
         };
@@ -195,7 +197,7 @@ export default class CharacterState {
             newYPos,
             this.direction,
             drawingEnabled ?
-                turnSegment.x1 != null && turnSegment.y1 != null ?
+                turnSegment.x1 !== 0 && turnSegment.y1 !== 0 ?
                     this.path.concat([turnSegment], [newPathSegment]) :
                     this.path.concat([newPathSegment]) :
                 this.path,
