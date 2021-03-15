@@ -26,7 +26,7 @@ import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ShareButton from './ShareButton';
-import type { AudioManager, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName, PositionName } from './types';
+import type { AudioManager, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
 import * as Utils from './Utils';
 import './App.scss';
 import './Themes.css';
@@ -76,6 +76,7 @@ type AppState = {
 export class App extends React.Component<AppProps, AppState> {
     version: string;
     appContext: AppContext;
+    sceneDimensions: SceneDimensions;
     dashDriver: RobotDriver;
     interpreter: Interpreter;
     audioManager: AudioManager;
@@ -94,8 +95,10 @@ export class App extends React.Component<AppProps, AppState> {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
         };
 
+        this.sceneDimensions = new SceneDimensions(26, 16);
+
         // Begin facing East
-        this.startingCharacterState = new CharacterState(1, 1, 2, []);
+        this.startingCharacterState = new CharacterState(1, 1, 2, [], this.sceneDimensions);
 
         this.state = {
             programSequence: new ProgramSequence([], 0),
@@ -111,7 +114,7 @@ export class App extends React.Component<AppProps, AppState> {
             isDraggingCommand: false,
             audioEnabled: true,
             actionPanelStepIndex: null,
-            sceneDimensions: new SceneDimensions(26, 16),
+            sceneDimensions: this.sceneDimensions,
             drawingEnabled: true,
             runningState: 'stopped'
         };
@@ -122,7 +125,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.programSerializer = new ProgramSerializer();
 
-        this.characterStateSerializer = new CharacterStateSerializer();
+        this.characterStateSerializer = new CharacterStateSerializer(this.sceneDimensions);
 
         this.interpreter.addCommandHandler(
             'forward1',
@@ -551,7 +554,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.setStateSettings({ theme });
     }
 
-    handleChangeCharacterPosition = (positionName: PositionName) => {
+    handleChangeCharacterPosition = (positionName: ?string) => {
         const currentCharacterState = this.state.characterState;
         switch(positionName) {
             case 'turnLeft':
@@ -589,17 +592,17 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    handleChangeCharacterXPos = (xPos: number) => {
+    handleChangeCharacterXPosition = (columnLabel: string) => {
         const currentCharacterState = this.state.characterState;
         this.setState({
-            characterState: currentCharacterState.changeXPos(xPos)
+            characterState: currentCharacterState.changeXPosition(columnLabel)
         });
     }
 
-    handleChangeCharacterYPos = (yPos: number) => {
+    handleChangeCharacterYPosition = (rowLabel: string) => {
         const currentCharacterState = this.state.characterState;
         this.setState({
-            characterState: currentCharacterState.changeYPos(yPos)
+            characterState: currentCharacterState.changeYPosition(parseInt(rowLabel, 10))
         });
     }
 
@@ -695,7 +698,8 @@ export class App extends React.Component<AppProps, AppState> {
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
                             theme={this.state.settings.theme}
                             onChangeCharacterPosition={this.handleChangeCharacterPosition}
-                            onChangeCharacterPositionCoordinate={this.handleChangeCharacterPositionCoordinate}
+                            onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
+                            onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
