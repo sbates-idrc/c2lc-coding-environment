@@ -96,12 +96,46 @@ export default class CharacterState {
         }
 
         let newYPos, newXPos = 0;
+        let turnSegment = {
+            x2: this.xPos,
+            y2: this.yPos
+        };
         switch(this.sceneDimensions.getBoundsStateX(this.xPos + xOffset)) {
             case 'outOfBoundsBelow':
                 newXPos = 1;
+                if (yOffset < 0) {
+                    turnSegment = {
+                        x1: this.xPos,
+                        y1: this.yPos,
+                        x2: newXPos,
+                        y2: this.yPos - 1
+                    };
+                } else {
+                    turnSegment = {
+                        x1: this.xPos,
+                        y1: this.yPos,
+                        x2: newXPos,
+                        y2: this.yPos + 1
+                    }
+                }
                 break;
             case 'outOfBoundsAbove':
                 newXPos = this.sceneDimensions.getWidth();
+                if (yOffset < 0) {
+                    turnSegment = {
+                        x1: this.xPos,
+                        y1: this.yPos,
+                        x2: newXPos,
+                        y2: this.yPos - 1
+                    };
+                } else {
+                    turnSegment = {
+                        x1: this.xPos,
+                        y1: this.yPos,
+                        x2: newXPos,
+                        y2: this.yPos + 1
+                    }
+                }
                 break;
             default:
                 newXPos = this.xPos + xOffset;
@@ -111,9 +145,39 @@ export default class CharacterState {
         switch(this.sceneDimensions.getBoundsStateY(this.yPos + yOffset)) {
             case 'outOfBoundsBelow':
                 newYPos = 1;
+                if (xOffset < 0) {
+                    turnSegment = {
+                        x1: this.xPos,
+                        y1: this.yPos,
+                        x2: this.xPos - 1,
+                        y2: newYPos
+                    };
+                } else {
+                    turnSegment = {
+                        x1: this.xPos,
+                        y1: this.yPos,
+                        x2: this.xPos + 1,
+                        y2: newYPos
+                    }
+                }
                 break;
             case 'outOfBoundsAbove':
                 newYPos = this.sceneDimensions.getHeight();
+                if (xOffset < 0) {
+                    turnSegment = {
+                        x1: this.xPos,
+                        y1: this.yPos,
+                        x2: this.xPos - 1,
+                        y2: newYPos
+                    };
+                } else {
+                    turnSegment = {
+                        x1: this.xPos,
+                        y1: this.yPos,
+                        x2: this.xPos + 1,
+                        y2: newYPos
+                    }
+                }
                 break;
             default:
                 newYPos = this.yPos + yOffset;
@@ -121,8 +185,8 @@ export default class CharacterState {
         }
 
         const newPathSegment = {
-            x1: this.xPos,
-            y1: this.yPos,
+            x1: turnSegment.x2,
+            y1: turnSegment.y2,
             x2: newXPos,
             y2: newYPos
         };
@@ -131,7 +195,9 @@ export default class CharacterState {
             newYPos,
             this.direction,
             drawingEnabled ?
-                this.path.concat([newPathSegment]) :
+                turnSegment.x1 != null && turnSegment.y1 != null ?
+                    this.path.concat([turnSegment], [newPathSegment]) :
+                    this.path.concat([newPathSegment]) :
                 this.path,
             this.sceneDimensions
         );

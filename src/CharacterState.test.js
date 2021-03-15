@@ -200,20 +200,32 @@ test('Moving diagonally out of the scene will only move parallel to the edges of
     const sceneDimensions = new SceneDimensions(10, 10);
     (expect(new CharacterState(2, 1, 1, [], sceneDimensions).forward(1, false)): any)
         .toHaveCharacterState(3, 1, 1, []);
-    (expect(new CharacterState(2, 1, 7, [], sceneDimensions).forward(1, false)): any)
-        .toHaveCharacterState(1, 1, 7, []);
-    (expect(new CharacterState(10, 2, 1, [], sceneDimensions).forward(1, false)): any)
-        .toHaveCharacterState(10, 1, 1, []);
+    (expect(new CharacterState(9, 3, 1, [], sceneDimensions).forward(2, true)): any)
+        .toHaveCharacterState(10, 1, 1, [
+            {x1: 9, y1: 3, x2: 10, y2: 2},
+            {x1: 10, y1: 2, x2: 10, y2: 1}
+        ]);
     (expect(new CharacterState(10, 2, 3, [], sceneDimensions).forward(1, false)): any)
         .toHaveCharacterState(10, 3, 3, []);
-    (expect(new CharacterState(2, 10, 3, [], sceneDimensions).forward(1, false)): any)
-        .toHaveCharacterState(3, 10, 3, []);
+    (expect(new CharacterState(9, 3, 3, [], sceneDimensions).forward(2, true)): any)
+        .toHaveCharacterState(10, 5, 3, [
+            {x1: 9, y1: 3, x2: 10, y2: 4},
+            {x1: 10, y1: 4, x2: 10, y2: 5}
+        ]);
     (expect(new CharacterState(2, 10, 5, [], sceneDimensions).forward(1, false)): any)
         .toHaveCharacterState(1, 10, 5, []);
-    (expect(new CharacterState(1, 2, 5, [], sceneDimensions).forward(1, false)): any)
-        .toHaveCharacterState(1, 3, 5, []);
+    (expect(new CharacterState(2, 2, 5, [], sceneDimensions).forward(2, true)): any)
+        .toHaveCharacterState(1, 4, 5, [
+            {x1: 2, y1: 2, x2: 1, y2: 3},
+            {x1: 1, y1: 3, x2: 1, y2: 4}
+        ]);
     (expect(new CharacterState(1, 2, 7, [], sceneDimensions).forward(1, false)): any)
         .toHaveCharacterState(1, 1, 7, []);
+    (expect(new CharacterState(3, 2, 7, [], sceneDimensions).forward(2, true)): any)
+        .toHaveCharacterState(1, 1, 7, [
+            {x1: 3, y1: 2, x2: 2, y2: 1},
+            {x1: 2, y1: 1, x2: 1, y2: 1}
+        ]);
 })
 
 test('When direction is not an integer in range 0-7, forward() should throw an Error', () => {
