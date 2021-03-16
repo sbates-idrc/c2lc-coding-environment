@@ -96,48 +96,15 @@ export default class CharacterState {
         }
 
         let newYPos, newXPos = 0;
-        let turnSegment = {
-            x1: 0,
-            y1: 0,
-            x2: this.xPos,
-            y2: this.yPos
-        };
+        let turnSegment = [];
         switch(this.sceneDimensions.getBoundsStateX(this.xPos + xOffset)) {
             case 'outOfBoundsBelow':
                 newXPos = 1;
-                if (yOffset < 0) {
-                    turnSegment = {
-                        x1: this.xPos,
-                        y1: this.yPos,
-                        x2: newXPos,
-                        y2: this.yPos - 1
-                    };
-                } else {
-                    turnSegment = {
-                        x1: this.xPos,
-                        y1: this.yPos,
-                        x2: newXPos,
-                        y2: this.yPos + 1
-                    }
-                }
+                turnSegment = this.drawEdgeDiagonalPath([], this.xPos - newXPos, this.direction);
                 break;
             case 'outOfBoundsAbove':
                 newXPos = this.sceneDimensions.getWidth();
-                if (yOffset < 0) {
-                    turnSegment = {
-                        x1: this.xPos,
-                        y1: this.yPos,
-                        x2: newXPos,
-                        y2: this.yPos - 1
-                    };
-                } else {
-                    turnSegment = {
-                        x1: this.xPos,
-                        y1: this.yPos,
-                        x2: newXPos,
-                        y2: this.yPos + 1
-                    }
-                }
+                turnSegment = this.drawEdgeDiagonalPath([], newXPos - this.xPos, this.direction);
                 break;
             default:
                 newXPos = this.xPos + xOffset;
@@ -147,48 +114,28 @@ export default class CharacterState {
         switch(this.sceneDimensions.getBoundsStateY(this.yPos + yOffset)) {
             case 'outOfBoundsBelow':
                 newYPos = 1;
-                if (xOffset < 0) {
-                    turnSegment = {
-                        x1: this.xPos,
-                        y1: this.yPos,
-                        x2: this.xPos - 1,
-                        y2: newYPos
-                    };
-                } else {
-                    turnSegment = {
-                        x1: this.xPos,
-                        y1: this.yPos,
-                        x2: this.xPos + 1,
-                        y2: newYPos
-                    }
-                }
+                turnSegment = this.drawEdgeDiagonalPath([], this.yPos - newYPos, this.direction);
                 break;
             case 'outOfBoundsAbove':
                 newYPos = this.sceneDimensions.getHeight();
-                if (xOffset < 0) {
-                    turnSegment = {
-                        x1: this.xPos,
-                        y1: this.yPos,
-                        x2: this.xPos - 1,
-                        y2: newYPos
-                    };
-                } else {
-                    turnSegment = {
-                        x1: this.xPos,
-                        y1: this.yPos,
-                        x2: this.xPos + 1,
-                        y2: newYPos
-                    }
-                }
+                turnSegment = this.drawEdgeDiagonalPath([], newYPos - this.yPos, this.direction);
                 break;
             default:
                 newYPos = this.yPos + yOffset;
                 break;
         }
 
+        let startingX1 = this.xPos;
+        let startingY1 = this.yPos;
+
+        if (turnSegment.length > 0) {
+            startingX1 = turnSegment[turnSegment.length - 1].x2;
+            startingY1 = turnSegment[turnSegment.length - 1].y2;
+        }
+
         const newPathSegment = {
-            x1: turnSegment.x2,
-            y1: turnSegment.y2,
+            x1: startingX1,
+            y1: startingY1,
             x2: newXPos,
             y2: newYPos
         };
@@ -197,12 +144,54 @@ export default class CharacterState {
             newYPos,
             this.direction,
             drawingEnabled ?
-                turnSegment.x1 !== 0 && turnSegment.y1 !== 0 ?
-                    this.path.concat([turnSegment], [newPathSegment]) :
+                turnSegment.length > 0 ?
+                    this.path.concat(turnSegment, [newPathSegment]) :
                     this.path.concat([newPathSegment]) :
                 this.path,
             this.sceneDimensions
         );
+    }
+
+    drawEdgeDiagonalPath(path: Array<PathSegment>, iterations: number, direction:number): Array<PathSegment> {
+        if (iterations === 0) {
+            return path;
+        } else {
+            let x2 = this.xPos;
+            let y2 = this.yPos;
+            if (path.length !== 0) {
+                x2 = path[path.length - 1].x2;
+                y2 = path[path.length - 1].y2;
+            }
+            let newX2 = 0;
+            let newY2 = 0;
+            switch (direction) {
+                case 1:
+                    newX2 = x2 + 1;
+                    newY2 = y2 - 1;
+                    break;
+                case 3:
+                    newX2 = x2 + 1;
+                    newY2 = y2 + 1;
+                    break;
+                case 5:
+                    newX2 = x2 - 1;
+                    newY2 = y2 + 1;
+                    break;
+                case 7:
+                    newX2 = x2 - 1;
+                    newY2 = y2 - 1;
+                    break;
+                default:
+                    break;
+            }
+            path.push({
+                x1: x2,
+                y1: y2,
+                x2: newX2,
+                y2: newY2
+            });
+            return this.drawEdgeDiagonalPath(path, iterations - 1, direction);
+        }
     }
 
     turnLeft(amountEighthsOfTurn: number): CharacterState {
