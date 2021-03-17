@@ -139,6 +139,18 @@ export default class CharacterState {
             x2: newXPos,
             y2: newYPos
         };
+
+        if (newPathSegment.x1 === newPathSegment.x2 &&
+            newPathSegment.y1 === newPathSegment.y2) {
+            return new CharacterState(
+                newXPos,
+                newYPos,
+                this.direction,
+                this.path,
+                this.sceneDimensions
+            )
+        }
+
         return new CharacterState(
             newXPos,
             newYPos,
@@ -182,7 +194,7 @@ export default class CharacterState {
                     newY2 = y2 - 1;
                     break;
                 default:
-                    break;
+                    return [];
             }
             path.push({
                 x1: x2,
