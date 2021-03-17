@@ -369,15 +369,15 @@ test('drawEdgeDiagonalPath', () => {
             ]
     );
     // N
-    expect(new CharacterState(2, 2, [], sceneDimensions)
+    expect(new CharacterState(2, 2, 0, [], sceneDimensions)
         .drawEdgeDiagonalPath([], 1, 0)).toStrictEqual([]);
     // E
-    expect(new CharacterState(25, 2, [], sceneDimensions)
+    expect(new CharacterState(25, 2, 2, [], sceneDimensions)
         .drawEdgeDiagonalPath([], 1, 2)).toStrictEqual([]);
     // S
-    expect(new CharacterState(2, 15, [], sceneDimensions)
+    expect(new CharacterState(2, 15, 4, [], sceneDimensions)
         .drawEdgeDiagonalPath([], 1, 4)).toStrictEqual([]);
     // W
-    expect(new CharacterState(2, 15, [], sceneDimensions)
+    expect(new CharacterState(2, 15, 6, [], sceneDimensions)
         .drawEdgeDiagonalPath([], 1, 6)).toStrictEqual([]);
 })
