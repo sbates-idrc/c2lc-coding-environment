@@ -2,17 +2,20 @@
 
 .ThemeSelector {
     button.btn {
-        background-color: #F1F2F4;
-
+        background-color: #4C9990;
+        border: none;
+        color: #EBFAF8;
+        font-weight: normal;
+    
         &:hover {
             background-color: #F5C58A;
+            color: black;
         }
 
         &:focus {
-            padding: 0.2rem 1.1rem;
-            background-color: #F5C58A;
-            border: 2px solid white;
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width #F5C58A;
+            box-shadow:
+                0 0 0 0.1rem white,
+                0 0 0 $c2lc-focus-indicator-width black;
         }
     }
 
@@ -24,4 +27,3 @@
         }
     }
 }
-

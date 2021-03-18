@@ -27,6 +27,12 @@ body.light-theme {
         color: #000;
     }
     
+
+    .ThemeSelector button.btn {
+        background-color: #F1F2F4;
+        color: black;
+    }
+
     .App__command-palette {
         background-color: #EBFAF8;
     }
@@ -212,6 +218,11 @@ body.light-theme {
     .App__playAndShare-background {
         background-color: #D5D8DD;
     }
+
+    button.btn.ShareButton {
+        background-color: #F1F2F4;
+        color: black;
+    }
 }
 
 
@@ -228,16 +239,6 @@ body.dark-theme {
     
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-        }
-    }
-
-    .ThemeSelector button.btn {
-        background-color: #4C9990;
-        color: #EBFAF8;
-
-        &:hover {
-            background-color: #F5C58A;
-            color: black;
         }
     }
 
@@ -328,11 +329,6 @@ body.dark-theme {
         background-color: #30444e;
     }
 
-    .App__shareButton-container button {
-        background-color: #4C9990;
-        color: #EBFAF8;
-    }
-
     button.btn.PlayButton:focus, button.btn.StopButton:focus {
         border-color: white;
     }
@@ -345,15 +341,12 @@ body.dark-theme {
 
     button.btn.ShareButton {
         &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-            border-color: black;
+            box-shadow:
+                0 0 0 0.1rem #30444E,
+                0 0 0 $c2lc-focus-indicator-width white;
         }
-
-        &:hover {
-            background-color: #F5C58A;
-            color: black;
-        }          
     }
+
 }
 
 
@@ -380,8 +373,9 @@ body.gray-theme {
             }
     
             &:focus {
-                border: 2px solid white;
-                box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862
+                box-shadow:
+                    0 0 0 0.1rem white,
+                    0 0 0 $c2lc-focus-indicator-width #505862
             }
         }
     
@@ -797,9 +791,20 @@ body.gray-theme {
         }
     }
 
-    button.btn.ShareButton:focus {
-        box-shadow: 0 0 0 0.2rem #505862;
-    }    
+    button.btn.ShareButton {
+        background-color: #F1F2F4;
+        color: black;
+
+        &:hover {
+            background-color:#D5D8DD;
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.15rem #d5d8dd,
+                0 0 0 0.25rem #505862;
+        }        
+    }
 }
 
 /* High Contrast "Mono" Theme */
