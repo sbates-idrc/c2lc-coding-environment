@@ -604,17 +604,18 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     }
 
     getThemedCharacter() {
+        const transform = `rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
         if (this.props.theme === 'space') {
             return <SpaceShipIcon
-                transform={`rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`}
+                transform={transform}
                 className='ProgramBlockEditor__character-column-character' />
         } else if (this.props.theme === 'forest') {
             return <RabbitIcon
-                transform={`rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`}
+                transform={transform}
                 className='ProgramBlockEditor__character-column-character' />
         } else {
             return <RobotIcon
-                transform={`rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`}
+                transform={transform}
                 className='ProgramBlockEditor__character-column-character' />
         }
     }
