@@ -28,8 +28,6 @@
 .ConfirmDeleteAllModal__footer {
     grid-row-start: 2;
     grid-row-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 3;
     margin-top: 2rem;
     display: flex;
     justify-content: space-around;
