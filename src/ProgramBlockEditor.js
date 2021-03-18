@@ -434,6 +434,22 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         this.props.onChangeCharacterYPosition(this.state.characterRowLabel);
     };
 
+    handleUpdateXPos = (e) => {
+        const enterKey = 'Enter';
+        if (e.key === enterKey) {
+            e.preventDefault();
+            this.props.onChangeCharacterXPosition(this.state.characterColumnLabel);
+        }
+    }
+
+    handleUpdateYPos = (e) => {
+        const enterKey = 'Enter';
+        if (e.key === enterKey) {
+            e.preventDefault();
+            this.props.onChangeCharacterYPosition(this.state.characterRowLabel);
+        }
+    }
+
     // Rendering
 
     makeProgramBlock(programStepNumber: number, command: string) {
@@ -726,7 +742,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                             type='text'
                             value={this.state.characterColumnLabel}
                             onChange={!this.props.editingDisabled ? this.handleChangeXPos : undefined}
-                            onBlur={this.handleBlurXPos} />
+                            onBlur={this.handleBlurXPos}
+                            onKeyDown={this.handleUpdateXPos} />
                         <input
                             className={characterPositionTextInputClassName}
                             aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.rowPosition'})}
@@ -734,6 +751,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                             type='text'
                             value={this.state.characterRowLabel}
                             onChange={!this.props.editingDisabled ? this.handleChangeYPos : undefined}
+                            onKeyDown={this.handleUpdateYPos}
                             onBlur={this.handleBlurYPos} />
                     </div>
                 </div>

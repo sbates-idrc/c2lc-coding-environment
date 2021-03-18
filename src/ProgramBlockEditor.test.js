@@ -872,10 +872,11 @@ describe('Using change character position buttons', () => {
 
 describe('Using change character position by column/row labels', () => {
     test('Changing x position', () => {
-        expect.assertions(3);
+        expect.assertions(6);
         const { wrapper, mockChangeCharacterXPosition } = createShallowProgramBlockEditor();
         const characterXPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(0);
-        const sampleXPosition = 'X'
+        const sampleXPosition = 'X';
+        const secondSampleXPosition = 'A';
 
         characterXPositionCoordinateBox.simulate('change', {currentTarget: {value : sampleXPosition}});
         wrapper.update();
@@ -884,20 +885,37 @@ describe('Using change character position by column/row labels', () => {
         characterXPositionCoordinateBox.simulate('blur');
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(1);
         expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(sampleXPosition);
+
+        characterXPositionCoordinateBox.simulate('change', {currentTarget: {value : secondSampleXPosition}});
+        wrapper.update();
+        expect(wrapper.instance().state.characterColumnLabel).toBe(secondSampleXPosition);
+
+        characterXPositionCoordinateBox.simulate('keyDown', {key: 'Enter', preventDefault: () =>  {}});
+        expect(mockChangeCharacterXPosition.mock.calls.length).toBe(2);
+        expect(mockChangeCharacterXPosition.mock.calls[1][0]).toBe(secondSampleXPosition);
     });
     test('Changing y position', () => {
-        expect.assertions(3);
+        expect.assertions(6);
         const { wrapper, mockChangeCharacterYPosition } = createShallowProgramBlockEditor();
-        const characterXPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(1);
-        const sampleYPosition = '2'
+        const characterYPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(1);
+        const sampleYPosition = '2';
+        const secondSampleYPosition = '8';
 
-        characterXPositionCoordinateBox.simulate('change', {currentTarget: {value : sampleYPosition}});
+        characterYPositionCoordinateBox.simulate('change', {currentTarget: {value : sampleYPosition}});
         wrapper.update();
         expect(wrapper.instance().state.characterRowLabel).toBe(sampleYPosition);
 
-        characterXPositionCoordinateBox.simulate('blur');
+        characterYPositionCoordinateBox.simulate('blur');
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(1);
         expect(mockChangeCharacterYPosition.mock.calls[0][0]).toBe(sampleYPosition);
+
+        characterYPositionCoordinateBox.simulate('change', {currentTarget: {value : secondSampleYPosition}});
+        wrapper.update();
+        expect(wrapper.instance().state.characterRowLabel).toBe(secondSampleYPosition);
+
+        characterYPositionCoordinateBox.simulate('keyDown', {key: 'Enter', preventDefault: () =>  {}});
+        expect(mockChangeCharacterYPosition.mock.calls.length).toBe(2);
+        expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(secondSampleYPosition);
     });
     test('When editingDisabled prop is true, onChange handler is undefined', () => {
         expect.assertions(4)
