@@ -57,8 +57,8 @@ button.btn:hover:not(:focus) {
 }
 
 button.btn-primary:disabled {
-    border: $c2lc-button-border-width solid $c2lc-disabled-color;
-    color: $c2lc-disabled-color;
+    border: $c2lc-button-border-width solid $c2lc-disabled-background-color;
+    color: $c2lc-disabled-foreground-color;
 }
 
 button.btn-command-block--none {
@@ -71,6 +71,11 @@ button.command-block {
     min-width: 45px;
     min-height: 45px;
     padding: 0;
+}
+
+button.btn.command-block:focus {
+    box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    border: 2px solid #30444E;
 }
 
 button.btn.command-block.command-block--pressed,
@@ -86,4 +91,11 @@ button.btn.command-block--dragged {
 .command-block-svg {
     width: 2rem;
     height: 2rem;
+
+    path, circle {
+        stroke: #1E1E1E;
+    }
+    circle, path.filled {
+        fill: #1E1E1E;
+    }                        
 }

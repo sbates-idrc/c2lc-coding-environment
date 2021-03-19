@@ -12,11 +12,14 @@ $c2lc-right-command-hover-color: #EA462F;
 
 $c2lc-focus-indicator-color: #000000;
 
-$c2lc-disabled-color: #777777;
+$c2lc-disabled-background-color: #B9BEC6;
+$c2lc-disabled-foreground-color: #F1F2F4;
 
 /* Borders */
 
-$c2lc-button-border-width: 2px;
+$c2lc-button-border-width: 3px;
+$c2lc-active-button-width: 6px;
+$c2lc-paused-button-outer-width: 8px;
 
 /* Focus Indicator */
 

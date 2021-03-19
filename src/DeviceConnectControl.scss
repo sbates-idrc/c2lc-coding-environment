@@ -53,10 +53,10 @@ button.btn.DeviceConnectControl__button:hover {
 }
 
 .DeviceConnectControl.DeviceConnectControl--disabled svg {
-    stroke: $c2lc-disabled-color;
+    stroke: $c2lc-disabled-foreground-color;
 }
 
 .DeviceConnectControl.DeviceConnectControl--disabled button {
-    background-color: $c2lc-disabled-color;
+    background-color: $c2lc-disabled-background-color;
     cursor: default;
 }

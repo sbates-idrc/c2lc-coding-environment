@@ -7,6 +7,10 @@ button.btn.ShareButton {
     padding: 0.2rem;
     width: 10rem;
 
+    &:active {
+        background-color: #ED972C;
+    }
+
     &:focus {
         box-shadow:
             0 0 0 0.1rem #D5D8DD,

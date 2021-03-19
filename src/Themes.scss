@@ -26,12 +26,6 @@ body.light-theme {
         background-color: #FFF;
         color: #000;
     }
-    
-
-    .ThemeSelector button.btn {
-        background-color: #F1F2F4;
-        color: black;
-    }
 
     .App__command-palette {
         background-color: #EBFAF8;
@@ -42,9 +36,8 @@ body.light-theme {
     }
 
     button.btn.command-block:focus {
-        box-shadow:
-            0 0 0 0.1rem white,
-            0 0 0 $c2lc-focus-indicator-width black;
+        border: 2px solid #EBFAF8;
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
     }
 
     // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
@@ -66,6 +59,10 @@ body.light-theme {
                 fill: white;
             }                                            
         }
+
+        &.command-block--pressed {
+            border: 2px solid #30444E;
+        }
     }
 
 
@@ -74,7 +71,6 @@ body.light-theme {
     #command-block--forward2, .btn-command-block--forward2,
     #command-block--forward3, .btn-command-block--forward3 {
         background-color: #4C9990;
-        border-color: #4C9990;
 
         &:hover, &:focus {
             background-color: #16796D;
@@ -86,7 +82,6 @@ body.light-theme {
     #command-block--left90, .btn-command-block--left90,
     #command-block--left180, .btn-command-block--left180 {
         background-color: #D37D12;
-        border-color: #D37D12;
 
         &:hover, &:focus {
             background-color: #AE6100;
@@ -98,7 +93,6 @@ body.light-theme {
     #command-block--right90, .btn-command-block--right90,
     #command-block--right180, .btn-command-block--right180 {
         background-color: #C13925;
-        border-color: #C13925;
 
         &:hover, &:focus {
             background-color: #952A1B;
@@ -137,11 +131,25 @@ body.light-theme {
         background-color: black;
     }
 
+    @keyframes pausedLightAnimation {
+        0% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width #30444E;}
+        50% {box-shadow: 0 0 0 $c2lc-active-button-width #30444E;}
+        100% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width #30444E;}
+    }
+
+    button.ProgramBlockEditor__program-block--active {
+        box-shadow: 0 0 0 6px #30444E;
+    }
+
+    button.ProgramBlockEditor__program-block--paused {
+        animation: pausedLightAnimation 2s infinite;
+    }
+
     .ActionPanel__background {
         svg {
             path {
                 fill: #F1F2F4;
-                stroke: #D5D8DD;
+                stroke: #505862;
             }
         }
     }
@@ -206,7 +214,7 @@ body.light-theme {
 
         svg {
             path {
-                stroke: black;
+                stroke: #505862;
             }
         }
     
@@ -217,6 +225,14 @@ body.light-theme {
 
     .App__playAndShare-background {
         background-color: #D5D8DD;
+    }
+
+    button.btn.PlayButton, button.btn.StopButton {
+        svg {
+            circle, path.triangle {
+                fill: #3A3F46;
+            }
+        }
     }
 
     button.btn.ShareButton {
@@ -264,9 +280,14 @@ body.dark-theme {
         color: #F1AE5B;
     }
 
-    button.btn.command-block:focus {
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-        border: 2px solid #30444E;
+    button.btn.command-block.command-block--pressed,
+    button.btn.command-block.command-block--pressed:hover,
+    button.btn.command-block.command-block--pressed:active {
+        border: $c2lc-button-border-width solid white;
+    }
+
+    .App__scene-container {
+        border-color: #33717F;
     }
 
     .Scene {
@@ -279,6 +300,10 @@ body.dark-theme {
 
     .Scene__path-line {
         stroke: white;
+    }
+
+    .PenDownToggleSwitch:focus {
+        box-shadow: 0 0 0 0.1rem #30444e, 0 0 0 0.2rem white;
     }
 
     .Character__icon-background {
@@ -299,8 +324,31 @@ body.dark-theme {
         color: #EBFAF8;
     }
 
+    .ProgramBlockEditor__add-node-toggle-switch:focus {
+        box-shadow: 0 0 0 0.1rem #30444e, 0 0 0 0.2rem white;    
+    }
+
+    button.btn.ProgramBlockEditor__program-deleteAll-button:focus {
+        box-shadow: 0 0 0 0.1rem #30444e, 0 0 0 0.2rem white;    
+
+    }
+
     .ProgramBlockEditor__program-sequence-scroll-container {
         background-color: #22343C;
+    }
+
+    @keyframes pausedDarkAnimation {
+        0% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width white;}
+        50% {box-shadow: 0 0 0 $c2lc-active-button-width white;}
+        100% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width white;}
+    }
+
+    button.ProgramBlockEditor__program-block--paused {
+        animation: pausedDarkAnimation 2s infinite;
+    }
+
+    button.ProgramBlockEditor__program-block--active {
+        box-shadow: 0 0 0 $c2lc-active-button-width white;
     }
 
     .AddNode__collapsed-icon {
@@ -434,7 +482,6 @@ body.gray-theme {
     #command-block--right180, .btn-command-block--right180,
     // TODO: Add backward commands to the above.
     .command-block {
-        border-color: #818A98;
         background-color: #818A98;
 
         svg {
@@ -447,9 +494,8 @@ body.gray-theme {
         }
 
         &:focus {
-            box-shadow:
-                0 0 0 0.1rem white,
-                0 0 0 $c2lc-focus-indicator-width #505862;
+            border: 2px solid white;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
 
         &:hover {
@@ -667,9 +713,9 @@ body.gray-theme {
     }
 
     @keyframes pausedGreyscaleAnimation {
-        0% {box-shadow: 0 0 0 6px #505862;}
-        50% {box-shadow: 0 0 0 4px #505862;}
-        100% {box-shadow: 0 0 0 6px #505862;}
+        0% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width #505862;}
+        50% {box-shadow: 0 0 0 $c2lc-active-button-width #505862;}
+        100% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width #505862;}
     }
 
     button.ProgramBlockEditor__program-block--paused {
@@ -789,6 +835,18 @@ body.gray-theme {
 
         &:focus {
             outline-color: #505862;
+        }
+    }
+
+
+    button.btn.PlayButton--play.PlayButton--disabled {
+        background-color: inherit;
+        cursor: default;
+    
+        svg {
+            path.triangle {
+                fill: #30444E;
+            }
         }
     }
 
@@ -921,7 +979,7 @@ body.contrast-theme {
         }
 
         &:hover {
-            border: 1px solid white;
+            border: 2px solid white;
             border-radius: 0.2rem;
             background-color: black;
 
@@ -935,15 +993,13 @@ body.contrast-theme {
             }
         }
 
-        // TODO: Review w/ Sepi
         &:focus:hover {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
         }
 
         &:focus:not(:hover) {
-            box-shadow:
-                0 0 0 0.1rem black,
-                0 0 0 $c2lc-focus-indicator-width white;
+            border: 2px solid black;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
         }
 
         &.command-block--pressed,
@@ -1205,9 +1261,9 @@ body.contrast-theme {
     }
 
     @keyframes pausedContrastAnimation {
-        0% {box-shadow: 0 0 0 6px white;}
-        50% {box-shadow: 0 0 0 4px white;}
-        100% {box-shadow: 0 0 0 6px white;}
+        0% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width white;}
+        50% {box-shadow: 0 0 0 $c2lc-active-button-width white;}
+        100% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width white;}
     }
 
     button.ProgramBlockEditor__program-block--paused {
@@ -1245,13 +1301,13 @@ body.contrast-theme {
         }
     }
 
-    button.btn.PlayButton--disabled, button.btn.StopButton--disabled {
+    button.btn.PlayButton--play.PlayButton--disabled, button.btn.StopButton--disabled {
         svg {
             path {
                 fill: white;
             }
             circle, path.triangle, rect {
-                fill: #C4C4C4;
+                fill: #8E8E8E;
             }
         }
     }

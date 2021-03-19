@@ -13,9 +13,11 @@
         svg {
             path {
                 stroke: none;
+                fill: #6e6e6e;
             }
         }
     }
+
     &.ToggleSwitch--checked {
         background-color: #4C9990;
     }

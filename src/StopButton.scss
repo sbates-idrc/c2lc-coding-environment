@@ -34,11 +34,18 @@ button.btn.StopButton:hover {
 }
 
 button.btn.StopButton.StopButton--disabled {
+    background-color: inherit;
     cursor: default;
-}
 
-button.btn.StopButton--disabled svg {
-    fill: $c2lc-disabled-color;
+    svg {
+        circle {
+            fill: #67717E;
+        }
+
+        path.inner-circle {
+            fill: #B9BEC6;
+        }
+    }
 }
 
 button.btn.StopButton.StopButton--disabled:active:focus {

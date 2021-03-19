@@ -19,6 +19,10 @@ button.btn.RefreshButton {
     svg path {
         fill: black;
     }
+
+    &:active {
+        background-color: #ED972C;
+    }
 }
 
 button.btn.RefreshButton.RefreshButton--disabled:active:focus {
@@ -28,12 +32,12 @@ button.btn.RefreshButton.RefreshButton--disabled:active:focus {
 
 button.btn.RefreshButton.RefreshButton--disabled,
 button.btn.RefreshButton.RefreshButton--disabled:active:focus {
-    background-color: #FFF;
+    background-color: $c2lc-disabled-background-color;
     cursor: default;
 }
 
 button.btn.RefreshButton--disabled svg {
-    stroke: $c2lc-disabled-color;
+    stroke: $c2lc-disabled-foreground-color;
 }
 
 button.btn.RefreshButton:hover {
