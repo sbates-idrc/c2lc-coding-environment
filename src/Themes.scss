@@ -417,7 +417,9 @@ body.gray-theme {
             color: black;
     
             &:hover:not(:active) {
-                background-color: #D5D8DD;
+                background: #505862;
+                color: White;
+            
             }
     
             &:focus {
@@ -541,16 +543,16 @@ body.gray-theme {
         background-color: #818A98;
     }
 
-    .RefreshButton {
+    button.btn.RefreshButton {
         background-color: #818A98;
         svg path {
             fill: white;
         }
+
         &:hover {
-            svg path {
-                fill: black;
-            }
+            background-color: #505862;
         }
+
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
@@ -605,11 +607,13 @@ body.gray-theme {
         svg path {
             stroke: white;
         }
-        &:hover {
-            background-color: #505862;
-        }
+
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+
+        &:hover {
+            background-color: #505862;
         }
     }
 
@@ -622,11 +626,6 @@ body.gray-theme {
         border-right: 1px solid #9DA4AF;
     }
     
-    .ProgramBlockEditor__character-column-character-container {
-        background-color: inherit;
-        box-shadow: none;
-    }
-
     .ProgramBlockEditor__program-sequence-scroll-container {
         background-color: white;
         margin-left: 0.1rem;
@@ -888,6 +887,10 @@ body.contrast-theme {
                 background-color: black;
                 border: 2px solid white;
                 color: white;
+                padding-bottom: 2.5px;
+                padding-left: 18.7px;
+                padding-right: 18.7px;
+                padding-top: 2.5px;
             }
     
             &:focus {
@@ -965,7 +968,7 @@ body.contrast-theme {
     #command-block--right90, .btn-command-block--right90,
     #command-block--right180, .btn-command-block--right180,
     // TODO: Add backward commands to the above.
-    .command-block {
+    btn.command-block {
         border-color: white;
         background-color: white;
 
@@ -997,18 +1000,22 @@ body.contrast-theme {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
         }
 
-        &:focus:not(:hover) {
-            border: 2px solid black;
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-        }
-
+        &:focus:not(:hover),     
+        &:active,
         &.command-block--pressed,
         &.command-block--pressed:hover,
         &.command-block--pressed:active {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
             border: 2px solid black;
-        }    
+            border-color: black;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        }
     }    
+
+    button.ProgramBlockEditor__program-block--active {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        border: 2px solid black;
+        border-color: black;
+    }
 
     .App__command-palette-heading {
         color: white;
@@ -1067,7 +1074,7 @@ body.contrast-theme {
             border: 2px solid black;
         }
 
-        &:hover {
+        &:hover:not(:active) {
             background-color: black;
             border: 2px solid white;
             svg path {
@@ -1132,7 +1139,7 @@ body.contrast-theme {
         &:hover {
             background-color: white;
             border: 2px solid black;
-            svg {
+            svg path {
                 stroke: black;
             }
         }
@@ -1181,9 +1188,7 @@ body.contrast-theme {
     }
 
     button.btn.AddNode__expanded-button.AddNode__expanded-button--isDragTarget {
-        box-shadow: 0 0 0 0.15rem white,
-        0 0 0 0.3rem black,
-        0 0 0 0.45rem white;
+        box-shadow: 0 0 0 0.45rem white;
     }
 
     .AddNode__expanded-button {
