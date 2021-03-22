@@ -1,12 +1,8 @@
 @import 'variables';
 
 .ActionPanel__background {
-    align-self: center;
-    height: $c2lc-action-panel-height;
     position: absolute;
     top: -0.3rem;
-    width: $c2lc-action-panel-width;
-    z-index: 1;
 
     svg {
         width: $c2lc-action-panel-width;
@@ -27,7 +23,6 @@
     padding-right: 2rem;
     position: absolute;
     width: $c2lc-action-panel-width;
-    z-index: 2;
 }
 
 .ActionPanel__panel--hidden {

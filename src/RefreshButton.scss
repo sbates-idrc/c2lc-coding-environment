@@ -23,6 +23,10 @@ button.btn.RefreshButton {
     &:active {
         background-color: #ED972C;
     }
+
+    &:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
+    }
 }
 
 button.btn.RefreshButton.RefreshButton--disabled:active:focus {

@@ -221,6 +221,11 @@ body.light-theme {
         &:hover {
             background-color: #e5e5e5;
         }
+
+        &:focus {
+            border: 2px solid white;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
+        }
     }
 
     .App__playAndShare-background {
@@ -303,7 +308,11 @@ body.dark-theme {
     }
 
     .PenDownToggleSwitch:focus {
-        box-shadow: 0 0 0 0.1rem #30444e, 0 0 0 0.2rem white;
+        box-shadow: 0 0 0 0.1rem #30444e, 0 0 0 $c2lc-focus-indicator-width white;
+    }
+
+    .RefreshButton:focus {
+        box-shadow: 0 0 0 0.1rem #30444e, 0 0 0 $c2lc-focus-indicator-width white;
     }
 
     .Character__icon-background {
@@ -371,6 +380,10 @@ body.dark-theme {
                 stroke: black;
             }
         }
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        }
     }
 
     .App__playAndShare-background {
@@ -414,6 +427,7 @@ body.gray-theme {
     .ThemeSelector {
         button.btn {
             background-color: #F1F2F4;
+            border-color: #F1F2F4;
             color: black;
     
             &:hover:not(:active) {
@@ -577,9 +591,15 @@ body.gray-theme {
         border: 2px solid #505862;
         background-color: inherit;
         box-shadow: none;
+
+        &:focus {
+            border: 2px solid white;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+
         svg path {
             stroke: #505862;
-        }
+        }        
     }
 
     .ProgramBlockEditor__container {
@@ -621,6 +641,30 @@ body.gray-theme {
 
         &:hover {
             background-color: #505862;
+        }
+    }
+
+    button.btn.ConfirmDeleteAllModal__option-button {
+        background-color: #F1F2F4;
+        border-color: #F1F2F4;
+        color: black;
+
+   
+        &:hover {
+            background: #505862;
+            color: White;
+        }
+    
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem white,
+                0 0 0 $c2lc-focus-indicator-width #505862            
+        }
+    
+        &.btn-primary {
+            &:not(:disabled):not(.disabled):active {
+                background-color: #B9BEC6;
+            }
         }
     }
 
@@ -889,15 +933,12 @@ body.contrast-theme {
         button.btn {
             background-color: white;
             color: black;
+            border-color: white;
     
             &:hover:not(:active) {
                 background-color: black;
                 border: 2px solid white;
                 color: white;
-                padding-bottom: 2.5px;
-                padding-left: 18.7px;
-                padding-right: 18.7px;
-                padding-top: 2.5px;
             }
     
             &:focus {
@@ -1160,6 +1201,35 @@ body.contrast-theme {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
         }
     }
+    
+    button.btn.ConfirmDeleteAllModal__option-button {
+        background-color: black;
+        color: white;
+        border-color: white;       
+   
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem white,
+                0 0 0 0.2rem black;
+        }
+    
+        &:hover {
+            background-color: white;
+            color: black;
+            box-shadow: 0 0 0 0.1rem black;
+        }
+
+        &:hover:focus {
+            box-shadow: 0 0 0 0.2rem black;            
+        }
+   
+        &.btn-primary {
+            &:not(:disabled):not(.disabled):active {
+                background-color: white;
+                color: black;
+            }
+        }
+    }
 
     .ProgramBlockEditor__character-column {
         background-color: black;
@@ -1299,6 +1369,15 @@ body.contrast-theme {
     }
 
     button.btn.PlayButton, button.btn.StopButton {
+        &:hover {
+            background-color: white;
+            svg {
+                path.inner-circle {
+                    fill: #9DA4AF;
+                }
+            }
+        }
+
         svg {
             path.inner-circle {
                 fill: white;
@@ -1309,14 +1388,7 @@ body.contrast-theme {
         }
     }
 
-    button.btn.PlayButton:hover {
-        background-color: white;
-        svg {
-            path.inner-circle {
-                fill: #9DA4AF;
-            }
-        }
-    }
+
 
     button.btn.PlayButton--play.PlayButton--disabled, button.btn.StopButton--disabled {
         svg {

@@ -679,6 +679,11 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     componentDidMount() {
+        // As long as we have no underlying "default" theme styles, we need to always set this to ensure that the default theme is applied on startup.
+        if (document.body) {
+            document.body.className = `${this.state.settings.theme}-theme`;
+        }
+
         if (window.location.search != null && window.location.search !== '') {
             const params = new C2lcURLParams(window.location.search);
             const programQuery = params.getProgram();
@@ -743,11 +748,6 @@ export class App extends React.Component<AppProps, AppState> {
             this.interpreter.startRun();
         }
 
-        // As long as we have no underlying "default" theme styles, we need to always set this to ensure that the default theme is applied on startup.
-        if (document.body) {
-            document.body.className = `${this.state.settings.theme}-theme`;
-        }
-
         if (this.state.selectedAction !== prevState.selectedAction) {
             const messagePayload = {};
             const announcementKey = this.state.selectedAction ?
@@ -771,6 +771,10 @@ export class App extends React.Component<AppProps, AppState> {
                 // All steps from the programCounter onward have been deleted
                 this.setState({ runningState: 'stopped' });
             }
+        }
+
+        if (this.state.settings.theme !== prevState.settings.theme && document.body) {
+            document.body.className = `${this.state.settings.theme}-theme`;
         }
 
         /* Dash connection removed for version 0.5
