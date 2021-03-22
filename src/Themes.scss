@@ -977,7 +977,7 @@ body.contrast-theme {
             }
         }
 
-        &.ToggleSwitch--checked {
+        &.ToggleSwitch--checked:not(:hover), &:hover {
             background-color: white;
             .ToggleSwitch__switch-inner-circle {
                 background-color: black;
@@ -990,6 +990,21 @@ body.contrast-theme {
         }
     }
     
+    .AudioFeedbackToggleSwitch.ToggleSwitch--checked:not(:hover) {
+        background-color: black;
+        border: 2px solid white;
+        padding: 0.1rem;
+    
+        .ToggleSwitch__switch-inner-circle {
+            background-color: white;
+            svg {
+                path {
+                    fill: black;
+                }
+            }
+        }
+    }
+
     .App__command-palette {
         background-color: black;
         border: 1px solid white;
@@ -1086,7 +1101,7 @@ body.contrast-theme {
         fill: white;
     }
 
-    .PenDownToggleSwitch {
+    .PenDownToggleSwitch, .PenDownToggleSwitch.ToggleSwitch--checked:hover {
         background-color: white;
         border: 1px solid black;
         .ToggleSwitch__switch-inner-circle {
@@ -1097,17 +1112,17 @@ body.contrast-theme {
                 }
             }
         }
+    }
 
-        &.ToggleSwitch--checked {
-            background-color: black;
-            border: 2px solid white;
-            padding: 0.05rem;
-            .ToggleSwitch__switch-inner-circle {
-                background-color: white;
-                svg {
-                    path {
-                        stroke: black;
-                    }
+    .PenDownToggleSwitch:hover, .PenDownToggleSwitch.ToggleSwitch--checked {
+        background-color: black;
+        border: 2px solid white;
+        padding: 0.05rem;
+        .ToggleSwitch__switch-inner-circle {
+            background-color: white;
+            svg {
+                path {
+                    stroke: black;
                 }
             }
         }
@@ -1145,7 +1160,7 @@ body.contrast-theme {
         color: black;
     }
 
-    .ProgramBlockEditor__add-node-toggle-switch {
+    .ProgramBlockEditor__add-node-toggle-switch, .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch:hover {
         background-color: black;
 
         .ToggleSwitch__switch-inner-circle {
@@ -1157,28 +1172,28 @@ body.contrast-theme {
             }
         }
 
-
         &:focus {
             border: 2px solid white;
             padding: 0.05rem;
         }
+    }
 
-        &.ToggleSwitch--checked {
-            background-color: white;
-            border: 2px solid black;
-            padding: 0.05rem;
-            .ToggleSwitch__switch-inner-circle {
-                background-color: black;
-                svg {
-                    path {
-                        stroke: white;
-                    }
+    .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch--checked, .ProgramBlockEditor__add-node-toggle-switch:hover {
+        background-color: white;
+        border: 2px solid black;
+        padding: 0.05rem;
+
+        .ToggleSwitch__switch-inner-circle {
+            background-color: black;
+            svg {
+                path {
+                    stroke: white;
                 }
             }
+        }
 
-            &:focus {
-                border: 2px solid black;
-            }
+        &:focus {
+            border: 2px solid black;
         }
     }
 
