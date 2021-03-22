@@ -1,7 +1,37 @@
-<svg width="53" height="59" viewBox="0 0 53 59" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="25" cy="34" r="25" transform="rotate(90 25 34)" fill="black" fill-opacity="0.1"/>
-<path class="filled" d="M50 34C50 30.717 49.3534 27.4661 48.097 24.4329C46.8406 21.3998 44.9991 18.6438 42.6777 16.3223C40.3562 14.0009 37.6002 12.1594 34.5671 10.903C31.5339 9.64664 28.283 9 25 9L25 34L50 34Z" fill="black" fill-opacity="0.3"/>
-<circle cx="25" cy="34" r="4" transform="rotate(-180 25 34)" fill="black"/>
-<path d="M50 34C50 27.3696 47.3661 21.0107 42.6777 16.3223C37.9893 11.6339 31.6304 9 25 9" stroke="black" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M25.9365 3.00009L21.0024 9.57514L25.9316 16.1387" stroke="black" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   fill="none"
+   viewBox="0 0 55 60.999908"
+   height="60.999908"
+   width="55">
+  <circle
+     fill-opacity="0.1"
+     fill="#000000"
+     transform="rotate(90)"
+     r="25"
+     cy="-27"
+     cx="33.999908" />
+  <path
+     fill-opacity="0.3"
+     fill="#000000"
+     d="m 52,33.99991 c 0,-3.283 -0.6466,-6.5339 -1.903,-9.5671 -1.2564,-3.0331 -3.0979,-5.7891 -5.4193,-8.1106 -2.3215,-2.3214 -5.0775,-4.1629 -8.1106,-5.4193 C 33.5339,9.64655 30.283,8.99991 27,8.99991 v 25 z"
+     class="filled" />
+  <circle
+     fill="#000000"
+     transform="scale(-1)"
+     r="4"
+     cy="-33.999908"
+     cx="-27" />
+  <path
+     stroke-linejoin="round"
+     stroke-linecap="round"
+     stroke-width="6"
+     stroke="#000000"
+     d="M 52,33.99991 C 52,27.36951 49.3661,21.01061 44.6777,16.32221 39.9893,11.63381 33.6304,8.99991 27,8.99991" />
+  <path
+     stroke-linejoin="round"
+     stroke-linecap="round"
+     stroke-width="6"
+     stroke="#000000"
+     d="m 27.9365,3 -4.9341,6.57505 4.9292,6.56356" />
 </svg>
