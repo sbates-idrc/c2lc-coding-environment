@@ -16,7 +16,8 @@ button.btn.AddNode__expanded-button {
     border-radius: 50%;
     background-color:  #22343C;
     padding: $addNodeExpandedButtonPadding;
-    width: 45px;
+    z-index: auto;
+    width: 45px;    
     height: 45px;
 
     svg {
