@@ -485,6 +485,7 @@ body.gray-theme {
     // TODO: Add backward commands to the above.
     .command-block {
         background-color: #818A98;
+        border-color: #818A98;
 
         svg {
             path, circle, rect {
@@ -502,6 +503,12 @@ body.gray-theme {
 
         &:hover {
             background-color: #505862;
+        }
+
+        &:not(:disabled):not(.disabled):active {
+            background-color: #818A98;
+            border-color: #818A98;            
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
     }
 
@@ -1002,12 +1009,17 @@ body.contrast-theme {
 
         &:focus:not(:hover),     
         &:active,
+        &:not(:disabled):not(.disabled):active,
         &.command-block--pressed,
         &.command-block--pressed:hover,
         &.command-block--pressed:active {
             border: 2px solid black;
             border-color: black;
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        }
+
+        &:not(:disabled):not(.disabled):active {
+            background-color: black;
         }
     }    
 
