@@ -12,13 +12,21 @@
         background-color: white;
         svg {
             path {
-                stroke: none;
                 fill: #6e6e6e;
+                stroke: none;
             }
         }
     }
 
     &.ToggleSwitch--checked {
         background-color: #4C9990;
+
+        .ToggleSwitch__switch-inner-circle {
+            svg {
+                path {
+                    fill: black;
+                }
+            }
+        }
     }
 }

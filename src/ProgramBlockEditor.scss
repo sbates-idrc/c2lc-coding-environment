@@ -1,9 +1,9 @@
 @import 'variables';
 
 @keyframes pausedAnimation {
-    0% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width #53A28C;}
-    50% {box-shadow: 0 0 0 $c2lc-active-button-width #53A28C;}
-    100% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width #53A28C;}
+    0% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width white;}
+    50% {box-shadow: 0 0 0 $c2lc-active-button-width white;}
+    100% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width white;}
 }
 
 .ProgramBlockEditor__container {
@@ -59,13 +59,18 @@
         }    
     }
 
+    &.ToggleSwitch--checked {
+        background-color: #4C9990;
+        .ToggleSwitch__switch-inner-circle {
+            svg path {
+                stroke: black;
+            }
+        }
+    }
+
     &:focus {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
     }
-}
-
-.ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch--checked {
-    background-color: #4C9990;
 }
 
 button.btn.ProgramBlockEditor__program-deleteAll-button {
@@ -192,7 +197,7 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
 }
 
 button.ProgramBlockEditor__program-block--active {
-    box-shadow: 0 0 0 6px #53A28C;
+    box-shadow: 0 0 0 6px white;
 }
 
 button.ProgramBlockEditor__program-block--paused {

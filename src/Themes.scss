@@ -308,11 +308,11 @@ body.dark-theme {
     }
 
     .PenDownToggleSwitch:focus {
-        box-shadow: 0 0 0 0.1rem #30444e, 0 0 0 $c2lc-focus-indicator-width white;
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
 
     .RefreshButton:focus {
-        box-shadow: 0 0 0 0.1rem #30444e, 0 0 0 $c2lc-focus-indicator-width white;
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
 
     .Character__icon-background {
@@ -334,11 +334,11 @@ body.dark-theme {
     }
 
     .ProgramBlockEditor__add-node-toggle-switch:focus {
-        box-shadow: 0 0 0 0.1rem #30444e, 0 0 0 0.2rem white;    
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;    
     }
 
     button.btn.ProgramBlockEditor__program-deleteAll-button:focus {
-        box-shadow: 0 0 0 0.1rem #30444e, 0 0 0 0.2rem white;    
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;    
 
     }
 
@@ -391,7 +391,8 @@ body.dark-theme {
     }
 
     button.btn.PlayButton:focus, button.btn.StopButton:focus {
-        border-color: white;
+        border: none;
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
 
     .ProgramSpeedController__slider {
@@ -552,7 +553,6 @@ body.gray-theme {
         }
         
         &:hover {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
             background-color: #505862;
             .ToggleSwitch__switch-inner-circle {
                 background-color: #B9BEC6;
@@ -1112,6 +1112,11 @@ body.contrast-theme {
                 }
             }
         }
+    }
+
+    .PenDownToggleSwitch:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        border: none;
     }
 
     .PenDownToggleSwitch:hover, .PenDownToggleSwitch.ToggleSwitch--checked {

@@ -29,6 +29,11 @@ button.btn.AddNode__expanded-button {
         }
     }
 
+    &:focus {
+        border: none;
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    }
+
     &:hover {
         box-shadow: 0 0 0 $c2lc-hover-indicator-width $c2lc-focus-indicator-color;
         background-color: #e5e5e5;
