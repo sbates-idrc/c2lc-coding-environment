@@ -877,20 +877,28 @@ describe('Using change character position by column/row labels', () => {
         const characterXPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(0);
         const sampleXPosition = 'X';
         const secondSampleXPosition = 'A';
+        const eventObject = (value) => (
+            {
+                key: 'Enter',
+                preventDefault: () =>  {},
+                currentTarget:
+                    { name: 'xPosition', value }
+            }
+        );
 
-        characterXPositionCoordinateBox.simulate('change', {currentTarget: {value : sampleXPosition}});
+        characterXPositionCoordinateBox.simulate('change', eventObject(sampleXPosition));
         wrapper.update();
         expect(wrapper.instance().state.characterColumnLabel).toBe(sampleXPosition);
 
-        characterXPositionCoordinateBox.simulate('blur');
+        characterXPositionCoordinateBox.simulate('blur', eventObject());
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(1);
         expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(sampleXPosition);
 
-        characterXPositionCoordinateBox.simulate('change', {currentTarget: {value : secondSampleXPosition}});
+        characterXPositionCoordinateBox.simulate('change', eventObject(secondSampleXPosition));
         wrapper.update();
         expect(wrapper.instance().state.characterColumnLabel).toBe(secondSampleXPosition);
 
-        characterXPositionCoordinateBox.simulate('keyDown', {key: 'Enter', preventDefault: () =>  {}});
+        characterXPositionCoordinateBox.simulate('keyDown', eventObject());
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(2);
         expect(mockChangeCharacterXPosition.mock.calls[1][0]).toBe(secondSampleXPosition);
     });
@@ -900,20 +908,28 @@ describe('Using change character position by column/row labels', () => {
         const characterYPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(1);
         const sampleYPosition = '2';
         const secondSampleYPosition = '8';
+        const eventObject = (value) => (
+            {
+                key: 'Enter',
+                preventDefault: () =>  {},
+                currentTarget:
+                    { name: 'yPosition', value }
+            }
+        );
 
-        characterYPositionCoordinateBox.simulate('change', {currentTarget: {value : sampleYPosition}});
+        characterYPositionCoordinateBox.simulate('change', eventObject(sampleYPosition));
         wrapper.update();
         expect(wrapper.instance().state.characterRowLabel).toBe(sampleYPosition);
 
-        characterYPositionCoordinateBox.simulate('blur');
+        characterYPositionCoordinateBox.simulate('blur', eventObject());
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(1);
         expect(mockChangeCharacterYPosition.mock.calls[0][0]).toBe(sampleYPosition);
 
-        characterYPositionCoordinateBox.simulate('change', {currentTarget: {value : secondSampleYPosition}});
+        characterYPositionCoordinateBox.simulate('change', eventObject(secondSampleYPosition));
         wrapper.update();
         expect(wrapper.instance().state.characterRowLabel).toBe(secondSampleYPosition);
 
-        characterYPositionCoordinateBox.simulate('keyDown', {key: 'Enter', preventDefault: () =>  {}});
+        characterYPositionCoordinateBox.simulate('keyDown', eventObject());
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(2);
         expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(secondSampleYPosition);
     });

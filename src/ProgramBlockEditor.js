@@ -414,39 +414,35 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         this.props.onChangeCharacterPosition(positionName);
     }
 
-    handleChangeXPos = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        this.setState({
-            characterColumnLabel: e.currentTarget.value
-        });
-    };
-
-    handleChangeYPos = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        this.setState({
-            characterRowLabel: e.currentTarget.value
-        });
-    };
-
-    handleBlurXPos = () => {
-        this.props.onChangeCharacterXPosition(this.state.characterColumnLabel);
-    };
-
-    handleBlurYPos = () => {
-        this.props.onChangeCharacterYPosition(this.state.characterRowLabel);
-    };
-
-    handleUpdateXPos = (e) => {
-        const enterKey = 'Enter';
-        if (e.key === enterKey) {
-            e.preventDefault();
-            this.props.onChangeCharacterXPosition(this.state.characterColumnLabel);
+    handleChangeCharacterPositionLabel = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+        if (e.currentTarget.name === 'xPosition') {
+            this.setState({
+                characterColumnLabel: e.currentTarget.value
+            });
+        } else if (e.currentTarget.name === 'yPosition'){
+            this.setState({
+                characterRowLabel: e.currentTarget.value
+            });
         }
     }
 
-    handleUpdateYPos = (e) => {
+    handleBlurCharacterPositionBox = (e: SyntheticEvent<HTMLInputElement>) => {
+        if (e.currentTarget.name === 'xPosition') {
+            this.props.onChangeCharacterXPosition(this.state.characterColumnLabel);
+        } else if (e.currentTarget.name === 'yPosition'){
+            this.props.onChangeCharacterYPosition(this.state.characterRowLabel);
+        }
+    }
+
+    handleUpdateCharacterPosition = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         const enterKey = 'Enter';
         if (e.key === enterKey) {
             e.preventDefault();
-            this.props.onChangeCharacterYPosition(this.state.characterRowLabel);
+            if (e.currentTarget.name === 'xPosition') {
+                this.props.onChangeCharacterXPosition(this.state.characterColumnLabel);
+            } else if (e.currentTarget.name === 'yPosition'){
+                this.props.onChangeCharacterYPosition(this.state.characterRowLabel);
+            }
         }
     }
 
@@ -737,23 +733,25 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                     </div>
                     <div className='ProgramBlockEditor__character-move-position-coordinate'>
                         <input
+                            name='xPosition'
                             className={characterPositionTextInputClassName}
                             aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.columnPosition'})}
                             aria-disabled={this.props.editingDisabled}
                             type='text'
                             value={this.state.characterColumnLabel}
-                            onChange={!this.props.editingDisabled ? this.handleChangeXPos : undefined}
-                            onBlur={this.handleBlurXPos}
-                            onKeyDown={this.handleUpdateXPos} />
+                            onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : undefined}
+                            onKeyDown={this.handleUpdateCharacterPosition}
+                            onBlur={this.handleBlurCharacterPositionBox} />
                         <input
+                            name='yPosition'
                             className={characterPositionTextInputClassName}
                             aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.rowPosition'})}
                             aria-disabled={this.props.editingDisabled}
                             type='text'
                             value={this.state.characterRowLabel}
-                            onChange={!this.props.editingDisabled ? this.handleChangeYPos : undefined}
-                            onKeyDown={this.handleUpdateYPos}
-                            onBlur={this.handleBlurYPos} />
+                            onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : undefined}
+                            onKeyDown={this.handleUpdateCharacterPosition}
+                            onBlur={this.handleBlurCharacterPositionBox} />
                     </div>
                 </div>
                 <div
