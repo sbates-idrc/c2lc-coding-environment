@@ -21,7 +21,8 @@ function makeDelayedPromise(timeMs: number): Promise<void> {
 }
 
 function generateEncodedProgramURL(versionString: string, themeString: string, programString: string, characterStateString: string): string {
-    return `?v=${encodeURIComponent(versionString)}&t=${themeString}&p=${encodeURIComponent(programString)}&c=${encodeURIComponent(characterStateString)}`;
+    // return `?v=${encodeURIComponent(versionString)}&t=${themeString}&p=${encodeURIComponent(programString)}&c=${encodeURIComponent(characterStateString)}`;
+    return `?v=${encodeURIComponent(versionString)}&p=${encodeURIComponent(programString)}&c=${encodeURIComponent(characterStateString)}`;
 }
 
 function getThemeFromString(themeQuery: ?string, defaultThemeName: ThemeName): ThemeName {
