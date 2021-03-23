@@ -688,7 +688,9 @@ export class App extends React.Component<AppProps, AppState> {
                         <ProgramBlockEditor
                             actionPanelStepIndex={this.state.actionPanelStepIndex}
                             characterState={this.state.characterState}
-                            editingDisabled={this.state.runningState === 'running'}
+                            editingDisabled={
+                                !(this.state.runningState === 'stopped'
+                                || this.state.runningState === 'paused')}
                             programSequence={this.state.programSequence}
                             runningState={this.state.runningState}
                             selectedAction={this.state.selectedAction}
