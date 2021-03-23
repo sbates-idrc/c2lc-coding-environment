@@ -221,41 +221,41 @@ describe('When the Scene renders', () => {
 
         // Grid rows
 
-        expect(findGridLines(sceneWrapper).get(0).props.x1).toBe(-0.5);
-        expect(findGridLines(sceneWrapper).get(0).props.y1).toBe(0.5);
-        expect(findGridLines(sceneWrapper).get(0).props.x2).toBe(2.5);
-        expect(findGridLines(sceneWrapper).get(0).props.y2).toBe(0.5);
+        expect(findGridLines(sceneWrapper).get(0).props.x1).toBe(0.5);
+        expect(findGridLines(sceneWrapper).get(0).props.y1).toBe(1.5);
+        expect(findGridLines(sceneWrapper).get(0).props.x2).toBe(3.5);
+        expect(findGridLines(sceneWrapper).get(0).props.y2).toBe(1.5);
 
         // Grid columns
 
-        expect(findGridLines(sceneWrapper).get(1).props.x1).toBe(0.5);
-        expect(findGridLines(sceneWrapper).get(1).props.y1).toBe(-0.5);
-        expect(findGridLines(sceneWrapper).get(1).props.x2).toBe(0.5);
-        expect(findGridLines(sceneWrapper).get(1).props.y2).toBe(1.5);
-        expect(findGridLines(sceneWrapper).get(2).props.x1).toBe(1.5);
-        expect(findGridLines(sceneWrapper).get(2).props.y1).toBe(-0.5);
-        expect(findGridLines(sceneWrapper).get(2).props.x2).toBe(1.5);
-        expect(findGridLines(sceneWrapper).get(2).props.y2).toBe(1.5);
+        expect(findGridLines(sceneWrapper).get(1).props.x1).toBe(1.5);
+        expect(findGridLines(sceneWrapper).get(1).props.y1).toBe(0.5);
+        expect(findGridLines(sceneWrapper).get(1).props.x2).toBe(1.5);
+        expect(findGridLines(sceneWrapper).get(1).props.y2).toBe(2.5);
+        expect(findGridLines(sceneWrapper).get(2).props.x1).toBe(2.5);
+        expect(findGridLines(sceneWrapper).get(2).props.y1).toBe(0.5);
+        expect(findGridLines(sceneWrapper).get(2).props.x2).toBe(2.5);
+        expect(findGridLines(sceneWrapper).get(2).props.y2).toBe(2.5);
     });
 });
 
 describe('The ARIA label should tell there is a character with its position', () => {
     test.each([
-        [0, 1, 0, 'Scene, 17 by 9 grid with a character at column A, row 2 facing up'],
-        [1, 2, 1, 'Scene, 17 by 9 grid with a character at column B, row 3 facing upper right'],
-        [0, 1, 2, 'Scene, 17 by 9 grid with a character at column A, row 2 facing right'],
-        [0, 1, 3, 'Scene, 17 by 9 grid with a character at column A, row 2 facing lower right'],
-        [0, 1, 4, 'Scene, 17 by 9 grid with a character at column A, row 2 facing down'],
-        [0, 1, 5, 'Scene, 17 by 9 grid with a character at column A, row 2 facing lower left'],
-        [0, 1, 6, 'Scene, 17 by 9 grid with a character at column A, row 2 facing left'],
-        [0, 1, 7, 'Scene, 17 by 9 grid with a character at column A, row 2 facing upper left'],
-        [   0, -10, 0, 'Scene, 17 by 9 grid with a character outside of the scene above the scene, facing up'],
+        [1, 2, 0, 'Scene, 17 by 9 grid with a character at column A, row 2 facing up'],
+        [2, 3, 1, 'Scene, 17 by 9 grid with a character at column B, row 3 facing upper right'],
+        [1, 2, 2, 'Scene, 17 by 9 grid with a character at column A, row 2 facing right'],
+        [1, 2, 3, 'Scene, 17 by 9 grid with a character at column A, row 2 facing lower right'],
+        [1, 2, 4, 'Scene, 17 by 9 grid with a character at column A, row 2 facing down'],
+        [1, 2, 5, 'Scene, 17 by 9 grid with a character at column A, row 2 facing lower left'],
+        [1, 2, 6, 'Scene, 17 by 9 grid with a character at column A, row 2 facing left'],
+        [1, 2, 7, 'Scene, 17 by 9 grid with a character at column A, row 2 facing upper left'],
+        [   1, -10, 0, 'Scene, 17 by 9 grid with a character outside of the scene above the scene, facing up'],
         [ 100, -10, 6, 'Scene, 17 by 9 grid with a character outside of the scene to the upper right of the scene, facing left'],
-        [ 100,   0, 0, 'Scene, 17 by 9 grid with a character outside of the scene to the right of the scene, facing up'],
+        [ 100,   1, 0, 'Scene, 17 by 9 grid with a character outside of the scene to the right of the scene, facing up'],
         [ 100,  10, 0, 'Scene, 17 by 9 grid with a character outside of the scene to the lower right of the scene, facing up'],
-        [   0,  10, 0, 'Scene, 17 by 9 grid with a character outside of the scene below the scene, facing up'],
+        [   1,  10, 0, 'Scene, 17 by 9 grid with a character outside of the scene below the scene, facing up'],
         [-100,  10, 0, 'Scene, 17 by 9 grid with a character outside of the scene to the lower left of the scene, facing up'],
-        [-100,   0, 0, 'Scene, 17 by 9 grid with a character outside of the scene to the left of the scene, facing up'],
+        [-100,   1, 0, 'Scene, 17 by 9 grid with a character outside of the scene to the left of the scene, facing up'],
         [-100, -10, 0, 'Scene, 17 by 9 grid with a character outside of the scene to the upper left of the scene, facing up']
     ])('x=%f, y=%f, direction=%i', (x, y, direction, expectedLabel) => {
         const sceneWrapper = createMountScene({
@@ -286,15 +286,15 @@ describe('When the Scene renders', () => {
 });
 
 describe('When the character renders, transform should apply', () => {
-    test('When xPos = 0, yPos = 0, direction = 2', () => {
+    test('When xPos = 1, yPos = 1, direction = 2', () => {
         expect.assertions(1);
         const sceneWrapper = createMountScene({
             dimensions: new SceneDimensions(1, 1),
-            characterState: new CharacterState(0, 0, 2, [])
+            characterState: new CharacterState(1, 1, 2, [])
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
-            .toBe('translate(0 0) rotate(0 0 0)');
+            .toBe('translate(1 1) rotate(0 0 0)');
     });
     test('When xPos = 10, yPos = 8, direction = 4', () => {
         expect.assertions(1);
@@ -306,28 +306,28 @@ describe('When the character renders, transform should apply', () => {
         expect(character.get(0).props.transform)
             .toBe('translate(10 8) rotate(90 0 0)');
     });
-    test('When xPos = 0, yPos = 9, direction = 0', () => {
+    test('When xPos = 1, yPos = 9, direction = 0', () => {
         expect.assertions(1);
         const sceneWrapper = createMountScene({
             dimensions: new SceneDimensions(20, 20),
-            characterState: new CharacterState(0, 9, 0, [])
+            characterState: new CharacterState(1, 9, 0, [])
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
-            .toBe('translate(0 9) rotate(-90 0 0)');
+            .toBe('translate(1 9) rotate(-90 0 0)');
     });
 });
 
 describe('Draw character when out of bounds', () => {
     test.each([
-        [  0, -2,  0  , -0.4 ], // N
-        [  6, -2,  4.4, -0.4 ], // NE
-        [  6,  0,  4.4,  0   ], // E
-        [  6,  4,  4.4,  2.4 ], // SE
-        [  0,  4,  0  ,  2.4 ], // S
-        [ -3,  4, -0.4,  2.4], // SW
-        [ -3,  0, -0.4,  0   ], // W
-        [ -3, -2, -0.4, -0.4 ]  // NW
+        [  1, -2,  1  , 0.6 ], // N
+        [  6, -2,  5.4, 0.6 ], // NE
+        [  6,  1,  5.4,  1   ], // E
+        [  6,  4,  5.4,  3.4 ], // SE
+        [  1,  4,  1  ,  3.4 ], // S
+        [ -3,  4, 0.6,  3.4], // SW
+        [ -3,  1, 0.6,  1   ], // W
+        [ -3, -2, 0.6, 0.6 ]  // NW
     ])('x=%f, y=%f, expectedDrawX=%f, expectedDrawY=%f',
         (x, y, expectedDrawX, expectedDrawY) => {
             const sceneWrapper = createMountScene({

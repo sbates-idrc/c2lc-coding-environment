@@ -95,7 +95,7 @@ export class App extends React.Component<AppProps, AppState> {
         };
 
         // Begin facing East
-        this.startingCharacterState = new CharacterState(0, 0, 2, []);
+        this.startingCharacterState = new CharacterState(1, 1, 2, []);
 
         this.state = {
             programSequence: new ProgramSequence([], 0),
@@ -632,7 +632,9 @@ export class App extends React.Component<AppProps, AppState> {
                     <div className='App__program-block-editor'>
                         <ProgramBlockEditor
                             actionPanelStepIndex={this.state.actionPanelStepIndex}
-                            editingDisabled={this.state.runningState === 'running'}
+                            editingDisabled={
+                                !(this.state.runningState === 'stopped'
+                                || this.state.runningState === 'paused')}
                             programSequence={this.state.programSequence}
                             runningState={this.state.runningState}
                             selectedAction={this.state.selectedAction}
