@@ -575,10 +575,12 @@ export class App extends React.Component<AppProps, AppState> {
 
     renderCommandBlocks = () => {
         const commandNames = [
-            'forward1', 'forward2', 'forward3',
-            'backward1', 'backward2', 'backward3',
-            'left45', 'left90', 'left180',
-            'right45', 'right90', 'right180'
+            'backward1', 'forward1',
+            'backward2', 'forward2',
+            'backward3', 'forward3',
+            'left45', 'right45',
+            'left90', 'right90',
+            'left180', 'right180'
         ];
         const commandBlocks = [];
 
