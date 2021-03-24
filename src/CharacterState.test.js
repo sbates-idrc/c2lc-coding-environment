@@ -240,12 +240,40 @@ test('Forward move is limited to the sceneDimensions', () => {
     const sceneDimensions = new SceneDimensions(10, 10);
     (expect(new CharacterState(1, 1, 0, [], sceneDimensions).forward(2, false)): any)
         .toHaveCharacterState(1, 1, 0, []);
+    (expect(new CharacterState(9, 3, 1, [], sceneDimensions).forward(3, false)): any)
+        .toHaveCharacterState(10, 1, 1, []);
     (expect(new CharacterState(10, 1, 2, [], sceneDimensions).forward(2, false)): any)
         .toHaveCharacterState(10, 1, 2, []);
+    (expect(new CharacterState(9, 8, 3, [], sceneDimensions).forward(3, false)): any)
+        .toHaveCharacterState(10, 10, 3, []);
     (expect(new CharacterState(1, 10, 4, [], sceneDimensions).forward(2, false)): any)
         .toHaveCharacterState(1, 10, 4, []);
+    (expect(new CharacterState(2, 8, 5, [], sceneDimensions).forward(3, false)): any)
+        .toHaveCharacterState(1, 10, 5, []);
     (expect(new CharacterState(1, 1, 6, [], sceneDimensions).forward(2, false)): any)
         .toHaveCharacterState(1, 1, 6, []);
+    (expect(new CharacterState(2, 3, 7, [], sceneDimensions).forward(3, false)): any)
+        .toHaveCharacterState(1, 1, 7, []);
+});
+
+test('Backward move is limited to the sceneDimensions', () => {
+    const sceneDimensions = new SceneDimensions(10, 10);
+    (expect(new CharacterState(1, 10, 0, [], sceneDimensions).backward(2, false)): any)
+        .toHaveCharacterState(1, 10, 0, []);
+    (expect(new CharacterState(2, 8, 1, [], sceneDimensions).backward(3, false)): any)
+        .toHaveCharacterState(1, 10, 1, []);
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).backward(2, false)): any)
+        .toHaveCharacterState(1, 1, 2, []);
+    (expect(new CharacterState(2, 3, 3, [], sceneDimensions).backward(3, false)): any)
+        .toHaveCharacterState(1, 1, 3, []);
+    (expect(new CharacterState(1, 1, 4, [], sceneDimensions).backward(2, false)): any)
+        .toHaveCharacterState(1, 1, 4, []);
+    (expect(new CharacterState(9, 3, 5, [], sceneDimensions).backward(3, false)): any)
+        .toHaveCharacterState(10, 1, 5, []);
+    (expect(new CharacterState(10, 1, 6, [], sceneDimensions).backward(2, false)): any)
+        .toHaveCharacterState(10, 1, 6, []);
+    (expect(new CharacterState(9, 8, 7, [], sceneDimensions).backward(3, false)): any)
+        .toHaveCharacterState(10, 10, 7, []);
 });
 
 test('Moving diagonally out of the scene will only move parallel to the edges of the scene', () => {
