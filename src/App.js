@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import { Row } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
@@ -81,6 +80,7 @@ type AppState = {
 export class App extends React.Component<AppProps, AppState> {
     version: string;
     appContext: AppContext;
+    sceneDimensions: SceneDimensions;
     dashDriver: RobotDriver;
     interpreter: Interpreter;
     audioManager: AudioManager;
@@ -100,8 +100,10 @@ export class App extends React.Component<AppProps, AppState> {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
         };
 
+        this.sceneDimensions = new SceneDimensions(26, 16);
+
         // Begin facing East
-        this.startingCharacterState = new CharacterState(0, 0, 2, []);
+        this.startingCharacterState = new CharacterState(1, 1, 2, [], this.sceneDimensions);
 
         this.interpreter = new Interpreter(1000, this);
 
@@ -109,7 +111,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.programSerializer = new ProgramSerializer();
 
-        this.characterStateSerializer = new CharacterStateSerializer();
+        this.characterStateSerializer = new CharacterStateSerializer(this.sceneDimensions);
 
         this.allowedActionsSerializer = new AllowedActionsSerializer();
 
@@ -599,6 +601,58 @@ export class App extends React.Component<AppProps, AppState> {
         this.setStateSettings({ theme });
     }
 
+    handleChangeCharacterPosition = (positionName: ?string) => {
+        const currentCharacterState = this.state.characterState;
+        switch(positionName) {
+            case 'turnLeft':
+                this.setState({
+                    characterState: currentCharacterState.turnLeft(1)
+                });
+                break;
+            case 'turnRight':
+                this.setState({
+                    characterState: currentCharacterState.turnRight(1)
+                });
+                break;
+            case 'up':
+                this.setState({
+                    characterState: currentCharacterState.moveUpPosition()
+                });
+                break;
+            case 'right':
+                this.setState({
+                    characterState: currentCharacterState.moveRightPosition()
+                });
+                break;
+            case 'down':
+                this.setState({
+                    characterState: currentCharacterState.moveDownPosition()
+                });
+                break;
+            case 'left':
+                this.setState({
+                    characterState: currentCharacterState.moveLeftPosition()
+                });
+                break;
+            default:
+                break;
+        }
+    }
+
+    handleChangeCharacterXPosition = (columnLabel: string) => {
+        const currentCharacterState = this.state.characterState;
+        this.setState({
+            characterState: currentCharacterState.changeXPosition(columnLabel)
+        });
+    }
+
+    handleChangeCharacterYPosition = (rowLabel: string) => {
+        const currentCharacterState = this.state.characterState;
+        this.setState({
+            characterState: currentCharacterState.changeYPosition(parseInt(rowLabel, 10))
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -607,34 +661,31 @@ export class App extends React.Component<AppProps, AppState> {
                     role='main'
                     onClick={this.handleRootClick}
                     onKeyDown={this.handleRootKeyDown}>
-                    <div className='App__header-background' />
                     <header className='App__header'>
-                        <div className='App__title'>
-                            <Row className='App__header-row'>
-                                <h1 className='App__app-heading'>
-                                    <FormattedMessage id='App.appHeading'/>
-                                </h1>
-                                <div className='App__header-right'>
-                                    <div className='App__audio-toggle-switch'>
-                                        <AudioFeedbackToggleSwitch
-                                            value={this.state.audioEnabled}
-                                            onChange={this.handleToggleAudioFeedback} />
-                                    </div>
-                                    {/* Dash connection removed for version 0.5
-                                    <DeviceConnectControl
-                                        disabled={
-                                            !this.appContext.bluetoothApiIsAvailable ||
-                                            this.state.dashConnectionStatus === 'connected' }
-                                        connectionStatus={this.state.dashConnectionStatus}
-                                        onClickConnect={this.handleClickConnectDash}>
-                                        <FormattedMessage id='App.connectToDash' />
-                                    </DeviceConnectControl>
-                                    */}
-                                    {/* Put ThemeSelector back in C2LC-289
-                                    <ThemeSelector onSelect={this.handleChangeTheme} />
-                                    */}
+                        <div className='App__header-row'>
+                            <h1 className='App__app-heading'>
+                                <FormattedMessage id='App.appHeading'/>
+                            </h1>
+                            <div className='App__header-audio-toggle'>
+                                <div className='App__audio-toggle-switch'>
+                                    <AudioFeedbackToggleSwitch
+                                        value={this.state.audioEnabled}
+                                        onChange={this.handleToggleAudioFeedback} />
                                 </div>
-                            </Row>
+                                {/* Dash connection removed for version 0.5
+                                <DeviceConnectControl
+                                    disabled={
+                                        !this.appContext.bluetoothApiIsAvailable ||
+                                        this.state.dashConnectionStatus === 'connected' }
+                                    connectionStatus={this.state.dashConnectionStatus}
+                                    onClickConnect={this.handleClickConnectDash}>
+                                    <FormattedMessage id='App.connectToDash' />
+                                </DeviceConnectControl>
+                                */}
+                                {/* Put ThemeSelector back in C2LC-289
+                                <ThemeSelector onSelect={this.handleChangeTheme} />
+                                */}
+                            </div>
                         </div>
                     </header>
                     {/* Dash connection removed for version 0.5
@@ -654,8 +705,11 @@ export class App extends React.Component<AppProps, AppState> {
                             intl={this.props.intl}
                             usedActions={this.state.usedActions}
                         />
-                        <h2 className='App__command-palette-heading'>
+                        <h2 className='App__command-palette-heading App__commandpalette-heading-long'>
                             <FormattedMessage id='CommandPalette.movementsTitle' />
+                        </h2>
+                        <h2 className='App__command-palette-heading App__commandpalette-heading-short'>
+                            <FormattedMessage id='CommandPalette.shortMovementsTitle' />
                         </h2>
                         <div className='App__command-palette-command-container'>
                             <div className='App__command-palette-commands'>
@@ -687,7 +741,10 @@ export class App extends React.Component<AppProps, AppState> {
                     <div className='App__program-block-editor'>
                         <ProgramBlockEditor
                             actionPanelStepIndex={this.state.actionPanelStepIndex}
-                            editingDisabled={this.state.runningState === 'running'}
+                            characterState={this.state.characterState}
+                            editingDisabled={
+                                !(this.state.runningState === 'stopped'
+                                || this.state.runningState === 'paused')}
                             programSequence={this.state.programSequence}
                             runningState={this.state.runningState}
                             selectedAction={this.state.selectedAction}
@@ -696,6 +753,9 @@ export class App extends React.Component<AppProps, AppState> {
                             focusTrapManager={this.focusTrapManager}
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
                             theme={this.state.settings.theme}
+                            onChangeCharacterPosition={this.handleChangeCharacterPosition}
+                            onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
+                            onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
@@ -741,7 +801,6 @@ export class App extends React.Component<AppProps, AppState> {
             const params = new C2lcURLParams(window.location.search);
             const programQuery = params.getProgram();
             const characterStateQuery = params.getCharacterState();
-            const themeQuery = params.getTheme();
             const allowedActionsQuery = params.getAllowedActions();
             if (programQuery != null && characterStateQuery != null && allowedActionsQuery != null) {
                 try {
@@ -759,12 +818,12 @@ export class App extends React.Component<AppProps, AppState> {
                     console.log(err.toString());
                 }
             }
-            this.setStateSettings({ theme: Utils.getThemeFromString(themeQuery, 'default') });
+            // this.setStateSettings({ theme: Utils.getThemeFromString(themeQuery, 'default') });
         } else {
             const localProgram = window.localStorage.getItem('c2lc-program');
             const localCharacterState = window.localStorage.getItem('c2lc-characterState');
-            const localTheme = window.localStorage.getItem('c2lc-theme');
             const localAllowedActions = window.localStorage.getItem('c2lc-allowedActions');
+            // const localTheme = window.localStorage.getItem('c2lc-theme');
             if (localProgram != null && localCharacterState != null) {
                 try {
                     const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(localProgram), 0);
@@ -780,7 +839,7 @@ export class App extends React.Component<AppProps, AppState> {
                     console.log(err.toString());
                 }
             }
-            this.setStateSettings({ theme: Utils.getThemeFromString(localTheme, 'default') });
+            // this.setStateSettings({ theme: Utils.getThemeFromString(localTheme, 'default') });
         }
     }
 
@@ -796,7 +855,7 @@ export class App extends React.Component<AppProps, AppState> {
                 {
                     p: serializedProgram,
                     c: serializedCharacterState,
-                    t: this.state.settings.theme,
+                    // t: this.state.settings.theme,
                     a: serializedAllowedActions
                 },
                 '',
@@ -805,7 +864,7 @@ export class App extends React.Component<AppProps, AppState> {
             window.localStorage.setItem('c2lc-version', this.version);
             window.localStorage.setItem('c2lc-program', serializedProgram);
             window.localStorage.setItem('c2lc-characterState', serializedCharacterState);
-            window.localStorage.setItem('c2lc-theme', this.state.settings.theme);
+            // window.localStorage.setItem('c2lc-theme', this.state.settings.theme);
             window.localStorage.setItem('c2lc-allowedActions', serializedAllowedActions);
         }
         if (this.state.audioEnabled !== prevState.audioEnabled) {
@@ -815,15 +874,15 @@ export class App extends React.Component<AppProps, AppState> {
                 && this.state.runningState === 'running') {
             this.interpreter.startRun();
         }
-        if (this.state.settings.theme !== prevState.settings.theme) {
-            if (document.body) {
-                if (this.state.settings.theme === 'default') {
-                    document.body.className = '';
-                } else {
-                    document.body.className = `${this.state.settings.theme}-theme`;
-                }
-            }
-        }
+        // if (this.state.settings.theme !== prevState.settings.theme) {
+        //     if (document.body) {
+        //         if (this.state.settings.theme === 'default') {
+        //             document.body.className = '';
+        //         } else {
+        //             document.body.className = `${this.state.settings.theme}-theme`;
+        //         }
+        //     }
+        // }
         if (this.state.selectedAction !== prevState.selectedAction) {
             const messagePayload = {};
             const announcementKey = this.state.selectedAction ?

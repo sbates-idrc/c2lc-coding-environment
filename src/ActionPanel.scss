@@ -6,7 +6,6 @@
 .ActionPanel__panel {
     width: $c2lc-action-panel-width;
     height: $c2lc-action-panel-height;
-    padding: 0.5rem 0;
     background-color: #F1F1F1;
     border: 0.1rem solid #939595;
     border-radius: 3rem;
@@ -18,22 +17,22 @@
 .ActionPanel__panel::before {
     content: '';
     position: absolute;
-    left: 45%;
+    left: 46.5%;
     top: 100%;
-    border-left: 0.7rem solid transparent;
-    border-top: 1rem solid #F1F1F1;
-    border-right: 0.7rem solid transparent;
+    border-left: 0.56rem solid transparent;
+    border-top: 0.8rem solid #F1F1F1;
+    border-right: 0.56rem solid transparent;
     z-index: 1;
 }
 
 .ActionPanel__panel::after {
     content: '';
     position: absolute;
-    left: 43.8%;
+    left: 45.5%;
     top: 100%;
-    border-left: 0.9rem solid transparent;
-    border-top: 1.2rem solid #939595;
-    border-right: 0.9rem solid transparent;
+    border-left: 0.7rem solid transparent;
+    border-top: 1rem solid #939595;
+    border-right: 0.7rem solid transparent;
 }
 
 .ActionPanel__panel--hidden {
@@ -42,8 +41,8 @@
 
 button.btn.ActionPanel__action-buttons {
     background-color: #8F8F8F;
-    width: 3rem;
-    height: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50%;
     padding: 0.3rem;
 }
