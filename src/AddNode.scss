@@ -16,7 +16,8 @@ button.btn.AddNode__expanded-button {
     border-radius: 50%;
     background-color:  #22343C;
     padding: $addNodeExpandedButtonPadding;
-    z-index: auto;
+    position: relative;
+    z-index: 2;
     width: 45px;    
     height: 45px;
 

@@ -6,25 +6,22 @@
 }
 
 button.btn.StopButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
     padding: 0;
+    padding-top: 0.05rem;
     width: 2.2rem;
     height: 2.2rem;
     margin-top: 1.8rem;
-    border-radius: 50%;
-    background-color: transparent;
+
     svg circle {
         fill: black
     }
 }
 
 button.btn.StopButton:focus {
-    border: $c2lc-focus-indicator-width solid $c2lc-focus-indicator-color;
-    box-shadow: none;
-}
-
-button.btn.StopButton:not(:focus) {
-    border: none;
-    padding: $c2lc-focus-indicator-width;
+    box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
 }
 
 button.btn.StopButton:hover {

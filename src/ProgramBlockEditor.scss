@@ -190,10 +190,17 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
     border-radius: 0.2rem;
 }
 
+.ProgramBlockEditor__program-block-with-panel {
+    position: relative;
+    z-index: 2;
+}
+
 .ProgramBlockEditor__program-block-connector {
     background-color: #939595;
     min-width: 0.8rem;
     height: 0.2rem;
+    position: relative;
+    z-index: 1;
 }
 
 button.ProgramBlockEditor__program-block--active {

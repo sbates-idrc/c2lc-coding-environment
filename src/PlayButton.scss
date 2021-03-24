@@ -21,13 +21,6 @@ button.btn.PlayButton {
 
 button.btn.PlayButton:focus {
     box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
-    // TODO: This prevents "jiggling" on focus or "nudging" the stop button, but the SVG is not perfecly centred.
-    padding-left: 0.2rem;
-    padding-top: 0.2rem;
-}
-
-button.btn.PlayButton:not(:focus) {
-    padding: 0.3rem;
 }
 
 button.btn.PlayButton:hover {

@@ -961,7 +961,7 @@ body.contrast-theme {
     .AudioFeedbackToggleSwitch {
         background-color: black;
         border: 2px solid white;
-        padding: 0.1rem;
+        padding: 0.2rem;
     
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
@@ -993,7 +993,6 @@ body.contrast-theme {
     .AudioFeedbackToggleSwitch.ToggleSwitch--checked:not(:hover) {
         background-color: black;
         border: 2px solid white;
-        padding: 0.1rem;
     
         .ToggleSwitch__switch-inner-circle {
             background-color: white;
