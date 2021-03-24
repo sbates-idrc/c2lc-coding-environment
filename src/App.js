@@ -22,7 +22,7 @@ import SceneDimensions from './SceneDimensions';
 import AudioFeedbackToggleSwitch from './AudioFeedbackToggleSwitch';
 import PenDownToggleSwitch from './PenDownToggleSwitch';
 import ProgramSpeedController from './ProgramSpeedController';
-import { programIsEmpty } from './ProgramUtils';
+import { deleteStep, insert, programIsEmpty } from './ProgramUtils';
 import ProgramSerializer from './ProgramSerializer';
 import ShareButton from './ShareButton';
 import type { DeviceConnectionStatus, Program, RobotDriver } from './types';
@@ -439,6 +439,87 @@ export default class App extends React.Component<{}, AppState> {
         this.focusTrapManager.handleKeyDown(e);
     };
 
+    appendToProgram(command: string) {
+        // TODO: Modify the program only when editing is allowed
+        this.setState((state) => {
+            return {
+                program: insert(
+                    state.program,
+                    state.program.length,
+                    command,
+                    "")
+            };
+        });
+    }
+
+    handleDocumentKeyDown = (e: KeyboardEvent) => {
+        console.log(e.key);
+        switch (e.key) {
+            case '1':
+                this.appendToProgram('forward1');
+                break;
+            case '2':
+                this.appendToProgram('forward2');
+                break;
+            case '3':
+                this.appendToProgram('forward3');
+                break;
+            case 'A':
+                this.appendToProgram('left45');
+                break;
+            case 'B':
+                this.appendToProgram('left90');
+                break;
+            case 'D':
+                this.appendToProgram('left180');
+                break;
+            case 'a':
+                this.appendToProgram('right45');
+                break;
+            case 'b':
+                this.appendToProgram('right90');
+                break;
+            case 'd':
+                this.appendToProgram('right180');
+                break;
+            case 'p':
+                // TODO: Extract functionality from handleClickPlay() and
+                //       place into a shared function, rather than delegating
+                //       to handleClickPlay() directly
+                this.handleClickPlay();
+                break;
+            case 'r':
+                // TODO: Extract functionality from handleRefresh() and
+                //       place into a shared function, rather than delegating
+                //       to handleRefresh() directly
+                this.handleRefresh();
+                break;
+            case 'x':
+                // TODO: Modify the program only when editing is allowed
+                this.setState((state) => {
+                    return {
+                        program: []
+                    };
+                });
+                break;
+            case 'Backspace':
+                // TODO: Modify the program only when editing is allowed
+                this.setState((state) => {
+                    if (state.program.length > 0) {
+                        return {
+                            program: deleteStep(state.program,
+                                state.program.length -1)
+                        }
+                    } else {
+                        return {};
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+    };
+
     handleToggleAudioFeedback = (audioEnabled: boolean) => {
         this.setState({
             audioEnabled: audioEnabled
@@ -628,6 +709,12 @@ export default class App extends React.Component<{}, AppState> {
                 }
             }
         }
+
+        document.addEventListener('keydown', this.handleDocumentKeyDown);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleDocumentKeyDown);
     }
 
     componentDidUpdate(prevProps: {}, prevState: AppState) {
