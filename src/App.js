@@ -78,6 +78,7 @@ type AppState = {
 export class App extends React.Component<AppProps, AppState> {
     version: string;
     appContext: AppContext;
+    sceneDimensions: SceneDimensions;
     dashDriver: RobotDriver;
     interpreter: Interpreter;
     audioManager: AudioManager;
@@ -96,8 +97,10 @@ export class App extends React.Component<AppProps, AppState> {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
         };
 
+        this.sceneDimensions = new SceneDimensions(26, 16);
+
         // Begin facing East
-        this.startingCharacterState = new CharacterState(0, 0, 2, []);
+        this.startingCharacterState = new CharacterState(1, 1, 2, [], this.sceneDimensions);
 
         this.state = {
             programSequence: new ProgramSequence([], 0),
@@ -114,7 +117,7 @@ export class App extends React.Component<AppProps, AppState> {
             isDraggingCommand: false,
             audioEnabled: true,
             actionPanelStepIndex: null,
-            sceneDimensions: new SceneDimensions(26, 16),
+            sceneDimensions: this.sceneDimensions,
             drawingEnabled: true,
             runningState: 'stopped'
         };
@@ -125,7 +128,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.programSerializer = new ProgramSerializer();
 
-        this.characterStateSerializer = new CharacterStateSerializer();
+        this.characterStateSerializer = new CharacterStateSerializer(this.sceneDimensions);
 
         this.interpreter.addCommandHandler(
             'forward1',
@@ -550,12 +553,60 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleChangeTheme = (theme: ThemeName) => {
-        this.setStateSettings({ theme });
-    }
-
     handleChangeWorld = (world: WorldName) => {
         this.setStateSettings({ world });
+    }
+
+    handleChangeCharacterPosition = (positionName: ?string) => {
+        const currentCharacterState = this.state.characterState;
+        switch(positionName) {
+            case 'turnLeft':
+                this.setState({
+                    characterState: currentCharacterState.turnLeft(1)
+                });
+                break;
+            case 'turnRight':
+                this.setState({
+                    characterState: currentCharacterState.turnRight(1)
+                });
+                break;
+            case 'up':
+                this.setState({
+                    characterState: currentCharacterState.moveUpPosition()
+                });
+                break;
+            case 'right':
+                this.setState({
+                    characterState: currentCharacterState.moveRightPosition()
+                });
+                break;
+            case 'down':
+                this.setState({
+                    characterState: currentCharacterState.moveDownPosition()
+                });
+                break;
+            case 'left':
+                this.setState({
+                    characterState: currentCharacterState.moveLeftPosition()
+                });
+                break;
+            default:
+                break;
+        }
+    }
+
+    handleChangeCharacterXPosition = (columnLabel: string) => {
+        const currentCharacterState = this.state.characterState;
+        this.setState({
+            characterState: currentCharacterState.changeXPosition(columnLabel)
+        });
+    }
+
+    handleChangeCharacterYPosition = (rowLabel: string) => {
+        const currentCharacterState = this.state.characterState;
+        this.setState({
+            characterState: currentCharacterState.changeYPosition(parseInt(rowLabel, 10))
+        });
     }
 
     render() {
@@ -646,7 +697,10 @@ export class App extends React.Component<AppProps, AppState> {
                     <div className='App__program-block-editor'>
                         <ProgramBlockEditor
                             actionPanelStepIndex={this.state.actionPanelStepIndex}
-                            editingDisabled={this.state.runningState === 'running'}
+                            characterState={this.state.characterState}
+                            editingDisabled={
+                                !(this.state.runningState === 'stopped'
+                                || this.state.runningState === 'paused')}
                             programSequence={this.state.programSequence}
                             runningState={this.state.runningState}
                             selectedAction={this.state.selectedAction}
@@ -655,6 +709,9 @@ export class App extends React.Component<AppProps, AppState> {
                             focusTrapManager={this.focusTrapManager}
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
                             world={this.state.settings.world}
+                            onChangeCharacterPosition={this.handleChangeCharacterPosition}
+                            onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
+                            onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
