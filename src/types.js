@@ -13,6 +13,8 @@ export type EditorMode = 'text' | 'block';
 
 export type ThemeName = 'default' | 'forest' | 'space';
 
+export type WorldName = 'default' | 'forest' | 'space';
+
 export type Program = Array<string>;
 
 // use running, paused, stopped

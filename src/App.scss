@@ -9,7 +9,7 @@ body {
     background-color: #FFF;
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: 1fr min-content 0.5rem minmax(auto, 78rem) 1fr;
+    grid-template-columns: 1fr min-content minmax(auto, 78rem) min-content 1fr;
     grid-template-rows: auto auto 1fr 90px;
     row-gap: 1rem;
     height: 100vh;
@@ -87,6 +87,16 @@ body {
     margin-left: 50px;
 }
 
+.App__world-selector-container {
+    grid-column-start: 4;
+    grid-column-end: 5;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+    width: 6rem;
+}
+
 .App__command-palette {
     background-color: #F1F1F1;
     text-align: center;
@@ -124,7 +134,7 @@ body {
 
 .App__program-block-editor {
     margin-right: 0.5rem;
-    grid-column-start: 4;
+    grid-column-start: 3;
     grid-column-end: 5;
     grid-row-start: 3;
     grid-row-end: 4;
