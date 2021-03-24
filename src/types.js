@@ -4,6 +4,7 @@ import type {IntlShape} from 'react-intl';
 
 export type CommandName =
     'forward1' | 'forward2' | 'forward3' |
+    'backward1' | 'backward2' | 'backward3' |
     'left45' | 'left90' | 'left180' |
     'right45' | 'right90' | 'right180';
 
