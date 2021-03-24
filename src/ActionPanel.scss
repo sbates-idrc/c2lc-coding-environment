@@ -19,8 +19,8 @@
     display: flex;
     height: $c2lc-action-panel-height;
     justify-content: space-evenly;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
     position: absolute;
     width: $c2lc-action-panel-width;
 }
@@ -33,18 +33,19 @@ button.btn.ActionPanel__action-buttons {
     background-color: #4C9990;
     border: none;
     border-radius: 50%;    
-    height: 2.1rem;
-    padding: 0.5rem;
-    width: 2.1rem;
+    height: 2.5rem;
+    padding: 0.1rem;
+    margin: 0.2rem;
+    width: 2.5rem;
 
     svg {
         height: 1rem;
         width: 1rem;
         path.stroked {
-            stroke: #505862;
+            stroke: #1e1e1e;
         }
         path.filled {
-            fill: #505862;
+            fill: #1e1e1e;
         }
     }
 
