@@ -88,6 +88,8 @@ body {
 }
 
 .App__world-selector-container {
+    position: relative;
+    top: 0.8rem;
     grid-column-start: 4;
     grid-column-end: 5;
     grid-row-start: 1;
@@ -95,7 +97,7 @@ body {
     margin-right: 0.5rem;
     margin-top: 0.5rem;
     margin-left: 0.5rem;
-    width: 6rem;
+    overflow-y: scroll;
 }
 
 .App__command-palette {
