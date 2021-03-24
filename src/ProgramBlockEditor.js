@@ -42,7 +42,9 @@ type ProgramBlockEditorProps = {
     audioManager: AudioManager,
     focusTrapManager: FocusTrapManager,
     addNodeExpandedMode: boolean,
-    theme: string,
+    // Bring back in C2LC-289
+    // theme: string,
+    world: string,
     onChangeCharacterPosition: (direction: ?string) => void,
     onChangeCharacterXPosition: (columnLabel: string) => void,
     onChangeCharacterYPosition: (rowLabel: string) => void,
@@ -589,23 +591,23 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         )
     }
 
-    getThemedCharacterAriaLabel() {
-        if (this.props.theme === 'space') {
+    getWorldCharacterAriaLabel() {
+        if (this.props.world === 'space') {
             return this.props.intl.formatMessage({id:'ProgramBlockEditor.spaceShipCharacter'});
-        } else if (this.props.theme === 'forest') {
+        } else if (this.props.world === 'forest') {
             return this.props.intl.formatMessage({id:'ProgramBlockEditor.rabbitCharacter'});
         } else {
             return this.props.intl.formatMessage({id:'ProgramBlockEditor.robotCharacter'});
         }
     }
 
-    getThemedCharacter() {
+    getWorldCharacter() {
         const transform = `rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
-        if (this.props.theme === 'space') {
+        if (this.props.world === 'space') {
             return <SpaceShipIcon
                 transform={transform}
                 className='ProgramBlockEditor__character-column-character' />
-        } else if (this.props.theme === 'forest') {
+        } else if (this.props.world === 'forest') {
             return <RabbitIcon
                 transform={transform}
                 className='ProgramBlockEditor__character-column-character' />
@@ -707,8 +709,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                         <div
                             className='ProgramBlockEditor__character-column-character-container'
                             role='img'
-                            aria-label={this.getThemedCharacterAriaLabel()}>
-                            {this.getThemedCharacter()}
+                            aria-label={this.getWorldCharacterAriaLabel()}>
+                            {this.getWorldCharacter()}
                         </div>
                         <MovePositionRight
                             className={characterPositionButtonClassName}

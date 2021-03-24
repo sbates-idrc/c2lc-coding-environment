@@ -9,10 +9,12 @@ import type {IntlShape} from 'react-intl';
 
 import './Scene.scss';
 
+import type {WorldName} from './types';
+
 export type SceneProps = {
     dimensions: SceneDimensions,
     characterState: CharacterState,
-    theme: string,
+    world: WorldName,
     intl: IntlShape
 };
 
@@ -260,7 +262,7 @@ class Scene extends React.Component<SceneProps, {}> {
                             <g clipPath='url(#Scene-clippath)'>
                                 {this.drawCharacterPath()}
                                 <Character
-                                    theme={this.props.theme}
+                                    world={this.props.world}
                                     transform={characterTransform}
                                     width={0.9}
                                 />
