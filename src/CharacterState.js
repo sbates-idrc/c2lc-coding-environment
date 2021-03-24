@@ -212,11 +212,15 @@ export default class CharacterState {
         switch(this.sceneDimensions.getBoundsStateX(this.xPos + xOffset)) {
             case 'outOfBoundsBelow':
                 newXPos = 1;
-                turnSegment = this.drawEdgeDiagonalPath([], this.xPos - newXPos, (this.direction + 4) % 8);
+                if (!this.sceneDimensions.isSceneEdgeY(this.yPos)) {
+                    turnSegment = this.drawEdgeDiagonalPath([], this.xPos - newXPos, (this.direction + 4) % 8);
+                }
                 break;
             case 'outOfBoundsAbove':
                 newXPos = this.sceneDimensions.getWidth();
-                turnSegment = this.drawEdgeDiagonalPath([], newXPos - this.xPos, (this.direction + 4) % 8);
+                if (!this.sceneDimensions.isSceneEdgeY(this.yPos)) {
+                    turnSegment = this.drawEdgeDiagonalPath([], newXPos - this.xPos, (this.direction + 4) % 8);
+                }
                 break;
             default:
                 newXPos = this.xPos + xOffset;
@@ -226,11 +230,15 @@ export default class CharacterState {
         switch(this.sceneDimensions.getBoundsStateY(this.yPos + yOffset)) {
             case 'outOfBoundsBelow':
                 newYPos = 1;
-                turnSegment = this.drawEdgeDiagonalPath([], this.yPos - newYPos, (this.direction + 4) % 8);
+                if (!this.sceneDimensions.isSceneEdgeX(this.xPos)) {
+                    turnSegment = this.drawEdgeDiagonalPath([], this.yPos - newYPos, (this.direction + 4) % 8);
+                }
                 break;
             case 'outOfBoundsAbove':
                 newYPos = this.sceneDimensions.getHeight();
-                turnSegment = this.drawEdgeDiagonalPath([], newYPos - this.yPos, (this.direction + 4) % 8);
+                if (!this.sceneDimensions.isSceneEdgeX(this.xPos)) {
+                    turnSegment = this.drawEdgeDiagonalPath([], newYPos - this.yPos, (this.direction + 4) % 8);
+                }
                 break;
             default:
                 newYPos = this.yPos + yOffset;
@@ -252,8 +260,8 @@ export default class CharacterState {
             y2: newYPos
         };
 
-        if (newPathSegment.x1 === newPathSegment.x2 &&
-            newPathSegment.y1 === newPathSegment.y2) {
+        if (newPathSegment.x2 === this.xPos &&
+            newPathSegment.y2 === this.yPos) {
             return new CharacterState(
                 newXPos,
                 newYPos,
@@ -290,20 +298,52 @@ export default class CharacterState {
             let newY2 = 0;
             switch (direction) {
                 case 1:
-                    newX2 = x2 + 1;
-                    newY2 = y2 - 1;
+                    if (x2 !== this.sceneDimensions.getWidth() && y2 === 1) {
+                        newX2 = x2 + 1;
+                        newY2 = y2;
+                    } else if (x2 === this.sceneDimensions.getWidth() && y2 !== 1) {
+                        newX2 = x2;
+                        newY2 = y2 - 1;
+                    }  else {
+                        newX2 = x2 + 1;
+                        newY2 = y2 - 1;
+                    }
                     break;
                 case 3:
-                    newX2 = x2 + 1;
-                    newY2 = y2 + 1;
+                    if (x2 !== this.sceneDimensions.getWidth() && y2 === this.sceneDimensions.getHeight()) {
+                        newX2 = x2 + 1;
+                        newY2 = y2;
+                    } else if (x2 === this.sceneDimensions.getWidth() && y2 !== this.sceneDimensions.getHeight()) {
+                        newX2 = x2;
+                        newY2 = y2 + 1;
+                    } else {
+                        newX2 = x2 + 1;
+                        newY2 = y2 + 1;
+                    }
                     break;
                 case 5:
-                    newX2 = x2 - 1;
-                    newY2 = y2 + 1;
+                    if (x2 !== 1 && y2 === this.sceneDimensions.getHeight()) {
+                        newX2 = x2 - 1;
+                        newY2 = y2;
+                    } else if (x2 === 1 && y2 !== this.sceneDimensions.getHeight()) {
+                        newX2 = x2;
+                        newY2 = y2 + 1;
+                    } else {
+                        newX2 = x2 - 1;
+                        newY2 = y2 + 1;
+                    }
                     break;
                 case 7:
-                    newX2 = x2 - 1;
-                    newY2 = y2 - 1;
+                    if (x2 !== 1 && y2 === 1) {
+                        newX2 = x2 - 1;
+                        newY2 = y2;
+                    } else if (x2 === 1 && y2 !== 1) {
+                        newX2 = x2;
+                        newY2 = y2 - 1;
+                    } else {
+                        newX2 = x2 - 1;
+                        newY2 = y2 - 1;
+                    }
                     break;
                 default:
                     return [];
