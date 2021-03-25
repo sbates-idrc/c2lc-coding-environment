@@ -33,19 +33,18 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
         editingDisabled: false,
         usedActions: {},
         menuItems: {
-            // TODO: Uncomment these out once C2LC-206 is merged.
-            // backward1: {
-            //     isAllowed: true,
-            //     labelKey: "Command.backward1"
-            // },
-            // backward2: {
-            //     isAllowed: true,
-            //     labelKey: "Command.backward2"
-            // },
-            // backward3: {
-            //     isAllowed: true,
-            //     labelKey: "Command.backward3"
-            // },
+            backward1: {
+                isAllowed: true,
+                labelKey: "Command.backward1"
+            },
+            backward2: {
+                isAllowed: true,
+                labelKey: "Command.backward2"
+            },
+            backward3: {
+                isAllowed: true,
+                labelKey: "Command.backward3"
+            },
             forward1: {
                 isAllowed: true,
                 labelKey: "Command.forward1"
