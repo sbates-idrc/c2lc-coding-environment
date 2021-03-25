@@ -48,7 +48,8 @@ const defaultProgramBlockEditorProps = {
     focusTrapManager: new FocusTrapManager(),
     addNodeExpandedMode: false,
     theme: 'default',
-    allowedActions: mockAllowedActions
+    allowedActions: mockAllowedActions,
+    world: 'default'
 };
 
 function createShallowProgramBlockEditor(props) {
@@ -124,6 +125,7 @@ function createMountProgramBlockEditor(props) {
                     onChangeProgramSequence: mockChangeProgramSequenceHandler,
                     onChangeActionPanelStepIndex: mockChangeActionPanelStepIndex,
                     onChangeAddNodeExpandedMode: mockChangeAddNodeExpandedModeHandler,
+                    world: 'default',
                     onChangeCharacterPosition: mockChangeCharacterPosition,
                     onChangeCharacterXPosition: mockChangeCharacterXPosition,
                     onChangeCharacterYPosition: mockChangeCharacterYPosition
@@ -785,7 +787,7 @@ test('The editor scrolls when a step is added to the end of the program', () => 
     expect(mockScrollIntoView.mock.instances[0]).toBe(getAddNodeButtonAtPosition(wrapper, 0).getDOMNode());
 });
 
-describe('Themed character icon should be rendered on the character column', () => {
+describe('World-appropriate character icon should be rendered on the character column', () => {
     test('default', () => {
         expect.assertions(2);
         const { wrapper } = createMountProgramBlockEditor();
@@ -794,13 +796,13 @@ describe('Themed character icon should be rendered on the character column', () 
     });
     test('forest', () => {
         expect.assertions(2);
-        const { wrapper } = createMountProgramBlockEditor({theme: 'forest'});
+        const { wrapper } = createMountProgramBlockEditor({world: 'forest'});
         expect(getCharacterColumnCharacterContainer(wrapper).props['aria-label']).toBe('Rabbit character');
         expect(getCharacterColumnCharacter(wrapper).type.render().props.children).toBe('Rabbit.svg');
     });
     test('space', () => {
         expect.assertions(2);
-        const { wrapper } = createMountProgramBlockEditor({theme: 'space'});
+        const { wrapper } = createMountProgramBlockEditor({world: 'space'});
         expect(getCharacterColumnCharacterContainer(wrapper).props['aria-label']).toBe('Space Ship character');
         expect(getCharacterColumnCharacter(wrapper).type.render().props.children).toBe('SpaceShip.svg');
     });

@@ -28,7 +28,8 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ShareButton from './ShareButton';
 import ActionsMenu from './ActionsMenu';
-import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName, WorldName } from './types';
+import WorldSelector from './WorldSelector';
 import * as Utils from './Utils';
 import './App.scss';
 import './Themes.css';
@@ -52,7 +53,8 @@ type AppContext = {
 type AppSettings = {
     language: string,
     addNodeExpandedMode: boolean,
-    theme: ThemeName
+    theme: ThemeName,
+    world: WorldName
 };
 
 type AppProps = {
@@ -125,7 +127,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.forward(1, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("movement", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState);
 
                     return {
                         characterState: newCharacterState
@@ -145,7 +147,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.forward(2, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("movement", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState);
 
                     return {
                         characterState: newCharacterState
@@ -165,7 +167,64 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.forward(3, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("movement", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState);
+                    return {
+                        characterState: newCharacterState
+                    };
+                });
+                return Utils.makeDelayedPromise(stepTimeMs);
+            }
+        );
+
+        this.interpreter.addCommandHandler(
+            'backward1',
+            'moveCharacter',
+            (interpreter, stepTimeMs) => {
+                // TODO: Enable announcements again.
+                // this.audioManager.playAnnouncement('backward1');
+                this.setState((state) => {
+                    const newCharacterState = state.characterState.backward(1, state.drawingEnabled);
+
+                    // We have to start the sound here because this is where we know the new character state.
+                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState);
+                    return {
+                        characterState: newCharacterState
+                    };
+                });
+                return Utils.makeDelayedPromise(stepTimeMs);
+            }
+        );
+
+        this.interpreter.addCommandHandler(
+            'backward2',
+            'moveCharacter',
+            (interpreter, stepTimeMs) => {
+                // TODO: Enable announcements again.
+                // this.audioManager.playAnnouncement('backward2');
+                this.setState((state) => {
+                    const newCharacterState = state.characterState.backward(2, state.drawingEnabled);
+
+                    // We have to start the sound here because this is where we know the new character state.
+                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState);
+                    return {
+                        characterState: newCharacterState
+                    };
+                });
+                return Utils.makeDelayedPromise(stepTimeMs);
+            }
+        );
+
+        this.interpreter.addCommandHandler(
+            'backward3',
+            'moveCharacter',
+            (interpreter, stepTimeMs) => {
+                // TODO: Enable announcements again.
+                // this.audioManager.playAnnouncement('backward3');
+                this.setState((state) => {
+                    const newCharacterState = state.characterState.backward(3, state.drawingEnabled);
+
+                    // We have to start the sound here because this is where we know the new character state.
+                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState);
                     return {
                         characterState: newCharacterState
                     };
@@ -321,7 +380,8 @@ export class App extends React.Component<AppProps, AppState> {
             settings: {
                 language: 'en',
                 addNodeExpandedMode: true,
-                theme: 'default'
+                theme: 'default',
+                world: 'default'
             },
             dashConnectionStatus: 'notConnected',
             showDashConnectionError: false,
@@ -329,7 +389,7 @@ export class App extends React.Component<AppProps, AppState> {
             isDraggingCommand: false,
             audioEnabled: true,
             actionPanelStepIndex: null,
-            sceneDimensions: new SceneDimensions(17, 9),
+            sceneDimensions: this.sceneDimensions,
             drawingEnabled: true,
             runningState: 'stopped',
             allowedActions: allowedActions,
@@ -565,8 +625,9 @@ export class App extends React.Component<AppProps, AppState> {
 
     renderCommandBlocks = () => {
         const commandNames = [
-            'forward1', 'forward2', 'forward3',
+            'backward1', 'backward2', 'backward3',
             'left45', 'left90', 'left180',
+            'forward1', 'forward2', 'forward3',
             'right45', 'right90', 'right180'
         ];
         const commandBlocks = [];
@@ -597,8 +658,8 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleChangeTheme = (theme: ThemeName) => {
-        this.setStateSettings({ theme });
+    handleChangeWorld = (world: WorldName) => {
+        this.setStateSettings({ world });
     }
 
     handleChangeCharacterPosition = (positionName: ?string) => {
@@ -721,7 +782,7 @@ export class App extends React.Component<AppProps, AppState> {
                         <Scene
                             dimensions={this.state.sceneDimensions}
                             characterState={this.state.characterState}
-                            theme={this.state.settings.theme}
+                            world={this.state.settings.world}
                         />
                         <div className='App__scene-controls'>
                             <div className='App__scene-controls-group'>
@@ -738,6 +799,13 @@ export class App extends React.Component<AppProps, AppState> {
                             </div>
                         </div>
                     </div>
+                    <div className="App__world-selector-container">
+                        <WorldSelector
+                            disabled={this.state.runningState === 'running'}
+                            world={this.state.settings.world}
+                            onSelect={this.handleChangeWorld}
+                        />
+                    </div>
                     <div className='App__program-block-editor'>
                         <ProgramBlockEditor
                             actionPanelStepIndex={this.state.actionPanelStepIndex}
@@ -752,7 +820,7 @@ export class App extends React.Component<AppProps, AppState> {
                             audioManager={this.audioManager}
                             focusTrapManager={this.focusTrapManager}
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
-                            theme={this.state.settings.theme}
+                            world={this.state.settings.world}
                             onChangeCharacterPosition={this.handleChangeCharacterPosition}
                             onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
                             onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
@@ -802,6 +870,8 @@ export class App extends React.Component<AppProps, AppState> {
             const programQuery = params.getProgram();
             const characterStateQuery = params.getCharacterState();
             const allowedActionsQuery = params.getAllowedActions();
+            const worldQuery = params.getWorld();
+            // const themeQuery = params.getTheme();
             if (programQuery != null && characterStateQuery != null && allowedActionsQuery != null) {
                 try {
                     const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(programQuery), 0);
@@ -819,11 +889,13 @@ export class App extends React.Component<AppProps, AppState> {
                 }
             }
             // this.setStateSettings({ theme: Utils.getThemeFromString(themeQuery, 'default') });
+            this.setStateSettings({ world: Utils.getThemeFromString(worldQuery, 'default') });
         } else {
             const localProgram = window.localStorage.getItem('c2lc-program');
             const localCharacterState = window.localStorage.getItem('c2lc-characterState');
             const localAllowedActions = window.localStorage.getItem('c2lc-allowedActions');
             // const localTheme = window.localStorage.getItem('c2lc-theme');
+            const localWorld = window.localStorage.getItem('c2lc-world');
             if (localProgram != null && localCharacterState != null) {
                 try {
                     const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(localProgram), 0);
@@ -839,6 +911,7 @@ export class App extends React.Component<AppProps, AppState> {
                     console.log(err.toString());
                 }
             }
+            this.setStateSettings({ world: Utils.getWorldFromString(localWorld, 'default') });
             // this.setStateSettings({ theme: Utils.getThemeFromString(localTheme, 'default') });
         }
     }
@@ -847,7 +920,8 @@ export class App extends React.Component<AppProps, AppState> {
         if (this.state.programSequence !== prevState.programSequence
             || this.state.characterState !== prevState.characterState
             || this.state.settings.theme !== prevState.settings.theme
-            || this.state.allowedActions !== prevState.allowedActions) {
+            || this.state.allowedActions !== prevState.allowedActions
+            || this.state.settings.world !== prevState.settings.world) {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedAllowedActions = this.allowedActionsSerializer.serialize(this.state.allowedActions);
@@ -856,16 +930,19 @@ export class App extends React.Component<AppProps, AppState> {
                     p: serializedProgram,
                     c: serializedCharacterState,
                     // t: this.state.settings.theme,
-                    a: serializedAllowedActions
+                    a: serializedAllowedActions,
+                    w: this.state.settings.world
                 },
                 '',
-                Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, serializedProgram, serializedCharacterState, serializedAllowedActions)
+                Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedAllowedActions),
+                '',
             );
             window.localStorage.setItem('c2lc-version', this.version);
             window.localStorage.setItem('c2lc-program', serializedProgram);
             window.localStorage.setItem('c2lc-characterState', serializedCharacterState);
             // window.localStorage.setItem('c2lc-theme', this.state.settings.theme);
             window.localStorage.setItem('c2lc-allowedActions', serializedAllowedActions);
+            window.localStorage.setItem('c2lc-world', this.state.settings.world)
         }
         if (this.state.audioEnabled !== prevState.audioEnabled) {
             this.audioManager.setAudioEnabled(this.state.audioEnabled);
