@@ -255,9 +255,7 @@ body.dark-theme {
         background-color: #18252C;
     }
 
-    .AudioFeedbackToggleSwitch {
-        background-color: #B9BEC6;
-    
+    .AudioFeedbackToggleSwitch {    
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
         }
@@ -1121,7 +1119,7 @@ body.contrast-theme {
     .PenDownToggleSwitch:hover, .PenDownToggleSwitch.ToggleSwitch--checked {
         background-color: black;
         border: 2px solid white;
-        padding: 0.05rem;
+        padding: 0.2rem;
         .ToggleSwitch__switch-inner-circle {
             background-color: white;
             svg {
@@ -1178,14 +1176,14 @@ body.contrast-theme {
 
         &:focus {
             border: 2px solid white;
-            padding: 0.05rem;
+            padding: 0.2rem;
         }
     }
 
     .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch--checked, .ProgramBlockEditor__add-node-toggle-switch:hover {
         background-color: white;
         border: 2px solid black;
-        padding: 0.05rem;
+        padding: 0.2rem;
 
         .ToggleSwitch__switch-inner-circle {
             background-color: black;
