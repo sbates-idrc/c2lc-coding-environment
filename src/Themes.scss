@@ -317,6 +317,28 @@ body.dark-theme {
         fill: #4C9990;
     }
 
+    .WorldSelector {
+        background-color: #33717F;
+        border: 1px solid #33717F;
+    }    
+    
+    .WorldSelector .WorldIcon:not(:hover):not(:active):not(.WorldIcon--selected):not(:focus) {
+        background-color: #30444E;
+        box-shadow: inset 0 .1rem .2rem rgba(0, 0, 0, 0.5);
+    }   
+   
+    .WorldSelector button:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    }
+    
+    .WorldSelector button:focus:not(:hover):not(:active):not(.WorldIcon--selected) {
+        background-color: #30444E;
+    }
+
+    .WorldSelector .WorldIcon--selected:not(:hover) {
+        background-color: #4C9990;
+    }
+
     .ProgramBlockEditor__container {
         background-color: #33717F;
         border: 2px solid #33717F;
@@ -575,6 +597,24 @@ body.gray-theme {
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
+    }
+
+    .WorldSelector {
+        background-color: #D5D8DD;
+        border: 1px solid #D5D8DD;
+    }
+
+    .WorldSelector svg.HeaderIcon { 
+        circle {
+            fill: #818A98;
+        }
+        path {
+            stroke: white;
+        }
+    }
+
+    .WorldSelector .WorldIcon--selected:not(:hover) {
+        background-color: #818A98;
     }
 
     .AddNode__collapsed-icon {
@@ -1150,6 +1190,40 @@ body.contrast-theme {
             svg path {
                 fill: white;
             }
+        }
+    }
+
+    .WorldSelector {
+        background-color: black;
+        border: 1px solid white;
+
+        svg.HeaderIcon { 
+            circle {
+                fill: white;
+            }
+        }
+    
+        button.btn:hover {
+            background-color: white;
+        }
+
+        button.btn:focus {
+            box-shadow:
+                0 0 0 0.1rem black,
+                0 0 0 $c2lc-focus-indicator-width white;
+
+        }
+
+        .WorldIcon--selected:not(:hover) {
+            background-color: white;
+            box-shadow:
+                0 0 0 0.05rem black,
+                0 0 0 0.1rem white;
+            border: 2px solid black;
+        }
+
+        .btn-primary:not(:disabled):not(.disabled):active {
+            background-color: white;            
         }
     }
 
