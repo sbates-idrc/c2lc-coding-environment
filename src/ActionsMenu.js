@@ -148,6 +148,7 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
             const isUsed: boolean = !!this.props.usedActions[itemKey];
             // TODO: Add a mechanism for values to come back to us.
             const itemChangeHandler = (event: Event) => {
+                /* istanbul ignore next */
                 if (this.props.changeHandler) {
                     this.props.changeHandler(event, itemKey);
                 }

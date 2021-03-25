@@ -55,7 +55,7 @@ function createActionsMenu(props) {
     };
 };
 
-it('Renders withhout crashing.', () => {
+it('Renders without crashing.', () => {
     createActionsMenu();
 });
 
@@ -92,8 +92,9 @@ it("Can be used to toggle individual items.", () => {
 
     const checkboxes = wrapper.find("input");
     const firstCheckbox = checkboxes.first();
+
     firstCheckbox.simulate("change");
+
     expect(mockChangeHandler.mock.calls.length).toBe(1);
     expect(mockChangeHandler.mock.calls[0][1]).toBe("forward1");
-
 });
