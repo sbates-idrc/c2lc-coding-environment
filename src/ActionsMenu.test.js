@@ -13,6 +13,9 @@ import messages from './messages.json';
 configure({ adapter: new Adapter()});
 
 const mockAllowedActions = {
+    "backward1": true,
+    "backward2": true,
+    "backward3": true,
     "forward1": true,
     "forward2": true,
     "forward3": true,
@@ -69,7 +72,7 @@ it("Can be toggled open.", () => {
     expect(actionsMenu.state("showMenu")).toBe(true);
 
     const actionsMenuItems = wrapper.find(ActionsMenuItem);
-    expect(actionsMenuItems.length).toBe(9);
+    expect(actionsMenuItems.length).toBe(12);
 });
 
 it("Cannot be toggled open when editing is disabled.", () => {
@@ -96,5 +99,5 @@ it("Can be used to toggle individual items.", () => {
     firstCheckbox.simulate("change");
 
     expect(mockChangeHandler.mock.calls.length).toBe(1);
-    expect(mockChangeHandler.mock.calls[0][1]).toBe("forward1");
+    expect(mockChangeHandler.mock.calls[0][1]).toBe("backward1");
 });
