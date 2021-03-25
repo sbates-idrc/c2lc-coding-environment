@@ -10,9 +10,9 @@ body {
     background-color: #FFF;
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: 1fr min-content minmax(auto, 78rem) 1fr;
-    grid-template-rows: auto auto 1fr auto 7rem;
-    row-gap: 0.5rem;
+    grid-template-columns: 1fr min-content minmax(auto, 78rem) min-content 1fr;
+    grid-template-rows: auto auto 1fr 90px;
+    row-gap: 1rem;
     height: 100vh;
 }
 
@@ -59,19 +59,17 @@ body {
     margin-top: 0.5rem;
     margin-right: 0.5rem;
     grid-column-start: 3;
-    grid-column-end: 4;
+    grid-column-end: 5;
     grid-row-start: 1;
     grid-row-end: 3;
     min-height: 12rem;
     min-width: 19.5rem;
     max-width: 78rem;
-    border-width: $c2lc-scene-border-width;
-    border-color: $c2lc-scene-border-color;
-    border-style: $c2lc-scene-border-style;
 }
 
 .App__scene-controls {
     position: absolute;
+    z-index: 1;
     padding: 1rem 0;
     bottom: 0;
     right: 0;
@@ -90,11 +88,22 @@ body {
     margin-left: 50px;
 }
 
+.App__world-selector-container {
+    grid-column-start: 4;
+    grid-column-end: 5;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+    width: 6rem;
+}
+
 .App__command-palette {
     background-color: #30444E;
     border-radius: 0.2rem;
     text-align: center;
-    margin: 0 0.5rem;
+    margin: 0 0.5rem 0 0.5rem;
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 2;
@@ -123,15 +132,23 @@ body {
 
 .App__command-palette-commands {
     width: 6rem;
-    display: grid;
-    grid-template-columns: repeat(2, 2.5rem);
-    grid-gap: 1rem;
+    height: 22rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+
+.App__command-palette-commands > button {
+    margin-bottom: 1rem;
 }
 
 .App__program-block-editor {
     margin-right: 0.5rem;
     grid-column-start: 3;
-    grid-column-end: 4;
+    grid-column-end: 5;
     grid-row-start: 3;
     grid-row-end: 4;
     height: auto;
@@ -142,7 +159,7 @@ body {
     margin: 0;
     box-shadow: 0px 0.7rem 4px rgba(0, 0, 0, 0.25);
     grid-column-start: 1;
-    grid-column-end: 5;
+    grid-column-end: 6;
     grid-row-start: 4;
     grid-row-end: 5;
     height: 1px;
@@ -160,9 +177,9 @@ body {
 .App__playAndShare-container {
     padding: 0 1rem;
     grid-column-start: 2;
-    grid-column-end: 4;
-    grid-row-start: 5;
-    grid-row-end: 6;
+    grid-column-end: 5;
+    grid-row-start: 4;
+    grid-row-end: 5;
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
@@ -199,7 +216,7 @@ body {
     }
 
     .App__command-palette-commands {
-        height: 100%;
+        height: 42rem;
         width: 100%;
         display: block;
     }

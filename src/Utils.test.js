@@ -1,11 +1,11 @@
 // @flow
 
-import { generateEncodedProgramURL, getThemeFromString } from './Utils.js';
+import { generateEncodedProgramURL, getThemeFromString, getWorldFromString } from './Utils.js';
 
 test('Test URL encoding', () => {
-    expect(generateEncodedProgramURL('version=5', 'light', 'f1=f2=f3', '0ab')).toBe('?v=version%3D5&t=light&p=f1%3Df2%3Df3&c=0ab');
-    expect(generateEncodedProgramURL('version?5', 'dark', 'f1?f2?f3', '0aab0c0')).toBe('?v=version%3F5&t=dark&p=f1%3Ff2%3Ff3&c=0aab0c0');
-    expect(generateEncodedProgramURL('version 5', 'contrast', 'f1 f2 f3', '0a b c')).toBe('?v=version%205&t=contrast&p=f1%20f2%20f3&c=0a%20b%20c');
+    expect(generateEncodedProgramURL('version=5', 'light', 'default', 'f1=f2=f3', '0ab')).toBe('?v=version%3D5&t=light&w=default&p=f1%3Df2%3Df3&c=0ab');
+    expect(generateEncodedProgramURL('version?5', 'dark', 'space' ,'f1?f2?f3', '0aab0c0')).toBe('?v=version%3F5&t=dark&w=space&p=f1%3Ff2%3Ff3&c=0aab0c0');
+    expect(generateEncodedProgramURL('version 5', 'contrast', 'forest', 'f1 f2 f3', '0a b c')).toBe('?v=version%205&t=contrast&w=forest&p=f1%20f2%20f3&c=0a%20b%20c');
 });
 
 test('Test getThemeFromString', () => {
@@ -15,4 +15,12 @@ test('Test getThemeFromString', () => {
     expect(getThemeFromString('dark', 'light')).toBe('dark');
     expect(getThemeFromString('contrast', 'light')).toBe('contrast');
     expect(getThemeFromString('gray', 'light')).toBe('gray');
-})
+});
+
+test('Test getWorldFromString', () => {
+    expect(getWorldFromString('', 'default')).toBe('default');
+    expect(getWorldFromString(null, 'default')).toBe('default');
+    expect(getWorldFromString('default', 'default')).toBe('default');
+    expect(getWorldFromString('space', 'default')).toBe('space');
+    expect(getWorldFromString('forest', 'default')).toBe('forest');
+});

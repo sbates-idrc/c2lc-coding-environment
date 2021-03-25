@@ -8,7 +8,7 @@ import Character from './Character';
 configure({ adapter: new Adapter() });
 
 const defaultCharacterProps = {
-    theme: 'default',
+    world: 'default',
     transform: '',
     width: 3
 };
@@ -38,17 +38,16 @@ describe('Right character should render based on theme props', () => {
         const wrapper = createMountCharacter();
         expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('Robot.svg');
     });
-    // TODO: Reenable / reconcile with "Worlds" work in C2LC-280.
-    // test('forest', () => {
-    //     expect.assertions(1);
-    //     const wrapper = createMountCharacter({theme: 'forest'});
-    //     expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('Rabbit.svg');
-    // });
-    // test('space', () => {
-    //     expect.assertions(1);
-    //     const wrapper = createMountCharacter({theme: 'space'});
-    //     expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('SpaceShip.svg');
-    // });
+    test('forest', () => {
+        expect.assertions(1);
+        const wrapper = createMountCharacter({world: 'forest'});
+        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('Rabbit.svg');
+    });
+    test('space', () => {
+        expect.assertions(1);
+        const wrapper = createMountCharacter({world: 'space'});
+        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('SpaceShip.svg');
+    });
 })
 
 test('Scene area scrolls so the character is visible on mount and transform propert changes', () => {
