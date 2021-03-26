@@ -297,6 +297,18 @@ body.dark-theme {
         background-color: #22343C;
     }
 
+    .Scene__background {
+        background-color: #33717F;
+    }
+
+    .Scene__column-header, .Scene__row-header {
+        fill: #33717F;
+    }
+
+    .Scene__grid-line, .Scene__path-line {
+        stroke: #33717F;
+    }
+
     .Scene__grid-line {
         stroke: #30444E;
     }
@@ -549,6 +561,18 @@ body.gray-theme {
 
     .Character__icon-background {
         fill: #818A98;
+    }
+
+    .Scene__background {
+        background-color: #D5D8DD;
+    }
+
+    .Scene__column-header, .Scene__row-header {
+        fill: #D5D8DD;
+    }
+
+    .Scene__grid-line, .Scene__path-line {
+        stroke: #D5D8DD;
     }
 
     .Scene__path-line {
@@ -1128,6 +1152,14 @@ body.contrast-theme {
 
     .Scene {
         background-color: black;
+    }
+
+    .Scene__background {
+        background-color: white;
+    }
+
+    .Scene__column-header, .Scene__row-header {
+        fill: white;
     }
 
     .Scene__grid-line, .Scene__path-line {
