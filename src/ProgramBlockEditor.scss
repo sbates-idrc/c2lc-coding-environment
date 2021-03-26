@@ -182,9 +182,16 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
     position: relative;
     z-index: 1;
     pointer-events: all;
-    stroke: black;
+    stroke: #4C9990;
     width: 2.5rem;
     height: 2.5rem;
+}
+
+.ProgramBlockEditor__character-turn-positions {
+    svg path.filled {
+        fill: #4C9990;
+        stroke: none;
+    }
 }
 
 .ProgramBlockEditor__character-position-button:focus {

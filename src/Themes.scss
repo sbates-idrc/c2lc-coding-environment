@@ -661,6 +661,16 @@ body.gray-theme {
         background-color: #818A98;
     }
 
+    .ProgramBlockEditor__character-position-button {
+        stroke: #818A98;
+    }
+    
+    .ProgramBlockEditor__character-turn-positions {
+        svg path.filled {
+            fill: #818A98;
+        }
+    }
+
     .AddNode__collapsed-icon {
         background-color: #505862;
         svg path {
@@ -1289,6 +1299,19 @@ body.contrast-theme {
     .ProgramBlockEditor__header {
         background-color: white;
         color: black;
+    }
+
+    .ProgramBlockEditor__character-position-button {
+        stroke: white;
+        &:focus {
+            outline: $c2lc-focus-indicator-width solid white;
+        }        
+    }
+    
+    .ProgramBlockEditor__character-turn-positions {
+        svg path.filled {
+            fill: white;
+        }
     }
 
     .ProgramBlockEditor__add-node-toggle-switch, .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch:hover {
