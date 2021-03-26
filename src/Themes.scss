@@ -41,6 +41,9 @@ body.light-theme {
     }
 
     // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
+    #command-block--backward1, .btn-command-block--backward1,
+    #command-block--backward2, .btn-command-block--backward2,
+    #command-block--backward3, .btn-command-block--backward3,
     #command-block--forward1, .btn-command-block--forward1,
     #command-block--forward2, .btn-command-block--forward2,
     #command-block--forward3, .btn-command-block--forward3,
@@ -65,6 +68,16 @@ body.light-theme {
         }
     }
 
+    // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
+    #command-block--backward1, .btn-command-block--backward1,
+    #command-block--backward2, .btn-command-block--backward2,
+    #command-block--backward3, .btn-command-block--backward3 {
+        background-color: #33717F;
+
+        &:hover, &:focus {
+            background-color: #07586A;
+        }
+    }
 
     // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
     #command-block--forward1, .btn-command-block--forward1,
@@ -520,6 +533,9 @@ body.gray-theme {
     }
 
     // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
+    #command-block--backward1, .btn-command-block--backward1,
+    #command-block--backward2, .btn-command-block--backward2,
+    #command-block--backward3, .btn-command-block--backward3,
     #command-block--forward1, .btn-command-block--forward1,
     #command-block--forward2, .btn-command-block--forward2,
     #command-block--forward3, .btn-command-block--forward3,
@@ -1082,6 +1098,9 @@ body.contrast-theme {
     }
 
     // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
+    #command-block--backward1, .btn-command-block--backward1,
+    #command-block--backward2, .btn-command-block--backward2,
+    #command-block--backward3, .btn-command-block--backward3,
     #command-block--forward1, .btn-command-block--forward1,
     #command-block--forward2, .btn-command-block--forward2,
     #command-block--forward3, .btn-command-block--forward3,
