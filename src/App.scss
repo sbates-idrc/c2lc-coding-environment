@@ -106,7 +106,7 @@ body {
     grid-column-end: 3;
     grid-row-start: 2;
     grid-row-end: 4;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .App__command-palette-heading {
@@ -132,7 +132,6 @@ body {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    justify-content: space-around;
     align-items: center;
     margin-bottom: 4rem;
 }

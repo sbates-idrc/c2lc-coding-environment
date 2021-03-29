@@ -100,3 +100,18 @@ export type SpeechRecognition = {
     // TODO: Add remaining supported events.
     //       https://developer.mozilla.org/docs/Web/API/SpeechRecognition#Events
 };
+
+export type ActionToggleRegister = {
+    backward1?: boolean,
+    backward2?: boolean,
+    backward3?: boolean,
+    forward1?: boolean,
+    forward2?: boolean,
+    forward3?: boolean,
+    left45?: boolean,
+    left90?: boolean,
+    left180?: boolean,
+    right45?: boolean,
+    right90?: boolean,
+    right180?: boolean
+};
