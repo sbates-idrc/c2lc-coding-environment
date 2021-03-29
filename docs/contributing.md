@@ -1,6 +1,8 @@
 # Contributing to the C2LC coding environment
 
-We use [rooms on Matrix.org](https://wiki.fluidproject.org/display/fluid/Matrix+Channel) to communicate as a team.  The
+## How We Work
+
+We use [rooms on Matrix.org](https://wiki.fluidproject.org/display/fluid/Matrix+Channel) to communicate as a team. The
 first step in contributing should be to introduce yourself and discuss what you have in mind to do.
 
 We use [pull requests](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests)
@@ -43,18 +45,18 @@ accessibility on the web.
 The coding environment is written using [React](https://reactjs.org). Here are a few guidelines regarding how we prefer
 to work with React:
 
-- Organize CSS by React component, storing the CSS for a component in a file named `COMPONENT.css` (for example
-  `TextEditor.css`)
-- Use [BEM](http://getbem.com/) (Block Element Modifier) to name and structure styles
-- Do instance property initialization in the constructor
+- Initialise instance properties in the constructor.
 - Use [prototype method syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Prototype_methods)
-  for class methods
-- Use public class field syntax for React event handlers
+  for class methods.
+- Use public class field syntax for React event handlers:
   - [Handling Events (React documentation)](https://reactjs.org/docs/handling-events.html)
   - [Event Handling for React (Flow documentation)](https://flow.org/en/docs/react/events/)
   - [Ecma TC39 "Class field declarations for JavaScript" proposal](https://github.com/tc39/proposal-class-fields)
-- Provide dependencies to an object instance via constructor parameters
-- Prefer single quotes for string literals
+- Provide dependencies to an object instance via constructor parameters.
+- Prefer single quotes for string literals.
+- Organize CSS by React component, storing the CSS for a component in a file named `ComponentName.css` or `ComponentName.scss` (for example
+  `ShareButton.css`) (see below).
+- Use [BEM](http://getbem.com/) (Block Element Modifier) to name and structure CSS styles (see below).
 
 In addition, here are the naming conventions we use:
 
@@ -63,6 +65,85 @@ In addition, here are the naming conventions we use:
 - Methods and Functions: lowerCamelCase
 - Event handlers begin with "handle" (for example `handleClick`)
 - Event emitters begin with "on" (for example `onClick={this.handleClick}`)
+
+#### Example
+
+```javascript
+import React from 'react';
+import './ClickCounter.css';
+
+type ClickCounterProps = {
+    timesClicked: number,
+    onClick: () => void
+};
+
+export default class ClickCounter extends React.Component<ClickCounterProps, {}> {
+    render() {
+        return (
+            <button onClick={this.props.onClick}>
+                {timesClicked}
+            </button>
+        );
+    }
+};
+```
+
+As you can see in the above example, we prefer to have [state](https://reactjs.org/docs/state-and-lifecycle.html)
+managed "top-down". Presumably there is some overarching component (in our case, usually `App.js`) that:
+
+1. Tracks a variable that will be used to control the component's look or behaviour.
+2. Passes a handler to the component to allow it to relay changes.
+
+A simpler example of an "overarching" component might look like:
+
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import ClickCounter from './ClickCounter.js';
+
+type TopDownManagerState = {
+    firstComponentClicks: number,
+    secondCompnentClicks: number
+};
+
+class TopDownManager extends React.Component<{}, TopDownManagerState> {
+    constructor (props) {
+        super(props);
+        this.state = {
+            firstComponentClicks: 0,
+            secondCompnentClicks: 0
+        };
+    }
+
+    handleFirstComponentClick (Event: event) {
+        this.setState((state, props) => ({
+            firstComponentClick: state.firstComponentClicks + 1
+        }));        
+    } 
+
+    handleSecondComponentClick (Event: event) {
+        this.setState((state, props) => {
+            return {
+                secondComponentClick: state.secondComponentClicks + 1
+            }
+        }));        
+    }
+
+    render() {
+        return(<React.Fragment>
+            <ClickCounter timesClicked={this.state.firstComponentClicks} onClick={this.handleFirstComponentClick}>
+            <ClickCounter timesClicked={this.state.secondComponentClicks} onClick={this.handleSecondComponentClick}>
+        </React.Fragment>);
+    }
+}
+
+ReactDOM.render(<TopDownManager />, document.getElementById('root'));
+```
+
+When a state variable is updated, react knows to re-render any components that use that value as a property. In this way
+we keep UI components simple and consolidate the logic regaarding variables. The above example also illustrates how we
+often use react's `setState` method to safely perform updates based on the current value of a state variable.
 
 ### Linting
 
@@ -113,11 +194,11 @@ npm test
 To check that your work in progress meets our standards for test code coverage, you can use a command like:
 
 ```shell
-npm test -- --verbose --coverage
+npm test -- --watchAll --coverage
 ```
 
 As there are some things that are difficult to test, these guidelines are flexible and open for discussion as part of
-the review.
+a pull request review.
 
 ## Internationalisation
 

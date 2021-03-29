@@ -11,8 +11,9 @@ To try the latest version of the Inclusive Coding Environment, visit our
 
 ## Installation for Developers
 
-Running this project requires [npm and Node.js](https://www.npmjs.com/get-npm). Once you download or fork the source
-code, you will need to install the required dependencies using a command like:
+Running this project requires [npm and Node.js](https://www.npmjs.com/get-npm). Many of the scripts used in this package
+require npx, which is included with npm 5.2.0 or higher. Once you download or fork the source code, you will need to
+install the required dependencies using a command like:
 
 ```shell
 npm install
@@ -39,7 +40,7 @@ npm test
 ```
 
 This launches the test runner in the interactive watch mode. We are using the [Jest](https://jestjs.io/) and
-[Enzyme](https://airbnb.io/enzyme/) testing frameworks.  For more details, see [our Contributor's guide](./docs/contributing.md).
+[Enzyme](https://airbnb.io/enzyme/) testing frameworks. For more details, see [our Contributor's guide](./docs/contributing.md).
 
 ## Contributing
 
@@ -66,3 +67,4 @@ We would like to thank these amazing open source projects and libraries that we 
 | [github.com/react-bootstrap/react-bootstrap](https://github.com/react-bootstrap/react-bootstrap) | MIT License |
 | [github.com/sass/node-sass](https://github.com/sass/node-sass) | MIT License |
 | [loading.io/](https://loading.io/) | [Loading.io Free License](https://loading.io/license/#free-license) |
+| [Tone.js][https://tonejs.github.io]| [MIT License](https://github.com/Tonejs/Tone.js/blob/dev/LICENSE.md)|
