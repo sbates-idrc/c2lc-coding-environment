@@ -1,15 +1,17 @@
 @import 'variables';
 
 @keyframes pausedAnimation {
-    50% {box-shadow: 0 0 0 0.4rem #79F1CD;}
+    0% {box-shadow: 0 0 0 0.7rem #53A28C;}
+    50% {box-shadow: 0 0 0 0.4rem #53A28C;}
+    100% {box-shadow: 0 0 0 0.7rem #53A28C;}
 }
 
 .ProgramBlockEditor__container {
     background-color: #F1F1F1;
     display: grid;
     height: 100%;
-    grid-template-columns: 6rem auto;
-    grid-template-rows: 4rem auto;
+    grid-template-columns: min-content auto;
+    grid-template-rows: min-content auto;
 }
 
 .ProgramBlockEditor__header {
@@ -22,12 +24,12 @@
 }
 
 .ProgramBlockEditor__heading {
-    margin-top: 1.5rem;
+    margin: auto 0;
     font-weight: bold;
     font-size: inherit;
     grid-column-start: 1;
     grid-column-end: 2;
-    padding-left: 1rem;
+    padding: 1rem;
 }
 
 .ProgramBlockEditor__options {
@@ -102,8 +104,8 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
 }
 
 .ProgramBlockEditor__program-deleteAll-button-svg {
-    width: 1.7rem;
-    height: 1.7rem;
+    width: 1.4rem;
+    height: 1.4rem;
     display: block;
 }
 
@@ -118,9 +120,12 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
     border-width: 0.1rem 0 0.1rem 0.1rem;
     border-color: #8F8F8F;
     border-style: solid;
+    pointer-events: none;
+    padding: 0 0.5rem;
 }
 
 .ProgramBlockEditor__character-column-character-container {
+    position: relative;
     border-radius: 50%;
     padding: 0.5rem;
     background-color: #FFF;
@@ -128,11 +133,74 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
 }
 
 .ProgramBlockEditor__character-column-character {
-    width: 3rem;
-    height: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.ProgramBlockEditor__character-turn-positions {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    position: relative;
+    top: 0.5rem;
+}
+
+.ProgramBlockEditor__character-turn-positions > svg {
+    fill: black;
+}
+
+.ProgramBlockEditor__character-turn-positions > .ProgramBlockEditor__character-position-button--disabled {
+    fill: $c2lc-disabled-color;
+}
+
+.ProgramBlockEditor__character-move-position-sides {
+    display: flex;
+    align-items: center;
+}
+
+.ProgramBlockEditor__character-position-button {
+    position: relative;
+    z-index: 1;
+    pointer-events: all;
+    stroke: black;
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.ProgramBlockEditor__character-position-button:focus {
+    outline: $c2lc-focus-indicator-width solid $c2lc-focus-indicator-color;
+}
+
+.ProgramBlockEditor__character-position-button--disabled {
+    stroke: $c2lc-disabled-color;
+    cursor: default;
+}
+
+.ProgramBlockEditor__character-move-position-coordinate {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.ProgramBlock__character-position-coordinate-box {
+    width: 2.5rem;
+    height: 2.5rem;
+    text-align: center;
+    pointer-events: all;
+    margin-bottom: 1rem;
+}
+
+.ProgramBlock__character-position-coordinate-box:focus {
+    outline: $c2lc-focus-indicator-width solid $c2lc-focus-indicator-color;
+}
+
+.ProgramBlock__character-position-coordinate-box--disabled {
+    color: $c2lc-disabled-color;
+    pointer-events: none;
 }
 
 .ProgramBlockEditor__program-sequence-scroll-container {
+    display: flex;
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 2;
@@ -141,8 +209,7 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
     background: #FFF;
     overflow: scroll;
     padding-left: 2rem;
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-top: 2rem;
 }
 
 .ProgramBlockEditor__program-sequence {
@@ -150,7 +217,7 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
     justify-content: flex-start;
     align-items: center;
     padding-top: 2.5rem;
-    padding-bottom: 2.5rem;
+    padding-bottom: 1rem;
 }
 
 .ProgramBlockEditor__start-indicator {
@@ -160,22 +227,25 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
     text-align: center;
     background-color: #000;
     color: #fff;
-    min-width: 4rem;
-    min-height: 4rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 45px;
+    min-height: 45px;
     border-radius: 50%;
 }
 
 .ProgramBlockEditor__program-block-connector {
     background-color: #939595;
-    min-width: 0.5rem;
+    min-width: 0.8rem;
     height: 0.1rem;
 }
 
 button.ProgramBlockEditor__program-block--active {
-    box-shadow: 0 0 0 0.2rem #79F1CD;
+    box-shadow: 0 0 0 0.7rem #53A28C;
 }
 
 button.ProgramBlockEditor__program-block--paused {
+    animation-timing-function: ease;
     animation: pausedAnimation 2s infinite;
 }
 
@@ -203,5 +273,9 @@ button.ProgramBlockEditor__program-block--paused {
 .ProgramBlockEditor__action-panel-container-inner {
     position: absolute;
     left: #{-$c2lc-action-panel-width / 2};
-    top: #{-$c2lc-action-panel-height * 1.3};
+    top: #{-$c2lc-action-panel-height * 1.4};
+}
+
+.ProgramBlockEditor__program-sequence-scroll-container--isDragging {
+    box-shadow: 0 0 0 0.4rem #53A28C;
 }

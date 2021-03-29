@@ -7,9 +7,7 @@ import AddNode from './AddNode';
 
 configure({ adapter: new Adapter()});
 
-const expandedDropAreaSelector = '.AddNode__expanded-drop-area';
 const expandedButtonSelector = '.AddNode__expanded-button';
-const collapsedDropAreaSelector = '.AddNode__collapsed-drop-area';
 const collapsedIconSelector = '.AddNode__collapsed-icon';
 
 function mountAddNode(props) {
@@ -26,6 +24,7 @@ function mountAddNode(props) {
                     disabled: false,
                     'aria-label': 'some aria label',
                     isDraggingCommand: false,
+                    closestAddNodeIndex: -1,
                     onClick: mockClickHandler,
                     onDrop: mockDropHandler
                 },
@@ -49,9 +48,7 @@ test('Given expandedMode is false, it should be in collapsed state', () => {
     const { wrapper } = mountAddNode({
         expandedMode: false
     });
-    expect(wrapper.exists(expandedDropAreaSelector)).toBe(false);
     expect(wrapper.exists(expandedButtonSelector)).toBe(false);
-    expect(wrapper.exists(collapsedDropAreaSelector)).toBe(true);
     expect(wrapper.exists(collapsedIconSelector)).toBe(true);
 });
 
@@ -68,9 +65,7 @@ describe('Given expandedMode is true and disabled is false', () => {
     });
 
     test('It should be in expanded state', () => {
-        expect(wrapper.exists(expandedDropAreaSelector)).toBe(true);
         expect(wrapper.exists(expandedButtonSelector)).toBe(true);
-        expect(wrapper.exists(collapsedDropAreaSelector)).toBe(false);
         expect(wrapper.exists(collapsedIconSelector)).toBe(false);
     });
 
@@ -90,13 +85,6 @@ describe('Given expandedMode is true and disabled is false', () => {
         expect(mockClickHandler.mock.calls[0][0]).toBe(expectedProgramStepNumber);
         expect(mockDropHandler.mock.calls.length).toBe(0);
     });
-
-    test('When there is a drop, then the onDrop handler should be called', () => {
-        wrapper.find(expandedDropAreaSelector).hostNodes().simulate('drop');
-        expect(mockDropHandler.mock.calls.length).toBe(1);
-        expect(mockDropHandler.mock.calls[0][0]).toBe(expectedProgramStepNumber);
-        expect(mockClickHandler.mock.calls.length).toBe(0);
-    });
 });
 
 describe('Given expandedMode is true and disabled is true', () => {
@@ -110,9 +98,7 @@ describe('Given expandedMode is true and disabled is true', () => {
     });
 
     test('It should be in expanded state', () => {
-        expect(wrapper.exists(expandedDropAreaSelector)).toBe(true);
         expect(wrapper.exists(expandedButtonSelector)).toBe(true);
-        expect(wrapper.exists(collapsedDropAreaSelector)).toBe(false);
         expect(wrapper.exists(collapsedIconSelector)).toBe(false);
     });
 

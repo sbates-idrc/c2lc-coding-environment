@@ -21,6 +21,7 @@ class PlayButton extends React.Component<PlayButtonProps, {}> {
     render() {
         const classes = classNames(
             this.props.className,
+            'PlayButton',
             this.props.interpreterIsRunning && 'PlayButton--pause',
             !this.props.interpreterIsRunning && 'PlayButton--play'
         );

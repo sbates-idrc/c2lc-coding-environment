@@ -8,6 +8,7 @@
 
 button.btn.StopButton {
     margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
     padding: 0.6rem;
     border: 1px solid #FFF;
     border-radius: 50%;
@@ -18,7 +19,12 @@ button.btn.StopButton:not(:focus) {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
 }
 
-button.btn.StopButton--disabled {
+button.btn.StopButton:hover {
+    box-shadow: 0 0 0 $c2lc-hover-indicator-width $c2lc-focus-indicator-color;
+    background-color: #e5e5e5;
+}
+
+button.btn.StopButton.StopButton--disabled {
     background-color: $c2lc-primary-button-color;
     cursor: default;
 }

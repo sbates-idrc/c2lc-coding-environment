@@ -1,8 +1,10 @@
 // @flow
 import CharacterState from './CharacterState';
+import type {IntlShape} from 'react-intl';
 
 export type CommandName =
     'forward1' | 'forward2' | 'forward3' |
+    'backward1' | 'backward2' | 'backward3' |
     'left45' | 'left90' | 'left180' |
     'right45' | 'right90' | 'right180';
 
@@ -12,10 +14,12 @@ export type EditorMode = 'text' | 'block';
 
 export type ThemeName = 'default' | 'forest' | 'space';
 
+export type WorldName = 'default' | 'forest' | 'space';
+
 export type Program = Array<string>;
 
 // use running, paused, stopped
-export type RunningState = 'running' | 'stopped' | 'paused';
+export type RunningState = 'running' | 'stopRequested' | 'stopped' | 'pauseRequested' | 'paused';
 
 export interface RobotDriver {
     connect(onDisconnected: () => void): Promise<void>;
@@ -23,8 +27,6 @@ export interface RobotDriver {
     left(): Promise<void>;
     right(): Promise<void>;
 };
-
-export type AnnouncedSoundName = CommandName | 'add' | 'deleteAll' | 'delete' | 'moveToPrevious' | 'moveToNext' | 'replace';
 
 // Flow lacks its own types for the Speech Recognition API, so we define our own
 // TODO: remove when https://github.com/facebook/flow/issues/7361 is resolved.
@@ -38,7 +40,7 @@ export type ArrayLike<T> = {
 export type AudioContext = any;
 
 export interface AudioManager {
-    playAnnouncement(soundName: AnnouncedSoundName) : void;
+    playAnnouncement(messageIdSuffix: string, intl: IntlShape, messagePayload?: any) : void;
     playSoundForCharacterState(samplerKey: string, releaseTimeInMs: number, characterState: CharacterState) : void;
     setAudioEnabled(value: boolean) : void;
 }

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState } from 'react';
+import React from 'react';
 import AriaDisablingButton from './AriaDisablingButton';
 import { ReactComponent as AddIcon } from './svg/Add.svg';
 import classNames from 'classnames';
@@ -12,41 +12,15 @@ type AddNodeProps = {
     disabled: boolean,
     'aria-label': string,
     isDraggingCommand: boolean,
-    onClick: (stepNumber: number) => void,
-    onDrop: (stepNumber: number) => void
+    closestAddNodeIndex: number,
+    onClick: (stepNumber: number) => void
 };
 
 const AddNode = React.forwardRef<AddNodeProps, HTMLDivElement>(
     (props, ref) => {
-        const [isDragOver, setIsDragOver] = useState(false);
-
-        /* istanbul ignore next */
-        const handleDragOver = (e: SyntheticDragEvent<HTMLButtonElement>) => {
-            if (props.isDraggingCommand) {
-                e.preventDefault();
-                setIsDragOver(true);
-            }
-        };
-
         const handleClick = (e: SyntheticEvent<HTMLButtonElement>) => {
             const stepNumber = parseInt(e.currentTarget.dataset.stepnumber, 10);
             props.onClick(stepNumber);
-        };
-
-        /* istanbul ignore next */
-        const handleDrop = (e: SyntheticDragEvent<HTMLButtonElement>) => {
-            e.preventDefault();
-            if (!props.disabled) {
-                const stepNumber = parseInt(e.currentTarget.dataset.stepnumber, 10);
-                props.onDrop(stepNumber);
-            }
-            setIsDragOver(false);
-        };
-
-        /* istanbul ignore next */
-        const handleDragLeave = (e: SyntheticDragEvent<HTMLButtonElement>) => {
-            e.preventDefault();
-            setIsDragOver(false);
         };
 
         /* istanbul ignore next */
@@ -54,19 +28,13 @@ const AddNode = React.forwardRef<AddNodeProps, HTMLDivElement>(
             props.isDraggingCommand && 'AddNode--is-dragging-command'
         );
 
-        if (props.expandedMode || (isDragOver && !props.disabled)) {
+        const isNearestDragNode = ( props.programStepNumber === props.closestAddNodeIndex);
+
+        if (props.expandedMode || isNearestDragNode) {
             return (
                 <div className={addNodeClasses}>
-                    <div className='AddNode__drop-area-container'>
-                        <div className='AddNode__expanded-drop-area'
-                            data-stepnumber={props.programStepNumber}
-                            onDragOver={handleDragOver}
-                            onDragLeave={handleDragLeave}
-                            onDrop={handleDrop}
-                        />
-                    </div>
                     <AriaDisablingButton
-                        className='AddNode__expanded-button'
+                        className={"AddNode__expanded-button" + (isNearestDragNode ? " AddNode__expanded-button--isDragTarget" : "")}
                         data-stepnumber={props.programStepNumber}
                         // $FlowFixMe: Use something less generic here.
                         ref={ref}
@@ -80,14 +48,7 @@ const AddNode = React.forwardRef<AddNodeProps, HTMLDivElement>(
             );
         } else {
             return (
-                <div className={addNodeClasses}>
-                    <div className='AddNode__drop-area-container'>
-                        <div className='AddNode__collapsed-drop-area'
-                            onDragOver={handleDragOver}
-                            onDragLeave={handleDragLeave}
-                            onDrop={handleDrop}
-                        />
-                    </div>
+                <div ref={ref} className={addNodeClasses}>
                     <div className='AddNode__collapsed-icon'>
                         <AddIcon />
                     </div>

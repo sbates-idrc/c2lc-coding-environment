@@ -5,14 +5,14 @@ import CommandBlock from './CommandBlock';
 import classNames from 'classnames';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
-import type {AudioManager, CommandName} from './types';
+import type {CommandName} from './types';
 
 
 type CommandPaletteCommandProps = {
     commandName: CommandName,
     intl: IntlShape,
+    isDraggingCommand: boolean,
     selectedCommandName: ?string,
-    audioManager: AudioManager,
     onChange: (commandName: ?string) => void,
     onDragStart: (commandName: string) => void,
     onDragEnd: () => void
@@ -20,7 +20,6 @@ type CommandPaletteCommandProps = {
 
 class CommandPaletteCommand extends React.Component<CommandPaletteCommandProps, {}> {
     handleClick = () => {
-        this.props.audioManager.playAnnouncement(this.props.commandName);
         this.props.onChange(
             this.props.commandName === this.props.selectedCommandName ? null : this.props.commandName
         );
@@ -37,10 +36,11 @@ class CommandPaletteCommand extends React.Component<CommandPaletteCommandProps, 
     };
 
     render() {
-        const pressed = this.props.commandName === this.props.selectedCommandName;
+        const pressed = this.props.commandName === this.props.selectedCommandName && !this.props.isDraggingCommand;
 
         const classes = classNames(
             {'command-block--pressed' : pressed},
+            {'command-block--dragged' : this.props.isDraggingCommand},
             'focus-trap-action-panel-replace__command_button'
         );
 

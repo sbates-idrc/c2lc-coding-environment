@@ -23,6 +23,10 @@ button.btn.AddNode__expanded-button:hover {
     background-color: #e5e5e5;
 }
 
+button.btn.AddNode__expanded-button.AddNode__expanded-button--isDragTarget {
+    box-shadow: 0 0 0 0.4rem #53A28C;
+}
+
 .AddNode--is-dragging-command .AddNode__expanded-button {
     pointer-events: none;
 }
@@ -45,32 +49,4 @@ button.btn.AddNode__expanded-button svg {
 .AddNode__collapsed-icon svg {
     display: block;
     stroke: #FFF;
-}
-
-.AddNode__drop-area-container {
-    position: relative;
-}
-
-.AddNode--is-dragging-command .AddNode__expanded-drop-area {
-    top: calc(
-        #{-$addNodeDropAreaHeight / 2}
-        + #{$heightOfExpandedIcon / 2}
-        + #{$addNodeExpandedButtonBorderWidth}
-        + #{$addNodeExpandedButtonPadding});
-    left: -$addNodeDropMargin;
-    position: absolute;
-    width: calc(
-        #{2 * $addNodeDropMargin}
-        + #{$widthOfExpandedIcon}
-        + #{2 * $addNodeExpandedButtonBorderWidth}
-        + #{2 * $addNodeExpandedButtonPadding});
-    height: $addNodeDropAreaHeight;
-}
-
-.AddNode--is-dragging-command .AddNode__collapsed-drop-area {
-    top: (-$addNodeDropAreaHeight / 2) + ($heightOfCollapsedIcon / 2);
-    left: -$addNodeDropMargin;
-    position: absolute;
-    width: (2 * $addNodeDropMargin) + $widthOfCollapsedIcon;
-    height: $addNodeDropAreaHeight;
 }
