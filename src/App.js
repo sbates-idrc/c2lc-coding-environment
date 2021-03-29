@@ -69,6 +69,7 @@ type AppState = {
     selectedAction: ?string,
     isDraggingCommand: boolean,
     audioEnabled: boolean,
+    announcementsEnabled: boolean,
     actionPanelStepIndex: ?number,
     sceneDimensions: SceneDimensions,
     drawingEnabled: boolean,
@@ -116,6 +117,7 @@ export class App extends React.Component<AppProps, AppState> {
             selectedAction: null,
             isDraggingCommand: false,
             audioEnabled: true,
+            announcementsEnabled: true,
             actionPanelStepIndex: null,
             sceneDimensions: this.sceneDimensions,
             drawingEnabled: true,
@@ -386,7 +388,7 @@ export class App extends React.Component<AppProps, AppState> {
             this.audioManager = props.audioManager
         }
         else if (FeatureDetection.webAudioApiIsAvailable()) {
-            this.audioManager = new AudioManagerImpl(this.state.audioEnabled);
+            this.audioManager = new AudioManagerImpl(this.state.audioEnabled, this.state.announcementsEnabled);
         }
         else {
             this.audioManager = new FakeAudioManager();
@@ -563,9 +565,9 @@ export class App extends React.Component<AppProps, AppState> {
         this.focusTrapManager.handleKeyDown(e);
     };
 
-    handleToggleAudioFeedback = (audioEnabled: boolean) => {
+    handleToggleAudioFeedback = (announcementsEnabled: boolean) => {
         this.setState({
-            audioEnabled: audioEnabled
+            announcementsEnabled: announcementsEnabled
         });
     }
 
@@ -683,7 +685,7 @@ export class App extends React.Component<AppProps, AppState> {
                             <div className='App__header-audio-toggle'>
                                 <div className='App__audio-toggle-switch'>
                                     <AudioFeedbackToggleSwitch
-                                        value={this.state.audioEnabled}
+                                        value={this.state.announcementsEnabled}
                                         onChange={this.handleToggleAudioFeedback} />
                                 </div>
                                 {/* Dash connection removed for version 0.5
@@ -873,6 +875,9 @@ export class App extends React.Component<AppProps, AppState> {
             window.localStorage.setItem('c2lc-characterState', serializedCharacterState);
             // window.localStorage.setItem('c2lc-theme', this.state.settings.theme);
             window.localStorage.setItem('c2lc-world', this.state.settings.world)
+        }
+        if (this.state.announcementsEnabled !== prevState.announcementsEnabled) {
+            this.audioManager.setAnnouncementsEnabled(this.state.announcementsEnabled);
         }
         if (this.state.audioEnabled !== prevState.audioEnabled) {
             this.audioManager.setAudioEnabled(this.state.audioEnabled);

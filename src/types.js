@@ -42,6 +42,7 @@ export type AudioContext = any;
 export interface AudioManager {
     playAnnouncement(messageIdSuffix: string, intl: IntlShape, messagePayload?: any) : void;
     playSoundForCharacterState(samplerKey: string, releaseTimeInMs: number, characterState: CharacterState) : void;
+    setAnnouncementsEnabled(value: boolean) : void;
     setAudioEnabled(value: boolean) : void;
 }
 
