@@ -3,7 +3,7 @@
 ## Tuning Diagram
 
 Sounds like movement and turning are adjusted to match a pitch that corresponds to their position in the coding
-environment.  This is based loosely on the [Tonnetz](https://en.wikipedia.org/wiki/Tonnetz) system, where each row and
+environment. This is based loosely on the [Tonnetz](https://en.wikipedia.org/wiki/Tonnetz) system, where each row and
 column are offset by a consistent number of pitches.
 
 The following is a diagram of the pitches for both "in bounds" cells (columns A-Q, rows 1-9) and a buffer

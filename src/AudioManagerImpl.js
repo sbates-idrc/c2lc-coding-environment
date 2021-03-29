@@ -14,21 +14,21 @@ function octaveModulo (rawPitch: number) : number {
 export function getNoteForState (characterState: CharacterState) : string {
     // The centre note (xPos: 0, yPos: 0) is 440hz = A4 = 69.
 
-    // Every "column" is 7 tones from the next but stays within the same octave.  This results in a pattern that
+    // Every "column" is 7 tones from the next but stays within the same octave. This results in a pattern that
     // cycles through the full octave range every 12 squares.
     const xPitchOffset = octaveModulo(7 * characterState.xPos);
 
 
-    // Every "row" is 4 tones from the next but stays within the same octave.  This results in a pattern of three
+    // Every "row" is 4 tones from the next but stays within the same octave. This results in a pattern of three
     // notes that repeats every three rows.
     const yPitchOffset = octaveModulo(4 * characterState.yPos);
 
     const combinedPitchOffset = octaveModulo(xPitchOffset + yPitchOffset);
 
     // To vary the range of notes without going too high or low, we use the repeating nature of the "row" pattern
-    // to divide the tuning into "octave bands" every three rows.  The middle band (yPos of -1, 0, or 1) is octave 3.
-    // The "band" above centre (yPos of 2, 3, or 4) is octave 4.  Anything higher is octave 5. The "band" below
-    // centre (yPos of -2, -3, or -4) is octave 2.  Anything lower is octave 1.
+    // to divide the tuning into "octave bands" every three rows. The middle band (yPos of -1, 0, or 1) is octave 3.
+    // The "band" above centre (yPos of 2, 3, or 4) is octave 4. Anything higher is octave 5. The "band" below
+    // centre (yPos of -2, -3, or -4) is octave 2. Anything lower is octave 1.
     const octaveOffset = (Math.round(characterState.yPos / 3));
     const boundedOctaveOffset = Math.max(Math.min(3, octaveOffset), -3);
     const octave = 4 - boundedOctaveOffset;
@@ -157,7 +157,7 @@ export default class AudioManagerImpl implements AudioManager {
 
             // Pan left/right to suggest the relative horizontal position.
             // As we use a single Sampler grade, our best option for panning is
-            // to pan all sounds.  We can discuss adjusting this once we have
+            // to pan all sounds. We can discuss adjusting this once we have
             // multiple sound-producing elements in the environment.
             const panningLevel = Math.min(1, Math.max(-1, (0.1 * characterState.xPos)));
 
