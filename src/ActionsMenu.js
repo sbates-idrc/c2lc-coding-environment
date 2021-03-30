@@ -87,7 +87,7 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
         super(props);
         this.state = { showMenu: false };
         this.focusTrapManager = new FocusTrapManager();
-        this.focusTrapManager.setFocusTrap(this.handleCloseActionMenuFocusTrap, [".ActionsMenu__toggle-button", ".ActionsMenuItem__checkbox"], ".ActionsMenu__toggle-button");
+        this.focusTrapManager.setFocusTrap(this.handleCloseActionMenuFocusTrap, [".ActionsMenu__menu", ".ActionsMenuItem__checkbox"], ".ActionsMenu__toggle-button");
     }
 
     render() {
