@@ -3,6 +3,8 @@
     display: grid;
     grid-template-columns: 1fr min-content 1fr;
     position:relative;
+    // Ensure that width matches the left position of .ActionsMenu__menu
+    width: 8rem;
 }
 
 .ActionsMenu__header-heading {

@@ -108,13 +108,16 @@ body {
     grid-column-end: 3;
     grid-row-start: 2;
     grid-row-end: 4;
-    overflow: visible;
+    display: grid;
+    grid-template-rows: min-content min-content auto;
 }
 
 .App__command-palette-heading {
     font-weight: bold;
     font-size: inherit;
-    margin: 1.5rem 0;
+    margin: 1rem;
+    grid-row-start: 2;
+    grid-row-end: 3;
 }
 
 .App__commandpalette-heading-short {
@@ -124,11 +127,13 @@ body {
 .App__command-palette-command-container {
     width: 100%;
     height: 100%;
-    padding: 1rem;
     overflow-y: scroll;
+    grid-row-start: 3;
+    grid-row-end: 4;
 }
 
 .App__command-palette-commands {
+    margin: auto;
     width: 6rem;
     height: 22rem;
     display: flex;
@@ -139,7 +144,7 @@ body {
 }
 
 .App__command-palette-commands > button {
-    margin-bottom: 1rem;
+    margin-top: 1rem;
 }
 
 .App__program-block-editor {
@@ -202,9 +207,8 @@ body {
     }
 
     .App__command-palette-commands {
-        height: 42rem;
         width: 100%;
-        display: block;
+        flex-wrap: nowrap;
     }
 
     .App__command-palette-commands > button{
