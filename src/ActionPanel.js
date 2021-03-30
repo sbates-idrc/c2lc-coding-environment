@@ -5,6 +5,7 @@ import AriaDisablingButton from './AriaDisablingButton';
 import ProgramSequence from './ProgramSequence';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
+import {ReactComponent as ActionPanelBackground} from './svg/ActionPanel.svg';
 import { ReactComponent as MovePreviousIcon } from './svg/MovePrevious.svg';
 import { ReactComponent as MoveNextIcon } from './svg/MoveNext.svg';
 import { ReactComponent as DeleteIcon } from './svg/Delete.svg';
@@ -100,46 +101,52 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
     render() {
         const stepInfoMessage = this.makeStepInfoMessage();
         return (
-            <div
-                id='ActionPanel'
-                className={'ActionPanel__panel'}
-                data-actionpanelgroup={true}
-                ref={this.actionPanelRef}>
-                <AriaDisablingButton
-                    name='deleteCurrentStep'
-                    disabled={false}
-                    aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.delete'}, stepInfoMessage)}
-                    className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
-                    onClick={this.handleClickDelete}>
-                    <DeleteIcon className='ActionPanel__action-button-svg' />
-                </AriaDisablingButton>
-                <AriaDisablingButton
-                    name='replaceCurrentStep'
-                    disabled={false}
-                    aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.replace'}, stepInfoMessage)}
-                    className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button focus-trap-action-panel-replace__replace_button'
-                    onClick={this.handleClickReplace}>
-                    <ReplaceIcon className='ActionPanel__action-button-svg' />
-                </AriaDisablingButton>
-                <AriaDisablingButton
-                    name='moveToPreviousStep'
-                    disabled={this.props.pressedStepIndex === 0}
-                    disabledClassName='ActionPanel__action-buttons--disabled'
-                    aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToPreviousStep'}, stepInfoMessage)}
-                    className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
-                    onClick={this.handleClickMoveToPreviousStep}>
-                    <MovePreviousIcon className='ActionPanel__action-button-svg' />
-                </AriaDisablingButton>
-                <AriaDisablingButton
-                    name='moveToNextStep'
-                    disabled={this.props.pressedStepIndex === this.props.programSequence.getProgramLength()-1}
-                    disabledClassName='ActionPanel__action-buttons--disabled'
-                    aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToNextStep'}, stepInfoMessage)}
-                    className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
-                    onClick={this.handleClickMoveToNextStep}>
-                    <MoveNextIcon className='ActionPanel__action-button-svg' />
-                </AriaDisablingButton>
-            </div>
+            <React.Fragment>
+                <div className="ActionPanel__background">
+                    <ActionPanelBackground/>
+                </div>
+                <div
+                    id='ActionPanel'
+                    className={'ActionPanel__panel'}
+                    data-actionpanelgroup={true}
+                    ref={this.actionPanelRef}>
+                    <AriaDisablingButton
+                        name='deleteCurrentStep'
+                        disabled={false}
+                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.delete'}, stepInfoMessage)}
+                        className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
+                        onClick={this.handleClickDelete}>
+                        <DeleteIcon className='ActionPanel__action-button-svg' />
+                    </AriaDisablingButton>
+                    <AriaDisablingButton
+                        name='replaceCurrentStep'
+                        disabled={false}
+                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.replace'}, stepInfoMessage)}
+                        className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button focus-trap-action-panel-replace__replace_button'
+                        onClick={this.handleClickReplace}>
+                        <ReplaceIcon className='ActionPanel__action-button-svg' />
+                    </AriaDisablingButton>
+                    <AriaDisablingButton
+                        name='moveToPreviousStep'
+                        disabled={this.props.pressedStepIndex === 0}
+                        disabledClassName='ActionPanel__action-buttons--disabled'
+                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToPreviousStep'}, stepInfoMessage)}
+                        className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
+                        onClick={this.handleClickMoveToPreviousStep}>
+                        <MovePreviousIcon className='ActionPanel__action-button-svg' />
+                    </AriaDisablingButton>
+                    <AriaDisablingButton
+                        name='moveToNextStep'
+                        disabled={this.props.pressedStepIndex === this.props.programSequence.getProgramLength()-1}
+                        disabledClassName='ActionPanel__action-buttons--disabled'
+                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToNextStep'}, stepInfoMessage)}
+                        className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
+                        onClick={this.handleClickMoveToNextStep}>
+                        <MoveNextIcon className='ActionPanel__action-button-svg' />
+                    </AriaDisablingButton>
+                </div>
+            </React.Fragment>
+
         )
     }
 

@@ -1,3 +1,5 @@
+@import '_variables';
+
 .ConfirmDeleteAllModal {
     width: 35rem;
     margin: auto;
@@ -28,8 +30,6 @@
 .ConfirmDeleteAllModal__footer {
     grid-row-start: 2;
     grid-row-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 3;
     margin-top: 2rem;
     display: flex;
     justify-content: space-around;
@@ -37,9 +37,32 @@
     align-items: center;
 }
 
-.ConfirmDeleteAllModal__option-button {
+button.btn.ConfirmDeleteAllModal__option-button {
     width: 11rem;
     margin-bottom: 1.5rem;
+
+
+    background-color: #4C9990;
+    border: 2px solid #4C9990;
+    color: #EBFAF8;
+
+    &:hover {
+        background-color: #F5C58A;
+        border-color: #F5C58A;
+        color: black;
+    }
+
+    &:focus {
+        box-shadow:
+            0 0 0 0.1rem white,
+            0 0 0 $c2lc-focus-indicator-width black;
+    }
+
+    &.btn-primary {
+        &:not(:disabled):not(.disabled):active {
+            background-color: #ED972C;
+        }
+    }
 }
 
 @media only screen and (max-width: 991px) {
