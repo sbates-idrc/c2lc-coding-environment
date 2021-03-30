@@ -1,35 +1,30 @@
 .ActionsMenu__header {
-    background-color: #cecccc;
+    background-color: #CCE6E2;
     display: grid;
-    grid-template-columns: 1fr min-content 1fr;
+    grid-template-columns: min-content 1fr;
+    padding: 0.4rem;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
     position:relative;
 }
 
 .ActionsMenu__header-heading {
     font-size: inherit;
     font-weight: bold;
-    grid-column-end: 3;
-    grid-column-start: 2;
-    margin: auto 0;
+    grid-column-end: 2;
+    grid-column-start: 1;
+    margin: auto;
 }
 
 .ActionsMenu__menu {
     background-color: #ffffff;
-    border-color: #cecccc;
-    border-style: solid;
-    border-width: 0.3rem;
+    border: 3px solid #D5D8DD;
+    box-shadow: 0px 1px 8px #22262A;
+    border-radius: 3px;
     left: 8rem;
     overflow: visible;
     position: absolute;
     top: -0.3rem;
     width: 12rem;
     z-index: 2;
-}
-
-.forest-theme .ActionsMenu__menu {
-    background-color: #CCE6E2;
-}
-
-.space-theme .ActionsMenu__menu {
-    background-color: #AAD5CF;
 }

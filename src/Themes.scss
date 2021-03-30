@@ -296,6 +296,30 @@ body.dark-theme {
         color: #F1AE5B;
     }
 
+    .ActionsMenu__header {
+        background-color: #33717F;
+        color: white;
+    }
+
+    .ActionsMenu__toggle-button {
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem white;
+        }
+    
+        svg line {
+            stroke: white;
+        }
+    }
+
+    .ActionsMenu__menu {
+        background-color: #22343C;
+        border: 2px solid #33717F;
+        box-shadow: 0px 4px 4px #22262A;
+        color: white;
+    }
+
+
     button.btn.command-block.command-block--pressed,
     button.btn.command-block.command-block--pressed:hover,
     button.btn.command-block.command-block--pressed:active {
@@ -534,6 +558,10 @@ body.gray-theme {
                 background-color: #B9BEC6;
             }
         }
+    }
+
+    .ActionsMenu__header {
+        background-color: #D5D8DD;
     }
 
     // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
@@ -1094,6 +1122,10 @@ body.contrast-theme {
                 }
             }
         }
+    }
+
+    .ActionsMenu__header {
+        background-color: white;
     }
 
     .App__command-palette {
