@@ -7,7 +7,7 @@ import type { IntlShape } from 'react-intl';
 
 import ShareCompleteModal from './ShareCompleteModal';
 
-import './ShareButton.css';
+import './ShareButton.scss';
 
 type ShareButtonProps = {
     intl: IntlShape,
@@ -45,7 +45,7 @@ class ShareButton extends React.Component<ShareButtonProps, ShareButtonState> {
         return (
             <React.Fragment>
                 <Button
-                    variant="dark"
+                    variant="light"
                     className='ShareButton'
                     onClick={this.handleClickShareButton}
                 >

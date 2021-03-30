@@ -133,14 +133,15 @@
         "ShareButton": "Share",
         "ShareCompleteModal.shareComplete": "The URL for your program has been copied to the clipboard.",
         "ThemeSelector.theme": "Theme",
-        "ThemeSelector.theme.default": "Default",
-        "ThemeSelector.theme.forest": "Forest",
-        "ThemeSelector.theme.space": "Space",
+        "ThemeSelector.theme.dark": "Dark",
+        "ThemeSelector.theme.contrast": "High Contrast",
+        "ThemeSelector.theme.gray": "Grayscale",
+        "ThemeSelector.theme.light": "Light",
+        "ThemeSelector.theme.mixed": "Default",
         "WorldSelector.world": "World",
         "WorldSelector.world.default": "Default",
         "WorldSelector.world.forest": "Forest",
         "WorldSelector.world.space": "Space"
-
     },
     "fr": {
         "App.blockMode": "Block in French",
