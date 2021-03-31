@@ -15,7 +15,6 @@ type ActionsMenuProps = {
     intl: IntlShape,
     changeHandler?: (event: Event, commandName: string) => void,
     editingDisabled?: boolean,
-    focusTrapManager: FocusTrapManager,
     // TODO: Flesh this definition out.
     menuItems: {},
     allowedActions: ActionToggleRegister,
@@ -89,16 +88,9 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
     constructor (props: ActionsMenuProps) {
         super(props);
         this.actionsMenuRef = React.createRef();
+        this.focusTrapManager = new FocusTrapManager();
+        this.focusTrapManager.setFocusTrap(this.handleCloseActionMenuFocusTrap, [".focus-trap-ActionsMenu__menu", ".focus-trap-ActionsMenuItem__checkbox"], ".focus-trap-ActionsMenu__toggle-button");
         this.state = { showMenu: false };
-    }
-
-    componentDidUpdate () {
-        if (this.state.showMenu) {
-            this.props.focusTrapManager.setFocusTrap(this.handleCloseActionMenuFocusTrap, [".focus-trap-ActionsMenu__menu", ".focus-trap-ActionsMenuItem__checkbox"], ".focus-trap-ActionsMenu__toggle-button");
-        }
-        else {
-            this.props.focusTrapManager.unsetFocusTrap();
-        }
     }
 
     render() {
@@ -128,14 +120,6 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
         event.preventDefault();
         this.showHideMenu();
     };
-
-    /* istanbul ignore next */
-    handleKeyDown = (event: SyntheticKeyboardEvent<HTMLElement>) => {
-        if (event.key === 'Escape') {
-            event.preventDefault();
-            this.showHideMenu();
-        }
-    }
 
     /* istanbul ignore next */
     handleCloseActionMenuFocusTrap = () => {
@@ -181,7 +165,7 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
             <div
                 id="ActionsMenu"
                 className="ActionsMenu__menu focus-trap-ActionsMenu__menu"
-                onKeyDown={this.handleKeyDown}
+                onKeyDown={this.focusTrapManager.handleKeyDown}
                 ref={this.actionsMenuRef}
             >
                 {actionsMenuItems}

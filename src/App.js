@@ -765,7 +765,6 @@ export class App extends React.Component<AppProps, AppState> {
                             allowedActions={this.state.allowedActions}
                             changeHandler={this.handleToggleAllowedCommand}
                             editingDisabled={this.state.runningState === 'running'}
-                            focusTrapManager={this.focusTrapManager}
                             intl={this.props.intl}
                             usedActions={this.state.usedActions}
                         />
