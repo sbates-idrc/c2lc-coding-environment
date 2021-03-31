@@ -880,23 +880,44 @@ export class App extends React.Component<AppProps, AppState> {
             const themeQuery = params.getTheme();
             const allowedActionsQuery = params.getAllowedActions();
             const worldQuery = params.getWorld();
-            // const themeQuery = params.getTheme();
-            if (programQuery != null && characterStateQuery != null && allowedActionsQuery != null) {
+
+            if (programQuery != null) {
                 try {
                     const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(programQuery), 0);
                     const usedActions: ActionToggleRegister = this.calculateUsedActions(programSequence);
 
                     this.setState({
                         programSequence: programSequence,
-                        characterState: this.characterStateSerializer.deserialize(characterStateQuery),
-                        allowedActions: this.allowedActionsSerializer.deserialize(allowedActionsQuery),
                         usedActions: usedActions
                     });
                 } catch(err) {
-                    console.log(`Error parsing program: ${programQuery} or characterState: ${characterStateQuery}`);
+                    console.log(`Error parsing program: ${programQuery}`);
                     console.log(err.toString());
                 }
             }
+
+            if (characterStateQuery != null) {
+                try {
+                    this.setState({
+                        characterState: this.characterStateSerializer.deserialize(characterStateQuery)
+                    });
+                } catch(err) {
+                    console.log(`Error parsing characterState: ${characterStateQuery}`);
+                    console.log(err.toString());
+                }
+            }
+
+            if (allowedActionsQuery != null) {
+                try {
+                    this.setState({
+                        allowedActions: this.allowedActionsSerializer.deserialize(allowedActionsQuery)
+                    });
+                } catch(err) {
+                    console.log(`Error parsing allowed actions: ${allowedActionsQuery}`);
+                    console.log(err.toString());
+                }
+            }
+
             this.setStateSettings({
                 theme: Utils.getThemeFromString(themeQuery, 'light'),
                 world: Utils.getWorldFromString(worldQuery, 'default')
@@ -907,21 +928,43 @@ export class App extends React.Component<AppProps, AppState> {
             const localTheme = window.localStorage.getItem('c2lc-theme');
             const localAllowedActions = window.localStorage.getItem('c2lc-allowedActions');
             const localWorld = window.localStorage.getItem('c2lc-world');
-            if (localProgram != null && localCharacterState != null) {
+            if (localProgram != null) {
                 try {
                     const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(localProgram), 0);
                     const usedActions: ActionToggleRegister = this.calculateUsedActions(programSequence);
                     this.setState({
                         programSequence: programSequence,
-                        characterState: this.characterStateSerializer.deserialize(localCharacterState),
-                        allowedActions: this.allowedActionsSerializer.deserialize(localAllowedActions),
                         usedActions: usedActions
                     });
                 } catch(err) {
-                    console.log(`Error parsing program: ${localProgram} or characterState: ${localCharacterState}`);
+                    console.log(`Error parsing program: ${localProgram}`);
                     console.log(err.toString());
                 }
             }
+
+            if (localCharacterState != null) {
+                try {
+                    this.setState({
+                        characterState: this.characterStateSerializer.deserialize(localCharacterState)
+                    });
+                } catch(err) {
+                    console.log(`Error parsing characterState: ${localCharacterState}`);
+                    console.log(err.toString());
+                }
+            }
+
+
+            if (localAllowedActions != null) {
+                try {
+                    this.setState({
+                        allowedActions: this.allowedActionsSerializer.deserialize(localAllowedActions)
+                    });
+                } catch(err) {
+                    console.log(`Error parsing allowed actions: ${localAllowedActions}`);
+                    console.log(err.toString());
+                }
+            }
+
             this.setStateSettings({
                 theme: Utils.getThemeFromString(localTheme, 'light'),
                 world: Utils.getWorldFromString(localWorld, 'default')
