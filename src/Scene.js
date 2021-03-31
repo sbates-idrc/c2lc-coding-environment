@@ -217,6 +217,9 @@ class Scene extends React.Component<SceneProps, {}> {
         // image is drawn upright when it is facing East
         const characterTransform = `translate(${this.props.characterState.xPos} ${this.props.characterState.yPos}) rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
 
+        // For the background, use the same translation, but skip the rotate.
+        const characterBackgroundTransform = `translate(${this.props.characterState.xPos} ${this.props.characterState.yPos})`;
+
         return (
             <React.Fragment>
                 <div className='Scene__background' />
@@ -261,6 +264,14 @@ class Scene extends React.Component<SceneProps, {}> {
                             {grid}
                             <g clipPath='url(#Scene-clippath)'>
                                 {this.drawCharacterPath()}
+                                <rect
+                                    className="Character__icon-background"
+                                    x={-0.5}
+                                    y={-0.5}
+                                    height={1}
+                                    width={1}
+                                    transform={characterBackgroundTransform}
+                                />
                                 <Character
                                     world={this.props.world}
                                     transform={characterTransform}

@@ -1,9 +1,29 @@
 @import 'variables';
 
-.PenDownToggleSwitch:focus {
-    box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
-}
+.PenDownToggleSwitch {
+    margin-bottom: 1rem;
+    background-color: #B9BEC6;
+    .ToggleSwitch__switch-inner-circle {
+        background-color: white;
+        svg {
+            path {
+                stroke: #6e6e6e;
+            }
+        }
+    }
 
-.PenDownToggleSwitch.ToggleSwitch--checked {
-    background: #000;
+    &.ToggleSwitch--checked {
+        background-color: #4C9990;
+        .ToggleSwitch__switch-inner-circle svg path {
+            stroke: black;
+        }
+    }
+
+    &.ToggleSwitch:active {
+        background-color: #ED972C;
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
+    }
 }

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 
-import { ReactComponent as EllipsisIcon } from './svg/Ellipsis.svg';
+import { ReactComponent as ActionsMenuToggleIcon } from './svg/ActionsMenuToggle.svg';
 
 import './ActionsMenuToggle.scss';
 
@@ -41,7 +41,7 @@ class ActionsMenuToggle extends React.Component<ActionsMenuToggleProps, {}> {
                 onClick={this.onClick}
                 onKeyDown={this.handleKeyDown}
             >
-                <EllipsisIcon className='ActionsMenu__toggle-button-svg'/>
+                <ActionsMenuToggleIcon className='ActionsMenu__toggle-button-svg'/>
             </div>
         );
     }

@@ -1,0 +1,24 @@
+@import '_variables';
+
+button.btn.ShareButton {
+    background-color: #4C9990;
+    border: 0;
+    color: #EBFAF8;
+    padding: 0.2rem;
+    width: 10rem;
+
+    &:active {
+        background-color: #ED972C;
+    }
+
+    &:focus {
+        box-shadow:
+            0 0 0 0.1rem #D5D8DD,
+            0 0 0 $c2lc-focus-indicator-width black;
+    }
+
+    &:hover {
+        background-color: #F5C58A;
+        color: black;
+    }          
+}

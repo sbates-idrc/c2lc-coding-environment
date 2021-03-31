@@ -1,23 +1,32 @@
 @import 'variables';
 
 .RefreshButton-svg {
-    width: 2rem;
-    height: 2rem;
+    width: 1.4rem;
+    height: 1.4rem;
 }
 
-button.btn.RefreshButton svg {
-    stroke: #000;
+button.btn.RefreshButton svg path {
+    stroke: none;
 }
 
 button.btn.RefreshButton {
-    padding: 0.2rem;
-    border: 1px solid #FFF;
+    background-color: #4C9990;
+    border: 0;
     border-radius: 50%;
-    background-color: #FFF;
-}
+    margin-bottom: 1rem;
+    padding: 0.5rem;
 
-button.btn.RefreshButton:not(:focus) {
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    svg path {
+        fill: black;
+    }
+
+    &:active {
+        background-color: #ED972C;
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
+    }
 }
 
 button.btn.RefreshButton.RefreshButton--disabled:active:focus {
@@ -27,15 +36,18 @@ button.btn.RefreshButton.RefreshButton--disabled:active:focus {
 
 button.btn.RefreshButton.RefreshButton--disabled,
 button.btn.RefreshButton.RefreshButton--disabled:active:focus {
-    background-color: #FFF;
+    background-color: $c2lc-disabled-background-color;
     cursor: default;
 }
 
 button.btn.RefreshButton--disabled svg {
-    stroke: $c2lc-disabled-color;
+    stroke: $c2lc-disabled-foreground-color;
 }
 
 button.btn.RefreshButton:hover {
-    box-shadow: 0 0 0 $c2lc-hover-indicator-width $c2lc-focus-indicator-color;
-    background-color: #e5e5e5;
+    background-color: #F1AE5B;
+}
+
+button.btn.RefreshButton:hover:not(:focus) {
+    box-shadow: none;
 }
