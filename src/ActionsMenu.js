@@ -176,14 +176,17 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
             );
         });
 
-        return (<div
-            id="ActionsMenu"
-            className="ActionsMenu__menu focus-trap-ActionsMenu__menu"
-            onKeyDown={this.handleKeyDown}
-            ref={this.actionsMenuRef}
-        >
-            {actionsMenuItems}
-        </div>);
+        return (<React.Fragment>
+            <div className="focus-escape-ActionsMenu" onClick={this.showHideMenu}/>
+            <div
+                id="ActionsMenu"
+                className="ActionsMenu__menu focus-trap-ActionsMenu__menu"
+                onKeyDown={this.handleKeyDown}
+                ref={this.actionsMenuRef}
+            >
+                {actionsMenuItems}
+            </div>
+        </React.Fragment>);
     }
 }
 
