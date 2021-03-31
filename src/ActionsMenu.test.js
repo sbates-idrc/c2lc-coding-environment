@@ -7,6 +7,7 @@ import { IntlProvider } from 'react-intl';
 import ActionsMenu from './ActionsMenu';
 import ActionsMenuItem from './ActionsMenuItem';
 import ActionsMenuToggle from './ActionsMenuToggle';
+import FocusTrapManager from './FocusTrapManager';
 
 import messages from './messages.json';
 
@@ -30,6 +31,8 @@ const mockAllowedActions = {
 function createActionsMenu(props) {
     const mockChangeHandler = jest.fn();
 
+    const focusTrapManager = new FocusTrapManager();
+
     const wrapper = mount(
         React.createElement(
             ActionsMenu,
@@ -37,7 +40,8 @@ function createActionsMenu(props) {
                 {
                     editingDisabled: false,
                     allowedActions: mockAllowedActions,
-                    changeHandler: mockChangeHandler
+                    changeHandler: mockChangeHandler,
+                    focusTrapManager: focusTrapManager
                 },
                 props
             )

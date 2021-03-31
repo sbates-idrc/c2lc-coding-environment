@@ -15,6 +15,7 @@ type ActionsMenuProps = {
     intl: IntlShape,
     changeHandler?: (event: Event, commandName: string) => void,
     editingDisabled?: boolean,
+    focusTrapManager: FocusTrapManager,
     // TODO: Flesh this definition out.
     menuItems: {},
     allowedActions: ActionToggleRegister,
@@ -26,6 +27,7 @@ type ActionsMenuState = {
 };
 
 class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
+    actionsMenuRef: { current: null | HTMLDivElement };
     focusTrapManager: FocusTrapManager;
 
     static defaultProps = {
@@ -83,22 +85,31 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
             }
         }
     }
+
     constructor (props: ActionsMenuProps) {
         super(props);
+        this.actionsMenuRef = React.createRef();
         this.state = { showMenu: false };
-        this.focusTrapManager = new FocusTrapManager();
-        this.focusTrapManager.setFocusTrap(this.handleCloseActionMenuFocusTrap, [".ActionsMenu__menu", ".ActionsMenuItem__checkbox"], ".ActionsMenu__toggle-button");
+    }
+
+    componentDidUpdate () {
+        if (this.state.showMenu) {
+            this.props.focusTrapManager.setFocusTrap(this.handleCloseActionMenuFocusTrap, [".focus-trap-ActionsMenu__menu", ".focus-trap-ActionsMenuItem__checkbox"], ".focus-trap-ActionsMenu__toggle-button");
+        }
+        else {
+            this.props.focusTrapManager.unsetFocusTrap();
+        }
     }
 
     render() {
         return (
             <React.Fragment>
-                <div className='ActionsMenu__header' onKeyDown={this.focusTrapManager.handleKeyDown}>
+                <div className='ActionsMenu__header'>
                     <h2 className='ActionsMenu__header-heading'>
                         <FormattedMessage id='ActionsMenu.title' />
                     </h2>
                     <ActionsMenuToggle
-                        className='ActionsMenu__header-toggle'
+                        className='ActionsMenu__header-toggle  focus-trap-ActionsMenu__header-toggle'
                         intl={this.props.intl}
                         editingDisabled={!!this.props.editingDisabled}
                         handleShowHideMenu={this.showHideMenu}
@@ -142,7 +153,7 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
     generateMenu = () => {
         const actionsMenuItems = [];
         // TODO: Discuss how to evolve this into a deeper structure when we add groups and things other than actions.
-        Object.keys(this.props.menuItems).forEach((itemKey) => {
+        Object.keys(this.props.menuItems).forEach((itemKey: string, itemNumber: number) => {
             const isAllowed: boolean = !!this.props.allowedActions[itemKey];
             const isUsed: boolean = !!this.props.usedActions[itemKey];
             // TODO: Add a mechanism for values to come back to us.
@@ -156,6 +167,7 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
                 <ActionsMenuItem
                     intl={this.props.intl}
                     isAllowed={isAllowed}
+                    isFirst={ itemNumber === 0}
                     isUsed={isUsed}
                     itemKey={itemKey}
                     key={itemKey}
@@ -163,10 +175,12 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
                 />
             );
         });
+
         return (<div
             id="ActionsMenu"
-            className="ActionsMenu__menu"
+            className="ActionsMenu__menu focus-trap-ActionsMenu__menu"
             onKeyDown={this.handleKeyDown}
+            ref={this.actionsMenuRef}
         >
             {actionsMenuItems}
         </div>);

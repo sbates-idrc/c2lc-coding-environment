@@ -9,12 +9,27 @@ import './ActionsMenuItem.scss';
 type ActionsMenuItemProps = {
     intl: IntlShape,
     isAllowed?: boolean,
+    isFirst?: boolean,
     isUsed?: boolean,
     itemKey: string,
     onChange: (event: Event) => void
 }
 
 export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} > {
+    checkboxRef: { current: null | HTMLInputElement };
+
+    constructor (props: ActionsMenuItemProps) {
+        super(props);
+        this.checkboxRef = React.createRef();
+    }
+
+    componentDidMount () {
+        if (this.props.isFirst && this.checkboxRef.current) {
+            // TODO: This only halfway seems to work, the focus styles are not visible.
+            this.checkboxRef.current.focus();
+        }
+    }
+
     render () {
         // We don't use FormattedMessage as we are working with a complex chain of templates.
         const commandName = this.props.intl.formatMessage({ id: `Command.${this.props.itemKey}` });
@@ -43,13 +58,14 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
                 </div>
                 <div className="ActionsMenuItem__option">
                     <input
-                        className="ActionsMenuItem__checkbox"
+                        className="ActionsMenuItem__checkbox focus-trap-ActionsMenuItem__checkbox"
                         type="checkbox"
                         aria-label={showHideAriaLabel}
                         id={commandNameShort}
                         checked={this.props.isAllowed}
                         aria-disabled={this.props.isUsed}
                         onChange={this.props.onChange}
+                        ref={this.checkboxRef}
                     />
                     <label htmlFor={commandNameShort} className="ActionsMenuItem__option-label">
                         {showHideLabel}
