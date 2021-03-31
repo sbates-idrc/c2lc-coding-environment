@@ -4,6 +4,7 @@ import { Midi, Panner, Sampler } from 'tone';
 import CharacterState from './CharacterState';
 import type {IntlShape} from 'react-intl';
 import {AudioManager} from './types';
+import SceneDimensions from './SceneDimensions';
 
 function octaveModulo (rawPitch: number) : number {
     const adjustedPitch = rawPitch % 12;
@@ -148,7 +149,7 @@ export default class AudioManagerImpl implements AudioManager {
         }
     }
 
-    playSoundForCharacterState(samplerKey: string, releaseTimeInMs: number, characterState: CharacterState) {
+    playSoundForCharacterState(samplerKey: string, releaseTimeInMs: number, characterState: CharacterState, sceneDimensions: SceneDimensions) {
         if (this.audioEnabled) {
             const releaseTime = releaseTimeInMs / 1000;
             const noteName = getNoteForState(characterState);
@@ -161,7 +162,7 @@ export default class AudioManagerImpl implements AudioManager {
             // As we use a single Sampler grade, our best option for panning is
             // to pan all sounds.  We can discuss adjusting this once we have
             // multiple sound-producing elements in the environment.
-            const panningLevel = Math.min(1, Math.max(-1, (0.1 * characterState.xPos)));
+            const panningLevel = ((characterState.xPos / sceneDimensions.getWidth()) * 2) - 1;
 
             // TODO: Consider making the timing configurable or tying it to the movement timing.
             this.panner.pan.rampTo(panningLevel, 0.5)
