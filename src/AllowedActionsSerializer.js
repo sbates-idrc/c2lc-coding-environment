@@ -5,13 +5,13 @@
     made in the "simplification" menu are persisted.
 */
 import type {ActionToggleRegister, Program} from './types';
-import ProgramSeraliazer from './ProgramSerializer';
+import ProgramSerializer from './ProgramSerializer';
 
 export default class AllowedActionsSerializer {
-    programSeraliazer: ProgramSeraliazer;
+    programSerializer: ProgramSerializer;
 
     constructor() {
-        this.programSeraliazer = new ProgramSeraliazer();
+        this.programSerializer = new ProgramSerializer();
     }
 
     serialize(actionToggleRegister: ActionToggleRegister): string {
@@ -21,11 +21,11 @@ export default class AllowedActionsSerializer {
                 registerAsProgram.push(actionKey);
             }
         }
-        return this.programSeraliazer.serialize(registerAsProgram);
+        return this.programSerializer.serialize(registerAsProgram);
     }
 
     deserialize(allowedActionsText: string): ActionToggleRegister {
-        const program = this.programSeraliazer.deserialize(allowedActionsText);
+        const program = this.programSerializer.deserialize(allowedActionsText);
         const actionToggleRegister = {};
         program.forEach((allowedActionKey) => {
             actionToggleRegister[allowedActionKey] = true;
