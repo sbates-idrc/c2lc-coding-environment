@@ -25,7 +25,7 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
 
     componentDidMount () {
         if (this.props.isFirst && this.checkboxRef.current) {
-            // TODO: This only halfway seems to work, the focus styles are not visible.
+            // TODO: This does not seem to work properly when clicking with the mouse.
             this.checkboxRef.current.focus();
         }
     }
