@@ -56,7 +56,7 @@
                     stroke: #6e6e6e;
                 }
             }
-        }    
+        }
     }
 
     &.ToggleSwitch--checked {
@@ -163,6 +163,7 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
     justify-content: space-around;
     position: relative;
     top: 0.5rem;
+    height: 2rem;
 }
 
 .ProgramBlockEditor__character-turn-positions > svg {
@@ -210,11 +211,11 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
 }
 
 .ProgramBlock__character-position-coordinate-box {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2rem;
+    height: 2rem;
     text-align: center;
     pointer-events: all;
-    margin-bottom: 1rem;
+    margin-bottom: 0.25rem;
 }
 
 .ProgramBlock__character-position-coordinate-box:focus {

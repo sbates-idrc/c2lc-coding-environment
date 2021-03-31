@@ -222,8 +222,8 @@ class Scene extends React.Component<SceneProps, {}> {
 
         return (
             <React.Fragment>
-                <div className='Scene__background' />
                 <div className='Scene__container'>
+                    <div className='Scene__header-corner' />
                     <div
                         id='scene-row-header'
                         className='Scene__row-header'
