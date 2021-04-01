@@ -60,9 +60,10 @@ describe('When rendering the WorldSelector', () => {
     test('it should be possible to select a world using mouse input.', () => {
         const {worldSelector, worldSelectorTestWrapper, mockOnSelectHandler} = createMountWorldSelector();
 
-        const robotIcon = worldSelector.childAt(0).childAt(1);
-        const rabbitIcon = worldSelector.childAt(0).childAt(2);
-        const spaceShipIcon = worldSelector.childAt(0).childAt(3);
+        // TODO: Adjust these once the header icon is the first child again.
+        const robotIcon = worldSelector.childAt(0).childAt(0);
+        const rabbitIcon = worldSelector.childAt(0).childAt(1);
+        const spaceShipIcon = worldSelector.childAt(0).childAt(2);
 
         rabbitIcon.simulate('click');
 
@@ -87,9 +88,10 @@ describe('When rendering the WorldSelector', () => {
     test('it should be possible to select a world using keyboard input.', () => {
         const {worldSelector, worldSelectorTestWrapper, mockOnSelectHandler} = createMountWorldSelector();
 
-        const robotIcon = worldSelector.childAt(0).childAt(1);
-        const rabbitIcon = worldSelector.childAt(0).childAt(2);
-        const spaceShipIcon = worldSelector.childAt(0).childAt(3);
+        // TODO: Adjust these once the header icon is the first child again.
+        const robotIcon = worldSelector.childAt(0).childAt(0);
+        const rabbitIcon = worldSelector.childAt(0).childAt(1);
+        const spaceShipIcon = worldSelector.childAt(0).childAt(2);
 
         rabbitIcon.simulate('keyDown', {key: ' '});
 
@@ -114,16 +116,18 @@ describe('When rendering the WorldSelector', () => {
     test('all icons should have ARIA labels.', () => {
         const {worldSelector} = createMountWorldSelector();
 
-        const worldIcon = worldSelector.childAt(0).childAt(0)
-        expect(worldIcon.prop('aria-label')).toBe("World");
+        // TODO: Reenable this once the header icon is uncommented.
+        // const worldIcon = worldSelector.childAt(0).childAt(0)
+        // expect(worldIcon.prop('aria-label')).toBe("World");
 
-        const robotIcon = worldSelector.childAt(0).childAt(1);
+        // TODO: Adjust the index numbers once the header icon is the first child again.
+        const robotIcon = worldSelector.childAt(0).childAt(0);
         expect(robotIcon.prop('aria-label')).toBe(intl.messages['WorldSelector.world.default']);
 
-        const rabbitIcon = worldSelector.childAt(0).childAt(2);
+        const rabbitIcon = worldSelector.childAt(0).childAt(1);
         expect(rabbitIcon.prop('aria-label')).toBe(intl.messages['WorldSelector.world.forest']);
 
-        const spaceShipIcon = worldSelector.childAt(0).childAt(3);
+        const spaceShipIcon = worldSelector.childAt(0).childAt(2);
         expect(spaceShipIcon.prop('aria-label')).toBe(intl.messages['WorldSelector.world.space']);
     });
 });
