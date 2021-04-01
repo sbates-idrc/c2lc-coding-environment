@@ -70,9 +70,8 @@ body {
 .App__scene-controls {
     position: absolute;
     z-index: 1;
-    padding: 1rem 0;
-    bottom: 0;
-    right: 0;
+    bottom: 2rem;
+    right: 2rem;
     display: grid;
     grid-template-columns: 1fr;
 }
@@ -81,7 +80,7 @@ body {
     display: flex;
     align-items: center;
     justify-self: end;
-    margin: auto 1rem auto 0;
+    margin: auto 0;
 }
 
 .App__refreshButton-container {
