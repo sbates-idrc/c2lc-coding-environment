@@ -9,7 +9,6 @@ import './ActionsMenuItem.scss';
 type ActionsMenuItemProps = {
     intl: IntlShape,
     isAllowed?: boolean,
-    isFirst?: boolean,
     isUsed?: boolean,
     itemKey: string,
     onChange: (event: Event) => void
@@ -21,13 +20,6 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
     constructor (props: ActionsMenuItemProps) {
         super(props);
         this.checkboxRef = React.createRef();
-    }
-
-    componentDidMount () {
-        if (this.props.isFirst && this.checkboxRef.current) {
-            // TODO: This does not seem to work properly when clicking with the mouse.
-            this.checkboxRef.current.focus();
-        }
     }
 
     render () {

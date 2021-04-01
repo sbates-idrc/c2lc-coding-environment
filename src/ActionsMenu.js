@@ -26,7 +26,6 @@ type ActionsMenuState = {
 };
 
 class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
-    actionsMenuRef: { current: null | HTMLDivElement };
     focusTrapManager: FocusTrapManager;
 
     static defaultProps = {
@@ -87,7 +86,6 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
 
     constructor (props: ActionsMenuProps) {
         super(props);
-        this.actionsMenuRef = React.createRef();
         this.focusTrapManager = new FocusTrapManager();
         this.focusTrapManager.setFocusTrap(this.handleCloseActionMenuFocusTrap, [".focus-trap-ActionsMenu__menu", ".focus-trap-ActionsMenuItem__checkbox"], ".focus-trap-ActionsMenu__toggle-button");
         this.state = { showMenu: false };
@@ -114,12 +112,6 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
             </React.Fragment>
         );
     }
-
-    /* istanbul ignore next */
-    handleClick = (event: SyntheticEvent<HTMLElement>) => {
-        event.preventDefault();
-        this.showHideMenu();
-    };
 
     /* istanbul ignore next */
     handleCloseActionMenuFocusTrap = () => {
@@ -151,7 +143,6 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
                 <ActionsMenuItem
                     intl={this.props.intl}
                     isAllowed={isAllowed}
-                    isFirst={ itemNumber === 0}
                     isUsed={isUsed}
                     itemKey={itemKey}
                     key={itemKey}
@@ -166,7 +157,6 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
                 id="ActionsMenu"
                 className="ActionsMenu__menu focus-trap-ActionsMenu__menu"
                 onKeyDown={this.focusTrapManager.handleKeyDown}
-                ref={this.actionsMenuRef}
             >
                 {actionsMenuItems}
             </div>
