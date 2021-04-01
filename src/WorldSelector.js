@@ -6,7 +6,8 @@ import type { IntlShape } from 'react-intl';
 import { injectIntl } from 'react-intl';
 
 import AriaDisablingButton from './AriaDisablingButton';
-import {ReactComponent as HeaderIcon} from './svg/SelectWorld.svg'
+// TODO: uncomment this when we need to distinguish ourselves from another set of buttons in the right panel.
+// import {ReactComponent as HeaderIcon} from './svg/SelectWorld.svg'
 import {ReactComponent as RabbitIcon} from './svg/Rabbit.svg';
 import {ReactComponent as RobotIcon} from './svg/Robot.svg';
 import { ReactComponent as SpaceShipIcon } from './svg/SpaceShip.svg';
@@ -45,10 +46,17 @@ class WorldSelector extends React.Component<WorldSelectorProps, {}> {
     render() {
         return (
             <div className='WorldSelector'>
-                <HeaderIcon
-                    aria-label={this.props.intl.formatMessage({id:'WorldSelector.world'})}
-                    className="HeaderIcon"
-                />
+                {/*
+
+                    TODO: uncomment this when we need to distinguish ourselves from another set of buttons in the right
+                          panel.
+
+                    <HeaderIcon
+                        aria-label={this.props.intl.formatMessage({id:'WorldSelector.world'})}
+                        className="HeaderIcon"
+                    />
+
+                */}
                 <AriaDisablingButton
                     aria-label={this.props.intl.formatMessage({id:'WorldSelector.world.default'})}
                     aria-pressed={this.props.world === 'default'}
