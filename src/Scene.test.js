@@ -415,38 +415,3 @@ describe('When Scene gets scrolled', () => {
         expect(columnHeader.ref.currentTarget.scrollLeft).toBe(200);
     });
 });
-
-describe('Scene gets scrolled', () => {
-    test('When row header gets scrolled vertically', () => {
-        expect.assertions(2);
-        const sceneWrapper = createMountScene();
-        const scene = findScene(sceneWrapper);
-        const rowHeader = findRowHeader(sceneWrapper);
-        scene.ref.currentTarget = {
-            scrollTop: 0
-        };
-        expect(scene.ref.currentTarget.scrollTop).toBe(0);
-        rowHeader.ref.currentTarget = {
-            scrollTop: 200
-        };
-        rowHeader.simulate('scroll');
-        expect(scene.ref.currentTarget.scrollTop).toBe(200);
-    });
-
-    test('When column header gets scrolled horizontally', () => {
-        expect.assertions(2);
-        const sceneWrapper = createMountScene();
-        const scene = findScene(sceneWrapper);
-        const columnHeader = findColumnHeader(sceneWrapper);
-        scene.ref.currentTarget = {
-            scrollLeft: 0
-        };
-        expect(scene.ref.currentTarget.scrollLeft).toBe(0);
-        columnHeader.ref.currentTarget = {
-            scrollLeft: 200
-        };
-        columnHeader.simulate('scroll');
-        expect(scene.ref.currentTarget.scrollLeft).toBe(200);
-    });
-
-});
