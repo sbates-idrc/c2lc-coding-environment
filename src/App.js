@@ -781,6 +781,9 @@ export class App extends React.Component<AppProps, AppState> {
                         </div>
                     </div>
                     <div className='App__scene-container'>
+                        <h2 className='App__scene-heading sr-only' >
+                            <FormattedMessage id='Scene.heading' />
+                        </h2>
                         <Scene
                             dimensions={this.state.sceneDimensions}
                             characterState={this.state.characterState}
