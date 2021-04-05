@@ -768,12 +768,6 @@ export class App extends React.Component<AppProps, AppState> {
                             intl={this.props.intl}
                             usedActions={this.state.usedActions}
                         />
-                        <h2 className='App__command-palette-heading App__commandpalette-heading-long'>
-                            <FormattedMessage id='CommandPalette.movementsTitle' />
-                        </h2>
-                        <h2 className='App__command-palette-heading App__commandpalette-heading-short'>
-                            <FormattedMessage id='CommandPalette.shortMovementsTitle' />
-                        </h2>
                         <div className='App__command-palette-command-container'>
                             <div className='App__command-palette-commands'>
                                 {this.renderCommandBlocks()}
@@ -831,7 +825,6 @@ export class App extends React.Component<AppProps, AppState> {
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
                         />
                     </div>
-                    <div className='App__playAndShare-bumper'/>
                     <div className='App__playAndShare-background' />
                     <div className='App__playAndShare-container'>
                         <div className='App__playControl-container'>
