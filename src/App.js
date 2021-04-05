@@ -919,7 +919,7 @@ export class App extends React.Component<AppProps, AppState> {
             }
 
             this.setStateSettings({
-                theme: Utils.getThemeFromString(themeQuery, 'light'),
+                theme: Utils.getThemeFromString(themeQuery, 'mixed'),
                 world: Utils.getWorldFromString(worldQuery, 'default')
             });
         } else {
@@ -966,7 +966,7 @@ export class App extends React.Component<AppProps, AppState> {
             }
 
             this.setStateSettings({
-                theme: Utils.getThemeFromString(localTheme, 'light'),
+                theme: Utils.getThemeFromString(localTheme, 'mixed'),
                 world: Utils.getWorldFromString(localWorld, 'default')
             });
         }
