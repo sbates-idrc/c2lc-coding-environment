@@ -148,7 +148,6 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
 .ProgramBlockEditor__character-column-character-container {
     position: relative;
     border-radius: 50%;
-    padding: 0.5rem;
     background-color: #FFF;
 }
 
@@ -177,6 +176,7 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
 .ProgramBlockEditor__character-move-position-sides {
     display: flex;
     align-items: center;
+    height: 2rem;
 }
 
 .ProgramBlockEditor__character-position-button {
@@ -185,6 +185,11 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
     pointer-events: all;
     stroke: #4C9990;
     width: 2.5rem;
+    height: 2rem;
+}
+
+.ProgramBlockEditor__character-move-position-sides > svg {
+    width: 2rem;
     height: 2.5rem;
 }
 
