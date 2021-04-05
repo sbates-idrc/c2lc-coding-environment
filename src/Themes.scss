@@ -333,6 +333,8 @@ body.dark-theme {
 
     .Scene {
         background-color: #22343C;
+        border-bottom: 2px solid #33717F;
+        border-right: 2px solid #33717F;
     }
 
     .Scene__background {
@@ -618,6 +620,11 @@ body.gray-theme {
 
     .Character__icon-background {
         fill: #818A98;
+    }
+
+    .Scene {
+        border-bottom: 2px solid #D5D8DD;
+        border-right: 2px solid #D5D8DD;
     }
 
     .Scene__background {
@@ -1233,6 +1240,8 @@ body.contrast-theme {
 
     .Scene {
         background-color: black;
+        border-bottom: 2px solid white;
+        border-right: 2px solid white;
     }
 
     .Scene__background {
