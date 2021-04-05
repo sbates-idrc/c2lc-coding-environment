@@ -3,22 +3,11 @@
 // Grid for Scene-container is set in App.scss
 .Scene__container {
     position: relative;
-    z-index: 1;
     height: 100%;
     width: 100%;
     display: grid;
     grid-template-columns: 30px auto;
     grid-template-rows: 30px auto;
-}
-
-.Scene__background {
-    position: absolute;
-    top: 0.8rem;
-    left: 0.5rem;
-    z-index: 0;
-    height: 100%;
-    width: 100%;
-    background-color: #CCE6E2;
 }
 
 .Scene {
@@ -30,10 +19,25 @@
     background-color: #FFF;
     display: inline-block;
     box-sizing: border-box;
+    border-bottom: 1px solid #CCE6E2;
+    border-right: 1px solid #CCE6E2;
 }
 
 .Scene > svg {
     width: 1430px;
+}
+
+.Scene__header-corner {
+    position: absolute;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    background-color: #CCE6E2;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 15px;
 }
 
 .Scene__row-header {
