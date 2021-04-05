@@ -50,6 +50,7 @@ class Scene extends React.Component<SceneProps, {}> {
             rowLabels.push(
                 <text
                     className='Scene__grid-label'
+                    aria-hidden='true'
                     textAnchor='middle'
                     key={`grid-cell-label-${i}`}
                     dominantBaseline='middle'
@@ -83,6 +84,7 @@ class Scene extends React.Component<SceneProps, {}> {
             columnLabels.push(
                 <text
                     className='Scene__grid-label'
+                    aria-hidden='true'
                     key={`grid-cell-label-${String.fromCharCode(64+i)}`}
                     textAnchor='middle'
                     x={8.25*i - 4.125}
