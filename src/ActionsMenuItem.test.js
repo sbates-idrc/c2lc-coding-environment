@@ -17,7 +17,6 @@ function createActionsMenuItem(props) {
             ActionsMenuItem,
             Object.assign(
                 {
-                    handleChildBlur: () => {},
                     isAllowed: true,
                     isUsed: false,
                     itemKey: 'forward1',
