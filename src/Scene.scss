@@ -47,6 +47,7 @@
     grid-row-end: 3;
     grid-column-start: 1;
     grid-column-end: 2;
+    pointer-events: none;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
@@ -68,6 +69,7 @@
     grid-column-end: 3;
     overflow-y: hidden;
     overflow-x: scroll;
+    pointer-events: none;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
