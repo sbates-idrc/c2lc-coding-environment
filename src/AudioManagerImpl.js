@@ -162,7 +162,12 @@ export default class AudioManagerImpl implements AudioManager {
             // As we use a single Sampler grade, our best option for panning is
             // to pan all sounds.  We can discuss adjusting this once we have
             // multiple sound-producing elements in the environment.
-            const panningLevel = ((characterState.xPos / sceneDimensions.getWidth()) * 2) - 1;
+
+            // TODO: Update this to use maxX - minX once the scene properly exposes the minimum width.
+            const midPoint = ((sceneDimensions.getWidth() + 1 )/ 2)
+
+            // Limit the deviation from the centre so that there is always some sound in each speaker.
+            const panningLevel = 0.65 * ((characterState.xPos - midPoint) / midPoint);
 
             // TODO: Consider making the timing configurable or tying it to the movement timing.
             this.panner.pan.rampTo(panningLevel, 0.5)
