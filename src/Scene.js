@@ -6,19 +6,31 @@ import Character from './Character';
 import SceneDimensions from './SceneDimensions';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
+import type { AnnouncementMode, RunningState } from './types';
 
 import './Scene.scss';
 
 import type {WorldName} from './types';
 
+type SceneState = {
+    announcementMode: AnnouncementMode
+};
+
 export type SceneProps = {
     dimensions: SceneDimensions,
     characterState: CharacterState,
     world: WorldName,
-    intl: IntlShape
+    intl: IntlShape,
+    runningState: RunningState
 };
 
-class Scene extends React.Component<SceneProps, {}> {
+class Scene extends React.Component<SceneProps, SceneState> {
+    constructor(props: SceneProps) {
+        super(props);
+        this.state = {
+            announcementMode: 'off'
+        }
+    }
     drawGrid(): any {
         const grid = [];
         const rowLabels = [];
@@ -250,6 +262,7 @@ class Scene extends React.Component<SceneProps, {}> {
                         </svg>
                     </div>
                     <div
+                        aria-live={this.state.announcementMode}
                         id='scene'
                         className='Scene'
                         role='img'
@@ -285,6 +298,20 @@ class Scene extends React.Component<SceneProps, {}> {
                 </div>
             </React.Fragment>
         );
+    }
+
+    componentDidUpdate(prevProps: SceneProps, prevState: SceneState) {
+        if (prevProps.runningState !== this.props.runningState) {
+            if (this.props.runningState === 'stopped' || this.props.runningState === 'paused') {
+                this.setState({
+                    announcementMode: 'polite'
+                });
+            } else {
+                this.setState({
+                    announcementMode: 'off'
+                });
+            }
+        }
     }
 }
 

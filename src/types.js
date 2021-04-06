@@ -33,6 +33,8 @@ export type Program = Array<string>;
 // use running, paused, stopped
 export type RunningState = 'running' | 'stopRequested' | 'stopped' | 'pauseRequested' | 'paused';
 
+export type AnnouncementMode = 'off' | 'polite';
+
 export interface RobotDriver {
     connect(onDisconnected: () => void): Promise<void>;
     forward(): Promise<void>;
