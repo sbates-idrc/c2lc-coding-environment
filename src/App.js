@@ -126,7 +126,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.forward(1, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -146,7 +146,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.forward(2, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -166,7 +166,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.forward(3, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -185,7 +185,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.backward(1, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -204,7 +204,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.backward(2, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -223,7 +223,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.backward(3, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -245,7 +245,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnLeft(1);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left", soundTime, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("left", soundTime, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -268,7 +268,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnLeft(2);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left", soundTime, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("left", soundTime, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -288,7 +288,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnLeft(4);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left", stepTimeMs,  newCharacterState);
+                    this.audioManager.playSoundForCharacterState("left", stepTimeMs,  newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -311,7 +311,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnRight(1);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right", soundTime, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("right", soundTime, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -334,7 +334,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnRight(2);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right", soundTime, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("right", soundTime, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -354,7 +354,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnRight(4);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("right", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
