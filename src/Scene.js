@@ -202,22 +202,6 @@ class Scene extends React.Component<SceneProps, SceneState> {
         }
     }
 
-    handleScrollRowHeader = (e: SyntheticEvent<HTMLDivElement>) => {
-        const rowHeaderScrollTop = e.currentTarget.scrollTop;
-        const scene = document.getElementById('scene');
-        if (rowHeaderScrollTop != null && scene != null) {
-            scene.scrollTop = rowHeaderScrollTop;
-        }
-    }
-
-    handleScrollColumnHeader = (e: SyntheticEvent<HTMLDivElement>) => {
-        const columnHeaderScrollLeft = e.currentTarget.scrollLeft;
-        const scene = document.getElementById('scene');
-        if (columnHeaderScrollLeft != null && scene != null) {
-            scene.scrollLeft = columnHeaderScrollLeft;
-        }
-    }
-
     render() {
         const minX = this.props.dimensions.getMinX();
         const minY = this.props.dimensions.getMinY();
@@ -240,8 +224,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                     <div className='Scene__header-corner' />
                     <div
                         id='scene-row-header'
-                        className='Scene__row-header'
-                        onScroll={this.handleScrollRowHeader}>
+                        className='Scene__row-header'>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             viewBox='-2 0 3 135'>
@@ -252,8 +235,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                     </div>
                     <div
                         id='scene-column-header'
-                        className='Scene__column-header'
-                        onScroll={this.handleScrollColumnHeader}>
+                        className='Scene__column-header'>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             viewBox='0 -2 217.5 3'>

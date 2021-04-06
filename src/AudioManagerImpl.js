@@ -170,7 +170,7 @@ export default class AudioManagerImpl implements AudioManager {
             const panningLevel = 0.65 * ((characterState.xPos - midPoint) / midPoint);
 
             // TODO: Consider making the timing configurable or tying it to the movement timing.
-            this.panner.pan.rampTo(panningLevel, 0.5)
+            this.panner.pan.rampTo(panningLevel, 0);
         }
     }
 
