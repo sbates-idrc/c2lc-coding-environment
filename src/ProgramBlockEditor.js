@@ -764,7 +764,10 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                     onDrop={this.handleDropCommandOnProgramArea}
                 >
                     <div className='ProgramBlockEditor__program-sequence'>
-                        <div className='ProgramBlockEditor__start-indicator'>
+                        <h3 className='sr-only' >
+                            <FormattedMessage id='ProgramSequence.heading' />
+                        </h3>
+                        <div aria-hidden='true' className='ProgramBlockEditor__start-indicator'>
                             {this.props.intl.formatMessage({id:'ProgramBlockEditor.startIndicator'})}
                         </div>
                         {contents}
