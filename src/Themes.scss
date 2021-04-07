@@ -1345,7 +1345,7 @@ body.contrast-theme {
         color: black;
     }
 
-    .ProgramBlockEditor__character-position-button {
+    .ProgramBlockEditor__character-position-button:not(.ProgramBlockEditor__character-position-button--disabled) {
         stroke: white;
         &:focus {
             outline: $c2lc-focus-indicator-width solid white;
@@ -1353,7 +1353,7 @@ body.contrast-theme {
     }
 
     .ProgramBlockEditor__character-turn-positions {
-        svg path.filled {
+        .ProgramBlockEditor__character-position-button:not(.ProgramBlockEditor__character-position-button--disabled) path.filled {
             fill: white;
         }
     }
