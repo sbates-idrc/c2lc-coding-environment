@@ -1371,13 +1371,13 @@ body.contrast-theme {
 
         .ProgramBlockEditor__character-position-button--disabled {
             path.filled {
-                fill: #B9BEC6;
+                fill: #505862;
             }
         }
     }
 
     .ProgramBlockEditor__character-position-button--disabled:not(.ProgramBlockEditor__character-turn-positions) {
-        stroke: #B9BEC6;
+        stroke: #505862;
     }
 
     .ProgramBlockEditor__add-node-toggle-switch, .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch:hover {
