@@ -405,8 +405,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     }
 
     handleKeyDownCharacterPosition = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        const spaceKey = ' ';
-        if (e.key === spaceKey) {
+        if (e.key === ' ' || e.key === 'Enter') {
             e.preventDefault();
             this.handleChangeCharacterPosition(e.currentTarget.getAttribute('value'));
         }
