@@ -100,7 +100,7 @@ describe('When rendering the WorldSelector', () => {
         expect(worldSelectorTestWrapper.state('world')).toBe('forest');
 
 
-        spaceShipIcon.simulate('keyDown', {key: ' '});
+        spaceShipIcon.simulate('keyDown', {key: 'Enter'});
 
         expect(mockOnSelectHandler.mock.calls.length).toBe(2);
         expect(mockOnSelectHandler.mock.calls[1][0]).toBe('space');
