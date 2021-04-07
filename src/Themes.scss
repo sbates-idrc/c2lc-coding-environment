@@ -805,6 +805,18 @@ body.gray-theme {
         border-right: 1px solid #9DA4AF;
     }
 
+    .ProgramBlockEditor__character-position-button--disabled:not(.ProgramBlockEditor__character-turn-positions) {
+        stroke: #B9BEC6;
+    }
+
+    .ProgramBlockEditor__character-turn-positions {
+        .ProgramBlockEditor__character-position-button--disabled {
+            path.filled {
+                fill: #B9BEC6;
+            }
+        }
+    }
+
     .ProgramBlockEditor__program-sequence-scroll-container {
         background-color: white;
         margin-left: 0.1rem;
@@ -1356,6 +1368,16 @@ body.contrast-theme {
         .ProgramBlockEditor__character-position-button:not(.ProgramBlockEditor__character-position-button--disabled) path.filled {
             fill: white;
         }
+
+        .ProgramBlockEditor__character-position-button--disabled {
+            path.filled {
+                fill: #B9BEC6;
+            }
+        }
+    }
+
+    .ProgramBlockEditor__character-position-button--disabled:not(.ProgramBlockEditor__character-turn-positions) {
+        stroke: #B9BEC6;
     }
 
     .ProgramBlockEditor__add-node-toggle-switch, .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch:hover {
