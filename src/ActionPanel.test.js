@@ -5,6 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount } from 'enzyme';
 import { IntlProvider } from 'react-intl';
 import ActionPanel from './ActionPanel';
+import ProgramSequence from './ProgramSequence';
 import messages from './messages.json';
 
 configure({ adapter: new Adapter()});
@@ -22,7 +23,7 @@ function createMountActionPanel(props) {
                 {
                     focusedOptionName: null,
                     selectedCommandName: 'right45',
-                    program: ['forward1', 'left45', 'right45'],
+                    programSequence: new ProgramSequence(['forward1', 'left45', 'right45'], 0),
                     pressedStepIndex: 1,
                     position: {
                         top: 0,

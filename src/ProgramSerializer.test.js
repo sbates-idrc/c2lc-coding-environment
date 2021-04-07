@@ -4,20 +4,24 @@ test('Serialize program', () => {
     const programSerializer = new ProgramSerializer();
 
     expect(programSerializer.serialize([])).toStrictEqual('');
-    expect(programSerializer.serialize(['forward1'])).toStrictEqual('f1');
-    expect(programSerializer.serialize(['forward2'])).toStrictEqual('f2');
-    expect(programSerializer.serialize(['forward3'])).toStrictEqual('f3');
-    expect(programSerializer.serialize(['left45'])).toStrictEqual('l45');
-    expect(programSerializer.serialize(['left90'])).toStrictEqual('l90');
-    expect(programSerializer.serialize(['left180'])).toStrictEqual('l180');
-    expect(programSerializer.serialize(['right45'])).toStrictEqual('r45');
-    expect(programSerializer.serialize(['right90'])).toStrictEqual('r90');
-    expect(programSerializer.serialize(['right180'])).toStrictEqual('r180');
+    expect(programSerializer.serialize(['forward1'])).toStrictEqual('1');
+    expect(programSerializer.serialize(['forward2'])).toStrictEqual('2');
+    expect(programSerializer.serialize(['forward3'])).toStrictEqual('3');
+    expect(programSerializer.serialize(['backward1'])).toStrictEqual('4');
+    expect(programSerializer.serialize(['backward2'])).toStrictEqual('5');
+    expect(programSerializer.serialize(['backward3'])).toStrictEqual('6');
+    expect(programSerializer.serialize(['left45'])).toStrictEqual('A');
+    expect(programSerializer.serialize(['left90'])).toStrictEqual('B');
+    expect(programSerializer.serialize(['left180'])).toStrictEqual('D');
+    expect(programSerializer.serialize(['right45'])).toStrictEqual('a');
+    expect(programSerializer.serialize(['right90'])).toStrictEqual('b');
+    expect(programSerializer.serialize(['right180'])).toStrictEqual('d');
     expect(programSerializer.serialize([
         'forward1', 'forward2', 'forward3',
+        'backward1', 'backward2', 'backward3',
         'left45', 'left90', 'left180',
         'right45', 'right90', 'right180'
-    ])).toStrictEqual('f1f2f3l45l90l180r45r90r180');
+    ])).toStrictEqual('123456ABDabd');
 });
 
 test('Serializing an unsupported command should throw an Error', () => {
@@ -29,7 +33,7 @@ test('Serializing an unsupported command should throw an Error', () => {
 test('Deserialize program', () => {
     const programSerializer = new ProgramSerializer();
     expect(programSerializer.deserialize('')).toStrictEqual([]);
-    expect(programSerializer.deserialize('f2f1r45')).toStrictEqual(['forward2', 'forward1', 'right45']);
+    expect(programSerializer.deserialize('21a')).toStrictEqual(['forward2', 'forward1', 'right45']);
 });
 
 test('Roundtrip program', () => {

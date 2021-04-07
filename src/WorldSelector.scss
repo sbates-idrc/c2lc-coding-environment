@@ -1,0 +1,54 @@
+@import 'variables';
+
+.WorldSelector {
+    background-color: #CCE6E2;
+    padding: 1rem;
+    min-height: 100%;
+}
+
+.WorldSelector .HeaderIcon, .WorldSelector .WorldIcon {
+    display: block;
+    height: 4rem;
+    width: 4rem;
+    padding: 0.2rem;
+}
+
+.WorldSelector .HeaderIcon {
+    background: none;
+}
+
+.WorldSelector .WorldIcon {
+    box-shadow: inset 0 .1rem .2rem rgba(0, 0, 0, 0.25);
+    background-color: white;
+    border: none;
+    padding: 0.4rem;
+    border-radius: 5px;
+
+    // TODO: Move this out of the conditional block once the header icon is reenabled.
+    &:not(:first-of-type) {
+        margin-top: 0.8rem;
+    }    
+}
+
+.WorldSelector .WorldIcon svg {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.WorldSelector .WorldIcon--selected {
+    background-color: #4C9990;
+}
+
+.WorldSelector button:focus {
+    box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
+}
+
+.WorldSelector button.btn:hover {
+    background-color: #F1AE5B;
+    padding-top: 0.25rem;
+    padding-left: 0.2rem;
+}
+
+.WorldSelector .btn-primary:not(:disabled):not(.disabled):active {
+    background-color: #F1AE5B;
+}

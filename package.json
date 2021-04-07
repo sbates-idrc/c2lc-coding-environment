@@ -1,6 +1,6 @@
 {
     "name": "c2lc-coding-environment",
-    "version": "0.4.0-dev",
+    "version": "0.7.0-dev",
     "private": true,
     "dependencies": {
         "bootstrap": "4.5.2",
@@ -37,6 +37,10 @@
             "build/"
         ],
         "rules": {
+            "indent": ["error", 4, {
+                "CallExpression": {"arguments": "off"},
+                "SwitchCase": 1
+            }],
             "no-trailing-spaces": "error",
             "no-unused-vars": "error",
             "no-var": "error",
@@ -49,10 +53,11 @@
             "!src/**/*.test.js",
             "!src/AddModeImage.js",
             "!src/App.js",
-            "!src/AudioManager.js",
+            "!src/AudioManagerImpl.js",
             "!src/DashDriver.js",
             "!src/DeleteModeImage.js",
             "!src/FakeRobotDriver.js",
+            "!src/FakeAudioManager.js",
             "!src/FeatureDetection.js",
             "!src/FocusTrapManager.js",
             "!src/MicMonitor.js",
@@ -63,7 +68,7 @@
         ],
         "coverageThreshold": {
             "global": {
-                "branches": 85,
+                "branches": 90,
                 "functions": 95,
                 "lines": 95,
                 "statements": 95

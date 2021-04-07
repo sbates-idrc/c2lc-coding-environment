@@ -12,13 +12,11 @@ type DeleteModeImageProps = {
 
 class DeleteModeImage extends React.Component<DeleteModeImageProps, {}> {
     render() {
-        return (
-            <span role='img'
-                  aria-label={this.props.intl.formatMessage({id: 'ProgramBlockEditor.editorAction.delete'})}
-                  className={this.props.className}>
-                <DeleteIcon/>
-            </span>
-        );
+        return (<span role='img'
+            aria-label={this.props.intl.formatMessage({id: 'ProgramBlockEditor.editorAction.delete'})}
+            className={this.props.className}>
+            <DeleteIcon/>
+        </span>);
     }
 }
 

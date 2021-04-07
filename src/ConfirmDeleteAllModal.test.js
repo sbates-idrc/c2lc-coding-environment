@@ -12,7 +12,7 @@ configure({ adapter: new Adapter()});
 
 function getOptionButtons(confirmDeleteAllModalWrapper) {
     return confirmDeleteAllModalWrapper.find(Button)
-        .filter('.ConfrimDeleteAllModal__option-button');
+        .filter('.ConfirmDeleteAllModal__option-button');
 }
 
 test('Check if buttons are calling right function from the props', () => {

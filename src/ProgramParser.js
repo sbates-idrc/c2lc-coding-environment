@@ -3,6 +3,7 @@
 import type { Program } from './types';
 
 type ProgramToken = 'forward1' | 'forward2' | 'forward3' |
+                    'backward1' | 'backward2' | 'backward3' |
                     'left45' | 'left90' | 'left180' |
                     'right45' | 'right90' | 'right180' |
                     'eof';
@@ -34,62 +35,46 @@ export default class ProgramParser {
 
     getToken(): ProgramToken {
         switch(this.ch) {
-            case 'eof':
-                return 'eof';
-            case 'f': {
+            case 'eof': return 'eof';
+            case '1':
                 this.nextCh();
-                const distance = this.getInteger();
-                switch(distance) {
-                    case 1:
-                        return 'forward1';
-                    case 2:
-                        return 'forward2';
-                    case 3:
-                        return 'forward3';
-                    default:
-                        throw new Error(`Bad forward distance: ${distance}`);
-                }
-            }
-            case 'l': {
+                return 'forward1';
+            case '2':
                 this.nextCh();
-                const angle = this.getInteger();
-                switch(angle) {
-                    case 45:
-                        return 'left45';
-                    case 90:
-                        return 'left90';
-                    case 180:
-                        return 'left180';
-                    default:
-                        throw new Error(`Bad turn left angle: ${angle}`);
-                }
-            }
-            case 'r': {
+                return 'forward2';
+            case '3':
                 this.nextCh();
-                const angle = this.getInteger();
-                switch(angle) {
-                    case 45:
-                        return 'right45';
-                    case 90:
-                        return 'right90';
-                    case 180:
-                        return 'right180';
-                    default:
-                        throw new Error(`Bad turn right angle: ${angle}`);
-                }
-            }
+                return 'forward3';
+            case '4':
+                this.nextCh();
+                return 'backward1';
+            case '5':
+                this.nextCh();
+                return 'backward2';
+            case '6':
+                this.nextCh();
+                return 'backward3';
+            case 'A':
+                this.nextCh();
+                return 'left45';
+            case 'B':
+                this.nextCh();
+                return 'left90';
+            case 'D':
+                this.nextCh();
+                return 'left180';
+            case 'a':
+                this.nextCh();
+                return 'right45';
+            case 'b':
+                this.nextCh();
+                return 'right90';
+            case 'd':
+                this.nextCh();
+                return 'right180';
             default:
                 throw new Error(`Unexpected character: ${this.ch}`);
         }
-    }
-
-    getInteger(): number {
-        let digits = '';
-        while (this.isDigit()) {
-            digits += this.ch;
-            this.nextCh();
-        }
-        return parseInt(digits, 10);
     }
 
     nextCh() {
@@ -99,9 +84,5 @@ export default class ProgramParser {
             this.ch = this.text.charAt(this.textIndex);
             this.textIndex += 1;
         }
-    }
-
-    isDigit(): boolean {
-        return (this.ch >= '0' && this.ch <= '9');
     }
 };

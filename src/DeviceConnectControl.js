@@ -35,7 +35,7 @@ class DeviceConnectControl extends React.Component<DeviceConnectControlProps, {}
                         <span
                             role='img'
                             aria-label={this.props.intl.formatMessage({id:'DeviceConnectControl.connecting'})}>
-                                <ConnectingIcon className='DeviceConnectControl__status-icon' />
+                            <ConnectingIcon className='DeviceConnectControl__status-icon' />
                         </span>
                     </span>
                 );

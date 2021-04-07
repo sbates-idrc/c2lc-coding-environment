@@ -1,72 +1,75 @@
 // @flow
 
+import {App} from './App';
 import Interpreter from './Interpreter';
-import type {CommandHandler} from './Interpreter';
+import ProgramSequence from './ProgramSequence';
 
-function makeIncrement(varName: string): CommandHandler {
-    return (interpreter: Interpreter) => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                interpreter.memory[varName] = interpreter.memory[varName] + 1;
-                resolve();
-            }, 0);
-        });
+jest.mock('./App');
+
+function createInterpreter() {
+    // $FlowFixMe: Flow doesn't know about the Jest mock API
+    App.mockClear();
+    const interpreter = new Interpreter(1000, new App());
+    // $FlowFixMe: Flow doesn't know about the Jest mock API
+    const appMock = App.mock.instances[0];
+    appMock.incrementProgramCounter.mockImplementation((callback) => {callback()});
+    return {
+        interpreter,
+        appMock
     };
 }
 
-test('New Interpreter has an empty program', () => {
-    const interpreter = new Interpreter(()=>{}, 1000);
-    expect(interpreter.program.length).toBe(0);
-    expect(interpreter.programCounter).toBe(0);
-});
+function createMockCommandHandler() {
+    const mockCommandHandler = jest.fn();
+    mockCommandHandler.mockImplementation(() => {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, 0);
+        });
+    });
+    return mockCommandHandler;
+}
 
 test('Stepping an empty program leaves the program counter at 0', (done) => {
-    const interpreter = new Interpreter(()=>{}, 1000);
-    expect(interpreter.programCounter).toBe(0);
-    interpreter.step().then(() => {
-        expect(interpreter.programCounter).toBe(0);
+    const { interpreter, appMock } = createInterpreter();
+    interpreter.step(new ProgramSequence([], 0)).then(() => {
+        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(0);
         done();
     });
 });
 
 test('Step a program with 1 command', (done) => {
-    const interpreter = new Interpreter(()=>{}, 1000);
-    interpreter.addCommandHandler('increment-x', 'test', makeIncrement('x'));
-    interpreter.setProgram(['increment-x']);
-    interpreter.memory.x = 10;
+    const { interpreter, appMock } = createInterpreter();
+    const mockCommandHandler = createMockCommandHandler();
+    interpreter.addCommandHandler('command', 'test', mockCommandHandler);
 
-    expect(interpreter.programCounter).toBe(0);
-    expect(interpreter.memory.x).toBe(10);
-    interpreter.step().then(() => {
-        expect(interpreter.programCounter).toBe(1);
-        expect(interpreter.memory.x).toBe(11);
+    interpreter.step(new ProgramSequence(['command'], 0)).then(() => {
+        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
         // Test step at end of program
-        interpreter.step().then(() => {
-            expect(interpreter.programCounter).toBe(1);
-            expect(interpreter.memory.x).toBe(11);
+        interpreter.step(new ProgramSequence(['command'], 1)).then(() => {
+            expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
+            expect(mockCommandHandler.mock.calls.length).toBe(1);
             done();
         });
     });
 });
 
 test('Step a program with 2 commands', (done) => {
-    const interpreter = new Interpreter(()=>{}, 1000);
-    interpreter.addCommandHandler('increment-x', 'test', makeIncrement('x'));
-    interpreter.setProgram(['increment-x', 'increment-x']);
-    interpreter.memory.x = 10;
+    const { interpreter, appMock } = createInterpreter();
+    const mockCommandHandler = createMockCommandHandler();
+    interpreter.addCommandHandler('command', 'test', mockCommandHandler);
 
-    expect(interpreter.programCounter).toBe(0);
-    expect(interpreter.memory.x).toBe(10);
-    interpreter.step().then(() => {
-        expect(interpreter.programCounter).toBe(1);
-        expect(interpreter.memory.x).toBe(11);
-        interpreter.step().then(() => {
-            expect(interpreter.programCounter).toBe(2);
-            expect(interpreter.memory.x).toBe(12);
+    interpreter.step(new ProgramSequence(['command', 'command'], 0)).then(() => {
+        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
+        expect(mockCommandHandler.mock.calls.length).toBe(1);
+        interpreter.step(new ProgramSequence(['command', 'command'], 1)).then(() => {
+            expect(appMock.incrementProgramCounter.mock.calls.length).toBe(2);
+            expect(mockCommandHandler.mock.calls.length).toBe(2);
             // Test step at end of program
-            interpreter.step().then(() => {
-                expect(interpreter.programCounter).toBe(2);
-                expect(interpreter.memory.x).toBe(12);
+            interpreter.step(new ProgramSequence(['command', 'command'], 2)).then(() => {
+                expect(appMock.incrementProgramCounter.mock.calls.length).toBe(2);
+                expect(mockCommandHandler.mock.calls.length).toBe(2);
                 done();
             });
         });
@@ -74,164 +77,144 @@ test('Step a program with 2 commands', (done) => {
 });
 
 test('Step a program with 2 handlers for the same command', (done) => {
-    const interpreter = new Interpreter(()=>{}, 1000);
-    interpreter.addCommandHandler('increment', 'x', makeIncrement('x'));
-    interpreter.addCommandHandler('increment', 'y', makeIncrement('y'));
-    interpreter.setProgram(['increment']);
-    interpreter.memory.x = 10;
-    interpreter.memory.y = 20;
+    const { interpreter, appMock } = createInterpreter();
+    const mockCommandHandler = createMockCommandHandler();
+    const anotherMockCommandHandler = createMockCommandHandler();
+    interpreter.addCommandHandler('command', 'test', mockCommandHandler);
+    interpreter.addCommandHandler('command', 'test2', anotherMockCommandHandler);
 
-    expect(interpreter.programCounter).toBe(0);
-    expect(interpreter.memory.x).toBe(10);
-    expect(interpreter.memory.y).toBe(20);
-    interpreter.step().then(() => {
-        expect(interpreter.programCounter).toBe(1);
-        expect(interpreter.memory.x).toBe(11);
-        expect(interpreter.memory.y).toBe(21);
+    interpreter.step(new ProgramSequence(['command'], 0)).then(() => {
+        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
+        expect(mockCommandHandler.mock.calls.length).toBe(1);
+        expect(anotherMockCommandHandler.mock.calls.length).toBe(1);
         done();
     });
 });
 
 test('Stepping a program with an unknown command rejects with Error', () => {
-    const interpreter = new Interpreter(()=>{}, 1000);
-    interpreter.setProgram(['unknown-command']);
+    const { interpreter } = createInterpreter();
 
-    return expect(interpreter.step()).rejects.toThrow('Unknown command: unknown-command');
+    return expect(interpreter.step(new ProgramSequence(['unknown-command'], 0)))
+        .rejects.toThrow('Unknown command: unknown-command');
 });
 
 test('Do a command without a program', (done) => {
-    const interpreter = new Interpreter(()=>{}, 1000);
-    interpreter.addCommandHandler('increment-x', 'test', makeIncrement('x'));
-    interpreter.setProgram([]);
-    interpreter.memory.x = 10;
+    const { interpreter, appMock } = createInterpreter();
+    const mockCommandHandler = createMockCommandHandler();
+    interpreter.addCommandHandler('command', 'test', mockCommandHandler);
 
-    expect(interpreter.programCounter).toBe(0);
-    expect(interpreter.memory.x).toBe(10);
-    interpreter.doCommand('increment-x').then(() => {
-        expect(interpreter.programCounter).toBe(0);
-        expect(interpreter.memory.x).toBe(11);
+    interpreter.doCommand('command').then(() => {
+        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(0);
         done();
     });
 });
 
 test('Do a command with a program', (done) => {
-    const interpreter = new Interpreter(()=>{}, 1000);
-    interpreter.addCommandHandler('increment-x', 'test', makeIncrement('x'));
-    interpreter.addCommandHandler('increment-y', 'test', makeIncrement('y'));
-    interpreter.setProgram(['increment-y']);
-    interpreter.memory.x = 10;
-    interpreter.memory.y = 20;
+    const { interpreter, appMock } = createInterpreter();
+    const mockCommandHandler = createMockCommandHandler();
+    const anotherMockCommandHandler = createMockCommandHandler();
+    interpreter.addCommandHandler('command', 'test', mockCommandHandler);
+    interpreter.addCommandHandler('anotherCommand', 'test', anotherMockCommandHandler);
 
-    expect(interpreter.programCounter).toBe(0);
-    expect(interpreter.memory.x).toBe(10);
-    expect(interpreter.memory.y).toBe(20);
     // Do a command independently of the program
-    interpreter.doCommand('increment-x').then(() => {
-        expect(interpreter.programCounter).toBe(0);
-        expect(interpreter.memory.x).toBe(11);
-        expect(interpreter.memory.y).toBe(20);
+    interpreter.doCommand('command').then(() => {
+        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(0);
         // Then step the program
-        interpreter.step().then(() => {
-            expect(interpreter.programCounter).toBe(1);
-            expect(interpreter.memory.x).toBe(11);
-            expect(interpreter.memory.y).toBe(21);
+        interpreter.step(new ProgramSequence(['anotherCommand'], 0)).then(() => {
+            expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
             done();
         });
     });
 });
 
 test('Doing an unknown command rejects with Error', () => {
-    const interpreter = new Interpreter(()=>{}, 1000);
-    return expect(interpreter.doCommand('unknown-command')).rejects.toThrow('Unknown command: unknown-command');
+    const { interpreter } = createInterpreter();
+    return expect(
+        interpreter.doCommand('unknown-command')
+    ).rejects.toThrow('Unknown command: unknown-command');
 });
 
-test('onRunningStateChange is called on run() empty program', (done) => {
-    const mockStateChangeHandler = jest.fn();
-    const interpreter = new Interpreter(mockStateChangeHandler, 1000);
-
-    interpreter.run([]).then(() => {
-        expect(mockStateChangeHandler.mock.calls.length).toBe(1);
-        expect(mockStateChangeHandler.mock.calls[0][0]).toStrictEqual({'isRunning': false, 'activeStep': null});
-        done();
+test('startRun() Promise is rejected on first command error', (done) => {
+    const { interpreter, appMock } = createInterpreter();
+    appMock.getRunningState.mockImplementation(() => {return 'running'});
+    appMock.getProgramSequence.mockImplementationOnce(() => {
+        return new ProgramSequence(['unknown-command1', 'unknown-command2'], 0);
     });
-});
-
-test('onRunningStateChange is called on run() program with one step', (done) => {
-    const mockStateChangeHandler = jest.fn();
-    const interpreter = new Interpreter(mockStateChangeHandler, 1000);
-    interpreter.addCommandHandler('step1', 'test', (interpreter) => {
-        return new Promise((resolve, reject) => {
-            expect(mockStateChangeHandler.mock.calls.length).toBe(1);
-            expect(mockStateChangeHandler.mock.calls[0][0]).toStrictEqual({'isRunning': true, 'activeStep': 0});
-            resolve();
-        });
-    });
-    interpreter.run(['step1']).then(() => {
-        expect(mockStateChangeHandler.mock.calls.length).toBe(2);
-        expect(mockStateChangeHandler.mock.calls[0][0]).toStrictEqual({'isRunning': true, 'activeStep': 0});
-        expect(mockStateChangeHandler.mock.calls[1][0]).toStrictEqual({'isRunning': false, 'activeStep': null});
-        done();
-    });
-});
-
-test('onRunningStateChange is called on run() program with two steps', (done) => {
-    const mockStateChangeHandler = jest.fn();
-    const interpreter = new Interpreter(mockStateChangeHandler, 1000);
-    interpreter.addCommandHandler('step1', 'test', (interpreter) => {
-        return new Promise((resolve, reject) => {
-            expect(mockStateChangeHandler.mock.calls.length).toBe(1);
-            expect(mockStateChangeHandler.mock.calls[0][0]).toStrictEqual({'isRunning': true, 'activeStep': 0});
-            resolve();
-        });
-    });
-    interpreter.addCommandHandler('step2', 'test', (interpreter) => {
-        return new Promise((resolve, reject) => {
-            expect(mockStateChangeHandler.mock.calls.length).toBe(2);
-            expect(mockStateChangeHandler.mock.calls[1][0]).toStrictEqual({'isRunning': true, 'activeStep': 1});
-            resolve();
-        });
-    });
-    interpreter.run(['step1', 'step2']).then(() => {
-        expect(mockStateChangeHandler.mock.calls.length).toBe(3);
-        expect(mockStateChangeHandler.mock.calls[0][0]).toStrictEqual({'isRunning': true, 'activeStep': 0});
-        expect(mockStateChangeHandler.mock.calls[1][0]).toStrictEqual({'isRunning': true, 'activeStep': 1});
-        expect(mockStateChangeHandler.mock.calls[2][0]).toStrictEqual({'isRunning': false, 'activeStep': null});
-        done();
-    });
-});
-
-test('Do not continue through program if stop is called', (done) => {
-    const mockStateChangeHandler = jest.fn();
-    const interpreter = new Interpreter(mockStateChangeHandler, 1000);
-    interpreter.addCommandHandler('step1', 'test', (interpreter) => {
-        return new Promise((resolve, reject) => {
-            expect(mockStateChangeHandler.mock.calls.length).toBe(1);
-            expect(mockStateChangeHandler.mock.calls[0][0]).toStrictEqual({'isRunning': true, 'activeStep': 0});
-            // call stop
-            interpreter.stop();
-            resolve();
-        });
-    });
-    interpreter.addCommandHandler('step2', 'test', (interpreter) => {
-        // This step is not executed, as stop is called in step1
-        return Promise.reject();
-    });
-    interpreter.run(['step1', 'step2']).then(() => {
-        expect(mockStateChangeHandler.mock.calls.length).toBe(2);
-        expect(mockStateChangeHandler.mock.calls[0][0]).toStrictEqual({'isRunning': true, 'activeStep': 0});
-        expect(mockStateChangeHandler.mock.calls[1][0]).toStrictEqual({'isRunning': false, 'activeStep': null});
-        done();
-    });
-});
-
-test('run() Promise is rejected on first command error', (done) => {
-    const mockStateChangeHandler = jest.fn();
-    const interpreter = new Interpreter(mockStateChangeHandler, 1000);
-    interpreter.run(['unknown-command1', 'unknown-command2']).then(() => {}, (error: Error) => {
+    interpreter.startRun().catch((error) => {
+        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(0);
         expect(error.message).toBe('Unknown command: unknown-command1');
-        expect(mockStateChangeHandler.mock.calls.length).toBe(2);
-        expect(mockStateChangeHandler.mock.calls[0][0]).toStrictEqual({'isRunning': true, 'activeStep': 0});
-        expect(mockStateChangeHandler.mock.calls[1][0]).toStrictEqual({'isRunning': false, 'activeStep': null});
+        done();
+    });
+});
+
+test('Run a program with one command from beginning to end without an error', (done) => {
+    const { interpreter, appMock } = createInterpreter();
+    const mockCommandHandler = createMockCommandHandler();
+    interpreter.addCommandHandler('command', 'test', mockCommandHandler);
+
+    appMock.getRunningState.mockImplementation(() => {return 'running'});
+    appMock.getProgramSequence.mockImplementationOnce(() => {
+        return new ProgramSequence(['command'], 0)
+    });
+    appMock.getProgramSequence.mockImplementationOnce(() => {
+        return new ProgramSequence(['command'], 1)
+    });
+
+    interpreter.startRun().then(() => {
+        expect(mockCommandHandler.mock.calls.length).toBe(1);
+        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
+        expect(appMock.setRunningState.mock.calls.length).toBe(1);
+        expect(appMock.setRunningState.mock.calls[0][0]).toBe('stopped');
+        done();
+    });
+});
+
+test('Run a program with three commands from beginning to end without an error', (done) => {
+    const { interpreter, appMock } = createInterpreter();
+    const mockCommandHandler = createMockCommandHandler();
+    interpreter.addCommandHandler('command', 'test', mockCommandHandler);
+
+    appMock.getRunningState.mockImplementation(() => {return 'running'});
+    appMock.getProgramSequence.mockImplementationOnce(() => {
+        return new ProgramSequence(['command', 'command', 'command'], 0)
+    });
+    appMock.getProgramSequence.mockImplementationOnce(() => {
+        return new ProgramSequence(['command', 'command', 'command'], 1)
+    });
+    appMock.getProgramSequence.mockImplementationOnce(() => {
+        return new ProgramSequence(['command', 'command', 'command'], 2)
+    });
+    appMock.getProgramSequence.mockImplementationOnce(() => {
+        return new ProgramSequence(['command', 'command', 'command'], 3)
+    });
+
+    interpreter.startRun().then(() => {
+        expect(mockCommandHandler.mock.calls.length).toBe(3);
+        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(3);
+        expect(appMock.setRunningState.mock.calls.length).toBe(1);
+        expect(appMock.setRunningState.mock.calls[0][0]).toBe('stopped');
+        done();
+    });
+});
+
+test('Do not continue through program if runningState changes to stopped', (done) => {
+    const { interpreter, appMock } = createInterpreter();
+    const mockCommandHandler = createMockCommandHandler();
+    const anotherMockCommandHandler = createMockCommandHandler();
+    interpreter.addCommandHandler('command', 'test', mockCommandHandler);
+    interpreter.addCommandHandler('anotherCommand', 'test', anotherMockCommandHandler);
+
+    appMock.getRunningState.mockImplementationOnce(() => {return 'running'});
+    appMock.getRunningState.mockImplementationOnce(() => {return 'stopped'});
+
+    appMock.getProgramSequence.mockImplementationOnce(() => {
+        return new ProgramSequence(['command', 'anotherCommand'], 0)
+    });
+
+    interpreter.startRun().then(() => {
+        expect(mockCommandHandler.mock.calls.length).toBe(1);
+        expect(anotherMockCommandHandler.mock.calls.length).toBe(0);
+        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
         done();
     });
 });
@@ -239,7 +222,7 @@ test('run() Promise is rejected on first command error', (done) => {
 test('Should initiallize stepTime value from constructor and update on setStepTime', () => {
     expect.assertions(2);
     const initialStepTimeValue = 1000;
-    const interpreter = new Interpreter(() => {}, initialStepTimeValue);
+    const interpreter = new Interpreter(initialStepTimeValue, new App());
     expect(interpreter.stepTimeMs).toBe(initialStepTimeValue);
 
     const newStepTimeValue = 2000;
@@ -248,17 +231,42 @@ test('Should initiallize stepTime value from constructor and update on setStepTi
 });
 
 test('Each command handler get called with step time specified in the class property', () => {
-    const mockCommandHandler = jest.fn();
-    const interpreter = new Interpreter(()=>{}, 1000);
-    interpreter.addCommandHandler('test', 'test', mockCommandHandler);
-    interpreter.doCommand('test');
+    const { interpreter } = createInterpreter();
+    const mockCommandHandler = createMockCommandHandler();
+    interpreter.addCommandHandler('command', 'test', mockCommandHandler);
+    interpreter.doCommand('command');
     expect(mockCommandHandler.mock.calls.length).toBe(1);
-    expect(mockCommandHandler.mock.calls[0][1]).toBe(interpreter.stepTimeMs);
+    expect(mockCommandHandler.mock.calls[0][1]).toBe(1000);
 
     const newStepTimeValue = 2000;
     interpreter.setStepTime(newStepTimeValue);
     expect(interpreter.stepTimeMs).toBe(newStepTimeValue);
-    interpreter.doCommand('test');
+    interpreter.doCommand('command');
     expect(mockCommandHandler.mock.calls.length).toBe(2);
-    expect(mockCommandHandler.mock.calls[1][1]).toBe(interpreter.stepTimeMs);
-})
+    expect(mockCommandHandler.mock.calls[1][1]).toBe(newStepTimeValue);
+});
+
+test('ContinueRun will not continue, when continueRunActive property of Interpreter is set to true, ', (done) => {
+    const { interpreter, appMock } = createInterpreter();
+    interpreter.continueRunActive = true;
+    interpreter.startRun().then(() => {
+        expect(appMock.getRunningState.mock.calls.length).toBe(0);
+        done();
+    })
+});
+
+test('When runningState is stopRequested or pauseRequested, call setRunningState in App', (done) => {
+    const { interpreter, appMock } =createInterpreter();
+    appMock.getRunningState.mockImplementationOnce(() => {return 'stopRequested'});
+    appMock.getRunningState.mockImplementationOnce(() => {return 'pauseRequested'});
+    interpreter.startRun().then(() => {
+        expect(appMock.setRunningState.mock.calls.length).toBe(1);
+        expect(appMock.setRunningState.mock.calls[0][0]).toBe('stopped');
+        done();
+    });
+    interpreter.startRun().then(() => {
+        expect(appMock.setRunningState.mock.calls.length).toBe(2);
+        expect(appMock.setRunningState.mock.calls[1][0]).toBe('paused');
+        done();
+    });
+});

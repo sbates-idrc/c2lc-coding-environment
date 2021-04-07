@@ -8,10 +8,10 @@ function checkFocusTrapProps(
     trapCloseHandler: () => void,
     elementSelectors: Array<string>,
     returnElementSelector: ?string) {
-        expect(focusTrapManager).toHaveProperty('active', active);
-        expect(focusTrapManager).toHaveProperty('elementSelectors', elementSelectors);
-        expect(focusTrapManager).toHaveProperty('onFocusTrapClosed');
-        expect(focusTrapManager).toHaveProperty('returnElementSelector', returnElementSelector);
+    expect(focusTrapManager).toHaveProperty('active', active);
+    expect(focusTrapManager).toHaveProperty('elementSelectors', elementSelectors);
+    expect(focusTrapManager).toHaveProperty('onFocusTrapClosed');
+    expect(focusTrapManager).toHaveProperty('returnElementSelector', returnElementSelector);
 }
 
 function mockSetFocusTrap(focusTrapManager, elementSelectors, returnElementSelector) {
