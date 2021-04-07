@@ -87,7 +87,7 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
     constructor (props: ActionsMenuProps) {
         super(props);
         this.focusTrapManager = new FocusTrapManager();
-        this.focusTrapManager.setFocusTrap(this.handleCloseActionMenuFocusTrap, [".focus-trap-ActionsMenu__menu", ".focus-trap-ActionsMenuItem__checkbox"], ".focus-trap-ActionsMenu__toggle-button");
+        this.focusTrapManager.setFocusTrap(this.handleCloseActionMenuFocusTrap, [".focus-trap-ActionsMenuItem__checkbox"], ".focus-trap-ActionsMenu__toggle-button");
         this.state = { showMenu: false };
     }
 
@@ -99,7 +99,7 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
                         <FormattedMessage id='ActionsMenu.title' />
                     </h2>
                     <ActionsMenuToggle
-                        className='ActionsMenu__header-toggle  focus-trap-ActionsMenu__header-toggle'
+                        className='ActionsMenu__header-toggle'
                         intl={this.props.intl}
                         editingDisabled={!!this.props.editingDisabled}
                         handleShowHideMenu={this.showHideMenu}
@@ -129,7 +129,7 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
     generateMenu = () => {
         const actionsMenuItems = [];
         // TODO: Discuss how to evolve this into a deeper structure when we add groups and things other than actions.
-        Object.keys(this.props.menuItems).forEach((itemKey: string, itemNumber: number) => {
+        Object.keys(this.props.menuItems).forEach((itemKey: string) => {
             const isAllowed: boolean = !!this.props.allowedActions[itemKey];
             const isUsed: boolean = !!this.props.usedActions[itemKey];
             // TODO: Add a mechanism for values to come back to us.
@@ -155,7 +155,7 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
             <div className="focus-escape-ActionsMenu" onClick={this.showHideMenu}/>
             <div
                 id="ActionsMenu"
-                className="ActionsMenu__menu focus-trap-ActionsMenu__menu"
+                className="ActionsMenu__menu"
                 onKeyDown={this.focusTrapManager.handleKeyDown}
             >
                 {actionsMenuItems}

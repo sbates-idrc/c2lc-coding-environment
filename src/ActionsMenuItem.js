@@ -15,13 +15,6 @@ type ActionsMenuItemProps = {
 }
 
 export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} > {
-    checkboxRef: { current: null | HTMLInputElement };
-
-    constructor (props: ActionsMenuItemProps) {
-        super(props);
-        this.checkboxRef = React.createRef();
-    }
-
     render () {
         // We don't use FormattedMessage as we are working with a complex chain of templates.
         const commandName = this.props.intl.formatMessage({ id: `Command.${this.props.itemKey}` });
@@ -57,7 +50,6 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
                         checked={this.props.isAllowed}
                         aria-disabled={this.props.isUsed}
                         onChange={this.props.onChange}
-                        ref={this.checkboxRef}
                     />
                     <label htmlFor={commandNameShort} className="ActionsMenuItem__option-label">
                         {showHideLabel}
