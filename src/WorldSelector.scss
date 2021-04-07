@@ -3,8 +3,6 @@
 .WorldSelector {
     background-color: #CCE6E2;
     padding: 1rem;
-    border: 1px solid grey;
-    border-radius: 3px;
     min-height: 100%;
 }
 
@@ -23,9 +21,13 @@
     box-shadow: inset 0 .1rem .2rem rgba(0, 0, 0, 0.25);
     background-color: white;
     border: none;
-    margin-top: 0.8rem;
     padding: 0.4rem;
     border-radius: 5px;
+
+    // TODO: Move this out of the conditional block once the header icon is reenabled.
+    &:not(:first-of-type) {
+        margin-top: 0.8rem;
+    }    
 }
 
 .WorldSelector .WorldIcon svg {

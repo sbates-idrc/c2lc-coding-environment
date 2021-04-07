@@ -21,7 +21,7 @@ body.light-theme {
     .App__container {
         background-color: #FFF;
     }
-    
+
     .App__header {
         background-color: #FFF;
         color: #000;
@@ -60,7 +60,7 @@ body.light-theme {
             }
             circle, path.filled {
                 fill: white;
-            }                                            
+            }
         }
 
         &.command-block--pressed {
@@ -166,7 +166,7 @@ body.light-theme {
             }
         }
     }
-       
+
     button.btn.ActionPanel__action-buttons {
         background-color: #D5D8DD;
         svg {
@@ -177,7 +177,7 @@ body.light-theme {
                 fill: #505862;
             }
         }
-    
+
         &:hover, &:focus:not(:disabled) {
             background-color: #505862;
             svg {
@@ -189,14 +189,14 @@ body.light-theme {
                 }
             }
         }
-    
+
         &:focus {
             box-shadow:
                 0 0 0 0.1rem #F1F2F4,
                 0 0 0 $c2lc-focus-indicator-width black;
         }
     }
-    
+
     button.btn.ActionPanel__action-buttons--disabled {
         background-color: #D5D8DD;
         svg {
@@ -230,7 +230,7 @@ body.light-theme {
                 stroke: #505862;
             }
         }
-    
+
         &:hover {
             background-color: #e5e5e5;
         }
@@ -268,7 +268,7 @@ body.dark-theme {
         background-color: #18252C;
     }
 
-    .AudioFeedbackToggleSwitch {    
+    .AudioFeedbackToggleSwitch {
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
         }
@@ -306,7 +306,7 @@ body.dark-theme {
             box-shadow:
                 0 0 0 0.1rem white;
         }
-    
+
         svg line {
             stroke: white;
         }
@@ -335,6 +335,10 @@ body.dark-theme {
     }
 
     .Scene__background {
+        background-color: #33717F;
+    }
+
+    .Scene__header-corner {
         background-color: #33717F;
     }
 
@@ -373,17 +377,17 @@ body.dark-theme {
     .WorldSelector {
         background-color: #33717F;
         border: 1px solid #33717F;
-    }    
-    
+    }
+
     .WorldSelector .WorldIcon:not(:hover):not(:active):not(.WorldIcon--selected):not(:focus) {
         background-color: #30444E;
         box-shadow: inset 0 .1rem .2rem rgba(0, 0, 0, 0.5);
-    }   
-   
+    }
+
     .WorldSelector button:focus {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
-    
+
     .WorldSelector button:focus:not(:hover):not(:active):not(.WorldIcon--selected) {
         background-color: #30444E;
     }
@@ -401,17 +405,17 @@ body.dark-theme {
         background-color: #30444E;
     }
 
-    .ProgramBlockEditor__header {        
+    .ProgramBlockEditor__header {
         background-color: #33717F;
         color: #EBFAF8;
     }
 
     .ProgramBlockEditor__add-node-toggle-switch:focus {
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;    
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
 
     button.btn.ProgramBlockEditor__program-deleteAll-button:focus {
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;    
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
 
     }
 
@@ -492,31 +496,31 @@ body.gray-theme {
     .App__container {
         background-color: #FFF;
     }
-    
+
     .App__header {
         background-color: #FFF;
         color: #000;
     }
-    
+
     .ThemeSelector {
         button.btn {
             background-color: #F1F2F4;
             border-color: #F1F2F4;
             color: black;
-    
+
             &:hover:not(:active) {
                 background: #505862;
                 color: White;
-            
+
             }
-    
+
             &:focus {
                 box-shadow:
                     0 0 0 0.1rem white,
                     0 0 0 $c2lc-focus-indicator-width #505862
             }
         }
-    
+
         button.btn-primary {
             &:not(:disabled):not(.disabled):active {
                 background-color: #B9BEC6;
@@ -527,7 +531,7 @@ body.gray-theme {
     .App__command-palette {
         background-color: #F1F2F4;
     }
-    
+
     .App__command-palette-command-container {
         &::-webkit-scrollbar {
             background-color: #F1F2F4;
@@ -602,7 +606,7 @@ body.gray-theme {
 
         &:not(:disabled):not(.disabled):active {
             background-color: #818A98;
-            border-color: #818A98;            
+            border-color: #818A98;
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
     }
@@ -612,6 +616,10 @@ body.gray-theme {
     }
 
     .Scene__background {
+        background-color: #D5D8DD;
+    }
+
+    .Scene__header-corner {
         background-color: #D5D8DD;
     }
 
@@ -637,13 +645,13 @@ body.gray-theme {
                     stroke: #818A98;
                 }
             }
-        }        
+        }
 
 
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
-        
+
         &:hover {
             background-color: #505862;
             .ToggleSwitch__switch-inner-circle {
@@ -676,7 +684,7 @@ body.gray-theme {
         border: 1px solid #D5D8DD;
     }
 
-    .WorldSelector svg.HeaderIcon { 
+    .WorldSelector svg.HeaderIcon {
         circle {
             fill: #818A98;
         }
@@ -692,7 +700,7 @@ body.gray-theme {
     .ProgramBlockEditor__character-position-button {
         stroke: #818A98;
     }
-    
+
     .ProgramBlockEditor__character-turn-positions {
         svg path.filled {
             fill: #818A98;
@@ -719,7 +727,7 @@ body.gray-theme {
 
         svg path {
             stroke: #505862;
-        }        
+        }
     }
 
     .ProgramBlockEditor__container {
@@ -736,8 +744,8 @@ body.gray-theme {
             background-color: #505862;
             .ToggleSwitch__switch-inner-circle {
                 background-color: #B9BEC6;
-            }  
-    
+            }
+
         }
 
         svg path {
@@ -769,18 +777,18 @@ body.gray-theme {
         border-color: #F1F2F4;
         color: black;
 
-   
+
         &:hover {
             background: #505862;
             color: White;
         }
-    
+
         &:focus {
             box-shadow:
                 0 0 0 0.1rem white,
-                0 0 0 $c2lc-focus-indicator-width #505862            
+                0 0 0 $c2lc-focus-indicator-width #505862
         }
-    
+
         &.btn-primary {
             &:not(:disabled):not(.disabled):active {
                 background-color: #B9BEC6;
@@ -796,7 +804,7 @@ body.gray-theme {
         background-color: #F1F2F4;
         border-right: 1px solid #9DA4AF;
     }
-    
+
     .ProgramBlockEditor__program-sequence-scroll-container {
         background-color: white;
         margin-left: 0.1rem;
@@ -837,10 +845,10 @@ body.gray-theme {
             }
         }
     }
-    
+
     button.btn.ActionPanel__action-buttons {
         background-color: #D5D8DD;
-    
+
         svg {
             path.stroked {
                 stroke: #505862;
@@ -849,7 +857,7 @@ body.gray-theme {
                 fill: #505862;
             }
         }
-    
+
         &:hover, &:focus {
             background-color: #505862;
 
@@ -861,8 +869,8 @@ body.gray-theme {
                     fill: #F1F2F4;
                 }
             }
-        }    
-   
+        }
+
         &:focus {
             box-shadow:
                 0 0 0 0.1rem #30444E,
@@ -870,7 +878,7 @@ body.gray-theme {
                 0 0 0 0.3rem #30444E;
         }
     }
-    
+
     button.btn.ActionPanel__action-buttons--disabled {
         svg {
             path.stroked {
@@ -900,7 +908,7 @@ body.gray-theme {
 
     button.btn.PlayButton, button.btn.StopButton {
         box-shadow: none;
-        
+
         svg {
             path.inner-circle {
                 fill: white;
@@ -915,7 +923,7 @@ body.gray-theme {
 
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
-            border: none;    
+            border: none;
         }
 
         &:hover {
@@ -947,7 +955,7 @@ body.gray-theme {
     }
 
     .ProgramSpeedController__container svg path {
-        fill: #67717E;    
+        fill: #67717E;
     }
 
     .ProgramSpeedController__slider {
@@ -970,17 +978,17 @@ body.gray-theme {
         }
 
         &::-moz-range-progress {
-            background-color: white; 
+            background-color: white;
         }
         &::-moz-range-track {
             background-color: #67717E;
         }
 
         &::-ms-fill-lower {
-            background-color: white; 
+            background-color: white;
         }
 
-        &::-ms-fill-upper {  
+        &::-ms-fill-upper {
             background-color: #67717E;
         }
 
@@ -993,13 +1001,13 @@ body.gray-theme {
                 background-color: #9DA4AF;
                 box-shadow: -8rem 0 0 8rem #9DA4AF;
             }
-    
+
             &::-moz-range-progress {
-                background-color: #9DA4AF; 
+                background-color: #9DA4AF;
             }
-    
+
             &::-ms-fill-lower {
-                background-color: #9DA4AF; 
+                background-color: #9DA4AF;
             }
         }
 
@@ -1012,7 +1020,7 @@ body.gray-theme {
     button.btn.PlayButton--play.PlayButton--disabled {
         background-color: inherit;
         cursor: default;
-    
+
         svg {
             path.triangle {
                 fill: #30444E;
@@ -1032,7 +1040,7 @@ body.gray-theme {
             box-shadow:
                 0 0 0 0.15rem #d5d8dd,
                 0 0 0 0.25rem #505862;
-        }        
+        }
     }
 }
 
@@ -1043,7 +1051,7 @@ body.contrast-theme {
     .App__container {
         background-color: black;
     }
-    
+
     .App__header {
         background-color: black;
         color: white;
@@ -1054,13 +1062,13 @@ body.contrast-theme {
             background-color: white;
             color: black;
             border-color: white;
-    
+
             &:hover:not(:active) {
                 background-color: black;
                 border: 2px solid white;
                 color: white;
             }
-    
+
             &:focus {
                 box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
             }
@@ -1069,7 +1077,7 @@ body.contrast-theme {
                 border: 2px solid black;
             }
         }
-    
+
         button.btn-primary {
             &:not(:disabled):not(.disabled):active {
                 background-color: white;
@@ -1082,12 +1090,12 @@ body.contrast-theme {
         background-color: black;
         border: 2px solid white;
         padding: 0.2rem;
-    
+
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
             border: 2px solid black;
         }
-    
+
         .ToggleSwitch__switch-inner-circle {
             background-color: white;
             svg {
@@ -1109,11 +1117,11 @@ body.contrast-theme {
             }
         }
     }
-    
+
     .AudioFeedbackToggleSwitch.ToggleSwitch--checked:not(:hover) {
         background-color: black;
         border: 2px solid white;
-    
+
         .ToggleSwitch__switch-inner-circle {
             background-color: white;
             svg {
@@ -1167,7 +1175,7 @@ body.contrast-theme {
             }
             circle, path.filled {
                 fill: black;
-            }                        
+            }
         }
 
         &:hover {
@@ -1181,7 +1189,7 @@ body.contrast-theme {
                 }
                 circle, path.filled {
                     fill: white;
-                }                        
+                }
             }
         }
 
@@ -1189,7 +1197,7 @@ body.contrast-theme {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
         }
 
-        &:focus:not(:hover),     
+        &:focus:not(:hover),
         &:active,
         &:not(:disabled):not(.disabled):active,
         &.command-block--pressed,
@@ -1203,7 +1211,7 @@ body.contrast-theme {
         &:not(:disabled):not(.disabled):active {
             background-color: black;
         }
-    }    
+    }
 
     button.ProgramBlockEditor__program-block--active {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
@@ -1220,6 +1228,10 @@ body.contrast-theme {
     }
 
     .Scene__background {
+        background-color: white;
+    }
+
+    .Scene__header-corner {
         background-color: white;
     }
 
@@ -1294,12 +1306,12 @@ body.contrast-theme {
         background-color: black;
         border: 1px solid white;
 
-        svg.HeaderIcon { 
+        svg.HeaderIcon {
             circle {
                 fill: white;
             }
         }
-    
+
         button.btn:hover {
             background-color: white;
         }
@@ -1320,7 +1332,7 @@ body.contrast-theme {
         }
 
         .btn-primary:not(:disabled):not(.disabled):active {
-            background-color: white;            
+            background-color: white;
         }
     }
 
@@ -1337,9 +1349,9 @@ body.contrast-theme {
         stroke: white;
         &:focus {
             outline: $c2lc-focus-indicator-width solid white;
-        }        
+        }
     }
-    
+
     .ProgramBlockEditor__character-turn-positions {
         svg path.filled {
             fill: white;
@@ -1402,18 +1414,18 @@ body.contrast-theme {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
         }
     }
-    
+
     button.btn.ConfirmDeleteAllModal__option-button {
         background-color: black;
         color: white;
-        border-color: white;       
-   
+        border-color: white;
+
         &:focus {
             box-shadow:
                 0 0 0 0.1rem white,
                 0 0 0 0.2rem black;
         }
-    
+
         &:hover {
             background-color: white;
             color: black;
@@ -1421,9 +1433,9 @@ body.contrast-theme {
         }
 
         &:hover:focus {
-            box-shadow: 0 0 0 0.2rem black;            
+            box-shadow: 0 0 0 0.2rem black;
         }
-   
+
         &.btn-primary {
             &:not(:disabled):not(.disabled):active {
                 background-color: white;
@@ -1503,10 +1515,10 @@ body.contrast-theme {
             }
         }
     }
-    
+
     button.btn.ActionPanel__action-buttons {
         background-color: black;
-    
+
         svg {
             path.stroked {
                 stroke: white;
@@ -1515,7 +1527,7 @@ body.contrast-theme {
                 fill: white;
             }
         }
-    
+
         &:hover {
             border: 1px solid black;
             background-color: white;
@@ -1527,8 +1539,8 @@ body.contrast-theme {
                     fill: black;
                 }
             }
-        }    
-   
+        }
+
         &:focus {
             box-shadow:
                 0 0 0 0.1rem #30444E,
@@ -1536,7 +1548,7 @@ body.contrast-theme {
                 0 0 0 0.3rem #30444E;
         }
     }
-    
+
     button.btn.ActionPanel__action-buttons--disabled {
         svg {
             path.stroked {
@@ -1622,7 +1634,7 @@ body.contrast-theme {
         }
 
         &::-moz-range-progress {
-            background-color: white; 
+            background-color: white;
         }
 
         &::-moz-range-track {
@@ -1630,10 +1642,10 @@ body.contrast-theme {
         }
 
         &::-ms-fill-lower {
-            background-color: white; 
+            background-color: white;
         }
 
-        &::-ms-fill-upper {  
+        &::-ms-fill-upper {
             background-color: black;
         }
 
@@ -1646,13 +1658,13 @@ body.contrast-theme {
                 background-color: #9DA4AF;
                 box-shadow: -8rem 0 0 8rem #9DA4AF;
             }
-    
+
             &::-moz-range-progress {
-                background-color: #9DA4AF; 
+                background-color: #9DA4AF;
             }
-    
+
             &::-ms-fill-lower {
-                background-color: #9DA4AF; 
+                background-color: #9DA4AF;
             }
         }
     }
@@ -1663,7 +1675,7 @@ body.contrast-theme {
                 0 0 0 0.1rem white,
                 0 0 0 0.2rem black;
         }
-    
+
         &:hover {
             background-color: white;
             color: black;
@@ -1671,7 +1683,7 @@ body.contrast-theme {
         }
 
         &:hover:focus {
-            box-shadow: 0 0 0 0.2rem black;            
+            box-shadow: 0 0 0 0.2rem black;
         }
     }
 }

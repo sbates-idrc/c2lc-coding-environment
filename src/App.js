@@ -95,7 +95,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '0.6';
+        this.version = '0.7';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -126,7 +126,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.forward(1, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -146,7 +146,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.forward(2, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -166,7 +166,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.forward(3, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -185,7 +185,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.backward(1, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -204,7 +204,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.backward(2, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -223,7 +223,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.backward(3, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -245,7 +245,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnLeft(1);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left", soundTime, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("left", soundTime, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -268,7 +268,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnLeft(2);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left", soundTime, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("left", soundTime, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -288,7 +288,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnLeft(4);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left", stepTimeMs,  newCharacterState);
+                    this.audioManager.playSoundForCharacterState("left", stepTimeMs,  newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -311,7 +311,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnRight(1);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right", soundTime, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("right", soundTime, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -334,7 +334,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnRight(2);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right", soundTime, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("right", soundTime, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -354,7 +354,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnRight(4);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right", stepTimeMs, newCharacterState);
+                    this.audioManager.playSoundForCharacterState("right", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -768,12 +768,6 @@ export class App extends React.Component<AppProps, AppState> {
                             intl={this.props.intl}
                             usedActions={this.state.usedActions}
                         />
-                        <h2 className='App__command-palette-heading App__commandpalette-heading-long'>
-                            <FormattedMessage id='CommandPalette.movementsTitle' />
-                        </h2>
-                        <h2 className='App__command-palette-heading App__commandpalette-heading-short'>
-                            <FormattedMessage id='CommandPalette.shortMovementsTitle' />
-                        </h2>
                         <div className='App__command-palette-command-container'>
                             <div className='App__command-palette-commands'>
                                 {this.renderCommandBlocks()}
@@ -781,6 +775,9 @@ export class App extends React.Component<AppProps, AppState> {
                         </div>
                     </div>
                     <div className='App__scene-container'>
+                        <h2 className='sr-only' >
+                            <FormattedMessage id='Scene.heading' />
+                        </h2>
                         <Scene
                             dimensions={this.state.sceneDimensions}
                             characterState={this.state.characterState}
@@ -802,6 +799,9 @@ export class App extends React.Component<AppProps, AppState> {
                         </div>
                     </div>
                     <div className="App__world-selector-container">
+                        <h2 className='sr-only' >
+                            <FormattedMessage id='WorldSelector.heading' />
+                        </h2>
                         <WorldSelector
                             disabled={this.state.runningState === 'running'}
                             world={this.state.settings.world}
@@ -831,9 +831,11 @@ export class App extends React.Component<AppProps, AppState> {
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
                         />
                     </div>
-                    <div className='App__playAndShare-bumper'/>
                     <div className='App__playAndShare-background' />
                     <div className='App__playAndShare-container'>
+                        <h2 className='sr-only' >
+                            <FormattedMessage id='PlayControls.heading' />
+                        </h2>
                         <div className='App__playControl-container'>
                             <div className='App__playButton-container'>
                                 <PlayButton
@@ -880,25 +882,46 @@ export class App extends React.Component<AppProps, AppState> {
             const themeQuery = params.getTheme();
             const allowedActionsQuery = params.getAllowedActions();
             const worldQuery = params.getWorld();
-            // const themeQuery = params.getTheme();
-            if (programQuery != null && characterStateQuery != null && allowedActionsQuery != null) {
+
+            if (programQuery != null) {
                 try {
                     const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(programQuery), 0);
                     const usedActions: ActionToggleRegister = this.calculateUsedActions(programSequence);
 
                     this.setState({
                         programSequence: programSequence,
-                        characterState: this.characterStateSerializer.deserialize(characterStateQuery),
-                        allowedActions: this.allowedActionsSerializer.deserialize(allowedActionsQuery),
                         usedActions: usedActions
                     });
                 } catch(err) {
-                    console.log(`Error parsing program: ${programQuery} or characterState: ${characterStateQuery}`);
+                    console.log(`Error parsing program: ${programQuery}`);
                     console.log(err.toString());
                 }
             }
+
+            if (characterStateQuery != null) {
+                try {
+                    this.setState({
+                        characterState: this.characterStateSerializer.deserialize(characterStateQuery)
+                    });
+                } catch(err) {
+                    console.log(`Error parsing characterState: ${characterStateQuery}`);
+                    console.log(err.toString());
+                }
+            }
+
+            if (allowedActionsQuery != null) {
+                try {
+                    this.setState({
+                        allowedActions: this.allowedActionsSerializer.deserialize(allowedActionsQuery)
+                    });
+                } catch(err) {
+                    console.log(`Error parsing allowed actions: ${allowedActionsQuery}`);
+                    console.log(err.toString());
+                }
+            }
+
             this.setStateSettings({
-                theme: Utils.getThemeFromString(themeQuery, 'light'),
+                theme: Utils.getThemeFromString(themeQuery, 'mixed'),
                 world: Utils.getWorldFromString(worldQuery, 'default')
             });
         } else {
@@ -907,23 +930,45 @@ export class App extends React.Component<AppProps, AppState> {
             const localTheme = window.localStorage.getItem('c2lc-theme');
             const localAllowedActions = window.localStorage.getItem('c2lc-allowedActions');
             const localWorld = window.localStorage.getItem('c2lc-world');
-            if (localProgram != null && localCharacterState != null) {
+            if (localProgram != null) {
                 try {
                     const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(localProgram), 0);
                     const usedActions: ActionToggleRegister = this.calculateUsedActions(programSequence);
                     this.setState({
                         programSequence: programSequence,
-                        characterState: this.characterStateSerializer.deserialize(localCharacterState),
-                        allowedActions: this.allowedActionsSerializer.deserialize(localAllowedActions),
                         usedActions: usedActions
                     });
                 } catch(err) {
-                    console.log(`Error parsing program: ${localProgram} or characterState: ${localCharacterState}`);
+                    console.log(`Error parsing program: ${localProgram}`);
                     console.log(err.toString());
                 }
             }
+
+            if (localCharacterState != null) {
+                try {
+                    this.setState({
+                        characterState: this.characterStateSerializer.deserialize(localCharacterState)
+                    });
+                } catch(err) {
+                    console.log(`Error parsing characterState: ${localCharacterState}`);
+                    console.log(err.toString());
+                }
+            }
+
+
+            if (localAllowedActions != null) {
+                try {
+                    this.setState({
+                        allowedActions: this.allowedActionsSerializer.deserialize(localAllowedActions)
+                    });
+                } catch(err) {
+                    console.log(`Error parsing allowed actions: ${localAllowedActions}`);
+                    console.log(err.toString());
+                }
+            }
+
             this.setStateSettings({
-                theme: Utils.getThemeFromString(localTheme, 'light'),
+                theme: Utils.getThemeFromString(localTheme, 'mixed'),
                 world: Utils.getWorldFromString(localWorld, 'default')
             });
         }

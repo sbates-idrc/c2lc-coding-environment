@@ -1,6 +1,7 @@
 // @flow
 import CharacterState from './CharacterState';
 import type {IntlShape} from 'react-intl';
+import SceneDimensions from './SceneDimensions';
 
 export type CommandName =
     'forward1' | 'forward2' | 'forward3' |
@@ -52,7 +53,7 @@ export type AudioContext = any;
 
 export interface AudioManager {
     playAnnouncement(messageIdSuffix: string, intl: IntlShape, messagePayload?: any) : void;
-    playSoundForCharacterState(samplerKey: string, releaseTimeInMs: number, characterState: CharacterState) : void;
+    playSoundForCharacterState(samplerKey: string, releaseTimeInMs: number, characterState: CharacterState, sceneDimension: SceneDimensions) : void;
     setAnnouncementsEnabled(value: boolean) : void;
     setAudioEnabled(value: boolean) : void;
 }
