@@ -6,8 +6,7 @@ Sounds like movement and turning are adjusted to match a pitch that corresponds 
 environment. This is based loosely on the [Tonnetz](https://en.wikipedia.org/wiki/Tonnetz) system, where each row and
 column are offset by a consistent number of pitches.
 
-The following is a diagram of the pitches for both "in bounds" cells (columns A-Q, rows 1-9) and a buffer
-zone of "out of bounds" cells bordering those.
+The following is a diagram of the pitches for the cells used in the current scene:
 
 |       |     A |     B |     C |     D |     E |     F |     G |     H |     I |     J |     K |     L |     M |     N |     O |     P |     Q |  R    |     S |     T |
 | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
