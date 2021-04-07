@@ -609,6 +609,10 @@ body.gray-theme {
             border-color: #818A98;
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
+
+        &.command-block--pressed {
+            border: 3px solid #505862;
+        }
     }
 
     .Character__icon-background {
