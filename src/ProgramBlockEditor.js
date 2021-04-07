@@ -592,12 +592,45 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     }
 
     getWorldCharacterAriaLabel() {
+        const characterState = this.props.characterState;
+        const xPos = characterState.getColumnLabel();
+        const yPos = characterState.getRowLabel();
+        const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
+        const ariaLiveRegion = document.getElementById('character-position');
+        console.log('getWorldCharacter called');
         if (this.props.world === 'space') {
-            return this.props.intl.formatMessage({id:'ProgramBlockEditor.spaceShipCharacter'});
+            ariaLiveRegion.setAttribute('aria-label',
+                this.props.intl.formatMessage(
+                    {id:'ProgramBlockEditor.spaceShipCharacter'},
+                    {
+                        xPos,
+                        yPos,
+                        direction
+                    }
+                )
+            );
         } else if (this.props.world === 'forest') {
-            return this.props.intl.formatMessage({id:'ProgramBlockEditor.rabbitCharacter'});
+            ariaLiveRegion.setAttribute('aria-label',
+                this.props.intl.formatMessage(
+                    {id:'ProgramBlockEditor.rabbitCharacter'},
+                    {
+                        xPos,
+                        yPos,
+                        direction
+                    }
+                )
+            );
         } else {
-            return this.props.intl.formatMessage({id:'ProgramBlockEditor.robotCharacter'});
+            ariaLiveRegion.setAttribute('aria-label',
+                this.props.intl.formatMessage(
+                    {id:'ProgramBlockEditor.robotCharacter'},
+                    {
+                        xPos,
+                        yPos,
+                        direction
+                    }
+                )
+            );
         }
     }
 
@@ -708,8 +741,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                             onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
                         <div
                             className='ProgramBlockEditor__character-column-character-container'
-                            role='img'
-                            aria-label={this.getWorldCharacterAriaLabel()}>
+                            role='img'>
                             {this.getWorldCharacter()}
                         </div>
                         <MovePositionRight
@@ -778,7 +810,15 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         );
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps: ProgramBlockEditorProps, {}) {
+        if (prevProps.characterState !== this.props.characterState) {
+            this.getWorldCharacterAriaLabel();
+        }
+        if (prevProps.runningState !== this.props.runningState) {
+            if (this.props.runningState !== 'running') {
+                this.getWorldCharacterAriaLabel();
+            }
+        }
         if (this.scrollToAddNodeIndex != null) {
             const element = this.addNodeRefs.get(this.scrollToAddNodeIndex);
             if (element && element.scrollIntoView) {

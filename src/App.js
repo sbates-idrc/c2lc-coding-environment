@@ -782,7 +782,6 @@ export class App extends React.Component<AppProps, AppState> {
                             dimensions={this.state.sceneDimensions}
                             characterState={this.state.characterState}
                             world={this.state.settings.world}
-                            runningState={this.state.runningState}
                         />
                         <div className='App__scene-controls'>
                             <div className='App__scene-controls-group'>
