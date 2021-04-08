@@ -775,7 +775,7 @@ export class App extends React.Component<AppProps, AppState> {
                         </div>
                     </div>
                     <div className='App__scene-container'>
-                        <h2 className='App__scene-heading sr-only' >
+                        <h2 className='sr-only' >
                             <FormattedMessage id='Scene.heading' />
                         </h2>
                         <Scene
@@ -799,6 +799,9 @@ export class App extends React.Component<AppProps, AppState> {
                         </div>
                     </div>
                     <div className="App__world-selector-container">
+                        <h2 className='sr-only' >
+                            <FormattedMessage id='WorldSelector.heading' />
+                        </h2>
                         <WorldSelector
                             disabled={this.state.runningState === 'running'}
                             world={this.state.settings.world}
@@ -830,6 +833,9 @@ export class App extends React.Component<AppProps, AppState> {
                     </div>
                     <div className='App__playAndShare-background' />
                     <div className='App__playAndShare-container'>
+                        <h2 className='sr-only' >
+                            <FormattedMessage id='PlayControls.heading' />
+                        </h2>
                         <div className='App__playControl-container'>
                             <div className='App__playButton-container'>
                                 <PlayButton

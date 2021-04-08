@@ -26,5 +26,13 @@
     position: absolute;
     top: -0.3rem;
     width: 12rem;
-    z-index: 2;
+    z-index: 4;
+}
+
+.focus-escape-ActionsMenu {
+    position: fixed;
+    margin: -10rem;
+    width: 150%;
+    height: 100%;
+    z-index: 3;
 }

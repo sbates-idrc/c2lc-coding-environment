@@ -27,7 +27,7 @@ body.light-theme {
         color: #000;
     }
 
-    .App__command-palette {
+    .App__command-palette-command-container {
         background-color: #EBFAF8;
     }
 
@@ -280,7 +280,8 @@ body.dark-theme {
     }
 
     .App__command-palette {
-        background-color: #30444E;
+        background-color: #33717F;
+        border: 2px solid #33717F;
     }
 
     .App__command-palette-command-container {
@@ -332,6 +333,8 @@ body.dark-theme {
 
     .Scene {
         background-color: #22343C;
+        border-bottom: 2px solid #33717F;
+        border-right: 2px solid #33717F;
     }
 
     .Scene__background {
@@ -529,6 +532,10 @@ body.gray-theme {
     }
 
     .App__command-palette {
+        border: 2px solid #D5D8DD;
+    }
+
+    .App__command-palette-command-container {
         background-color: #F1F2F4;
     }
 
@@ -613,6 +620,11 @@ body.gray-theme {
 
     .Character__icon-background {
         fill: #818A98;
+    }
+
+    .Scene {
+        border-bottom: 2px solid #D5D8DD;
+        border-right: 2px solid #D5D8DD;
     }
 
     .Scene__background {
@@ -1137,8 +1149,11 @@ body.contrast-theme {
     }
 
     .App__command-palette {
+        border: 2px solid white;
+    }
+
+    .App__command-palette-command-container {
         background-color: black;
-        border: 1px solid white;
     }
 
     .App__command-palette-command-container {
@@ -1225,6 +1240,8 @@ body.contrast-theme {
 
     .Scene {
         background-color: black;
+        border-bottom: 2px solid white;
+        border-right: 2px solid white;
     }
 
     .Scene__background {
