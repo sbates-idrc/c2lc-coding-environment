@@ -199,14 +199,6 @@ function getProgramSequenceContainer(programBlockEditorWrapper) {
     return programBlockEditorWrapper.find('.ProgramBlockEditor__program-sequence-scroll-container').get(0);
 }
 
-function getCharacterColumnCharacterContainer(programBlockEditorWrapper) {
-    return programBlockEditorWrapper.find('.ProgramBlockEditor__character-column-character-container').get(0);
-}
-
-function getCharacterColumnCharacter(programBlockEditorWrapper) {
-    return programBlockEditorWrapper.find('.ProgramBlockEditor__character-column-character').get(0);
-}
-
 function getCharacterPositionButton(programBlockEditorWrapper, directionName) {
     return programBlockEditorWrapper.find('.ProgramBlockEditor__character-position-button').filter({value: directionName}).at(0);
 }
@@ -954,7 +946,7 @@ describe('Using change character position by column/row labels', () => {
 
 describe('Character position gets updated on character-position div', () => {
     test('When characterState prop is changed', () => {
-        const { wrapper, mockChangeCharacterPosition } = createMountProgramBlockEditor();
+        const { wrapper } = createMountProgramBlockEditor();
         wrapper.setProps({
             characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(100,100))
         });
