@@ -43,7 +43,7 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
                 </div>
                 <div className="ActionsMenuItem__option">
                     <input
-                        className="ActionsMenuItem__checkbox"
+                        className="ActionsMenuItem__checkbox focus-trap-ActionsMenuItem__checkbox"
                         type="checkbox"
                         aria-label={showHideAriaLabel}
                         id={commandNameShort}
