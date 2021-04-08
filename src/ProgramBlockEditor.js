@@ -591,45 +591,41 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         )
     }
 
-    getWorldCharacterAriaLabel() {
+    updateCharacterPositionAriaLive() {
         const characterState = this.props.characterState;
         const xPos = characterState.getColumnLabel();
         const yPos = characterState.getRowLabel();
         const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
         const ariaLiveRegion = document.getElementById('character-position');
-        console.log('getWorldCharacter called');
         if (this.props.world === 'space') {
-            ariaLiveRegion.setAttribute('aria-label',
-                this.props.intl.formatMessage(
-                    {id:'ProgramBlockEditor.spaceShipCharacter'},
-                    {
-                        xPos,
-                        yPos,
-                        direction
-                    }
-                )
+            // $FlowFixMe: Flow doesn't know about character-position div
+            ariaLiveRegion.innerText=this.props.intl.formatMessage(
+                {id:'ProgramBlockEditor.spaceShipCharacter'},
+                {
+                    xPos,
+                    yPos,
+                    direction
+                }
             );
         } else if (this.props.world === 'forest') {
-            ariaLiveRegion.setAttribute('aria-label',
-                this.props.intl.formatMessage(
-                    {id:'ProgramBlockEditor.rabbitCharacter'},
-                    {
-                        xPos,
-                        yPos,
-                        direction
-                    }
-                )
+            // $FlowFixMe: Flow doesn't know about character-position div
+            ariaLiveRegion.innerText=this.props.intl.formatMessage(
+                {id:'ProgramBlockEditor.rabbitCharacter'},
+                {
+                    xPos,
+                    yPos,
+                    direction
+                }
             );
         } else {
-            ariaLiveRegion.setAttribute('aria-label',
-                this.props.intl.formatMessage(
-                    {id:'ProgramBlockEditor.robotCharacter'},
-                    {
-                        xPos,
-                        yPos,
-                        direction
-                    }
-                )
+            // $FlowFixMe: Flow doesn't know about character-position div
+            ariaLiveRegion.innerText=this.props.intl.formatMessage(
+                {id:'ProgramBlockEditor.robotCharacter'},
+                {
+                    xPos,
+                    yPos,
+                    direction
+                }
             );
         }
     }
@@ -740,6 +736,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                             onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
                             onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
                         <div
+                            aria-hidden='true'
                             className='ProgramBlockEditor__character-column-character-container'
                             role='img'>
                             {this.getWorldCharacter()}
@@ -810,13 +807,17 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         );
     }
 
-    componentDidUpdate(prevProps: ProgramBlockEditorProps, {}) {
+    componentDidUpdate(prevProps: ProgramBlockEditorProps) {
+        // Ensure updateCharacterPositionAriaLive gets called only once
         if (prevProps.characterState !== this.props.characterState) {
-            this.getWorldCharacterAriaLabel();
-        }
-        if (prevProps.runningState !== this.props.runningState) {
             if (this.props.runningState !== 'running') {
-                this.getWorldCharacterAriaLabel();
+                this.updateCharacterPositionAriaLive();
+            }
+        }  else if (prevProps.runningState !== this.props.runningState) {
+            if (this.props.runningState === 'pauseRequested' ||
+                this.props.runningState === 'stopRequested' ||
+                (prevProps.runningState === 'running' && this.props.runningState === 'stopped')) {
+                this.updateCharacterPositionAriaLive();
             }
         }
         if (this.scrollToAddNodeIndex != null) {
