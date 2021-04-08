@@ -139,7 +139,6 @@ function createMountProgramBlockEditor(props) {
             )
         ),
         {
-            attachTo: ariaLiveDiv,
             wrappingComponent: IntlProvider,
             wrappingComponentProps: {
                 locale: 'en',
