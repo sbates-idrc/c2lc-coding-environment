@@ -77,6 +77,14 @@ describe('Given value property is false', () => {
         expect(mockChangeHandler.mock.calls.length).toBe(1);
         expect(mockChangeHandler.mock.calls[0][0]).toBe(!toggleValue);
     });
+
+    test('When enter key is pressed, then onChange handler should be called with negation of the value property', () => {
+        expect.assertions(2);
+        const toggleSwitch = getToggleSwitch(wrapper);
+        toggleSwitch.simulate('keyDown', {key: 'Enter', preventDefault: ()=>{}});
+        expect(mockChangeHandler.mock.calls.length).toBe(1);
+        expect(mockChangeHandler.mock.calls[0][0]).toBe(!toggleValue);
+    });
 });
 
 describe('Given value property is true', () => {
