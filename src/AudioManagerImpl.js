@@ -81,7 +81,7 @@ const SamplerDefs = {
         },
         baseUrl: "/audio/right/180/"
     },
-    backward: {
+    backward1: {
         urls: {
             "C0": "C0.wav",
             "C1": "C1.wav",
@@ -91,7 +91,30 @@ const SamplerDefs = {
             "C5": "C5.wav",
             "C6": "C6.wav"
         },
-        baseUrl: "/audio/backward/"
+        baseUrl: "/audio/backward/1/"
+    },
+    backward2: {
+        urls: {
+            "C1": "C1.wav",
+            "C2": "C2.wav",
+            "C3": "C3.wav",
+            "C4": "C4.wav",
+            "C5": "C5.wav",
+            "C6": "C6.wav"
+        },
+        baseUrl: "/audio/backward/2/"
+    },
+    backward3: {
+        urls: {
+            "C0": "C0.wav",
+            "C1": "C1.wav",
+            "C2": "C2.wav",
+            "C3": "C3.wav",
+            "C4": "C4.wav",
+            "C5": "C5.wav",
+            "C6": "C6.wav"
+        },
+        baseUrl: "/audio/backward/3/"
     },
     forward1: {
         urls: {
@@ -171,7 +194,9 @@ export default class AudioManagerImpl implements AudioManager {
     announcementsEnabled: boolean;
     panner: Panner;
     samplers: {
-        backward: Sampler,
+        backward1: Sampler,
+        backward2: Sampler,
+        backward3: Sampler,
         forward1: Sampler,
         forward2: Sampler,
         forward3: Sampler,
