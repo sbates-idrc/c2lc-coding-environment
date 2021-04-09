@@ -78,7 +78,7 @@ button.btn.ProgramBlockEditor__program-deleteAll-button {
     border: none;
     border-radius: 50%;
     box-shadow: none;
-    margin-left: 50px;
+    margin-left: 1.5rem;
     padding: 0.5rem;
 
     &:focus {
@@ -154,6 +154,7 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
 .ProgramBlockEditor__character-column-character {
     width: 2.5rem;
     height: 2.5rem;
+    padding: 0.4rem;
 }
 
 .ProgramBlockEditor__character-turn-positions {
