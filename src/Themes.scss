@@ -622,6 +622,10 @@ body.gray-theme {
         }
     }
 
+    .command-block--hidden > svg {
+        fill: #818A98;
+    }
+
     .Character__icon-background {
         fill: #818A98;
     }
@@ -1230,6 +1234,10 @@ body.contrast-theme {
         &:not(:disabled):not(.disabled):active {
             background-color: black;
         }
+    }
+
+    .command-block--hidden > svg {
+        fill: white;
     }
 
     button.ProgramBlockEditor__program-block--active {

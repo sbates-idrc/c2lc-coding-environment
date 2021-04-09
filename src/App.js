@@ -28,13 +28,14 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ShareButton from './ShareButton';
 import ActionsMenu from './ActionsMenu';
-import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName, WorldName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName, WorldName } from './types';
 import WorldSelector from './WorldSelector';
 import * as Utils from './Utils';
 import './App.scss';
 import './Themes.scss';
 import './vendor/dragdroptouch/DragDropTouch.js';
 import ThemeSelector from './ThemeSelector';
+import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
 
 /* Dash connection removed for version 0.5
 import BluetoothApiWarning from './BluetoothApiWarning';
@@ -611,16 +612,10 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.setStepTime(stepTimeMs);
     }
 
-    renderCommandBlocks = () => {
-        const commandNames = [
-            'backward1', 'backward2', 'backward3',
-            'left45', 'left90', 'left180',
-            'forward1', 'forward2', 'forward3',
-            'right45', 'right90', 'right180'
-        ];
+    renderCommandBlocks = (commands: Array<CommandName>) => {
         const commandBlocks = [];
 
-        for (const [index, value] of commandNames.entries()) {
+        for (const [index, value] of commands.entries()) {
             const isAllowed = this.state.allowedActions[value];
             if (isAllowed) {
                 commandBlocks.push(
@@ -633,6 +628,15 @@ export class App extends React.Component<AppProps, AppState> {
                         onChange={this.handleCommandFromCommandPalette}
                         onDragStart={this.handleDragStartCommand}
                         onDragEnd={this.handleDragEndCommand}/>
+                );
+            } else {
+                commandBlocks.push(
+                    <div
+                        className='command-block--hidden'
+                        key={`CommandBlock-${index}`}
+                        aria-hidden='true'>
+                        <HiddenBlock />
+                    </div>
                 );
             }
         }
@@ -758,7 +762,16 @@ export class App extends React.Component<AppProps, AppState> {
                         />
                         <div className='App__command-palette-command-container'>
                             <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks()}
+                                {this.renderCommandBlocks([
+                                    'forward1', 'forward2', 'forward3',
+                                    'backward1', 'backward2', 'backward3'
+                                ])}
+                            </div>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks([
+                                    'left45', 'left90', 'left180',
+                                    'right45', 'right90', 'right180'
+                                ])}
                             </div>
                         </div>
                     </div>
