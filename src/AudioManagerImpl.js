@@ -95,6 +95,7 @@ const SamplerDefs = {
     },
     backward2: {
         urls: {
+            "C0": "C0.wav",
             "C1": "C1.wav",
             "C2": "C2.wav",
             "C3": "C3.wav",
