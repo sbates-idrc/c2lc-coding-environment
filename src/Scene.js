@@ -199,6 +199,7 @@ class Scene extends React.Component<SceneProps, {}> {
 
     componentDidUpdate = (prevProps) => {
         // Required to avoid the lack of scrollIntoView on SVG elements in Safari.
+        /* istanbul ignore next */
         if ((prevProps.characterState.xPos !== this.props.characterState.xPos ||
             prevProps.characterState.yPos !== this.props.characterState.yPos) &&
             this.sceneRef.current !== null) {
