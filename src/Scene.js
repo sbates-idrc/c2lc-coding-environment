@@ -19,6 +19,13 @@ export type SceneProps = {
 };
 
 class Scene extends React.Component<SceneProps, {}> {
+    sceneRef: { current: null | HTMLDivElement };
+
+    constructor (props: SceneProps) {
+        super(props);
+        this.sceneRef = React.createRef();
+    }
+
     drawGrid(): any {
         const grid = [];
         const rowLabels = [];
@@ -190,6 +197,44 @@ class Scene extends React.Component<SceneProps, {}> {
         }
     }
 
+    componentDidUpdate = (prevProps) => {
+        // Required to avoid the lack of scrollIntoView on SVG elements in Safari.
+        if ((prevProps.characterState.xPos !== this.props.characterState.xPos ||
+            prevProps.characterState.yPos !== this.props.characterState.yPos) &&
+            this.sceneRef.current !== null) {
+            const characterElement = document.getElementById('scene-character-icon');
+            if (characterElement !== null) {
+                const characterBounds = characterElement.getBoundingClientRect();
+                // $FlowFixMe: Flow doesn't understand that the scene has this method.
+                const sceneBounds = this.sceneRef.current.getBoundingClientRect();
+
+                // Check to see if the character is visible.
+                // If not, scroll to bring it into view.
+                if (characterBounds.left < sceneBounds.left) {
+                    // Scroll left.
+                    // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
+                    this.sceneRef.current.scrollLeft = characterBounds.left;
+                }
+                else if ((characterBounds.left + characterBounds.width) > (sceneBounds.left + sceneBounds.width)) {
+                    // Scroll right.
+                    // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
+                    this.sceneRef.current.scrollLeft = sceneBounds.left + this.sceneRef.current.scrollWidth - characterBounds.width;
+                }
+
+                if (characterBounds.top < sceneBounds.top) {
+                    // Scroll up.
+                    // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
+                    this.sceneRef.current.scrollTop = characterBounds.top;
+                }
+                else if ((characterBounds.top + characterBounds.height) > (sceneBounds.top + sceneBounds.height)) {
+                    // Scroll down.  TODO: This doesn't work well on Chrome.
+                    // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
+                    this.sceneRef.current.scrollTop = sceneBounds.top + this.sceneRef.current.scrollHeight - characterBounds.height;
+                }
+            }
+        }
+    }
+
     render() {
         const minX = this.props.dimensions.getMinX();
         const minY = this.props.dimensions.getMinY();
@@ -236,7 +281,8 @@ class Scene extends React.Component<SceneProps, {}> {
                         className='Scene'
                         role='img'
                         aria-label={this.generateAriaLabel()}
-                        onScroll={this.handleScrollScene}>
+                        onScroll={this.handleScrollScene}
+                        ref={this.sceneRef}>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             viewBox={`${minX} ${minY} ${width} ${height}`}>
