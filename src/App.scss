@@ -124,7 +124,7 @@ body {
     width: 6rem;
     display: grid;
     height: auto;
-    grid-template-rows: repeat(6, min-content);
+    grid-template-rows: repeat(3, min-content);
     grid-row-gap: 1rem;
     grid-auto-flow: column;
     margin: 1rem auto;
