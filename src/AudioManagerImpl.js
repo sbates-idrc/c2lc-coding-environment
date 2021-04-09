@@ -11,145 +11,145 @@ const SamplerDefs = {
     // pitches so that we can scale relative to the octave without ending up with wildy different tempos.
     left45: {
         urls: {
-            "C0": "C6.wav",
-            "C1": "C6.wav",
-            "C2": "C6.wav",
-            "C3": "C6.wav",
-            "C4": "C6.wav",
-            "C5": "C6.wav",
-            "C6": "C6.wav"
+            "C0": "C6.mp3",
+            "C1": "C6.mp3",
+            "C2": "C6.mp3",
+            "C3": "C6.mp3",
+            "C4": "C6.mp3",
+            "C5": "C6.mp3",
+            "C6": "C6.mp3"
         },
         baseUrl: "/audio/left/45/"
     },
     left90: {
         urls: {
-            "C0": "C6.wav",
-            "C1": "C6.wav",
-            "C2": "C6.wav",
-            "C3": "C6.wav",
-            "C4": "C6.wav",
-            "C5": "C6.wav",
-            "C6": "C6.wav"
+            "C0": "C6.mp3",
+            "C1": "C6.mp3",
+            "C2": "C6.mp3",
+            "C3": "C6.mp3",
+            "C4": "C6.mp3",
+            "C5": "C6.mp3",
+            "C6": "C6.mp3"
         },
         baseUrl: "/audio/left/90/"
     },
     left180: {
         urls: {
-            "C0": "C6.wav",
-            "C1": "C6.wav",
-            "C2": "C6.wav",
-            "C3": "C6.wav",
-            "C4": "C6.wav",
-            "C5": "C6.wav",
-            "C6": "C6.wav"
+            "C0": "C6.mp3",
+            "C1": "C6.mp3",
+            "C2": "C6.mp3",
+            "C3": "C6.mp3",
+            "C4": "C6.mp3",
+            "C5": "C6.mp3",
+            "C6": "C6.mp3"
         },
         baseUrl: "/audio/left/180/"
     },
     right45: {
         urls: {
-            "C0": "C6.wav",
-            "C1": "C6.wav",
-            "C2": "C6.wav",
-            "C3": "C6.wav",
-            "C4": "C6.wav",
-            "C5": "C6.wav",
-            "C6": "C6.wav"
+            "C0": "C6.mp3",
+            "C1": "C6.mp3",
+            "C2": "C6.mp3",
+            "C3": "C6.mp3",
+            "C4": "C6.mp3",
+            "C5": "C6.mp3",
+            "C6": "C6.mp3"
         },
         baseUrl: "/audio/right/45/"
     },
     right90: {
         urls: {
-            "C0": "C6.wav",
-            "C1": "C6.wav",
-            "C2": "C6.wav",
-            "C3": "C6.wav",
-            "C4": "C6.wav",
-            "C5": "C6.wav",
-            "C6": "C6.wav"
+            "C0": "C6.mp3",
+            "C1": "C6.mp3",
+            "C2": "C6.mp3",
+            "C3": "C6.mp3",
+            "C4": "C6.mp3",
+            "C5": "C6.mp3",
+            "C6": "C6.mp3"
         },
         baseUrl: "/audio/right/90/"
     },
     right180: {
         urls: {
-            "C0": "C6.wav",
-            "C1": "C6.wav",
-            "C2": "C6.wav",
-            "C3": "C6.wav",
-            "C4": "C6.wav",
-            "C5": "C6.wav",
-            "C6": "C6.wav"
+            "C0": "C6.mp3",
+            "C1": "C6.mp3",
+            "C2": "C6.mp3",
+            "C3": "C6.mp3",
+            "C4": "C6.mp3",
+            "C5": "C6.mp3",
+            "C6": "C6.mp3"
         },
         baseUrl: "/audio/right/180/"
     },
     backward1: {
         urls: {
-            "C0": "C0.wav",
-            "C1": "C1.wav",
-            "C2": "C2.wav",
-            "C3": "C3.wav",
-            "C4": "C4.wav",
-            "C5": "C5.wav",
-            "C6": "C6.wav"
+            "C0": "C0.mp3",
+            "C1": "C1.mp3",
+            "C2": "C2.mp3",
+            "C3": "C3.mp3",
+            "C4": "C4.mp3",
+            "C5": "C5.mp3",
+            "C6": "C6.mp3"
         },
         baseUrl: "/audio/backward/1/"
     },
     backward2: {
         urls: {
-            "C0": "C0.wav",
-            "C1": "C1.wav",
-            "C2": "C2.wav",
-            "C3": "C3.wav",
-            "C4": "C4.wav",
-            "C5": "C5.wav",
-            "C6": "C6.wav"
+            "C0": "C0.mp3",
+            "C1": "C1.mp3",
+            "C2": "C2.mp3",
+            "C3": "C3.mp3",
+            "C4": "C4.mp3",
+            "C5": "C5.mp3",
+            "C6": "C6.mp3"
         },
         baseUrl: "/audio/backward/2/"
     },
     backward3: {
         urls: {
-            "C0": "C0.wav",
-            "C1": "C1.wav",
-            "C2": "C2.wav",
-            "C3": "C3.wav",
-            "C4": "C4.wav",
-            "C5": "C5.wav",
-            "C6": "C6.wav"
+            "C0": "C0.mp3",
+            "C1": "C1.mp3",
+            "C2": "C2.mp3",
+            "C3": "C3.mp3",
+            "C4": "C4.mp3",
+            "C5": "C5.mp3",
+            "C6": "C6.mp3"
         },
         baseUrl: "/audio/backward/3/"
     },
     forward1: {
         urls: {
-            "C0": "C0.wav",
-            "C1": "C1.wav",
-            "C2": "C2.wav",
-            "C3": "C3.wav",
-            "C4": "C4.wav",
-            "C5": "C5.wav",
-            "C6": "C6.wav"
+            "C0": "C0.mp3",
+            "C1": "C1.mp3",
+            "C2": "C2.mp3",
+            "C3": "C3.mp3",
+            "C4": "C4.mp3",
+            "C5": "C5.mp3",
+            "C6": "C6.mp3"
         },
         baseUrl: "/audio/forward/1/"
     },
     forward2: {
         urls: {
-            "C0": "C0.wav",
-            "C1": "C1.wav",
-            "C2": "C2.wav",
-            "C3": "C3.wav",
-            "C4": "C4.wav",
-            "C5": "C5.wav",
-            "C6": "C6.wav"
+            "C0": "C0.mp3",
+            "C1": "C1.mp3",
+            "C2": "C2.mp3",
+            "C3": "C3.mp3",
+            "C4": "C4.mp3",
+            "C5": "C5.mp3",
+            "C6": "C6.mp3"
         },
         baseUrl: "/audio/forward/2/"
     },
     forward3: {
         urls: {
-            "C0": "C0.wav",
-            "C1": "C1.wav",
-            "C2": "C2.wav",
-            "C3": "C3.wav",
-            "C4": "C4.wav",
-            "C5": "C5.wav",
-            "C6": "C6.wav"
+            "C0": "C0.mp3",
+            "C1": "C1.mp3",
+            "C2": "C2.mp3",
+            "C3": "C3.mp3",
+            "C4": "C4.mp3",
+            "C5": "C5.mp3",
+            "C6": "C6.mp3"
         },
         baseUrl: "/audio/forward/3/"
     }
