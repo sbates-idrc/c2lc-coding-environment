@@ -590,13 +590,42 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         )
     }
 
-    getWorldCharacterAriaLabel() {
+    updateCharacterPositionAriaLive() {
+        const characterState = this.props.characterState;
+        const xPos = characterState.getColumnLabel();
+        const yPos = characterState.getRowLabel();
+        const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
+        const ariaLiveRegion = document.getElementById('character-position');
         if (this.props.world === 'space') {
-            return this.props.intl.formatMessage({id:'ProgramBlockEditor.spaceShipCharacter'});
+            // $FlowFixMe: Flow doesn't know about character-position div
+            ariaLiveRegion.innerText=this.props.intl.formatMessage(
+                {id:'ProgramBlockEditor.spaceShipCharacter'},
+                {
+                    xPos,
+                    yPos,
+                    direction
+                }
+            );
         } else if (this.props.world === 'forest') {
-            return this.props.intl.formatMessage({id:'ProgramBlockEditor.rabbitCharacter'});
+            // $FlowFixMe: Flow doesn't know about character-position div
+            ariaLiveRegion.innerText=this.props.intl.formatMessage(
+                {id:'ProgramBlockEditor.rabbitCharacter'},
+                {
+                    xPos,
+                    yPos,
+                    direction
+                }
+            );
         } else {
-            return this.props.intl.formatMessage({id:'ProgramBlockEditor.robotCharacter'});
+            // $FlowFixMe: Flow doesn't know about character-position div
+            ariaLiveRegion.innerText=this.props.intl.formatMessage(
+                {id:'ProgramBlockEditor.robotCharacter'},
+                {
+                    xPos,
+                    yPos,
+                    direction
+                }
+            );
         }
     }
 
@@ -706,9 +735,9 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                             onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
                             onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
                         <div
+                            aria-hidden='true'
                             className='ProgramBlockEditor__character-column-character-container'
-                            role='img'
-                            aria-label={this.getWorldCharacterAriaLabel()}>
+                            role='img'>
                             {this.getWorldCharacter()}
                         </div>
                         <MovePositionRight
@@ -780,7 +809,19 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         );
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps: ProgramBlockEditorProps) {
+        // Ensure updateCharacterPositionAriaLive gets called only once
+        if (prevProps.characterState !== this.props.characterState) {
+            if (this.props.runningState !== 'running') {
+                this.updateCharacterPositionAriaLive();
+            }
+        }  else if (prevProps.runningState !== this.props.runningState) {
+            if (this.props.runningState === 'pauseRequested' ||
+                this.props.runningState === 'stopRequested' ||
+                (prevProps.runningState === 'running' && this.props.runningState === 'stopped')) {
+                this.updateCharacterPositionAriaLive();
+            }
+        }
         if (this.scrollToAddNodeIndex != null) {
             const element = this.addNodeRefs.get(this.scrollToAddNodeIndex);
             if (element && element.scrollIntoView) {

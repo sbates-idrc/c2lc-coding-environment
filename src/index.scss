@@ -84,7 +84,7 @@ button.btn.command-block:focus {
 button.btn.command-block.command-block--pressed,
 button.btn.command-block.command-block--pressed:hover,
 button.btn.command-block.command-block--pressed:active {
-    border: $c2lc-button-border-width solid #000000;
+    border: $c2lc-button-border-width solid white;
 }
 
 button.btn.command-block--dragged {
