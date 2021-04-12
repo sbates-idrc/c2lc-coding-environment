@@ -162,26 +162,21 @@ function octaveModulo (rawPitch: number) : number {
 
 // Modified "Tonnetz" tuning, see https://en.wikipedia.org/wiki/Tonnetz for explanation and diagrams.
 export function getNoteForState (characterState: CharacterState) : string {
-    // The centre note (xPos: 0, yPos: 0) is 440hz = A4 = 69.
-
     // Every "column" is 7 tones from the next but stays within the same octave.  This results in a pattern that
     // cycles through the full octave range every 12 squares.
     const xPitchOffset = octaveModulo(7 * characterState.xPos);
 
 
-    // Every "row" is 4 tones from the next but stays within the same octave.  This results in a pattern of three
-    // notes that repeats every three rows.
+    // Every "row" is 4 tones from the next.
     const yPitchOffset = octaveModulo(4 * characterState.yPos);
 
     const combinedPitchOffset = octaveModulo(xPitchOffset + yPitchOffset);
 
     // To vary the range of notes without going too high or low, we use the repeating nature of the "row" pattern
-    // to divide the tuning into "octave bands" every three rows.  The middle band (yPos of -1, 0, or 1) is octave 3.
-    // The "band" above centre (yPos of 2, 3, or 4) is octave 4.  Anything higher is octave 5. The "band" below
-    // centre (yPos of -2, -3, or -4) is octave 2.  Anything lower is octave 1.
-    const octaveOffset = (Math.round(characterState.yPos / 3));
-    const boundedOctaveOffset = Math.max(Math.min(3, octaveOffset), -3);
-    const octave = 4 - boundedOctaveOffset;
+    // to divide the tuning into "octave bands" every three rows.  The top band (yPos of 1, 2, or 3) is C5, the bottom
+    // band (yPos of 16) is C0.
+    const octaveOffset = (Math.floor((characterState.yPos - 1)/ 3));
+    const octave = 6 - octaveOffset;
 
     // const midiNote = (12 * octave);
     const midiNote = combinedPitchOffset + (12 * octave);
