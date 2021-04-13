@@ -1,6 +1,6 @@
 {
     "name": "c2lc-coding-environment",
-    "version": "0.7.0-dev",
+    "version": "0.8.0",
     "private": true,
     "dependencies": {
         "bootstrap": "4.5.2",
