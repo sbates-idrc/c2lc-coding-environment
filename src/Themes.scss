@@ -1,0 +1,1718 @@
+@import 'variables';
+
+/* "Mixed" Theme is the default, check _variables.scss for most colours. */
+body.mixed-theme {
+    // Change this in the theme to avoid side effects in other themes.
+    .App__command-palette-command-container {
+        &::-webkit-scrollbar {
+            background-color: #30444E;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: #CCE6E2;
+        }
+    }
+}
+
+
+/* Light Theme */
+body.light-theme {
+    background-color: #FFF;
+
+    .App__container {
+        background-color: #FFF;
+    }
+
+    .App__header {
+        background-color: #FFF;
+        color: #000;
+    }
+
+    .App__command-palette-command-container {
+        background-color: #EBFAF8;
+    }
+
+    .App__command-palette-heading {
+        color: #30444E;
+    }
+
+    button.btn.command-block:focus {
+        border: 2px solid #EBFAF8;
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
+    }
+
+    // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
+    #command-block--backward1, .btn-command-block--backward1,
+    #command-block--backward2, .btn-command-block--backward2,
+    #command-block--backward3, .btn-command-block--backward3,
+    #command-block--forward1, .btn-command-block--forward1,
+    #command-block--forward2, .btn-command-block--forward2,
+    #command-block--forward3, .btn-command-block--forward3,
+    #command-block--left45, .btn-command-block--left45,
+    #command-block--left90, .btn-command-block--left90,
+    #command-block--left180, .btn-command-block--left180,
+    #command-block--right45, .btn-command-block--right45,
+    #command-block--right90, .btn-command-block--right90,
+    #command-block--right180, .btn-command-block--right180
+    {
+        svg {
+            path, circle, rect {
+                stroke: white;
+            }
+            circle, path.filled {
+                fill: white;
+            }
+        }
+
+        &.command-block--pressed {
+            border: 2px solid #30444E;
+        }
+    }
+
+    // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
+    #command-block--backward1, .btn-command-block--backward1,
+    #command-block--backward2, .btn-command-block--backward2,
+    #command-block--backward3, .btn-command-block--backward3 {
+        background-color: #33717F;
+
+        &:hover, &:focus {
+            background-color: #07586A;
+        }
+    }
+
+    // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
+    #command-block--forward1, .btn-command-block--forward1,
+    #command-block--forward2, .btn-command-block--forward2,
+    #command-block--forward3, .btn-command-block--forward3 {
+        background-color: #4C9990;
+
+        &:hover, &:focus {
+            background-color: #16796D;
+        }
+    }
+
+    // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
+    #command-block--left45, .btn-command-block--left45,
+    #command-block--left90, .btn-command-block--left90,
+    #command-block--left180, .btn-command-block--left180 {
+        background-color: #D37D12;
+
+        &:hover, &:focus {
+            background-color: #AE6100;
+        }
+    }
+
+    // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
+    #command-block--right45, .btn-command-block--right45,
+    #command-block--right90, .btn-command-block--right90,
+    #command-block--right180, .btn-command-block--right180 {
+        background-color: #C13925;
+
+        &:hover, &:focus {
+            background-color: #952A1B;
+        }
+    }
+
+    .Scene {
+        background-color: white;
+    }
+
+    .Character__icon-background {
+        fill: #4C9990;
+    }
+
+    .ProgramBlockEditor__container {
+        border: 2px solid #CCE6E2;
+        background-color: #CCE6E2;
+    }
+
+    .ProgramBlockEditor__header {
+        background-color: #CCE6E2;
+        color: #1E1E1E;
+    }
+
+    .ProgramBlockEditor__character-column {
+        background-color: #EBFAF8;
+        border-right: 2px solid #D3E7EC;
+    }
+
+    .ProgramBlockEditor__program-sequence-scroll-container {
+        background-color: white;
+    }
+
+    .ProgramBlockEditor__start-indicator {
+        color: white;
+        background-color: black;
+    }
+
+    @keyframes pausedLightAnimation {
+        0% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width #30444E;}
+        50% {box-shadow: 0 0 0 $c2lc-active-button-width #30444E;}
+        100% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width #30444E;}
+    }
+
+    button.ProgramBlockEditor__program-block--active {
+        box-shadow: 0 0 0 6px #30444E;
+    }
+
+    button.ProgramBlockEditor__program-block--paused {
+        animation: pausedLightAnimation 2s infinite;
+    }
+
+    .ActionPanel__background {
+        svg {
+            path {
+                fill: #F1F2F4;
+                stroke: #505862;
+            }
+        }
+    }
+
+    button.btn.ActionPanel__action-buttons {
+        background-color: #D5D8DD;
+        svg {
+            path.stroked {
+                stroke: #505862;
+            }
+            path.filled {
+                fill: #505862;
+            }
+        }
+
+        &:hover, &:focus:not(:disabled) {
+            background-color: #505862;
+            svg {
+                path.stroked {
+                    stroke: #F1F2F4;
+                }
+                path.filled {
+                    fill: #F1F2F4;
+                }
+            }
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem #F1F2F4,
+                0 0 0 $c2lc-focus-indicator-width black;
+        }
+    }
+
+    button.btn.ActionPanel__action-buttons--disabled {
+        background-color: #D5D8DD;
+        svg {
+            path.stroked {
+                stroke: #F1F2F4;
+            }
+            path.filled {
+                fill: #F1F2F4;
+            }
+        }
+    }
+
+    .AddNode__collapsed-icon {
+        background-color: #505862;
+        svg path {
+            stroke: white;
+            stroke-width: 6px;
+        }
+    }
+
+    button.btn.AddNode__expanded-button {
+        background-color: white;
+        border: 3px solid #505862;
+
+        &:not(.AddNode__expanded-button--isDragTarget) {
+            box-shadow: none;
+        }
+
+        svg {
+            path {
+                stroke: #505862;
+            }
+        }
+
+        &:hover {
+            background-color: #e5e5e5;
+        }
+
+        &:focus {
+            border: 2px solid white;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
+        }
+    }
+
+    .App__playAndShare-background {
+        background-color: #D5D8DD;
+    }
+
+    button.btn.PlayButton, button.btn.StopButton {
+        svg {
+            circle, path.triangle {
+                fill: #3A3F46;
+            }
+        }
+    }
+
+    button.btn.ShareButton {
+        background-color: #F1F2F4;
+        color: black;
+    }
+}
+
+
+/* Dark Theme */
+body.dark-theme {
+    background-color: #18252C;
+
+    .App__container {
+        background-color: #18252C;
+    }
+
+    .AudioFeedbackToggleSwitch {
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        }
+    }
+
+    .App__header {
+        background-color: #18252C;
+        color: white;
+    }
+
+    .App__command-palette {
+        background-color: #33717F;
+        border: 2px solid #33717F;
+    }
+
+    .App__command-palette-command-container {
+        &::-webkit-scrollbar {
+            background-color: #30444E;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: #4C9990;
+        }
+    }
+
+    .App__command-palette-heading {
+        color: #F1AE5B;
+    }
+
+    .ActionsMenu__header {
+        background-color: #33717F;
+        color: white;
+    }
+
+    .ActionsMenu__toggle-button {
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem white;
+        }
+
+        svg line {
+            stroke: white;
+        }
+    }
+
+    .ActionsMenu__menu {
+        background-color: #22343C;
+        border: 2px solid #33717F;
+        box-shadow: 0px 4px 4px #22262A;
+        color: white;
+    }
+
+
+    button.btn.command-block.command-block--pressed,
+    button.btn.command-block.command-block--pressed:hover,
+    button.btn.command-block.command-block--pressed:active {
+        border: $c2lc-button-border-width solid white;
+    }
+
+    .App__scene-container {
+        border-color: #33717F;
+    }
+
+    .Scene {
+        background-color: #22343C;
+        border-bottom: 2px solid #33717F;
+        border-right: 2px solid #33717F;
+    }
+
+    .Scene__background {
+        background-color: #33717F;
+    }
+
+    .Scene__header-corner {
+        background-color: #33717F;
+    }
+
+    .Scene__column-header, .Scene__row-header {
+        fill: #33717F;
+    }
+
+    text.Scene__grid-label {
+        fill: white;
+    }
+
+    .Scene__grid-line, .Scene__path-line {
+        stroke: #33717F;
+    }
+
+    .Scene__grid-line {
+        stroke: #30444E;
+    }
+
+    .Scene__path-line {
+        stroke: white;
+    }
+
+    .PenDownToggleSwitch:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    }
+
+    .RefreshButton:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    }
+
+    .Character__icon-background {
+        fill: #4C9990;
+    }
+
+    .WorldSelector {
+        background-color: #33717F;
+        border: 1px solid #33717F;
+    }
+
+    .WorldSelector .WorldIcon:not(:hover):not(:active):not(.WorldIcon--selected):not(:focus) {
+        background-color: #30444E;
+        box-shadow: inset 0 .1rem .2rem rgba(0, 0, 0, 0.5);
+    }
+
+    .WorldSelector button:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    }
+
+    .WorldSelector button:focus:not(:hover):not(:active):not(.WorldIcon--selected) {
+        background-color: #30444E;
+    }
+
+    .WorldSelector .WorldIcon--selected:not(:hover) {
+        background-color: #4C9990;
+    }
+
+    .ProgramBlockEditor__container {
+        background-color: #33717F;
+        border: 2px solid #33717F;
+    }
+
+    .ProgramBlockEditor__character-column {
+        background-color: #30444E;
+    }
+
+    .ProgramBlockEditor__header {
+        background-color: #33717F;
+        color: #EBFAF8;
+    }
+
+    .ProgramBlockEditor__add-node-toggle-switch:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    }
+
+    button.btn.ProgramBlockEditor__program-deleteAll-button:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+
+    }
+
+    .ProgramBlockEditor__program-sequence-scroll-container {
+        background-color: #22343C;
+    }
+
+    @keyframes pausedDarkAnimation {
+        0% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width white;}
+        50% {box-shadow: 0 0 0 $c2lc-active-button-width white;}
+        100% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width white;}
+    }
+
+    button.ProgramBlockEditor__program-block--paused {
+        animation: pausedDarkAnimation 2s infinite;
+    }
+
+    button.ProgramBlockEditor__program-block--active {
+        box-shadow: 0 0 0 $c2lc-active-button-width white;
+    }
+
+    .AddNode__collapsed-icon {
+        background-color: white;
+        svg {
+            stroke: black;
+            fill: black;
+        }
+    }
+
+    .AddNode__expanded-button {
+        border: 2px solid #D5D8DD;
+        background-color: #22343C;
+        box-shadow: none;
+        svg path {
+            stroke: #D5D8DD;
+        }
+        &:hover {
+            svg path {
+                stroke: black;
+            }
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        }
+    }
+
+    .App__playAndShare-background {
+        background-color: #30444e;
+    }
+
+    button.btn.PlayButton:focus, button.btn.StopButton:focus {
+        border: none;
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    }
+
+    .ProgramSpeedController__slider {
+        &:focus {
+            outline-color: white;
+        }
+    }
+
+    button.btn.ShareButton {
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem #30444E,
+                0 0 0 $c2lc-focus-indicator-width white;
+        }
+    }
+
+}
+
+
+/* Grayscale Theme */
+body.gray-theme {
+    background-color: #FFF;
+
+    .App__container {
+        background-color: #FFF;
+    }
+
+    .App__header {
+        background-color: #FFF;
+        color: #000;
+    }
+
+    .ThemeSelector {
+        button.btn {
+            background-color: #F1F2F4;
+            border-color: #F1F2F4;
+            color: black;
+
+            &:hover:not(:active) {
+                background: #505862;
+                color: White;
+
+            }
+
+            &:focus {
+                box-shadow:
+                    0 0 0 0.1rem white,
+                    0 0 0 $c2lc-focus-indicator-width #505862
+            }
+        }
+
+        button.btn-primary {
+            &:not(:disabled):not(.disabled):active {
+                background-color: #B9BEC6;
+            }
+        }
+    }
+
+    .App__command-palette {
+        border: 2px solid #D5D8DD;
+    }
+
+    .App__command-palette-command-container {
+        background-color: #F1F2F4;
+    }
+
+    .App__command-palette-command-container {
+        &::-webkit-scrollbar {
+            background-color: #F1F2F4;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: #D5D8DD;
+        }
+    }
+
+    .App__command-palette-heading {
+        color: #818A98;
+    }
+
+    .AudioFeedbackToggleSwitch {
+        background-color: #B9BEC6;
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+
+        &.ToggleSwitch--checked{
+            background-color: #818A98;
+        }
+
+        &:hover {
+            background-color: #505862;
+            .ToggleSwitch__switch-inner-circle {
+                background-color: #B9BEC6;
+            }
+        }
+    }
+
+    .ActionsMenu__header {
+        background-color: #D5D8DD;
+    }
+
+    // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
+    #command-block--backward1, .btn-command-block--backward1,
+    #command-block--backward2, .btn-command-block--backward2,
+    #command-block--backward3, .btn-command-block--backward3,
+    #command-block--forward1, .btn-command-block--forward1,
+    #command-block--forward2, .btn-command-block--forward2,
+    #command-block--forward3, .btn-command-block--forward3,
+    #command-block--left45, .btn-command-block--left45,
+    #command-block--left90, .btn-command-block--left90,
+    #command-block--left180, .btn-command-block--left180,
+    #command-block--right45, .btn-command-block--right45,
+    #command-block--right90, .btn-command-block--right90,
+    #command-block--right180, .btn-command-block--right180,
+    // TODO: Add backward commands to the above.
+    .command-block {
+        background-color: #818A98;
+        border-color: #818A98;
+
+        svg {
+            path, circle, rect {
+                stroke: white;
+            }
+            circle, path.filled {
+                fill: white;
+            }
+        }
+
+        &:focus {
+            border: 2px solid white;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+
+        &:hover {
+            background-color: #505862;
+        }
+
+        &:not(:disabled):not(.disabled):active {
+            background-color: #818A98;
+            border-color: #818A98;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+
+        &.command-block--pressed {
+            border: 3px solid #505862;
+        }
+    }
+
+    .command-block--hidden > svg {
+        fill: #818A98;
+    }
+
+    .Character__icon-background {
+        fill: #818A98;
+    }
+
+    .Scene {
+        border-bottom: 2px solid #D5D8DD;
+        border-right: 2px solid #D5D8DD;
+    }
+
+    .Scene__background {
+        background-color: #D5D8DD;
+    }
+
+    .Scene__header-corner {
+        background-color: #D5D8DD;
+    }
+
+    .Scene__column-header, .Scene__row-header {
+        fill: #D5D8DD;
+    }
+
+    .Scene__grid-line, .Scene__path-line {
+        stroke: #D5D8DD;
+    }
+
+    .Scene__path-line {
+        stroke: #505862;
+    }
+
+    .PenDownToggleSwitch.ToggleSwitch {
+        background-color: #B9BEC6;
+
+        .ToggleSwitch__switch-inner-circle {
+            background-color: white;
+            svg {
+                path {
+                    stroke: #818A98;
+                }
+            }
+        }
+
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+
+        &:hover {
+            background-color: #505862;
+            .ToggleSwitch__switch-inner-circle {
+                background-color: #B9BEC6;
+            }
+        }
+    }
+
+    .PenDownToggleSwitch.ToggleSwitch--checked {
+        background-color: #818A98;
+    }
+
+    button.btn.RefreshButton {
+        background-color: #818A98;
+        svg path {
+            fill: white;
+        }
+
+        &:hover {
+            background-color: #505862;
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+    }
+
+    .WorldSelector {
+        background-color: #D5D8DD;
+        border: 1px solid #D5D8DD;
+    }
+
+    .WorldSelector svg.HeaderIcon {
+        circle {
+            fill: #818A98;
+        }
+        path {
+            stroke: white;
+        }
+    }
+
+    .WorldSelector .WorldIcon--selected:not(:hover) {
+        background-color: #818A98;
+    }
+
+    .ProgramBlockEditor__character-position-button {
+        stroke: #818A98;
+    }
+
+    .ProgramBlockEditor__character-turn-positions {
+        svg path.filled {
+            fill: #818A98;
+        }
+    }
+
+    .AddNode__collapsed-icon {
+        background-color: #505862;
+        svg path {
+            stroke: white;
+            stroke-width: 6px;
+        }
+    }
+
+    .AddNode__expanded-button {
+        border: 2px solid #505862;
+        background-color: inherit;
+        box-shadow: none;
+
+        &:focus {
+            border: 2px solid white;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+
+        svg path {
+            stroke: #505862;
+        }
+    }
+
+    .ProgramBlockEditor__container {
+        background-color: #D5D8DD;
+        border: 2px solid #D5D8DD;
+    }
+
+    .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch {
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+
+        &:hover {
+            background-color: #505862;
+            .ToggleSwitch__switch-inner-circle {
+                background-color: #B9BEC6;
+            }
+
+        }
+
+        svg path {
+            stroke: #818A98
+        }
+    }
+
+    .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch--checked {
+        background-color: #818A98;
+    }
+
+    button.btn.ProgramBlockEditor__program-deleteAll-button {
+        background-color: #818A98;
+        svg path {
+            stroke: white;
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+
+        &:hover {
+            background-color: #505862;
+        }
+    }
+
+    button.btn.ConfirmDeleteAllModal__option-button {
+        background-color: #F1F2F4;
+        border-color: #F1F2F4;
+        color: black;
+
+
+        &:hover {
+            background: #505862;
+            color: White;
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem white,
+                0 0 0 $c2lc-focus-indicator-width #505862
+        }
+
+        &.btn-primary {
+            &:not(:disabled):not(.disabled):active {
+                background-color: #B9BEC6;
+            }
+        }
+    }
+
+    .ProgramBlockEditor__header {
+        background-color: #D5D8DD;
+    }
+
+    .ProgramBlockEditor__character-column {
+        background-color: #F1F2F4;
+        border-right: 1px solid #9DA4AF;
+    }
+
+    .ProgramBlockEditor__program-sequence-scroll-container {
+        background-color: white;
+        margin-left: 0.1rem;
+    }
+
+    .ProgramBlockEditor__program-sequence-scroll-container--isDragging {
+        box-shadow: 0 0 0 0.4rem #505862;
+    }
+
+    .ProgramBlockEditor__start-indicator {
+        background-color: #818A98;
+        color: white;
+    }
+
+    .ProgramBlockEditor__start-indicator {
+        border-color: #818A98;
+        background-color: #818A98;
+    }
+
+    .ProgramBlockEditor__program-block-connector {
+        background-color: #505862;
+    }
+
+    button.ProgramBlockEditor__program-block--active {
+        border: 1px solid white;
+        box-shadow: 0 0 0 6px #505862;
+    }
+
+    button.btn.AddNode__expanded-button.AddNode__expanded-button--isDragTarget {
+        box-shadow: 0 0 0 0.4rem #505862;
+    }
+
+    .ActionPanel__background {
+        svg {
+            path {
+                fill: #F1F2F4;
+                stroke: #D5D8DD;
+            }
+        }
+    }
+
+    button.btn.ActionPanel__action-buttons {
+        background-color: #D5D8DD;
+
+        svg {
+            path.stroked {
+                stroke: #505862;
+            }
+            path.filled {
+                fill: #505862;
+            }
+        }
+
+        &:hover, &:focus {
+            background-color: #505862;
+
+            svg {
+                path.stroked {
+                    stroke: #F1F2F4;
+                }
+                path.filled {
+                    fill: #F1F2F4;
+                }
+            }
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem #30444E,
+                0 0 0 $c2lc-focus-indicator-width white,
+                0 0 0 0.3rem #30444E;
+        }
+    }
+
+    button.btn.ActionPanel__action-buttons--disabled {
+        svg {
+            path.stroked {
+                stroke: #F1F2F4;
+            }
+            path.filled {
+                fill: #F1F2F4;
+            }
+        }
+    }
+
+    @keyframes pausedGreyscaleAnimation {
+        0% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width #505862;}
+        50% {box-shadow: 0 0 0 $c2lc-active-button-width #505862;}
+        100% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width #505862;}
+    }
+
+    button.ProgramBlockEditor__program-block--paused {
+        animation-timing-function: ease;
+        animation: pausedGreyscaleAnimation 2s infinite;
+        border: 1px solid white;
+    }
+
+    .App__playAndShare-background {
+        background-color: #D5D8DD;
+    }
+
+    button.btn.PlayButton, button.btn.StopButton {
+        box-shadow: none;
+
+        svg {
+            path.inner-circle {
+                fill: white;
+            }
+            circle {
+                fill: #67717E;
+            }
+            path.triangle {
+                fill: #30444E;
+            }
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+            border: none;
+        }
+
+        &:hover {
+            svg {
+                path.inner-circle {
+                    fill: #9DA4AF;
+                }
+                circle {
+                    fill: #67717E;
+                }
+                path.triangle {
+                    fill: #30444E;
+                }
+            }
+        }
+    }
+
+    button.btn.PlayButton--disabled, button.btn.StopButton--disabled {
+        background-color: #D5D8DD;
+
+        svg {
+            path.inner-circle {
+                fill: #D5D8DD;
+            }
+            circle, path.triangle {
+                fill: #9DA4AF;
+            }
+        }
+    }
+
+    .ProgramSpeedController__container svg path {
+        fill: #67717E;
+    }
+
+    .ProgramSpeedController__slider {
+        &::-webkit-slider-runnable-track {
+            background-color: #67717E;
+            border: 2px solid #67717E;
+        }
+
+        &::-webkit-slider-thumb {
+            border: 2px solid #67717E;
+            background-color: white;
+            box-shadow: -8rem 0 0 8rem white;
+        }
+
+        &::-moz-range-thumb {
+            border-radius: 0;
+            border: 2px solid black;
+            background-color: white;
+            box-shadow: -8rem 0 0 8rem white;
+        }
+
+        &::-moz-range-progress {
+            background-color: white;
+        }
+        &::-moz-range-track {
+            background-color: #67717E;
+        }
+
+        &::-ms-fill-lower {
+            background-color: white;
+        }
+
+        &::-ms-fill-upper {
+            background-color: #67717E;
+        }
+
+        &:hover {
+            &::-webkit-slider-thumb {
+                background-color: #9DA4AF;
+                box-shadow: -8rem 0 0 8rem #9DA4AF;
+            }
+            &::-moz-range-thumb {
+                background-color: #9DA4AF;
+                box-shadow: -8rem 0 0 8rem #9DA4AF;
+            }
+
+            &::-moz-range-progress {
+                background-color: #9DA4AF;
+            }
+
+            &::-ms-fill-lower {
+                background-color: #9DA4AF;
+            }
+        }
+
+        &:focus {
+            outline-color: #505862;
+        }
+    }
+
+
+    button.btn.PlayButton--play.PlayButton--disabled {
+        background-color: inherit;
+        cursor: default;
+
+        svg {
+            path.triangle {
+                fill: #30444E;
+            }
+        }
+    }
+
+    button.btn.ShareButton {
+        background-color: #F1F2F4;
+        color: black;
+
+        &:hover {
+            background-color:#D5D8DD;
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.15rem #d5d8dd,
+                0 0 0 0.25rem #505862;
+        }
+    }
+}
+
+/* High Contrast "Mono" Theme */
+body.contrast-theme {
+    background-color: black;
+
+    .App__container {
+        background-color: black;
+    }
+
+    .App__header {
+        background-color: black;
+        color: white;
+    }
+
+    .ThemeSelector {
+        button.btn {
+            background-color: white;
+            color: black;
+            border-color: white;
+
+            &:hover:not(:active) {
+                background-color: black;
+                border: 2px solid white;
+                color: white;
+            }
+
+            &:focus {
+                box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+            }
+
+            &:focus:not(:hover) {
+                border: 2px solid black;
+            }
+        }
+
+        button.btn-primary {
+            &:not(:disabled):not(.disabled):active {
+                background-color: white;
+                color: black;
+            }
+        }
+    }
+
+    .AudioFeedbackToggleSwitch {
+        background-color: black;
+        border: 2px solid white;
+        padding: 0.2rem;
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+            border: 2px solid black;
+        }
+
+        .ToggleSwitch__switch-inner-circle {
+            background-color: white;
+            svg {
+                path {
+                    fill: black;
+                }
+            }
+        }
+
+        &.ToggleSwitch--checked:not(:hover), &:hover {
+            background-color: white;
+            .ToggleSwitch__switch-inner-circle {
+                background-color: black;
+                svg {
+                    path {
+                        fill: white;
+                    }
+                }
+            }
+        }
+    }
+
+    .AudioFeedbackToggleSwitch.ToggleSwitch--checked:not(:hover) {
+        background-color: black;
+        border: 2px solid white;
+
+        .ToggleSwitch__switch-inner-circle {
+            background-color: white;
+            svg {
+                path {
+                    fill: black;
+                }
+            }
+        }
+    }
+
+    .ActionsMenu__header {
+        background-color: white;
+    }
+
+    .App__command-palette {
+        border: 2px solid white;
+    }
+
+    .App__command-palette-command-container {
+        background-color: black;
+    }
+
+    .App__command-palette-command-container {
+        &::-webkit-scrollbar {
+            background-color: black;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: black;
+            border: 2px solid white;
+        }
+    }
+
+    // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
+    #command-block--backward1, .btn-command-block--backward1,
+    #command-block--backward2, .btn-command-block--backward2,
+    #command-block--backward3, .btn-command-block--backward3,
+    #command-block--forward1, .btn-command-block--forward1,
+    #command-block--forward2, .btn-command-block--forward2,
+    #command-block--forward3, .btn-command-block--forward3,
+    #command-block--left45, .btn-command-block--left45,
+    #command-block--left90, .btn-command-block--left90,
+    #command-block--left180, .btn-command-block--left180,
+    #command-block--right45, .btn-command-block--right45,
+    #command-block--right90, .btn-command-block--right90,
+    #command-block--right180, .btn-command-block--right180,
+    // TODO: Add backward commands to the above.
+    btn.command-block {
+        border-color: white;
+        background-color: white;
+
+        svg {
+            path, circle {
+                stroke: black;
+            }
+            circle, path.filled {
+                fill: black;
+            }
+        }
+
+        &:hover {
+            border: 2px solid white;
+            border-radius: 0.2rem;
+            background-color: black;
+
+            svg {
+                path, rect, circle {
+                    stroke: white;
+                }
+                circle, path.filled {
+                    fill: white;
+                }
+            }
+        }
+
+        &:focus:hover {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        }
+
+        &:focus:not(:hover),
+        &:active,
+        &:not(:disabled):not(.disabled):active,
+        &.command-block--pressed,
+        &.command-block--pressed:hover,
+        &.command-block--pressed:active {
+            border: 2px solid black;
+            border-color: black;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        }
+
+        &:not(:disabled):not(.disabled):active {
+            background-color: black;
+        }
+    }
+
+    .command-block--hidden > svg {
+        fill: white;
+    }
+
+    button.ProgramBlockEditor__program-block--active {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        border: 2px solid black;
+        border-color: black;
+    }
+
+    .App__command-palette-heading {
+        color: white;
+    }
+
+    .Scene {
+        background-color: black;
+        border-bottom: 2px solid white;
+        border-right: 2px solid white;
+    }
+
+    .Scene__background {
+        background-color: white;
+    }
+
+    .Scene__header-corner {
+        background-color: white;
+    }
+
+    .Scene__column-header, .Scene__row-header {
+        fill: white;
+    }
+
+    .Scene__grid-line, .Scene__path-line {
+        stroke: white;
+    }
+
+    .Character__icon-background {
+        fill: white;
+    }
+
+    .PenDownToggleSwitch, .PenDownToggleSwitch.ToggleSwitch--checked:hover {
+        background-color: white;
+        border: 1px solid black;
+        .ToggleSwitch__switch-inner-circle {
+            background-color: black;
+            svg {
+                path {
+                    stroke: white;
+                }
+            }
+        }
+    }
+
+    .PenDownToggleSwitch:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        border: none;
+    }
+
+    .PenDownToggleSwitch:hover, .PenDownToggleSwitch.ToggleSwitch--checked {
+        background-color: black;
+        border: 2px solid white;
+        padding: 0.2rem;
+        .ToggleSwitch__switch-inner-circle {
+            background-color: white;
+            svg {
+                path {
+                    stroke: black;
+                }
+            }
+        }
+    }
+
+    .RefreshButton {
+        background-color: white;
+        border: 0.1rem solid black;
+        padding: 0.4rem;
+        svg path {
+            fill: black;
+            stroke: none;
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+            border: 2px solid black;
+        }
+
+        &:hover:not(:active) {
+            background-color: black;
+            border: 2px solid white;
+            svg path {
+                fill: white;
+            }
+        }
+    }
+
+    .WorldSelector {
+        background-color: black;
+        border: 1px solid white;
+
+        svg.HeaderIcon {
+            circle {
+                fill: white;
+            }
+        }
+
+        button.btn:hover {
+            background-color: white;
+        }
+
+        button.btn:focus {
+            box-shadow:
+                0 0 0 0.1rem black,
+                0 0 0 $c2lc-focus-indicator-width white;
+
+        }
+
+        .WorldIcon--selected:not(:hover) {
+            background-color: white;
+            box-shadow:
+                0 0 0 0.05rem black,
+                0 0 0 0.1rem white;
+            border: 2px solid black;
+        }
+
+        .btn-primary:not(:disabled):not(.disabled):active {
+            background-color: white;
+        }
+    }
+
+    .ProgramBlockEditor__container {
+        border: 2px solid #F1F1F1;
+    }
+
+    .ProgramBlockEditor__header {
+        background-color: white;
+        color: black;
+    }
+
+    .ProgramBlockEditor__character-position-button {
+        stroke: white;
+        &:focus {
+            outline: $c2lc-focus-indicator-width solid white;
+        }
+    }
+
+    .ProgramBlockEditor__character-turn-positions {
+        svg path.filled {
+            fill: white;
+        }
+    }
+
+    .ProgramBlockEditor__add-node-toggle-switch, .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch:hover {
+        background-color: black;
+
+        .ToggleSwitch__switch-inner-circle {
+            background-color: white;
+            svg {
+                path {
+                    stroke: black;
+                }
+            }
+        }
+
+        &:focus {
+            border: 2px solid white;
+            padding: 0.2rem;
+        }
+    }
+
+    .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch--checked, .ProgramBlockEditor__add-node-toggle-switch:hover {
+        background-color: white;
+        border: 2px solid black;
+        padding: 0.2rem;
+
+        .ToggleSwitch__switch-inner-circle {
+            background-color: black;
+            svg {
+                path {
+                    stroke: white;
+                }
+            }
+        }
+
+        &:focus {
+            border: 2px solid black;
+        }
+    }
+
+    button.btn.ProgramBlockEditor__program-deleteAll-button {
+        background-color: black;
+        border: 2px solid white;
+        svg path {
+            stroke: white;
+        }
+
+        &:hover {
+            background-color: white;
+            border: 2px solid black;
+            svg path {
+                stroke: black;
+            }
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
+        }
+    }
+
+    button.btn.ConfirmDeleteAllModal__option-button {
+        background-color: black;
+        color: white;
+        border-color: white;
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem white,
+                0 0 0 0.2rem black;
+        }
+
+        &:hover {
+            background-color: white;
+            color: black;
+            box-shadow: 0 0 0 0.1rem black;
+        }
+
+        &:hover:focus {
+            box-shadow: 0 0 0 0.2rem black;
+        }
+
+        &.btn-primary {
+            &:not(:disabled):not(.disabled):active {
+                background-color: white;
+                color: black;
+            }
+        }
+    }
+
+    .ProgramBlockEditor__character-column {
+        background-color: black;
+        border-right: 2px solid #9DA4AF;
+    }
+
+    .ProgramBlockEditor__character-column-character-container {
+        background-color: white;
+    }
+
+    .ProgramBlockEditor__program-sequence-scroll-container {
+        background-color: black;
+    }
+
+    .ProgramBlockEditor__program-sequence-scroll-container--isDragging {
+        box-shadow: 0 0 0 0.2rem black,
+        0 0 0 0.4rem white,
+        0 0 0 0.6rem black;
+    }
+
+    .ProgramBlockEditor__start-indicator {
+        border-color: white;
+        background-color: white;
+        color: black;
+    }
+
+    .ProgramBlockEditor__program-block-connector {
+        background-color: white;
+    }
+
+    .AddNode__collapsed-icon {
+        background-color: white;
+        svg path {
+            stroke-width: 6px;
+            stroke: black;
+            fill: black;
+        }
+    }
+
+    button.btn.AddNode__expanded-button.AddNode__expanded-button--isDragTarget {
+        box-shadow: 0 0 0 0.45rem white;
+    }
+
+    .AddNode__expanded-button {
+        border: 2px solid white;
+        background-color: black;
+        box-shadow: none;
+        svg path {
+            stroke: white;
+            fill: white
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        }
+
+        &:hover {
+            svg path {
+                stroke: black;
+                fill: black;
+            }
+        }
+    }
+
+    .ActionPanel__background {
+        svg {
+            path {
+                fill: white;
+                stroke: white;
+            }
+        }
+    }
+
+    button.btn.ActionPanel__action-buttons {
+        background-color: black;
+
+        svg {
+            path.stroked {
+                stroke: white;
+            }
+            path.filled {
+                fill: white;
+            }
+        }
+
+        &:hover {
+            border: 1px solid black;
+            background-color: white;
+            svg {
+                path.stroked {
+                    stroke: black;
+                }
+                path.filled {
+                    fill: black;
+                }
+            }
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem #30444E,
+                0 0 0 $c2lc-focus-indicator-width white,
+                0 0 0 0.3rem #30444E;
+        }
+    }
+
+    button.btn.ActionPanel__action-buttons--disabled {
+        svg {
+            path.stroked {
+                stroke: #505862;
+            }
+            path.filled {
+                fill: #505862;
+            }
+        }
+    }
+
+    @keyframes pausedContrastAnimation {
+        0% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width white;}
+        50% {box-shadow: 0 0 0 $c2lc-active-button-width white;}
+        100% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width white;}
+    }
+
+    button.ProgramBlockEditor__program-block--paused {
+        border: 1px solid black;
+        animation-timing-function: ease;
+        animation: pausedContrastAnimation 2s infinite;
+    }
+
+    .App__playAndShare-background {
+        background-color: white;
+    }
+
+    .App__shareButton-container button {
+        background-color: black;
+        color: white;
+    }
+
+    button.btn.PlayButton, button.btn.StopButton {
+        &:hover {
+            background-color: white;
+            svg {
+                path.inner-circle {
+                    fill: #9DA4AF;
+                }
+            }
+        }
+
+        svg {
+            path.inner-circle {
+                fill: white;
+            }
+            circle, path.triangle {
+                fill: black;
+            }
+        }
+    }
+
+
+
+    button.btn.PlayButton--play.PlayButton--disabled, button.btn.StopButton--disabled {
+        svg {
+            path {
+                fill: white;
+            }
+            circle, path.triangle, rect {
+                fill: #8E8E8E;
+            }
+        }
+    }
+
+    .ProgramSpeedController__slider {
+        &::-webkit-slider-runnable-track {
+            background-color: black;
+            border: 2px solid black;
+        }
+
+        &::-webkit-slider-thumb {
+            border: 2px solid black;
+            background-color: white;
+            box-shadow: -8rem 0 0 8rem white;
+        }
+
+        &::-moz-range-thumb {
+            border-radius: 0;
+            border: 2px solid black;
+            background-color: white;
+            box-shadow: -8rem 0 0 8rem white;
+        }
+
+        &::-moz-range-progress {
+            background-color: white;
+        }
+
+        &::-moz-range-track {
+            background-color: black;
+        }
+
+        &::-ms-fill-lower {
+            background-color: white;
+        }
+
+        &::-ms-fill-upper {
+            background-color: black;
+        }
+
+        &:hover {
+            &::-webkit-slider-thumb {
+                background-color: #9DA4AF;
+                box-shadow: -8rem 0 0 8rem #9DA4AF;
+            }
+            &::-moz-range-thumb {
+                background-color: #9DA4AF;
+                box-shadow: -8rem 0 0 8rem #9DA4AF;
+            }
+
+            &::-moz-range-progress {
+                background-color: #9DA4AF;
+            }
+
+            &::-ms-fill-lower {
+                background-color: #9DA4AF;
+            }
+        }
+    }
+
+    button.btn.ShareButton {
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem white,
+                0 0 0 0.2rem black;
+        }
+
+        &:hover {
+            background-color: white;
+            color: black;
+            box-shadow: 0 0 0 0.1rem black;
+        }
+
+        &:hover:focus {
+            box-shadow: 0 0 0 0.2rem black;
+        }
+    }
+}

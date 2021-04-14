@@ -35,30 +35,33 @@ body {
 }
 
 button.btn {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 0.6rem;
+    border-radius: 0.2rem;
 }
 
 button.btn:focus {
-    box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
+    box-shadow:
+        0 0 0 0.1rem #30444E,
+        0 0 0 $c2lc-focus-indicator-width white;
     z-index: 1;
 }
 
 button.btn-primary,
 button.btn-primary:hover {
-    border: $c2lc-button-border-width solid #000000;
     font-weight: bold;
     padding: 1.15rem 1.25rem;
 }
 
 button.btn:hover {
-    box-shadow: 0 0 0 $c2lc-hover-indicator-width $c2lc-focus-indicator-color;
     z-index: 1;
 }
 
+button.btn:hover:not(:focus) {
+    box-shadow: none;
+}
+
 button.btn-primary:disabled {
-    border: $c2lc-button-border-width solid $c2lc-disabled-color;
-    color: $c2lc-disabled-color;
+    border: $c2lc-button-border-width solid $c2lc-disabled-background-color;
+    color: $c2lc-disabled-foreground-color;
 }
 
 button.btn-command-block--none {
@@ -73,10 +76,15 @@ button.command-block {
     padding: 0;
 }
 
+button.btn.command-block:focus {
+    box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    border: 2px solid #30444E;
+}
+
 button.btn.command-block.command-block--pressed,
 button.btn.command-block.command-block--pressed:hover,
 button.btn.command-block.command-block--pressed:active {
-    border: $c2lc-button-border-width dashed #000000;
+    border: $c2lc-button-border-width solid white;
 }
 
 button.btn.command-block--dragged {
@@ -86,4 +94,51 @@ button.btn.command-block--dragged {
 .command-block-svg {
     width: 2rem;
     height: 2rem;
+
+    path, circle {
+        stroke: #1E1E1E;
+    }
+    circle, path.filled {
+        fill: #1E1E1E;
+    }
+}
+
+.command-block--hidden {
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 45px;
+    min-height: 45px;
+    padding-top: 0.5rem;
+}
+
+.command-block--hidden > svg {
+    width: 1rem;
+    height: 1rem;
+    fill: #B9BEC6;
+}
+
+.btn-command-block--backward1:hover,
+.btn-command-block--backward2:hover,
+.btn-command-block--backward3:hover {
+    background-color: $c2lc-backward-command-hover-color;
+}
+
+
+button.btn.btn-command-block--forward1:hover,
+button.btn.btn-command-block--forward2:hover,
+button.btn.btn-command-block--forward3:hover {
+    background-color: $c2lc-forward-command-hover-color;
+
+}
+
+button.btn.btn-command-block--left45:hover,
+button.btn.btn-command-block--left90:hover,
+button.btn.btn-command-block--left180:hover {
+    background-color: $c2lc-left-command-hover-color;
+}
+
+button.btn.btn-command-block--right45:hover,
+button.btn.btn-command-block--right90:hover,
+button.btn.btn-command-block--right180:hover {
+    background-color: $c2lc-right-command-hover-color;
 }

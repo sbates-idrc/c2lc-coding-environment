@@ -19,8 +19,7 @@ export default class ToggleSwitch extends React.Component<ToggleSwitchProps, {}>
     }
 
     handleKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        const spaceKey = ' ';
-        if (e.key === spaceKey) {
+        if (e.key === ' ' || e.key === 'Enter') {
             e.preventDefault();
             this.toggleStateChange();
         }

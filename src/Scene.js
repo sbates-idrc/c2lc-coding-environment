@@ -50,6 +50,7 @@ class Scene extends React.Component<SceneProps, {}> {
             rowLabels.push(
                 <text
                     className='Scene__grid-label'
+                    aria-hidden='true'
                     textAnchor='middle'
                     key={`grid-cell-label-${i}`}
                     dominantBaseline='middle'
@@ -83,6 +84,7 @@ class Scene extends React.Component<SceneProps, {}> {
             columnLabels.push(
                 <text
                     className='Scene__grid-label'
+                    aria-hidden='true'
                     key={`grid-cell-label-${String.fromCharCode(64+i)}`}
                     textAnchor='middle'
                     x={8.25*i - 4.125}
@@ -188,22 +190,6 @@ class Scene extends React.Component<SceneProps, {}> {
         }
     }
 
-    handleScrollRowHeader = (e: SyntheticEvent<HTMLDivElement>) => {
-        const rowHeaderScrollTop = e.currentTarget.scrollTop;
-        const scene = document.getElementById('scene');
-        if (rowHeaderScrollTop != null && scene != null) {
-            scene.scrollTop = rowHeaderScrollTop;
-        }
-    }
-
-    handleScrollColumnHeader = (e: SyntheticEvent<HTMLDivElement>) => {
-        const columnHeaderScrollLeft = e.currentTarget.scrollLeft;
-        const scene = document.getElementById('scene');
-        if (columnHeaderScrollLeft != null && scene != null) {
-            scene.scrollLeft = columnHeaderScrollLeft;
-        }
-    }
-
     render() {
         const minX = this.props.dimensions.getMinX();
         const minY = this.props.dimensions.getMinY();
@@ -217,14 +203,16 @@ class Scene extends React.Component<SceneProps, {}> {
         // image is drawn upright when it is facing East
         const characterTransform = `translate(${this.props.characterState.xPos} ${this.props.characterState.yPos}) rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
 
+        // For the background, use the same translation, but skip the rotate.
+        const characterBackgroundTransform = `translate(${this.props.characterState.xPos} ${this.props.characterState.yPos})`;
+
         return (
             <React.Fragment>
-                <div className='Scene__background' />
                 <div className='Scene__container'>
+                    <div className='Scene__header-corner' />
                     <div
                         id='scene-row-header'
-                        className='Scene__row-header'
-                        onScroll={this.handleScrollRowHeader}>
+                        className='Scene__row-header'>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             viewBox='-2 0 3 135'>
@@ -235,8 +223,7 @@ class Scene extends React.Component<SceneProps, {}> {
                     </div>
                     <div
                         id='scene-column-header'
-                        className='Scene__column-header'
-                        onScroll={this.handleScrollColumnHeader}>
+                        className='Scene__column-header'>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             viewBox='0 -2 217.5 3'>
@@ -261,6 +248,14 @@ class Scene extends React.Component<SceneProps, {}> {
                             {grid}
                             <g clipPath='url(#Scene-clippath)'>
                                 {this.drawCharacterPath()}
+                                <rect
+                                    className="Character__icon-background"
+                                    x={-0.5}
+                                    y={-0.5}
+                                    height={1}
+                                    width={1}
+                                    transform={characterBackgroundTransform}
+                                />
                                 <Character
                                     world={this.props.world}
                                     transform={characterTransform}
