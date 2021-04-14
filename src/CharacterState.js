@@ -98,41 +98,48 @@ export default class CharacterState {
         let newYPos = 0;
         let newXPos = 0;
         let turnSegment = [];
+        const boundsStateX = this.sceneDimensions.getBoundsStateX(this.xPos + xOffset);
+        const boundsStateY = this.sceneDimensions.getBoundsStateY(this.yPos + yOffset);
 
-        switch(this.sceneDimensions.getBoundsStateX(this.xPos + xOffset)) {
-            case 'outOfBoundsBelow':
-                newXPos = 1;
-                if (!this.sceneDimensions.isSceneEdgeY(this.yPos)) {
-                    turnSegment = this.drawEdgeDiagonalPath([], this.xPos - newXPos, this.direction);
-                }
-                break;
-            case 'outOfBoundsAbove':
-                newXPos = this.sceneDimensions.getWidth();
-                if (!this.sceneDimensions.isSceneEdgeY(this.yPos)) {
-                    turnSegment = this.drawEdgeDiagonalPath([], newXPos - this.xPos, this.direction);
-                }
-                break;
-            default:
-                newXPos = this.xPos + xOffset;
-                break;
-        }
-
-        switch(this.sceneDimensions.getBoundsStateY(this.yPos + yOffset)) {
-            case 'outOfBoundsBelow':
-                newYPos = 1;
-                if (!this.sceneDimensions.isSceneEdgeX(this.xPos)) {
-                    turnSegment = this.drawEdgeDiagonalPath([], this.yPos - newYPos, this.direction);
-                }
-                break;
-            case 'outOfBoundsAbove':
-                newYPos = this.sceneDimensions.getHeight();
-                if (!this.sceneDimensions.isSceneEdgeX(this.xPos)) {
-                    turnSegment = this.drawEdgeDiagonalPath([], newYPos - this.yPos, this.direction);
-                }
-                break;
-            default:
-                newYPos = this.yPos + yOffset;
-                break;
+        if (boundsStateX === 'outOfBoundsBelow' && boundsStateY === 'outOfBoundsBelow') {
+            newXPos = 1;
+            newYPos = 1;
+            const drawIteration = Math.max(this.xPos - 1, this.yPos - 1);
+            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, this.direction);
+        } else if (boundsStateX === 'outOfBoundsBelow' && boundsStateY === 'outOfBoundsAbove') {
+            newXPos = 1;
+            newYPos = this.sceneDimensions.getHeight();
+            const drawIteration = Math.max(this.xPos - 1, newYPos - this.yPos);
+            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, this.direction);
+        } else if (boundsStateX === 'outOfBoundsBelow' && boundsStateY === 'inBounds') {
+            newXPos = 1;
+            newYPos = this.yPos + yOffset;
+            turnSegment = this.drawEdgeDiagonalPath([], this.xPos - 1, this.direction);
+        } else if (boundsStateX === 'outOfBoundsAbove' && boundsStateY === 'inBounds') {
+            newXPos = this.sceneDimensions.getWidth();
+            newYPos = this.yPos + yOffset;
+            turnSegment = this.drawEdgeDiagonalPath([], newXPos - this.xPos, this.direction);
+        } else if (boundsStateX === 'outOfBoundsAbove' && boundsStateY === 'outOfBoundsBelow') {
+            newXPos = this.sceneDimensions.getWidth();
+            newYPos = 1;
+            const drawIteration = Math.max(newXPos - this.xPos, this.yPos - 1);
+            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, this.direction);
+        } else if (boundsStateX === 'outOfBoundsAbove' && boundsStateY === 'outOfBoundsAbove') {
+            newXPos = this.sceneDimensions.getWidth();
+            newYPos = this.sceneDimensions.getHeight();
+            const drawIteration = Math.max(newXPos - this.xPos, newYPos - this.yPos);
+            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, this.direction);
+        } else if (boundsStateX === 'inBounds' && boundsStateY === 'outOfBoundsBelow') {
+            newXPos = this.xPos + xOffset;
+            newYPos = 1;
+            turnSegment = this.drawEdgeDiagonalPath([], this.yPos - 1, this.direction);
+        } else if (boundsStateX === 'inBounds' && boundsStateY === 'outOfBoundsAbove') {
+            newXPos = this.xPos + xOffset;
+            newYPos = this.sceneDimensions.getHeight();
+            turnSegment = this.drawEdgeDiagonalPath([], newYPos - this.yPos, this.direction);
+        } else {
+            newXPos = this.xPos + xOffset;
+            newYPos = this.yPos + yOffset;
         }
 
         let startingX1 = this.xPos;
@@ -217,40 +224,48 @@ export default class CharacterState {
 
         let newYPos, newXPos = 0;
         let turnSegment = [];
-        switch(this.sceneDimensions.getBoundsStateX(this.xPos + xOffset)) {
-            case 'outOfBoundsBelow':
-                newXPos = 1;
-                if (!this.sceneDimensions.isSceneEdgeY(this.yPos)) {
-                    turnSegment = this.drawEdgeDiagonalPath([], this.xPos - newXPos, (this.direction + 4) % 8);
-                }
-                break;
-            case 'outOfBoundsAbove':
-                newXPos = this.sceneDimensions.getWidth();
-                if (!this.sceneDimensions.isSceneEdgeY(this.yPos)) {
-                    turnSegment = this.drawEdgeDiagonalPath([], newXPos - this.xPos, (this.direction + 4) % 8);
-                }
-                break;
-            default:
-                newXPos = this.xPos + xOffset;
-                break;
-        }
+        const boundsStateX = this.sceneDimensions.getBoundsStateX(this.xPos + xOffset);
+        const boundsStateY = this.sceneDimensions.getBoundsStateY(this.yPos + yOffset);
 
-        switch(this.sceneDimensions.getBoundsStateY(this.yPos + yOffset)) {
-            case 'outOfBoundsBelow':
-                newYPos = 1;
-                if (!this.sceneDimensions.isSceneEdgeX(this.xPos)) {
-                    turnSegment = this.drawEdgeDiagonalPath([], this.yPos - newYPos, (this.direction + 4) % 8);
-                }
-                break;
-            case 'outOfBoundsAbove':
-                newYPos = this.sceneDimensions.getHeight();
-                if (!this.sceneDimensions.isSceneEdgeX(this.xPos)) {
-                    turnSegment = this.drawEdgeDiagonalPath([], newYPos - this.yPos, (this.direction + 4) % 8);
-                }
-                break;
-            default:
-                newYPos = this.yPos + yOffset;
-                break;
+        if (boundsStateX === 'outOfBoundsBelow' && boundsStateY === 'outOfBoundsBelow') {
+            newXPos = 1;
+            newYPos = 1;
+            const drawIteration = Math.max(this.xPos - 1, this.yPos - 1);
+            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, (this.direction + 4) % 8);
+        } else if (boundsStateX === 'outOfBoundsBelow' && boundsStateY === 'outOfBoundsAbove') {
+            newXPos = 1;
+            newYPos = this.sceneDimensions.getHeight();
+            const drawIteration = Math.max(this.xPos - 1, newYPos - this.yPos);
+            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, (this.direction + 4) % 8);
+        } else if (boundsStateX === 'outOfBoundsBelow' && boundsStateY === 'inBounds') {
+            newXPos = 1;
+            newYPos = this.yPos + yOffset;
+            turnSegment = this.drawEdgeDiagonalPath([], this.xPos - 1, (this.direction + 4) % 8);
+        } else if (boundsStateX === 'outOfBoundsAbove' && boundsStateY === 'inBounds') {
+            newXPos = this.sceneDimensions.getWidth();
+            newYPos = this.yPos + yOffset;
+            turnSegment = this.drawEdgeDiagonalPath([], newXPos - this.xPos, (this.direction + 4) % 8);
+        } else if (boundsStateX === 'outOfBoundsAbove' && boundsStateY === 'outOfBoundsBelow') {
+            newXPos = this.sceneDimensions.getWidth();
+            newYPos = 1;
+            const drawIteration = Math.max(newXPos - this.xPos, this.yPos - 1);
+            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, (this.direction + 4) % 8);
+        } else if (boundsStateX === 'outOfBoundsAbove' && boundsStateY === 'outOfBoundsAbove') {
+            newXPos = this.sceneDimensions.getWidth();
+            newYPos = this.sceneDimensions.getHeight();
+            const drawIteration = Math.max(newXPos - this.xPos, newYPos - this.yPos);
+            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, (this.direction + 4) % 8);
+        } else if (boundsStateX === 'inBounds' && boundsStateY === 'outOfBoundsBelow') {
+            newXPos = this.xPos + xOffset;
+            newYPos = 1;
+            turnSegment = this.drawEdgeDiagonalPath([], this.yPos - 1, (this.direction + 4) % 8);
+        } else if (boundsStateX === 'inBounds' && boundsStateY === 'outOfBoundsAbove') {
+            newXPos = this.xPos + xOffset;
+            newYPos = this.sceneDimensions.getHeight();
+            turnSegment = this.drawEdgeDiagonalPath([], newYPos - this.yPos, (this.direction + 4) % 8);
+        } else {
+            newXPos = this.xPos + xOffset;
+            newYPos = this.yPos + yOffset;
         }
 
         let startingX1 = this.xPos;
@@ -356,12 +371,14 @@ export default class CharacterState {
                 default:
                     return [];
             }
-            path.push({
-                x1: x2,
-                y1: y2,
-                x2: newX2,
-                y2: newY2
-            });
+            if (x2 !== newX2 && y2 !== newY2) {
+                path.push({
+                    x1: x2,
+                    y1: y2,
+                    x2: newX2,
+                    y2: newY2
+                });
+            }
             return this.drawEdgeDiagonalPath(path, iterations - 1, direction);
         }
     }
