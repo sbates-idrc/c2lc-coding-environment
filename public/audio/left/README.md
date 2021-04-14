@@ -8,7 +8,7 @@ simulate a fuller range of pitches.
 
 The 16-step sequence of notes used is (0s for unplayed, 1 for played):
 
-1 1 1 1 1 0 1 0 1 1 0 1 1 0 1 0 
+1 1 1 1 1 0 1 0 1 1 0 1 1 0 1 0
 
 The tempo of the sequence is varied by the angle, such that 45 is the slowest,
 180 is the fastest, and 90 is somewhere in between.

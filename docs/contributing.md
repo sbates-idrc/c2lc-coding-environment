@@ -54,8 +54,8 @@ to work with React:
   - [Ecma TC39 "Class field declarations for JavaScript" proposal](https://github.com/tc39/proposal-class-fields)
 - Provide dependencies to an object instance via constructor parameters.
 - Prefer single quotes for string literals.
-- Organize CSS by React component, storing the CSS for a component in a file named `ComponentName.css` or `ComponentName.scss` (for example
-  `ShareButton.css`) (see below).
+- Organize CSS by React component, storing the CSS for a component in a file named `ComponentName.css` or\
+  `ComponentName.scss` (for example `ShareButton.css`) (see below).
 - Use [BEM](http://getbem.com/) (Block Element Modifier) to name and structure CSS styles (see below).
 
 In addition, here are the naming conventions we use:

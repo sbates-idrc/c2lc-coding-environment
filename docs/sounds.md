@@ -24,7 +24,6 @@ The following is a diagram of the pitches for the cells used in the current scen
 |    12 |    A1 |    E1 |    B1 |   F#1 |   C#1 |   G#1 |   D#1 |   A#1 |    F1 |    C1 |    G1 |    D1 |    A1 |    E1 |    B1 |   F#1 |   C#1 |   G#1 |   D#1 |   A#1 |    F1 |    C1 |
 |    13 |   C#1 |   G#1 |   D#1 |   A#1 |    F1 |    C1 |    G1 |    D1 |    A1 |    E1 |    B1 |   F#1 |   C#1 |   G#1 |   D#1 |   A#1 |    F1 |    C1 |    G1 |    D1 |    A1 |    E1 |
 
-
 ## Musical Movements
 
 The tonnetz space as used here has a few interesting features as you move around:
