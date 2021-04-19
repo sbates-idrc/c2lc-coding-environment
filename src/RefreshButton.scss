@@ -34,7 +34,7 @@ button.btn.RefreshButton.RefreshButton--disabled:active:focus {
 }
 
 button.btn.RefreshButton.RefreshButton--disabled,
-button.btn.RefreshButton.RefreshButton--disabled:active:focus {
+button.btn.RefreshButton.RefreshButton--disabled:hover {
     background-color: $c2lc-disabled-background-color;
     cursor: default;
 }
