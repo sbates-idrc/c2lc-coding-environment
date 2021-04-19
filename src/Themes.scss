@@ -11,6 +11,19 @@ body.mixed-theme {
             background-color: #CCE6E2;
         }
     }
+
+    .WorldSelector .WorldIcon {
+        background-color: #30444E;
+        box-shadow: inset 0 .1rem .2rem rgba(0, 0, 0, 0.5);
+    }
+
+    .WorldSelector button.btn.WorldIcon--disabled {
+        background-color: #505862;
+    }
+
+    .WorldSelector .WorldIcon--selected:not(:hover) {
+        background-color: #4C9990;
+    }
 }
 
 
@@ -142,6 +155,17 @@ body.light-theme {
     .ProgramBlockEditor__start-indicator {
         color: white;
         background-color: black;
+    }
+
+    button.btn.WorldIcon {
+        border: 1px solid rgba(0, 0, 0, 0.25);
+    }
+
+    .WorldSelector button.btn.WorldIcon:focus {
+        box-shadow:
+            0 0 0 0.1rem #CCE6E2,
+            0 0 0 0.2rem #30444E;
+
     }
 
     @keyframes pausedLightAnimation {
@@ -382,17 +406,17 @@ body.dark-theme {
         border: 1px solid #33717F;
     }
 
-    .WorldSelector .WorldIcon:not(:hover):not(:active):not(.WorldIcon--selected):not(:focus) {
+    .WorldSelector .WorldIcon {
         background-color: #30444E;
         box-shadow: inset 0 .1rem .2rem rgba(0, 0, 0, 0.5);
     }
 
-    .WorldSelector button:focus {
+    .WorldSelector button.btn.WorldIcon:focus {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
 
-    .WorldSelector button:focus:not(:hover):not(:active):not(.WorldIcon--selected) {
-        background-color: #30444E;
+    .WorldSelector button.btn.WorldIcon--disabled {
+        background-color: #505862;
     }
 
     .WorldSelector .WorldIcon--selected:not(:hover) {
@@ -699,6 +723,14 @@ body.gray-theme {
         }
     }
 
+    button.btn.RefreshButton--disabled,
+    button.btn.RefreshButton--disabled:hover {
+        background-color: #9DA4AF;
+        svg path {
+            fill: #D5D8DD;
+        }
+    }
+
     .WorldSelector {
         background-color: #D5D8DD;
         border: 1px solid #D5D8DD;
@@ -713,8 +745,27 @@ body.gray-theme {
         }
     }
 
-    .WorldSelector .WorldIcon--selected:not(:hover) {
-        background-color: #818A98;
+    button.btn.WorldIcon {
+        border: 1px solid rgba(0, 0, 0, 0.25);
+    }
+
+    .WorldSelector .WorldIcon--selected {
+        background-color: #B9BEC6;
+    }
+
+    .WorldSelector button.btn.WorldIcon:not(.WorldIcon--disabled):hover {
+        background-color: #505862;
+    }
+
+    .WorldSelector button.btn.WorldIcon:focus {
+        box-shadow:
+            0 0 0 0.1rem white,
+            0 0 0 0.2rem #505862;
+
+    }
+
+    .WorldSelector button.btn.WorldIcon--disabled {
+        background-color: #F1F2F4;
     }
 
     .ProgramBlockEditor__character-position-button {
@@ -789,6 +840,14 @@ body.gray-theme {
 
         &:hover {
             background-color: #505862;
+        }
+    }
+
+    button.btn.ProgramBlockEditor__program-deleteAll-button--disabled,
+    button.btn.ProgramBlockEditor__program-deleteAll-button--disabled:hover {
+        background-color: #9DA4AF;
+        svg path {
+            stroke: #D5D8DD;
         }
     }
 
@@ -1310,7 +1369,7 @@ body.contrast-theme {
 
     .RefreshButton {
         background-color: white;
-        border: 0.1rem solid black;
+        border: 2px solid black;
         padding: 0.4rem;
         svg path {
             fill: black;
@@ -1331,6 +1390,14 @@ body.contrast-theme {
         }
     }
 
+    button.btn.RefreshButton--disabled,
+    button.btn.RefreshButton--disabled:hover {
+        background-color: white;
+        svg path {
+            fill: #818A98;
+        }
+    }
+
     .WorldSelector {
         background-color: black;
         border: 1px solid white;
@@ -1341,27 +1408,24 @@ body.contrast-theme {
             }
         }
 
-        button.btn:hover {
-            background-color: white;
+        button.btn.WorldIcon:not(.WorldIcon--disabled):hover {
+            background-color: black;
+            border: 1px solid white;
         }
 
+        button.btn:hover:not(.WorldIcon--disabled) svg {
+            stroke: white;
+        }
+
+        .WorldIcon--selected:not(.WorldIcon--disabled),
         button.btn:focus {
-            box-shadow:
-                0 0 0 0.1rem black,
-                0 0 0 $c2lc-focus-indicator-width white;
-
+            background-color: white;
+            box-shadow: 0 0 0 0.2rem white;
+            border: 0.2rem solid black;
         }
 
-        .WorldIcon--selected:not(:hover) {
-            background-color: white;
-            box-shadow:
-                0 0 0 0.05rem black,
-                0 0 0 0.1rem white;
-            border: 2px solid black;
-        }
-
-        .btn-primary:not(:disabled):not(.disabled):active {
-            background-color: white;
+        button.btn.WorldIcon--disabled {
+            background-color: #505862;
         }
     }
 
@@ -1387,7 +1451,7 @@ body.contrast-theme {
         }
     }
 
-    .ProgramBlockEditor__add-node-toggle-switch, .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch:hover {
+    .ProgramBlockEditor__add-node-toggle-switch, div.ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch--checked:hover {
         background-color: black;
 
         .ToggleSwitch__switch-inner-circle {
@@ -1405,7 +1469,7 @@ body.contrast-theme {
         }
     }
 
-    .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch--checked, .ProgramBlockEditor__add-node-toggle-switch:hover {
+    .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch--checked, .ProgramBlockEditor__add-node-toggle-switch.ToggleSwitch:hover {
         background-color: white;
         border: 2px solid black;
         padding: 0.2rem;
@@ -1441,6 +1505,15 @@ body.contrast-theme {
 
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
+        }
+    }
+
+    button.btn.ProgramBlockEditor__program-deleteAll-button--disabled,
+    button.btn.ProgramBlockEditor__program-deleteAll-button--disabled:hover {
+        background-color: white;
+        border: 2px solid black;
+        svg path {
+            stroke: #818A98;
         }
     }
 
