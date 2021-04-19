@@ -90,7 +90,8 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed {
     background-color: #000;
 }
 
-button.btn.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled {
+button.btn.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled,
+button.btn.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled:hover {
     background-color: $c2lc-disabled-background-color;
     cursor: default;
 }
