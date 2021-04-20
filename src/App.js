@@ -92,6 +92,7 @@ export class App extends React.Component<AppProps, AppState> {
     characterStateSerializer: CharacterStateSerializer;
     allowedActionsSerializer: AllowedActionsSerializer;
     speedLookUp: Array<number>;
+    pushStateTimer: ?TimeoutID;
 
     constructor(props: any) {
         super(props);
@@ -116,6 +117,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.characterStateSerializer = new CharacterStateSerializer(this.sceneDimensions);
 
         this.allowedActionsSerializer = new AllowedActionsSerializer();
+
+        this.pushStateTimer = null;
 
         this.interpreter.addCommandHandler(
             'forward1',
@@ -984,18 +987,23 @@ export class App extends React.Component<AppProps, AppState> {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedAllowedActions = this.allowedActionsSerializer.serialize(this.state.allowedActions);
-            window.history.pushState(
-                {
-                    p: serializedProgram,
-                    c: serializedCharacterState,
-                    t: this.state.settings.theme,
-                    a: serializedAllowedActions,
-                    w: this.state.settings.world
-                },
-                '',
-                Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedAllowedActions),
-                '',
-            );
+            if (this.pushStateTimer == null) {
+                this.pushStateTimer = setTimeout(() => {
+                    window.history.pushState(
+                        {
+                            p: serializedProgram,
+                            c: serializedCharacterState,
+                            t: this.state.settings.theme,
+                            a: serializedAllowedActions,
+                            w: this.state.settings.world
+                        },
+                        '',
+                        Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedAllowedActions),
+                        '',
+                    );
+                    this.pushStateTimer = null;
+                }, 300);
+            }
             window.localStorage.setItem('c2lc-version', this.version);
             window.localStorage.setItem('c2lc-program', serializedProgram);
             window.localStorage.setItem('c2lc-characterState', serializedCharacterState);
