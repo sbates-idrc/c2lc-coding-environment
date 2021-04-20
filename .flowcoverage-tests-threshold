@@ -4,7 +4,7 @@
     "src/**/*.test.js"
   ],
   "outputDir": "flow-coverage-tests",
-  "threshold": 92,
+  "threshold": 91,
   "reportTypes": "text"
 }
 

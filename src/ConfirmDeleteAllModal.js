@@ -5,7 +5,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import { ReactComponent as ErrorIcon } from './svg/Error.svg';
-import './ConfirmDeleteAllModal.css';
+import './ConfirmDeleteAllModal.scss';
 
 type ConfirmDeleteAllModalProps = {
     intl: IntlShape,

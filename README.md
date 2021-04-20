@@ -1,12 +1,11 @@
 # Coding to Learn and Create - Inclusive Coding Environment
 
-The Inclusive Coding Environment is a new educational coding tool designed for learners with disabilities. Learners can create code sequences that control the movement of a Bluetooth-connected robot. The Environment can be used with a mouse, touchscreen, or keyboard, and supports assistive technologies such as screen readers. It is a web application that works in the Chrome browser.
+The Inclusive Coding Environment is a new educational coding tool designed for learners with disabilities. The Environment can be used with a mouse, touchscreen, or keyboard, and supports assistive technologies such as screen readers. It is a web application that works in the Chrome browser.
 
 ![inclusive coding environment UI](./inclusive-coding-env.png)
 
-To try the latest development version of the Inclusive Coding Environment, visit our [development build](https://c2lc-dev.web.app/).
-
-Currently, the Inclusive Coding Environment supports the [Dash](https://www.makewonder.com/robots/dash/) robot. We'll be adding support for new robots in upcoming releases.
+To try the latest version of the Inclusive Coding Environment,
+visit our [coding environment online](https://build.codelearncreate.org/).
 
 ## Installation for Developers
 
@@ -50,7 +49,7 @@ Before submitting pull requests, please make sure all static type checks and tes
 
 ## License
 
-The Inclusive Coding Environment is open source software, distributed under the [BSD-3](https://github.com/codelearncreate/c2lc-coding-environment/blob/master/LICENSE.txt) license.
+The Inclusive Coding Environment is open source software, distributed under the [BSD-3](LICENSE.txt) license.
 
 ## Dependencies
 
@@ -64,8 +63,6 @@ We would like to thank these amazing open source projects and libraries that we 
 | [github.com/googlefonts/roboto](https://github.com/googlefonts/roboto) | Apache License 2.0 |
 | [github.com/JedWatson/classnames](https://github.com/JedWatson/classnames) | MIT License |
 | [github.com/KyleAMathews/typefaces/tree/master/packages/roboto](https://github.com/KyleAMathews/typefaces/tree/master/packages/roboto) | MIT License |
-| [github.com/LouisT/node-soundex](https://github.com/LouisT/node-soundex) | Unlicense |
 | [github.com/react-bootstrap/react-bootstrap](https://github.com/react-bootstrap/react-bootstrap) | MIT License |
 | [github.com/sass/node-sass](https://github.com/sass/node-sass) | MIT License |
 | [loading.io/](https://loading.io/) | [Loading.io Free License](https://loading.io/license/#free-license) |
-

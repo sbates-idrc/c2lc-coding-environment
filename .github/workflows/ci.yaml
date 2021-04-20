@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-18.04]
-        node-version: [10.x, 12.x]
+        node-version: [12.x, 14.x]
     runs-on: ${{ matrix.os }}
     env:
       CI: true
@@ -40,6 +40,7 @@ jobs:
       - name: Flow Type Coverage (HTML report)
         run: npx flow-coverage-report --config .flowcoverage-all
       - name: Archive Flow Type Coverage Report
+        continue-on-error: true
         uses: actions/upload-artifact@v2
         with:
           name: Flow Type Coverage Report
@@ -47,6 +48,7 @@ jobs:
       - name: Test
         run: npm test -- --verbose --coverage
       - name: Archive Test Code Coverage Report
+        continue-on-error: true
         uses: actions/upload-artifact@v2
         with:
           name: Test Code Coverage Report

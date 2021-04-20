@@ -13,13 +13,12 @@ type AddModeImageProps = {
 
 class AddModeImage extends React.Component<AddModeImageProps, {}> {
     render() {
-        return (
-            <span role='img'
-                  aria-label={this.props.intl.formatMessage({id: 'ProgramBlockEditor.editorAction.add'})}
-                  className={this.props.className}>
-                <AddIcon/>
-            </span>
-        );
+        return (<span
+            role='img'
+            aria-label={this.props.intl.formatMessage({id: 'ProgramBlockEditor.editorAction.add'})}
+            className={this.props.className}>
+            <AddIcon/>
+        </span>);
     }
 }
 

@@ -40,31 +40,26 @@ function createShallowPlayButton(props) {
 }
 
 function getPlayButton(playButtonWrapper) {
-    return playButtonWrapper.find(AriaDisablingButton)
-        .filter('.PlayButton');
+    return playButtonWrapper.find(AriaDisablingButton);
 }
 
-describe('The Play button class is changed when the program is running', () => {
-    describe('Given the program is running', () => {
-        test('Then the Play button should have the pressed class', () => {
-            expect.assertions(1);
-            const wrapper = createShallowPlayButton({
-                interpreterIsRunning: true
-            });
-            expect(getPlayButton(wrapper).hasClass('PlayButton--pressed')).toBe(true);
-        })
+describe('The Play button renders different svgs', () => {
+    test('Renders play svg when interpreterIsRunning property is false', () => {
+        const wrapper = createShallowPlayButton({
+            interpreterIsRunning: false
+        });
+        expect(getPlayButton(wrapper).get(0).props['aria-label']).toBe('Play');
+        expect(getPlayButton(wrapper).get(0).props.children.type.render().props.children).toBe('Play.svg');
     });
 
-    describe('Given the program is not running', () => {
-        test('Then the Play button should not have the pressed class', () => {
-            expect.assertions(1);
-            const wrapper = createShallowPlayButton({
-                interpreterIsRunning: false
-            });
-            expect(getPlayButton(wrapper).hasClass('PlayButton--pressed')).toBe(false);
-        })
+    test('Renders pause svg when interpreterIsRunning property is true', () => {
+        const wrapper = createShallowPlayButton({
+            interpreterIsRunning: true
+        });
+        expect(getPlayButton(wrapper).get(0).props['aria-label']).toBe('Pause');
+        expect(getPlayButton(wrapper).get(0).props.children.type.render().props.children).toBe('Pause.svg');
     });
-});
+})
 
 describe('The Play button can be disabled', () => {
     describe('Given disabled is true', () => {

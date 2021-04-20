@@ -1,5 +1,5 @@
 // @flow
-import type {SpeechRecognition} from './types';
+import type {SpeechRecognition, AudioContext} from './types';
 
 // Light type definition for the parts of the global window object we use.
 type NavigatorSubset = {
@@ -9,7 +9,9 @@ type NavigatorSubset = {
 }
 // Light type definition for the parts of the global navigator object we use.
 type WindowSubset = {
-    webkitSpeechRecognition?: SpeechRecognition
+    webkitSpeechRecognition?: SpeechRecognition,
+    AudioContext?: AudioContext,
+    webkitAudioContext?: AudioContext
 }
 
 function bluetoothApiIsAvailable(): boolean {
@@ -20,4 +22,8 @@ function speechRecognitionApiIsAvailable(): boolean {
     return !!((window: WindowSubset).webkitSpeechRecognition);
 }
 
-export { bluetoothApiIsAvailable, speechRecognitionApiIsAvailable };
+function webAudioApiIsAvailable(): boolean {
+    return !!(window.AudioContext || window.webkitAudioContext);
+}
+
+export { bluetoothApiIsAvailable, speechRecognitionApiIsAvailable, webAudioApiIsAvailable };

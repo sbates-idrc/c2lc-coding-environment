@@ -1,31 +1,100 @@
 @import 'variables';
 
-.Scene {
-    display: inline-block;
-    box-sizing: border-box;
+// Grid for Scene-container is set in App.scss
+.Scene__container {
+    position: relative;
+    height: 100%;
     width: 100%;
-    height: auto;
-    border-width: $c2lc-scene-border-width $c2lc-scene-border-width 0 $c2lc-scene-border-width;
-    border-color: $c2lc-scene-border-color;
-    border-style: $c2lc-scene-border-style;
+    display: grid;
+    grid-template-columns: 30px auto;
+    grid-template-rows: 30px auto;
 }
 
-.Scene svg {
-    overflow: visible;
+.Scene {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    overflow: scroll;
+    background-color: #FFF;
+    display: inline-block;
+    box-sizing: border-box;
+    border-bottom: 2px solid #CCE6E2;
+    border-right: 2px solid #CCE6E2;
+}
+
+.Scene > svg {
+    width: 1430px;
+}
+
+.Scene__header-corner {
+    position: absolute;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    background-color: #CCE6E2;
+    bottom: 0;
+    right: 0;
+    width: 20px;
+    height: 15px;
+}
+
+.Scene__row-header {
+    overflow: scroll;
+    fill: #CCE6E2;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    pointer-events: none;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.Scene__row-header > svg {
+    width: 30px;
+    height: 900px;
+}
+
+.Scene__row-header::-webkit-scrollbar {
+    display: none;
+}
+
+.Scene__column-header {
+    fill: #CCE6E2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    pointer-events: none;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.Scene__column-header::-webkit-scrollbar {
+    display: none;
+}
+
+.Scene__column-header > svg {
+    width: 1450px;
+    height: 30px;
 }
 
 .Scene__grid-line {
-    stroke: #DDD;
-    stroke-width: 0.01;
+    stroke: #F1F2F4;
+    stroke-width: 0.02;
 }
 
 .Scene__grid-label {
     fill: #555;
-    font: bold 0.01em sans-serif;
+    font: 500 2.2px sans-serif;
 }
 
 .Scene__path-line {
-    stroke: #222;
-    stroke-width: 0.03;
+    stroke-width: 0.05;
     stroke-linecap: round;
+    stroke: #505862;
 }

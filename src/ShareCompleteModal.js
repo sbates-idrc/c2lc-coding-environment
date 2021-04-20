@@ -19,15 +19,16 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
     }
 
     render () {
-        return(<Modal
+        return(
+            <Modal
                 onHide={this.props.onHide}
                 show={this.props.show}
                 dialogClassName='ShareCompleteModal'
             >
-            <Modal.Body className='ShareCompleteModal__content'>
-                <FormattedMessage id='ShareCompleteModal.shareComplete' />
-            </Modal.Body>
-        </Modal>);
+                <Modal.Body className='ShareCompleteModal__content'>
+                    <FormattedMessage id='ShareCompleteModal.shareComplete' />
+                </Modal.Body>
+            </Modal>);
     }
 }
 

@@ -2,76 +2,65 @@
 
 $widthOfCollapsedIcon: 0.8rem;
 $heightOfCollapsedIcon: 0.8rem;
-$widthOfExpandedIcon: 1.7rem;
-$heightOfExpandedIcon: 1.7rem;
+$widthOfExpandedIcon: 1.25rem;
+$heightOfExpandedIcon: 1.25rem;
 
-$addNodeExpandedButtonBorderWidth: 1px;
+$addNodeExpandedButtonBorderWidth: 2px;
 $addNodeExpandedButtonPadding: 0.5rem;
 
 $addNodeDropMargin: 2.5rem;
 $addNodeDropAreaHeight: 6.25rem;
 
 button.btn.AddNode__expanded-button {
-    z-index: 1;
-    border: $addNodeExpandedButtonBorderWidth solid #FFF;
+    border: $addNodeExpandedButtonBorderWidth solid #D5D8DD;
     border-radius: 50%;
-    background-color: #FFF;
+    background-color:  #22343C;
     padding: $addNodeExpandedButtonPadding;
+    position: relative;
+    z-index: 2;
+    width: 45px;    
+    height: 45px;
+
+    svg {
+        width: $widthOfExpandedIcon;
+        height: $heightOfExpandedIcon;
+        display: block;
+        path {
+            stroke: white;
+        }
+    }
+
+    &:focus {
+        border: none;
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    }
+
+    &:hover {
+        box-shadow: 0 0 0 $c2lc-hover-indicator-width $c2lc-focus-indicator-color;
+        background-color: #e5e5e5;
+    }
 }
 
-button.btn.AddNode__expanded-button:hover {
-    box-shadow: 0 0 0 $c2lc-hover-indicator-width $c2lc-focus-indicator-color;
-    background-color: #e5e5e5;
+button.btn.AddNode__expanded-button.AddNode__expanded-button--isDragTarget {
+    box-shadow: 0 0 0 0.4rem #53A28C;
 }
 
 .AddNode--is-dragging-command .AddNode__expanded-button {
     pointer-events: none;
 }
 
-button.btn.AddNode__expanded-button svg {
-    stroke: #000;
-    width: $widthOfExpandedIcon;
-    height: $heightOfExpandedIcon;
-    display: block;
-}
-
 .AddNode__collapsed-icon {
-    background-color: #939595;
+    background-color: #D5D8DD;
     height: $heightOfCollapsedIcon;
     width: $widthOfCollapsedIcon;
-    border: 0.1rem solid #8F8F8F;
+    padding: 0.225rem;
     border-radius: 50%;
-}
 
-.AddNode__collapsed-icon svg {
-    display: block;
-    stroke: #FFF;
-}
-
-.AddNode__drop-area-container {
-    position: relative;
-}
-
-.AddNode--is-dragging-command .AddNode__expanded-drop-area {
-    top: calc(
-        #{-$addNodeDropAreaHeight / 2}
-        + #{$heightOfExpandedIcon / 2}
-        + #{$addNodeExpandedButtonBorderWidth}
-        + #{$addNodeExpandedButtonPadding});
-    left: -$addNodeDropMargin;
-    position: absolute;
-    width: calc(
-        #{2 * $addNodeDropMargin}
-        + #{$widthOfExpandedIcon}
-        + #{2 * $addNodeExpandedButtonBorderWidth}
-        + #{2 * $addNodeExpandedButtonPadding});
-    height: $addNodeDropAreaHeight;
-}
-
-.AddNode--is-dragging-command .AddNode__collapsed-drop-area {
-    top: (-$addNodeDropAreaHeight / 2) + ($heightOfCollapsedIcon / 2);
-    left: -$addNodeDropMargin;
-    position: absolute;
-    width: (2 * $addNodeDropMargin) + $widthOfCollapsedIcon;
-    height: $addNodeDropAreaHeight;
+    svg {
+        height: 0.375rem;
+        width: 0.375rem;
+        display: block;
+        stroke: black;
+        stroke-width: 2.1px;
+    }
 }

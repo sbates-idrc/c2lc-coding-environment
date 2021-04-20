@@ -1,3 +1,5 @@
+@import 'variables';
+
 .ProgramSpeedController__container {
     display: flex;
     flex-direction: row;
@@ -5,7 +7,93 @@
 }
 
 .ProgramSpeedController__slider {
-    width: 8rem;
-    margin-left: 0.3rem;
-    margin-right: 0.3rem;
+    -webkit-appearance: none;
+    border: 0;
+    background-color: inherit;
+    height: 32px;
+    margin-left: 0.6em;
+    margin-right: 0.6rem;
+    overflow: hidden;
+    width: 179px;
+
+    &:focus {
+        outline-color: $c2lc-focus-indicator-color;
+        outline-offset: 2px;
+        outline-width: 2px;
+        outline-style: solid;
+    }
+
+    button.btn.PlayButton:hover {
+        svg path.inner-circle {
+            fill: #F1AE5B;
+        }
+    }
+
+    &:hover {
+        &::-webkit-slider-thumb {
+            background-color: #F1AE5B;
+            box-shadow: -8rem 0 0 8rem #F1AE5B;
+        }
+    
+        &::-moz-range-thumb {
+            background-color: #F1AE5B;
+        }
+       
+        &::-moz-range-progress {
+            background-color: #F1AE5B; 
+        }
+        
+        &::-ms-fill-lower {
+            background-color: #F1AE5B; 
+        }
+    }
+    
+
+    &::-webkit-slider-runnable-track {
+        border: 2px solid black;
+        -webkit-appearance: none;
+        background-color: black;
+        border-radius: 8px;
+        height: 16px;
+        overflow: hidden;
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        background-color: #F97953;
+        border: 2px solid black;
+        border-radius: 0;
+        box-shadow: -8rem 0 0 8rem #F97953;
+        height: 12px;
+        width: 12px;
+    }
+
+    &::-moz-range-thumb {
+        background-color: #F97953;
+        border: 2px solid black;
+        border-radius: 0;
+        box-shadow: -8rem 0 0 8rem #F97953;
+        height: 16px;
+        width: 16px;
+    }
+   
+    &::-moz-range-progress {
+        height:16px;
+        background-color: #F97953; 
+        overflow: hidden;
+    }
+    
+    &::-moz-range-track {
+        height:16px;
+        overflow: hidden;
+        background-color: black;
+    }
+
+    &::-ms-fill-lower {
+        background-color: #F97953; 
+    }
+
+    &::-ms-fill-upper {  
+        background-color: black;    
+    }
 }
