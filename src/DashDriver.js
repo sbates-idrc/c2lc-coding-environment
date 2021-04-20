@@ -31,7 +31,7 @@ export default class DashDriver implements RobotDriver {
     sendCommand(bytes: Array<number>, waitTimeMs: number): Promise<void> {
         // TODO: Use feedback from Dash to know when the command has finished,
         //       rather than after a set amount of time
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.commandCharacteristic.writeValue(new Uint8Array(bytes));
             setTimeout(() => {
                 resolve();

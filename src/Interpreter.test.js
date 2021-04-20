@@ -22,7 +22,7 @@ function createInterpreter() {
 function createMockCommandHandler() {
     const mockCommandHandler = jest.fn();
     mockCommandHandler.mockImplementation(() => {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             setTimeout(() => {
                 resolve();
             }, 0);

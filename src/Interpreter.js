@@ -4,7 +4,7 @@ import {App} from './App';
 import ProgramSequence from './ProgramSequence';
 
 /* eslint-disable no-use-before-define */
-export type CommandHandler = { (Interpreter, stepTimeMs: number): Promise<void> };
+export type CommandHandler = { (stepTimeMs: number): Promise<void> };
 /* eslint-enable no-use-before-define */
 
 export default class Interpreter {
@@ -113,7 +113,7 @@ export default class Interpreter {
         const promises = [];
         const stepTimeMs = this.stepTimeMs;
         for (const handler of handlers) {
-            promises.push(handler(this, stepTimeMs));
+            promises.push(handler(stepTimeMs));
         }
         return Promise.all(promises);
     }
