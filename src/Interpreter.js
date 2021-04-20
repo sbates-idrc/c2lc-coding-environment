@@ -3,9 +3,7 @@
 import {App} from './App';
 import ProgramSequence from './ProgramSequence';
 
-/* eslint-disable no-use-before-define */
 export type CommandHandler = { (stepTimeMs: number): Promise<void> };
-/* eslint-enable no-use-before-define */
 
 export default class Interpreter {
     commands: { [command: string]: { [namespace: string]: CommandHandler } };

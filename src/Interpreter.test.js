@@ -25,7 +25,7 @@ function createMockCommandHandler() {
         return new Promise((resolve) => {
             setTimeout(() => {
                 resolve();
-            }, 0);
+            }, 250);
         });
     });
     return mockCommandHandler;
@@ -219,7 +219,7 @@ test('Do not continue through program if runningState changes to stopped', (done
     });
 });
 
-test('Should initiallize stepTime value from constructor and update on setStepTime', () => {
+test('Should initialize stepTime value from constructor and update on setStepTime', () => {
     expect.assertions(2);
     const initialStepTimeValue = 1000;
     const interpreter = new Interpreter(initialStepTimeValue, new App());
@@ -236,14 +236,14 @@ test('Each command handler get called with step time specified in the class prop
     interpreter.addCommandHandler('command', 'test', mockCommandHandler);
     interpreter.doCommand('command');
     expect(mockCommandHandler.mock.calls.length).toBe(1);
-    expect(mockCommandHandler.mock.calls[0][1]).toBe(1000);
+    expect(mockCommandHandler.mock.calls[0][0]).toBe(1000);
 
     const newStepTimeValue = 2000;
     interpreter.setStepTime(newStepTimeValue);
     expect(interpreter.stepTimeMs).toBe(newStepTimeValue);
     interpreter.doCommand('command');
     expect(mockCommandHandler.mock.calls.length).toBe(2);
-    expect(mockCommandHandler.mock.calls[1][1]).toBe(newStepTimeValue);
+    expect(mockCommandHandler.mock.calls[1][0]).toBe(newStepTimeValue);
 });
 
 test('ContinueRun will not continue, when continueRunActive property of Interpreter is set to true, ', (done) => {
@@ -255,18 +255,22 @@ test('ContinueRun will not continue, when continueRunActive property of Interpre
     })
 });
 
-test('When runningState is stopRequested or pauseRequested, call setRunningState in App', (done) => {
-    const { interpreter, appMock } =createInterpreter();
-    appMock.getRunningState.mockImplementationOnce(() => {return 'stopRequested'});
+test('When runningState is pauseRequested, call setRunningState in App', (done) => {
+    const { interpreter, appMock } = createInterpreter();
     appMock.getRunningState.mockImplementationOnce(() => {return 'pauseRequested'});
     interpreter.startRun().then(() => {
         expect(appMock.setRunningState.mock.calls.length).toBe(1);
-        expect(appMock.setRunningState.mock.calls[0][0]).toBe('stopped');
+        expect(appMock.setRunningState.mock.calls[0][0]).toBe('paused');
         done();
     });
+});
+
+test('When runningState is stopRequested, call setRunningState in App', (done) => {
+    const { interpreter, appMock } = createInterpreter();
+    appMock.getRunningState.mockImplementationOnce(() => {return 'stopRequested'});
     interpreter.startRun().then(() => {
-        expect(appMock.setRunningState.mock.calls.length).toBe(2);
-        expect(appMock.setRunningState.mock.calls[1][0]).toBe('paused');
+        expect(appMock.setRunningState.mock.calls.length).toBe(1);
+        expect(appMock.setRunningState.mock.calls[0][0]).toBe('stopped');
         done();
     });
 });
