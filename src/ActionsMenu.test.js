@@ -13,12 +13,12 @@ import messages from './messages.json';
 configure({ adapter: new Adapter()});
 
 const mockAllowedActions = {
-    "backward1": true,
-    "backward2": true,
-    "backward3": true,
     "forward1": true,
     "forward2": true,
     "forward3": true,
+    "backward1": true,
+    "backward2": true,
+    "backward3": true,
     "left45": true,
     "left90": true,
     "left180": true,
@@ -99,5 +99,5 @@ it("Can be used to toggle individual items.", () => {
     firstCheckbox.simulate("change");
 
     expect(mockChangeHandler.mock.calls.length).toBe(1);
-    expect(mockChangeHandler.mock.calls[0][1]).toBe("backward1");
+    expect(mockChangeHandler.mock.calls[0][1]).toBe("forward1");
 });

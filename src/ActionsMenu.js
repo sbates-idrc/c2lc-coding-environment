@@ -33,18 +33,6 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
         editingDisabled: false,
         usedActions: {},
         menuItems: {
-            backward1: {
-                isAllowed: true,
-                labelKey: "Command.backward1"
-            },
-            backward2: {
-                isAllowed: true,
-                labelKey: "Command.backward2"
-            },
-            backward3: {
-                isAllowed: true,
-                labelKey: "Command.backward3"
-            },
             forward1: {
                 isAllowed: true,
                 labelKey: "Command.forward1"
@@ -56,6 +44,18 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
             forward3: {
                 isAllowed: true,
                 labelKey: "Command.forward3"
+            },
+            backward1: {
+                isAllowed: true,
+                labelKey: "Command.backward1"
+            },
+            backward2: {
+                isAllowed: true,
+                labelKey: "Command.backward2"
+            },
+            backward3: {
+                isAllowed: true,
+                labelKey: "Command.backward3"
             },
             left45: {
                 isAllowed: true,

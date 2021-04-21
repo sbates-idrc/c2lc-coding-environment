@@ -616,6 +616,14 @@ body.gray-theme {
             border-color: #818A98;
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
+
+        &.command-block--pressed {
+            border: 3px solid #505862;
+        }
+    }
+
+    .command-block--hidden > svg {
+        fill: #818A98;
     }
 
     .Character__icon-background {
@@ -1226,6 +1234,10 @@ body.contrast-theme {
         &:not(:disabled):not(.disabled):active {
             background-color: black;
         }
+    }
+
+    .command-block--hidden > svg {
+        fill: white;
     }
 
     button.ProgramBlockEditor__program-block--active {

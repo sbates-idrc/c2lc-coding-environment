@@ -28,13 +28,14 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ShareButton from './ShareButton';
 import ActionsMenu from './ActionsMenu';
-import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName, WorldName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName, WorldName } from './types';
 import WorldSelector from './WorldSelector';
 import * as Utils from './Utils';
 import './App.scss';
 import './Themes.scss';
 import './vendor/dragdroptouch/DragDropTouch.js';
 import ThemeSelector from './ThemeSelector';
+import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
 
 /* Dash connection removed for version 0.5
 import BluetoothApiWarning from './BluetoothApiWarning';
@@ -95,7 +96,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '0.7';
+        this.version = '0.8';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -126,7 +127,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.forward(1, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("forward1", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -146,7 +147,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.forward(2, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("forward2", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -166,7 +167,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.forward(3, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("forward3", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -185,7 +186,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.backward(1, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("backward1", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -204,7 +205,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.backward(2, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("backward2", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -223,7 +224,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.backward(3, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("backward3", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -236,16 +237,13 @@ export class App extends React.Component<AppProps, AppState> {
             'left45',
             'moveCharacter',
             (interpreter, stepTimeMs) => {
-                // We want for a 180 degree turn to take the whole movement delay, and for a 45 degree to take 1/4 of that.
-                const soundTime = stepTimeMs / 4;
-
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('left45', this.props.intl);
                 this.setState((state) => {
                     const newCharacterState = state.characterState.turnLeft(1);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left", soundTime, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("left45", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -259,16 +257,13 @@ export class App extends React.Component<AppProps, AppState> {
             'left90',
             'moveCharacter',
             (interpreter, stepTimeMs) => {
-                // We want for a 180 degree turn to take the whole movement delay, and for a 90 degree turn to take 1/2 of that.
-                const soundTime = stepTimeMs / 2;
-
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('left90', this.props.intl);
                 this.setState((state) => {
                     const newCharacterState = state.characterState.turnLeft(2);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left", soundTime, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("left90", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -288,7 +283,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnLeft(4);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left", stepTimeMs,  newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("left180", stepTimeMs,  newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -302,16 +297,13 @@ export class App extends React.Component<AppProps, AppState> {
             'right45',
             'moveCharacter',
             (interpreter, stepTimeMs) => {
-                // We want for a 180 degree turn to take the whole movement delay, and for a 45 degree turn to take 1/4 of that.
-                const soundTime = stepTimeMs / 2;
-
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('right45', this.props.intl);
                 this.setState((state) => {
                     const newCharacterState = state.characterState.turnRight(1);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right", soundTime, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("right45", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -325,16 +317,13 @@ export class App extends React.Component<AppProps, AppState> {
             'right90',
             'moveCharacter',
             (interpreter, stepTimeMs) => {
-                // We want for a 180 degree turn to take the whole movement delay, and for a 90 degree to take 1/2 of that.
-                const soundTime = stepTimeMs / 2;
-
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('right90', this.props.intl);
                 this.setState((state) => {
                     const newCharacterState = state.characterState.turnRight(2);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right", soundTime, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("right90", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -354,7 +343,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const newCharacterState = state.characterState.turnRight(4);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right", stepTimeMs, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("right180", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -623,16 +612,10 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.setStepTime(stepTimeMs);
     }
 
-    renderCommandBlocks = () => {
-        const commandNames = [
-            'backward1', 'backward2', 'backward3',
-            'left45', 'left90', 'left180',
-            'forward1', 'forward2', 'forward3',
-            'right45', 'right90', 'right180'
-        ];
+    renderCommandBlocks = (commands: Array<CommandName>) => {
         const commandBlocks = [];
 
-        for (const [index, value] of commandNames.entries()) {
+        for (const [index, value] of commands.entries()) {
             const isAllowed = this.state.allowedActions[value];
             if (isAllowed) {
                 commandBlocks.push(
@@ -645,6 +628,15 @@ export class App extends React.Component<AppProps, AppState> {
                         onChange={this.handleCommandFromCommandPalette}
                         onDragStart={this.handleDragStartCommand}
                         onDragEnd={this.handleDragEndCommand}/>
+                );
+            } else {
+                commandBlocks.push(
+                    <div
+                        className='command-block--hidden'
+                        key={`CommandBlock-${index}`}
+                        aria-hidden='true'>
+                        <HiddenBlock />
+                    </div>
                 );
             }
         }
@@ -770,7 +762,16 @@ export class App extends React.Component<AppProps, AppState> {
                         />
                         <div className='App__command-palette-command-container'>
                             <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks()}
+                                {this.renderCommandBlocks([
+                                    'forward1', 'forward2', 'forward3',
+                                    'backward1', 'backward2', 'backward3'
+                                ])}
+                            </div>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks([
+                                    'left45', 'left90', 'left180',
+                                    'right45', 'right90', 'right180'
+                                ])}
                             </div>
                         </div>
                     </div>
