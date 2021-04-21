@@ -241,11 +241,12 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     };
 
     handleActionPanelReplaceStep = (index: number) => {
-        const oldCommandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.programSequence.getProgramStepAt(index)});
-        const newCommandString = this.props.intl.formatMessage({ id: "Announcement." + (this.props.selectedAction || "") });
+        if (this.props.selectedAction !== null && this.props.selectedAction !== undefined) {
+            const oldCommandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.programSequence.getProgramStepAt(index)});
+            //$FlowFixMe: Flow is flat out wrong her.
+            const newCommandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.selectedAction});
 
-        this.props.audioManager.playAnnouncement('replace', this.props.intl, { oldCommand: oldCommandString, newCommand: newCommandString});
-        if (this.props.selectedAction) {
+            this.props.audioManager.playAnnouncement('replace', this.props.intl, { oldCommand: oldCommandString, newCommand: newCommandString});
             if (
                 this.props.selectedAction &&
                 this.props.programSequence.getProgramStepAt(index) !== this.props.selectedAction) {
@@ -263,6 +264,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                 });
             }
         } else {
+            this.props.audioManager.playAnnouncement('noMovementSelected', this.props.intl);
+
             this.setState({
                 replaceIsActive: true
             });
