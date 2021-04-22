@@ -211,6 +211,8 @@ class Scene extends React.Component<SceneProps, {}> {
                 <div className='Scene__container'>
                     <div className='Scene__header-corner' />
                     <div
+                        tabIndex='-1'
+                        aria-hidden='true'
                         id='scene-row-header'
                         className='Scene__row-header'>
                         <svg
@@ -222,6 +224,8 @@ class Scene extends React.Component<SceneProps, {}> {
                         </svg>
                     </div>
                     <div
+                        tabIndex='-1'
+                        aria-hidden='true'
                         id='scene-column-header'
                         className='Scene__column-header'>
                         <svg
