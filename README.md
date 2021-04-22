@@ -63,7 +63,6 @@ We would like to thank these amazing open source projects and libraries that we 
 | [github.com/googlefonts/roboto](https://github.com/googlefonts/roboto) | Apache License 2.0 |
 | [github.com/JedWatson/classnames](https://github.com/JedWatson/classnames) | MIT License |
 | [github.com/KyleAMathews/typefaces/tree/master/packages/roboto](https://github.com/KyleAMathews/typefaces/tree/master/packages/roboto) | MIT License |
-| [github.com/LouisT/node-soundex](https://github.com/LouisT/node-soundex) | Unlicense |
 | [github.com/react-bootstrap/react-bootstrap](https://github.com/react-bootstrap/react-bootstrap) | MIT License |
 | [github.com/sass/node-sass](https://github.com/sass/node-sass) | MIT License |
 | [loading.io/](https://loading.io/) | [Loading.io Free License](https://loading.io/license/#free-license) |
