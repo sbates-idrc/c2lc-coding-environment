@@ -331,6 +331,10 @@ body.dark-theme {
         border-color: #33717F;
     }
 
+    .Scene__container {
+        background-color: #33717F;
+    }
+
     .Scene {
         background-color: #22343C;
         border-bottom: 2px solid #33717F;
@@ -532,6 +536,7 @@ body.gray-theme {
     }
 
     .App__command-palette {
+        background-color: #D5D8DD;
         border: 2px solid #D5D8DD;
     }
 
@@ -628,6 +633,10 @@ body.gray-theme {
 
     .Character__icon-background {
         fill: #818A98;
+    }
+
+    .Scene__container {
+        background-color: #D5D8DD;
     }
 
     .Scene {
@@ -1248,6 +1257,10 @@ body.contrast-theme {
 
     .App__command-palette-heading {
         color: white;
+    }
+
+    .Scene__container {
+        background-color: white;
     }
 
     .Scene {
