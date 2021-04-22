@@ -111,7 +111,7 @@ describe('When the Scene renders', () => {
     });
 
     test('With width = 1, height = 1', () => {
-        expect.assertions(13);
+        expect.assertions(7);
         const dimensions = new SceneDimensions(1, 1);
         const sceneWrapper = createMountScene({
             dimensions: dimensions
@@ -142,7 +142,7 @@ describe('When the Scene renders', () => {
     });
 
     test('With width = 3, height = 2', () => {
-        expect.assertions(40);
+        expect.assertions(25);
         const dimensions = new SceneDimensions(3, 2);
         const sceneWrapper = createMountScene({
             dimensions: dimensions
