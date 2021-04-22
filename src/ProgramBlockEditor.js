@@ -590,43 +590,49 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         )
     }
 
+    clearCharacterPositionAriaLive() {
+        const ariaLiveRegion = document.getElementById('character-position');
+        const character = this.getCharacterAriaLabel();
+        // $FlowFixMe: Flow doesn't know that elements have innerText.
+        ariaLiveRegion.innerText = this.props.intl.formatMessage(
+            {id:'ProgramBlockEditor.movementAriaLabel'},
+            { character }
+        );;
+    }
+
+    getCharacterAriaLabel() {
+        if (this.props.world === 'space') {
+            return this.props.intl.formatMessage(
+                {id:'ProgramBlockEditor.spaceShipCharacter'}
+            );
+        } else if (this.props.world === 'forest') {
+            return this.props.intl.formatMessage(
+                {id:'ProgramBlockEditor.rabbitCharacter'}
+            );
+        } else {
+            return this.props.intl.formatMessage(
+                {id:'ProgramBlockEditor.robotCharacter'}
+            );
+        }
+    }
+
     updateCharacterPositionAriaLive() {
         const characterState = this.props.characterState;
         const xPos = characterState.getColumnLabel();
         const yPos = characterState.getRowLabel();
         const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
+        const character = this.getCharacterAriaLabel();
         const ariaLiveRegion = document.getElementById('character-position');
-        if (this.props.world === 'space') {
-            // $FlowFixMe: Flow doesn't know about character-position div
-            ariaLiveRegion.innerText=this.props.intl.formatMessage(
-                {id:'ProgramBlockEditor.spaceShipCharacter'},
-                {
-                    xPos,
-                    yPos,
-                    direction
-                }
-            );
-        } else if (this.props.world === 'forest') {
-            // $FlowFixMe: Flow doesn't know about character-position div
-            ariaLiveRegion.innerText=this.props.intl.formatMessage(
-                {id:'ProgramBlockEditor.rabbitCharacter'},
-                {
-                    xPos,
-                    yPos,
-                    direction
-                }
-            );
-        } else {
-            // $FlowFixMe: Flow doesn't know about character-position div
-            ariaLiveRegion.innerText=this.props.intl.formatMessage(
-                {id:'ProgramBlockEditor.robotCharacter'},
-                {
-                    xPos,
-                    yPos,
-                    direction
-                }
-            );
-        }
+        // $FlowFixMe: Flow doesn't know that elements have innerText.
+        ariaLiveRegion.innerText=this.props.intl.formatMessage(
+            {id:'ProgramBlockEditor.positionAriaLabel'},
+            {
+                character,
+                xPos,
+                yPos,
+                direction
+            }
+        );
     }
 
     getWorldCharacter() {
@@ -696,7 +702,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                     <div className='ProgramBlockEditor__character-turn-positions'>
                         <TurnPositionLeft
                             className={characterPositionButtonClassName}
-                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.trunLeft'})}
+                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.turnLeft'})}
                             aria-disabled={this.props.editingDisabled}
                             role='button'
                             tabIndex='0'
@@ -705,7 +711,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                             onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
                         <TurnPositionRight
                             className={characterPositionButtonClassName}
-                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.trunRight'})}
+                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.turnRight'})}
                             aria-disabled={this.props.editingDisabled}
                             role='button'
                             tabIndex='0'
@@ -820,6 +826,9 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                 this.props.runningState === 'stopRequested' ||
                 (prevProps.runningState === 'running' && this.props.runningState === 'stopped')) {
                 this.updateCharacterPositionAriaLive();
+            }
+            else if (this.props.runningState === "running") {
+                this.clearCharacterPositionAriaLive();
             }
         }
         if (this.scrollToAddNodeIndex != null) {
