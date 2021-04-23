@@ -104,7 +104,6 @@
         "ProgramBlockEditor.command": "{command}, position {index} of current program",
         "ProgramBlockEditor.program.deleteAll": "Clear and start new program",
         "ProgramBlockEditor.programHeading": "Program",
-        "ProgramBlockEditor.movementAriaLabel": "{character} is moving",
         "ProgramBlockEditor.positionAriaLabel": "{character} at column {xPos}, row {yPos} facing {direction}",
         "ProgramBlockEditor.spaceShipCharacter": "Space Ship character",
         "ProgramBlockEditor.rabbitCharacter": "Rabbit character",

@@ -592,12 +592,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
 
     clearCharacterPositionAriaLive() {
         const ariaLiveRegion = document.getElementById('character-position');
-        const character = this.getCharacterAriaLabel();
         // $FlowFixMe: Flow doesn't know that elements have innerText.
-        ariaLiveRegion.innerText = this.props.intl.formatMessage(
-            {id:'ProgramBlockEditor.movementAriaLabel'},
-            { character }
-        );;
+        ariaLiveRegion.innerText = "";
     }
 
     getCharacterAriaLabel() {
