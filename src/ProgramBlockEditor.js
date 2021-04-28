@@ -590,12 +590,6 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         )
     }
 
-    clearCharacterPositionAriaLive() {
-        const ariaLiveRegion = document.getElementById('character-position');
-        // $FlowFixMe: Flow doesn't know that elements have innerText.
-        ariaLiveRegion.innerText = "";
-    }
-
     getCharacterAriaLabel() {
         if (this.props.world === 'space') {
             return this.props.intl.formatMessage(
@@ -611,6 +605,18 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
             );
         }
     }
+
+    clearCharacterPositionAriaLive() {
+        const ariaLiveRegion = document.getElementById('character-position');
+        const character = this.getCharacterAriaLabel();
+
+        // $FlowFixMe: Flow doesn't know that elements have innerText.
+        ariaLiveRegion.innerText=this.props.intl.formatMessage(
+            {id:'ProgramBlockEditor.movementAriaLabel'},
+            { character }
+        );
+    }
+
 
     updateCharacterPositionAriaLive() {
         const characterState = this.props.characterState;
