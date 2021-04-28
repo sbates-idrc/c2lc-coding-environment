@@ -767,7 +767,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                             className={characterPositionTextInputClassName}
                             aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.columnPosition'})}
                             aria-disabled={this.props.editingDisabled}
-                            maxLength='2'
+                            maxLength='1'
                             size='2'
                             type='text'
                             value={this.state.characterColumnLabel}
