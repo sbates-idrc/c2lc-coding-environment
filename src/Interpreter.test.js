@@ -25,7 +25,7 @@ function createMockCommandHandler() {
         return new Promise((resolve) => {
             setTimeout(() => {
                 resolve();
-            }, 250);
+            }, 0);
         });
     });
     return mockCommandHandler;
