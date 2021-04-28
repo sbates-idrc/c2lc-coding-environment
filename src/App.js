@@ -120,7 +120,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'forward1',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('forward1', this.props.intl);
                 this.setState((state) => {
@@ -140,7 +140,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'forward2',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('forward2', this.props.intl);
                 this.setState((state) => {
@@ -160,7 +160,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'forward3',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('forward3', this.props.intl);
                 this.setState((state) => {
@@ -179,7 +179,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'backward1',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('backward1');
                 this.setState((state) => {
@@ -198,7 +198,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'backward2',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('backward2');
                 this.setState((state) => {
@@ -217,7 +217,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'backward3',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('backward3');
                 this.setState((state) => {
@@ -236,7 +236,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'left45',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('left45', this.props.intl);
                 this.setState((state) => {
@@ -256,7 +256,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'left90',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('left90', this.props.intl);
                 this.setState((state) => {
@@ -276,7 +276,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'left180',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('left180', this.props.intl);
                 this.setState((state) => {
@@ -296,7 +296,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'right45',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('right45', this.props.intl);
                 this.setState((state) => {
@@ -316,7 +316,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'right90',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('right90', this.props.intl);
                 this.setState((state) => {
@@ -336,7 +336,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'right180',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('right180', this.props.intl);
                 this.setState((state) => {
