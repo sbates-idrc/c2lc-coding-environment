@@ -19,8 +19,8 @@
     background-color: #FFF;
     display: inline-block;
     box-sizing: border-box;
-    border-bottom: 1px solid #CCE6E2;
-    border-right: 1px solid #CCE6E2;
+    border-bottom: 2px solid #CCE6E2;
+    border-right: 2px solid #CCE6E2;
 }
 
 .Scene > svg {
@@ -47,6 +47,7 @@
     grid-row-end: 3;
     grid-column-start: 1;
     grid-column-end: 2;
+    pointer-events: none;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
@@ -68,6 +69,7 @@
     grid-column-end: 3;
     overflow-y: hidden;
     overflow-x: scroll;
+    pointer-events: none;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
