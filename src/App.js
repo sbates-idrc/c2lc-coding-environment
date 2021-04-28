@@ -92,7 +92,7 @@ export class App extends React.Component<AppProps, AppState> {
     characterStateSerializer: CharacterStateSerializer;
     allowedActionsSerializer: AllowedActionsSerializer;
     speedLookUp: Array<number>;
-    pushStateTimer: ?TimeoutID;
+    pushStateTimeoutID: ?TimeoutID;
 
     constructor(props: any) {
         super(props);
@@ -118,7 +118,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.allowedActionsSerializer = new AllowedActionsSerializer();
 
-        this.pushStateTimer = null;
+        this.pushStateTimeoutID = null;
 
         this.interpreter.addCommandHandler(
             'forward1',
@@ -987,8 +987,10 @@ export class App extends React.Component<AppProps, AppState> {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedAllowedActions = this.allowedActionsSerializer.serialize(this.state.allowedActions);
-            clearTimeout(this.pushStateTimer);
-            this.pushStateTimer = setTimeout(() => {
+            // Safari throws an error: "SecurityError: Attempt to use history.pushState() more than 100 times per 30 seconds".
+            const pushStateDelayMs = 350;
+            clearTimeout(this.pushStateTimeoutID);
+            this.pushStateTimeoutID = setTimeout(() => {
                 window.history.pushState(
                     {
                         p: serializedProgram,
@@ -1001,7 +1003,7 @@ export class App extends React.Component<AppProps, AppState> {
                     Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedAllowedActions),
                     '',
                 );
-            }, 300);
+            }, pushStateDelayMs);
             window.localStorage.setItem('c2lc-version', this.version);
             window.localStorage.setItem('c2lc-program', serializedProgram);
             window.localStorage.setItem('c2lc-characterState', serializedCharacterState);
