@@ -9,7 +9,7 @@ import './Character.scss';
 type CharacterProps = {
     world: string,
     transform: string,
-    width: number
+    width: number,
 };
 
 export default class Character extends React.Component<CharacterProps, {}> {
@@ -17,8 +17,8 @@ export default class Character extends React.Component<CharacterProps, {}> {
         if (this.props.world === 'space') {
             return (
                 <SpaceShipIcon
+                    id="character-icon-space"
                     className='Character__icon'
-                    id='scene-character-icon'
                     x={-this.props.width/2}
                     y={-this.props.width/2}
                     width={this.props.width}
@@ -27,8 +27,8 @@ export default class Character extends React.Component<CharacterProps, {}> {
         } else if (this.props.world === 'forest') {
             return (
                 <RabbitIcon
+                    id="character-icon-forest"
                     className='Character__icon'
-                    id='scene-character-icon'
                     x={-this.props.width/2}
                     y={-this.props.width/2}
                     width={this.props.width}
@@ -37,14 +37,18 @@ export default class Character extends React.Component<CharacterProps, {}> {
         } else {
             return (
                 <RobotIcon
+                    id="character-icon-robot"
                     className='Character__icon'
-                    id='scene-character-icon'
                     x={-this.props.width/2}
                     y={-this.props.width/2}
                     width={this.props.width}
                     height={this.props.width} />
             )
         }
+    }
+
+    getIconId = (): string => {
+        return "character-icon-" + this.props.world;
     }
 
     render() {

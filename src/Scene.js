@@ -19,10 +19,12 @@ export type SceneProps = {
 };
 
 class Scene extends React.Component<SceneProps, {}> {
+    characterRef: { current: null | Character };
     sceneRef: { current: null | HTMLDivElement };
 
     constructor (props: SceneProps) {
         super(props);
+        this.characterRef = React.createRef();
         this.sceneRef = React.createRef();
     }
 
@@ -202,42 +204,41 @@ class Scene extends React.Component<SceneProps, {}> {
         /* istanbul ignore next */
         if ((prevProps.characterState.xPos !== this.props.characterState.xPos ||
             prevProps.characterState.yPos !== this.props.characterState.yPos) &&
-            this.sceneRef.current !== null) {
-            const characterElement = document.getElementById('scene-character-icon');
-            if (characterElement !== null) {
-                const oldCharacterBounds = characterElement.getBoundingClientRect();
-                characterElement.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
-
+            this.sceneRef.current !== null && this.characterRef.current !== null) {
+            const iconId = this.characterRef.current.getIconId();
+            const characterElement = document.getElementById(iconId);
+            if (characterElement) {
                 const newCharacterBounds = characterElement.getBoundingClientRect();
 
-                // On Safari, scrollIntoView doesn't work on SVG elements, so we use a backup strategy if the position hasn't changed.
-                if (newCharacterBounds.left === oldCharacterBounds.left && newCharacterBounds.top === oldCharacterBounds.top) {
-                    // $FlowFixMe: Flow doesn't understand that the scene has this method.
-                    const sceneBounds = this.sceneRef.current.getBoundingClientRect();
+                // $FlowFixMe: Flow doesn't understand that the scene has this method.
+                const sceneBounds = this.sceneRef.current.getBoundingClientRect();
 
-                    // Check to see if the character is visible.
-                    // If not, scroll to bring it into view.
-                    if (newCharacterBounds.left < sceneBounds.left) {
-                        // Scroll left.
-                        // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
-                        this.sceneRef.current.scrollLeft -= (sceneBounds.left - newCharacterBounds.left + 50);
-                    }
-                    else if ((newCharacterBounds.left + newCharacterBounds.width) > (sceneBounds.left + sceneBounds.width)) {
-                        // Scroll right.
-                        // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
-                        this.sceneRef.current.scrollLeft += (newCharacterBounds.left + newCharacterBounds.width) - (sceneBounds.left + sceneBounds.width) + 50;
-                    }
+                // Check to see if the character is visible. If not, scroll to bring it into view. We do this ourselves
+                // for two reasons:
+                //
+                // 1. On Safari, scrollIntoView doesn't work on SVG elements (C2LC-347).
+                // 2. On Firefox, scrollIntoView seems to scroll to the center of the character rather than bringing it
+                //    completely into view (C2LC-343).
+                if (newCharacterBounds.left < sceneBounds.left) {
+                    // Scroll left.
+                    // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
+                    this.sceneRef.current.scrollLeft -= (sceneBounds.left - newCharacterBounds.left + 50);
+                }
+                else if ((newCharacterBounds.left + newCharacterBounds.width) > (sceneBounds.left + sceneBounds.width)) {
+                    // Scroll right.
+                    // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
+                    this.sceneRef.current.scrollLeft += (newCharacterBounds.left + newCharacterBounds.width) - (sceneBounds.left + sceneBounds.width) + 50;
+                }
 
-                    if (newCharacterBounds.top < sceneBounds.top) {
-                        // Scroll up.  For whatever reason we have to overshoot on the scroll to avoid leaving the icon half out of bounds and constantly triggering scrolls.
-                        // $FlowFixMe: Flow doesn't understand that this element has a scrollTop.
-                        this.sceneRef.current.scrollTop -= (sceneBounds.top - newCharacterBounds.top + 50);
-                    }
-                    else if ((newCharacterBounds.top + newCharacterBounds.height) > (sceneBounds.top + sceneBounds.height)) {
-                        // Scroll down.
-                        // $FlowFixMe: Flow doesn't understand that this element has a scrollTop.
-                        this.sceneRef.current.scrollTop += (newCharacterBounds.top + newCharacterBounds.height) - (sceneBounds.top + sceneBounds.height) + 50;
-                    }
+                if (newCharacterBounds.top < sceneBounds.top) {
+                    // Scroll up.  For whatever reason we have to overshoot on the scroll to avoid leaving the icon half out of bounds and constantly triggering scrolls.
+                    // $FlowFixMe: Flow doesn't understand that this element has a scrollTop.
+                    this.sceneRef.current.scrollTop -= (sceneBounds.top - newCharacterBounds.top + 50);
+                }
+                else if ((newCharacterBounds.top + newCharacterBounds.height) > (sceneBounds.top + sceneBounds.height)) {
+                    // Scroll down.
+                    // $FlowFixMe: Flow doesn't understand that this element has a scrollTop.
+                    this.sceneRef.current.scrollTop += (newCharacterBounds.top + newCharacterBounds.height) - (sceneBounds.top + sceneBounds.height) + 50;
                 }
             }
         }
@@ -311,6 +312,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                     transform={characterBackgroundTransform}
                                 />
                                 <Character
+                                    ref={this.characterRef}
                                     world={this.props.world}
                                     transform={characterTransform}
                                     width={0.9}
