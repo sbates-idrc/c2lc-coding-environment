@@ -138,7 +138,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
             this.props.onChangeProgramSequence(
                 this.props.programSequence.insertStep(index, this.props.selectedAction)
             );
-            const element = this.commandBlockRefs.get(this.focusCommandBlockIndex);
+            const element = this.commandBlockRefs.get(index);
             if (element) {
                 element.classList.remove('ProgramBlockEditor__program-block--inserted');
             }
@@ -835,8 +835,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         }
         if (this.focusCommandBlockIndex != null) {
             const element = this.commandBlockRefs.get(this.focusCommandBlockIndex);
-            element.classList.add('ProgramBlockEditor__program-block--inserted');
             if (element) {
+                element.classList.add('ProgramBlockEditor__program-block--inserted');
                 element.focus();
             }
             this.focusCommandBlockIndex = null;
