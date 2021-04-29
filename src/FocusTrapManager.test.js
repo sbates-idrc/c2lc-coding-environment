@@ -5,7 +5,6 @@ import FocusTrapManager from './FocusTrapManager';
 function checkFocusTrapProps(
     focusTrapManager: FocusTrapManager,
     active: boolean,
-    trapCloseHandler: () => void,
     elementSelectors: Array<string>,
     returnElementSelector: ?string) {
     expect(focusTrapManager).toHaveProperty('active', active);
@@ -27,7 +26,7 @@ describe('FocusManagerProperty', () => {
 
     test('Checking default values', () => {
         expect.assertions(4);
-        checkFocusTrapProps(focusTrapManager, false, ()=>{}, [], null);
+        checkFocusTrapProps(focusTrapManager, false, [], null);
     })
 
     test.each([
@@ -41,9 +40,9 @@ describe('FocusManagerProperty', () => {
         (elementSelectors, returnSelector) => {
             expect.assertions(8);
             focusTrapManager = mockSetFocusTrap(focusTrapManager, elementSelectors, returnSelector);
-            checkFocusTrapProps(focusTrapManager, true, ()=>{}, elementSelectors, returnSelector);
+            checkFocusTrapProps(focusTrapManager, true, elementSelectors, returnSelector);
             focusTrapManager.unsetFocusTrap();
-            checkFocusTrapProps(focusTrapManager, false, ()=>{}, [], null);
+            checkFocusTrapProps(focusTrapManager, false, [], null);
         }
     );
 });
