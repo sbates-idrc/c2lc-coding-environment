@@ -13,7 +13,7 @@ function generateId(prefix: string): string {
 
 /* istanbul ignore next */
 function makeDelayedPromise(timeMs: number): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         setTimeout(() => {
             resolve();
         }, timeMs);
