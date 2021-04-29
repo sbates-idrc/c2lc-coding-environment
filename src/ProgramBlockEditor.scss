@@ -6,6 +6,12 @@
     100% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width white;}
 }
 
+@keyframes insertedAnimation {
+    0% {width: 3.5rem; height: 3.5rem}
+    50% {width: 3rem; height: 3rem}
+    100% {width: 2.5rem; height: 2.5rem;}
+}
+
 .ProgramBlockEditor__container {
     background-color: #CCE6E2;
     border: 2px solid #CCE6E2;
@@ -288,6 +294,11 @@ button.ProgramBlockEditor__program-block--active {
 button.ProgramBlockEditor__program-block--paused {
     animation-timing-function: ease;
     animation: pausedAnimation 2s infinite;
+}
+
+button.ProgramBlockEditor__program-block--inserted {
+    animation-timing-function: ease;
+    animation: insertedAnimation 2s;
 }
 
 .ProgramBlockEditor__action-panel-container-outer {
