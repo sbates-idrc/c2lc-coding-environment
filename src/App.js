@@ -987,7 +987,11 @@ export class App extends React.Component<AppProps, AppState> {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedAllowedActions = this.allowedActionsSerializer.serialize(this.state.allowedActions);
-            // Safari throws an error: "SecurityError: Attempt to use history.pushState() more than 100 times per 30 seconds".
+
+            // Use setTimeout() to limit how often we call history.pushState().
+            // Safari will throw an error if calls to history.pushState() are
+            // too frequent: "SecurityError: Attempt to use history.pushState()
+            // more than 100 times per 30 seconds".
             const pushStateDelayMs = 350;
             clearTimeout(this.pushStateTimeoutID);
             this.pushStateTimeoutID = setTimeout(() => {
@@ -1004,6 +1008,7 @@ export class App extends React.Component<AppProps, AppState> {
                     '',
                 );
             }, pushStateDelayMs);
+
             window.localStorage.setItem('c2lc-version', this.version);
             window.localStorage.setItem('c2lc-program', serializedProgram);
             window.localStorage.setItem('c2lc-characterState', serializedCharacterState);
