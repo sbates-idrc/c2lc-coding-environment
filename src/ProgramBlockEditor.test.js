@@ -498,15 +498,19 @@ describe('Replace program steps', () => {
             const replaceButton = getActionPanelActionButtons(wrapper).at(1);
             replaceButton.simulate('click');
 
-            // The 'replace' announcement should be played
+            // An announcement should be played.
             expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
-            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('replace');
 
-            // The program should be updated
             if (selectedAction) {
+                expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('replace');
+
+                // The program should be updated
                 expect(mockChangeProgramSequenceHandler.mock.calls.length).toBe(1);
                 expect(mockChangeProgramSequenceHandler.mock.calls[0][0].program).toStrictEqual(expectedProgram);
             } else {
+                expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('noMovementSelected');
+
+                // The program should not be updated
                 expect(mockChangeProgramSequenceHandler.mock.calls.length).toBe(0);
                 expect(wrapper.props().programSequence.getProgram()).toStrictEqual(expectedProgram);
             }
