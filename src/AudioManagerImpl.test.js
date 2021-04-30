@@ -48,7 +48,7 @@ test("Returns a sensible note range for every supported character position.", ()
     // noteTable [row][col] = singlePitchString;
     const noteTable = [];
 
-    const sceneDimensions = new SceneDimensions(1, 1);
+    const sceneDimensions = new SceneDimensions(1, 26, 1, 16);
 
     for (let row = minRow; row <= maxRow; row++) {
         let maxPitch = 0;

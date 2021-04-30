@@ -37,7 +37,7 @@ const mockAllowedActions = {
 
 const defaultProgramBlockEditorProps = {
     interpreterIsRunning: false,
-    characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(100, 100)),
+    characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
     programSequence: new ProgramSequence(['forward1', 'left45', 'forward1', 'left45'], 0),
     runningState: 'stopped',
     actionPanelStepIndex: null,
@@ -947,14 +947,14 @@ describe('Character position gets updated on character-position div', () => {
     test('When characterState prop is changed', () => {
         const { wrapper } = createMountProgramBlockEditor();
         wrapper.setProps({
-            characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(100,100))
+            characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100))
         });
         // $FlowFixMe: Flow doesn't know about character-position div
         expect(document.getElementById('character-position').innerText).toBe('Robot character at column A, row 1 facing right');
-        wrapper.setProps({world: 'forest', characterState: new CharacterState(2, 1, 2, [], new SceneDimensions(100, 100))});
+        wrapper.setProps({world: 'forest', characterState: new CharacterState(2, 1, 2, [], new SceneDimensions(1, 100, 1, 100))});
         // $FlowFixMe: Flow doesn't know about character-position div
         expect(document.getElementById('character-position').innerText).toBe('Rabbit character at column B, row 1 facing right');
-        wrapper.setProps({world: 'space', characterState: new CharacterState(3, 1, 2, [], new SceneDimensions(100, 100))});
+        wrapper.setProps({world: 'space', characterState: new CharacterState(3, 1, 2, [], new SceneDimensions(1, 100, 1, 100))});
         // $FlowFixMe: Flow doesn't know about character-position div
         expect(document.getElementById('character-position').innerText).toBe('Space Ship character at column C, row 1 facing right');
     })
