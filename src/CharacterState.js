@@ -20,6 +20,12 @@ type PathSegment = {
     y2: number
 };
 
+type MovementResult = {
+    x: number,
+    y: number,
+    pathSegments: Array<PathSegment>
+};
+
 export default class CharacterState {
     xPos: number; // Positive x is East
     yPos: number; // Positive y is South
@@ -55,332 +61,26 @@ export default class CharacterState {
     }
 
     forward(distance: number, drawingEnabled: boolean): CharacterState {
-        let xOffset = 0;
-        let yOffset = 0;
-
-        switch(this.direction) {
-            case 0:
-                xOffset = 0;
-                yOffset = -distance;
-                break;
-            case 1:
-                xOffset = distance;
-                yOffset = -distance;
-                break;
-            case 2:
-                xOffset = distance;
-                yOffset = 0;
-                break;
-            case 3:
-                xOffset = distance;
-                yOffset = distance;
-                break;
-            case 4:
-                xOffset = 0;
-                yOffset = distance;
-                break;
-            case 5:
-                xOffset = -distance;
-                yOffset = distance;
-                break;
-            case 6:
-                xOffset = -distance;
-                yOffset = 0;
-                break;
-            case 7:
-                xOffset = -distance;
-                yOffset = -distance;
-                break;
-            default:
-                throw new Error('CharacterState direction must be an integer in range 0-7 inclusive');
-        }
-
-        let newYPos = 0;
-        let newXPos = 0;
-        let turnSegment = [];
-        const boundsStateX = this.sceneDimensions.getBoundsStateX(this.xPos + xOffset);
-        const boundsStateY = this.sceneDimensions.getBoundsStateY(this.yPos + yOffset);
-
-        if (boundsStateX === 'outOfBoundsBelow' && boundsStateY === 'outOfBoundsBelow') {
-            newXPos = 1;
-            newYPos = 1;
-            const drawIteration = Math.max(this.xPos - 1, this.yPos - 1);
-            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, this.direction);
-        } else if (boundsStateX === 'outOfBoundsBelow' && boundsStateY === 'outOfBoundsAbove') {
-            newXPos = 1;
-            newYPos = this.sceneDimensions.getHeight();
-            const drawIteration = Math.max(this.xPos - 1, newYPos - this.yPos);
-            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, this.direction);
-        } else if (boundsStateX === 'outOfBoundsBelow' && boundsStateY === 'inBounds') {
-            newXPos = 1;
-            newYPos = this.yPos + yOffset;
-            turnSegment = this.drawEdgeDiagonalPath([], this.xPos - 1, this.direction);
-        } else if (boundsStateX === 'outOfBoundsAbove' && boundsStateY === 'inBounds') {
-            newXPos = this.sceneDimensions.getWidth();
-            newYPos = this.yPos + yOffset;
-            turnSegment = this.drawEdgeDiagonalPath([], newXPos - this.xPos, this.direction);
-        } else if (boundsStateX === 'outOfBoundsAbove' && boundsStateY === 'outOfBoundsBelow') {
-            newXPos = this.sceneDimensions.getWidth();
-            newYPos = 1;
-            const drawIteration = Math.max(newXPos - this.xPos, this.yPos - 1);
-            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, this.direction);
-        } else if (boundsStateX === 'outOfBoundsAbove' && boundsStateY === 'outOfBoundsAbove') {
-            newXPos = this.sceneDimensions.getWidth();
-            newYPos = this.sceneDimensions.getHeight();
-            const drawIteration = Math.max(newXPos - this.xPos, newYPos - this.yPos);
-            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, this.direction);
-        } else if (boundsStateX === 'inBounds' && boundsStateY === 'outOfBoundsBelow') {
-            newXPos = this.xPos + xOffset;
-            newYPos = 1;
-            turnSegment = this.drawEdgeDiagonalPath([], this.yPos - 1, this.direction);
-        } else if (boundsStateX === 'inBounds' && boundsStateY === 'outOfBoundsAbove') {
-            newXPos = this.xPos + xOffset;
-            newYPos = this.sceneDimensions.getHeight();
-            turnSegment = this.drawEdgeDiagonalPath([], newYPos - this.yPos, this.direction);
-        } else {
-            newXPos = this.xPos + xOffset;
-            newYPos = this.yPos + yOffset;
-        }
-
-        let startingX1 = this.xPos;
-        let startingY1 = this.yPos;
-
-        if (turnSegment.length > 0) {
-            startingX1 = turnSegment[turnSegment.length - 1].x2;
-            startingY1 = turnSegment[turnSegment.length - 1].y2;
-        }
-
-        const newPathSegment = {
-            x1: startingX1,
-            y1: startingY1,
-            x2: newXPos,
-            y2: newYPos
-        };
-
-        if (newPathSegment.x2 === this.xPos &&
-            newPathSegment.y2 === this.yPos) {
-            return new CharacterState(
-                newXPos,
-                newYPos,
-                this.direction,
-                this.path,
-                this.sceneDimensions
-            )
-        }
-
+        const movementResult = this.calculateMove(distance, this.direction, drawingEnabled);
         return new CharacterState(
-            newXPos,
-            newYPos,
+            movementResult.x,
+            movementResult.y,
             this.direction,
-            drawingEnabled ?
-                turnSegment.length > 0 ?
-                    this.path.concat(turnSegment, [newPathSegment]) :
-                    this.path.concat([newPathSegment]) :
-                this.path,
+            this.path.concat(movementResult.pathSegments),
             this.sceneDimensions
         );
     }
 
     backward(distance: number, drawingEnabled: boolean): CharacterState {
-        let xOffset = 0;
-        let yOffset = 0;
-
-        switch(this.direction) {
-            case 0:
-                xOffset = 0;
-                yOffset = distance;
-                break;
-            case 1:
-                xOffset = -distance;
-                yOffset = +distance;
-                break;
-            case 2:
-                xOffset = -distance;
-                yOffset = 0;
-                break;
-            case 3:
-                xOffset = -distance;
-                yOffset = -distance;
-                break;
-            case 4:
-                xOffset = 0;
-                yOffset = -distance;
-                break;
-            case 5:
-                xOffset = distance;
-                yOffset = -distance;
-                break;
-            case 6:
-                xOffset = distance;
-                yOffset = 0;
-                break;
-            case 7:
-                xOffset = distance;
-                yOffset = distance;
-                break;
-            default:
-                throw new Error('CharacterState direction must be an integer in range 0-7 inclusive');
-        }
-
-        let newYPos, newXPos = 0;
-        let turnSegment = [];
-        const boundsStateX = this.sceneDimensions.getBoundsStateX(this.xPos + xOffset);
-        const boundsStateY = this.sceneDimensions.getBoundsStateY(this.yPos + yOffset);
-
-        if (boundsStateX === 'outOfBoundsBelow' && boundsStateY === 'outOfBoundsBelow') {
-            newXPos = 1;
-            newYPos = 1;
-            const drawIteration = Math.max(this.xPos - 1, this.yPos - 1);
-            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, (this.direction + 4) % 8);
-        } else if (boundsStateX === 'outOfBoundsBelow' && boundsStateY === 'outOfBoundsAbove') {
-            newXPos = 1;
-            newYPos = this.sceneDimensions.getHeight();
-            const drawIteration = Math.max(this.xPos - 1, newYPos - this.yPos);
-            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, (this.direction + 4) % 8);
-        } else if (boundsStateX === 'outOfBoundsBelow' && boundsStateY === 'inBounds') {
-            newXPos = 1;
-            newYPos = this.yPos + yOffset;
-            turnSegment = this.drawEdgeDiagonalPath([], this.xPos - 1, (this.direction + 4) % 8);
-        } else if (boundsStateX === 'outOfBoundsAbove' && boundsStateY === 'inBounds') {
-            newXPos = this.sceneDimensions.getWidth();
-            newYPos = this.yPos + yOffset;
-            turnSegment = this.drawEdgeDiagonalPath([], newXPos - this.xPos, (this.direction + 4) % 8);
-        } else if (boundsStateX === 'outOfBoundsAbove' && boundsStateY === 'outOfBoundsBelow') {
-            newXPos = this.sceneDimensions.getWidth();
-            newYPos = 1;
-            const drawIteration = Math.max(newXPos - this.xPos, this.yPos - 1);
-            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, (this.direction + 4) % 8);
-        } else if (boundsStateX === 'outOfBoundsAbove' && boundsStateY === 'outOfBoundsAbove') {
-            newXPos = this.sceneDimensions.getWidth();
-            newYPos = this.sceneDimensions.getHeight();
-            const drawIteration = Math.max(newXPos - this.xPos, newYPos - this.yPos);
-            turnSegment = this.drawEdgeDiagonalPath([], drawIteration, (this.direction + 4) % 8);
-        } else if (boundsStateX === 'inBounds' && boundsStateY === 'outOfBoundsBelow') {
-            newXPos = this.xPos + xOffset;
-            newYPos = 1;
-            turnSegment = this.drawEdgeDiagonalPath([], this.yPos - 1, (this.direction + 4) % 8);
-        } else if (boundsStateX === 'inBounds' && boundsStateY === 'outOfBoundsAbove') {
-            newXPos = this.xPos + xOffset;
-            newYPos = this.sceneDimensions.getHeight();
-            turnSegment = this.drawEdgeDiagonalPath([], newYPos - this.yPos, (this.direction + 4) % 8);
-        } else {
-            newXPos = this.xPos + xOffset;
-            newYPos = this.yPos + yOffset;
-        }
-
-        let startingX1 = this.xPos;
-        let startingY1 = this.yPos;
-
-        if (turnSegment.length > 0) {
-            startingX1 = turnSegment[turnSegment.length - 1].x2;
-            startingY1 = turnSegment[turnSegment.length - 1].y2;
-        }
-
-        const newPathSegment = {
-            x1: startingX1,
-            y1: startingY1,
-            x2: newXPos,
-            y2: newYPos
-        };
-
-        if (newPathSegment.x2 === this.xPos &&
-            newPathSegment.y2 === this.yPos) {
-            return new CharacterState(
-                newXPos,
-                newYPos,
-                this.direction,
-                this.path,
-                this.sceneDimensions
-            )
-        }
-
+        const movementResult = this.calculateMove(distance,
+                C2lcMath.wrap(0, 8, this.direction + 4), drawingEnabled);
         return new CharacterState(
-            newXPos,
-            newYPos,
+            movementResult.x,
+            movementResult.y,
             this.direction,
-            drawingEnabled ?
-                turnSegment.length > 0 ?
-                    this.path.concat(turnSegment, [newPathSegment]) :
-                    this.path.concat([newPathSegment]) :
-                this.path,
+            this.path.concat(movementResult.pathSegments),
             this.sceneDimensions
         );
-    }
-
-    drawEdgeDiagonalPath(path: Array<PathSegment>, iterations: number, direction:number): Array<PathSegment> {
-        if (iterations === 0) {
-            return path;
-        } else {
-            let x2 = this.xPos;
-            let y2 = this.yPos;
-            if (path.length !== 0) {
-                x2 = path[path.length - 1].x2;
-                y2 = path[path.length - 1].y2;
-            }
-            let newX2 = 0;
-            let newY2 = 0;
-            switch (direction) {
-                case 1:
-                    if (x2 !== this.sceneDimensions.getWidth() && y2 === 1) {
-                        newX2 = x2 + 1;
-                        newY2 = y2;
-                    } else if (x2 === this.sceneDimensions.getWidth() && y2 !== 1) {
-                        newX2 = x2;
-                        newY2 = y2 - 1;
-                    }  else {
-                        newX2 = x2 + 1;
-                        newY2 = y2 - 1;
-                    }
-                    break;
-                case 3:
-                    if (x2 !== this.sceneDimensions.getWidth() && y2 === this.sceneDimensions.getHeight()) {
-                        newX2 = x2 + 1;
-                        newY2 = y2;
-                    } else if (x2 === this.sceneDimensions.getWidth() && y2 !== this.sceneDimensions.getHeight()) {
-                        newX2 = x2;
-                        newY2 = y2 + 1;
-                    } else {
-                        newX2 = x2 + 1;
-                        newY2 = y2 + 1;
-                    }
-                    break;
-                case 5:
-                    if (x2 !== 1 && y2 === this.sceneDimensions.getHeight()) {
-                        newX2 = x2 - 1;
-                        newY2 = y2;
-                    } else if (x2 === 1 && y2 !== this.sceneDimensions.getHeight()) {
-                        newX2 = x2;
-                        newY2 = y2 + 1;
-                    } else {
-                        newX2 = x2 - 1;
-                        newY2 = y2 + 1;
-                    }
-                    break;
-                case 7:
-                    if (x2 !== 1 && y2 === 1) {
-                        newX2 = x2 - 1;
-                        newY2 = y2;
-                    } else if (x2 === 1 && y2 !== 1) {
-                        newX2 = x2;
-                        newY2 = y2 - 1;
-                    } else {
-                        newX2 = x2 - 1;
-                        newY2 = y2 - 1;
-                    }
-                    break;
-                default:
-                    return [];
-            }
-            if (x2 !== newX2 && y2 !== newY2) {
-                path.push({
-                    x1: x2,
-                    y1: y2,
-                    x2: newX2,
-                    y2: newY2
-                });
-            }
-            return this.drawEdgeDiagonalPath(path, iterations - 1, direction);
-        }
     }
 
     turnLeft(amountEighthsOfTurn: number): CharacterState {
@@ -504,5 +204,99 @@ export default class CharacterState {
 
     getColumnLabel(): string {
         return String.fromCharCode(64 + this.xPos);
+    }
+
+    // Internal implementation method.
+    // Calculates the movement for the specified distance in the specified direction.
+    // Returns the final position and any generated path segments.
+    calculateMove(distance: number, direction: number, drawingEnabled: boolean): MovementResult {
+        const pathSegments = [];
+        let x = this.xPos;
+        let y = this.yPos;
+
+        for (let i = 0; i < distance; i++) {
+            const movementResult = this.calculateMoveOneGridUnit(x, y, direction);
+            x = movementResult.x;
+            y = movementResult.y;
+            if (drawingEnabled) {
+                Array.prototype.push.apply(pathSegments, movementResult.pathSegments);
+            }
+        }
+
+        return {
+            x,
+            y,
+            pathSegments
+        };
+    }
+
+    // Internal implementation method.
+    // Calculates the movement for one grid unit in the specified direction.
+    // Returns the new position and, if movement was possible, a path segment.
+    calculateMoveOneGridUnit(x: number, y: number, direction: number): MovementResult {
+        let newX;
+        let newY;
+
+        switch(direction) {
+            case 0:
+                newX = x;
+                newY = y - 1;
+                break;
+            case 1:
+                newX = x + 1;
+                newY = y - 1;
+                break;
+            case 2:
+                newX = x + 1;
+                newY = y;
+                break;
+            case 3:
+                newX = x + 1;
+                newY = y + 1;
+                break;
+            case 4:
+                newX = x;
+                newY = y + 1;
+                break;
+            case 5:
+                newX = x - 1;
+                newY = y + 1;
+                break;
+            case 6:
+                newX = x - 1;
+                newY = y;
+                break;
+            case 7:
+                newX = x - 1;
+                newY = y - 1;
+                break;
+            default:
+                throw new Error('CharacterState direction must be an integer in range 0-7 inclusive');
+        }
+
+        newX = C2lcMath.clamp(1, this.sceneDimensions.getWidth(), newX);
+        newY = C2lcMath.clamp(1, this.sceneDimensions.getHeight(), newY);
+
+        if (newX === x && newY === y) {
+            // We didn't move, don't return a path segment
+            return {
+                x: newX,
+                y: newY,
+                pathSegments: []
+            };
+        } else {
+            // We did move, return a path segment
+            const pathSegment = {
+                x1: x,
+                y1: y,
+                x2: newX,
+                y2: newY
+            };
+            return {
+                x: newX,
+                y: newY,
+                pathSegments: [pathSegment]
+            };
+        }
     }
 }
