@@ -825,7 +825,7 @@ body.gray-theme {
         border-right: 1px solid #9DA4AF;
     }
 
-    .ProgramBlockEditor__character-position-button--disabled:not(.ProgramBlockEditor__character-turn-positions) {
+    .ProgramBlockEditor__character-position-button--disabled {
         stroke: #B9BEC6;
     }
 
@@ -1405,7 +1405,7 @@ body.contrast-theme {
         }
     }
 
-    .ProgramBlockEditor__character-position-button--disabled:not(.ProgramBlockEditor__character-turn-positions) {
+    .ProgramBlockEditor__character-position-button--disabled {
         stroke: #505862;
     }
 
