@@ -102,47 +102,47 @@ test('CharacterState.getDirectionDegrees() should return the direction in degree
 });
 
 test('The character can move in 8 directions (N, NE, E, SE, S, SW, W, NW)', () => {
-    const sceneDimensions = new SceneDimensions(500, 500);
+    const sceneDimensions = new SceneDimensions(5, 5);
     // N
-    (expect(new CharacterState(200, 200, 0, [], sceneDimensions).forward(100, true)): any)
-        .toHaveCharacterState(200, 100, 0, [{x1: 200, y1: 200, x2: 200, y2: 100}]);
-    (expect(new CharacterState(200, 200, 4, [], sceneDimensions).backward(100, true)): any)
-        .toHaveCharacterState(200, 100, 4, [{x1: 200, y1: 200, x2: 200, y2: 100}]);
+    (expect(new CharacterState(2, 2, 0, [], sceneDimensions).forward(1, true)): any)
+        .toHaveCharacterState(2, 1, 0, [{x1: 2, y1: 2, x2: 2, y2: 1}]);
+    (expect(new CharacterState(2, 2, 4, [], sceneDimensions).backward(1, true)): any)
+        .toHaveCharacterState(2, 1, 4, [{x1: 2, y1: 2, x2: 2, y2: 1}]);
     // NE
-    (expect(new CharacterState(100, 200, 1, [], sceneDimensions).forward(100, true)): any)
-        .toHaveCharacterState(200, 100, 1, [{x1: 100, y1: 200, x2: 200, y2: 100}]);
-    (expect(new CharacterState(100, 200, 5, [], sceneDimensions).backward(100, true)): any)
-        .toHaveCharacterState(200, 100, 5, [{x1: 100, y1: 200, x2: 200, y2: 100}]);
+    (expect(new CharacterState(1, 2, 1, [], sceneDimensions).forward(1, true)): any)
+        .toHaveCharacterState(2, 1, 1, [{x1: 1, y1: 2, x2: 2, y2: 1}]);
+    (expect(new CharacterState(1, 2, 5, [], sceneDimensions).backward(1, true)): any)
+        .toHaveCharacterState(2, 1, 5, [{x1: 1, y1: 2, x2: 2, y2: 1}]);
     // E
-    (expect(new CharacterState(100, 100, 2, [], sceneDimensions).forward(100, true)): any)
-        .toHaveCharacterState(200, 100, 2, [{x1: 100, y1: 100, x2: 200, y2: 100}]);
-    (expect(new CharacterState(100, 100, 6, [], sceneDimensions).backward(100, true)): any)
-        .toHaveCharacterState(200, 100, 6, [{x1: 100, y1: 100, x2: 200, y2: 100}]);
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true)): any)
+        .toHaveCharacterState(2, 1, 2, [{x1: 1, y1: 1, x2: 2, y2: 1}]);
+    (expect(new CharacterState(1, 1, 6, [], sceneDimensions).backward(1, true)): any)
+        .toHaveCharacterState(2, 1, 6, [{x1: 1, y1: 1, x2: 2, y2: 1}]);
     // SE
-    (expect(new CharacterState(100, 100, 3, [], sceneDimensions).forward(100, true)): any)
-        .toHaveCharacterState(200, 200, 3, [{x1: 100, y1: 100, x2: 200, y2: 200}]);
-    (expect(new CharacterState(100, 100, 7, [], sceneDimensions).backward(100, true)): any)
-        .toHaveCharacterState(200, 200, 7, [{x1: 100, y1: 100, x2: 200, y2: 200}]);
+    (expect(new CharacterState(1, 1, 3, [], sceneDimensions).forward(1, true)): any)
+        .toHaveCharacterState(2, 2, 3, [{x1: 1, y1: 1, x2: 2, y2: 2}]);
+    (expect(new CharacterState(1, 1, 7, [], sceneDimensions).backward(1, true)): any)
+        .toHaveCharacterState(2, 2, 7, [{x1: 1, y1: 1, x2: 2, y2: 2}]);
     // S
-    (expect(new CharacterState(100, 100, 4, [], sceneDimensions).forward(100, true)): any)
-        .toHaveCharacterState(100, 200, 4, [{x1: 100, y1: 100, x2: 100, y2: 200}]);
-    (expect(new CharacterState(100, 100, 0, [], sceneDimensions).backward(100, true)): any)
-        .toHaveCharacterState(100, 200, 0, [{x1: 100, y1: 100, x2: 100, y2: 200}]);
+    (expect(new CharacterState(1, 1, 4, [], sceneDimensions).forward(1, true)): any)
+        .toHaveCharacterState(1, 2, 4, [{x1: 1, y1: 1, x2: 1, y2: 2}]);
+    (expect(new CharacterState(1, 1, 0, [], sceneDimensions).backward(1, true)): any)
+        .toHaveCharacterState(1, 2, 0, [{x1: 1, y1: 1, x2: 1, y2: 2}]);
     // SW
-    (expect(new CharacterState(200, 100, 5, [], sceneDimensions).forward(100, true)): any)
-        .toHaveCharacterState(100, 200, 5, [{x1: 200, y1: 100, x2: 100, y2: 200}]);
-    (expect(new CharacterState(200, 100, 1, [], sceneDimensions).backward(100, true)): any)
-        .toHaveCharacterState(100, 200, 1, [{x1: 200, y1: 100, x2: 100, y2: 200}]);
+    (expect(new CharacterState(2, 1, 5, [], sceneDimensions).forward(1, true)): any)
+        .toHaveCharacterState(1, 2, 5, [{x1: 2, y1: 1, x2: 1, y2: 2}]);
+    (expect(new CharacterState(2, 1, 1, [], sceneDimensions).backward(1, true)): any)
+        .toHaveCharacterState(1, 2, 1, [{x1: 2, y1: 1, x2: 1, y2: 2}]);
     // W
-    (expect(new CharacterState(200, 100, 6, [], sceneDimensions).forward(100, true)): any)
-        .toHaveCharacterState(100, 100, 6, [{x1: 200, y1: 100, x2: 100, y2: 100}]);
-    (expect(new CharacterState(200, 100, 2, [], sceneDimensions).backward(100, true)): any)
-        .toHaveCharacterState(100, 100, 2, [{x1: 200, y1: 100, x2: 100, y2: 100}]);
+    (expect(new CharacterState(2, 1, 6, [], sceneDimensions).forward(1, true)): any)
+        .toHaveCharacterState(1, 1, 6, [{x1: 2, y1: 1, x2: 1, y2: 1}]);
+    (expect(new CharacterState(2, 1, 2, [], sceneDimensions).backward(1, true)): any)
+        .toHaveCharacterState(1, 1, 2, [{x1: 2, y1: 1, x2: 1, y2: 1}]);
     // NW
-    (expect(new CharacterState(200, 200, 7, [], sceneDimensions).forward(100, true)): any)
-        .toHaveCharacterState(100, 100, 7, [{x1: 200, y1: 200, x2: 100, y2: 100}]);
-    (expect(new CharacterState(200, 200, 3, [], sceneDimensions).backward(100, true)): any)
-        .toHaveCharacterState(100, 100, 3, [{x1: 200, y1: 200, x2: 100, y2: 100}]);
+    (expect(new CharacterState(2, 2, 7, [], sceneDimensions).forward(1, true)): any)
+        .toHaveCharacterState(1, 1, 7, [{x1: 2, y1: 2, x2: 1, y2: 1}]);
+    (expect(new CharacterState(2, 2, 3, [], sceneDimensions).backward(1, true)): any)
+        .toHaveCharacterState(1, 1, 3, [{x1: 2, y1: 2, x2: 1, y2: 1}]);
 });
 
 test('Turn Left moves anti-clockwise and wraps at N', () => {
@@ -166,74 +166,76 @@ test('Turn Right moves clockwise and wraps at N', () => {
 });
 
 test('Each Forward move should create a path segment', () => {
-    const sceneDimensions = new SceneDimensions(500, 500);
-    (expect(new CharacterState(100, 100, 2, [], sceneDimensions).forward(100, true).forward(100, true)): any)
-        .toHaveCharacterState(300, 100, 2, [
-            {x1: 100, y1: 100, x2: 200, y2: 100},
-            {x1: 200, y1: 100, x2: 300, y2: 100}
+    const sceneDimensions = new SceneDimensions(5, 5);
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true).forward(1, true)): any)
+        .toHaveCharacterState(3, 1, 2, [
+            {x1: 1, y1: 1, x2: 2, y2: 1},
+            {x1: 2, y1: 1, x2: 3, y2: 1}
         ]);
-    (expect(new CharacterState(100, 200, 2, [], sceneDimensions).forward(100, true).turnLeft(2).forward(100, true)): any)
-        .toHaveCharacterState(200, 100, 0, [
-            {x1: 100, y1: 200, x2: 200, y2: 200},
-            {x1: 200, y1: 200, x2: 200, y2: 100}
+    (expect(new CharacterState(1, 2, 2, [], sceneDimensions).forward(1, true).turnLeft(2).forward(1, true)): any)
+        .toHaveCharacterState(2, 1, 0, [
+            {x1: 1, y1: 2, x2: 2, y2: 2},
+            {x1: 2, y1: 2, x2: 2, y2: 1}
         ]);
-    (expect(new CharacterState(100, 100, 2, [], sceneDimensions).forward(100, true).turnRight(2).forward(100, true)): any)
-        .toHaveCharacterState(200, 200, 4, [
-            {x1: 100, y1: 100, x2: 200, y2: 100},
-            {x1: 200, y1: 100, x2: 200, y2: 200}
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true).turnRight(2).forward(1, true)): any)
+        .toHaveCharacterState(2, 2, 4, [
+            {x1: 1, y1: 1, x2: 2, y2: 1},
+            {x1: 2, y1: 1, x2: 2, y2: 2}
         ]);
 });
 
 test('Each Backward move should create a path segment', () => {
-    const sceneDimensions = new SceneDimensions(500, 500);
-    (expect(new CharacterState(100, 100, 6, [], sceneDimensions).backward(100, true).backward(100, true)): any)
-        .toHaveCharacterState(300, 100, 6, [
-            {x1: 100, y1: 100, x2: 200, y2: 100},
-            {x1: 200, y1: 100, x2: 300, y2: 100}
+    const sceneDimensions = new SceneDimensions(5, 5);
+    (expect(new CharacterState(1, 1, 6, [], sceneDimensions).backward(1, true).backward(1, true)): any)
+        .toHaveCharacterState(3, 1, 6, [
+            {x1: 1, y1: 1, x2: 2, y2: 1},
+            {x1: 2, y1: 1, x2: 3, y2: 1}
         ]);
-    (expect(new CharacterState(100, 200, 6, [], sceneDimensions).backward(100, true).turnLeft(2).backward(100, true)): any)
-        .toHaveCharacterState(200, 100, 4, [
-            {x1: 100, y1: 200, x2: 200, y2: 200},
-            {x1: 200, y1: 200, x2: 200, y2: 100}
+    (expect(new CharacterState(1, 2, 6, [], sceneDimensions).backward(1, true).turnLeft(2).backward(1, true)): any)
+        .toHaveCharacterState(2, 1, 4, [
+            {x1: 1, y1: 2, x2: 2, y2: 2},
+            {x1: 2, y1: 2, x2: 2, y2: 1}
         ]);
-    (expect(new CharacterState(100, 100, 6, [], sceneDimensions).backward(100, true).turnRight(2).backward(100, true)): any)
-        .toHaveCharacterState(200, 200, 0, [
-            {x1: 100, y1: 100, x2: 200, y2: 100},
-            {x1: 200, y1: 100, x2: 200, y2: 200}
+    (expect(new CharacterState(1, 1, 6, [], sceneDimensions).backward(1, true).turnRight(2).backward(1, true)): any)
+        .toHaveCharacterState(2, 2, 0, [
+            {x1: 1, y1: 1, x2: 2, y2: 1},
+            {x1: 2, y1: 1, x2: 2, y2: 2}
         ]);
 });
 
 
 test('Forward move should not create a path segment, when drawingEnabled is false', () => {
-    const sceneDimensions = new SceneDimensions(500, 500);
-    (expect(new CharacterState(100, 100, 2, [], sceneDimensions).forward(100, false)): any)
-        .toHaveCharacterState(200, 100, 2, []);
-    (expect(new CharacterState(100, 100, 2, [], sceneDimensions).forward(100, false).forward(200, true)): any)
-        .toHaveCharacterState(400, 100, 2, [
-            {x1: 200, y1: 100, x2: 400, y2: 100}
+    const sceneDimensions = new SceneDimensions(5, 5);
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, false)): any)
+        .toHaveCharacterState(2, 1, 2, []);
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, false).forward(2, true)): any)
+        .toHaveCharacterState(4, 1, 2, [
+            {x1: 2, y1: 1, x2: 3, y2: 1},
+            {x1: 3, y1: 1, x2: 4, y2: 1}
         ]);
-    (expect(new CharacterState(100, 100, 2, [], sceneDimensions).forward(100, true).forward(200, false)): any)
-        .toHaveCharacterState(400, 100, 2, [
-            {x1: 100, y1: 100, x2: 200, y2: 100}
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true).forward(2, false)): any)
+        .toHaveCharacterState(4, 1, 2, [
+            {x1: 1, y1: 1, x2: 2, y2: 1}
         ]);
-    (expect(new CharacterState(100, 100, 2, [], sceneDimensions).forward(100, false).forward(200, false)): any)
-        .toHaveCharacterState(400, 100, 2, []);
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, false).forward(2, false)): any)
+        .toHaveCharacterState(4, 1, 2, []);
 });
 
 test('Backward move should not create a path segment, when drawingEnabled is false', () => {
-    const sceneDimensions = new SceneDimensions(500, 500);
-    (expect(new CharacterState(200, 100, 2, [], sceneDimensions).backward(100, false)): any)
-        .toHaveCharacterState(100, 100, 2, []);
-    (expect(new CharacterState(400, 100, 2, [], sceneDimensions).backward(100, false).backward(200, true)): any)
-        .toHaveCharacterState(100, 100, 2, [
-            {x1: 300, y1: 100, x2: 100, y2: 100}
+    const sceneDimensions = new SceneDimensions(5, 5);
+    (expect(new CharacterState(2, 1, 2, [], sceneDimensions).backward(1, false)): any)
+        .toHaveCharacterState(1, 1, 2, []);
+    (expect(new CharacterState(4, 1, 2, [], sceneDimensions).backward(1, false).backward(2, true)): any)
+        .toHaveCharacterState(1, 1, 2, [
+            {x1: 3, y1: 1, x2: 2, y2: 1},
+            {x1: 2, y1: 1, x2: 1, y2: 1}
         ]);
-    (expect(new CharacterState(400, 100, 2, [], sceneDimensions).backward(100, true).backward(200, false)): any)
-        .toHaveCharacterState(100, 100, 2, [
-            {x1: 400, y1: 100, x2: 300, y2: 100}
+    (expect(new CharacterState(4, 1, 2, [], sceneDimensions).backward(1, true).backward(2, false)): any)
+        .toHaveCharacterState(1, 1, 2, [
+            {x1: 4, y1: 1, x2: 3, y2: 1}
         ]);
-    (expect(new CharacterState(400, 100, 2, [], sceneDimensions).backward(100, false).backward(200, false)): any)
-        .toHaveCharacterState(100, 100, 2, []);
+    (expect(new CharacterState(4, 1, 2, [], sceneDimensions).backward(1, false).backward(2, false)): any)
+        .toHaveCharacterState(1, 1, 2, []);
 });
 
 test('Forward move is limited to the sceneDimensions', () => {
@@ -342,7 +344,7 @@ test('When direction is not an integer in range 0-7, forward() and backward() sh
     const sceneDimensions = new SceneDimensions(200, 200);
 
     expect(() => {
-        (new CharacterState(100, 100, -1, [], sceneDimensions)).forward(1, false);
+        (new CharacterState(1, 1, -1, [], sceneDimensions)).forward(1, false);
     }).toThrowError(/^CharacterState direction must be an integer in range 0-7 inclusive$/);
 
     expect(() => {
@@ -354,11 +356,11 @@ test('When direction is not an integer in range 0-7, forward() and backward() sh
     }).toThrowError(/^CharacterState direction must be an integer in range 0-7 inclusive$/);
 
     expect(() => {
-        (new CharacterState(0, 0, -1, [], sceneDimensions)).backward(1, false);
+        (new CharacterState(0, 0, 8.5, [], sceneDimensions)).backward(1, false);
     }).toThrowError(/^CharacterState direction must be an integer in range 0-7 inclusive$/);
 
     expect(() => {
-        (new CharacterState(0, 0, 8, [], sceneDimensions)).backward(1, false);
+        (new CharacterState(0, 0, 3.5, [], sceneDimensions)).backward(1, false);
     }).toThrowError(/^CharacterState direction must be an integer in range 0-7 inclusive$/);
 
     expect(() => {
