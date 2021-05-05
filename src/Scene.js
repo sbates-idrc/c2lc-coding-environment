@@ -28,7 +28,7 @@ class Scene extends React.Component<SceneProps, {}> {
             return { grid, rowLabels, columnLabels };
         }
         let yOffset = this.props.dimensions.getMinY();
-        for (let i=1;i < this.props.dimensions.getHeight() + 1;i++) {
+        for (let i=1; i < this.props.dimensions.getHeight() + 1; i++) {
             yOffset += 1;
             if (i < this.props.dimensions.getHeight()) {
                 grid.push(<line
@@ -36,7 +36,7 @@ class Scene extends React.Component<SceneProps, {}> {
                     key={`grid-cell-row-${i}`}
                     x1={this.props.dimensions.getMinX()}
                     y1={yOffset}
-                    x2={this.props.dimensions.getMaxX()}
+                    x2={this.props.dimensions.getMaxX() + 1}
                     y2={yOffset} />);
             }
             rowLabels.push(
@@ -62,7 +62,7 @@ class Scene extends React.Component<SceneProps, {}> {
             )
         }
         let xOffset = this.props.dimensions.getMinX();
-        for (let i=1;i < this.props.dimensions.getWidth() + 1;i++) {
+        for (let i=1; i < this.props.dimensions.getWidth() + 1; i++) {
             xOffset += 1;
             if (i < this.props.dimensions.getWidth()) {
                 grid.push(<line
@@ -71,7 +71,7 @@ class Scene extends React.Component<SceneProps, {}> {
                     x1={xOffset}
                     y1={this.props.dimensions.getMinY()}
                     x2={xOffset}
-                    y2={this.props.dimensions.getMaxY()} />);
+                    y2={this.props.dimensions.getMaxY() + 1} />);
             }
             columnLabels.push(
                 <circle
