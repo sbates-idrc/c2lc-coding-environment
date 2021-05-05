@@ -207,12 +207,8 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
     outline: $c2lc-focus-indicator-width solid $c2lc-focus-indicator-color;
 }
 
-.ProgramBlockEditor__character-position-button--disabled,
-.ProgramBlockEditor__character-turn-positions--disabled {
-    cursor: default;
-}
-
 .ProgramBlockEditor__character-position-button--disabled {
+    cursor: default;
     stroke: #818A98;
 }
 
