@@ -101,10 +101,10 @@ class Scene extends React.Component<SceneProps, {}> {
             return <line
                 className='Scene__path-line'
                 key={`path-${i}`}
-                x1={pathSegment.x1}
-                y1={pathSegment.y1}
-                x2={pathSegment.x2}
-                y2={pathSegment.y2} />
+                x1={pathSegment.x1 + 0.5}
+                y1={pathSegment.y1 + 0.5}
+                x2={pathSegment.x2 + 0.5}
+                y2={pathSegment.y2 + 0.5} />
         });
     }
 

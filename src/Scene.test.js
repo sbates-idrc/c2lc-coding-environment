@@ -331,10 +331,10 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
         });
         const characterPath = findCharacterPath(sceneWrapper);
         expect(characterPath.length).toBe(1);
-        expect(characterPath.get(0).props.x1).toBe(100);
-        expect(characterPath.get(0).props.y1).toBe(200);
-        expect(characterPath.get(0).props.x2).toBe(300);
-        expect(characterPath.get(0).props.y2).toBe(400);
+        expect(characterPath.get(0).props.x1).toBe(100.5);
+        expect(characterPath.get(0).props.y1).toBe(200.5);
+        expect(characterPath.get(0).props.x2).toBe(300.5);
+        expect(characterPath.get(0).props.y2).toBe(400.5);
     });
 
     test('When there are two path segments', () => {
@@ -349,14 +349,14 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
         });
         const characterPath = findCharacterPath(sceneWrapper);
         expect(characterPath.length).toBe(2);
-        expect(characterPath.get(0).props.x1).toBe(100);
-        expect(characterPath.get(0).props.y1).toBe(200);
-        expect(characterPath.get(0).props.x2).toBe(300);
-        expect(characterPath.get(0).props.y2).toBe(400);
-        expect(characterPath.get(1).props.x1).toBe(500);
-        expect(characterPath.get(1).props.y1).toBe(600);
-        expect(characterPath.get(1).props.x2).toBe(700);
-        expect(characterPath.get(1).props.y2).toBe(800);
+        expect(characterPath.get(0).props.x1).toBe(100.5);
+        expect(characterPath.get(0).props.y1).toBe(200.5);
+        expect(characterPath.get(0).props.x2).toBe(300.5);
+        expect(characterPath.get(0).props.y2).toBe(400.5);
+        expect(characterPath.get(1).props.x1).toBe(500.5);
+        expect(characterPath.get(1).props.y1).toBe(600.5);
+        expect(characterPath.get(1).props.x2).toBe(700.5);
+        expect(characterPath.get(1).props.y2).toBe(800.5);
     })
 })
 
