@@ -10,13 +10,14 @@ export default class SceneDimensions {
     #maxX: number;
     #maxY: number;
 
-    constructor(width: number, height: number) {
-        this.#width = width;
-        this.#height = height;
-        this.#minX = 0.5;
-        this.#minY = 0.5;
-        this.#maxX = width + 0.5;
-        this.#maxY = height + 0.5;
+    constructor(minX: number, maxX:number, minY:number, maxY: number) {
+        this.#minX = minX;
+        this.#maxX = maxX;
+        this.#maxY = maxY;
+        this.#minY = minY;
+
+        this.#width = (maxX - minX) + 1;
+        this.#height = (maxY - minY) + 1;
     }
 
     getWidth(): number {
@@ -62,14 +63,14 @@ export default class SceneDimensions {
     }
 
     isSceneEdgeX(x: number): boolean {
-        if (x === 1 || x === this.#width) {
+        if (x === this.#minX || x === this.#width) {
             return true;
         }
         return false;
     }
 
     isSceneEdgeY(y: number): boolean {
-        if (y === 1 || y === this.#height) {
+        if (y === this.#minY || y === this.#height) {
             return true;
         }
         return false;
