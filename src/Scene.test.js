@@ -224,7 +224,7 @@ describe('When the Scene renders', () => {
 
         expect(findGridLines(sceneWrapper).get(0).props.x1).toBe(1);
         expect(findGridLines(sceneWrapper).get(0).props.y1).toBe(2);
-        expect(findGridLines(sceneWrapper).get(0).props.x2).toBe(3);
+        expect(findGridLines(sceneWrapper).get(0).props.x2).toBe(4);
         expect(findGridLines(sceneWrapper).get(0).props.y2).toBe(2);
 
         // Grid columns
@@ -232,11 +232,11 @@ describe('When the Scene renders', () => {
         expect(findGridLines(sceneWrapper).get(1).props.x1).toBe(2);
         expect(findGridLines(sceneWrapper).get(1).props.y1).toBe(1);
         expect(findGridLines(sceneWrapper).get(1).props.x2).toBe(2);
-        expect(findGridLines(sceneWrapper).get(1).props.y2).toBe(2);
+        expect(findGridLines(sceneWrapper).get(1).props.y2).toBe(3);
         expect(findGridLines(sceneWrapper).get(2).props.x1).toBe(3);
         expect(findGridLines(sceneWrapper).get(2).props.y1).toBe(1);
         expect(findGridLines(sceneWrapper).get(2).props.x2).toBe(3);
-        expect(findGridLines(sceneWrapper).get(2).props.y2).toBe(2);
+        expect(findGridLines(sceneWrapper).get(2).props.y2).toBe(3);
     });
 });
 
