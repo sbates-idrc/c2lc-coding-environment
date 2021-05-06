@@ -103,7 +103,7 @@ export class App extends React.Component<AppProps, AppState> {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
         };
 
-        this.sceneDimensions = new SceneDimensions(26, 16);
+        this.sceneDimensions = new SceneDimensions(1, 26, 1, 16);
 
         // Begin facing East
         this.startingCharacterState = new CharacterState(1, 1, 2, [], this.sceneDimensions);
