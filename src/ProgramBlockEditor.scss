@@ -7,34 +7,34 @@
 }
 
 @keyframes updatedProgramBlockAnimation-forwad {
-    0% {box-shadow: 0 0 0 0.5rem $c2lc-forward-command-color;}
-    25% {box-shadow: 0 0 0 0.375rem $c2lc-forward-command-color;}
-    50% {box-shadow: 0 0 0 0.25rem $c2lc-forward-command-color;}
-    75% {box-shadow: 0 0 0 0.125rem $c2lc-forward-command-color;}
+    0% {box-shadow: 0 0 0 1rem $c2lc-forward-command-color;}
+    25% {box-shadow: 0 0 0 0.75rem $c2lc-forward-command-color;}
+    50% {box-shadow: 0 0 0 0.5rem $c2lc-forward-command-color;}
+    75% {box-shadow: 0 0 0 0.25rem $c2lc-forward-command-color;}
     100% {box-shadow: 0 0 0 0 $c2lc-forward-command-color;}
 }
 
 @keyframes updatedProgramBlockAnimation-backward {
-    0% {box-shadow: 0 0 0 0.5rem $c2lc-backward-command-color;}
-    25% {box-shadow: 0 0 0 0.375rem $c2lc-backward-command-color;}
-    50% {box-shadow: 0 0 0 0.25rem $c2lc-backward-command-color;}
-    75% {box-shadow: 0 0 0 0.125rem $c2lc-backward-command-color;}
+    0% {box-shadow: 0 0 0 1rem $c2lc-backward-command-color;}
+    25% {box-shadow: 0 0 0 0.75rem $c2lc-backward-command-color;}
+    50% {box-shadow: 0 0 0 0.5rem $c2lc-backward-command-color;}
+    75% {box-shadow: 0 0 0 0.25rem $c2lc-backward-command-color;}
     100% {box-shadow: 0 0 0 0 $c2lc-backward-command-color;}
 }
 
 @keyframes updatedProgramBlockAnimation-left {
-    0% {box-shadow: 0 0 0 0.5rem $c2lc-left-command-color;}
-    25% {box-shadow: 0 0 0 0.375rem $c2lc-left-command-color;}
-    50% {box-shadow: 0 0 0 0.25rem $c2lc-left-command-color;}
-    75% {box-shadow: 0 0 0 0.125rem $c2lc-left-command-color;}
+    0% {box-shadow: 0 0 0 1rem $c2lc-left-command-color;}
+    25% {box-shadow: 0 0 0 0.75rem $c2lc-left-command-color;}
+    50% {box-shadow: 0 0 0 0.5rem $c2lc-left-command-color;}
+    75% {box-shadow: 0 0 0 0.25rem $c2lc-left-command-color;}
     100% {box-shadow: 0 0 0 0 $c2lc-left-command-color;}
 }
 
 @keyframes updatedProgramBlockAnimation-right {
-    0% {box-shadow: 0 0 0 0.5rem $c2lc-right-command-color;}
-    25% {box-shadow: 0 0 0 0.375rem $c2lc-right-command-color;}
-    50% {box-shadow: 0 0 0 0.25rem $c2lc-right-command-color;}
-    75% {box-shadow: 0 0 0 0.125rem $c2lc-right-command-color;}
+    0% {box-shadow: 0 0 0 1rem $c2lc-right-command-color;}
+    25% {box-shadow: 0 0 0 0.75rem $c2lc-right-command-color;}
+    50% {box-shadow: 0 0 0 0.5rem $c2lc-right-command-color;}
+    75% {box-shadow: 0 0 0 0.25rem $c2lc-right-command-color;}
     100% {box-shadow: 0 0 0 0 $c2lc-right-command-color;}
 }
 
@@ -326,28 +326,28 @@ button.ProgramBlockEditor__program-block--updated.btn-command-block--forward1,
 button.ProgramBlockEditor__program-block--updated.btn-command-block--forward2,
 button.ProgramBlockEditor__program-block--updated.btn-command-block--forward3 {
     animation-timing-function: ease;
-    animation: updatedProgramBlockAnimation-forwad 1s;
+    animation: updatedProgramBlockAnimation-forwad 1.5s;
 }
 
 button.ProgramBlockEditor__program-block--updated.btn-command-block--backward1,
 button.ProgramBlockEditor__program-block--updated.btn-command-block--backward2,
 button.ProgramBlockEditor__program-block--updated.btn-command-block--backward3 {
     animation-timing-function: ease;
-    animation: updatedProgramBlockAnimation-backward 1s;
+    animation: updatedProgramBlockAnimation-backward 1.5s;
 }
 
 button.ProgramBlockEditor__program-block--updated.btn-command-block--left45,
 button.ProgramBlockEditor__program-block--updated.btn-command-block--left90,
 button.ProgramBlockEditor__program-block--updated.btn-command-block--left180 {
     animation-timing-function: ease;
-    animation: updatedProgramBlockAnimation-left 1s;
+    animation: updatedProgramBlockAnimation-left 1.5s;
 }
 
 button.ProgramBlockEditor__program-block--updated.btn-command-block--right45,
 button.ProgramBlockEditor__program-block--updated.btn-command-block--right90,
 button.ProgramBlockEditor__program-block--updated.btn-command-block--right180 {
     animation-timing-function: ease;
-    animation: updatedProgramBlockAnimation-right 1s;
+    animation: updatedProgramBlockAnimation-right 1.5s;
 }
 
 .ProgramBlockEditor__action-panel-container-outer {
