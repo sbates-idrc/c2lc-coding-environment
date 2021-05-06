@@ -37,7 +37,7 @@ function logTuning (noteTable: Array<Array<string>>) {
 }
 
 test("Returns a sensible note range for every supported character position.", () => {
-    // We now have 17 rows and no "out of bounds".
+    // We now have 16 rows and no "out of bounds".
     const minRow = 1;
     const maxRow = 16;
 
