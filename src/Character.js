@@ -70,7 +70,7 @@ export default class Character extends React.Component<CharacterProps, {}> {
         }
     }
 
-    componentDidUpdate(prevProps: CharacterProps, prevState: {}) {
+    componentDidUpdate(prevProps: CharacterProps) {
         if (prevProps.transform !== this.props.transform) {
             if (this.characterRef.current.scrollIntoView) {
                 this.characterRef.current.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
