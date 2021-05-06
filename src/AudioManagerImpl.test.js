@@ -41,7 +41,7 @@ test("Returns a sensible note range for every supported character position.", ()
     const minRow = 1;
     const maxRow = 16;
 
-    // 9 columns "in bounds" above and below the centre plus testing three "out of bounds" columns on each side.
+    // We now have 26 columns and no "out of bounds".
     const minCol = 1;
     const maxCol = 26;
 
