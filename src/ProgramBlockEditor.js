@@ -140,7 +140,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
             );
             const element = this.commandBlockRefs.get(index);
             if (element) {
-                element.classList.remove('ProgramBlockEditor__program-block--inserted');
+                element.classList.remove('ProgramBlockEditor__program-block--updated');
             }
         }
     }
@@ -836,7 +836,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         if (this.focusCommandBlockIndex != null) {
             const element = this.commandBlockRefs.get(this.focusCommandBlockIndex);
             if (element) {
-                element.classList.add('ProgramBlockEditor__program-block--inserted');
+                element.classList.add('ProgramBlockEditor__program-block--updated');
                 element.focus();
             }
             this.focusCommandBlockIndex = null;
