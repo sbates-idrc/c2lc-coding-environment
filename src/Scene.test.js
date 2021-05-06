@@ -105,7 +105,7 @@ describe('When the Scene renders', () => {
         // Scene viewbox
 
         expect(findScene(sceneWrapper).get(0).props.children.props.viewBox)
-            .toBe(`${dimensions.getMinX()} ${dimensions.getMinY()} ${dimensions.getWidth()} ${dimensions.getHeight()}`);
+            .toBe(`${dimensions.getMinX() - 0.5} ${dimensions.getMinY() - 0.5} ${dimensions.getWidth()} ${dimensions.getHeight()}`);
 
         // Grid labels
 
@@ -148,7 +148,7 @@ describe('When the Scene renders', () => {
         // Scene viewbox
 
         expect(findScene(sceneWrapper).get(0).props.children.props.viewBox)
-            .toBe(`${dimensions.getMinX()} ${dimensions.getMinY()} ${dimensions.getWidth()} ${dimensions.getHeight()}`);
+            .toBe(`${dimensions.getMinX() - 0.5} ${dimensions.getMinY() - 0.5} ${dimensions.getWidth()} ${dimensions.getHeight()}`);
 
         // Grid labels
 
@@ -198,21 +198,21 @@ describe('When the Scene renders', () => {
 
         // Grid rows
 
-        expect(findGridLines(sceneWrapper).get(0).props.x1).toBe(1);
-        expect(findGridLines(sceneWrapper).get(0).props.y1).toBe(2);
-        expect(findGridLines(sceneWrapper).get(0).props.x2).toBe(4);
-        expect(findGridLines(sceneWrapper).get(0).props.y2).toBe(2);
+        expect(findGridLines(sceneWrapper).get(0).props.x1).toBe(0.5);
+        expect(findGridLines(sceneWrapper).get(0).props.y1).toBe(1.5);
+        expect(findGridLines(sceneWrapper).get(0).props.x2).toBe(3.5);
+        expect(findGridLines(sceneWrapper).get(0).props.y2).toBe(1.5);
 
         // Grid columns
 
-        expect(findGridLines(sceneWrapper).get(1).props.x1).toBe(2);
-        expect(findGridLines(sceneWrapper).get(1).props.y1).toBe(1);
-        expect(findGridLines(sceneWrapper).get(1).props.x2).toBe(2);
-        expect(findGridLines(sceneWrapper).get(1).props.y2).toBe(3);
-        expect(findGridLines(sceneWrapper).get(2).props.x1).toBe(3);
-        expect(findGridLines(sceneWrapper).get(2).props.y1).toBe(1);
-        expect(findGridLines(sceneWrapper).get(2).props.x2).toBe(3);
-        expect(findGridLines(sceneWrapper).get(2).props.y2).toBe(3);
+        expect(findGridLines(sceneWrapper).get(1).props.x1).toBe(1.5);
+        expect(findGridLines(sceneWrapper).get(1).props.y1).toBe(0.5);
+        expect(findGridLines(sceneWrapper).get(1).props.x2).toBe(1.5);
+        expect(findGridLines(sceneWrapper).get(1).props.y2).toBe(2.5);
+        expect(findGridLines(sceneWrapper).get(2).props.x1).toBe(2.5);
+        expect(findGridLines(sceneWrapper).get(2).props.y1).toBe(0.5);
+        expect(findGridLines(sceneWrapper).get(2).props.x2).toBe(2.5);
+        expect(findGridLines(sceneWrapper).get(2).props.y2).toBe(2.5);
     });
 });
 
@@ -264,7 +264,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
-            .toBe('translate(1.5 1.5) rotate(0 0 0)');
+            .toBe('translate(1 1) rotate(0 0 0)');
     });
     test('When xPos = 10, yPos = 8, direction = 4', () => {
         expect.assertions(1);
@@ -274,7 +274,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
-            .toBe('translate(10.5 8.5) rotate(90 0 0)');
+            .toBe('translate(10 8) rotate(90 0 0)');
     });
     test('When xPos = 1, yPos = 9, direction = 0', () => {
         expect.assertions(1);
@@ -284,7 +284,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
-            .toBe('translate(1.5 9.5) rotate(-90 0 0)');
+            .toBe('translate(1 9) rotate(-90 0 0)');
     });
 });
 
@@ -307,10 +307,10 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
         });
         const characterPath = findCharacterPath(sceneWrapper);
         expect(characterPath.length).toBe(1);
-        expect(characterPath.get(0).props.x1).toBe(100.5);
-        expect(characterPath.get(0).props.y1).toBe(200.5);
-        expect(characterPath.get(0).props.x2).toBe(300.5);
-        expect(characterPath.get(0).props.y2).toBe(400.5);
+        expect(characterPath.get(0).props.x1).toBe(100);
+        expect(characterPath.get(0).props.y1).toBe(200);
+        expect(characterPath.get(0).props.x2).toBe(300);
+        expect(characterPath.get(0).props.y2).toBe(400);
     });
 
     test('When there are two path segments', () => {
@@ -325,14 +325,14 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
         });
         const characterPath = findCharacterPath(sceneWrapper);
         expect(characterPath.length).toBe(2);
-        expect(characterPath.get(0).props.x1).toBe(100.5);
-        expect(characterPath.get(0).props.y1).toBe(200.5);
-        expect(characterPath.get(0).props.x2).toBe(300.5);
-        expect(characterPath.get(0).props.y2).toBe(400.5);
-        expect(characterPath.get(1).props.x1).toBe(500.5);
-        expect(characterPath.get(1).props.y1).toBe(600.5);
-        expect(characterPath.get(1).props.x2).toBe(700.5);
-        expect(characterPath.get(1).props.y2).toBe(800.5);
+        expect(characterPath.get(0).props.x1).toBe(100);
+        expect(characterPath.get(0).props.y1).toBe(200);
+        expect(characterPath.get(0).props.x2).toBe(300);
+        expect(characterPath.get(0).props.y2).toBe(400);
+        expect(characterPath.get(1).props.x1).toBe(500);
+        expect(characterPath.get(1).props.y1).toBe(600);
+        expect(characterPath.get(1).props.x2).toBe(700);
+        expect(characterPath.get(1).props.y2).toBe(800);
     })
 })
 
