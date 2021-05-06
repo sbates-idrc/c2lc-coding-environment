@@ -95,30 +95,6 @@ function calculateCharacterDimensions() {
 }
 
 describe('When the Scene renders', () => {
-    // TODO: Discuss in the pull, the currently min/max logic does not support zero-width (or zero-height) scenes.
-    // test('with width = 0, height = 0', () => {
-    //     expect.assertions(1);
-    //     const sceneWrapper = createMountScene();
-    //     sceneWrapper.setProps({ dimensions: new SceneDimensions(0, 0, 0, 0) });
-    //     expect(findGridLines(sceneWrapper).length).toBe(0);
-    // })
-
-    // test('With width = 0, height = 2', () => {
-    //     expect.assertions(1);
-    //     const sceneWrapper = createMountScene({
-    //         dimensions: new SceneDimensions(0, 0, 1, 2)
-    //     });
-    //     expect(findGridLines(sceneWrapper).length).toBe(0);
-    // });
-
-    // test('With width = 2, height = 0', () => {
-    //     expect.assertions(1);
-    //     const sceneWrapper = createMountScene({
-    //         dimensions: new SceneDimensions(1, 2, 0, 0)
-    //     });
-    //     expect(findGridLines(sceneWrapper).length).toBe(0);
-    // });
-
     test('With width = 1, height = 1', () => {
         expect.assertions(13);
         const dimensions = new SceneDimensions(1, 1, 1, 1);
