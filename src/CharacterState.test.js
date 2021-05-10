@@ -205,7 +205,7 @@ test('Each Backward move should create a path segment', () => {
 
 
 test('Forward move should not create a path segment, when drawingEnabled is false', () => {
-    const sceneDimensions = new SceneDimensions(1, 500, 1, 500);
+    const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
     (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, false)): any)
         .toHaveCharacterState(2, 1, 2, []);
     (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, false).forward(2, true)): any)
@@ -222,7 +222,7 @@ test('Forward move should not create a path segment, when drawingEnabled is fals
 });
 
 test('Backward move should not create a path segment, when drawingEnabled is false', () => {
-    const sceneDimensions = new SceneDimensions(1, 500, 1, 500);
+    const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
     (expect(new CharacterState(2, 1, 2, [], sceneDimensions).backward(1, false)): any)
         .toHaveCharacterState(1, 1, 2, []);
     (expect(new CharacterState(4, 1, 2, [], sceneDimensions).backward(1, false).backward(2, true)): any)
