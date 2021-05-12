@@ -835,7 +835,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         }
         if (this.focusCommandBlockIndex != null) {
             const element = this.commandBlockRefs.get(this.focusCommandBlockIndex);
-            if (element) {
+            const isDeleteStep = prevProps.programSequence.getProgramLength() > this.props.programSequence.getProgramLength();
+            if (element && !isDeleteStep) {
                 element.classList.add('ProgramBlockEditor__program-block--updated');
                 element.focus();
             }
