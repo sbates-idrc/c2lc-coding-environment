@@ -76,7 +76,9 @@ type AppState = {
     drawingEnabled: boolean,
     runningState: RunningState,
     allowedActions: ActionToggleRegister,
-    usedActions: ActionToggleRegister
+    usedActions: ActionToggleRegister,
+    // TODO: Make this configurable
+    keyBindingsEnabled: boolean
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -93,6 +95,8 @@ export class App extends React.Component<AppProps, AppState> {
     allowedActionsSerializer: AllowedActionsSerializer;
     speedLookUp: Array<number>;
     pushStateTimeoutID: ?TimeoutID;
+    modifierKeyHeld: boolean;
+    speedControlRef: { current: null | HTMLElement };
 
     constructor(props: any) {
         super(props);
@@ -385,7 +389,8 @@ export class App extends React.Component<AppProps, AppState> {
             drawingEnabled: true,
             runningState: 'stopped',
             allowedActions: allowedActions,
-            usedActions: {}
+            usedActions: {},
+            keyBindingsEnabled: true
         };
 
         // For FakeRobotDriver, replace with:
@@ -403,6 +408,10 @@ export class App extends React.Component<AppProps, AppState> {
         }
 
         this.focusTrapManager = new FocusTrapManager();
+
+        this.modifierKeyHeld = false;
+
+        this.speedControlRef = React.createRef();
     }
 
     setStateSettings(settings: $Shape<AppSettings>) {
@@ -482,6 +491,7 @@ export class App extends React.Component<AppProps, AppState> {
                 break;
             case 'stopRequested': // Fall through
             case 'stopped':
+                this.handleClickStop();
                 this.setState((state) => {
                     return {
                         programSequence: state.programSequence.updateProgramCounter(0),
@@ -583,6 +593,87 @@ export class App extends React.Component<AppProps, AppState> {
         });
     };
 
+    // Global shortcut handling.
+    handleDocumentKeyDown = (e: KeyboardEvent) => {
+        // Keys that can only be used in combination with the 'alt' key.
+        if (e.altKey && !e.shiftKey && !e.ctrlKey) {
+            // We have to use the code because the alt key makes some 'key' values show up with accents, umlauts, etc.
+            switch (e.code) {
+                // Alt + A = Toggle announcements
+                case 'KeyA':
+                    this.handleToggleAudioFeedback(!this.state.audioEnabled);
+                    e.preventDefault();
+                    break;
+                // TODO: Alt + B = Add block to the beginning of the program;
+                case 'KeyB':
+                    break;
+                // TODO: Alt + E = Add block to the end of the program.
+                case 'KeyE':
+                    break;
+                // TODO: Alt + I  = Announce scene information.
+                case 'KeyI':
+                    const ariaLiveRegion = document.getElementById('character-position');
+                    if (ariaLiveRegion) {
+                        if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+                            window.speechSynthesis.cancel();
+                        }
+                        const utterance = new SpeechSynthesisUtterance(ariaLiveRegion.innerText);
+                        window.speechSynthesis.speak(utterance);
+                    }
+                    break;
+                // Alt + P = Play/Pause Program
+                case 'KeyP':
+                    if (this.state.programSequence.getProgramLength() > 0) {
+                        this.handleClickPlay();
+                    }
+                    e.preventDefault();
+                    break;
+                // Alt + R = Refresh Scene
+                case 'KeyR':
+                    if (this.state.runningState !== 'running') {
+                        this.handleRefresh();
+                    }
+                    e.preventDefault();
+                    break;
+                // Alt + S = Stop Program
+                case 'KeyS':
+                    if (this.state.runningState !== 'stopped' && this.state.runningState === 'stopRequested') {
+                        this.handleClickStop();
+                    }
+                    e.preventDefault();
+                    break;
+                default:
+                    break;
+            }
+        }
+        // Keys that can only be used if the alt key is not already held.
+        else {
+            const currentSpeedIndex = this.speedLookUp.indexOf(this.interpreter.stepTimeMs);
+            switch (e.key) {
+                // < = Slow down playback speed.
+                case '<':
+                    this.changeProgramSpeedIndex(currentSpeedIndex - 1);
+                    break;
+                // > = Speed up playback speed.
+                case '>':
+                    this.changeProgramSpeedIndex(currentSpeedIndex + 1);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // Keys that can be used whether or not the alt key is held.
+        switch (e.key) {
+            case '?':
+                // TODO: Open help menu
+                break;
+            default:
+                break;
+        }
+    };
+
+    // Focus trap escape key handling.
     handleRootKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         this.focusTrapManager.handleKeyDown(e);
     };
@@ -608,6 +699,16 @@ export class App extends React.Component<AppProps, AppState> {
             const currentIsAllowed = this.state.allowedActions[commandName];
             newAllowedActions[commandName] = !currentIsAllowed;
             this.setState({ allowedActions: newAllowedActions})
+        }
+    }
+
+    changeProgramSpeedIndex = (newSpeedIndex: number) => {
+        if (newSpeedIndex >= 0 && newSpeedIndex <= (this.speedLookUp.length - 1)) {
+            this.interpreter.setStepTime(this.speedLookUp[newSpeedIndex]);
+            if (this.speedControlRef.current) {
+                // $FlowFixMe: Flow doesn't believe that we have sufficiently ensured that current !== null.
+                this.speedControlRef.current.value = (newSpeedIndex + 1).toString();
+            }
         }
     }
 
@@ -855,6 +956,7 @@ export class App extends React.Component<AppProps, AppState> {
                                         || this.state.runningState === 'stopRequested'}
                                     onClick={this.handleClickStop}/>
                                 <ProgramSpeedController
+                                    rangeControlRef={this.speedControlRef}
                                     values={this.speedLookUp}
                                     onChange={this.handleChangeProgramSpeed}
                                 />
@@ -976,6 +1078,8 @@ export class App extends React.Component<AppProps, AppState> {
                 world: Utils.getWorldFromString(localWorld, 'default')
             });
         }
+
+        document.addEventListener('keydown', this.handleDocumentKeyDown);
     }
 
     componentDidUpdate(prevProps: {}, prevState: AppState) {
@@ -1076,6 +1180,10 @@ export class App extends React.Component<AppProps, AppState> {
             }
         }
         */
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleDocumentKeyDown);
     }
 }
 
