@@ -205,11 +205,8 @@ class Scene extends React.Component<SceneProps, {}> {
         if ((prevProps.characterState.xPos !== this.props.characterState.xPos ||
             prevProps.characterState.yPos !== this.props.characterState.yPos) &&
             this.sceneRef.current !== null && this.characterRef.current !== null) {
-            const iconId = this.characterRef.current.getIconId();
-            const characterElement = document.getElementById(iconId);
-            if (characterElement) {
-                const newCharacterBounds = characterElement.getBoundingClientRect();
-
+            const newCharacterBounds = this.characterRef.current.getBoundingClientRect();
+            if (newCharacterBounds) {
                 // $FlowFixMe: Flow doesn't understand that the scene has this method.
                 const sceneBounds = this.sceneRef.current.getBoundingClientRect();
 
