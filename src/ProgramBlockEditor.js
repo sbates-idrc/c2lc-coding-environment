@@ -45,6 +45,7 @@ type ProgramBlockEditorProps = {
     // Bring back in C2LC-289
     // theme: string,
     world: string,
+    theme: string,
     onChangeCharacterPosition: (direction: ?string) => void,
     onChangeCharacterXPosition: (columnLabel: string) => void,
     onChangeCharacterYPosition: (rowLabel: string) => void,
@@ -66,6 +67,7 @@ type ProgramBlockEditorState = {
 class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, ProgramBlockEditorState> {
     commandBlockRefs: Map<number, HTMLElement>;
     addNodeRefs: Map<number, HTMLElement>;
+    updatedCommandBlocks: Array<HTMLElement>;
     focusCommandBlockIndex: ?number;
     focusAddNodeIndex: ?number;
     scrollToAddNodeIndex: ?number;
@@ -76,6 +78,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         super(props);
         this.commandBlockRefs = new Map();
         this.addNodeRefs = new Map();
+        this.updatedCommandBlocks = [];
         this.focusCommandBlockIndex = null;
         this.focusAddNodeIndex = null;
         this.scrollToAddNodeIndex = null;
@@ -836,11 +839,20 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         if (this.focusCommandBlockIndex != null) {
             const element = this.commandBlockRefs.get(this.focusCommandBlockIndex);
             const isDeleteStep = prevProps.programSequence.getProgramLength() > this.props.programSequence.getProgramLength();
-            if (element && !isDeleteStep) {
-                element.classList.add('ProgramBlockEditor__program-block--updated');
+            if (element) {
                 element.focus();
+                if (!isDeleteStep) {
+                    element.classList.add('ProgramBlockEditor__program-block--updated');
+                    this.updatedCommandBlocks.push(element);
+                }
             }
             this.focusCommandBlockIndex = null;
+        }
+        if (prevProps.theme !== this.props.theme) {
+            for (const updatedCommandBlock of this.updatedCommandBlocks) {
+                updatedCommandBlock.classList.remove('ProgramBlockEditor__program-block--updated');
+            }
+            this.updatedCommandBlocks = [];
         }
         if (this.focusAddNodeIndex != null) {
             const addNode = this.addNodeRefs.get(this.focusAddNodeIndex);
