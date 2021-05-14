@@ -167,10 +167,6 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
     fill: black;
 }
 
-.ProgramBlockEditor__character-turn-positions > .ProgramBlockEditor__character-position-button--disabled {
-    fill: $c2lc-disabled-background-color;
-}
-
 .ProgramBlockEditor__character-move-position-sides {
     display: flex;
     align-items: center;
@@ -196,6 +192,12 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
         fill: #4C9990;
         stroke: none;
     }
+
+    .ProgramBlockEditor__character-position-button--disabled {
+        path.filled {
+            fill: #818A98;
+        }
+    }
 }
 
 .ProgramBlockEditor__character-position-button:focus {
@@ -203,8 +205,8 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
 }
 
 .ProgramBlockEditor__character-position-button--disabled {
-    stroke: $c2lc-disabled-foreground-color;
     cursor: default;
+    stroke: #818A98;
 }
 
 .ProgramBlockEditor__character-move-position-coordinate {

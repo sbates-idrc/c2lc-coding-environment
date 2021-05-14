@@ -4,6 +4,7 @@ body {
     background-color: #FFF;
     overflow-y: hidden;
     overflow-x: hidden;
+    user-select: none;
 }
 
 .App__container {
@@ -126,6 +127,7 @@ body {
     overflow-y: auto;
     grid-row-start: 3;
     grid-row-end: 4;
+    padding-top: 1rem;
 }
 
 .App__command-palette-commands {
@@ -133,10 +135,14 @@ body {
     display: grid;
     height: auto;
     grid-template-rows: repeat(3, min-content);
-    grid-row-gap: 1rem;
     grid-column-gap: 1rem;
     grid-auto-flow: column;
-    margin: 1rem auto;
+    margin: 0 auto;
+}
+
+.App__command-palette-commands > button,
+.App__command-palette-commands > div {
+    margin-bottom: 1rem;
 }
 
 .App__program-block-editor {
