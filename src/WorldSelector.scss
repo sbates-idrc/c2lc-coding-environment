@@ -35,7 +35,8 @@
     height: 2.5rem;
 }
 
-.WorldSelector button.btn.WorldIcon--disabled {
+.WorldSelector button.btn.WorldIcon--disabled,
+.WorldSelector button.btn.WorldIcon--disabled:active {
     background-color: #B9BEC6;
     cursor: default;
     box-shadow: unset;
@@ -63,6 +64,6 @@
     padding-left: 0.2rem;
 }
 
-.WorldSelector .btn-primary:not(:disabled):not(.disabled):active {
+.WorldSelector .btn-primary:not(.WorldIcon--disabled):not(.WorldIcon--disabled):active {
     background-color: #F1AE5B;
 }

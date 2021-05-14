@@ -724,7 +724,8 @@ body.gray-theme {
     }
 
     button.btn.RefreshButton--disabled,
-    button.btn.RefreshButton--disabled:hover {
+    button.btn.RefreshButton--disabled:hover,
+    button.btn.RefreshButton--disabled:focus {
         background-color: #9DA4AF;
         svg path {
             fill: #D5D8DD;
@@ -1391,8 +1392,10 @@ body.contrast-theme {
     }
 
     button.btn.RefreshButton--disabled,
-    button.btn.RefreshButton--disabled:hover {
+    button.btn.RefreshButton--disabled:hover,
+    button.btn.RefreshButton--disabled:active {
         background-color: white;
+        border: 2px solid black;
         svg path {
             fill: #818A98;
         }
