@@ -767,6 +767,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                             className={characterPositionTextInputClassName}
                             aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.columnPosition'})}
                             aria-disabled={this.props.editingDisabled}
+                            maxLength='1'
+                            size='2'
                             type='text'
                             value={this.state.characterColumnLabel}
                             onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : undefined}
@@ -777,6 +779,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                             className={characterPositionTextInputClassName}
                             aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.rowPosition'})}
                             aria-disabled={this.props.editingDisabled}
+                            maxLength='2'
+                            size='2'
                             type='text'
                             value={this.state.characterRowLabel}
                             onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : undefined}
