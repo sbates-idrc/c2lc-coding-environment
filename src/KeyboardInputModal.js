@@ -52,7 +52,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
                 dialogClassName='KeyboardInputModal'
             >
                 <Modal.Body className='KeyboardInputModal__content'>
-                    <h2>
+                    <h2 className="KeyboardInputModal__content__title">
                         <FormattedMessage id='KeyboardInputModal.Title'/>
                     </h2>
                     <div>
