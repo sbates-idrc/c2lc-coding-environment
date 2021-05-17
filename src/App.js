@@ -610,13 +610,24 @@ export class App extends React.Component<AppProps, AppState> {
                     });
                     e.preventDefault();
                     break;
-                // TODO: Alt + B = Add block to the beginning of the program;
+                // Alt + B = Add block to the beginning of the program;
                 case 'KeyB':
+                    if (this.state.selectedAction) {
+                        const newProgramSequence = this.state.programSequence.insertStep(0, this.state.selectedAction);
+                        this.handleProgramSequenceChange(newProgramSequence);
+                    }
+                    e.preventDefault();
                     break;
-                // TODO: Alt + E = Add block to the end of the program.
+                // Alt + E = Add block to the end of the program.
                 case 'KeyE':
+                    if (this.state.selectedAction) {
+                        // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
+                        const newProgramSequence = this.state.programSequence.insertStep(this.state.programSequence.getProgramLength(), this.state.selectedAction);
+                        this.handleProgramSequenceChange(newProgramSequence);
+                    }
+                    e.preventDefault();
                     break;
-                // TODO: Alt + I  = Announce scene information.
+                // Alt + I  = Announce scene information.
                 case 'KeyI':
                     const ariaLiveRegion = document.getElementById('character-position');
                     if (ariaLiveRegion) {
