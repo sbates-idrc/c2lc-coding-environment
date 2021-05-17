@@ -601,7 +601,10 @@ export class App extends React.Component<AppProps, AppState> {
             switch (e.code) {
                 // Alt + A = Toggle announcements
                 case 'KeyA':
-                    this.handleToggleAudioFeedback(!this.state.audioEnabled);
+                    // We have to use the function form here as our change is based on the current state.
+                    this.setState((currentState) => {
+                        return { announcementsEnabled: !(currentState.announcementsEnabled) };
+                    });
                     e.preventDefault();
                     break;
                 // TODO: Alt + B = Add block to the beginning of the program;
@@ -637,7 +640,7 @@ export class App extends React.Component<AppProps, AppState> {
                     break;
                 // Alt + S = Stop Program
                 case 'KeyS':
-                    if (this.state.runningState !== 'stopped' && this.state.runningState === 'stopRequested') {
+                    if (this.state.runningState !== 'stopped' && this.state.runningState !== 'stopRequested') {
                         this.handleClickStop();
                     }
                     e.preventDefault();
