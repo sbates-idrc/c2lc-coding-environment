@@ -36,6 +36,7 @@ import './Themes.scss';
 import './vendor/dragdroptouch/DragDropTouch.js';
 import ThemeSelector from './ThemeSelector';
 import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
+import KeyboardInputModal from './KeyboardInputModal';
 
 /* Dash connection removed for version 0.5
 import BluetoothApiWarning from './BluetoothApiWarning';
@@ -78,7 +79,8 @@ type AppState = {
     allowedActions: ActionToggleRegister,
     usedActions: ActionToggleRegister,
     // TODO: Make this configurable
-    keyBindingsEnabled: boolean
+    keyBindingsEnabled: boolean,
+    showKeyboardModal: boolean
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -390,7 +392,8 @@ export class App extends React.Component<AppProps, AppState> {
             runningState: 'stopped',
             allowedActions: allowedActions,
             usedActions: {},
-            keyBindingsEnabled: true
+            keyBindingsEnabled: true,
+            showKeyboardModal: false
         };
 
         // For FakeRobotDriver, replace with:
@@ -668,12 +671,19 @@ export class App extends React.Component<AppProps, AppState> {
 
         // Keys that can be used whether or not the alt key is held.
         switch (e.key) {
+            // ? = Open/close help menu.
             case '?':
-                // TODO: Open help menu
+                this.setState((currentState) => {
+                    return { showKeyboardModal: !(currentState.showKeyboardModal) };
+                });
                 break;
             default:
                 break;
         }
+    };
+
+    handleKeyboardModalClose = () => {
+        this.setState({showKeyboardModal: false});
     };
 
     // Focus trap escape key handling.
@@ -974,6 +984,10 @@ export class App extends React.Component<AppProps, AppState> {
                     show={this.state.showDashConnectionError}
                     onCancel={this.handleCancelDashConnection}
                     onRetry={this.handleClickConnectDash}/>
+                <KeyboardInputModal
+                    show={this.state.showKeyboardModal}
+                    onHide={this.handleKeyboardModalClose}
+                />
             </React.Fragment>
         );
     }
