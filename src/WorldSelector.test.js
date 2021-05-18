@@ -48,7 +48,7 @@ class WorldSelectorTestWrapper extends React.Component<WorldSelectorTestWrapperP
     }
 }
 
-function createMountWorldSelector(props) {
+function createMountWorldSelector() {
     const mockOnSelectHandler = jest.fn();
     const worldSelectorTestWrapper = mount(<WorldSelectorTestWrapper onSelect={mockOnSelectHandler}/>);
     const worldSelector = worldSelectorTestWrapper.find(WorldSelector).childAt(0);

@@ -90,14 +90,11 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed {
     background-color: #000;
 }
 
-button.btn.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled {
+button.btn.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled,
+button.btn.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled:hover,
+button.btn.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled:active {
     background-color: $c2lc-disabled-background-color;
     cursor: default;
-}
-
-button.btn.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled:active:focus {
-    background-color: $c2lc-disabled-background-color;
-    box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
 }
 
 button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEditor__program-deleteAll-button--disabled,
@@ -170,10 +167,6 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
     fill: black;
 }
 
-.ProgramBlockEditor__character-turn-positions > .ProgramBlockEditor__character-position-button--disabled {
-    fill: $c2lc-disabled-background-color;
-}
-
 .ProgramBlockEditor__character-move-position-sides {
     display: flex;
     align-items: center;
@@ -212,11 +205,17 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
         fill: #4C9990;
         stroke: none;
     }
+
+    .ProgramBlockEditor__character-position-button--disabled {
+        path.filled {
+            fill: #818A98;
+        }
+    }
 }
 
 .ProgramBlockEditor__character-position-button--disabled {
-    stroke: $c2lc-disabled-foreground-color;
     cursor: default;
+    stroke: #818A98;
 }
 
 .ProgramBlockEditor__character-move-position-coordinate {
@@ -226,8 +225,6 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
 }
 
 .ProgramBlock__character-position-coordinate-box {
-    width: 2rem;
-    height: 2rem;
     text-align: center;
     pointer-events: all;
     margin-bottom: 0.25rem;

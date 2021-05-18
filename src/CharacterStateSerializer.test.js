@@ -6,7 +6,7 @@ import SceneDimensions from './SceneDimensions';
 
 test('Serialize character state', () => {
     expect.assertions(5);
-    const sceneDimensions = new SceneDimensions(1000, 1000);
+    const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
     const serializer = new CharacterStateSerializer(sceneDimensions);
     expect(serializer.serialize(
         new CharacterState(0, 1, 2, [], sceneDimensions)
@@ -27,7 +27,7 @@ test('Serialize character state', () => {
 
 test('Deserialize character state', () => {
     expect.assertions(5);
-    const sceneDimensions = new SceneDimensions(1000, 1000);
+    const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
     const serializer = new CharacterStateSerializer(sceneDimensions);
     expect(serializer.deserialize('0ab')).toStrictEqual(new CharacterState(0,1,2,[], sceneDimensions));
     expect(serializer.deserialize('a0d0abc')).toStrictEqual(new CharacterState(1,0,4,[{x1:0,y1:1,x2:2,y2:3}], sceneDimensions));
@@ -42,7 +42,7 @@ test('Deserialize character state', () => {
 
 test('encodeDirection', () => {
     expect.assertions(10);
-    const sceneDimensions = new SceneDimensions(1000, 1000);
+    const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
     const serializer = new CharacterStateSerializer(sceneDimensions);
     expect(serializer.encodeDirection(0)).toBe('0');
     expect(serializer.encodeDirection(1)).toBe('a');
@@ -62,7 +62,7 @@ test('encodeDirection', () => {
 
 test('decodeDirection', () => {
     expect.assertions(9);
-    const sceneDimensions = new SceneDimensions(1000, 1000);
+    const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
     const serializer = new CharacterStateSerializer(sceneDimensions);
     expect(serializer.decodeDirection('0')).toBe(0);
     expect(serializer.decodeDirection('a')).toBe(1);
@@ -79,7 +79,7 @@ test('decodeDirection', () => {
 
 test('encodePosition', () => {
     expect.assertions(9);
-    const sceneDimensions = new SceneDimensions(1000, 1000);
+    const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
     const serializer = new CharacterStateSerializer(sceneDimensions);
     expect(serializer.encodePosition(0)).toBe('0');
     expect(serializer.encodePosition(-1)).toBe('A');
@@ -96,7 +96,7 @@ test('encodePosition', () => {
 
 test('decodePosition', () => {
     expect.assertions(7);
-    const sceneDimensions = new SceneDimensions(1000, 1000);
+    const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
     const serializer = new CharacterStateSerializer(sceneDimensions);
     expect(serializer.decodePosition('0')).toBe(0);
     expect(serializer.decodePosition('A')).toBe(-1);
