@@ -780,7 +780,7 @@ body.gray-theme {
             outline: $c2lc-focus-indicator-width solid $c2lc-focus-indicator-color;
         }
     
-        &:hover {
+        &:hover:not(.ProgramBlockEditor__character-position-button--disabled) {
             path.filled {
                 fill: #505862;
 
@@ -1493,27 +1493,30 @@ body.contrast-theme {
     }
 
     .ProgramBlockEditor__character-turn-positions {
-        svg.ProgramBlockEditor__character-position-button{
+        .ProgramBlockEditor__character-position-button{
             path.filled {
                 fill: white;
+                stroke: white;
             }
         }
 
         .ProgramBlockEditor__character-position-button:not(.ProgramBlockEditor__character-position-button--disabled) path.filled {
             fill: white;
-
-       }
+        }
 
         .ProgramBlockEditor__character-position-button--disabled {
             path.filled {
                 fill: #505862;
+                stroke: #505862;
             }
         }
 
-        &:hover:not(.ProgramBlockEditor__character-position-button--disabled) {
-            path.filled {
-                fill: black;
-                stroke: white;
+        .ProgramBlockEditor__character-position-button:not(.ProgramBlockEditor__character-position-button--disabled) {
+            &:hover {
+                path.filled {
+                    fill: black;
+                    stroke: white;
+                }
             }
         }
     }
