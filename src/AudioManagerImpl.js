@@ -259,9 +259,8 @@ export default class AudioManagerImpl implements AudioManager {
             // multiple sound-producing elements in the environment.
 
             // Limit the deviation from the centre so that there is always some sound in each speaker.
-            const midPoint = (sceneDimensions.getWidth() + 1) / 2;
+            const midPoint = (sceneDimensions.getWidth() + sceneDimensions.getMinX()) / 2;
             const panningLevel = 0.75 * ((characterState.xPos - midPoint) / midPoint);
-            console.log(panningLevel);
 
             // TODO: Consider making the timing configurable or tying it to the movement timing.
             this.panner.pan.rampTo(panningLevel, 0);
