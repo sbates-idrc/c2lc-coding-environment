@@ -219,23 +219,23 @@ class Scene extends React.Component<SceneProps, {}> {
                 if (newCharacterBounds.left < sceneBounds.left) {
                     // Scroll left.
                     // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
-                    this.sceneRef.current.scrollLeft -= (sceneBounds.left - newCharacterBounds.left + 50);
+                    this.sceneRef.current.scrollLeft -= (sceneBounds.left - newCharacterBounds.left + newCharacterBounds.width);
                 }
                 else if ((newCharacterBounds.left + newCharacterBounds.width) > (sceneBounds.left + sceneBounds.width)) {
                     // Scroll right.
                     // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
-                    this.sceneRef.current.scrollLeft += (newCharacterBounds.left + newCharacterBounds.width) - (sceneBounds.left + sceneBounds.width) + 50;
+                    this.sceneRef.current.scrollLeft += (newCharacterBounds.left + newCharacterBounds.width) - (sceneBounds.left + sceneBounds.width) + newCharacterBounds.width;
                 }
 
                 if (newCharacterBounds.top < sceneBounds.top) {
                     // Scroll up.  For whatever reason we have to overshoot on the scroll to avoid leaving the icon half out of bounds and constantly triggering scrolls.
                     // $FlowFixMe: Flow doesn't understand that this element has a scrollTop.
-                    this.sceneRef.current.scrollTop -= (sceneBounds.top - newCharacterBounds.top + 50);
+                    this.sceneRef.current.scrollTop -= (sceneBounds.top - newCharacterBounds.top + newCharacterBounds.height);
                 }
                 else if ((newCharacterBounds.top + newCharacterBounds.height) > (sceneBounds.top + sceneBounds.height)) {
                     // Scroll down.
                     // $FlowFixMe: Flow doesn't understand that this element has a scrollTop.
-                    this.sceneRef.current.scrollTop += (newCharacterBounds.top + newCharacterBounds.height) - (sceneBounds.top + sceneBounds.height) + 50;
+                    this.sceneRef.current.scrollTop += (newCharacterBounds.top + newCharacterBounds.height) - (sceneBounds.top + sceneBounds.height) + newCharacterBounds.height;
                 }
             }
         }
