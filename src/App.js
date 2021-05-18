@@ -795,7 +795,10 @@ export class App extends React.Component<AppProps, AppState> {
                                     onChange={this.handleTogglePenDown}/>
                                 <div className='App__refreshButton-container'>
                                     <RefreshButton
-                                        disabled={this.state.runningState === 'running'}
+                                        disabled={
+                                            !(this.state.runningState === 'stopped'
+                                            || this.state.runningState === 'paused')
+                                        }
                                         onClick={this.handleRefresh}
                                     />
                                 </div>
@@ -807,7 +810,10 @@ export class App extends React.Component<AppProps, AppState> {
                             <FormattedMessage id='WorldSelector.heading' />
                         </h2>
                         <WorldSelector
-                            disabled={this.state.runningState === 'running'}
+                            disabled={
+                                !(this.state.runningState === 'stopped'
+                                || this.state.runningState === 'paused')
+                            }
                             world={this.state.settings.world}
                             onSelect={this.handleChangeWorld}
                         />

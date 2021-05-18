@@ -36,14 +36,6 @@ class Scene extends React.Component<SceneProps, {}> {
                     y2={yOffset} />);
             }
             rowLabels.push(
-                <circle
-                    className='Scene__row-decoration'
-                    key={`grid-row-decoration-${i}`}
-                    cx={-0.7}
-                    cy={8.25*i - 4.125}
-                    r={2}/>
-            )
-            rowLabels.push(
                 <text
                     className='Scene__grid-label'
                     aria-hidden='true'
@@ -69,14 +61,6 @@ class Scene extends React.Component<SceneProps, {}> {
                     x2={xOffset}
                     y2={this.props.dimensions.getMaxY() + 1} />);
             }
-            columnLabels.push(
-                <circle
-                    className='Scene__column-decoration'
-                    key={`grid-column-decoration-${i}`}
-                    cx={8.25*i - 4.125}
-                    cy={0}
-                    r={2}/>
-            )
             columnLabels.push(
                 <text
                     className='Scene__grid-label'
@@ -209,8 +193,9 @@ class Scene extends React.Component<SceneProps, {}> {
         return (
             <React.Fragment>
                 <div className='Scene__container'>
-                    <div className='Scene__header-corner' />
                     <div
+                        tabIndex='-1'
+                        aria-hidden='true'
                         id='scene-row-header'
                         className='Scene__row-header'>
                         <svg
@@ -222,6 +207,8 @@ class Scene extends React.Component<SceneProps, {}> {
                         </svg>
                     </div>
                     <div
+                        tabIndex='-1'
+                        aria-hidden='true'
                         id='scene-column-header'
                         className='Scene__column-header'>
                         <svg
