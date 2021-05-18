@@ -92,6 +92,7 @@ export class App extends React.Component<AppProps, AppState> {
     characterStateSerializer: CharacterStateSerializer;
     allowedActionsSerializer: AllowedActionsSerializer;
     speedLookUp: Array<number>;
+    pushStateTimeoutID: ?TimeoutID;
 
     constructor(props: any) {
         super(props);
@@ -102,7 +103,7 @@ export class App extends React.Component<AppProps, AppState> {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
         };
 
-        this.sceneDimensions = new SceneDimensions(26, 16);
+        this.sceneDimensions = new SceneDimensions(1, 26, 1, 16);
 
         // Begin facing East
         this.startingCharacterState = new CharacterState(1, 1, 2, [], this.sceneDimensions);
@@ -116,6 +117,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.characterStateSerializer = new CharacterStateSerializer(this.sceneDimensions);
 
         this.allowedActionsSerializer = new AllowedActionsSerializer();
+
+        this.pushStateTimeoutID = null;
 
         this.interpreter.addCommandHandler(
             'forward1',
@@ -792,7 +795,10 @@ export class App extends React.Component<AppProps, AppState> {
                                     onChange={this.handleTogglePenDown}/>
                                 <div className='App__refreshButton-container'>
                                     <RefreshButton
-                                        disabled={this.state.runningState === 'running'}
+                                        disabled={
+                                            !(this.state.runningState === 'stopped'
+                                            || this.state.runningState === 'paused')
+                                        }
                                         onClick={this.handleRefresh}
                                     />
                                 </div>
@@ -804,7 +810,10 @@ export class App extends React.Component<AppProps, AppState> {
                             <FormattedMessage id='WorldSelector.heading' />
                         </h2>
                         <WorldSelector
-                            disabled={this.state.runningState === 'running'}
+                            disabled={
+                                !(this.state.runningState === 'stopped'
+                                || this.state.runningState === 'paused')
+                            }
                             world={this.state.settings.world}
                             onSelect={this.handleChangeWorld}
                         />
@@ -984,18 +993,28 @@ export class App extends React.Component<AppProps, AppState> {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedAllowedActions = this.allowedActionsSerializer.serialize(this.state.allowedActions);
-            window.history.pushState(
-                {
-                    p: serializedProgram,
-                    c: serializedCharacterState,
-                    t: this.state.settings.theme,
-                    a: serializedAllowedActions,
-                    w: this.state.settings.world
-                },
-                '',
-                Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedAllowedActions),
-                '',
-            );
+
+            // Use setTimeout() to limit how often we call history.pushState().
+            // Safari will throw an error if calls to history.pushState() are
+            // too frequent: "SecurityError: Attempt to use history.pushState()
+            // more than 100 times per 30 seconds".
+            const pushStateDelayMs = 350;
+            clearTimeout(this.pushStateTimeoutID);
+            this.pushStateTimeoutID = setTimeout(() => {
+                window.history.pushState(
+                    {
+                        p: serializedProgram,
+                        c: serializedCharacterState,
+                        t: this.state.settings.theme,
+                        a: serializedAllowedActions,
+                        w: this.state.settings.world
+                    },
+                    '',
+                    Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedAllowedActions),
+                    '',
+                );
+            }, pushStateDelayMs);
+
             window.localStorage.setItem('c2lc-version', this.version);
             window.localStorage.setItem('c2lc-program', serializedProgram);
             window.localStorage.setItem('c2lc-characterState', serializedCharacterState);
