@@ -8,6 +8,14 @@ test('C2lcMath.approxEqual', () => {
     expect(C2lcMath.approxEqual(1.0, 1.05, 0.1)).toBeTruthy();
 });
 
+test('C2lcMath.clamp', () => {
+    expect(C2lcMath.clamp(100, 200, 50)).toBe(100);
+    expect(C2lcMath.clamp(100, 200, 100)).toBe(100);
+    expect(C2lcMath.clamp(100, 200, 150)).toBe(150);
+    expect(C2lcMath.clamp(100, 200, 200)).toBe(200);
+    expect(C2lcMath.clamp(100, 200, 250)).toBe(200);
+});
+
 test('C2lcMath.wrap', () => {
     // [0, 10]
 
