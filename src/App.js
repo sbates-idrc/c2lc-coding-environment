@@ -38,6 +38,10 @@ import ThemeSelector from './ThemeSelector';
 import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
 import KeyboardInputModal from './KeyboardInputModal';
 
+import type {KeyboardInputSchemeName, KeyboardInputScheme} from './KeyboardInputSchemes';
+import {KeyboardInputSchemes, keyboardEventMatchesKeyDef} from './KeyboardInputSchemes';
+
+
 /* Dash connection removed for version 0.5
 import BluetoothApiWarning from './BluetoothApiWarning';
 import DeviceConnectControl from './DeviceConnectControl';
@@ -97,8 +101,8 @@ export class App extends React.Component<AppProps, AppState> {
     allowedActionsSerializer: AllowedActionsSerializer;
     speedLookUp: Array<number>;
     pushStateTimeoutID: ?TimeoutID;
-    modifierKeyHeld: boolean;
     speedControlRef: { current: null | HTMLElement };
+    keyboardInputSchemeName: KeyboardInputSchemeName;
 
     constructor(props: any) {
         super(props);
@@ -125,6 +129,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.allowedActionsSerializer = new AllowedActionsSerializer();
 
         this.pushStateTimeoutID = null;
+
+        this.keyboardInputSchemeName = "alt";
 
         this.interpreter.addCommandHandler(
             'forward1',
@@ -412,8 +418,6 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.focusTrapManager = new FocusTrapManager();
 
-        this.modifierKeyHeld = false;
-
         this.speedControlRef = React.createRef();
     }
 
@@ -597,99 +601,71 @@ export class App extends React.Component<AppProps, AppState> {
     };
 
     // Global shortcut handling.
+    // TODO: Convert to use keyboardEventMatchesKeyDef for each command in turn.
     handleDocumentKeyDown = (e: KeyboardEvent) => {
-        // Keys that can only be used in combination with the 'alt' key.
-        if (e.altKey && !e.shiftKey && !e.ctrlKey) {
-            // We have to use the code because the alt key makes some 'key' values show up with accents, umlauts, etc.
-            switch (e.code) {
-                // Alt + A = Toggle announcements
-                case 'KeyA':
-                    // We have to use the function form here as our change is based on the current state.
-                    this.setState((currentState) => {
-                        return { announcementsEnabled: !(currentState.announcementsEnabled) };
-                    });
-                    e.preventDefault();
-                    break;
-                // Alt + B = Add block to the beginning of the program;
-                case 'KeyB':
-                    if (this.state.selectedAction) {
-                        const newProgramSequence = this.state.programSequence.insertStep(0, this.state.selectedAction);
-                        this.handleProgramSequenceChange(newProgramSequence);
-                    }
-                    e.preventDefault();
-                    break;
-                // Alt + E = Add block to the end of the program.
-                case 'KeyE':
-                    if (this.state.selectedAction) {
-                        // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
-                        const newProgramSequence = this.state.programSequence.insertStep(this.state.programSequence.getProgramLength(), this.state.selectedAction);
-                        this.handleProgramSequenceChange(newProgramSequence);
-                    }
-                    e.preventDefault();
-                    break;
-                // Alt + I  = Announce scene information.
-                case 'KeyI':
-                    const ariaLiveRegion = document.getElementById('character-position');
-                    if (ariaLiveRegion) {
-                        if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
-                            window.speechSynthesis.cancel();
-                        }
-                        const utterance = new SpeechSynthesisUtterance(ariaLiveRegion.innerText);
-                        window.speechSynthesis.speak(utterance);
-                    }
-                    break;
-                // Alt + P = Play/Pause Program
-                case 'KeyP':
-                    if (this.state.programSequence.getProgramLength() > 0) {
-                        this.handleClickPlay();
-                    }
-                    e.preventDefault();
-                    break;
-                // Alt + R = Refresh Scene
-                case 'KeyR':
-                    if (this.state.runningState !== 'running') {
-                        this.handleRefresh();
-                    }
-                    e.preventDefault();
-                    break;
-                // Alt + S = Stop Program
-                case 'KeyS':
-                    if (this.state.runningState !== 'stopped' && this.state.runningState !== 'stopRequested') {
-                        this.handleClickStop();
-                    }
-                    e.preventDefault();
-                    break;
-                default:
-                    break;
+        const keyBindings: KeyboardInputScheme = KeyboardInputSchemes[this.keyboardInputSchemeName];
+        if (keyboardEventMatchesKeyDef(e, keyBindings.showHide)){
+            this.setState((currentState) => {
+                return { showKeyboardModal: !(currentState.showKeyboardModal) };
+            });
+        }
+        else if (keyboardEventMatchesKeyDef(e, keyBindings.toggleAnnouncements)) {
+            // We have to use the function form here as our change is based on the current state.
+            this.setState((currentState) => {
+                return { announcementsEnabled: !(currentState.announcementsEnabled) };
+            });
+            e.preventDefault();
+        }
+        else if (keyboardEventMatchesKeyDef(e, keyBindings.addCommandToBeginning)) {
+            if (this.state.selectedAction) {
+                const newProgramSequence = this.state.programSequence.insertStep(0, this.state.selectedAction);
+                this.handleProgramSequenceChange(newProgramSequence);
+            }
+            e.preventDefault();
+        }
+        else if (keyboardEventMatchesKeyDef(e, keyBindings.addCommandToEnd)) {
+            if (this.state.selectedAction) {
+                // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
+                const newProgramSequence = this.state.programSequence.insertStep(this.state.programSequence.getProgramLength(), this.state.selectedAction);
+                this.handleProgramSequenceChange(newProgramSequence);
+            }
+            e.preventDefault();
+        }
+        else if (keyboardEventMatchesKeyDef(e, keyBindings.announceScene)) {
+            const ariaLiveRegion = document.getElementById('character-position');
+            if (ariaLiveRegion) {
+                if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+                    window.speechSynthesis.cancel();
+                }
+                const utterance = new SpeechSynthesisUtterance(ariaLiveRegion.innerText);
+                window.speechSynthesis.speak(utterance);
             }
         }
-        // Keys that can only be used if the alt key is not already held.
-        else {
+        else if (keyboardEventMatchesKeyDef(e, keyBindings.playPauseProgram)) {
+            if (this.state.programSequence.getProgramLength() > 0) {
+                this.handleClickPlay();
+            }
+            e.preventDefault();
+        }
+        else if (keyboardEventMatchesKeyDef(e, keyBindings.refreshScene)) {
+            if (this.state.runningState !== 'running') {
+                this.handleRefresh();
+            }
+            e.preventDefault();
+        }
+        else if (keyboardEventMatchesKeyDef(e, keyBindings.stopProgram)) {
+            if (this.state.runningState !== 'stopped' && this.state.runningState !== 'stopRequested') {
+                this.handleClickStop();
+            }
+            e.preventDefault();
+        }
+        else if (keyboardEventMatchesKeyDef(e, keyBindings.decreaseProgramSpeed)) {
             const currentSpeedIndex = this.speedLookUp.indexOf(this.interpreter.stepTimeMs);
-            switch (e.key) {
-                // < = Slow down playback speed.
-                case '<':
-                    this.changeProgramSpeedIndex(currentSpeedIndex - 1);
-                    break;
-                // > = Speed up playback speed.
-                case '>':
-                    this.changeProgramSpeedIndex(currentSpeedIndex + 1);
-                    break;
-                default:
-                    break;
-            }
+            this.changeProgramSpeedIndex(currentSpeedIndex - 1);
         }
-
-        // Keys that can be used whether or not the alt key is held.
-        switch (e.key) {
-            // ? = Open/close help menu.
-            case '?':
-                this.setState((currentState) => {
-                    return { showKeyboardModal: !(currentState.showKeyboardModal) };
-                });
-                break;
-            default:
-                break;
+        else if (keyboardEventMatchesKeyDef(e, keyBindings.increaseProgramSpeed)) {
+            const currentSpeedIndex = this.speedLookUp.indexOf(this.interpreter.stepTimeMs);
+            this.changeProgramSpeedIndex(currentSpeedIndex + 1);
         }
     };
 
