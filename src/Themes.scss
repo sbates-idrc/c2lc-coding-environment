@@ -1474,12 +1474,14 @@ body.contrast-theme {
         color: black;
     }
 
-    .ProgramBlockEditor__character-position-button:not(.ProgramBlockEditor__character-position-button--disabled) {
-        stroke: white;
-
+    .ProgramBlockEditor__character-position-button {
         &:focus {
             outline: $c2lc-focus-indicator-width solid white;
-        }
+        }        
+    }
+
+    .ProgramBlockEditor__character-position-button:not(.ProgramBlockEditor__character-position-button--disabled) {
+        stroke: white;
 
         &:hover {
             path:not(.inner):not(.filled) {
