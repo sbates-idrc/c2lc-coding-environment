@@ -21,25 +21,43 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
 
     renderKeyBindings = () => {
 
+        // TODO: Make this configurable and store the options in a separate file.
         // This controls which keys are displayed but also determines the order in which they are displayed.
         const keyBindings = [
-            "?", "KeyA", "KeyB", "KeyE", "KeyI", "KeyP", "KeyR", "KeyS", "<", ">"
+            "showHide",
+            "toggleAnnouncements",
+            "addCommandToBeginning",
+            "addCommandToEnd",
+            "announceScene",
+            "playPauseProgram",
+            "refreshScene",
+            "stopProgram",
+            "decreaseProgramSpeed",
+            "increaseProgramSpeed"
         ];
 
         const keyBindingElements = [];
-        keyBindings.forEach((code, index) => {
+        keyBindings.forEach((messageKeySuffix, index) => {
             const itemKey = "binding-" + index;
-            const labelKey = "binding-label-" + index;
-            const iconMessageKey = "KeyboardInputModal.IconText." + code;
-            const labelMessageKey = "KeyboardInputModal.Labels." + code;
-            keyBindingElements.push(<div className="KeyboardInputModal__binding" key={itemKey}>
-                <div className="KeyboardInputModal__binding__icon" aria-labelledby={labelKey}>
-                    <FormattedMessage className="KeyboardInputModal__binding__icon" id={iconMessageKey} aria-labelledby={labelKey}/>
+            const iconMessageKey = "KeyboardInputModal.IconText." + messageKeySuffix;
+            const descriptionMessageKey = "KeyboardInputModal.Description." + messageKeySuffix;
+            const keyNameMessageKey = "KeyboardInputModal.KeyName." + messageKeySuffix;
+            const keyString = this.props.intl.formatMessage(
+                { id: keyNameMessageKey }
+            );
+            keyBindingElements.push(<li className="KeyboardInputModal__binding" key={itemKey}>
+                <div className="KeyboardInputModal__binding__icon" aria-hidden={true}>
+                    <FormattedMessage className="KeyboardInputModal__binding__icon" id={iconMessageKey} aria-labelledby={iconMessageKey}/>
                 </div>
-                <div className="KeyboardInputModal__binding__label" id={labelKey}>
-                    <FormattedMessage className="KeyboardInputModal__binding__label" id={labelMessageKey}/>
+                <div className="KeyboardInputModal__binding__label">
+                    <FormattedMessage
+                        className="KeyboardInputModal__binding__label" id={descriptionMessageKey}
+                        values={{
+                            key: keyString
+                        }}
+                    />
                 </div>
-            </div>);
+            </li>);
         });
         return keyBindingElements;
     }
@@ -49,15 +67,17 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
             <Modal
                 onHide={this.props.onHide}
                 show={this.props.show}
+                aria-modal={true}
+                role="dialog"
                 dialogClassName='KeyboardInputModal'
             >
                 <Modal.Body className='KeyboardInputModal__content'>
                     <h2 className="KeyboardInputModal__content__title">
                         <FormattedMessage id='KeyboardInputModal.Title'/>
                     </h2>
-                    <div>
+                    <ul className="KeyboardInputModal__content__list">
                         {this.renderKeyBindings()}
-                    </div>
+                    </ul>
                 </Modal.Body>
             </Modal>);
     }
