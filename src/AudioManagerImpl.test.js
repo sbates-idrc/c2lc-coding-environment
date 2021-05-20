@@ -33,6 +33,7 @@ function logTuning (noteTable: Array<Array<string>>) {
         }
         tableStringSegments.push(arrayToPaddedRowString(rowStringSegments));
     }
+    // eslint-disable-next-line no-console
     console.log(tableStringSegments.join("\n"));
 }
 
