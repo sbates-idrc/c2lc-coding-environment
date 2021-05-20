@@ -11,6 +11,10 @@
     margin-bottom: 2rem;
 }
 
+.KeyboardInputModal__content__list {
+    padding-inline-start: 0;
+}
+
 .KeyboardInputModal__binding {
     display: grid;
     align-items: center;
@@ -31,6 +35,3 @@
     padding: 0.25rem;
     text-align: center;
 }
-
-/* .KeyboardInputModal__binding__label {
-} */
