@@ -37,7 +37,7 @@ const mockAllowedActions = {
 
 const defaultProgramBlockEditorProps = {
     interpreterIsRunning: false,
-    characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(100, 100)),
+    characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
     programSequence: new ProgramSequence(['forward1', 'left45', 'forward1', 'left45'], 0),
     runningState: 'stopped',
     actionPanelStepIndex: null,
