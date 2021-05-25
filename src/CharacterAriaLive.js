@@ -14,10 +14,6 @@ type CharacterAriaLiveProps = {
 };
 
 class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
-    constructor(props: CharacterAriaLiveProps) {
-        super(props);
-    }
-
     updateCharacterPositionAriaLive() {
         const characterState = this.props.characterState;
         const xPos = characterState.getColumnLabel();
