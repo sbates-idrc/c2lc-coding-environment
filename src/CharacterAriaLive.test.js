@@ -60,5 +60,14 @@ describe('Character position gets updated on character-position div', () => {
         wrapper.setProps({world: 'space', characterState: new CharacterState(3, 1, 2, [], new SceneDimensions(1, 100, 1, 100))});
         // $FlowFixMe: Flow doesn't know about character-position div
         expect(document.getElementById('character-position').innerText).toBe('Space Ship character at column C, row 1 facing right');
+    });
+    test('When runningState prop is changed', () => {
+        const wrapper = createMountCharacterAriaLive();
+        wrapper.setProps({ runningState: 'pauseRequested', world: 'forest' });
+        // $FlowFixMe: Flow doesn't know about character-position div
+        expect(document.getElementById('character-position').innerText).toBe('Rabbit character at column A, row 1 facing right');
+        wrapper.setProps({ runningState: 'stopRequested', world: 'space' });
+        // $FlowFixMe: Flow doesn't know about character-position div
+        expect(document.getElementById('character-position').innerText).toBe('Space Ship character at column A, row 1 facing right');
     })
 });
