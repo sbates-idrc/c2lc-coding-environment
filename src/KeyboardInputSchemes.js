@@ -1,5 +1,5 @@
 //@flow
-export type KeyboardInputSchemeName = "alt" | "windows";
+export type KeyboardInputSchemeName = "alt" | "nvda";
 
 export type KeyDef = {
     code?: string,
@@ -24,7 +24,7 @@ export type KeyboardInputScheme = {
 
 export type KeyboardInputSchemesType = {
     "alt": KeyboardInputScheme,
-    "windows": KeyboardInputScheme
+    "nvda": KeyboardInputScheme
 }
 
 export const KeyboardInputSchemes:KeyboardInputSchemesType = {
@@ -40,17 +40,17 @@ export const KeyboardInputSchemes:KeyboardInputSchemesType = {
         stopProgram: { code: "KeyS", altKey: true},
         toggleAnnouncements: { code: "KeyA", altKey: true}
     },
-    "windows": {
-        addCommandToBeginning: { code: "KeyB", altKey: true},
-        addCommandToEnd: { code: "KeyE", altKey: true},
-        announceScene: { code: "KeyI", altKey: true},
-        decreaseProgramSpeed: { code: "<", altKey: true},
-        increaseProgramSpeed: { code: ">", altKey: true},
-        playPauseProgram: { code: "KeyP", altKey: true},
-        refreshScene: { code: "KeyR", altKey: true},
-        showHide: { code: "?", altKey: true},
-        stopProgram: { code: "KeyS", altKey: true},
-        toggleAnnouncements: { code: "KeyA", altKey: true}
+    "nvda": {
+        addCommandToBeginning: { code: "KeyB", altKey: true, ctrlKey: true},
+        addCommandToEnd: { code: "KeyE", altKey: true, ctrlKey: true},
+        announceScene: { code: "KeyI", altKey: true, ctrlKey: true},
+        decreaseProgramSpeed: { code: "<" },
+        increaseProgramSpeed: { code: ">" },
+        playPauseProgram: { code: "KeyP", altKey: true, ctrlKey: true},
+        refreshScene: { code: "KeyR", altKey: true, ctrlKey: true},
+        showHide: { key: "?" },
+        stopProgram: { code: "KeyS", altKey: true, ctrlKey: true},
+        toggleAnnouncements: { code: "KeyA", altKey: true, ctrlKey: true}
     }
 };
 
@@ -66,6 +66,9 @@ export function keyboardEventMatchesKeyDef (e: KeyboardEvent, keyDef: KeyDef) {
             return false;
         }
         return true;
+    }
+    else {
+        console.log('code', e.code, 'key', e.key);
     }
 
     return false;

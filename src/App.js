@@ -84,6 +84,7 @@ type AppState = {
     usedActions: ActionToggleRegister,
     // TODO: Make this configurable
     keyBindingsEnabled: boolean,
+    keyboardInputSchemeName: KeyboardInputSchemeName;
     showKeyboardModal: boolean
 };
 
@@ -102,7 +103,6 @@ export class App extends React.Component<AppProps, AppState> {
     speedLookUp: Array<number>;
     pushStateTimeoutID: ?TimeoutID;
     speedControlRef: { current: null | HTMLElement };
-    keyboardInputSchemeName: KeyboardInputSchemeName;
 
     constructor(props: any) {
         super(props);
@@ -129,8 +129,6 @@ export class App extends React.Component<AppProps, AppState> {
         this.allowedActionsSerializer = new AllowedActionsSerializer();
 
         this.pushStateTimeoutID = null;
-
-        this.keyboardInputSchemeName = "alt";
 
         this.interpreter.addCommandHandler(
             'forward1',
@@ -399,7 +397,8 @@ export class App extends React.Component<AppProps, AppState> {
             allowedActions: allowedActions,
             usedActions: {},
             keyBindingsEnabled: true,
-            showKeyboardModal: false
+            showKeyboardModal: false,
+            keyboardInputSchemeName: "alt"
         };
 
         // For FakeRobotDriver, replace with:
@@ -603,7 +602,7 @@ export class App extends React.Component<AppProps, AppState> {
     // Global shortcut handling.
     // TODO: Convert to use keyboardEventMatchesKeyDef for each command in turn.
     handleDocumentKeyDown = (e: KeyboardEvent) => {
-        const keyBindings: KeyboardInputScheme = KeyboardInputSchemes[this.keyboardInputSchemeName];
+        const keyBindings: KeyboardInputScheme = KeyboardInputSchemes[this.state.keyboardInputSchemeName];
         if (keyboardEventMatchesKeyDef(e, keyBindings.showHide)){
             this.setState((currentState) => {
                 return { showKeyboardModal: !(currentState.showKeyboardModal) };
@@ -814,6 +813,14 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
+    handleChangeKeyboardInputScheme = (event: Event) => {
+        // $FlowFixMe: Find a more specific event type.
+        if (event.target.value) {
+            // $FlowFixMe: Figure out how to properly gate this to disallow nonsensical values.
+            this.setState({keyboardInputSchemeName: event.target.value});
+        }
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -973,6 +980,8 @@ export class App extends React.Component<AppProps, AppState> {
                     onRetry={this.handleClickConnectDash}/>
                 <KeyboardInputModal
                     show={this.state.showKeyboardModal}
+                    keyboardInputSchemeName={this.state.keyboardInputSchemeName}
+                    onChangeKeyboardInputScheme={this.handleChangeKeyboardInputScheme}
                     onHide={this.handleKeyboardModalClose}
                 />
             </React.Fragment>

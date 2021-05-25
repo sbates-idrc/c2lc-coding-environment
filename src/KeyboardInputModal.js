@@ -4,12 +4,17 @@ import { Modal } from 'react-bootstrap';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 
+import type {KeyDef, KeyboardInputScheme, KeyboardInputSchemeName} from './KeyboardInputSchemes';
+import {KeyboardInputSchemes} from './KeyboardInputSchemes';
+
 import './KeyboardInputModal.scss';
 
 type KeyboardInputModalProps = {
     intl: IntlShape,
-    show: boolean,
-    onHide: Function
+    keyboardInputSchemeName: KeyboardInputSchemeName,
+    onChangeKeyboardInputScheme: Function,
+    onHide: Function,
+    show: boolean
 };
 
 class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
@@ -20,7 +25,6 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
     }
 
     renderKeyBindings = () => {
-
         // TODO: Make this configurable and store the options in a separate file.
         // This controls which keys are displayed but also determines the order in which they are displayed.
         const keyBindings = [
@@ -36,18 +40,42 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
             "increaseProgramSpeed"
         ];
 
+        const keyboardInputScheme: KeyboardInputScheme = KeyboardInputSchemes[this.props.keyboardInputSchemeName];
+
         const keyBindingElements = [];
-        keyBindings.forEach((messageKeySuffix, index) => {
+        keyBindings.forEach((key, index) => {
             const itemKey = "binding-" + index;
-            const iconMessageKey = "KeyboardInputModal.IconText." + messageKeySuffix;
-            const descriptionMessageKey = "KeyboardInputModal.Description." + messageKeySuffix;
-            const keyNameMessageKey = "KeyboardInputModal.KeyName." + messageKeySuffix;
-            const keyString = this.props.intl.formatMessage(
-                { id: keyNameMessageKey }
-            );
+            const keyDef: KeyDef = keyboardInputScheme[key];
+            const keySegments = [];
+            // TODO: Make a lookup table to resolve code names or store some displayable value/message key.
+            keySegments.push(keyDef.key || (keyDef.code && keyDef.code.replace("Key", "")));
+
+            if (keyDef.shiftKey) {
+                const shiftKeyName = this.props.intl.formatMessage(
+                    { id: "KeyboardInputModal.Keys.Shift" }
+                );
+                keySegments.unshift(shiftKeyName);
+            }
+
+            if (keyDef.altKey) {
+                const altKeyName = this.props.intl.formatMessage(
+                    { id: "KeyboardInputModal.Keys.Alt" }
+                );
+                keySegments.unshift(altKeyName);
+            }
+
+            if (keyDef.ctrlKey) {
+                const controlKeyName = this.props.intl.formatMessage(
+                    { id: "KeyboardInputModal.Keys.Control" }
+                );
+                keySegments.unshift(controlKeyName);
+            }
+
+            const keyString = keySegments.join(" + ")
+            const descriptionMessageKey = "KeyboardInputModal.Description." + key;
             keyBindingElements.push(<li className="KeyboardInputModal__binding" key={itemKey}>
-                <div className="KeyboardInputModal__binding__icon" aria-hidden={true}>
-                    <FormattedMessage className="KeyboardInputModal__binding__icon" id={iconMessageKey} aria-labelledby={iconMessageKey}/>
+                <div className="KeyboardInputModal__binding__icon" aria-hidden={true}  aria-labelledby={descriptionMessageKey}>
+                    {keyString}
                 </div>
                 <div className="KeyboardInputModal__binding__label">
                     <FormattedMessage
@@ -60,6 +88,20 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
             </li>);
         });
         return keyBindingElements;
+    }
+    renderKeyboardSchemeMenu () {
+        const selectOptionElements = [];
+        Object.keys(KeyboardInputSchemes).forEach((schemeName) => {
+            const messageId = "KeyboardInputModal.Scheme.Descriptions." + schemeName;
+            const optionText = this.props.intl.formatMessage({ id: messageId });
+            selectOptionElements.push(<option key={schemeName} value={schemeName}>
+                {optionText}
+            </option>);
+        })
+
+        return (<select defaultValue={this.props.keyboardInputSchemeName} onChange={this.props.onChangeKeyboardInputScheme}>
+            {selectOptionElements}
+        </select>);
     }
 
     render () {
@@ -78,6 +120,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
                     <ul className="KeyboardInputModal__content__list">
                         {this.renderKeyBindings()}
                     </ul>
+                    {this.renderKeyboardSchemeMenu()}
                 </Modal.Body>
             </Modal>);
     }
