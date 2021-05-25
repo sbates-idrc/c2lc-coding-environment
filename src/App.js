@@ -5,6 +5,7 @@ import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import AllowedActionsSerializer from './AllowedActionsSerializer';
 import AudioManagerImpl from './AudioManagerImpl';
+import CharacterAriaLive from './CharacterAriaLive';
 import CharacterState from './CharacterState';
 import CharacterStateSerializer from './CharacterStateSerializer';
 import CommandPaletteCommand from './CommandPaletteCommand';
@@ -428,45 +429,6 @@ export class App extends React.Component<AppProps, AppState> {
                 return { runningState };
             }
         });
-    }
-
-    updateCharacterPositionAriaLive() {
-        const characterState = this.state.characterState;
-        const xPos = characterState.getColumnLabel();
-        const yPos = characterState.getRowLabel();
-        const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
-        const ariaLiveRegion = document.getElementById('character-position');
-        if (this.state.settings.world === 'space') {
-            // $FlowFixMe: Flow doesn't know about character-position div
-            ariaLiveRegion.innerText=this.props.intl.formatMessage(
-                {id:'ProgramBlockEditor.spaceShipCharacter'},
-                {
-                    xPos,
-                    yPos,
-                    direction
-                }
-            );
-        } else if (this.state.settings.world === 'forest') {
-            // $FlowFixMe: Flow doesn't know about character-position div
-            ariaLiveRegion.innerText=this.props.intl.formatMessage(
-                {id:'ProgramBlockEditor.rabbitCharacter'},
-                {
-                    xPos,
-                    yPos,
-                    direction
-                }
-            );
-        } else {
-            // $FlowFixMe: Flow doesn't know about character-position div
-            ariaLiveRegion.innerText=this.props.intl.formatMessage(
-                {id:'ProgramBlockEditor.robotCharacter'},
-                {
-                    xPos,
-                    yPos,
-                    direction
-                }
-            );
-        }
     }
 
     // API for Interpreter
@@ -901,6 +863,10 @@ export class App extends React.Component<AppProps, AppState> {
                         </div>
                     </div>
                 </div>
+                <CharacterAriaLive
+                    characterState={this.state.characterState}
+                    runningState={this.state.runningState}
+                    world={this.state.settings.world}/>
                 <DashConnectionErrorModal
                     show={this.state.showDashConnectionError}
                     onCancel={this.handleCancelDashConnection}
@@ -1041,19 +1007,6 @@ export class App extends React.Component<AppProps, AppState> {
             window.localStorage.setItem('c2lc-theme', this.state.settings.theme);
             window.localStorage.setItem('c2lc-allowedActions', serializedAllowedActions);
             window.localStorage.setItem('c2lc-world', this.state.settings.world)
-        }
-
-        // Ensure updateCharacterPositionAriaLive gets called only once
-        if (prevState.characterState !== this.state.characterState) {
-            if (this.state.runningState !== 'running') {
-                this.updateCharacterPositionAriaLive();
-            }
-        }  else if (prevState.runningState !== this.state.runningState) {
-            if (this.state.runningState === 'pauseRequested' ||
-                this.state.runningState === 'stopRequested' ||
-                (prevState.runningState === 'running' && this.state.runningState === 'stopped')) {
-                this.updateCharacterPositionAriaLive();
-            }
         }
 
         if (this.state.announcementsEnabled !== prevState.announcementsEnabled) {
