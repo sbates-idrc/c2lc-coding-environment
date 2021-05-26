@@ -196,23 +196,28 @@ class Scene extends React.Component<SceneProps, {}> {
                 // 1. On Safari, scrollIntoView doesn't work on SVG elements (C2LC-347).
                 // 2. On Firefox, scrollIntoView seems to scroll to the center of the character rather than bringing it
                 //    completely into view (C2LC-343).
-                if (newCharacterBackgroundBounds.left < sceneBounds.left) {
+                //
+                // We add some padding to the position checking (0.5 times the
+                // width or height) to ensure that we always leave some room
+                // between the character and the edge of the scene (unless we
+                // are in the first or last row/col).
+                if (newCharacterBackgroundBounds.left - (0.5 * newCharacterBackgroundBounds.width) < sceneBounds.left) {
                     // Scroll left.
                     // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
                     this.sceneRef.current.scrollLeft -= (sceneBounds.left - newCharacterBackgroundBounds.left + newCharacterBackgroundBounds.width);
                 }
-                else if ((newCharacterBackgroundBounds.left + newCharacterBackgroundBounds.width) > (sceneBounds.left + sceneBounds.width)) {
+                else if ((newCharacterBackgroundBounds.left + (1.5 * newCharacterBackgroundBounds.width)) > (sceneBounds.left + sceneBounds.width)) {
                     // Scroll right.
                     // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
                     this.sceneRef.current.scrollLeft += (newCharacterBackgroundBounds.left + newCharacterBackgroundBounds.width) - (sceneBounds.left + sceneBounds.width) + newCharacterBackgroundBounds.width;
                 }
 
-                if (newCharacterBackgroundBounds.top < sceneBounds.top) {
+                if (newCharacterBackgroundBounds.top - (0.5 * newCharacterBackgroundBounds.height) < sceneBounds.top) {
                     // Scroll up.  For whatever reason we have to overshoot on the scroll to avoid leaving the icon half out of bounds and constantly triggering scrolls.
                     // $FlowFixMe: Flow doesn't understand that this element has a scrollTop.
                     this.sceneRef.current.scrollTop -= (sceneBounds.top - newCharacterBackgroundBounds.top + newCharacterBackgroundBounds.height);
                 }
-                else if ((newCharacterBackgroundBounds.top + newCharacterBackgroundBounds.height) > (sceneBounds.top + sceneBounds.height)) {
+                else if ((newCharacterBackgroundBounds.top + (1.5 * newCharacterBackgroundBounds.height)) > (sceneBounds.top + sceneBounds.height)) {
                     // Scroll down.
                     // $FlowFixMe: Flow doesn't understand that this element has a scrollTop.
                     this.sceneRef.current.scrollTop += (newCharacterBackgroundBounds.top + newCharacterBackgroundBounds.height) - (sceneBounds.top + sceneBounds.height) + newCharacterBackgroundBounds.height;
