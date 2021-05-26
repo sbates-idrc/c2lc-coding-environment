@@ -602,6 +602,7 @@ export class App extends React.Component<AppProps, AppState> {
     // Global shortcut handling.
     // TODO: Convert to use keyboardEventMatchesKeyDef for each command in turn.
     handleDocumentKeyDown = (e: KeyboardEvent) => {
+        // TODO: Add variable for whether keyboard shortcuts are enabled and ignore keyboard events if that's false.
         const keyBindings: KeyboardInputScheme = KeyboardInputSchemes[this.state.keyboardInputSchemeName];
         if (keyboardEventMatchesKeyDef(e, keyBindings.showHide)){
             this.setState((currentState) => {
