@@ -274,6 +274,12 @@ body.dark-theme {
         }
     }
 
+    .App__header-keyboardMenuIcon {    
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        }
+    }
+
     .App__header {
         background-color: #18252C;
         color: white;
@@ -552,6 +558,18 @@ body.gray-theme {
         color: #818A98;
     }
 
+    .App__header-keyboardMenuIcon {    
+        background-color: #818A98;
+
+        &:hover {
+            background-color: #505862;
+        }
+    
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+    }
+        
     .AudioFeedbackToggleSwitch {
         background-color: #B9BEC6;
 
@@ -1103,6 +1121,21 @@ body.contrast-theme {
                 background-color: white;
                 color: black;
             }
+        }
+    }
+
+    .App__header-keyboardMenuIcon {    
+        background-color: black;
+        border: 2px solid white;
+
+        &:hover {
+            background-color: white;
+            color: black;
+        }
+    
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+            border: 2px solid black;
         }
     }
 

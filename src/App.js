@@ -669,8 +669,20 @@ export class App extends React.Component<AppProps, AppState> {
         }
     };
 
+    handleKeyboardMenuIconKeydown = (event: KeyboardEvent) => {
+        if (event.key === "Enter" || event.key === " ") {
+            this.handleKeyboardModalToggle();
+        }
+    }
+
     handleKeyboardModalClose = () => {
         this.setState({showKeyboardModal: false});
+    };
+
+    handleKeyboardModalToggle = () => {
+        this.setState((currentState: AppState) => {
+            return { showKeyboardModal: !currentState.showKeyboardModal};
+        });
     };
 
     // Focus trap escape key handling.
@@ -835,6 +847,14 @@ export class App extends React.Component<AppProps, AppState> {
                             <h1 className='App__app-heading'>
                                 <FormattedMessage id='App.appHeading'/>
                             </h1>
+                            <div
+                                className="App__header-keyboardMenuIcon"
+                                tabIndex={0}
+                                onClick={this.handleKeyboardModalToggle}
+                                onKeyDown={this.handleKeyboardMenuIconKeydown}
+                            >
+                                K
+                            </div>
                             <div className='App__header-audio-toggle'>
                                 <div className='App__audio-toggle-switch'>
                                     <AudioFeedbackToggleSwitch

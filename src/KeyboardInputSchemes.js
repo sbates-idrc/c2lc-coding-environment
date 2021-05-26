@@ -67,9 +67,6 @@ export function keyboardEventMatchesKeyDef (e: KeyboardEvent, keyDef: KeyDef) {
         }
         return true;
     }
-    else {
-        console.log('code', e.code, 'key', e.key);
-    }
 
     return false;
 };
