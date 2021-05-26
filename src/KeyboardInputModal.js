@@ -1,17 +1,21 @@
 // @flow
 import React from 'react';
-import { Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 
 import type {KeyDef, KeyboardInputScheme, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {KeyboardInputSchemes} from './KeyboardInputSchemes';
 
+import ToggleSwitch from './ToggleSwitch';
+
 import './KeyboardInputModal.scss';
 
 type KeyboardInputModalProps = {
     intl: IntlShape,
+    keyBindingsEnabled: boolean,
     keyboardInputSchemeName: KeyboardInputSchemeName,
+    onChangeKeyBindingsEnabled: Function,
     onChangeKeyboardInputScheme: Function,
     onHide: Function,
     show: boolean
@@ -21,6 +25,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
 
     static defaultProps = {
         show: false,
+        onChangeKeyBindingsEnabled: () => {},
         onHide: () => {}
     }
 
@@ -99,7 +104,11 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
             </option>);
         })
 
-        return (<select defaultValue={this.props.keyboardInputSchemeName} onChange={this.props.onChangeKeyboardInputScheme}>
+        return (<select
+            className="KeyboardInputModal__content__schemeDropdown"
+            defaultValue={this.props.keyboardInputSchemeName}
+            disabled={!this.props.keyBindingsEnabled}
+            onChange={this.props.onChangeKeyboardInputScheme}>
             {selectOptionElements}
         </select>);
     }
@@ -117,13 +126,37 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
                     <h2 className="KeyboardInputModal__content__title">
                         <FormattedMessage id='KeyboardInputModal.Title'/>
                     </h2>
-                    <ul className="KeyboardInputModal__content__list">
+
+                    <ToggleSwitch
+                        ariaLabel={this.props.intl.formatMessage({id: "KeyboardInputModal.Toggle.AriaLabel"})}
+                        className="KeyboardInputModal__content__toggle"
+                        contentsTrue="On"
+                        contentsFalse="Off"
+                        value={this.props.keyBindingsEnabled}
+                        onChange={this.props.onChangeKeyBindingsEnabled}
+                    />
+
+                    {this.renderKeyboardSchemeMenu()}
+
+                    <ul className={"KeyboardInputModal__content__list" + (this.props.keyBindingsEnabled ? "": " KeyboardInputModal__content__list--disabled")}>
                         {this.renderKeyBindings()}
                     </ul>
-                    {this.renderKeyboardSchemeMenu()}
+
+                    <Button className="KeyboardInputModal__content__closeButton" onClick={this.props.onHide}>
+                        <FormattedMessage id="KeyboardInputModal.Done"/>
+                    </Button>
                 </Modal.Body>
             </Modal>);
     }
 }
+
+/*
+    ariaLabel: string,
+    value: boolean,
+    className?: string,
+    contentsTrue: any,
+    contentsFalse: any,
+    onChange: (value: boolean) => void
+*/
 
 export default injectIntl(KeyboardInputModal);

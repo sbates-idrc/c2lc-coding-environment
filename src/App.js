@@ -602,70 +602,71 @@ export class App extends React.Component<AppProps, AppState> {
     // Global shortcut handling.
     // TODO: Convert to use keyboardEventMatchesKeyDef for each command in turn.
     handleDocumentKeyDown = (e: KeyboardEvent) => {
-        // TODO: Add variable for whether keyboard shortcuts are enabled and ignore keyboard events if that's false.
-        const keyBindings: KeyboardInputScheme = KeyboardInputSchemes[this.state.keyboardInputSchemeName];
-        if (keyboardEventMatchesKeyDef(e, keyBindings.showHide)){
-            this.setState((currentState) => {
-                return { showKeyboardModal: !(currentState.showKeyboardModal) };
-            });
-        }
-        else if (keyboardEventMatchesKeyDef(e, keyBindings.toggleAnnouncements)) {
-            // We have to use the function form here as our change is based on the current state.
-            this.setState((currentState) => {
-                return { announcementsEnabled: !(currentState.announcementsEnabled) };
-            });
-            e.preventDefault();
-        }
-        else if (keyboardEventMatchesKeyDef(e, keyBindings.addCommandToBeginning)) {
-            if (this.state.selectedAction) {
-                const newProgramSequence = this.state.programSequence.insertStep(0, this.state.selectedAction);
-                this.handleProgramSequenceChange(newProgramSequence);
+        if (this.state.keyBindingsEnabled) {
+            const keyBindings: KeyboardInputScheme = KeyboardInputSchemes[this.state.keyboardInputSchemeName];
+            if (keyboardEventMatchesKeyDef(e, keyBindings.showHide)){
+                this.setState((currentState) => {
+                    return { showKeyboardModal: !(currentState.showKeyboardModal) };
+                });
             }
-            e.preventDefault();
-        }
-        else if (keyboardEventMatchesKeyDef(e, keyBindings.addCommandToEnd)) {
-            if (this.state.selectedAction) {
-                // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
-                const newProgramSequence = this.state.programSequence.insertStep(this.state.programSequence.getProgramLength(), this.state.selectedAction);
-                this.handleProgramSequenceChange(newProgramSequence);
+            else if (keyboardEventMatchesKeyDef(e, keyBindings.toggleAnnouncements)) {
+                // We have to use the function form here as our change is based on the current state.
+                this.setState((currentState) => {
+                    return { announcementsEnabled: !(currentState.announcementsEnabled) };
+                });
+                e.preventDefault();
             }
-            e.preventDefault();
-        }
-        else if (keyboardEventMatchesKeyDef(e, keyBindings.announceScene)) {
-            const ariaLiveRegion = document.getElementById('character-position');
-            if (ariaLiveRegion) {
-                if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
-                    window.speechSynthesis.cancel();
+            else if (keyboardEventMatchesKeyDef(e, keyBindings.addCommandToBeginning)) {
+                if (this.state.selectedAction) {
+                    const newProgramSequence = this.state.programSequence.insertStep(0, this.state.selectedAction);
+                    this.handleProgramSequenceChange(newProgramSequence);
                 }
-                const utterance = new SpeechSynthesisUtterance(ariaLiveRegion.innerText);
-                window.speechSynthesis.speak(utterance);
+                e.preventDefault();
             }
-        }
-        else if (keyboardEventMatchesKeyDef(e, keyBindings.playPauseProgram)) {
-            if (this.state.programSequence.getProgramLength() > 0) {
-                this.handleClickPlay();
+            else if (keyboardEventMatchesKeyDef(e, keyBindings.addCommandToEnd)) {
+                if (this.state.selectedAction) {
+                    // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
+                    const newProgramSequence = this.state.programSequence.insertStep(this.state.programSequence.getProgramLength(), this.state.selectedAction);
+                    this.handleProgramSequenceChange(newProgramSequence);
+                }
+                e.preventDefault();
             }
-            e.preventDefault();
-        }
-        else if (keyboardEventMatchesKeyDef(e, keyBindings.refreshScene)) {
-            if (this.state.runningState !== 'running') {
-                this.handleRefresh();
+            else if (keyboardEventMatchesKeyDef(e, keyBindings.announceScene)) {
+                const ariaLiveRegion = document.getElementById('character-position');
+                if (ariaLiveRegion) {
+                    if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+                        window.speechSynthesis.cancel();
+                    }
+                    const utterance = new SpeechSynthesisUtterance(ariaLiveRegion.innerText);
+                    window.speechSynthesis.speak(utterance);
+                }
             }
-            e.preventDefault();
-        }
-        else if (keyboardEventMatchesKeyDef(e, keyBindings.stopProgram)) {
-            if (this.state.runningState !== 'stopped' && this.state.runningState !== 'stopRequested') {
-                this.handleClickStop();
+            else if (keyboardEventMatchesKeyDef(e, keyBindings.playPauseProgram)) {
+                if (this.state.programSequence.getProgramLength() > 0) {
+                    this.handleClickPlay();
+                }
+                e.preventDefault();
             }
-            e.preventDefault();
-        }
-        else if (keyboardEventMatchesKeyDef(e, keyBindings.decreaseProgramSpeed)) {
-            const currentSpeedIndex = this.speedLookUp.indexOf(this.interpreter.stepTimeMs);
-            this.changeProgramSpeedIndex(currentSpeedIndex - 1);
-        }
-        else if (keyboardEventMatchesKeyDef(e, keyBindings.increaseProgramSpeed)) {
-            const currentSpeedIndex = this.speedLookUp.indexOf(this.interpreter.stepTimeMs);
-            this.changeProgramSpeedIndex(currentSpeedIndex + 1);
+            else if (keyboardEventMatchesKeyDef(e, keyBindings.refreshScene)) {
+                if (this.state.runningState !== 'running') {
+                    this.handleRefresh();
+                }
+                e.preventDefault();
+            }
+            else if (keyboardEventMatchesKeyDef(e, keyBindings.stopProgram)) {
+                if (this.state.runningState !== 'stopped' && this.state.runningState !== 'stopRequested') {
+                    this.handleClickStop();
+                }
+                e.preventDefault();
+            }
+            else if (keyboardEventMatchesKeyDef(e, keyBindings.decreaseProgramSpeed)) {
+                const currentSpeedIndex = this.speedLookUp.indexOf(this.interpreter.stepTimeMs);
+                this.changeProgramSpeedIndex(currentSpeedIndex - 1);
+            }
+            else if (keyboardEventMatchesKeyDef(e, keyBindings.increaseProgramSpeed)) {
+                const currentSpeedIndex = this.speedLookUp.indexOf(this.interpreter.stepTimeMs);
+                this.changeProgramSpeedIndex(currentSpeedIndex + 1);
+            }
         }
     };
 
@@ -834,6 +835,10 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
+    handleChangeKeyBindingsEnabled = (keyBindingsEnabled: boolean) => {
+        this.setState({keyBindingsEnabled: keyBindingsEnabled});
+    };
+
     render() {
         return (
             <React.Fragment>
@@ -1001,8 +1006,10 @@ export class App extends React.Component<AppProps, AppState> {
                     onRetry={this.handleClickConnectDash}/>
                 <KeyboardInputModal
                     show={this.state.showKeyboardModal}
+                    keyBindingsEnabled={this.state.keyBindingsEnabled}
                     keyboardInputSchemeName={this.state.keyboardInputSchemeName}
                     onChangeKeyboardInputScheme={this.handleChangeKeyboardInputScheme}
+                    onChangeKeyBindingsEnabled={this.handleChangeKeyBindingsEnabled}
                     onHide={this.handleKeyboardModalClose}
                 />
             </React.Fragment>

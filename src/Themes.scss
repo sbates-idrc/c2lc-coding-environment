@@ -569,7 +569,41 @@ body.gray-theme {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
     }
-        
+
+    .KeyboardInputModal__content__toggle {
+        background-color: #B9BEC6;
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+
+        &.ToggleSwitch--checked{
+            background-color: #818A98;
+        }
+
+        &:hover {
+            background-color: #505862;
+            .ToggleSwitch__switch-inner-circle {
+                background-color: #B9BEC6;
+            }
+        }
+    }
+
+    button.btn.KeyboardInputModal__content__closeButton {
+        background-color: #aaa;
+        color: black;
+
+        &:hover {
+            background-color:#D5D8DD;
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.15rem #d5d8dd,
+                0 0 0 0.25rem #505862;
+        }
+    }
+
     .AudioFeedbackToggleSwitch {
         background-color: #B9BEC6;
 
@@ -1139,6 +1173,52 @@ body.contrast-theme {
         }
     }
 
+    .KeyboardInputModal__content__toggle {
+        background-color: white;
+        border: 2px solid black;
+        padding: 0.2rem;
+        color: white;
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+            border: 2px solid black;
+        }
+
+        .ToggleSwitch__switch-inner-circle {
+            background-color: black;
+        }
+
+
+        &.ToggleSwitch--checked:not(:hover), &:hover {
+            background-color: black;
+            color: black;
+            .ToggleSwitch__switch-inner-circle {
+                background-color: white;
+            }
+        }
+    }
+
+    button.btn.KeyboardInputModal__content__closeButton {
+        background-color: black;
+        color: white;
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem white,
+                0 0 0 0.2rem black;
+        }
+
+        &:hover {
+            background-color: white;
+            color: black;
+            box-shadow: 0 0 0 0.1rem black;
+        }
+
+        &:hover:focus {
+            box-shadow: 0 0 0 0.2rem black;
+        }        
+    }
+
     .AudioFeedbackToggleSwitch {
         background-color: black;
         border: 2px solid white;
@@ -1662,8 +1742,6 @@ body.contrast-theme {
             }
         }
     }
-
-
 
     button.btn.PlayButton--play.PlayButton--disabled, button.btn.StopButton--disabled {
         svg {

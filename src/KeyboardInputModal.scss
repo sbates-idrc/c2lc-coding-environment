@@ -1,18 +1,28 @@
+@import '_variables';
+
 .KeyboardInputModal {
     border-radius: 0.25rem;
 }
 
 .KeyboardInputModal__content {
+    align-items: center;
     border-radius: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 1.5rem;
 }
 
-.KeyboardInputModal__content__title {
-    text-align: center;
-    margin-bottom: 2rem;
+.KeyboardInputModal__content__toggle.ToggleSwitch--checked {
+    background-color: #4C9990;
 }
 
 .KeyboardInputModal__content__list {
     padding-inline-start: 0;
+}
+
+.KeyboardInputModal__content__list--disabled {
+    opacity: 50%;
 }
 
 .KeyboardInputModal__binding {
@@ -20,10 +30,10 @@
     align-items: center;
     grid-template-columns: 10rem auto;
     column-gap: 1rem;
-    margin-top: 0.75rem;
+    row-gap: 1rem;
 
-    &:first {
-        margin-top: 0;
+    &:not(:first-of-type) {
+        margin-top: 1rem;
     }
 }
 
@@ -34,4 +44,28 @@
     height: 2.5rem;
     padding: 0.25rem;
     text-align: center;
+}
+
+button.btn.KeyboardInputModal__content__closeButton {
+    align-self: flex-end;
+    background-color: #4C9990;
+    border: 0;
+    color: #EBFAF8;
+    padding: 0.2rem;
+    width: 10rem;
+
+    &:active {
+        background-color: #ED972C;
+    }
+
+    &:focus {
+        box-shadow:
+            0 0 0 0.1rem #D5D8DD,
+            0 0 0 $c2lc-focus-indicator-width black;
+    }
+
+    &:hover {
+        background-color: #F5C58A;
+        color: black;
+    }          
 }
