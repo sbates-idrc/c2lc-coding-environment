@@ -19,12 +19,12 @@ export type SceneProps = {
 };
 
 class Scene extends React.Component<SceneProps, {}> {
-    characterRef: { current: null | Character };
+    characterBackgroundRef: { current: null | Element };
     sceneRef: { current: null | HTMLDivElement };
 
     constructor (props: SceneProps) {
         super(props);
-        this.characterRef = React.createRef();
+        this.characterBackgroundRef = React.createRef();
         this.sceneRef = React.createRef();
     }
 
@@ -184,9 +184,9 @@ class Scene extends React.Component<SceneProps, {}> {
         /* istanbul ignore next */
         if ((prevProps.characterState.xPos !== this.props.characterState.xPos ||
             prevProps.characterState.yPos !== this.props.characterState.yPos) &&
-            this.sceneRef.current !== null && this.characterRef.current !== null) {
-            const newCharacterBounds = this.characterRef.current.getBoundingClientRect();
-            if (newCharacterBounds) {
+            this.sceneRef.current !== null && this.characterBackgroundRef.current !== null) {
+            const newCharacterBackgroundBounds = this.characterBackgroundRef.current.getBoundingClientRect();
+            if (newCharacterBackgroundBounds) {
                 // $FlowFixMe: Flow doesn't understand that the scene has this method.
                 const sceneBounds = this.sceneRef.current.getBoundingClientRect();
 
@@ -196,26 +196,26 @@ class Scene extends React.Component<SceneProps, {}> {
                 // 1. On Safari, scrollIntoView doesn't work on SVG elements (C2LC-347).
                 // 2. On Firefox, scrollIntoView seems to scroll to the center of the character rather than bringing it
                 //    completely into view (C2LC-343).
-                if (newCharacterBounds.left < sceneBounds.left) {
+                if (newCharacterBackgroundBounds.left < sceneBounds.left) {
                     // Scroll left.
                     // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
-                    this.sceneRef.current.scrollLeft -= (sceneBounds.left - newCharacterBounds.left + newCharacterBounds.width);
+                    this.sceneRef.current.scrollLeft -= (sceneBounds.left - newCharacterBackgroundBounds.left + newCharacterBackgroundBounds.width);
                 }
-                else if ((newCharacterBounds.left + newCharacterBounds.width) > (sceneBounds.left + sceneBounds.width)) {
+                else if ((newCharacterBackgroundBounds.left + newCharacterBackgroundBounds.width) > (sceneBounds.left + sceneBounds.width)) {
                     // Scroll right.
                     // $FlowFixMe: Flow doesn't understand that this element has a scrollLeft.
-                    this.sceneRef.current.scrollLeft += (newCharacterBounds.left + newCharacterBounds.width) - (sceneBounds.left + sceneBounds.width) + newCharacterBounds.width;
+                    this.sceneRef.current.scrollLeft += (newCharacterBackgroundBounds.left + newCharacterBackgroundBounds.width) - (sceneBounds.left + sceneBounds.width) + newCharacterBackgroundBounds.width;
                 }
 
-                if (newCharacterBounds.top < sceneBounds.top) {
+                if (newCharacterBackgroundBounds.top < sceneBounds.top) {
                     // Scroll up.  For whatever reason we have to overshoot on the scroll to avoid leaving the icon half out of bounds and constantly triggering scrolls.
                     // $FlowFixMe: Flow doesn't understand that this element has a scrollTop.
-                    this.sceneRef.current.scrollTop -= (sceneBounds.top - newCharacterBounds.top + newCharacterBounds.height);
+                    this.sceneRef.current.scrollTop -= (sceneBounds.top - newCharacterBackgroundBounds.top + newCharacterBackgroundBounds.height);
                 }
-                else if ((newCharacterBounds.top + newCharacterBounds.height) > (sceneBounds.top + sceneBounds.height)) {
+                else if ((newCharacterBackgroundBounds.top + newCharacterBackgroundBounds.height) > (sceneBounds.top + sceneBounds.height)) {
                     // Scroll down.
                     // $FlowFixMe: Flow doesn't understand that this element has a scrollTop.
-                    this.sceneRef.current.scrollTop += (newCharacterBounds.top + newCharacterBounds.height) - (sceneBounds.top + sceneBounds.height) + newCharacterBounds.height;
+                    this.sceneRef.current.scrollTop += (newCharacterBackgroundBounds.top + newCharacterBackgroundBounds.height) - (sceneBounds.top + sceneBounds.height) + newCharacterBackgroundBounds.height;
                 }
             }
         }
@@ -293,10 +293,10 @@ class Scene extends React.Component<SceneProps, {}> {
                                     y={-0.5}
                                     height={1}
                                     width={1}
+                                    ref={this.characterBackgroundRef}
                                     transform={characterBackgroundTransform}
                                 />
                                 <Character
-                                    ref={this.characterRef}
                                     world={this.props.world}
                                     transform={characterTransform}
                                     width={0.9}

@@ -13,18 +13,10 @@ type CharacterProps = {
 };
 
 export default class Character extends React.Component<CharacterProps, {}> {
-    iconRef: { current: null | Character };
-
-    constructor (props: CharacterProps) {
-        super(props);
-        this.iconRef = React.createRef();
-    }
-
     getThemedCharacter = () => {
         if (this.props.world === 'space') {
             return (
                 <SpaceShipIcon
-                    ref={this.iconRef}
                     className='Character__icon'
                     x={-this.props.width/2}
                     y={-this.props.width/2}
@@ -34,7 +26,6 @@ export default class Character extends React.Component<CharacterProps, {}> {
         } else if (this.props.world === 'forest') {
             return (
                 <RabbitIcon
-                    ref={this.iconRef}
                     className='Character__icon'
                     x={-this.props.width/2}
                     y={-this.props.width/2}
@@ -44,19 +35,12 @@ export default class Character extends React.Component<CharacterProps, {}> {
         } else {
             return (
                 <RobotIcon
-                    ref={this.iconRef}
                     className='Character__icon'
                     x={-this.props.width/2}
                     y={-this.props.width/2}
                     width={this.props.width}
                     height={this.props.width} />
             )
-        }
-    }
-
-    getBoundingClientRect = () => {
-        if (this.iconRef.current !== null) {
-            return this.iconRef.current.getBoundingClientRect();
         }
     }
 
