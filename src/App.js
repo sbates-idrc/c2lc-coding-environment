@@ -5,6 +5,7 @@ import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import AllowedActionsSerializer from './AllowedActionsSerializer';
 import AudioManagerImpl from './AudioManagerImpl';
+import CharacterAriaLive from './CharacterAriaLive';
 import CharacterState from './CharacterState';
 import CharacterStateSerializer from './CharacterStateSerializer';
 import CommandPaletteCommand from './CommandPaletteCommand';
@@ -871,6 +872,11 @@ export class App extends React.Component<AppProps, AppState> {
                         </div>
                     </div>
                 </div>
+                <CharacterAriaLive
+                    ariaLiveRegionId='character-position'
+                    characterState={this.state.characterState}
+                    runningState={this.state.runningState}
+                    world={this.state.settings.world}/>
                 <DashConnectionErrorModal
                     show={this.state.showDashConnectionError}
                     onCancel={this.handleCancelDashConnection}
@@ -1022,6 +1028,7 @@ export class App extends React.Component<AppProps, AppState> {
             window.localStorage.setItem('c2lc-allowedActions', serializedAllowedActions);
             window.localStorage.setItem('c2lc-world', this.state.settings.world)
         }
+
         if (this.state.announcementsEnabled !== prevState.announcementsEnabled) {
             this.audioManager.setAnnouncementsEnabled(this.state.announcementsEnabled);
         }
