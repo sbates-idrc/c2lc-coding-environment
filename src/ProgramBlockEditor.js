@@ -241,15 +241,16 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     };
 
     handleActionPanelReplaceStep = (index: number) => {
-        const oldCommandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.programSequence.getProgramStepAt(index)});
-        const newCommandString = this.props.intl.formatMessage({ id: "Announcement." + (this.props.selectedAction || "") });
-
-        this.props.audioManager.playAnnouncement('replace', this.props.intl, { oldCommand: oldCommandString, newCommand: newCommandString});
         if (this.props.selectedAction) {
-            if (
-                this.props.selectedAction &&
-                this.props.programSequence.getProgramStepAt(index) !== this.props.selectedAction) {
+            if (this.props.programSequence.getProgramStepAt(index) !== this.props.selectedAction) {
+                const oldCommandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.programSequence.getProgramStepAt(index)});
+                //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
+                const newCommandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.selectedAction});
+
+                this.props.audioManager.playAnnouncement('replace', this.props.intl, { oldCommand: oldCommandString, newCommand: newCommandString});
+
                 this.props.onChangeProgramSequence(
+                    //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
                     this.props.programSequence.overwriteStep(index, this.props.selectedAction)
                 );
                 this.setState({
@@ -263,6 +264,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                 });
             }
         } else {
+            this.props.audioManager.playAnnouncement('noMovementSelected', this.props.intl);
+
             this.setState({
                 replaceIsActive: true
             });
