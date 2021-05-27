@@ -8,6 +8,7 @@ import type { RunningState, WorldName } from './types';
 
 type CharacterAriaLiveProps = {
     intl: IntlShape,
+    ariaLiveRegionId: string,
     characterState: CharacterState,
     runningState: RunningState,
     world: WorldName
@@ -19,7 +20,7 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
         const xPos = characterState.getColumnLabel();
         const yPos = characterState.getRowLabel();
         const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
-        const ariaLiveRegion = document.getElementById('character-position');
+        const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
         if (this.props.world === 'space') {
             // $FlowFixMe: Flow doesn't know about character-position div
             ariaLiveRegion.innerText=this.props.intl.formatMessage(

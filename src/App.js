@@ -873,6 +873,7 @@ export class App extends React.Component<AppProps, AppState> {
                     </div>
                 </div>
                 <CharacterAriaLive
+                    ariaLiveRegionId='character-position'
                     characterState={this.state.characterState}
                     runningState={this.state.runningState}
                     world={this.state.settings.world}/>
