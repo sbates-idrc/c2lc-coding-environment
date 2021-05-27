@@ -54,6 +54,62 @@ export const KeyboardInputSchemes:KeyboardInputSchemesType = {
     }
 };
 
+const labelMessageKeysByCode = {
+    "KeyA": "KeyboardInputModal.KeyLabels.A",
+    "KeyB": "KeyboardInputModal.KeyLabels.B",
+    "KeyE": "KeyboardInputModal.KeyLabels.E",
+    "KeyI": "KeyboardInputModal.KeyLabels.I",
+    "KeyP": "KeyboardInputModal.KeyLabels.P",
+    "KeyS": "KeyboardInputModal.KeyLabels.S",
+    "KeyR": "KeyboardInputModal.KeyLabels.R"
+};
+
+const labelMessageKeysByKey = {
+    "?": "KeyboardInputModal.KeyLabels.QuestionMark",
+    ">": "KeyboardInputModal.KeyLabels.GreaterThan",
+    "<": "KeyboardInputModal.KeyLabels.LessThan"
+};
+
+export function getLabelMessageKeyFromKeyDef (keyDef: KeyDef) {
+    if (keyDef.code && labelMessageKeysByCode[keyDef.code]) {
+        return labelMessageKeysByCode[keyDef.code];
+    }
+    else if (keyDef.key && labelMessageKeysByKey[keyDef.key]) {
+        return labelMessageKeysByKey[keyDef.key];
+    }
+    else {
+        return "";
+    }
+};
+
+const iconMessageKeysByCode = {
+    "KeyA": "KeyboardInputModal.KeyIcons.A",
+    "KeyB": "KeyboardInputModal.KeyIcons.B",
+    "KeyE": "KeyboardInputModal.KeyIcons.E",
+    "KeyI": "KeyboardInputModal.KeyIcons.I",
+    "KeyP": "KeyboardInputModal.KeyIcons.P",
+    "KeyS": "KeyboardInputModal.KeyIcons.S",
+    "KeyR": "KeyboardInputModal.KeyIcons.R"
+};
+
+const iconMessageKeysByKey = {
+    "?": "KeyboardInputModal.KeyIcons.QuestionMark",
+    ">": "KeyboardInputModal.KeyIcons.GreaterThan",
+    "<": "KeyboardInputModal.KeyIcons.LessThan"
+};
+
+export function getIconMessageKeyFromKeyDef (keyDef: KeyDef) {
+    if (keyDef.code && iconMessageKeysByCode[keyDef.code]) {
+        return iconMessageKeysByCode[keyDef.code];
+    }
+    else if (keyDef.key && iconMessageKeysByKey[keyDef.key]) {
+        return iconMessageKeysByKey[keyDef.key];
+    }
+    else {
+        return "";
+    }
+};
+
 export function keyboardEventMatchesKeyDef (e: KeyboardEvent, keyDef: KeyDef) {
     if (e.code === keyDef.code || e.key === keyDef.key) {
         if (keyDef.altKey && !e.altKey) {

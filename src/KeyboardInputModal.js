@@ -5,7 +5,7 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 
 import type {KeyDef, KeyboardInputScheme, KeyboardInputSchemeName} from './KeyboardInputSchemes';
-import {KeyboardInputSchemes} from './KeyboardInputSchemes';
+import {KeyboardInputSchemes, getLabelMessageKeyFromKeyDef, getIconMessageKeyFromKeyDef} from './KeyboardInputSchemes';
 
 import ToggleSwitch from './ToggleSwitch';
 
@@ -51,42 +51,51 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
         keyBindings.forEach((key, index) => {
             const itemKey = "binding-" + index;
             const keyDef: KeyDef = keyboardInputScheme[key];
-            const keySegments = [];
-            // TODO: Make a lookup table to resolve code names or store some displayable value/message key.
-            keySegments.push(keyDef.key || (keyDef.code && keyDef.code.replace("Key", "")));
+            const labelKeySegments = [];
+            const iconKeySegments  = [];
+
+            const labelMessageKey = getLabelMessageKeyFromKeyDef(keyDef);
+            labelKeySegments.push(this.props.intl.formatMessage({ id: labelMessageKey }));
+
+            const iconMessageKey = getIconMessageKeyFromKeyDef(keyDef);
+            iconKeySegments.push(this.props.intl.formatMessage({ id: iconMessageKey}))
 
             if (keyDef.shiftKey) {
                 const shiftKeyName = this.props.intl.formatMessage(
-                    { id: "KeyboardInputModal.Keys.Shift" }
+                    { id: "KeyboardInputModal.KeyLabels.Shift" }
                 );
-                keySegments.unshift(shiftKeyName);
+                iconKeySegments.unshift(shiftKeyName);
+                labelKeySegments.unshift(shiftKeyName);
             }
 
             if (keyDef.altKey) {
                 const altKeyName = this.props.intl.formatMessage(
-                    { id: "KeyboardInputModal.Keys.Alt" }
+                    { id: "KeyboardInputModal.KeyLabels.Alt" }
                 );
-                keySegments.unshift(altKeyName);
+                iconKeySegments.unshift(altKeyName);
+                labelKeySegments.unshift(altKeyName);
             }
 
             if (keyDef.ctrlKey) {
                 const controlKeyName = this.props.intl.formatMessage(
-                    { id: "KeyboardInputModal.Keys.Control" }
+                    { id: "KeyboardInputModal.KeyLabels.Control" }
                 );
-                keySegments.unshift(controlKeyName);
+                iconKeySegments.unshift(controlKeyName);
+                labelKeySegments.unshift(controlKeyName);
             }
 
-            const keyString = keySegments.join(" + ")
+            const iconKeyString = iconKeySegments.join(" + ");
+            const labelKeyString = labelKeySegments.join(" + ")
             const descriptionMessageKey = "KeyboardInputModal.Description." + key;
             keyBindingElements.push(<li className="KeyboardInputModal__binding" key={itemKey}>
                 <div className="KeyboardInputModal__binding__icon" aria-hidden={true}  aria-labelledby={descriptionMessageKey}>
-                    {keyString}
+                    {iconKeyString}
                 </div>
                 <div className="KeyboardInputModal__binding__label">
                     <FormattedMessage
                         className="KeyboardInputModal__binding__label" id={descriptionMessageKey}
                         values={{
-                            key: keyString
+                            key: labelKeyString
                         }}
                     />
                 </div>
