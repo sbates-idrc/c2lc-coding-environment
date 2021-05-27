@@ -775,6 +775,20 @@ body.gray-theme {
 
     .ProgramBlockEditor__character-position-button {
         stroke: #818A98;
+
+        &:focus {
+            outline: $c2lc-focus-indicator-width solid $c2lc-focus-indicator-color;
+        }
+    
+        &:hover:not(.ProgramBlockEditor__character-position-button--disabled) {
+            path.filled {
+                fill: #505862;
+
+            }
+            path:not(.filled) {
+                stroke: #505862;
+            }
+        }
     }
 
     .ProgramBlockEditor__character-turn-positions {
@@ -1460,14 +1474,34 @@ body.contrast-theme {
         color: black;
     }
 
-    .ProgramBlockEditor__character-position-button:not(.ProgramBlockEditor__character-position-button--disabled) {
-        stroke: white;
+    .ProgramBlockEditor__character-position-button {
         &:focus {
             outline: $c2lc-focus-indicator-width solid white;
+        }        
+    }
+
+    .ProgramBlockEditor__character-position-button:not(.ProgramBlockEditor__character-position-button--disabled) {
+        stroke: white;
+
+        &:hover {
+            path:not(.inner):not(.filled) {
+                stroke: white;
+                stroke-width: 4px;
+            }
+            path.inner {
+                stroke: black;
+            }
         }
     }
 
     .ProgramBlockEditor__character-turn-positions {
+        .ProgramBlockEditor__character-position-button{
+            path.filled {
+                fill: white;
+                stroke: white;
+            }
+        }
+
         .ProgramBlockEditor__character-position-button:not(.ProgramBlockEditor__character-position-button--disabled) path.filled {
             fill: white;
         }
@@ -1475,6 +1509,16 @@ body.contrast-theme {
         .ProgramBlockEditor__character-position-button--disabled {
             path.filled {
                 fill: #505862;
+                stroke: #505862;
+            }
+        }
+
+        .ProgramBlockEditor__character-position-button:not(.ProgramBlockEditor__character-position-button--disabled) {
+            &:hover {
+                path.filled {
+                    fill: black;
+                    stroke: white;
+                }
             }
         }
     }
