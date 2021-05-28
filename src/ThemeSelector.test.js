@@ -6,16 +6,15 @@ import { configure, mount } from 'enzyme';
 import { IntlProvider } from 'react-intl';
 import messages from './messages.json';
 import ThemeSelector from './ThemeSelector';
-import type { ThemeName } from './types';
 
 configure({ adapter: new Adapter() });
 
-function createMountThemeSelector(props) {
+function createMountThemeSelector() {
     const wrapper = mount(
         React.createElement(
             ThemeSelector,
             {
-                onSelect: (value: ThemeName) => {}
+                onSelect: () => {}
             }
         ),
         {

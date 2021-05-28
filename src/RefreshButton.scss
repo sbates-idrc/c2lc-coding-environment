@@ -28,13 +28,9 @@ button.btn.RefreshButton {
     }
 }
 
-button.btn.RefreshButton.RefreshButton--disabled:active:focus {
-    background-color: $c2lc-primary-button-color;
-    box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
-}
-
 button.btn.RefreshButton.RefreshButton--disabled,
-button.btn.RefreshButton.RefreshButton--disabled:active:focus {
+button.btn.RefreshButton.RefreshButton--disabled:hover,
+button.btn.RefreshButton.RefreshButton--disabled:active {
     background-color: $c2lc-disabled-background-color;
     cursor: default;
 }

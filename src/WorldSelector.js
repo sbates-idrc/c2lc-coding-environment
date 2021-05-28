@@ -36,7 +36,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, {}> {
     handleCharacterKeyDown = (event: KeyboardEvent) => {
         const toggleKeys = [' ', 'Enter'];
 
-        if (toggleKeys.indexOf(event.key) !== -1) {
+        if (!this.props.disabled && toggleKeys.indexOf(event.key) !== -1) {
             event.preventDefault();
             // $FlowFixMe: Flow doesn't get what we're doing stashing a value on the element.
             this.props.onSelect(event.currentTarget.value);
@@ -62,6 +62,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, {}> {
                     aria-pressed={this.props.world === 'default'}
                     className={"WorldIcon" + (this.props.world === 'default' ? " WorldIcon--selected" : "") }
                     disabled={this.props.disabled}
+                    disabledClassName='WorldIcon--disabled'
                     onClick={this.handleCharacterClick}
                     onKeyDown={this.handleCharacterKeyDown}
                     value="default"
@@ -73,6 +74,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, {}> {
                     aria-pressed={this.props.world === 'forest'}
                     className={"WorldIcon" + (this.props.world === 'forest' ? " WorldIcon--selected" : "") }
                     disabled={this.props.disabled}
+                    disabledClassName='WorldIcon--disabled'
                     onClick={this.handleCharacterClick}
                     onKeyDown={this.handleCharacterKeyDown}
                     value="forest"
@@ -84,6 +86,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, {}> {
                     aria-pressed={this.props.world === 'space'}
                     className={"WorldIcon" + (this.props.world === 'space' ? " WorldIcon--selected" : "") }
                     disabled={this.props.disabled}
+                    disabledClassName='WorldIcon--disabled'
                     onClick={this.handleCharacterClick}
                     onKeyDown={this.handleCharacterKeyDown}
                     value="space"
