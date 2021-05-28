@@ -112,13 +112,13 @@ export function getIconMessageKeyFromKeyDef (keyDef: KeyDef) {
 
 export function keyboardEventMatchesKeyDef (e: KeyboardEvent, keyDef: KeyDef) {
     if (e.code === keyDef.code || e.key === keyDef.key) {
-        if (keyDef.altKey && !e.altKey) {
+        if (!!(keyDef.altKey) !== !!(e.altKey)) {
             return false;
         }
-        if (keyDef.shiftKey && !e.shiftKey) {
+        if (!!(keyDef.shiftKey) !== !!(e.shiftKey)) {
             return false;
         }
-        if (keyDef.ctrlKey && !e.ctrlKey) {
+        if (!!(keyDef.ctrlKey) !== !!(e.ctrlKey)) {
             return false;
         }
         return true;
