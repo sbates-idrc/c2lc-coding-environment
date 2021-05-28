@@ -38,24 +38,25 @@ import {Frequency} from 'tone';
 // }
 
 test("Returns a sensible note range for every supported character position.", () => {
-    // 4 rows "in bounds" on either side of the centre plus testing three "out of bounds" rows on each side.
-    const minRow = -7;
-    const maxRow = 7;
+    // We now have 16 rows and no "out of bounds".
+    const minRow = 1;
+    const maxRow = 16;
 
-    // 9 columns "in bounds" above and below the centre plus testing three "out of bounds" columns on each side.
-    const minCol = -12;
-    const maxCol = 12;
+    // We now have 26 columns and no "out of bounds".
+    const minCol = 1;
+    const maxCol = 26;
 
     // noteTable [row][col] = singlePitchString;
     const noteTable = [];
 
-    const sceneDimensions = new SceneDimensions(1, 1);
+    const sceneDimensions = new SceneDimensions(1, 26, 1, 16);
 
     for (let row = minRow; row <= maxRow; row++) {
-        let maxPitch = 0;
-        let minPitch = 127;
         const rowEntries = [];
         noteTable.push(rowEntries);
+
+        let maxPitch = 0;
+        let minPitch = 127;
 
         for (let col = minCol; col <= maxCol; col++) {
             const noteForState = getNoteForState(new CharacterState(col, row, 0, [], sceneDimensions));
@@ -64,13 +65,14 @@ test("Returns a sensible note range for every supported character position.", ()
             const midiNote: number = Frequency(noteForState).toMidi();
             maxPitch = Math.max(maxPitch, midiNote);
             minPitch = Math.min(minPitch, midiNote);
+
+            const pitchRange = maxPitch - minPitch;
+            expect(pitchRange).toBeGreaterThanOrEqual(0);
+            expect(pitchRange).toBeLessThanOrEqual(12);
+
             expect(midiNote).toBeGreaterThanOrEqual(0);
             expect(midiNote).toBeLessThanOrEqual(127);
         }
-
-        const pitchRange = maxPitch - minPitch;
-        expect(pitchRange).toBeGreaterThanOrEqual(0);
-        expect(pitchRange).toBeLessThanOrEqual(12);
     }
 
     // Uncomment this and the functions above to log the tuning as part of test runs.
