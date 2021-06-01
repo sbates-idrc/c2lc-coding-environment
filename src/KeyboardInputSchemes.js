@@ -44,11 +44,11 @@ export const KeyboardInputSchemes:KeyboardInputSchemesType = {
         addCommandToBeginning: { code: "KeyB", altKey: true, ctrlKey: true},
         addCommandToEnd: { code: "KeyE", altKey: true, ctrlKey: true},
         announceScene: { code: "KeyI", altKey: true, ctrlKey: true},
-        decreaseProgramSpeed: { key: "<" },
-        increaseProgramSpeed: { key: ">" },
+        decreaseProgramSpeed: { key: "<", shiftKey: true },
+        increaseProgramSpeed: { key: ">", shiftKey: true },
         playPauseProgram: { code: "KeyP", altKey: true, ctrlKey: true},
         refreshScene: { code: "KeyR", altKey: true, ctrlKey: true},
-        showHide: { key: "?" },
+        showHide: { key: "?", shiftKey: true },
         stopProgram: { code: "KeyS", altKey: true, ctrlKey: true},
         toggleAnnouncements: { code: "KeyA", altKey: true, ctrlKey: true}
     }
@@ -115,10 +115,13 @@ export function keyboardEventMatchesKeyDef (e: KeyboardEvent, keyDef: KeyDef) {
         if (!!(keyDef.altKey) !== !!(e.altKey)) {
             return false;
         }
-        if (!!(keyDef.shiftKey) !== !!(e.shiftKey)) {
+        if (!!(keyDef.ctrlKey) !== !!(e.ctrlKey)) {
             return false;
         }
-        if (!!(keyDef.ctrlKey) !== !!(e.ctrlKey)) {
+        // This check is intentionally less strict to allow capital letters,
+        // avoid issues when the caps lock is on, and to avoid having to display
+        // onscreen labels like "shift + ?"
+        if (keyDef.shiftKey && !e.shiftKey) {
             return false;
         }
         return true;
