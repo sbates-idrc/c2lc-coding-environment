@@ -59,6 +59,10 @@ body {
     }
 }
 
+.App__header-keyboardMenuIcon--disabled {    
+    background-color: #B9BEC6;
+}
+
 .App__header-audio-toggle {
     display: flex;
     align-self: center;

@@ -22,7 +22,6 @@ type KeyboardInputModalProps = {
 };
 
 class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
-
     static defaultProps = {
         show: false,
         onChangeKeyBindingsEnabled: () => {},
@@ -52,46 +51,61 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
             const itemKey = "binding-" + index;
             const keyDef: KeyDef = keyboardInputScheme[key];
             const labelKeySegments = [];
-            const iconKeySegments  = [];
+            const icons  = [];
 
             const labelMessageKey = getLabelMessageKeyFromKeyDef(keyDef);
             labelKeySegments.push(this.props.intl.formatMessage({ id: labelMessageKey }));
 
             const iconMessageKey = getIconMessageKeyFromKeyDef(keyDef);
-            iconKeySegments.push(this.props.intl.formatMessage({ id: iconMessageKey}))
+            const singleKeyString = this.props.intl.formatMessage({ id: iconMessageKey});
+            icons.push(<div key="unmodified" className="KeyboardInputModal__binding__icon">
+                {singleKeyString}
+            </div>);
 
+            // TODO: Discuss removing support for shiftKey flags.
             if (keyDef.shiftKey) {
                 const shiftKeyName = this.props.intl.formatMessage(
                     { id: "KeyboardInputModal.KeyLabels.Shift" }
                 );
-                iconKeySegments.unshift(shiftKeyName);
                 labelKeySegments.unshift(shiftKeyName);
             }
 
             if (keyDef.altKey) {
-                const altKeyName = this.props.intl.formatMessage(
+                const altKeyLabel = this.props.intl.formatMessage(
                     { id: "KeyboardInputModal.KeyLabels.Alt" }
                 );
-                iconKeySegments.unshift(altKeyName);
-                labelKeySegments.unshift(altKeyName);
+                labelKeySegments.unshift(altKeyLabel);
+
+                const altKeyIcon = this.props.intl.formatMessage(
+                    { id: "KeyboardInputModal.KeyIcons.Alt" }
+                );
+                icons.unshift(<div key="alt-modifier" className="KeyboardInputModal__binding__icon">
+                    {altKeyIcon}
+                </div>);
             }
 
             if (keyDef.ctrlKey) {
-                const controlKeyName = this.props.intl.formatMessage(
+                const controlKeyLabel = this.props.intl.formatMessage(
                     { id: "KeyboardInputModal.KeyLabels.Control" }
                 );
-                iconKeySegments.unshift(controlKeyName);
-                labelKeySegments.unshift(controlKeyName);
+                labelKeySegments.unshift(controlKeyLabel);
+
+                const controlKeyIcon = this.props.intl.formatMessage(
+                    { id: "KeyboardInputModal.KeyIcons.Control" }
+                );
+                icons.unshift(<div key="ctrl-modifier" className="KeyboardInputModal__binding__icon">
+                    {controlKeyIcon}
+                </div>);
             }
 
-            const iconKeyString = iconKeySegments.join(" + ");
             const labelKeyString = labelKeySegments.join(" + ")
             const descriptionMessageKey = "KeyboardInputModal.Description." + key;
+            const descriptionMessageId = "key-binding-description-" + index;
             keyBindingElements.push(<li className="KeyboardInputModal__binding" key={itemKey}>
-                <div className="KeyboardInputModal__binding__icon" aria-hidden={true}  aria-labelledby={descriptionMessageKey}>
-                    {iconKeyString}
+                <div className="KeyboardInputModal__binding__keyCombo"  aria-hidden={true}  aria-labelledby={descriptionMessageId}>
+                    {icons}
                 </div>
-                <div className="KeyboardInputModal__binding__label">
+                <div className="KeyboardInputModal__binding__label" id={descriptionMessageId}>
                     <FormattedMessage
                         className="KeyboardInputModal__binding__label" id={descriptionMessageKey}
                         values={{

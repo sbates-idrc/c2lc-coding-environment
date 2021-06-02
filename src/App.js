@@ -856,7 +856,7 @@ export class App extends React.Component<AppProps, AppState> {
                                 <FormattedMessage id='App.appHeading'/>
                             </h1>
                             <div
-                                className="App__header-keyboardMenuIcon"
+                                className={"App__header-keyboardMenuIcon" + (this.state.keyBindingsEnabled ? "" : " App__header-keyboardMenuIcon--disabled")}
                                 tabIndex={0}
                                 aria-label={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
                                 onClick={this.handleKeyboardModalToggle}
