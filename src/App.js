@@ -5,6 +5,7 @@ import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import AllowedActionsSerializer from './AllowedActionsSerializer';
 import AudioManagerImpl from './AudioManagerImpl';
+import CharacterAriaLive from './CharacterAriaLive';
 import CharacterState from './CharacterState';
 import CharacterStateSerializer from './CharacterStateSerializer';
 import CommandPaletteCommand from './CommandPaletteCommand';
@@ -508,9 +509,11 @@ export class App extends React.Component<AppProps, AppState> {
                 dashConnectionStatus: 'connected'
             });
         }, (error: Error) => {
+            /* eslint-disable no-console */
             console.log('ERROR');
             console.log(error.name);
             console.log(error.message);
+            /* eslint-enable no-console */
             this.setState({
                 dashConnectionStatus: 'notConnected',
                 showDashConnectionError: true
@@ -872,6 +875,11 @@ export class App extends React.Component<AppProps, AppState> {
                         </div>
                     </div>
                 </div>
+                <CharacterAriaLive
+                    ariaLiveRegionId='character-position'
+                    characterState={this.state.characterState}
+                    runningState={this.state.runningState}
+                    world={this.state.settings.world}/>
                 <DashConnectionErrorModal
                     show={this.state.showDashConnectionError}
                     onCancel={this.handleCancelDashConnection}
@@ -904,8 +912,10 @@ export class App extends React.Component<AppProps, AppState> {
                         usedActions: usedActions
                     });
                 } catch(err) {
+                    /* eslint-disable no-console */
                     console.log(`Error parsing program: ${programQuery}`);
                     console.log(err.toString());
+                    /* eslint-enable no-console */
                 }
             }
 
@@ -915,8 +925,10 @@ export class App extends React.Component<AppProps, AppState> {
                         characterState: this.characterStateSerializer.deserialize(characterStateQuery)
                     });
                 } catch(err) {
+                    /* eslint-disable no-console */
                     console.log(`Error parsing characterState: ${characterStateQuery}`);
                     console.log(err.toString());
+                    /* eslint-enable no-console */
                 }
             }
 
@@ -926,8 +938,10 @@ export class App extends React.Component<AppProps, AppState> {
                         allowedActions: this.allowedActionsSerializer.deserialize(allowedActionsQuery)
                     });
                 } catch(err) {
+                    /* eslint-disable no-console */
                     console.log(`Error parsing allowed actions: ${allowedActionsQuery}`);
                     console.log(err.toString());
+                    /* eslint-enable no-console */
                 }
             }
 
@@ -950,8 +964,10 @@ export class App extends React.Component<AppProps, AppState> {
                         usedActions: usedActions
                     });
                 } catch(err) {
+                    /* eslint-disable no-console */
                     console.log(`Error parsing program: ${localProgram}`);
                     console.log(err.toString());
+                    /* eslint-enable no-console */
                 }
             }
 
@@ -961,8 +977,10 @@ export class App extends React.Component<AppProps, AppState> {
                         characterState: this.characterStateSerializer.deserialize(localCharacterState)
                     });
                 } catch(err) {
+                    /* eslint-disable no-console */
                     console.log(`Error parsing characterState: ${localCharacterState}`);
                     console.log(err.toString());
+                    /* eslint-enable no-console */
                 }
             }
 
@@ -973,8 +991,10 @@ export class App extends React.Component<AppProps, AppState> {
                         allowedActions: this.allowedActionsSerializer.deserialize(localAllowedActions)
                     });
                 } catch(err) {
+                    /* eslint-disable no-console */
                     console.log(`Error parsing allowed actions: ${localAllowedActions}`);
                     console.log(err.toString());
+                    /* eslint-enable no-console */
                 }
             }
 
@@ -1023,6 +1043,7 @@ export class App extends React.Component<AppProps, AppState> {
             window.localStorage.setItem('c2lc-allowedActions', serializedAllowedActions);
             window.localStorage.setItem('c2lc-world', this.state.settings.world)
         }
+
         if (this.state.announcementsEnabled !== prevState.announcementsEnabled) {
             this.audioManager.setAnnouncementsEnabled(this.state.announcementsEnabled);
         }
