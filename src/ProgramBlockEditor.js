@@ -45,7 +45,6 @@ type ProgramBlockEditorProps = {
     // Bring back in C2LC-289
     // theme: string,
     world: string,
-    theme: string,
     onChangeCharacterPosition: (direction: ?string) => void,
     onChangeCharacterXPosition: (columnLabel: string) => void,
     onChangeCharacterYPosition: (rowLabel: string) => void,
@@ -67,10 +66,10 @@ type ProgramBlockEditorState = {
 class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, ProgramBlockEditorState> {
     commandBlockRefs: Map<number, HTMLElement>;
     addNodeRefs: Map<number, HTMLElement>;
-    updatedCommandBlocks: Array<HTMLElement>;
     focusCommandBlockIndex: ?number;
     focusAddNodeIndex: ?number;
     scrollToAddNodeIndex: ?number;
+    updatedCommandBlockIndex: ?number;
     programSequenceContainerRef: { current: null | HTMLDivElement };
     lastCalculatedClosestAddNode: number;
 
@@ -78,10 +77,10 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         super(props);
         this.commandBlockRefs = new Map();
         this.addNodeRefs = new Map();
-        this.updatedCommandBlocks = [];
         this.focusCommandBlockIndex = null;
         this.focusAddNodeIndex = null;
         this.scrollToAddNodeIndex = null;
+        this.updatedCommandBlockIndex = null;
         this.programSequenceContainerRef = React.createRef();
         this.lastCalculatedClosestAddNode = Date.now();
         this.state = {
@@ -137,14 +136,11 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     insertSelectedCommandIntoProgram(index: number) {
         if (this.props.selectedAction) {
             this.focusCommandBlockIndex = index;
+            this.updatedCommandBlockIndex = index;
             this.scrollToAddNodeIndex = index + 1;
             this.props.onChangeProgramSequence(
                 this.props.programSequence.insertStep(index, this.props.selectedAction)
             );
-            const element = this.commandBlockRefs.get(index);
-            if (element) {
-                element.classList.remove('ProgramBlockEditor__program-block--updated');
-            }
         }
     }
 
@@ -317,6 +313,10 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
             // Otherwise, open it
             this.props.onChangeActionPanelStepIndex(index);
         }
+    };
+
+    handleProgramCommandBlockAnimationEnd = (e: SyntheticEvent<HTMLButtonElement>) => {
+        e.currentTarget.classList.remove('ProgramBlockEditor__program-block--updated');
     };
 
     handleClickAddNode = (stepNumber: number) => {
@@ -506,6 +506,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                 aria-expanded={hasActionPanelControl}
                 disabled={this.props.editingDisabled}
                 onClick={this.handleClickStep}
+                onAnimationEnd={this.handleProgramCommandBlockAnimationEnd}
             />
         );
     }
@@ -794,21 +795,10 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         }
         if (this.focusCommandBlockIndex != null) {
             const element = this.commandBlockRefs.get(this.focusCommandBlockIndex);
-            const isDeleteStep = prevProps.programSequence.getProgramLength() > this.props.programSequence.getProgramLength();
             if (element) {
                 element.focus();
-                if (!isDeleteStep) {
-                    element.classList.add('ProgramBlockEditor__program-block--updated');
-                    this.updatedCommandBlocks.push(element);
-                }
             }
             this.focusCommandBlockIndex = null;
-        }
-        if (prevProps.theme !== this.props.theme) {
-            for (const updatedCommandBlock of this.updatedCommandBlocks) {
-                updatedCommandBlock.classList.remove('ProgramBlockEditor__program-block--updated');
-            }
-            this.updatedCommandBlocks = [];
         }
         if (this.focusAddNodeIndex != null) {
             const addNode = this.addNodeRefs.get(this.focusAddNodeIndex);
@@ -816,6 +806,13 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                 addNode.focus();
             }
             this.focusAddNodeIndex = null;
+        }
+        if (this.updatedCommandBlockIndex != null) {
+            const element = this.commandBlockRefs.get(this.updatedCommandBlockIndex);
+            if (element) {
+                element.classList.add('ProgramBlockEditor__program-block--updated');
+            }
+            this.updatedCommandBlockIndex = null;
         }
         if (this.props.runningState === 'running') {
             const activeProgramStepNum = this.props.programSequence.getProgramCounter();

@@ -836,7 +836,6 @@ export class App extends React.Component<AppProps, AppState> {
                             focusTrapManager={this.focusTrapManager}
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
                             world={this.state.settings.world}
-                            theme={this.state.settings.theme}
                             onChangeCharacterPosition={this.handleChangeCharacterPosition}
                             onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
                             onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
