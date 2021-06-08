@@ -133,11 +133,22 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         return this.props.selectedAction != null;
     }
 
+    setUpdatedCommandBlock(index: number) {
+        this.updatedCommandBlockIndex = index;
+        // Remove the animation class, if it exists, from the current
+        // block at the index, to ensure that the animation (re)starts from
+        // the beginning.
+        const element = this.commandBlockRefs.get(index);
+        if (element) {
+            element.classList.remove('ProgramBlockEditor__program-block--updated');
+        }
+    }
+
     insertSelectedCommandIntoProgram(index: number) {
         if (this.props.selectedAction) {
             this.focusCommandBlockIndex = index;
-            this.updatedCommandBlockIndex = index;
             this.scrollToAddNodeIndex = index + 1;
+            this.setUpdatedCommandBlock(index);
             this.props.onChangeProgramSequence(
                 this.props.programSequence.insertStep(index, this.props.selectedAction)
             );
@@ -261,6 +272,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                 });
                 this.focusCommandBlockIndex = index;
                 this.scrollToAddNodeIndex = index + 1;
+                this.setUpdatedCommandBlock(index);
             } else {
                 this.setState({
                     replaceIsActive: true
