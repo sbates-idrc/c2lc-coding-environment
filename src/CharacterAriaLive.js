@@ -18,26 +18,26 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
     getCharacterAriaLabel() {
         if (this.props.world === 'space') {
             return this.props.intl.formatMessage(
-                {id:'ProgramBlockEditor.spaceShipCharacter'}
+                {id:'CharacterAriaLive.spaceShipCharacter'}
             );
         } else if (this.props.world === 'forest') {
             return this.props.intl.formatMessage(
-                {id:'ProgramBlockEditor.rabbitCharacter'}
+                {id:'CharacterAriaLive.rabbitCharacter'}
             );
         } else {
             return this.props.intl.formatMessage(
-                {id:'ProgramBlockEditor.robotCharacter'}
+                {id:'CharacterAriaLive.robotCharacter'}
             );
         }
     }
 
-    clearCharacterPositionAriaLive() {
+    setCharacterMovingAriaLive() {
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
         const character = this.getCharacterAriaLabel();
 
         // $FlowFixMe: Flow doesn't know that elements have innerText.
         ariaLiveRegion.innerText=this.props.intl.formatMessage(
-            {id:'ProgramBlockEditor.movementAriaLabel'},
+            {id:'CharacterAriaLive.movementAriaLabel'},
             { character }
         );
     }
@@ -51,7 +51,7 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
         const character = this.getCharacterAriaLabel();
         // $FlowFixMe: Flow doesn't know that elements have innerText.
         ariaLiveRegion.innerText=this.props.intl.formatMessage(
-            {id:'ProgramBlockEditor.positionAriaLabel'},
+            {id:'CharacterAriaLive.positionAriaLabel'},
             {
                 character,
                 xPos,
@@ -80,7 +80,7 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
                 this.updateCharacterPositionAriaLive();
             }
             else if (this.props.runningState === "running") {
-                this.clearCharacterPositionAriaLive();
+                this.setCharacterMovingAriaLive();
             }
         }
     }
