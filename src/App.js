@@ -41,6 +41,7 @@ import KeyboardInputModal from './KeyboardInputModal';
 
 import type {KeyboardInputSchemeName, KeyboardInputScheme} from './KeyboardInputSchemes';
 import {KeyboardInputSchemes, keyboardEventMatchesKeyDef} from './KeyboardInputSchemes';
+import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg'
 
 
 /* Dash connection removed for version 0.5
@@ -862,7 +863,7 @@ export class App extends React.Component<AppProps, AppState> {
                                 onClick={this.handleKeyboardModalToggle}
                                 onKeyDown={this.handleKeyboardMenuIconKeydown}
                             >
-                                K
+                                <KeyboardModalToggleIcon/>
                             </div>
                             <div className='App__header-audio-toggle'>
                                 <div className='App__audio-toggle-switch'>
