@@ -48,7 +48,6 @@ export default class Character extends React.Component<CharacterProps, {}> {
         return (
             <g
                 className='Character'
-                is='svg-group'
                 transform={this.props.transform}>
                 {this.getThemedCharacter()}
             </g>
