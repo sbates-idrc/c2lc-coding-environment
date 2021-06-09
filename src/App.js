@@ -5,6 +5,7 @@ import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import AllowedActionsSerializer from './AllowedActionsSerializer';
 import AudioManagerImpl from './AudioManagerImpl';
+import CharacterAriaLive from './CharacterAriaLive';
 import CharacterState from './CharacterState';
 import CharacterStateSerializer from './CharacterStateSerializer';
 import CommandPaletteCommand from './CommandPaletteCommand';
@@ -92,6 +93,7 @@ export class App extends React.Component<AppProps, AppState> {
     characterStateSerializer: CharacterStateSerializer;
     allowedActionsSerializer: AllowedActionsSerializer;
     speedLookUp: Array<number>;
+    pushStateTimeoutID: ?TimeoutID;
 
     constructor(props: any) {
         super(props);
@@ -102,7 +104,7 @@ export class App extends React.Component<AppProps, AppState> {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
         };
 
-        this.sceneDimensions = new SceneDimensions(26, 16);
+        this.sceneDimensions = new SceneDimensions(1, 26, 1, 16);
 
         // Begin facing East
         this.startingCharacterState = new CharacterState(1, 1, 2, [], this.sceneDimensions);
@@ -117,10 +119,12 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.allowedActionsSerializer = new AllowedActionsSerializer();
 
+        this.pushStateTimeoutID = null;
+
         this.interpreter.addCommandHandler(
             'forward1',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('forward1', this.props.intl);
                 this.setState((state) => {
@@ -140,7 +144,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'forward2',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('forward2', this.props.intl);
                 this.setState((state) => {
@@ -160,7 +164,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'forward3',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('forward3', this.props.intl);
                 this.setState((state) => {
@@ -179,7 +183,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'backward1',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('backward1');
                 this.setState((state) => {
@@ -198,7 +202,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'backward2',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('backward2');
                 this.setState((state) => {
@@ -217,7 +221,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'backward3',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('backward3');
                 this.setState((state) => {
@@ -236,7 +240,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'left45',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('left45', this.props.intl);
                 this.setState((state) => {
@@ -256,7 +260,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'left90',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('left90', this.props.intl);
                 this.setState((state) => {
@@ -276,7 +280,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'left180',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('left180', this.props.intl);
                 this.setState((state) => {
@@ -296,7 +300,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'right45',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('right45', this.props.intl);
                 this.setState((state) => {
@@ -316,7 +320,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'right90',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('right90', this.props.intl);
                 this.setState((state) => {
@@ -336,7 +340,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.addCommandHandler(
             'right180',
             'moveCharacter',
-            (interpreter, stepTimeMs) => {
+            (stepTimeMs) => {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('right180', this.props.intl);
                 this.setState((state) => {
@@ -505,9 +509,11 @@ export class App extends React.Component<AppProps, AppState> {
                 dashConnectionStatus: 'connected'
             });
         }, (error: Error) => {
+            /* eslint-disable no-console */
             console.log('ERROR');
             console.log(error.name);
             console.log(error.message);
+            /* eslint-enable no-console */
             this.setState({
                 dashConnectionStatus: 'notConnected',
                 showDashConnectionError: true
@@ -792,7 +798,10 @@ export class App extends React.Component<AppProps, AppState> {
                                     onChange={this.handleTogglePenDown}/>
                                 <div className='App__refreshButton-container'>
                                     <RefreshButton
-                                        disabled={this.state.runningState === 'running'}
+                                        disabled={
+                                            !(this.state.runningState === 'stopped'
+                                            || this.state.runningState === 'paused')
+                                        }
                                         onClick={this.handleRefresh}
                                     />
                                 </div>
@@ -804,7 +813,10 @@ export class App extends React.Component<AppProps, AppState> {
                             <FormattedMessage id='WorldSelector.heading' />
                         </h2>
                         <WorldSelector
-                            disabled={this.state.runningState === 'running'}
+                            disabled={
+                                !(this.state.runningState === 'stopped'
+                                || this.state.runningState === 'paused')
+                            }
                             world={this.state.settings.world}
                             onSelect={this.handleChangeWorld}
                         />
@@ -862,6 +874,11 @@ export class App extends React.Component<AppProps, AppState> {
                         </div>
                     </div>
                 </div>
+                <CharacterAriaLive
+                    ariaLiveRegionId='character-position'
+                    characterState={this.state.characterState}
+                    runningState={this.state.runningState}
+                    world={this.state.settings.world}/>
                 <DashConnectionErrorModal
                     show={this.state.showDashConnectionError}
                     onCancel={this.handleCancelDashConnection}
@@ -894,8 +911,10 @@ export class App extends React.Component<AppProps, AppState> {
                         usedActions: usedActions
                     });
                 } catch(err) {
+                    /* eslint-disable no-console */
                     console.log(`Error parsing program: ${programQuery}`);
                     console.log(err.toString());
+                    /* eslint-enable no-console */
                 }
             }
 
@@ -905,8 +924,10 @@ export class App extends React.Component<AppProps, AppState> {
                         characterState: this.characterStateSerializer.deserialize(characterStateQuery)
                     });
                 } catch(err) {
+                    /* eslint-disable no-console */
                     console.log(`Error parsing characterState: ${characterStateQuery}`);
                     console.log(err.toString());
+                    /* eslint-enable no-console */
                 }
             }
 
@@ -916,8 +937,10 @@ export class App extends React.Component<AppProps, AppState> {
                         allowedActions: this.allowedActionsSerializer.deserialize(allowedActionsQuery)
                     });
                 } catch(err) {
+                    /* eslint-disable no-console */
                     console.log(`Error parsing allowed actions: ${allowedActionsQuery}`);
                     console.log(err.toString());
+                    /* eslint-enable no-console */
                 }
             }
 
@@ -940,8 +963,10 @@ export class App extends React.Component<AppProps, AppState> {
                         usedActions: usedActions
                     });
                 } catch(err) {
+                    /* eslint-disable no-console */
                     console.log(`Error parsing program: ${localProgram}`);
                     console.log(err.toString());
+                    /* eslint-enable no-console */
                 }
             }
 
@@ -951,8 +976,10 @@ export class App extends React.Component<AppProps, AppState> {
                         characterState: this.characterStateSerializer.deserialize(localCharacterState)
                     });
                 } catch(err) {
+                    /* eslint-disable no-console */
                     console.log(`Error parsing characterState: ${localCharacterState}`);
                     console.log(err.toString());
+                    /* eslint-enable no-console */
                 }
             }
 
@@ -963,8 +990,10 @@ export class App extends React.Component<AppProps, AppState> {
                         allowedActions: this.allowedActionsSerializer.deserialize(localAllowedActions)
                     });
                 } catch(err) {
+                    /* eslint-disable no-console */
                     console.log(`Error parsing allowed actions: ${localAllowedActions}`);
                     console.log(err.toString());
+                    /* eslint-enable no-console */
                 }
             }
 
@@ -984,18 +1013,28 @@ export class App extends React.Component<AppProps, AppState> {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedAllowedActions = this.allowedActionsSerializer.serialize(this.state.allowedActions);
-            window.history.pushState(
-                {
-                    p: serializedProgram,
-                    c: serializedCharacterState,
-                    t: this.state.settings.theme,
-                    a: serializedAllowedActions,
-                    w: this.state.settings.world
-                },
-                '',
-                Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedAllowedActions),
-                '',
-            );
+
+            // Use setTimeout() to limit how often we call history.pushState().
+            // Safari will throw an error if calls to history.pushState() are
+            // too frequent: "SecurityError: Attempt to use history.pushState()
+            // more than 100 times per 30 seconds".
+            const pushStateDelayMs = 350;
+            clearTimeout(this.pushStateTimeoutID);
+            this.pushStateTimeoutID = setTimeout(() => {
+                window.history.pushState(
+                    {
+                        p: serializedProgram,
+                        c: serializedCharacterState,
+                        t: this.state.settings.theme,
+                        a: serializedAllowedActions,
+                        w: this.state.settings.world
+                    },
+                    '',
+                    Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedAllowedActions),
+                    '',
+                );
+            }, pushStateDelayMs);
+
             window.localStorage.setItem('c2lc-version', this.version);
             window.localStorage.setItem('c2lc-program', serializedProgram);
             window.localStorage.setItem('c2lc-characterState', serializedCharacterState);
@@ -1003,6 +1042,7 @@ export class App extends React.Component<AppProps, AppState> {
             window.localStorage.setItem('c2lc-allowedActions', serializedAllowedActions);
             window.localStorage.setItem('c2lc-world', this.state.settings.world)
         }
+
         if (this.state.announcementsEnabled !== prevState.announcementsEnabled) {
             this.audioManager.setAnnouncementsEnabled(this.state.announcementsEnabled);
         }
