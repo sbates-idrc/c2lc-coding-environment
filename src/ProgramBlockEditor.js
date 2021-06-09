@@ -145,12 +145,13 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     }
 
     insertSelectedCommandIntoProgram(index: number) {
-        if (this.props.selectedAction) {
+        const selectedAction = this.props.selectedAction;
+        if (selectedAction) {
             this.focusCommandBlockIndex = index;
             this.scrollToAddNodeIndex = index + 1;
             this.setUpdatedCommandBlock(index);
             this.props.onChangeProgramSequence(
-                this.props.programSequence.insertStep(index, this.props.selectedAction)
+                this.props.programSequence.insertStep(index, selectedAction)
             );
         }
     }
