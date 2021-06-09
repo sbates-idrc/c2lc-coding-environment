@@ -10,6 +10,5 @@ We use [this template based on Nygard's blog post](https://github.com/joelparker
 as the starting point for our ADRs.
 
 ADRs should be submitted as pull requests against this repository, which add a new ADR to this directory. ADRs are
-named based on the order in which they are approved. For example, the first ADR approved is named `ADR001.md`, the
-second is `ADR002.md`. If more than one ADR is under review at a given time, the second to be approved should be
-renamed to use the next ADR number.
+named based on the order in which they are created. For example, the first ADR created is named `ADR001.md`, the
+second is `ADR002.md`. The order in which they are approved is reflected by the time the file was merged.

@@ -15,5 +15,4 @@ npx flow-typed install react-intl@2
 Note that there have been local changes to the flow types for `react-intl` and `react-bootstrap`, those definitions
 cannot simply be regenerated or updated.
 
-We have manually created types for packages that do note have flow-typed definitions, like `soundex` and `Tone.js`.
-We also created types for the `messages.json` language bundle used in this package.
+We have manually created types for packages that do note have flow-typed definitions, like `Tone.js`. We also created types for the `messages.json` language bundle used in this package.

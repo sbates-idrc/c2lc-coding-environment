@@ -2,7 +2,7 @@
 
 The Inclusive Coding Environment is a new educational coding tool designed for learners with disabilities. The
 Environment can be used with a mouse, touchscreen, or keyboard, and supports assistive technologies such as screen
-readers. It is a web application that works in the Chrome browser.
+readers. It is a web application that works in a browser.
 
 ![inclusive coding environment UI](./inclusive-coding-env.png)
 
@@ -29,7 +29,7 @@ npm start
 
 A URL like [http://localhost:3000](http://localhost:3000) will be displayed in the console output, open that URL with
 a browser to see the Coding Environment in action. The browser window will reload if you add or change files. You
-will also see any lint errors in the console (see [our Contributor's guide for details](./docs/contributing.md)).
+will also see any errors in the console (see [our Contributor's guide for details](./docs/contributing.md)).
 
 ## Testing
 
@@ -65,5 +65,5 @@ We would like to thank these amazing open source projects and libraries that we 
 | [github.com/KyleAMathews/typefaces/tree/master/packages/roboto](https://github.com/KyleAMathews/typefaces/tree/master/packages/roboto) | MIT License |
 | [github.com/react-bootstrap/react-bootstrap](https://github.com/react-bootstrap/react-bootstrap) | MIT License |
 | [github.com/sass/node-sass](https://github.com/sass/node-sass) | MIT License |
-| [loading.io/](https://loading.io/) | [Loading.io Free License](https://loading.io/license/#free-license) |
-| [Tone.js][https://tonejs.github.io]| [MIT License](https://github.com/Tonejs/Tone.js/blob/dev/LICENSE.md)|
+| [github.com/Tonejs/Tone.js][https://github.com/Tonejs/Tone.js]| [MIT License](https://github.com/Tonejs/Tone.js/blob/dev/LICENSE.md)|
+| [loading.io](https://loading.io/) | [Loading.io Free License](https://loading.io/license/#free-license) |

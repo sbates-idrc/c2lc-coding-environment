@@ -142,7 +142,7 @@ ReactDOM.render(<TopDownManager />, document.getElementById('root'));
 ```
 
 When a state variable is updated, react knows to re-render any components that use that value as a property. In this way
-we keep UI components simple and consolidate the logic regaarding variables. The above example also illustrates how we
+we keep UI components simple and consolidate the logic regarding variables. The above example also illustrates how we
 often use react's `setState` method to safely perform updates based on the current value of a state variable.
 
 ### Linting
