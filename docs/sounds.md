@@ -2,11 +2,13 @@
 
 ## Tuning Diagram
 
-Sounds like movement and turning are adjusted to match a pitch that corresponds to their position in the coding
-environment. This is based loosely on the [Tonnetz](https://en.wikipedia.org/wiki/Tonnetz) system, where each row and
+Sounds like movement and turning are adjusted to match a pitch that corresponds
+to their position in the coding environment. This is based loosely on the
+[Tonnetz](https://en.wikipedia.org/wiki/Tonnetz) system, where each row and
 column are offset by a consistent number of pitches.
 
-The following is a diagram of the pitches for the cells used in the current scene:
+The following is a diagram of the pitches for the cells used in the current
+scene:
 
 |       |     A |     B |     C |     D |     E |     F |     G |     H |     I |     J |     K |     L |     M |     N |     O |     P |     Q |  R    |     S |     T |
 | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
@@ -29,5 +31,7 @@ The following is a diagram of the pitches for the cells used in the current scen
 The tonnetz space as used here has a few interesting features as you move around:
 
 1. Moving up or down three squares changes the octave.
-2. Moving in a triangle that points up and to the right (such as B2 -> B1 -> C1) plays the notes of a major chord.
-3. Moving in a triangle that points down and to the left (such as B1 -> C1 -> C2) plays the notes of a minor chord.
+2. Moving in a triangle that points up and to the right (such as B2 -> B1 -> C1)
+   plays the notes of a major chord.
+3. Moving in a triangle that points down and to the left (such as B1 -> C1 -> C2)
+   plays the notes of a minor chord.
