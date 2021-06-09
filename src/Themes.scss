@@ -34,11 +34,6 @@ body.light-theme {
         background-color: #FFF;
     }
 
-    .App__header {
-        background-color: #FFF;
-        color: #000;
-    }
-
     .App__command-palette-command-container {
         background-color: #EBFAF8;
     }
@@ -299,6 +294,9 @@ body.dark-theme {
 
     .App__header {
         background-color: #18252C;
+    }
+
+    .App__app-heading > a {
         color: white;
     }
 
@@ -524,11 +522,6 @@ body.gray-theme {
 
     .App__container {
         background-color: #FFF;
-    }
-
-    .App__header {
-        background-color: #FFF;
-        color: #000;
     }
 
     .ThemeSelector {
@@ -778,7 +771,7 @@ body.gray-theme {
         &:focus {
             outline: $c2lc-focus-indicator-width solid $c2lc-focus-indicator-color;
         }
-    
+
         &:hover:not(.ProgramBlockEditor__character-position-button--disabled) {
             path.filled {
                 fill: #505862;
@@ -1163,6 +1156,9 @@ body.contrast-theme {
 
     .App__header {
         background-color: black;
+    }
+
+    .App__app-heading > a {
         color: white;
     }
 
@@ -1476,7 +1472,7 @@ body.contrast-theme {
     .ProgramBlockEditor__character-position-button {
         &:focus {
             outline: $c2lc-focus-indicator-width solid white;
-        }        
+        }
     }
 
     .ProgramBlockEditor__character-position-button:not(.ProgramBlockEditor__character-position-button--disabled) {
