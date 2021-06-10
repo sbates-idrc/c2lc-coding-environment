@@ -727,7 +727,9 @@ export class App extends React.Component<AppProps, AppState> {
                     <header className='App__header'>
                         <div className='App__header-row'>
                             <h1 className='App__app-heading'>
-                                <a href='https://weavly.org'>
+                                <a href='https://weavly.org'
+                                    aria-label={this.props.intl.formatMessage({id: 'App.appHeading.link'})}
+                                    target='_blank'>
                                     <FormattedMessage id='App.appHeading'/>
                                 </a>
                             </h1>
