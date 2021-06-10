@@ -660,7 +660,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                     <div className='ProgramBlockEditor__character-turn-positions'>
                         <TurnPositionLeft
                             className={characterPositionButtonClassName}
-                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.trunLeft'})}
+                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.turnLeft'})}
                             aria-disabled={this.props.editingDisabled}
                             role='button'
                             tabIndex='0'
@@ -669,7 +669,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                             onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
                         <TurnPositionRight
                             className={characterPositionButtonClassName}
-                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.trunRight'})}
+                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.turnRight'})}
                             aria-disabled={this.props.editingDisabled}
                             role='button'
                             tabIndex='0'
