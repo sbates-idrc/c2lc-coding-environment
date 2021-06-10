@@ -729,7 +729,8 @@ export class App extends React.Component<AppProps, AppState> {
                             <h1 className='App__app-heading'>
                                 <a href='https://weavly.org'
                                     aria-label={this.props.intl.formatMessage({id: 'App.appHeading.link'})}
-                                    target='_blank'>
+                                    target='_blank'
+                                    rel='noopener noreferrer'>
                                     <FormattedMessage id='App.appHeading'/>
                                 </a>
                             </h1>
