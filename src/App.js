@@ -8,6 +8,7 @@ import AudioManagerImpl from './AudioManagerImpl';
 import CharacterAriaLive from './CharacterAriaLive';
 import CharacterState from './CharacterState';
 import CharacterStateSerializer from './CharacterStateSerializer';
+import CharacterPositionController from './CharacterPositionController';
 import CommandPaletteCommand from './CommandPaletteCommand';
 import C2lcURLParams from './C2lcURLParams';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
@@ -808,7 +809,7 @@ export class App extends React.Component<AppProps, AppState> {
                             </div>
                         </div>
                     </div>
-                    <div className="App__world-selector-container">
+                    <div className="App__world-container">
                         <h2 className='sr-only' >
                             <FormattedMessage id='WorldSelector.heading' />
                         </h2>
@@ -820,6 +821,15 @@ export class App extends React.Component<AppProps, AppState> {
                             world={this.state.settings.world}
                             onSelect={this.handleChangeWorld}
                         />
+                        <CharacterPositionController
+                            characterState={this.state.characterState}
+                            editingDisabled={
+                                !(this.state.runningState === 'stopped'
+                                || this.state.runningState === 'paused')}
+                            world={this.state.settings.world}
+                            onChangeCharacterPosition={this.handleChangeCharacterPosition}
+                            onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
+                            onChangeCharacterYPosition={this.handleChangeCharacterYPosition} />
                     </div>
                     <div className='App__program-block-editor'>
                         <ProgramBlockEditor
@@ -836,9 +846,6 @@ export class App extends React.Component<AppProps, AppState> {
                             focusTrapManager={this.focusTrapManager}
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
                             world={this.state.settings.world}
-                            onChangeCharacterPosition={this.handleChangeCharacterPosition}
-                            onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
-                            onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
