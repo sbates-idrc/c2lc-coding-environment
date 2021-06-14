@@ -17,7 +17,7 @@ body.mixed-theme {
     }
 
     .WorldSelector button.btn.WorldIcon--disabled {
-        background-color: #505862;
+        background-color: #B9BEC6;
     }
 
     .WorldSelector .WorldIcon--selected:not(:hover) {
@@ -417,6 +417,28 @@ body.dark-theme {
         border-top: 1px solid #19282F;
     }
 
+    .CharacterPositionController__character-turn-positions {
+        svg path.filled {
+            fill: #22343C;
+            stroke: none;
+        }
+
+        .CharacterPositionController__character-position-button--disabled {
+            path.filled {
+                fill: #505862;
+            }
+        }
+    }
+
+    .CharacterPositionController__character-position-button {
+        stroke: #22343C;
+    }
+
+    .CharacterPositionController__character-position-button--disabled {
+        cursor: default;
+        stroke: #505862;
+    }
+
     .WorldSelector {
         background-color: #33717F;
         border: 1px solid #33717F;
@@ -676,7 +698,7 @@ body.gray-theme {
     }
 
     .CharacterPositionController__character-position-button {
-        stroke: #818A98;
+        stroke: #67717E;
 
         &:focus {
             outline: $c2lc-focus-indicator-width solid $c2lc-focus-indicator-color;
@@ -695,7 +717,7 @@ body.gray-theme {
 
     .CharacterPositionController__character-turn-positions {
         svg path.filled {
-            fill: #818A98;
+            fill: #67717E;
         }
     }
 
@@ -940,7 +962,6 @@ body.gray-theme {
         height: 45px;
         width: 45px;
         background-color: #F1F2F4;
-        border: 2px solid #818A98;
         border-radius: 4px;
     }
 
