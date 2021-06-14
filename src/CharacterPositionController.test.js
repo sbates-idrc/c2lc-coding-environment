@@ -99,6 +99,10 @@ function getCharacterPositionCoordinateBoxes(characterPositionControllerWrapper)
     return characterPositionControllerWrapper.find('.ProgramBlock__character-position-coordinate-box');
 }
 
+function getCharacterIcon(characterPositionControllerWrapper) {
+    return characterPositionControllerWrapper.find('.CharacterPositionController__character-column-character');
+}
+
 describe('Using change character position buttons', () => {
     test.each([
         'turnLeft', 'turnRight', 'up', 'right', 'down', 'left'
@@ -193,4 +197,24 @@ describe('Using change character position by column/row labels', () => {
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(2);
         expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(secondSampleYPosition);
     });
+    test('Changing world changes the character icon', () => {
+        expect.assertions(2);
+        const { wrapper } = createShallowCharacterPositionController();
+        wrapper.setProps({world: 'space'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip.svg');
+        wrapper.setProps({world: 'forest'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Rabbit.svg');
+    });
+    test('Character icon gets transform value to match the character in the scene', () => {
+        expect.assertions(3);
+        const { wrapper } = createShallowCharacterPositionController();
+        // With default character facing right
+        expect(getCharacterIcon(wrapper).get(0).props.transform).toBe('rotate(0 0 0)');
+        // Set characterState prop to make the character face down
+        wrapper.setProps({characterState: new CharacterState(1, 1, 4, [], new SceneDimensions(1, 100, 1, 100))});
+        expect(getCharacterIcon(wrapper).get(0).props.transform).toBe('rotate(90 0 0)');
+        // Set characterState prop to make the character face up
+        wrapper.setProps({characterState: new CharacterState(1, 1, 0, [], new SceneDimensions(1, 100, 1, 100))});
+        expect(getCharacterIcon(wrapper).get(0).props.transform).toBe('rotate(-90 0 0)');
+    })
 });
