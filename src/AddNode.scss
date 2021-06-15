@@ -5,14 +5,13 @@ $heightOfCollapsedIcon: 0.8rem;
 $widthOfExpandedIcon: 1.25rem;
 $heightOfExpandedIcon: 1.25rem;
 
-$addNodeExpandedButtonBorderWidth: 2px;
 $addNodeExpandedButtonPadding: 0.5rem;
 
 $addNodeDropMargin: 2.5rem;
 $addNodeDropAreaHeight: 6.25rem;
 
 button.btn.AddNode__expanded-button {
-    border: $addNodeExpandedButtonBorderWidth solid #D5D8DD;
+    border: $c2lc-add-node-expanded-border-width solid #D5D8DD;
     border-radius: 50%;
     background-color:  #22343C;
     padding: $addNodeExpandedButtonPadding;
@@ -31,7 +30,7 @@ button.btn.AddNode__expanded-button {
     }
 
     &:focus {
-        border: $addNodeExpandedButtonBorderWidth solid transparent;
+        border: $c2lc-add-node-expanded-border-width solid transparent;
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
 
