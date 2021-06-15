@@ -595,11 +595,12 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     }
 
     makeEndOfProgramAddNodeSection(programStepNumber: number) {
+        const isEmptyProgram = this.props.programSequence.getProgramLength() === 0;
         return (
             <React.Fragment key={'endOfProgramAddNodeSection'}>
                 <div className='ProgramBlockEditor__program-block-connector'/>
                 <AddNode
-                    aria-label={this.makeAddNodeAriaLabel(programStepNumber, true)}
+                    aria-label={this.makeAddNodeAriaLabel(programStepNumber, !isEmptyProgram)}
                     ref={ (element) => this.setAddNodeRef(programStepNumber, element) }
                     expandedMode={true}
                     isDraggingCommand={this.props.isDraggingCommand}
