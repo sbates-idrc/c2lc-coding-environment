@@ -316,7 +316,7 @@ describe("Add nodes", () => {
 
         const soleAddButton  = getAddNodeButtonAtPosition(wrapper, 0);
 
-        // Add to the end when an action is selected
+        // Add to the empty program when an action is selected
         const addButtonLabel = soleAddButton.getDOMNode().getAttribute('aria-label');
         expect(addButtonLabel).toBe("Add selected action turn left 45 degrees to the beginning of the program");
     });
