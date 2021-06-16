@@ -9,6 +9,9 @@ import {KeyboardInputSchemes, getLabelMessageKeyFromKeyDef, getIconMessageKeyFro
 
 import ToggleSwitch from './ToggleSwitch';
 
+import { ReactComponent as KeyboardIcon} from './svg/Keyboard.svg'
+
+
 import './KeyboardInputModal.scss';
 
 type KeyboardInputModalProps = {
@@ -149,17 +152,37 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
             >
                 <Modal.Body className='KeyboardInputModal__content'>
                     <h2 className="KeyboardInputModal__content__title">
-                        <FormattedMessage id='KeyboardInputModal.Title'/>
+                        <KeyboardIcon/>
+                        <div>
+                            <FormattedMessage id='KeyboardInputModal.Title'/>
+                        </div>
                     </h2>
 
-                    <ToggleSwitch
-                        ariaLabel={this.props.intl.formatMessage({id: "KeyboardInputModal.Toggle.AriaLabel"})}
-                        className="KeyboardInputModal__content__toggle"
-                        contentsTrue="On"
-                        contentsFalse="Off"
-                        value={this.props.keyBindingsEnabled}
-                        onChange={this.props.onChangeKeyBindingsEnabled}
-                    />
+                    <div className="KeyboardInputModal__content__toggleBar">
+                        <div className="KeyboardInputModal__content__toggleBar__label">
+                            <FormattedMessage id='KeyboardInputModal.Toggle.Label'/>
+                        </div>
+                        <div className="KeyboardInputModal__content__toggleBar__toggle">
+                            <div>
+                                <FormattedMessage id='KeyboardInputModal.Toggle.Off'/>
+                            </div>
+                            <ToggleSwitch
+                                ariaLabel={this.props.intl.formatMessage({id: "KeyboardInputModal.Toggle.AriaLabel"})}
+                                className="KeyboardInputModal__content__toggle"
+                                contentsTrue=""
+                                contentsFalse=""
+                                value={this.props.keyBindingsEnabled}
+                                onChange={this.props.onChangeKeyBindingsEnabled}
+                            />
+                            <div>
+                                <FormattedMessage id='KeyboardInputModal.Toggle.On'/>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
 
                     {this.renderKeyboardSchemeMenu()}
 
@@ -167,9 +190,15 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
                         {this.renderKeyBindings()}
                     </ul>
 
-                    <Button className="KeyboardInputModal__content__closeButton" onClick={this.props.onHide}>
-                        <FormattedMessage id="KeyboardInputModal.Done"/>
-                    </Button>
+                    <div className="KeyboardInputModal__content__footer">
+                        <Button className="KeyboardInputModal__content__cancelButton" onClick={this.props.onHide}>
+                            <FormattedMessage id="KeyboardInputModal.Cancel"/>
+                        </Button>
+
+                        <Button className="KeyboardInputModal__content__doneButton" onClick={this.props.onHide}>
+                            <FormattedMessage id="KeyboardInputModal.Done"/>
+                        </Button>
+                    </div>
                 </Modal.Body>
             </Modal>);
     }

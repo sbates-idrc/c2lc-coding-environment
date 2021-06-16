@@ -1,25 +1,80 @@
 @import '_variables';
 
-.KeyboardInputModal {
+.modal {
     border-radius: 0.25rem;
+}
+
+.modal-body {
+    border-radius: 0.25rem;
+    padding: 0;
+}
+
+.KeyboardInputModal {
     max-width: 75%;
 }
 
 .KeyboardInputModal__content {
-    align-items: center;
-    border-radius: 0.25rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    row-gap: 1.5rem;
+    row-gap: .5rem;
+}
+
+.KeyboardInputModal__content__title {
+    background-color: #F1F2F4;
+    border-radius: 0.25rem 0.25rem 0 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 0.5rem;
+    width: 100%;
+    padding: 0.5rem;
+
+    svg {
+        width: 2rem;
+    }
+}
+
+.KeyboardInputModal__content__toggleBar {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    margin-left: 3rem;
+}
+
+.KeyboardInputModal__content__toggleBar__label {
+    font-weight: bold;
+}
+
+.KeyboardInputModal__content__toggleBar__toggle {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    column-gap: 0.5rem;
+}
+
+.KeyboardInputModal__content__toggle.ToggleSwitch {
+    .ToggleSwitch__switch-inner-circle {
+        height: 1.9rem;
+        width: 1.9rem;
+    }
 }
 
 .KeyboardInputModal__content__toggle.ToggleSwitch--checked {
     background-color: #4C9990;
 }
 
+.KeyboardInputModal__content__schemeDropdown {
+    margin-bottom: 0.5rem;
+    margin-left: 3rem;
+    padding: 0.25rem;
+    width: 20rem;
+}
+
 .KeyboardInputModal__content__list {
-    padding-inline-start: 0;
+    background-color: #F1F2F4;
+    padding: 1rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 1.5rem;
@@ -46,37 +101,60 @@
 }
 
 .KeyboardInputModal__binding__keyCombo {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 0.5rem;
-    row-gap: 0.5rem;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    column-gap: 0;
 }
 
 .KeyboardInputModal__binding__icon {
-    border: 1px solid black;
-    background-color: #aaa;
+    border: 2px solid #B9BEC6;
+    background-color: white;
     border-radius: 3px;
+    box-shadow: 0 3px 1px 0 #B9BEC6;
+    font-weight: bold;
     height: 2.5rem;
-    width: 2.5rem;
+    padding-top: 0.25rem;
     text-align: center;
+    width: 2.5rem;
 }
 
-button.btn.KeyboardInputModal__content__closeButton {
-    align-self: flex-end;
-    background-color: #4C9990;
+.KeyboardInputModal__content__footer {
+    align-items: center;
+    background-color: white;
+    border-radius: 0 0 0.25rem 0.25rem;
+    column-gap: 2.5rem;
+    display:flex;
+    flex-direction: row;
+    padding-bottom: 1rem;
+    padding-right: 1.5rem;
+    width: 100%;
+}
+
+button.btn.KeyboardInputModal__content__cancelButton,
+button.btn.KeyboardInputModal__content__doneButton {
     border: 0;
-    color: #EBFAF8;
     padding: 0.2rem;
     width: 10rem;
-
-    &:active {
-        background-color: #ED972C;
-    }
 
     &:focus {
         box-shadow:
             0 0 0 0.1rem #D5D8DD,
             0 0 0 $c2lc-focus-indicator-width black;
+    }
+}
+
+button.KeyboardInputModal__content__cancelButton {
+    margin-left: auto;
+    background-color: #F1F2F4;
+}
+
+button.btn.KeyboardInputModal__content__doneButton {
+    background-color: #4C9990;
+    color: #EBFAF8;
+
+    &:active {
+        background-color: #ED972C;
     }
 
     &:hover {
