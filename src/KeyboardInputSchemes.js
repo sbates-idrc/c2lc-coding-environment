@@ -6,7 +6,8 @@ export type KeyDef = {
     key?: string,
     altKey?: boolean,
     shiftKey?: boolean,
-    ctrlKey?: boolean
+    ctrlKey?: boolean,
+    hidden?: boolean
 };
 
 export type KeyboardInputScheme = {
@@ -32,25 +33,25 @@ export const KeyboardInputSchemes:KeyboardInputSchemesType = {
         addCommandToBeginning: { code: "KeyB", altKey: true},
         addCommandToEnd: { code: "KeyE", altKey: true},
         announceScene: { code: "KeyI", altKey: true},
-        decreaseProgramSpeed: { key: "<" },
-        increaseProgramSpeed: { key: ">" },
+        decreaseProgramSpeed: { key: "<", hidden: true },
+        increaseProgramSpeed: { key: ">", hidden: true },
         playPauseProgram: { code: "KeyP", altKey: true},
         refreshScene: { code: "KeyR", altKey: true},
         showHide: { key: "?" },
         stopProgram: { code: "KeyS", altKey: true},
-        toggleAnnouncements: { code: "KeyA", altKey: true}
+        toggleAnnouncements: { code: "KeyA", altKey: true, hidden: true}
     },
     "nvda": {
         addCommandToBeginning: { code: "KeyB", altKey: true, ctrlKey: true},
         addCommandToEnd: { code: "KeyE", altKey: true, ctrlKey: true},
         announceScene: { code: "KeyI", altKey: true, ctrlKey: true},
-        decreaseProgramSpeed: { key: "<", shiftKey: true },
-        increaseProgramSpeed: { key: ">", shiftKey: true },
+        decreaseProgramSpeed: { key: "<", shiftKey: true, hidden: true },
+        increaseProgramSpeed: { key: ">", shiftKey: true, hidden: true },
         playPauseProgram: { code: "KeyP", altKey: true, ctrlKey: true},
         refreshScene: { code: "KeyR", altKey: true, ctrlKey: true},
         showHide: { key: "?", shiftKey: true },
         stopProgram: { code: "KeyS", altKey: true, ctrlKey: true},
-        toggleAnnouncements: { code: "KeyA", altKey: true, ctrlKey: true}
+        toggleAnnouncements: { code: "KeyA", altKey: true, ctrlKey: true, hidden: true}
     }
 };
 
