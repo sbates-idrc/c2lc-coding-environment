@@ -137,6 +137,15 @@ button.btn.KeyboardInputModal__content__doneButton {
     padding: 0.2rem;
     width: 10rem;
 
+    &:active {
+        background-color: #ED972C;
+    }
+
+    &:hover {
+        background-color: #F5C58A;
+        color: black;
+    }     
+
     &:focus {
         box-shadow:
             0 0 0 0.1rem #D5D8DD,
@@ -151,14 +160,5 @@ button.KeyboardInputModal__content__cancelButton {
 
 button.btn.KeyboardInputModal__content__doneButton {
     background-color: #4C9990;
-    color: #EBFAF8;
-
-    &:active {
-        background-color: #ED972C;
-    }
-
-    &:hover {
-        background-color: #F5C58A;
-        color: black;
-    }          
+    color: #EBFAF8;     
 }
