@@ -498,7 +498,7 @@ export class App extends React.Component<AppProps, AppState> {
                 this.setState({ runningState: 'running' });
                 break;
             case 'stopRequested': // Fall through
-                this.handleClickStop();
+            case 'stopped':
                 this.setState((state) => {
                     return {
                         programSequence: state.programSequence.updateProgramCounter(0),
