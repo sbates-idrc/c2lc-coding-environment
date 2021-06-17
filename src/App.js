@@ -830,12 +830,8 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleChangeKeyboardInputScheme = (event: Event) => {
-        // $FlowFixMe: Find a more specific event type.
-        if (event.target.value) {
-            // $FlowFixMe: Figure out how to properly gate this to disallow nonsensical values.
-            this.setState({keyboardInputSchemeName: event.target.value});
-        }
+    handleChangeKeyboardInputScheme = (keyboardInputSchemeName: KeyboardInputSchemeName) => {
+        this.setState({keyboardInputSchemeName});
     }
 
     handleChangeKeyBindingsEnabled = (keyBindingsEnabled: boolean) => {

@@ -24,11 +24,50 @@ type KeyboardInputModalProps = {
     show: boolean
 };
 
-class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
+type KeyboardInputModalState = {
+    keyBindingsEnabled: boolean,
+    keyboardInputSchemeName: KeyboardInputSchemeName
+}
+
+class KeyboardInputModal extends React.Component<KeyboardInputModalProps, KeyboardInputModalState> {
     static defaultProps = {
         show: false,
         onChangeKeyBindingsEnabled: () => {},
         onHide: () => {}
+    }
+
+    constructor(props: KeyboardInputModalProps) {
+        super(props);
+        this.state = {
+            keyBindingsEnabled: props.keyBindingsEnabled,
+            keyboardInputSchemeName: props.keyboardInputSchemeName
+        };
+    }
+
+    handleChangeKeyboardInputSchemeName = (event: Event) => {
+        // $FlowFixMe: Find a more specific event type.
+        if (event.target.value) {
+            // $FlowFixMe: Figure out how to properly gate this to disallow nonsensical values.
+            this.setState({keyboardInputSchemeName: event.target.value});
+        }
+    }
+
+    handleChangeKeyBindingsEnabled = (keyBindingsEnabled: boolean) => {
+        this.setState({keyBindingsEnabled: keyBindingsEnabled});
+    }
+
+    cancelChanges = () => {
+        this.setState({
+            keyBindingsEnabled: this.props.keyBindingsEnabled,
+            keyboardInputSchemeName: this.props.keyboardInputSchemeName
+        });
+        this.props.onHide();
+    }
+
+    saveChanges =  () => {
+        this.props.onChangeKeyBindingsEnabled(this.state.keyBindingsEnabled);
+        this.props.onChangeKeyboardInputScheme(this.state.keyboardInputSchemeName);
+        this.props.onHide();
     }
 
     renderKeyBindings = () => {
@@ -47,7 +86,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
             "increaseProgramSpeed"
         ];
 
-        const keyboardInputScheme: KeyboardInputScheme = KeyboardInputSchemes[this.props.keyboardInputSchemeName];
+        const keyboardInputScheme: KeyboardInputScheme = KeyboardInputSchemes[this.state.keyboardInputSchemeName];
 
         const keyBindingElements = [];
         keyBindings.forEach((key, index) => {
@@ -122,6 +161,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
         });
         return keyBindingElements;
     }
+
     renderKeyboardSchemeMenu () {
         const selectOptionElements = [];
         Object.keys(KeyboardInputSchemes).forEach((schemeName) => {
@@ -134,9 +174,9 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
 
         return (<select
             className="KeyboardInputModal__content__schemeDropdown"
-            defaultValue={this.props.keyboardInputSchemeName}
-            disabled={!this.props.keyBindingsEnabled}
-            onChange={this.props.onChangeKeyboardInputScheme}>
+            defaultValue={this.state.keyboardInputSchemeName}
+            disabled={!this.state.keyBindingsEnabled}
+            onChange={this.handleChangeKeyboardInputSchemeName}>
             {selectOptionElements}
         </select>);
     }
@@ -144,7 +184,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
     render () {
         return(
             <Modal
-                onHide={this.props.onHide}
+                onHide={this.cancelChanges}
                 show={this.props.show}
                 aria-modal={true}
                 role="dialog"
@@ -171,31 +211,27 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
                                 className="KeyboardInputModal__content__toggle"
                                 contentsTrue=""
                                 contentsFalse=""
-                                value={this.props.keyBindingsEnabled}
-                                onChange={this.props.onChangeKeyBindingsEnabled}
+                                value={this.state.keyBindingsEnabled}
+                                onChange={this.handleChangeKeyBindingsEnabled}
                             />
                             <div>
                                 <FormattedMessage id='KeyboardInputModal.Toggle.On'/>
                             </div>
                         </div>
-
-
-
-
                     </div>
 
                     {this.renderKeyboardSchemeMenu()}
 
-                    <ul className={"KeyboardInputModal__content__list" + (this.props.keyBindingsEnabled ? "": " KeyboardInputModal__content__list--disabled")}>
+                    <ul className={"KeyboardInputModal__content__list" + (this.state.keyBindingsEnabled ? "": " KeyboardInputModal__content__list--disabled")}>
                         {this.renderKeyBindings()}
                     </ul>
 
                     <div className="KeyboardInputModal__content__footer">
-                        <Button className="KeyboardInputModal__content__cancelButton" onClick={this.props.onHide}>
+                        <Button className="KeyboardInputModal__content__cancelButton" onClick={this.cancelChanges}>
                             <FormattedMessage id="KeyboardInputModal.Cancel"/>
                         </Button>
 
-                        <Button className="KeyboardInputModal__content__doneButton" onClick={this.props.onHide}>
+                        <Button className="KeyboardInputModal__content__doneButton" onClick={this.saveChanges}>
                             <FormattedMessage id="KeyboardInputModal.Done"/>
                         </Button>
                     </div>
@@ -203,14 +239,5 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, {}> {
             </Modal>);
     }
 }
-
-/*
-    ariaLabel: string,
-    value: boolean,
-    className?: string,
-    contentsTrue: any,
-    contentsFalse: any,
-    onChange: (value: boolean) => void
-*/
 
 export default injectIntl(KeyboardInputModal);
