@@ -33,6 +33,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
     static defaultProps = {
         show: false,
         onChangeKeyBindingsEnabled: () => {},
+        onChangeKeyboardInputScheme: () => {},
         onHide: () => {}
     }
 
