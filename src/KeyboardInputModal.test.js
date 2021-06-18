@@ -5,7 +5,6 @@ import { createIntl, IntlProvider } from 'react-intl';
 import messages from './messages.json';
 import { configure, mount } from 'enzyme';
 import KeyboardInputModal from './KeyboardInputModal';
-import { expect, it } from '@jest/globals';
 
 configure({ adapter: new Adapter()});
 
