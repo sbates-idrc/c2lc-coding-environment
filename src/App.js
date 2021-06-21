@@ -99,7 +99,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '0.8';
+        this.version = '0.9';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -759,29 +759,6 @@ export class App extends React.Component<AppProps, AppState> {
                         </Row>
                     }
                     */}
-                    <div className='App__command-palette'>
-                        <ActionsMenu
-                            allowedActions={this.state.allowedActions}
-                            changeHandler={this.handleToggleAllowedCommand}
-                            editingDisabled={this.state.runningState === 'running'}
-                            intl={this.props.intl}
-                            usedActions={this.state.usedActions}
-                        />
-                        <div className='App__command-palette-command-container'>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks([
-                                    'forward1', 'forward2', 'forward3',
-                                    'backward1', 'backward2', 'backward3'
-                                ])}
-                            </div>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks([
-                                    'left45', 'left90', 'left180',
-                                    'right45', 'right90', 'right180'
-                                ])}
-                            </div>
-                        </div>
-                    </div>
                     <div className='App__scene-container'>
                         <h2 className='sr-only' >
                             <FormattedMessage id='Scene.heading' />
@@ -830,6 +807,29 @@ export class App extends React.Component<AppProps, AppState> {
                             onChangeCharacterPosition={this.handleChangeCharacterPosition}
                             onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
                             onChangeCharacterYPosition={this.handleChangeCharacterYPosition} />
+                    </div>
+                    <div className='App__command-palette'>
+                        <ActionsMenu
+                            allowedActions={this.state.allowedActions}
+                            changeHandler={this.handleToggleAllowedCommand}
+                            editingDisabled={this.state.runningState === 'running'}
+                            intl={this.props.intl}
+                            usedActions={this.state.usedActions}
+                        />
+                        <div className='App__command-palette-command-container'>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks([
+                                    'forward1', 'forward2', 'forward3',
+                                    'backward1', 'backward2', 'backward3'
+                                ])}
+                            </div>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks([
+                                    'left45', 'left90', 'left180',
+                                    'right45', 'right90', 'right180'
+                                ])}
+                            </div>
+                        </div>
                     </div>
                     <div className='App__program-block-editor'>
                         <ProgramBlockEditor
