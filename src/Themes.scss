@@ -275,7 +275,7 @@ body.light-theme {
 
     button.btn.AddNode__expanded-button {
         background-color: white;
-        border: 3px solid #505862;
+        border: $c2lc-add-node-expanded-border-width solid #505862;
 
         &:not(.AddNode__expanded-button--isDragTarget) {
             box-shadow: none;
@@ -292,7 +292,7 @@ body.light-theme {
         }
 
         &:focus {
-            border: 2px solid white;
+            border: $c2lc-add-node-expanded-border-width solid white;
             box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
         }
     }
@@ -535,7 +535,7 @@ body.dark-theme {
     }
 
     .AddNode__expanded-button {
-        border: 2px solid #D5D8DD;
+        border: $c2lc-add-node-expanded-border-width solid #D5D8DD;
         background-color: #22343C;
         box-shadow: none;
         svg path {
@@ -909,12 +909,12 @@ body.gray-theme {
     }
 
     .AddNode__expanded-button {
-        border: 2px solid #505862;
+        border: $c2lc-add-node-expanded-border-width solid #505862;
         background-color: inherit;
         box-shadow: none;
 
         &:focus {
-            border: 2px solid white;
+            border: $c2lc-add-node-expanded-border-width solid white;
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
 
@@ -1795,7 +1795,7 @@ body.contrast-theme {
     }
 
     .AddNode__expanded-button {
-        border: 2px solid white;
+        border: $c2lc-add-node-expanded-border-width solid white;
         background-color: black;
         box-shadow: none;
         svg path {
