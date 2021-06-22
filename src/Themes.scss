@@ -119,6 +119,30 @@ body.light-theme {
         }
     }
 
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--forward1,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--forward2,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--forward3 {
+        @include updatedProgramAnimation(#16796D, 'forward', 'light');
+    }
+
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--backward1,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--backward2,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--backward3 {
+        @include updatedProgramAnimation(#07586A, 'backward', 'light');
+    }
+
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--left45,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--left90,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--left180 {
+        @include updatedProgramAnimation(#AE6100, 'left', 'light');
+    }
+
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--right45,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--right90,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--right180 {
+        @include updatedProgramAnimation(#952A1B, 'right', 'light');
+    }
+
     .Scene {
         background-color: white;
     }
@@ -237,7 +261,7 @@ body.light-theme {
 
     button.btn.AddNode__expanded-button {
         background-color: white;
-        border: 3px solid #505862;
+        border: $c2lc-add-node-expanded-border-width solid #505862;
 
         &:not(.AddNode__expanded-button--isDragTarget) {
             box-shadow: none;
@@ -254,7 +278,7 @@ body.light-theme {
         }
 
         &:focus {
-            border: 2px solid white;
+            border: $c2lc-add-node-expanded-border-width solid white;
             box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
         }
     }
@@ -473,7 +497,7 @@ body.dark-theme {
     }
 
     .AddNode__expanded-button {
-        border: 2px solid #D5D8DD;
+        border: $c2lc-add-node-expanded-border-width solid #D5D8DD;
         background-color: #22343C;
         box-shadow: none;
         svg path {
@@ -642,6 +666,30 @@ body.gray-theme {
         }
     }
 
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--forward1,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--forward2,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--forward3 {
+        @include updatedProgramAnimation(#818A98, 'forward', 'grayscale');
+    }
+
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--backward1,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--backward2,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--backward3 {
+        @include updatedProgramAnimation(#818A98, 'backward', 'grayscale');
+    }
+
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--left45,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--left90,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--left180 {
+        @include updatedProgramAnimation(#818A98, 'left', 'grayscale');
+    }
+
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--right45,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--right90,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--right180 {
+        @include updatedProgramAnimation(#818A98, 'right', 'grayscale');
+    }
+
     .command-block--hidden > svg {
         fill: #818A98;
     }
@@ -798,12 +846,12 @@ body.gray-theme {
     }
 
     .AddNode__expanded-button {
-        border: 2px solid #505862;
+        border: $c2lc-add-node-expanded-border-width solid #505862;
         background-color: inherit;
         box-shadow: none;
 
         &:focus {
-            border: 2px solid white;
+            border: $c2lc-add-node-expanded-border-width solid white;
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
 
@@ -1321,6 +1369,30 @@ body.contrast-theme {
         }
     }
 
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--forward1,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--forward2,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--forward3 {
+        @include updatedProgramAnimation(white, 'forward', 'highcontrast');
+    }
+
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--backward1,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--backward2,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--backward3 {
+        @include updatedProgramAnimation(white, 'backward', 'highcontrast');
+    }
+
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--left45,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--left90,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--left180 {
+        @include updatedProgramAnimation(white, 'left', 'highcontrast');
+    }
+
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--right45,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--right90,
+    button.ProgramBlockEditor__program-block--updated.btn-command-block--right180 {
+        @include updatedProgramAnimation(white, 'right', 'highcontrast');
+    }
+
     .command-block--hidden > svg {
         fill: white;
     }
@@ -1660,7 +1732,7 @@ body.contrast-theme {
     }
 
     .AddNode__expanded-button {
-        border: 2px solid white;
+        border: $c2lc-add-node-expanded-border-width solid white;
         background-color: black;
         box-shadow: none;
         svg path {
