@@ -666,36 +666,47 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleChangeCharacterPosition = (positionName: ?string) => {
-        const currentCharacterState = this.state.characterState;
         switch(positionName) {
             case 'turnLeft':
-                this.setState({
-                    characterState: currentCharacterState.turnLeft(1)
+                this.setState((state) => {
+                    return {
+                        characterState: state.characterState.turnLeft(1)
+                    }
                 });
                 break;
             case 'turnRight':
-                this.setState({
-                    characterState: currentCharacterState.turnRight(1)
+                this.setState((state) => {
+                    return {
+                        characterState: state.characterState.turnRight(1)
+                    }
                 });
                 break;
             case 'up':
-                this.setState({
-                    characterState: currentCharacterState.moveUpPosition()
+                this.setState((state) => {
+                    return {
+                        characterState: state.characterState.moveUpPosition()
+                    }
                 });
                 break;
             case 'right':
-                this.setState({
-                    characterState: currentCharacterState.moveRightPosition()
+                this.setState((state) => {
+                    return {
+                        characterState: state.characterState.moveRightPosition()
+                    }
                 });
                 break;
             case 'down':
-                this.setState({
-                    characterState: currentCharacterState.moveDownPosition()
+                this.setState((state) => {
+                    return {
+                        characterState: state.characterState.moveDownPosition()
+                    }
                 });
                 break;
             case 'left':
-                this.setState({
-                    characterState: currentCharacterState.moveLeftPosition()
+                this.setState((state) => {
+                    return {
+                        characterState: state.characterState.moveLeftPosition()
+                    }
                 });
                 break;
             default:

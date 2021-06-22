@@ -55,19 +55,15 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         }
     }
 
-    handleClickCharacterPosition = (e) => {
-        this.handleChangeCharacterPosition(e.currentTarget.getAttribute('value'));
+    handleClickCharacterPositionButton = (e) => {
+        this.props.onChangeCharacterPosition(e.currentTarget.getAttribute('value'));
     }
 
-    handleKeyDownCharacterPosition = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+    handleKeyDownCharacterPositionButton = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         if (e.key === ' ' || e.key === 'Enter') {
             e.preventDefault();
-            this.handleChangeCharacterPosition(e.currentTarget.getAttribute('value'));
+            this.props.onChangeCharacterPosition(e.currentTarget.getAttribute('value'));
         }
-    }
-
-    handleChangeCharacterPosition = (positionName: ?string) => {
-        this.props.onChangeCharacterPosition(positionName);
     }
 
     handleChangeCharacterPositionLabel = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
@@ -82,7 +78,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         }
     }
 
-    handleBlurCharacterPositionBox = (e: SyntheticEvent<HTMLInputElement>) => {
+    handleBlurCharacterPositionLabel = (e: SyntheticEvent<HTMLInputElement>) => {
         if (e.currentTarget.name === 'xPosition') {
             this.props.onChangeCharacterXPosition(this.state.characterColumnLabel);
         } else if (e.currentTarget.name === 'yPosition'){
@@ -90,7 +86,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         }
     }
 
-    handleUpdateCharacterPosition = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+    handleKeyDownCharacterPositionLabel = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         const enterKey = 'Enter';
         if (e.key === enterKey) {
             e.preventDefault();
@@ -140,8 +136,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         role='button'
                         tabIndex='0'
                         value='turnLeft'
-                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
-                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
+                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
+                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined} />
                     <TurnPositionRight
                         className={characterPositionButtonClassName}
                         aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.turnRight'})}
@@ -149,8 +145,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         role='button'
                         tabIndex='0'
                         value='turnRight'
-                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
-                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
+                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
+                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined} />
                 </div>
                 <div className='CharacterPositionController__character-move-position-top'>
                     <MovePositionUp
@@ -160,8 +156,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         role='button'
                         tabIndex='0'
                         value='up'
-                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
-                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
+                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
+                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined} />
                 </div>
                 <div className='CharacterPositionController__character-move-position-sides'>
                     <MovePositionLeft
@@ -171,8 +167,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         role='button'
                         tabIndex='0'
                         value='left'
-                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
-                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
+                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
+                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined} />
                     <div
                         aria-hidden='true'
                         className='CharacterPositionController__character-column-character-container'
@@ -186,8 +182,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         role='button'
                         tabIndex='0'
                         value='right'
-                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
-                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
+                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
+                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined} />
                 </div>
                 <div className='CharacterPositionController__character-move-position-bottom'>
                     <MovePositionDown
@@ -197,8 +193,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         role='button'
                         tabIndex='0'
                         value='down'
-                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
-                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
+                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
+                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined} />
                 </div>
                 <div className='CharacterPositionController__character-move-position-coordinate'>
                     <input
@@ -211,8 +207,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         type='text'
                         value={this.state.characterColumnLabel}
                         onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : () => {}}
-                        onKeyDown={this.handleUpdateCharacterPosition}
-                        onBlur={this.handleBlurCharacterPositionBox} />
+                        onKeyDown={this.handleKeyDownCharacterPositionLabel}
+                        onBlur={this.handleBlurCharacterPositionLabel} />
                     <input
                         name='yPosition'
                         className={characterPositionTextInputClassName}
@@ -223,8 +219,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         type='text'
                         value={this.state.characterRowLabel}
                         onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : () => {}}
-                        onKeyDown={this.handleUpdateCharacterPosition}
-                        onBlur={this.handleBlurCharacterPositionBox} />
+                        onKeyDown={this.handleKeyDownCharacterPositionLabel}
+                        onBlur={this.handleBlurCharacterPositionLabel} />
                 </div>
             </div>
         )
