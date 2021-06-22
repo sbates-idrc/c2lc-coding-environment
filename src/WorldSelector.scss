@@ -7,12 +7,13 @@
     background-color: #CCE6E2;
     padding: 1rem;
     min-height: 50%;
+    justify-content: center;
 }
 
 .WorldSelector .HeaderIcon, .WorldSelector .WorldIcon {
     display: block;
-    height: 4rem;
-    width: 4rem;
+    height: 2.5rem;
+    width: 2.5rem;
     padding: 0.2rem;
 }
 
@@ -34,8 +35,8 @@
 }
 
 .WorldSelector .WorldIcon svg {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 .WorldSelector button.btn.WorldIcon--disabled,
