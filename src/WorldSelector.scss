@@ -6,14 +6,19 @@
     align-items: center;
     background-color: #CCE6E2;
     padding: 1rem;
-    min-height: 50%;
-    justify-content: center;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    overflow-y: auto;
+    min-height: 5rem;
+    height: calc(80vh - 20rem);
+    // max-height = 3.5 (icon height) * 3 + 0.8 (margin top) * 2 + 1 (padding top/bottom)  * 2
+    max-height: 14.1rem;
 }
 
 .WorldSelector .HeaderIcon, .WorldSelector .WorldIcon {
     display: block;
-    height: 2.5rem;
-    width: 2.5rem;
+    min-height: 3.5rem;
+    width: 3.5rem;
     padding: 0.2rem;
 }
 
@@ -35,8 +40,8 @@
 }
 
 .WorldSelector .WorldIcon svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2rem;
+    height: 2rem;
 }
 
 .WorldSelector button.btn.WorldIcon--disabled,

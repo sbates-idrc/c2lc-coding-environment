@@ -1,20 +1,20 @@
 @import 'variables';
 
 .CharacterPositionController__character-column {
-    min-height: 50%;
     align-items: center;
     background-color: #CCE6E2;
     border: 0px;
     border-top: 1px solid #88C3BC;
     border-radius: 0 0 0 3px;
-    box-shadow: 2px 0px 1px #8F8F8F;
     display: flex;
     flex-direction: column;
     grid-column-start: 1;
     grid-column-end: 2;
-    justify-content: center;
+    justify-content: flex-end;
     pointer-events: none;
     padding: 0 0.5rem;
+    grid-row-start: 2;
+    grid-row-end: 3;
 }
 
 .CharacterPositionController__character-column-character-container {
@@ -52,7 +52,7 @@
     z-index: 1;
     pointer-events: all;
     stroke: #4C9990;
-    width: 2.5rem;
+    width: 2.2rem;
     height: 2rem;
 
     &:focus {
@@ -71,7 +71,7 @@
 
 .CharacterPositionController__character-move-position-sides > svg {
     width: 2rem;
-    height: 2.5rem;
+    height: 2.2rem;
 }
 
 .CharacterPositionController__character-turn-positions {
@@ -101,7 +101,7 @@
 .ProgramBlock__character-position-coordinate-box {
     text-align: center;
     pointer-events: all;
-    margin-bottom: 0.25rem;
+    margin-bottom: 1rem;
 }
 
 .ProgramBlock__character-position-coordinate-box:focus {
