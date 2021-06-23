@@ -296,8 +296,10 @@ body.light-theme {
     }
 
     button.btn.ShareButton {
-        background-color: #F1F2F4;
         color: black;
+        &:not(:hover) {
+            background-color: #F1F2F4;           
+        }
     }
 }
 
