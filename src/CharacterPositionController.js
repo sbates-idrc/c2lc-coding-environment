@@ -55,7 +55,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         }
     }
 
-    handleClickCharacterPositionButton = (e) => {
+    handleClickCharacterPositionButton = (e: SyntheticEvent<HTMLElement>) => {
         this.props.onChangeCharacterPosition(e.currentTarget.getAttribute('value'));
     }
 
