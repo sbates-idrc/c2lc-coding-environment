@@ -376,6 +376,10 @@ body.dark-theme {
         color: white;
     }
 
+    .App__world-container {
+        background-color: #33717F;
+    }
+
 
     button.btn.command-block.command-block--pressed,
     button.btn.command-block.command-block--pressed:hover,
@@ -588,6 +592,10 @@ body.gray-theme {
     .App__header {
         background-color: #FFF;
         color: #000;
+    }
+
+    .App__world-container {
+        background-color: #D5D8DD;
     }
 
     .ThemeSelector {

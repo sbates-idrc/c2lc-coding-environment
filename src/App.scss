@@ -105,6 +105,7 @@ body {
     margin-right: 0.5rem;
     margin-top: 0.25rem;
     grid-template-rows: 1fr min-content;
+    background-color: #CCE6E2;
 }
 
 .App__command-palette {
@@ -212,7 +213,12 @@ body {
     .App__playAndShare-container {
         padding-bottom: 2rem;
     }
+}
 
+@media only screen and (max-height: 800px) {
+    .WorldSelector {
+        height: calc(80vh - 22rem);
+    }
 }
 
 @media only screen and (max-width: 414px) {
