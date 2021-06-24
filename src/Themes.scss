@@ -34,11 +34,6 @@ body.light-theme {
         background-color: #FFF;
     }
 
-    .App__header {
-        background-color: #FFF;
-        color: #000;
-    }
-
     .App__command-palette-command-container {
         background-color: #EBFAF8;
     }
@@ -332,6 +327,9 @@ body.dark-theme {
 
     .App__header {
         background-color: #18252C;
+    }
+
+    .App__app-heading > a {
         color: white;
     }
 
@@ -587,11 +585,6 @@ body.gray-theme {
 
     .App__container {
         background-color: #FFF;
-    }
-
-    .App__header {
-        background-color: #FFF;
-        color: #000;
     }
 
     .App__world-container {
@@ -1268,6 +1261,9 @@ body.contrast-theme {
 
     .App__header {
         background-color: black;
+    }
+
+    .App__app-heading > a {
         color: white;
     }
 

@@ -739,7 +739,12 @@ export class App extends React.Component<AppProps, AppState> {
                     <header className='App__header'>
                         <div className='App__header-row'>
                             <h1 className='App__app-heading'>
-                                <FormattedMessage id='App.appHeading'/>
+                                <a href='https://weavly.org'
+                                    aria-label={this.props.intl.formatMessage({id: 'App.appHeading.link'})}
+                                    target='_blank'
+                                    rel='noopener noreferrer'>
+                                    <FormattedMessage id='App.appHeading'/>
+                                </a>
                             </h1>
                             <div className='App__header-audio-toggle'>
                                 <div className='App__audio-toggle-switch'>

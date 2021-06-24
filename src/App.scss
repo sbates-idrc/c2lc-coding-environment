@@ -24,7 +24,6 @@ body {
 
 .App__header {
     background-color: #FFF;
-    color: #000;
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 1;
@@ -50,6 +49,13 @@ body {
     font-size: 1.3rem;
     margin: 1rem 1rem;
     padding: 0 1rem;
+}
+
+.App__app-heading > a {
+    color: black;
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 /* Dash connection removed for version 0.5
