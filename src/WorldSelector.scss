@@ -10,9 +10,7 @@
     grid-row-end: 2;
     overflow-y: auto;
     min-height: 5rem;
-    height: calc(80vh - 22rem);
-    // max-height = 4 (icon height) * 3 + 0.8 (margin top) * 2 + 1 (padding top/bottom)  * 2
-    max-height: 15.6rem;
+    height: calc(80vh - 20rem);
     border-radius: 3px 3px 0 0;
 }
 
