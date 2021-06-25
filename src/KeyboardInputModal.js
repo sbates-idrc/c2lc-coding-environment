@@ -92,7 +92,10 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
         const keyBindingElements = [];
         keyBindings.forEach((key, index) => {
             const itemKey = "binding-" + index;
-            const keyDef: KeyDef = keyboardInputScheme[key];
+            const keyDef: KeyDef = keyboardInputScheme[key].keyDef;
+            // This only works for single-step key bindings. If we ever have
+            // "sequences" that are not hidden, we will need to write code to
+            // display them.
             if (!keyDef.hidden) {
                 const labelKeySegments = [];
                 const icons  = [];
@@ -105,14 +108,6 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
                 icons.push(<div key="unmodified" className="KeyboardInputModal__binding__icon">
                     {singleKeyString}
                 </div>);
-
-                // TODO: Discuss removing support for shiftKey flags.
-                if (keyDef.shiftKey) {
-                    const shiftKeyName = this.props.intl.formatMessage(
-                        { id: "KeyboardInputModal.KeyLabels.Shift" }
-                    );
-                    labelKeySegments.unshift(shiftKeyName);
-                }
 
                 if (keyDef.altKey) {
                     const altKeyLabel = this.props.intl.formatMessage(

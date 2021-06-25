@@ -39,8 +39,8 @@ import ThemeSelector from './ThemeSelector';
 import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
 import KeyboardInputModal from './KeyboardInputModal';
 
-import type {KeyboardInputSchemeName, KeyboardInputScheme} from './KeyboardInputSchemes';
-import {KeyboardInputSchemes, keyboardEventMatchesKeyDef} from './KeyboardInputSchemes';
+import type {KeyboardInputSchemeName} from './KeyboardInputSchemes';
+import {findKeyboardEventSequenceMatches} from './KeyboardInputSchemes';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg'
 
 
@@ -84,7 +84,6 @@ type AppState = {
     runningState: RunningState,
     allowedActions: ActionToggleRegister,
     usedActions: ActionToggleRegister,
-    // TODO: Make this configurable
     keyBindingsEnabled: boolean,
     keyboardInputSchemeName: KeyboardInputSchemeName;
     showKeyboardModal: boolean
@@ -105,6 +104,7 @@ export class App extends React.Component<AppProps, AppState> {
     speedLookUp: Array<number>;
     pushStateTimeoutID: ?TimeoutID;
     speedControlRef: { current: null | HTMLElement };
+    sequenceInProgress: Array<KeyboardEvent>;
 
     constructor(props: any) {
         super(props);
@@ -131,6 +131,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.allowedActionsSerializer = new AllowedActionsSerializer();
 
         this.pushStateTimeoutID = null;
+
+        this.sequenceInProgress = [];
 
         this.interpreter.addCommandHandler(
             'forward1',
@@ -606,69 +608,113 @@ export class App extends React.Component<AppProps, AppState> {
     // TODO: Convert to use keyboardEventMatchesKeyDef for each command in turn.
     handleDocumentKeyDown = (e: KeyboardEvent) => {
         if (this.state.keyBindingsEnabled) {
-            const keyBindings: KeyboardInputScheme = KeyboardInputSchemes[this.state.keyboardInputSchemeName];
-            if (keyboardEventMatchesKeyDef(e, keyBindings.showHide)){
-                this.setState((currentState) => {
-                    return { showKeyboardModal: !(currentState.showKeyboardModal) };
-                });
-            }
-            else if (keyboardEventMatchesKeyDef(e, keyBindings.toggleAnnouncements)) {
-                // We have to use the function form here as our change is based on the current state.
-                this.setState((currentState) => {
-                    return { announcementsEnabled: !(currentState.announcementsEnabled) };
-                });
-                e.preventDefault();
-            }
-            else if (keyboardEventMatchesKeyDef(e, keyBindings.addCommandToBeginning)) {
-                if (this.state.selectedAction) {
-                    const newProgramSequence = this.state.programSequence.insertStep(0, this.state.selectedAction);
-                    this.handleProgramSequenceChange(newProgramSequence);
+            const isOnlyModifier = ["Shift", "Control", "Alt"].indexOf(e.key) !== -1;
+            if (!isOnlyModifier) {
+                this.sequenceInProgress.push(e);
+
+                const matchingKeyboardAction = findKeyboardEventSequenceMatches(this.sequenceInProgress, this.state.keyboardInputSchemeName);
+                if (matchingKeyboardAction === false || matchingKeyboardAction !== "partial") {
+                    this.sequenceInProgress = [];
                 }
-                e.preventDefault();
-            }
-            else if (keyboardEventMatchesKeyDef(e, keyBindings.addCommandToEnd)) {
-                if (this.state.selectedAction) {
-                    // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
-                    const newProgramSequence = this.state.programSequence.insertStep(this.state.programSequence.getProgramLength(), this.state.selectedAction);
-                    this.handleProgramSequenceChange(newProgramSequence);
-                }
-                e.preventDefault();
-            }
-            else if (keyboardEventMatchesKeyDef(e, keyBindings.announceScene)) {
-                const ariaLiveRegion = document.getElementById('character-position');
-                if (ariaLiveRegion) {
-                    if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
-                        window.speechSynthesis.cancel();
+
+                if (matchingKeyboardAction !== false && matchingKeyboardAction !== "partial") {
+                    e.preventDefault();
+                    switch (matchingKeyboardAction) {
+                        case("showHide"):
+                            this.setState((currentState) => {
+                                return { showKeyboardModal: !(currentState.showKeyboardModal) };
+                            });
+                            break;
+                        case("toggleAnnouncements"):
+                            // We have to use the function form here as our change is based on the current state.
+                            this.setState((currentState) => {
+                                return { announcementsEnabled: !(currentState.announcementsEnabled) };
+                            });
+                            break;
+                        case("addCommandToBeginning"):
+                            if (this.state.selectedAction) {
+                                const newProgramSequence = this.state.programSequence.insertStep(0, this.state.selectedAction);
+                                this.handleProgramSequenceChange(newProgramSequence);
+                            }
+                            break;
+                        case("addCommandToEnd"):
+                            if (this.state.selectedAction) {
+                                // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
+                                const newProgramSequence = this.state.programSequence.insertStep(this.state.programSequence.getProgramLength(), this.state.selectedAction);
+                                this.handleProgramSequenceChange(newProgramSequence);
+                            }
+                            break;
+                        case("announceScene"):
+                            const ariaLiveRegion = document.getElementById('character-position');
+                            if (ariaLiveRegion) {
+                                if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+                                    window.speechSynthesis.cancel();
+                                }
+                                const utterance = new SpeechSynthesisUtterance(ariaLiveRegion.innerText);
+                                window.speechSynthesis.speak(utterance);
+                            }
+                            break;
+                        case("playPauseProgram"):
+                            if (this.state.programSequence.getProgramLength() > 0) {
+                                this.handleClickPlay();
+                            }
+                            break;
+                        case("refreshScene"):
+                            if (this.state.runningState !== 'running') {
+                                this.handleRefresh();
+                            }
+                            break;
+                        case("stopProgram"):
+                            if (this.state.runningState !== 'stopped' && this.state.runningState !== 'stopRequested') {
+                                this.handleClickStop();
+                            }
+                            break;
+                        case("decreaseProgramSpeed"):
+                            this.changeProgramSpeedIndex(this.speedLookUp.indexOf(this.interpreter.stepTimeMs) - 1);
+                            break;
+                        case("increaseProgramSpeed"):
+                            this.changeProgramSpeedIndex(this.speedLookUp.indexOf(this.interpreter.stepTimeMs) + 1);
+                            break;
+                        case("selectForward1"):
+                            this.setState({ "selectedAction": "forward1" });
+                            break;
+                        case("selectForward2"):
+                            this.setState({ "selectedAction": "forward2" });
+                            break;
+                        case("selectForward3"):
+                            this.setState({ "selectedAction": "forward3" });
+                            break;
+                        case("selectBackward1"):
+                            this.setState({ "selectedAction": "backward1" });
+                            break;
+                        case("selectBackward2"):
+                            this.setState({ "selectedAction": "backward2" });
+                            break;
+                        case("selectBackward3"):
+                            this.setState({ "selectedAction": "backward3" });
+                            break;
+                        case("selectLeft45"):
+                            this.setState({ "selectedAction": "left45" });
+                            break;
+                        case("selectLeft90"):
+                            this.setState({ "selectedAction": "left90" });
+                            break;
+                        case("selectLeft180"):
+                            this.setState({ "selectedAction": "left180" });
+                            break;
+                        case("selectRight45"):
+                            this.setState({ "selectedAction": "right45" });
+                            break;
+                        case("selectRight90"):
+                            this.setState({ "selectedAction": "right90" });
+                            break;
+                        case("selectRight180"):
+                            this.setState({ "selectedAction": "right180" });
+                            break;
+                        default:
+                            break;
                     }
-                    const utterance = new SpeechSynthesisUtterance(ariaLiveRegion.innerText);
-                    window.speechSynthesis.speak(utterance);
                 }
-            }
-            else if (keyboardEventMatchesKeyDef(e, keyBindings.playPauseProgram)) {
-                if (this.state.programSequence.getProgramLength() > 0) {
-                    this.handleClickPlay();
-                }
-                e.preventDefault();
-            }
-            else if (keyboardEventMatchesKeyDef(e, keyBindings.refreshScene)) {
-                if (this.state.runningState !== 'running') {
-                    this.handleRefresh();
-                }
-                e.preventDefault();
-            }
-            else if (keyboardEventMatchesKeyDef(e, keyBindings.stopProgram)) {
-                if (this.state.runningState !== 'stopped' && this.state.runningState !== 'stopRequested') {
-                    this.handleClickStop();
-                }
-                e.preventDefault();
-            }
-            else if (keyboardEventMatchesKeyDef(e, keyBindings.decreaseProgramSpeed)) {
-                const currentSpeedIndex = this.speedLookUp.indexOf(this.interpreter.stepTimeMs);
-                this.changeProgramSpeedIndex(currentSpeedIndex - 1);
-            }
-            else if (keyboardEventMatchesKeyDef(e, keyBindings.increaseProgramSpeed)) {
-                const currentSpeedIndex = this.speedLookUp.indexOf(this.interpreter.stepTimeMs);
-                this.changeProgramSpeedIndex(currentSpeedIndex + 1);
             }
         }
     };
@@ -687,12 +733,12 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState((currentState: AppState) => {
             return { showKeyboardModal: !currentState.showKeyboardModal};
         });
-    };
+    }
 
     // Focus trap escape key handling.
     handleRootKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         this.focusTrapManager.handleKeyDown(e);
-    };
+    }
 
     handleToggleAudioFeedback = (announcementsEnabled: boolean) => {
         this.setState({
@@ -836,7 +882,7 @@ export class App extends React.Component<AppProps, AppState> {
 
     handleChangeKeyBindingsEnabled = (keyBindingsEnabled: boolean) => {
         this.setState({keyBindingsEnabled: keyBindingsEnabled});
-    };
+    }
 
     render() {
         return (
