@@ -711,6 +711,24 @@ export class App extends React.Component<AppProps, AppState> {
                         case("selectRight180"):
                             this.setState({ "selectedAction": "right180" });
                             break;
+                        case("focusCommands"):
+                            // TODO: Move to convenience function?
+                            let firstAllowedAction = false;
+                            // TODO: Discuss fixing the order properly.
+                            const commandsInOrder = ["forward1", "forward2", "forward3", "backward1", "backward2", "backward3", "left45", "left90", "left180", "right45", "right90", "right180"]
+                            for (const actionName of commandsInOrder) {
+                                if (!firstAllowedAction && this.state.allowedActions[actionName]) {
+                                    firstAllowedAction = actionName;
+                                }
+                            }
+                            if (firstAllowedAction) {
+                                const commandBlockId = "command-block--" + firstAllowedAction;
+                                const firstCommandBlockElement = document.getElementById(commandBlockId);
+                                if (firstCommandBlockElement && firstCommandBlockElement.focus) {
+                                    firstCommandBlockElement.focus();
+                                }
+                            }
+                            break;
                         default:
                             break;
                     }
