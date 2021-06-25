@@ -1,4 +1,4 @@
-import {keyboardEventMatchesKeyDef} from './KeyboardInputSchemes';
+import {keyboardEventMatchesKeyDef, findKeyboardEventSequenceMatches} from './KeyboardInputSchemes';
 
 it('Should be able to handle unmodified keys', ()  => {
     const keyDef = { key: "?" };
@@ -41,12 +41,32 @@ it('Should be able to handle alt keys', ()  => {
 });
 
 
-it('Should be able to handle shift keys', ()  => {
-    const keyDef = { key: "C", shiftKey: true };
+it('Should be able to handle a complete valid sequence', () => {
+    const completeValidSequence = [
+        new KeyboardEvent('keydown', { code: "KeyC", altKey: true}),
+        new KeyboardEvent('keydown', { code: "KeyF"}),
+        new KeyboardEvent('keydown', { key: "2"})
+    ];
 
-    const shiftyKeyboardEvent = new KeyboardEvent('keydown', { key: "C", shiftKey: true});
-    expect(keyboardEventMatchesKeyDef(shiftyKeyboardEvent, keyDef)).toBe(true);
+    const result = findKeyboardEventSequenceMatches(completeValidSequence, "alt");
+    expect(result).toBe("selectForward2");
+});
 
-    const nonShiftyKeyboardEvent = new KeyboardEvent('keydown', { key: "C"});
-    expect(keyboardEventMatchesKeyDef(nonShiftyKeyboardEvent, keyDef)).toBe(false);
+it('Should be able to handle a complete invalid sequence', () => {
+    const completeInvalidSequence = [
+        new KeyboardEvent('keydown', { code: "KeyF", altKey: true}),
+        new KeyboardEvent('keydown', { code: "KeyX"})
+    ];
+    const result = findKeyboardEventSequenceMatches(completeInvalidSequence, "alt");
+    expect(result).toBe(false);
+});
+
+it('Should be able to handle a partial sequence', () => {
+    const partialSequence = [
+        new KeyboardEvent('keydown', { code: "KeyC", altKey: true}),
+        new KeyboardEvent('keydown', { code: "KeyB"})
+    ];
+
+    const result = findKeyboardEventSequenceMatches(partialSequence, "alt");
+    expect(result).toBe("partial");
 });
