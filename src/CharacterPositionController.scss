@@ -35,7 +35,7 @@
     justify-content: space-around;
     position: relative;
     height: 2rem;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 }
 
 .CharacterPositionController__character-turn-positions > svg {
@@ -102,7 +102,7 @@
 .ProgramBlock__character-position-coordinate-box {
     text-align: center;
     pointer-events: all;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 .ProgramBlock__character-position-coordinate-box:focus {
