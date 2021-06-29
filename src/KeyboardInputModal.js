@@ -76,7 +76,6 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
         // This controls which keys are displayed but also determines the order in which they are displayed.
         const keyBindings = [
             "showHide",
-            "toggleAnnouncements",
             "addCommandToBeginning",
             "addCommandToEnd",
             "announceScene",
@@ -92,6 +91,9 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
         const keyBindingElements = [];
         keyBindings.forEach((key, index) => {
             const itemKey = "binding-" + index;
+            if (!keyboardInputScheme[key]) {
+                debugger;
+            }
             const keyDef: KeyDef = keyboardInputScheme[key].keyDef;
             // This only works for single-step key bindings. If we ever have
             // "sequences" that are not hidden, we will need to write code to

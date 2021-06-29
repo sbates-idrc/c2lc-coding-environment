@@ -43,6 +43,14 @@ import type {KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches} from './KeyboardInputSchemes';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg'
 
+// Convenience function to focus on the first element with a given class, used
+// for keyboard shortcuts.
+function focusOnFirstElementWithClass (className) {
+    const elements = document.getElementsByClassName(className);
+    if (elements.length) {
+        elements[0].focus();
+    }
+}
 
 /* Dash connection removed for version 0.5
 import BluetoothApiWarning from './BluetoothApiWarning';
@@ -711,23 +719,29 @@ export class App extends React.Component<AppProps, AppState> {
                         case("selectRight180"):
                             this.setState({ "selectedAction": "right180" });
                             break;
-                        case("focusCommands"):
-                            // TODO: Move to convenience function?
-                            let firstAllowedAction = false;
-                            // TODO: Discuss fixing the order properly.
-                            const commandsInOrder = ["forward1", "forward2", "forward3", "backward1", "backward2", "backward3", "left45", "left90", "left180", "right45", "right90", "right180"]
-                            for (const actionName of commandsInOrder) {
-                                if (!firstAllowedAction && this.state.allowedActions[actionName]) {
-                                    firstAllowedAction = actionName;
-                                }
-                            }
-                            if (firstAllowedAction) {
-                                const commandBlockId = "command-block--" + firstAllowedAction;
-                                const firstCommandBlockElement = document.getElementById(commandBlockId);
-                                if (firstCommandBlockElement && firstCommandBlockElement.focus) {
-                                    firstCommandBlockElement.focus();
-                                }
-                            }
+                        case("focusActions"):
+                            focusOnFirstElementWithClass("command-block");
+                            break;
+                        case("focusAppHeader"):
+                            focusOnFirstElementWithClass("App__header-keyboardMenuIcon");
+                            break;
+                        case("focusAddNodeToggle"):
+                            focusOnFirstElementWithClass("ProgramBlockEditor__add-node-toggle-switch");
+                            break;
+                        case("focusCharacterPositionControls"):
+                            focusOnFirstElementWithClass("ProgramBlockEditor__character-position-button");
+                            break;
+                        case("focusPlayShare"):
+                            focusOnFirstElementWithClass("PlayButton--play");
+                            break;
+                        case("focusProgramSequence"):
+                            focusOnFirstElementWithClass("AddNode__expanded-button");
+                            break;
+                        case("focusScene"):
+                            focusOnFirstElementWithClass("PenDownToggleSwitch");
+                            break;
+                        case("focusWorldSelector"):
+                            focusOnFirstElementWithClass("WorldIcon");
                             break;
                         default:
                             break;
