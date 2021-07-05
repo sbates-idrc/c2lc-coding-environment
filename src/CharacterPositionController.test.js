@@ -8,6 +8,7 @@ import CharacterState from './CharacterState';
 import SceneDimensions from './SceneDimensions';
 import messages from './messages.json';
 import CharacterPositionController from './CharacterPositionController';
+import * as TestUtils from './TestUtils';
 
 configure({ adapter: new Adapter()});
 
@@ -141,28 +142,28 @@ describe('Using change character position by column/row labels', () => {
         const characterXPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(0);
         const sampleXPosition = 'X';
         const secondSampleXPosition = 'A';
-        const eventObject = (value) => (
-            {
-                key: 'Enter',
-                preventDefault: () =>  {},
-                currentTarget:
-                    { name: 'xPosition', value }
-            }
-        );
+        const currentTarget = (value: string) => ({
+            name: 'xPosition',
+            value
+        });
 
-        characterXPositionCoordinateBox.simulate('change', eventObject(sampleXPosition));
+        characterXPositionCoordinateBox.simulate('change',
+            TestUtils.makeChangeEvent(currentTarget(sampleXPosition)));
         wrapper.update();
         expect(wrapper.instance().state.characterColumnLabel).toBe(sampleXPosition);
 
-        characterXPositionCoordinateBox.simulate('blur', eventObject());
+        characterXPositionCoordinateBox.simulate('blur',
+            TestUtils.makeBlurEvent(currentTarget(sampleXPosition)));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(1);
         expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(sampleXPosition);
 
-        characterXPositionCoordinateBox.simulate('change', eventObject(secondSampleXPosition));
+        characterXPositionCoordinateBox.simulate('change',
+            TestUtils.makeChangeEvent(currentTarget(secondSampleXPosition)));
         wrapper.update();
         expect(wrapper.instance().state.characterColumnLabel).toBe(secondSampleXPosition);
 
-        characterXPositionCoordinateBox.simulate('keyDown', eventObject());
+        characterXPositionCoordinateBox.simulate('keyDown',
+            TestUtils.makeKeyDownEvent(currentTarget(secondSampleXPosition), 'Enter'));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(2);
         expect(mockChangeCharacterXPosition.mock.calls[1][0]).toBe(secondSampleXPosition);
     });
@@ -172,28 +173,28 @@ describe('Using change character position by column/row labels', () => {
         const characterYPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(1);
         const sampleYPosition = '2';
         const secondSampleYPosition = '8';
-        const eventObject = (value) => (
-            {
-                key: 'Enter',
-                preventDefault: () =>  {},
-                currentTarget:
-                    { name: 'yPosition', value }
-            }
-        );
+        const currentTarget = (value: string) => ({
+            name: 'yPosition',
+            value
+        });
 
-        characterYPositionCoordinateBox.simulate('change', eventObject(sampleYPosition));
+        characterYPositionCoordinateBox.simulate('change',
+            TestUtils.makeChangeEvent(currentTarget(sampleYPosition)));
         wrapper.update();
         expect(wrapper.instance().state.characterRowLabel).toBe(sampleYPosition);
 
-        characterYPositionCoordinateBox.simulate('blur', eventObject());
+        characterYPositionCoordinateBox.simulate('blur',
+            TestUtils.makeBlurEvent(currentTarget(sampleYPosition)));
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(1);
         expect(mockChangeCharacterYPosition.mock.calls[0][0]).toBe(sampleYPosition);
 
-        characterYPositionCoordinateBox.simulate('change', eventObject(secondSampleYPosition));
+        characterYPositionCoordinateBox.simulate('change',
+            TestUtils.makeChangeEvent(currentTarget(secondSampleYPosition)));
         wrapper.update();
         expect(wrapper.instance().state.characterRowLabel).toBe(secondSampleYPosition);
 
-        characterYPositionCoordinateBox.simulate('keyDown', eventObject());
+        characterYPositionCoordinateBox.simulate('keyDown',
+            TestUtils.makeKeyDownEvent(currentTarget(secondSampleYPosition), 'Enter'));
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(2);
         expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(secondSampleYPosition);
     });
