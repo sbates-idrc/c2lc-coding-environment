@@ -448,16 +448,25 @@ body.dark-theme {
             fill: white;
             stroke: none;
         }
-
         .CharacterPositionController__character-position-button--disabled {
             path.filled {
                 fill: #505862;
             }
         }
+        &:focus {
+            outline: $c2lc-focus-indicator-width solid white;
+        }
     }
 
     .CharacterPositionController__character-position-button {
         stroke: white;
+        &:focus {
+            outline: $c2lc-focus-indicator-width solid white;
+        }
+    }
+
+    .ProgramBlock__character-position-coordinate-box:focus {
+        outline: $c2lc-focus-indicator-width solid white;
     }
 
     .CharacterPositionController__character-position-button--disabled {
@@ -1364,6 +1373,10 @@ body.contrast-theme {
         }
     }
 
+    .App__world-container {
+        background-color: black;
+    }
+
     // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
     #command-block--backward1, .btn-command-block--backward1,
     #command-block--backward2, .btn-command-block--backward2,
@@ -1524,6 +1537,10 @@ body.contrast-theme {
 
     .CharacterPositionController__character-position-button--disabled {
         stroke: #505862;
+    }
+
+    .ProgramBlock__character-position-coordinate-box:focus {
+        outline: $c2lc-focus-indicator-width solid white;
     }
 
     .Scene__container {
