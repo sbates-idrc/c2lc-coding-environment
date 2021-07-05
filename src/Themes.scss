@@ -445,7 +445,7 @@ body.dark-theme {
 
     .CharacterPositionController__character-turn-positions {
         svg path.filled {
-            fill: #22343C;
+            fill: white;
             stroke: none;
         }
 
@@ -457,7 +457,7 @@ body.dark-theme {
     }
 
     .CharacterPositionController__character-position-button {
-        stroke: #22343C;
+        stroke: white;
     }
 
     .CharacterPositionController__character-position-button--disabled {
