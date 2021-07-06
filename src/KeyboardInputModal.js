@@ -32,9 +32,11 @@ type KeyboardInputModalState = {
 class KeyboardInputModal extends React.Component<KeyboardInputModalProps, KeyboardInputModalState> {
     static defaultProps = {
         show: false,
-        onChangeKeyBindingsEnabled: () => {},
-        onChangeKeyboardInputScheme: () => {},
-        onHide: () => {}
+        // Istanbul doesn't understand that we test these by passing them in and
+        // Don't care about the default functions.
+        onChangeKeyBindingsEnabled: /* istanbul ignore next */ () => {},
+        onChangeKeyboardInputScheme: /* istanbul ignore next */ () => {},
+        onHide: /* istanbul ignore next */ () => {}
     }
 
     constructor(props: KeyboardInputModalProps) {
@@ -91,9 +93,6 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
         const keyBindingElements = [];
         keyBindings.forEach((key, index) => {
             const itemKey = "binding-" + index;
-            if (!keyboardInputScheme[key]) {
-                debugger;
-            }
             const keyDef: KeyDef = keyboardInputScheme[key].keyDef;
             // This only works for single-step key bindings. If we ever have
             // "sequences" that are not hidden, we will need to write code to
