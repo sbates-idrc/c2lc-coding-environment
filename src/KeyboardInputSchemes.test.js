@@ -43,7 +43,7 @@ it('Should be able to handle alt keys', ()  => {
 
 it('Should be able to handle a complete valid sequence', () => {
     const completeValidSequence = [
-        new KeyboardEvent('keydown', { code: "KeyC", altKey: true}),
+        new KeyboardEvent('keydown', { code: "KeyA", altKey: true}),
         new KeyboardEvent('keydown', { code: "KeyF"}),
         new KeyboardEvent('keydown', { key: "2"})
     ];
@@ -54,7 +54,7 @@ it('Should be able to handle a complete valid sequence', () => {
 
 it('Should be able to handle a complete invalid sequence', () => {
     const completeInvalidSequence = [
-        new KeyboardEvent('keydown', { code: "KeyF", altKey: true}),
+        new KeyboardEvent('keydown', { code: "KeyA", altKey: true}),
         new KeyboardEvent('keydown', { code: "KeyX"})
     ];
     const result = findKeyboardEventSequenceMatches(completeInvalidSequence, "alt");
@@ -63,7 +63,7 @@ it('Should be able to handle a complete invalid sequence', () => {
 
 it('Should be able to handle a partial sequence', () => {
     const partialSequence = [
-        new KeyboardEvent('keydown', { code: "KeyC", altKey: true}),
+        new KeyboardEvent('keydown', { code: "KeyA", altKey: true}),
         new KeyboardEvent('keydown', { code: "KeyB"})
     ];
 
