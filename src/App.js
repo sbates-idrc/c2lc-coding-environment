@@ -8,6 +8,7 @@ import AudioManagerImpl from './AudioManagerImpl';
 import CharacterAriaLive from './CharacterAriaLive';
 import CharacterState from './CharacterState';
 import CharacterStateSerializer from './CharacterStateSerializer';
+import CharacterPositionController from './CharacterPositionController';
 import CommandPaletteCommand from './CommandPaletteCommand';
 import C2lcURLParams from './C2lcURLParams';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
@@ -857,36 +858,47 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleChangeCharacterPosition = (positionName: ?string) => {
-        const currentCharacterState = this.state.characterState;
         switch(positionName) {
             case 'turnLeft':
-                this.setState({
-                    characterState: currentCharacterState.turnLeft(1)
+                this.setState((state) => {
+                    return {
+                        characterState: state.characterState.turnLeft(1)
+                    }
                 });
                 break;
             case 'turnRight':
-                this.setState({
-                    characterState: currentCharacterState.turnRight(1)
+                this.setState((state) => {
+                    return {
+                        characterState: state.characterState.turnRight(1)
+                    }
                 });
                 break;
             case 'up':
-                this.setState({
-                    characterState: currentCharacterState.moveUpPosition()
+                this.setState((state) => {
+                    return {
+                        characterState: state.characterState.moveUpPosition()
+                    }
                 });
                 break;
             case 'right':
-                this.setState({
-                    characterState: currentCharacterState.moveRightPosition()
+                this.setState((state) => {
+                    return {
+                        characterState: state.characterState.moveRightPosition()
+                    }
                 });
                 break;
             case 'down':
-                this.setState({
-                    characterState: currentCharacterState.moveDownPosition()
+                this.setState((state) => {
+                    return {
+                        characterState: state.characterState.moveDownPosition()
+                    }
                 });
                 break;
             case 'left':
-                this.setState({
-                    characterState: currentCharacterState.moveLeftPosition()
+                this.setState((state) => {
+                    return {
+                        characterState: state.characterState.moveLeftPosition()
+                    }
                 });
                 break;
             default:
@@ -999,7 +1011,7 @@ export class App extends React.Component<AppProps, AppState> {
                             </div>
                         </div>
                     </div>
-                    <div className="App__world-selector-container">
+                    <div className="App__world-container">
                         <h2 className='sr-only' >
                             <FormattedMessage id='WorldSelector.heading' />
                         </h2>
@@ -1011,6 +1023,15 @@ export class App extends React.Component<AppProps, AppState> {
                             world={this.state.settings.world}
                             onSelect={this.handleChangeWorld}
                         />
+                        <CharacterPositionController
+                            characterState={this.state.characterState}
+                            editingDisabled={
+                                !(this.state.runningState === 'stopped'
+                                || this.state.runningState === 'paused')}
+                            world={this.state.settings.world}
+                            onChangeCharacterPosition={this.handleChangeCharacterPosition}
+                            onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
+                            onChangeCharacterYPosition={this.handleChangeCharacterYPosition} />
                     </div>
                     <div className='App__command-palette'>
                         <ActionsMenu
@@ -1050,9 +1071,6 @@ export class App extends React.Component<AppProps, AppState> {
                             focusTrapManager={this.focusTrapManager}
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
                             world={this.state.settings.world}
-                            onChangeCharacterPosition={this.handleChangeCharacterPosition}
-                            onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
-                            onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
