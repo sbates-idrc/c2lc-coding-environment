@@ -70,3 +70,61 @@ it('Should be able to handle a partial sequence', () => {
     const result = findKeyboardEventSequenceMatches(partialSequence, "alt");
     expect(result).toBe("partial");
 });
+
+// Uncomment these out (and add KeyboardInputSchemes to your imports) to generate
+// and output markdown representing the full set of key bindings.
+
+// function processSingleLevel (singleLevel, accumulatedSequence) {
+//     let levelSequences = [];
+//     const levelAccumulatedSequence = accumulatedSequence.concat([singleLevel.keyDef]);
+//     if (singleLevel.actionName) {
+//         levelAccumulatedSequence.push(singleLevel.actionName);
+//         levelSequences.push(levelAccumulatedSequence);
+//     }
+//     else {
+//         for (const [subEntryKey, subEntryValue] of Object.entries(singleLevel)) {
+//             if (subEntryKey !== "keyDef" && subEntryKey !== "commandName") {
+//                 const subSequences = processSingleLevel(subEntryValue, levelAccumulatedSequence);
+//                 levelSequences = levelSequences.concat(subSequences);
+//             }
+//         }
+//     }
+//     return levelSequences;
+// }
+
+// function  displayKeyBindings () {
+//     let markdown = "";
+//     for (const [schemeName, keyboardInputScheme] of Object.entries(KeyboardInputSchemes)) {
+//         markdown += '## ' + schemeName + ' Key Bindings\n\n';
+//         markdown += '| Keys | Command |\n'
+//         markdown += '| ---- | ------- |\n'
+//         for (const topLevelBinding of Object.values(keyboardInputScheme)) {
+//             const allSequences = processSingleLevel(topLevelBinding, []);
+//             const bindingEntries = [];
+//             for (const sequence of allSequences) {
+//                 const keys = sequence.slice(0, sequence.length - 1);
+//                 const commandName = sequence.slice(-1);
+//                 let bindingText = "";
+//                 for (const keyDef of keys) {
+//                     if (bindingText.length) {
+//                         bindingText += ", ";
+//                     }
+//                     if (keyDef.ctrlKey) {
+//                         bindingText += "Ctrl + ";
+//                     }
+//                     if (keyDef.altKey) {
+//                         bindingText += "Alt + "
+//                     }
+//                     bindingText += keyDef.key || (keyDef.code && keyDef.code.replace("Key", ""));
+//                 }
+//                 bindingEntries.push('| ' + bindingText + ' | ' + commandName + ' |');
+//             }
+//             markdown += bindingEntries.sort().join('\n') + '\n';
+//         }
+//         markdown += "\n";
+//     }
+//     /* eslint-disable-next-line no-console */
+//     console.log(markdown);
+// }
+
+// displayKeyBindings();
