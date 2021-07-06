@@ -31,6 +31,12 @@ The default key bindings are as follows:
 | Alt + A, R, 1 | selectRight45 |
 | Alt + A, R, 2 | selectRight90 |
 | Alt + A, R, 3 | selectRight180 |
+| Alt + C, M, ArrowDown | moveCharacterDown |
+| Alt + C, M, ArrowLeft | moveCharacterLeft |
+| Alt + C, M, ArrowRight | moveCharacterRight |
+| Alt + C, M, ArrowUp | moveCharacterUp |
+| Alt + C, T, ArrowLeft | turnCharacterLeft |
+| Alt + C, T, ArrowRight | turnCharacterRight |
 | Alt + F, A | focusActions |
 | Alt + F, C | focusCharacterPositionControls |
 | Alt + F, H | focusAppHeader |
@@ -45,7 +51,7 @@ The default key bindings are as follows:
 
 As NVDA makes use of many keys in combination with the alt key, an alternate
 key binding scheme is provided as well.  Those key bindings are as follows.
-
+      
 | Keys | Command |
 | ---- | ------- |
 | Ctrl + Alt + B | addCommandToBeginning |
@@ -69,6 +75,12 @@ key binding scheme is provided as well.  Those key bindings are as follows.
 | Alt + A, R, 1 | selectRight45 |
 | Alt + A, R, 2 | selectRight90 |
 | Alt + A, R, 3 | selectRight180 |
+| Alt + C, M, ArrowDown | moveCharacterDown |
+| Alt + C, M, ArrowLeft | moveCharacterLeft |
+| Alt + C, M, ArrowRight | moveCharacterRight |
+| Alt + C, M, ArrowUp | moveCharacterUp |
+| Alt + C, T, ArrowLeft | turnCharacterLeft |
+| Alt + C, T, ArrowRight | turnCharacterRight |
 | Alt + F, A | focusActions |
 | Alt + F, C | focusCharacterPositionControls |
 | Alt + F, H | focusAppHeader |

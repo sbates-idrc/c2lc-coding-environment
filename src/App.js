@@ -744,6 +744,24 @@ export class App extends React.Component<AppProps, AppState> {
                         case("focusWorldSelector"):
                             focusOnFirstElementWithClass("WorldIcon");
                             break;
+                        case("moveCharacterLeft"):
+                            this.handleChangeCharacterPosition('left');
+                            break;
+                        case("moveCharacterRight"):
+                            this.handleChangeCharacterPosition('right');
+                            break;
+                        case("moveCharacterUp"):
+                            this.handleChangeCharacterPosition('up');
+                            break;
+                        case("moveCharacterDown"):
+                            this.handleChangeCharacterPosition('down');
+                            break;
+                        case("turnCharacterLeft"):
+                            this.handleChangeCharacterPosition('turnLeft');
+                            break;
+                        case("turnCharacterRight"):
+                            this.handleChangeCharacterPosition('turnRight');
+                            break;
                         default:
                             break;
                     }

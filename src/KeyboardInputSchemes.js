@@ -36,6 +36,7 @@ type ActionName =
     | "selectRight90"
     | "selectRight180"
 
+    // Focus Sequences
     | "focusActions"
     | "focusAppHeader"
     | "focusAddNodeToggle"
@@ -44,6 +45,14 @@ type ActionName =
     | "focusProgramSequence"
     | "focusScene"
     | "focusWorldSelector"
+
+    // Character Position Sequences
+    | "moveCharacterLeft"
+    | "moveCharacterRight"
+    | "moveCharacterUp"
+    | "moveCharacterDown"
+    | "turnCharacterLeft"
+    | "turnCharacterRight"
     ;
 
 type ActionKeyStep = {
@@ -91,7 +100,7 @@ const CommonKeyboardSequences: KeyboardInputScheme = {
             actionName: "focusAddNodeToggle"
         },
         characterPositionControls: {
-            keyDef: { code: "KeyC"},
+            keyDef: { code: "KeyC", hidden: true},
             actionName: "focusCharacterPositionControls"
         },
         playShare: {
@@ -174,6 +183,40 @@ const CommonKeyboardSequences: KeyboardInputScheme = {
                 actionName: "selectRight180"
             }
         }
+    },
+
+    characterPosition: {
+        keyDef: { code: "KeyC", altKey: true},
+        move: {
+            keyDef: { code: "KeyM" },
+            left: {
+                keyDef: { key: "ArrowLeft" },
+                actionName: "moveCharacterLeft"
+            },
+            right: {
+                keyDef: { key: "ArrowRight" },
+                actionName: "moveCharacterRight"
+            },
+            up: {
+                keyDef: { key: "ArrowUp" },
+                actionName: "moveCharacterUp"
+            },
+            down: {
+                keyDef: { key: "ArrowDown" },
+                actionName: "moveCharacterDown"
+            }
+        },
+        turn: {
+            keyDef: { code: "KeyT" },
+            left: {
+                keyDef: { key: "ArrowLeft" },
+                actionName: "turnCharacterLeft"
+            },
+            right: {
+                keyDef: { key: "ArrowRight" },
+                actionName: "turnCharacterRight"
+            }
+        }
     }
 }
 
@@ -216,6 +259,7 @@ export const KeyboardInputSchemes:KeyboardInputSchemesType = {
             actionName: "stopProgram"
         },
 
+        characterPosition: CommonKeyboardSequences.characterPosition,
         extraSettings: CommonKeyboardSequences.extraSettings,
         focusChange: CommonKeyboardSequences.focusChange,
         selectedActionChange: CommonKeyboardSequences.selectedActionChange
@@ -258,6 +302,7 @@ export const KeyboardInputSchemes:KeyboardInputSchemesType = {
             actionName: "stopProgram"
         },
 
+        characterPosition: CommonKeyboardSequences.characterPosition,
         extraSettings: CommonKeyboardSequences.extraSettings,
         focusChange: CommonKeyboardSequences.focusChange,
         selectedActionChange: CommonKeyboardSequences.selectedActionChange
