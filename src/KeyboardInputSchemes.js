@@ -190,30 +190,30 @@ const CommonKeyboardSequences: KeyboardInputScheme = {
         move: {
             keyDef: { code: "KeyM" },
             left: {
-                keyDef: { key: "ArrowLeft" },
+                keyDef: { code: "KeyL" },
                 actionName: "moveCharacterLeft"
             },
             right: {
-                keyDef: { key: "ArrowRight" },
+                keyDef: { code: "KeyR" },
                 actionName: "moveCharacterRight"
             },
             up: {
-                keyDef: { key: "ArrowUp" },
+                keyDef: { code: "KeyU" },
                 actionName: "moveCharacterUp"
             },
             down: {
-                keyDef: { key: "ArrowDown" },
+                keyDef: { code: "KeyD" },
                 actionName: "moveCharacterDown"
             }
         },
         turn: {
             keyDef: { code: "KeyT" },
             left: {
-                keyDef: { key: "ArrowLeft" },
+                keyDef: { code: "KeyL" },
                 actionName: "turnCharacterLeft"
             },
             right: {
-                keyDef: { key: "ArrowRight" },
+                keyDef: { code: "KeyR" },
                 actionName: "turnCharacterRight"
             }
         }
@@ -264,6 +264,8 @@ export const KeyboardInputSchemes:KeyboardInputSchemesType = {
         focusChange: CommonKeyboardSequences.focusChange,
         selectedActionChange: CommonKeyboardSequences.selectedActionChange
     },
+    // TODO: Make the common key bindings use ctrl+alt instead of just alt.
+    // TODO: Update character position navigation to use awsd? udlr?
     "nvda": {
         addCommandToBeginning: {
             keyDef: { code: "KeyB", altKey: true, ctrlKey: true},
