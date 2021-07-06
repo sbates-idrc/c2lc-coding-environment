@@ -668,7 +668,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("refreshScene"):
-                            if (this.state.runningState !== 'running') {
+                            if (this.state.runningState === 'stopped' || this.state.runningState === 'paused') {
                                 this.handleRefresh();
                             }
                             break;
