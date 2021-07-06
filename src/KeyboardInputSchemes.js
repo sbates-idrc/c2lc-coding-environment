@@ -1,4 +1,6 @@
 //@flow
+import {extend} from './Utils';
+
 export type KeyboardInputSchemeName = "alt" | "nvda";
 
 export type KeyDef = {
@@ -74,7 +76,7 @@ export type KeyboardInputSchemesType = {
     "nvda": KeyboardInputScheme
 };
 
-const CommonKeyboardSequences: KeyboardInputScheme = {
+const ExtendedKeyboardSequences: KeyboardInputScheme = {
     extraSettings: {
         keyDef: { code: "KeyX", altKey: true, hidden: true},
         audioFeedback: {
@@ -220,95 +222,105 @@ const CommonKeyboardSequences: KeyboardInputScheme = {
     }
 }
 
-export const KeyboardInputSchemes:KeyboardInputSchemesType = {
-    "alt": {
-        addCommandToBeginning: {
-            keyDef: { code: "KeyB", altKey: true},
-            actionName: "addCommandToBeginning"
-        },
-        addCommandToEnd: {
-            keyDef: { code: "KeyE", altKey: true},
-            actionName: "addCommandToEnd"
-        },
-        announceScene: {
-            keyDef: { code: "KeyI", altKey: true},
-            actionName: "announceScene"
-        },
-        decreaseProgramSpeed: {
-            keyDef: { key: "<", hidden: true},
-            actionName: "decreaseProgramSpeed"
-        },
-        increaseProgramSpeed: {
-            keyDef: { key: ">", hidden: true},
-            actionName: "increaseProgramSpeed"
-        },
-        playPauseProgram: {
-            keyDef: { code: "KeyP", altKey: true},
-            actionName: "playPauseProgram"
-        },
-        refreshScene: {
-            keyDef: { code: "KeyR", altKey: true},
-            actionName: "refreshScene"
-        },
-        showHide: {
-            keyDef: { key: "?"},
-            actionName: "showHide"
-        },
-        stopProgram: {
-            keyDef: { code: "KeyS", altKey: true},
-            actionName: "stopProgram"
-        },
-
-        characterPosition: CommonKeyboardSequences.characterPosition,
-        extraSettings: CommonKeyboardSequences.extraSettings,
-        focusChange: CommonKeyboardSequences.focusChange,
-        selectedActionChange: CommonKeyboardSequences.selectedActionChange
+const defaultInputScheme: KeyboardInputScheme = Object.assign({
+    addCommandToBeginning: {
+        keyDef: { code: "KeyB", altKey: true},
+        actionName: "addCommandToBeginning"
     },
-    // TODO: Make the common key bindings use ctrl+alt instead of just alt.
-    // TODO: Update character position navigation to use awsd? udlr?
-    "nvda": {
-        addCommandToBeginning: {
-            keyDef: { code: "KeyB", altKey: true, ctrlKey: true},
-            actionName: "addCommandToBeginning"
-        },
-        addCommandToEnd: {
-            keyDef: { code: "KeyE", altKey: true, ctrlKey: true},
-            actionName: "addCommandToEnd"
-        },
-        announceScene: {
-            keyDef: {code: "KeyI", altKey: true, ctrlKey: true},
-            actionName: "announceScene"
-        },
-        decreaseProgramSpeed: {
-            keyDef: { key: "<", shiftKey: true, hidden: true},
-            actionName: "decreaseProgramSpeed"
-        },
-        increaseProgramSpeed: {
-            keyDef: { key: ">", shiftKey: true, hidden: true},
-            actionName: "increaseProgramSpeed"
-        },
-        playPauseProgram: {
-            keyDef: { code: "KeyP", altKey: true, ctrlKey: true},
-            actionName: "playPauseProgram"
-        },
-        refreshScene: {
-            keyDef: { code: "KeyR", altKey: true, ctrlKey: true },
-            actionName: "refreshScene"
-        },
-        showHide: {
-            keyDef: { key: "?", shiftKey: true },
-            actionName: "showHide"
-        },
-        stopProgram: {
-            keyDef: {code: "KeyS", altKey: true, ctrlKey: true},
-            actionName: "stopProgram"
-        },
-
-        characterPosition: CommonKeyboardSequences.characterPosition,
-        extraSettings: CommonKeyboardSequences.extraSettings,
-        focusChange: CommonKeyboardSequences.focusChange,
-        selectedActionChange: CommonKeyboardSequences.selectedActionChange
+    addCommandToEnd: {
+        keyDef: { code: "KeyE", altKey: true},
+        actionName: "addCommandToEnd"
+    },
+    announceScene: {
+        keyDef: { code: "KeyI", altKey: true},
+        actionName: "announceScene"
+    },
+    decreaseProgramSpeed: {
+        keyDef: { key: "<", hidden: true},
+        actionName: "decreaseProgramSpeed"
+    },
+    increaseProgramSpeed: {
+        keyDef: { key: ">", hidden: true},
+        actionName: "increaseProgramSpeed"
+    },
+    playPauseProgram: {
+        keyDef: { code: "KeyP", altKey: true},
+        actionName: "playPauseProgram"
+    },
+    refreshScene: {
+        keyDef: { code: "KeyR", altKey: true},
+        actionName: "refreshScene"
+    },
+    showHide: {
+        keyDef: { key: "?"},
+        actionName: "showHide"
+    },
+    stopProgram: {
+        keyDef: { code: "KeyS", altKey: true},
+        actionName: "stopProgram"
     }
+}, ExtendedKeyboardSequences);
+
+const NvdaExtendedKeyboardSequences = extend(ExtendedKeyboardSequences, {
+    extraSettings: {
+        keyDef: { ctrlKey: true }
+    },
+
+    focusChange: {
+        keyDef: {ctrlKey: true }
+    },
+
+    selectedActionChange: {
+        keyDef: { ctrlKey: true }
+    },
+
+    characterPosition: {
+        keyDef: { ctrlKey: true }
+    }
+});
+
+const NvdaInputScheme = Object.assign({
+    addCommandToBeginning: {
+        keyDef: { code: "KeyB", altKey: true, ctrlKey: true},
+        actionName: "addCommandToBeginning"
+    },
+    addCommandToEnd: {
+        keyDef: { code: "KeyE", altKey: true, ctrlKey: true},
+        actionName: "addCommandToEnd"
+    },
+    announceScene: {
+        keyDef: {code: "KeyI", altKey: true, ctrlKey: true},
+        actionName: "announceScene"
+    },
+    decreaseProgramSpeed: {
+        keyDef: { key: "<", shiftKey: true, hidden: true},
+        actionName: "decreaseProgramSpeed"
+    },
+    increaseProgramSpeed: {
+        keyDef: { key: ">", shiftKey: true, hidden: true},
+        actionName: "increaseProgramSpeed"
+    },
+    playPauseProgram: {
+        keyDef: { code: "KeyP", altKey: true, ctrlKey: true},
+        actionName: "playPauseProgram"
+    },
+    refreshScene: {
+        keyDef: { code: "KeyR", altKey: true, ctrlKey: true },
+        actionName: "refreshScene"
+    },
+    showHide: {
+        keyDef: { key: "?", shiftKey: true },
+        actionName: "showHide"
+    },
+    stopProgram: {
+        keyDef: {code: "KeyS", altKey: true, ctrlKey: true},
+        actionName: "stopProgram"
+    },
+}, NvdaExtendedKeyboardSequences);
+
+export const KeyboardInputSchemes:KeyboardInputSchemesType = {
+    "alt": defaultInputScheme,
+    "nvda": NvdaInputScheme
 };
 
 const labelMessageKeysByCode = {
