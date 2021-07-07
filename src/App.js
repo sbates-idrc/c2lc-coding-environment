@@ -626,6 +626,10 @@ export class App extends React.Component<AppProps, AppState> {
                     this.sequenceInProgress = [];
                 }
 
+                if (matchingKeyboardAction === "partial") {
+                    e.preventDefault();
+                }
+
                 if (matchingKeyboardAction !== false && matchingKeyboardAction !== "partial") {
                     e.preventDefault();
                     switch (matchingKeyboardAction) {
