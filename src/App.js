@@ -658,6 +658,19 @@ export class App extends React.Component<AppProps, AppState> {
                                 this.handleProgramSequenceChange(newProgramSequence);
                             }
                             break;
+                        case("deleteCurrentStep"):
+                            const currentElement = document.activeElement;
+                            // $FlowFixMe: Not all elements have dataset property
+                            const index = parseInt(currentElement.dataset.stepnumber);
+                            if (index != null) {
+                                const newProgramSequence = this.state.programSequence.deleteStep(index);
+                                this.handleProgramSequenceChange(newProgramSequence);
+                            }
+                            break;
+                        case("deleteAll"): {
+                            const newProgramSequence = this.state.programSequence.updateProgram([]);
+                            this.handleProgramSequenceChange(newProgramSequence);
+                        }
                         case("announceScene"):
                             const ariaLiveRegion = document.getElementById('character-position');
                             if (ariaLiveRegion) {
