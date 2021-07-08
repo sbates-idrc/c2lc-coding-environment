@@ -11,7 +11,7 @@ export type KeyDef = {
     hidden?: boolean
 };
 
-type ActionName =
+export type ActionName =
     // Single Key Commands
     | "addCommandToBeginning"
     | "addCommandToEnd"

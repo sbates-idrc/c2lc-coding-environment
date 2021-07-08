@@ -40,7 +40,7 @@ import ThemeSelector from './ThemeSelector';
 import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
 import KeyboardInputModal from './KeyboardInputModal';
 
-import type {KeyboardInputSchemeName} from './KeyboardInputSchemes';
+import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches} from './KeyboardInputSchemes';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg'
 
@@ -621,7 +621,7 @@ export class App extends React.Component<AppProps, AppState> {
             if (!isOnlyModifier) {
                 this.sequenceInProgress.push(e);
 
-                const matchingKeyboardAction = findKeyboardEventSequenceMatches(this.sequenceInProgress, this.state.keyboardInputSchemeName);
+                const matchingKeyboardAction: ActionName | "partial" | false = findKeyboardEventSequenceMatches(this.sequenceInProgress, this.state.keyboardInputSchemeName);
                 if (matchingKeyboardAction === false || matchingKeyboardAction !== "partial") {
                     this.sequenceInProgress = [];
                 }
@@ -634,7 +634,7 @@ export class App extends React.Component<AppProps, AppState> {
                                 return { showKeyboardModal: !(currentState.showKeyboardModal) };
                             });
                             break;
-                        case("toggleAnnouncements"):
+                        case("toggleFeedbackAnnouncements"):
                             // We have to use the function form here as our change is based on the current state.
                             this.setState((currentState) => {
                                 return { announcementsEnabled: !(currentState.announcementsEnabled) };
