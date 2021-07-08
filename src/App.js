@@ -730,7 +730,7 @@ export class App extends React.Component<AppProps, AppState> {
                             focusOnFirstElementWithClass("ProgramBlockEditor__add-node-toggle-switch");
                             break;
                         case("focusCharacterPositionControls"):
-                            focusOnFirstElementWithClass("ProgramBlockEditor__character-position-button");
+                            focusOnFirstElementWithClass("CharacterPositionController__character-position-button");
                             break;
                         case("focusPlayShare"):
                             focusOnFirstElementWithClass("PlayButton--play");
