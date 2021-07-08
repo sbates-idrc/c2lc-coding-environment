@@ -661,10 +661,12 @@ export class App extends React.Component<AppProps, AppState> {
                         case("deleteCurrentStep"):
                             const currentElement = document.activeElement;
                             // $FlowFixMe: Not all elements have dataset property
-                            const index = parseInt(currentElement.dataset.stepnumber, 10);
-                            if (index != null) {
-                                const newProgramSequence = this.state.programSequence.deleteStep(index);
-                                this.handleProgramSequenceChange(newProgramSequence);
+                            if (currentElement.dataset.controltype === 'programStep') {
+                                const index = parseInt(currentElement.dataset.stepnumber, 10);
+                                if (index != null) {
+                                    const newProgramSequence = this.state.programSequence.deleteStep(index);
+                                    this.handleProgramSequenceChange(newProgramSequence);
+                                }
                             }
                             break;
                         case("deleteAll"): {

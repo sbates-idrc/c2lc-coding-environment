@@ -436,6 +436,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                 ref={ (element) => { this.setCommandBlockRef(programStepNumber, element) } }
                 key={`${programStepNumber}-${command}`}
                 data-stepnumber={programStepNumber}
+                data-controltype='programStep'
                 data-command={command}
                 data-actionpanelgroup={true}
                 className={classes}
