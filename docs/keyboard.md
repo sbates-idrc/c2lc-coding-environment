@@ -1,16 +1,17 @@
 # Key Bindings
 
 Weavly supports several key binding schemes.  These can be configured (or turned
-off) using the keyboard input menu, which is displayed by default when the 
+off) using the keyboard input menu, which is displayed by default when the
 question mark key is pressed, or when the keyboard icon is clicked.
 
 ## Default Key Bindings
 
 The default key bindings are as follows:
-     
+
 | Keys | Command |
 | ---- | ------- |
 | Alt + B | addCommandToBeginning |
+| Alt + D | deleteCurrentStep |
 | Alt + E | addCommandToEnd |
 | Alt + I | announceScene |
 | Alt + P | playPauseProgram |
@@ -37,6 +38,7 @@ The default key bindings are as follows:
 | Alt + X, C, M, U | moveCharacterUp |
 | Alt + X, C, T, L | turnCharacterLeft |
 | Alt + X, C, T, R | turnCharacterRight |
+| Alt + X, D | deleteAll |
 | Alt + X, F, A | focusActions |
 | Alt + X, F, C | focusCharacterPositionControls |
 | Alt + X, F, H | focusAppHeader |
@@ -46,18 +48,19 @@ The default key bindings are as follows:
 | Alt + X, F, T | focusAddNodeToggle |
 | Alt + X, F, W | focusWorldSelector |
 | Alt + X, X | toggleFeedbackAnnouncements |
-      
 
-    
+
+
 ## NVDA Key Bindings
 
 As NVDA makes use of many keys in combination with the alt key, an alternate
 key binding scheme is provided as well.  Those key bindings are as follows.
-      
+
 
 | Keys | Command |
 | ---- | ------- |
 | Ctrl + Alt + B | addCommandToBeginning |
+| Ctrl + Alt + D | deleteCurrentStep |
 | Ctrl + Alt + E | addCommandToEnd |
 | Ctrl + Alt + I | announceScene |
 | Ctrl + Alt + P | playPauseProgram |
@@ -84,6 +87,7 @@ key binding scheme is provided as well.  Those key bindings are as follows.
 | Ctrl + Alt + X, C, M, U | moveCharacterUp |
 | Ctrl + Alt + X, C, T, L | turnCharacterLeft |
 | Ctrl + Alt + X, C, T, R | turnCharacterRight |
+| Ctrl + Alt + X, D | deleteAll |
 | Ctrl + Alt + X, F, A | focusActions |
 | Ctrl + Alt + X, F, C | focusCharacterPositionControls |
 | Ctrl + Alt + X, F, H | focusAppHeader |
