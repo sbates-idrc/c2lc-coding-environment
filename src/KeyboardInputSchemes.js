@@ -80,143 +80,142 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
     extraSettings: {
         keyDef: { code: "KeyX", altKey: true, hidden: true},
         audioFeedback: {
-            keyDef: { code: "KeyF"},
+            keyDef: { code: "KeyX"},
             actionName: "toggleFeedbackAnnouncements"
-        }
-    },
-
-    focusChange: {
-        keyDef: {
-            code: "KeyF", altKey: true, hidden:true
         },
-        actions: {
+        focusChange: {
+            keyDef: {
+                code: "KeyF"
+            },
+            actions: {
+                keyDef: { code: "KeyA"},
+                actionName: "focusActions"
+            },
+            appHeader: {
+                keyDef: { code: "KeyH"},
+                actionName: "focusAppHeader"
+            },
+            addNodeToggle: {
+                keyDef: { code: "KeyT"},
+                actionName: "focusAddNodeToggle"
+            },
+            characterPositionControls: {
+                keyDef: { code: "KeyC", hidden: true},
+                actionName: "focusCharacterPositionControls"
+            },
+            playShare: {
+                keyDef: { code: "KeyP"},
+                actionName: "focusPlayShare"
+            },
+            programSequence: {
+                keyDef: { code: "KeyQ"},
+                actionName: "focusProgramSequence"
+            },
+            scene: {
+                keyDef: { code: "KeyS"},
+                actionName: "focusScene"
+            },
+            worldSelector: {
+                keyDef: { code: "KeyW"},
+                actionName: "focusWorldSelector"
+            }
+        },
+
+        selectedActionChange: {
             keyDef: { code: "KeyA"},
-            actionName: "focusActions"
-        },
-        appHeader: {
-            keyDef: { code: "KeyH"},
-            actionName: "focusAppHeader"
-        },
-        addNodeToggle: {
-            keyDef: { code: "KeyT"},
-            actionName: "focusAddNodeToggle"
-        },
-        characterPositionControls: {
-            keyDef: { code: "KeyC", hidden: true},
-            actionName: "focusCharacterPositionControls"
-        },
-        playShare: {
-            keyDef: { code: "KeyP"},
-            actionName: "focusPlayShare"
-        },
-        programSequence: {
-            keyDef: { code: "KeyQ"},
-            actionName: "focusProgramSequence"
-        },
-        scene: {
-            keyDef: { code: "KeyS"},
-            actionName: "focusScene"
-        },
-        worldSelector: {
-            keyDef: { code: "KeyW"},
-            actionName: "focusWorldSelector"
-        }
-    },
-
-    selectedActionChange: {
-        keyDef: { code: "KeyA", altKey: true, hidden:true},
-        forward: {
-            keyDef: { code: "KeyF"},
-            forward1: {
-                keyDef: { key: "1"},
-                actionName: "selectForward1"
+            forward: {
+                keyDef: { code: "KeyF"},
+                forward1: {
+                    keyDef: { key: "1"},
+                    actionName: "selectForward1"
+                },
+                forward2: {
+                    keyDef: { key: "2"},
+                    actionName: "selectForward2"
+                },
+                forward3: {
+                    keyDef: { key: "3"},
+                    actionName: "selectForward3"
+                }
             },
-            forward2: {
-                keyDef: { key: "2"},
-                actionName: "selectForward2"
+            backward: {
+                keyDef: { code: "KeyB"},
+                backward1: {
+                    keyDef: { key: "1"},
+                    actionName: "selectBackward1"
+                },
+                backward2: {
+                    keyDef: { key: "2"},
+                    actionName: "selectBackward2"
+                },
+                backward3: {
+                    keyDef: { key: "3"},
+                    actionName: "selectBackward3"
+                }
             },
-            forward3: {
-                keyDef: { key: "3"},
-                actionName: "selectForward3"
-            }
-        },
-        backward: {
-            keyDef: { code: "KeyB"},
-            backward1: {
-                keyDef: { key: "1"},
-                actionName: "selectBackward1"
-            },
-            backward2: {
-                keyDef: { key: "2"},
-                actionName: "selectBackward2"
-            },
-            backward3: {
-                keyDef: { key: "3"},
-                actionName: "selectBackward3"
-            }
-        },
-        left: {
-            keyDef: { code: "KeyL"},
-            left45: {
-                keyDef: { key: "1"},
-                actionName: "selectLeft45"
-            },
-            left90: {
-                keyDef: { key: "2"},
-                actionName: "selectLeft90"
-            },
-            left180: {
-                keyDef: { key: "3"},
-                actionName: "selectLeft180"
-            }
-        },
-        right: {
-            keyDef: { code: "KeyR"},
-            right45: {
-                keyDef: { key: "1"},
-                actionName: "selectRight45"
-            },
-            right90: {
-                keyDef: { key: "2"},
-                actionName: "selectRight90"
-            },
-            right180: {
-                keyDef: { key: "3"},
-                actionName: "selectRight180"
-            }
-        }
-    },
-
-    characterPosition: {
-        keyDef: { code: "KeyC", altKey: true},
-        move: {
-            keyDef: { code: "KeyM" },
             left: {
-                keyDef: { code: "KeyL" },
-                actionName: "moveCharacterLeft"
+                keyDef: { code: "KeyL"},
+                left45: {
+                    keyDef: { key: "1"},
+                    actionName: "selectLeft45"
+                },
+                left90: {
+                    keyDef: { key: "2"},
+                    actionName: "selectLeft90"
+                },
+                left180: {
+                    keyDef: { key: "3"},
+                    actionName: "selectLeft180"
+                }
             },
             right: {
-                keyDef: { code: "KeyR" },
-                actionName: "moveCharacterRight"
-            },
-            up: {
-                keyDef: { code: "KeyU" },
-                actionName: "moveCharacterUp"
-            },
-            down: {
-                keyDef: { code: "KeyD" },
-                actionName: "moveCharacterDown"
+                keyDef: { code: "KeyR"},
+                right45: {
+                    keyDef: { key: "1"},
+                    actionName: "selectRight45"
+                },
+                right90: {
+                    keyDef: { key: "2"},
+                    actionName: "selectRight90"
+                },
+                right180: {
+                    keyDef: { key: "3"},
+                    actionName: "selectRight180"
+                }
             }
         },
-        turn: {
-            keyDef: { code: "KeyT" },
-            left: {
-                keyDef: { code: "KeyL" },
-                actionName: "turnCharacterLeft"
+
+        characterPosition: {
+            keyDef: { code: "KeyC"},
+            move: {
+                keyDef: { code: "KeyM" },
+                left: {
+                    keyDef: { code: "KeyL" },
+                    actionName: "moveCharacterLeft"
+                },
+                right: {
+                    keyDef: { code: "KeyR" },
+                    actionName: "moveCharacterRight"
+                },
+                up: {
+                    keyDef: { code: "KeyU" },
+                    actionName: "moveCharacterUp"
+                },
+                down: {
+                    keyDef: { code: "KeyD" },
+                    actionName: "moveCharacterDown"
+                }
             },
-            right: {
-                keyDef: { code: "KeyR" },
-                actionName: "turnCharacterRight"
+            turn: {
+                keyDef: { code: "KeyT" },
+                left: {
+                    keyDef: { code: "KeyL" },
+                    actionName: "turnCharacterLeft"
+                },
+                right: {
+                    keyDef: { code: "KeyR" },
+                    actionName: "turnCharacterRight"
+                }
             }
         }
     }
@@ -434,4 +433,14 @@ function matchSingleInputSchemeLevel (events: Array<KeyboardEvent>, inputSchemeL
         }
     }
     return false;
+}
+
+export function isRepeatedEvent (firstKeyboardEvent: KeyboardEvent, secondKeyboardEvent: KeyboardEvent) {
+    for (const property of ["key", "code", "altKey", "ctrlKey"]) {
+        // $FlowFixMe: Flow is confused about the structure of a keyboard event.
+        if (firstKeyboardEvent[property] !== secondKeyboardEvent[property]) {
+            return false;
+        }
+    }
+    return true;
 }

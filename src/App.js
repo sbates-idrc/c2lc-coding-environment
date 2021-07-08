@@ -41,7 +41,7 @@ import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
 import KeyboardInputModal from './KeyboardInputModal';
 
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
-import {findKeyboardEventSequenceMatches} from './KeyboardInputSchemes';
+import {findKeyboardEventSequenceMatches, isRepeatedEvent} from './KeyboardInputSchemes';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg'
 
 // Convenience function to focus on the first element with a given class, used
@@ -618,7 +618,12 @@ export class App extends React.Component<AppProps, AppState> {
     handleDocumentKeyDown = (e: KeyboardEvent) => {
         if (this.state.keyBindingsEnabled) {
             const isOnlyModifier = ["Shift", "Control", "Alt"].indexOf(e.key) !== -1;
-            if (!isOnlyModifier) {
+            let isRepeat = false;
+            if (this.sequenceInProgress.length) {
+                isRepeat = isRepeatedEvent(this.sequenceInProgress[this.sequenceInProgress.length - 1], e);
+            }
+
+            if (!isOnlyModifier && !isRepeat) {
                 this.sequenceInProgress.push(e);
 
                 const matchingKeyboardAction: ActionName | "partial" | false = findKeyboardEventSequenceMatches(this.sequenceInProgress, this.state.keyboardInputSchemeName);
@@ -766,6 +771,9 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                     }
                 }
+            }
+            else if (isRepeat) {
+                e.preventDefault();
             }
         }
     };
