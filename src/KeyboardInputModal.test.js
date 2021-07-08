@@ -21,7 +21,7 @@ function createShallowKeyboardInputModal(props) {
 
     const defaultWrapperProps = {
         keyBindingsEnabled: true,
-        keyboardInputSchemeName: "alt",
+        keyboardInputSchemeName: "nvda",
         onChangeKeyBindingsEnabled: onChangeKeyBindingsEnabled,
         onChangeKeyboardInputScheme: onChangeKeyboardInputScheme,
         onHide: onHide,

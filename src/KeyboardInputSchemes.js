@@ -1,7 +1,7 @@
 //@flow
 import {extend} from './Utils';
 
-export type KeyboardInputSchemeName = "alt" | "nvda";
+export type KeyboardInputSchemeName = "nvda" | "voiceover";
 
 export type KeyDef = {
     code?: string,
@@ -72,8 +72,8 @@ export type KeyboardInputScheme = {
 };
 
 export type KeyboardInputSchemesType = {
-    "alt":  KeyboardInputScheme,
-    "nvda": KeyboardInputScheme
+    "nvda": KeyboardInputScheme,
+    "voiceover":  KeyboardInputScheme
 };
 
 const ExtendedKeyboardSequences: KeyboardInputScheme = {
@@ -221,7 +221,7 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
     }
 }
 
-const defaultInputScheme: KeyboardInputScheme = Object.assign({
+const VoiceOverInputScheme: KeyboardInputScheme = Object.assign({
     addCommandToBeginning: {
         keyDef: { code: "KeyB", altKey: true},
         actionName: "addCommandToBeginning"
@@ -318,8 +318,8 @@ const NvdaInputScheme = Object.assign({
 }, NvdaExtendedKeyboardSequences);
 
 export const KeyboardInputSchemes:KeyboardInputSchemesType = {
-    "alt": defaultInputScheme,
-    "nvda": NvdaInputScheme
+    "nvda": NvdaInputScheme,
+    "voiceover": VoiceOverInputScheme
 };
 
 const labelMessageKeysByCode = {
