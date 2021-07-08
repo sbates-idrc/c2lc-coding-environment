@@ -670,6 +670,7 @@ export class App extends React.Component<AppProps, AppState> {
                         case("deleteAll"): {
                             const newProgramSequence = this.state.programSequence.updateProgram([]);
                             this.handleProgramSequenceChange(newProgramSequence);
+                            break;
                         }
                         case("announceScene"):
                             const ariaLiveRegion = document.getElementById('character-position');
