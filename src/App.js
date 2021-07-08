@@ -749,6 +749,34 @@ export class App extends React.Component<AppProps, AppState> {
                         case("focusWorldSelector"):
                             focusOnFirstElementWithClass("WorldIcon");
                             break;
+                        case("swapCurrentStepWithPreviousStep"):
+                            if (this.state.actionPanelStepIndex != null) {
+                                const previousStepIndex = this.state.actionPanelStepIndex - 1;
+                                if (this.state.programSequence.getProgramStepAt(previousStepIndex) != null) {
+                                    const newProgramSequence = this.state.programSequence.swapStep(this.state.actionPanelStepIndex, previousStepIndex);
+                                    this.handleProgramSequenceChange(newProgramSequence);
+                                    this.handleChangeActionPanelStepIndex(previousStepIndex);
+                                    const focusedOptionName = document.querySelector(`[name="moveToPreviousStep"]`);
+                                    if (focusedOptionName) {
+                                        focusedOptionName.focus();
+                                    }
+                                }
+                            }
+                            break;
+                        case("swapCurrentStepWithNextStep"):
+                            if (this.state.actionPanelStepIndex != null) {
+                                const nextStepIndex = this.state.actionPanelStepIndex + 1;
+                                if (this.state.programSequence.getProgramStepAt(nextStepIndex) != null) {
+                                    const newProgramSequence = this.state.programSequence.swapStep(this.state.actionPanelStepIndex, nextStepIndex);
+                                    this.handleProgramSequenceChange(newProgramSequence);
+                                    this.handleChangeActionPanelStepIndex(nextStepIndex);
+                                    const focusedOptionName = document.querySelector(`[name="moveToNextStep"]`);
+                                    if (focusedOptionName) {
+                                        focusedOptionName.focus();
+                                    }
+                                }
+                            }
+                            break;
                         case("moveCharacterLeft"):
                             this.handleChangeCharacterPosition('left');
                             break;

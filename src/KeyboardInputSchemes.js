@@ -217,6 +217,18 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     actionName: "turnCharacterRight"
                 }
             }
+        },
+
+        swapProgramStep: {
+            keyDef: { code: "KeyS" },
+            left: {
+                keyDef: { code: "KeyL" },
+                actionName: "swapCurrentStepWithPreviousStep"
+            },
+            right: {
+                keyDef: { code: "KeyR" },
+                actionName: "swapCurrentStepWithNextStep"
+            }
         }
     }
 }
