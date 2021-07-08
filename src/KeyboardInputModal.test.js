@@ -91,16 +91,16 @@ it('should be able to cancel changes.', () => {
 
     wrappedModal.handleChangeKeyboardInputSchemeName({
         target: {
-            value: "nvda"
+            value: "voiceover"
         }
     });
-    expect(wrappedModal.state.keyboardInputSchemeName).toBe("nvda");
+    expect(wrappedModal.state.keyboardInputSchemeName).toBe("voiceover");
 
     wrappedModal.handleChangeKeyBindingsEnabled(false);
     expect(wrappedModal.state.keyBindingsEnabled).toBe(false);
 
     wrappedModal.cancelChanges();
-    expect(wrappedModal.state.keyboardInputSchemeName).toBe("alt");
+    expect(wrappedModal.state.keyboardInputSchemeName).toBe("nvda");
     expect(wrappedModal.state.keyBindingsEnabled).toBe(true);
 
     expect(onChangeKeyBindingsEnabled.mock.calls.length).toBe(0);
