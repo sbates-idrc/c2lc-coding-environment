@@ -666,6 +666,15 @@ export class App extends React.Component<AppProps, AppState> {
                                 if (index != null) {
                                     const newProgramSequence = this.state.programSequence.deleteStep(index);
                                     this.handleProgramSequenceChange(newProgramSequence);
+                                    const focusCommandBlockIndex = document.querySelector(`button.ProgramBlockEditor__program-block[data-stepnumber='${index}']`);
+                                    if (focusCommandBlockIndex != null) {
+                                        focusCommandBlockIndex.focus();
+                                    } else {
+                                        const focusAddNodeIndex = document.querySelector(`button.AddNode__expanded-button[data-stepnumber='${index}']`);
+                                        if (focusAddNodeIndex) {
+                                            focusAddNodeIndex.focus();
+                                        }
+                                    }
                                 }
                             }
                             break;
