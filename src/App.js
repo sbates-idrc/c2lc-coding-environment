@@ -38,6 +38,20 @@ import './Themes.scss';
 import './vendor/dragdroptouch/DragDropTouch.js';
 import ThemeSelector from './ThemeSelector';
 import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
+import KeyboardInputModal from './KeyboardInputModal';
+
+import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
+import {findKeyboardEventSequenceMatches, isRepeatedEvent} from './KeyboardInputSchemes';
+import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg'
+
+// Convenience function to focus on the first element with a given class, used
+// for keyboard shortcuts.
+function focusOnFirstElementWithClass (className) {
+    const elements = document.getElementsByClassName(className);
+    if (elements.length) {
+        elements[0].focus();
+    }
+}
 
 /* Dash connection removed for version 0.5
 import BluetoothApiWarning from './BluetoothApiWarning';
@@ -78,7 +92,10 @@ type AppState = {
     drawingEnabled: boolean,
     runningState: RunningState,
     allowedActions: ActionToggleRegister,
-    usedActions: ActionToggleRegister
+    usedActions: ActionToggleRegister,
+    keyBindingsEnabled: boolean,
+    keyboardInputSchemeName: KeyboardInputSchemeName;
+    showKeyboardModal: boolean
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -95,6 +112,8 @@ export class App extends React.Component<AppProps, AppState> {
     allowedActionsSerializer: AllowedActionsSerializer;
     speedLookUp: Array<number>;
     pushStateTimeoutID: ?TimeoutID;
+    speedControlRef: { current: null | HTMLElement };
+    sequenceInProgress: Array<KeyboardEvent>;
 
     constructor(props: any) {
         super(props);
@@ -121,6 +140,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.allowedActionsSerializer = new AllowedActionsSerializer();
 
         this.pushStateTimeoutID = null;
+
+        this.sequenceInProgress = [];
 
         this.interpreter.addCommandHandler(
             'forward1',
@@ -387,7 +408,10 @@ export class App extends React.Component<AppProps, AppState> {
             drawingEnabled: true,
             runningState: 'stopped',
             allowedActions: allowedActions,
-            usedActions: {}
+            usedActions: {},
+            keyBindingsEnabled: true,
+            showKeyboardModal: false,
+            keyboardInputSchemeName: "nvda"
         };
 
         // For FakeRobotDriver, replace with:
@@ -405,6 +429,8 @@ export class App extends React.Component<AppProps, AppState> {
         }
 
         this.focusTrapManager = new FocusTrapManager();
+
+        this.speedControlRef = React.createRef();
     }
 
     setStateSettings(settings: $Shape<AppSettings>) {
@@ -587,9 +613,191 @@ export class App extends React.Component<AppProps, AppState> {
         });
     };
 
+    // Global shortcut handling.
+    // TODO: Convert to use keyboardEventMatchesKeyDef for each command in turn.
+    handleDocumentKeyDown = (e: KeyboardEvent) => {
+        if (this.state.keyBindingsEnabled) {
+            const isOnlyModifier = ["Shift", "Control", "Alt"].indexOf(e.key) !== -1;
+            let isRepeat = false;
+            if (this.sequenceInProgress.length) {
+                isRepeat = isRepeatedEvent(this.sequenceInProgress[this.sequenceInProgress.length - 1], e);
+            }
+
+            if (!isOnlyModifier && !isRepeat) {
+                this.sequenceInProgress.push(e);
+
+                const matchingKeyboardAction: ActionName | "partial" | false = findKeyboardEventSequenceMatches(this.sequenceInProgress, this.state.keyboardInputSchemeName);
+                if (matchingKeyboardAction === false || matchingKeyboardAction !== "partial") {
+                    this.sequenceInProgress = [];
+                }
+
+                if (matchingKeyboardAction !== false) {
+                    e.preventDefault();
+                    switch (matchingKeyboardAction) {
+                        case("showHide"):
+                            this.setState((currentState) => {
+                                return { showKeyboardModal: !(currentState.showKeyboardModal) };
+                            });
+                            break;
+                        case("toggleFeedbackAnnouncements"):
+                            // We have to use the function form here as our change is based on the current state.
+                            this.setState((currentState) => {
+                                return { announcementsEnabled: !(currentState.announcementsEnabled) };
+                            });
+                            break;
+                        case("addCommandToBeginning"):
+                            if (this.state.selectedAction) {
+                                const newProgramSequence = this.state.programSequence.insertStep(0, this.state.selectedAction);
+                                this.handleProgramSequenceChange(newProgramSequence);
+                            }
+                            break;
+                        case("addCommandToEnd"):
+                            if (this.state.selectedAction) {
+                                // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
+                                const newProgramSequence = this.state.programSequence.insertStep(this.state.programSequence.getProgramLength(), this.state.selectedAction);
+                                this.handleProgramSequenceChange(newProgramSequence);
+                            }
+                            break;
+                        case("announceScene"):
+                            const ariaLiveRegion = document.getElementById('character-position');
+                            if (ariaLiveRegion) {
+                                if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+                                    window.speechSynthesis.cancel();
+                                }
+                                const utterance = new SpeechSynthesisUtterance(ariaLiveRegion.innerText);
+                                window.speechSynthesis.speak(utterance);
+                            }
+                            break;
+                        case("playPauseProgram"):
+                            if (this.state.programSequence.getProgramLength() > 0) {
+                                this.handleClickPlay();
+                            }
+                            break;
+                        case("refreshScene"):
+                            if (this.state.runningState === 'stopped' || this.state.runningState === 'paused') {
+                                this.handleRefresh();
+                            }
+                            break;
+                        case("stopProgram"):
+                            if (this.state.runningState !== 'stopped' && this.state.runningState !== 'stopRequested') {
+                                this.handleClickStop();
+                            }
+                            break;
+                        case("decreaseProgramSpeed"):
+                            this.changeProgramSpeedIndex(this.speedLookUp.indexOf(this.interpreter.stepTimeMs) - 1);
+                            break;
+                        case("increaseProgramSpeed"):
+                            this.changeProgramSpeedIndex(this.speedLookUp.indexOf(this.interpreter.stepTimeMs) + 1);
+                            break;
+                        case("selectForward1"):
+                            this.setState({ "selectedAction": "forward1" });
+                            break;
+                        case("selectForward2"):
+                            this.setState({ "selectedAction": "forward2" });
+                            break;
+                        case("selectForward3"):
+                            this.setState({ "selectedAction": "forward3" });
+                            break;
+                        case("selectBackward1"):
+                            this.setState({ "selectedAction": "backward1" });
+                            break;
+                        case("selectBackward2"):
+                            this.setState({ "selectedAction": "backward2" });
+                            break;
+                        case("selectBackward3"):
+                            this.setState({ "selectedAction": "backward3" });
+                            break;
+                        case("selectLeft45"):
+                            this.setState({ "selectedAction": "left45" });
+                            break;
+                        case("selectLeft90"):
+                            this.setState({ "selectedAction": "left90" });
+                            break;
+                        case("selectLeft180"):
+                            this.setState({ "selectedAction": "left180" });
+                            break;
+                        case("selectRight45"):
+                            this.setState({ "selectedAction": "right45" });
+                            break;
+                        case("selectRight90"):
+                            this.setState({ "selectedAction": "right90" });
+                            break;
+                        case("selectRight180"):
+                            this.setState({ "selectedAction": "right180" });
+                            break;
+                        case("focusActions"):
+                            focusOnFirstElementWithClass("command-block");
+                            break;
+                        case("focusAppHeader"):
+                            focusOnFirstElementWithClass("App__header-keyboardMenuIcon");
+                            break;
+                        case("focusAddNodeToggle"):
+                            focusOnFirstElementWithClass("ProgramBlockEditor__add-node-toggle-switch");
+                            break;
+                        case("focusCharacterPositionControls"):
+                            focusOnFirstElementWithClass("CharacterPositionController__character-position-button");
+                            break;
+                        case("focusPlayShare"):
+                            focusOnFirstElementWithClass("PlayButton--play");
+                            break;
+                        case("focusProgramSequence"):
+                            focusOnFirstElementWithClass("AddNode__expanded-button");
+                            break;
+                        case("focusScene"):
+                            focusOnFirstElementWithClass("PenDownToggleSwitch");
+                            break;
+                        case("focusWorldSelector"):
+                            focusOnFirstElementWithClass("WorldIcon");
+                            break;
+                        case("moveCharacterLeft"):
+                            this.handleChangeCharacterPosition('left');
+                            break;
+                        case("moveCharacterRight"):
+                            this.handleChangeCharacterPosition('right');
+                            break;
+                        case("moveCharacterUp"):
+                            this.handleChangeCharacterPosition('up');
+                            break;
+                        case("moveCharacterDown"):
+                            this.handleChangeCharacterPosition('down');
+                            break;
+                        case("turnCharacterLeft"):
+                            this.handleChangeCharacterPosition('turnLeft');
+                            break;
+                        case("turnCharacterRight"):
+                            this.handleChangeCharacterPosition('turnRight');
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else if (isRepeat) {
+                e.preventDefault();
+            }
+        }
+    };
+
+    handleKeyboardMenuIconKeydown = (event: KeyboardEvent) => {
+        if (event.key === "Enter" || event.key === " ") {
+            this.handleKeyboardModalToggle();
+        }
+    }
+
+    handleKeyboardModalClose = () => {
+        this.setState({showKeyboardModal: false});
+    };
+
+    handleKeyboardModalToggle = () => {
+        this.setState((currentState: AppState) => {
+            return { showKeyboardModal: !currentState.showKeyboardModal};
+        });
+    }
+
+    // Focus trap escape key handling.
     handleRootKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         this.focusTrapManager.handleKeyDown(e);
-    };
+    }
 
     handleToggleAudioFeedback = (announcementsEnabled: boolean) => {
         this.setState({
@@ -612,6 +820,16 @@ export class App extends React.Component<AppProps, AppState> {
             const currentIsAllowed = this.state.allowedActions[commandName];
             newAllowedActions[commandName] = !currentIsAllowed;
             this.setState({ allowedActions: newAllowedActions})
+        }
+    }
+
+    changeProgramSpeedIndex = (newSpeedIndex: number) => {
+        if (newSpeedIndex >= 0 && newSpeedIndex <= (this.speedLookUp.length - 1)) {
+            this.interpreter.setStepTime(this.speedLookUp[newSpeedIndex]);
+            if (this.speedControlRef.current) {
+                // $FlowFixMe: Flow doesn't believe that we have sufficiently ensured that current !== null.
+                this.speedControlRef.current.value = (newSpeedIndex + 1).toString();
+            }
         }
     }
 
@@ -728,6 +946,14 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
+    handleChangeKeyboardInputScheme = (keyboardInputSchemeName: KeyboardInputSchemeName) => {
+        this.setState({keyboardInputSchemeName});
+    }
+
+    handleChangeKeyBindingsEnabled = (keyBindingsEnabled: boolean) => {
+        this.setState({keyBindingsEnabled: keyBindingsEnabled});
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -746,6 +972,15 @@ export class App extends React.Component<AppProps, AppState> {
                                     <FormattedMessage id='App.appHeading'/>
                                 </a>
                             </h1>
+                            <div
+                                className={"App__header-keyboardMenuIcon" + (this.state.keyBindingsEnabled ? "" : " App__header-keyboardMenuIcon--disabled")}
+                                tabIndex={0}
+                                aria-label={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                                onClick={this.handleKeyboardModalToggle}
+                                onKeyDown={this.handleKeyboardMenuIconKeydown}
+                            >
+                                <KeyboardModalToggleIcon/>
+                            </div>
                             <div className='App__header-audio-toggle'>
                                 <div className='App__audio-toggle-switch'>
                                     <AudioFeedbackToggleSwitch
@@ -887,6 +1122,7 @@ export class App extends React.Component<AppProps, AppState> {
                                         || this.state.runningState === 'stopRequested'}
                                     onClick={this.handleClickStop}/>
                                 <ProgramSpeedController
+                                    rangeControlRef={this.speedControlRef}
                                     values={this.speedLookUp}
                                     onChange={this.handleChangeProgramSpeed}
                                 />
@@ -906,6 +1142,14 @@ export class App extends React.Component<AppProps, AppState> {
                     show={this.state.showDashConnectionError}
                     onCancel={this.handleCancelDashConnection}
                     onRetry={this.handleClickConnectDash}/>
+                <KeyboardInputModal
+                    show={this.state.showKeyboardModal}
+                    keyBindingsEnabled={this.state.keyBindingsEnabled}
+                    keyboardInputSchemeName={this.state.keyboardInputSchemeName}
+                    onChangeKeyboardInputScheme={this.handleChangeKeyboardInputScheme}
+                    onChangeKeyBindingsEnabled={this.handleChangeKeyBindingsEnabled}
+                    onHide={this.handleKeyboardModalClose}
+                />
             </React.Fragment>
         );
     }
@@ -1025,6 +1269,8 @@ export class App extends React.Component<AppProps, AppState> {
                 world: Utils.getWorldFromString(localWorld, 'default')
             });
         }
+
+        document.addEventListener('keydown', this.handleDocumentKeyDown);
     }
 
     componentDidUpdate(prevProps: {}, prevState: AppState) {
@@ -1126,6 +1372,10 @@ export class App extends React.Component<AppProps, AppState> {
             }
         }
         */
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleDocumentKeyDown);
     }
 }
 
