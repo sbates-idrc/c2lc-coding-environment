@@ -55,6 +55,10 @@ export type ActionName =
     | "moveCharacterDown"
     | "turnCharacterLeft"
     | "turnCharacterRight"
+
+    // Update Program
+    | "swapCurrentStepWithPreviousStep"
+    | "swapCurrentStepWithNextStep"
     ;
 
 type ActionKeyStep = {

@@ -753,6 +753,7 @@ export class App extends React.Component<AppProps, AppState> {
                             if (this.state.actionPanelStepIndex != null) {
                                 const previousStepIndex = this.state.actionPanelStepIndex - 1;
                                 if (this.state.programSequence.getProgramStepAt(previousStepIndex) != null) {
+                                    // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.actionPanelStepIndex shouldn't be null.
                                     const newProgramSequence = this.state.programSequence.swapStep(this.state.actionPanelStepIndex, previousStepIndex);
                                     this.handleProgramSequenceChange(newProgramSequence);
                                     this.handleChangeActionPanelStepIndex(previousStepIndex);
@@ -767,6 +768,7 @@ export class App extends React.Component<AppProps, AppState> {
                             if (this.state.actionPanelStepIndex != null) {
                                 const nextStepIndex = this.state.actionPanelStepIndex + 1;
                                 if (this.state.programSequence.getProgramStepAt(nextStepIndex) != null) {
+                                    // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.actionPanelStepIndex shouldn't be null.
                                     const newProgramSequence = this.state.programSequence.swapStep(this.state.actionPanelStepIndex, nextStepIndex);
                                     this.handleProgramSequenceChange(newProgramSequence);
                                     this.handleChangeActionPanelStepIndex(nextStepIndex);
