@@ -1,15 +1,16 @@
 # Key Bindings
 
 Weavly supports several key binding schemes.  These can be configured (or turned
-off) using the keyboard input menu, which is displayed by default when the 
+off) using the keyboard input menu, which is displayed by default when the
 question mark key is pressed, or when the keyboard icon is clicked.
 
 ## Default Key Bindings
 
 The default key bindings are as follows:
-     
+
 | Keys | Command |
 | ---- | ------- |
+| Alt + A | addCommand |
 | Alt + B | addCommandToBeginning |
 | Alt + E | addCommandToEnd |
 | Alt + I | announceScene |
@@ -46,17 +47,18 @@ The default key bindings are as follows:
 | Alt + X, F, T | focusAddNodeToggle |
 | Alt + X, F, W | focusWorldSelector |
 | Alt + X, X | toggleFeedbackAnnouncements |
-      
 
-    
+
+
 ## NVDA Key Bindings
 
 As NVDA makes use of many keys in combination with the alt key, an alternate
 key binding scheme is provided as well.  Those key bindings are as follows.
-      
+
 
 | Keys | Command |
 | ---- | ------- |
+| Ctrl + Alt + A | addCommand |
 | Ctrl + Alt + B | addCommandToBeginning |
 | Ctrl + Alt + E | addCommandToEnd |
 | Ctrl + Alt + I | announceScene |

@@ -645,6 +645,28 @@ export class App extends React.Component<AppProps, AppState> {
                                 return { announcementsEnabled: !(currentState.announcementsEnabled) };
                             });
                             break;
+                        case("addCommand"): {
+                            if (this.state.selectedAction) {
+                                const currentElement = document.activeElement;
+                                // $FlowFixMe: Not all elements have dataset property
+                                if (currentElement.dataset.controltype === 'programStep') {
+                                    const index = parseInt(currentElement.dataset.stepnumber, 10) + 1;
+                                    if (index != null) {
+                                        // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
+                                        const newProgramSequence = this.state.programSequence.insertStep(index, this.state.selectedAction);
+                                        this.handleProgramSequenceChange(newProgramSequence);
+                                    }
+                                } else if (currentElement.dataset.controltype ==='addNode') {
+                                    const index = parseInt(currentElement.dataset.stepnumber, 10);
+                                    if (index != null) {
+                                        // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
+                                        const newProgramSequence = this.state.programSequence.insertStep(index, this.state.selectedAction);
+                                        this.handleProgramSequenceChange(newProgramSequence);
+                                    }
+                                }
+                            }
+                            break;
+                        }
                         case("addCommandToBeginning"):
                             if (this.state.selectedAction) {
                                 const newProgramSequence = this.state.programSequence.insertStep(0, this.state.selectedAction);

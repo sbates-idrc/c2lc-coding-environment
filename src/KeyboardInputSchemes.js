@@ -13,6 +13,7 @@ export type KeyDef = {
 
 export type ActionName =
     // Single Key Commands
+    | "addCommand"
     | "addCommandToBeginning"
     | "addCommandToEnd"
     | "announceScene"
@@ -222,6 +223,10 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
 }
 
 const VoiceOverInputScheme: KeyboardInputScheme = Object.assign({
+    addCommand: {
+        keyDef: { code: "KeyA", altKey: true},
+        actionName: "addCommand"
+    },
     addCommandToBeginning: {
         keyDef: { code: "KeyB", altKey: true},
         actionName: "addCommandToBeginning"
@@ -279,6 +284,10 @@ const NvdaExtendedKeyboardSequences = extend(ExtendedKeyboardSequences, {
 });
 
 const NvdaInputScheme = Object.assign({
+    addCommand: {
+        keyDef: { code: "KeyA", altKey: true, ctrlKey: true},
+        actionName: "addCommand"
+    },
     addCommandToBeginning: {
         keyDef: { code: "KeyB", altKey: true, ctrlKey: true},
         actionName: "addCommandToBeginning"
