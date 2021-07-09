@@ -1,13 +1,13 @@
 # Key Bindings
 
 Weavly supports several key binding schemes.  These can be configured (or turned
-off) using the keyboard input menu, which is displayed by default when the 
+off) using the keyboard input menu, which is displayed by default when the
 question mark key is pressed, or when the keyboard icon is clicked.
 
 ## Default Key Bindings
 
 The default key bindings are as follows:
-     
+
 | Keys | Command |
 | ---- | ------- |
 | Alt + B | addCommandToBeginning |
@@ -45,15 +45,20 @@ The default key bindings are as follows:
 | Alt + X, F, S | focusScene |
 | Alt + X, F, T | focusAddNodeToggle |
 | Alt + X, F, W | focusWorldSelector |
+| Alt + X, T, 1 | changeToDefaultTheme |
+| Alt + X, T, 2 | changeToLightTheme |
+| Alt + X, T, 3 | changeToDarkTheme |
+| Alt + X, T, 4 | changeToGrayscaleTheme |
+| Alt + X, T, 5 | changeToHighContrastTheme |
 | Alt + X, X | toggleFeedbackAnnouncements |
-      
 
-    
+
+
 ## NVDA Key Bindings
 
 As NVDA makes use of many keys in combination with the alt key, an alternate
 key binding scheme is provided as well.  Those key bindings are as follows.
-      
+
 
 | Keys | Command |
 | ---- | ------- |
@@ -92,4 +97,9 @@ key binding scheme is provided as well.  Those key bindings are as follows.
 | Ctrl + Alt + X, F, S | focusScene |
 | Ctrl + Alt + X, F, T | focusAddNodeToggle |
 | Ctrl + Alt + X, F, W | focusWorldSelector |
+| Ctrl + Alt + X, T, 1 | changeToDefaultTheme |
+| Ctrl + Alt + X, T, 2 | changeToLightTheme |
+| Ctrl + Alt + X, T, 3 | changeToDarkTheme |
+| Ctrl + Alt + X, T, 4 | changeToGrayscaleTheme |
+| Ctrl + Alt + X, T, 5 | changeToHighContrastTheme |
 | Ctrl + Alt + X, X | toggleFeedbackAnnouncements |
