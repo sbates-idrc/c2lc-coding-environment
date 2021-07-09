@@ -113,6 +113,7 @@ export class App extends React.Component<AppProps, AppState> {
     speedLookUp: Array<number>;
     pushStateTimeoutID: ?TimeoutID;
     speedControlRef: { current: null | HTMLElement };
+    programBlockEditorRef: { current: any };
     sequenceInProgress: Array<KeyboardEvent>;
 
     constructor(props: any) {
@@ -431,6 +432,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.focusTrapManager = new FocusTrapManager();
 
         this.speedControlRef = React.createRef();
+        this.programBlockEditorRef = React.createRef();
     }
 
     setStateSettings(settings: $Shape<AppSettings>) {
@@ -469,6 +471,11 @@ export class App extends React.Component<AppProps, AppState> {
 
     getRunningState(): RunningState {
         return this.state.runningState;
+    }
+
+    editingIsDisabled(): boolean {
+        return !(this.state.runningState === 'stopped'
+            || this.state.runningState === 'paused');
     }
 
     incrementProgramCounter(callback: () => void): void {
@@ -659,28 +666,26 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("deleteCurrentStep"):
-                            const currentElement = document.activeElement;
-                            // $FlowFixMe: Not all elements have dataset property
-                            if (currentElement.dataset.controltype === 'programStep') {
-                                const index = parseInt(currentElement.dataset.stepnumber, 10);
-                                if (index != null) {
-                                    const newProgramSequence = this.state.programSequence.deleteStep(index);
-                                    this.handleProgramSequenceChange(newProgramSequence);
-                                    const focusCommandBlockIndex = document.querySelector(`button.ProgramBlockEditor__program-block[data-stepnumber='${index}']`);
-                                    if (focusCommandBlockIndex != null) {
-                                        focusCommandBlockIndex.focus();
-                                    } else {
-                                        const focusAddNodeIndex = document.querySelector(`button.AddNode__expanded-button[data-stepnumber='${index}']`);
-                                        if (focusAddNodeIndex) {
-                                            focusAddNodeIndex.focus();
+                            if (!this.editingIsDisabled()) {
+                                const currentElement = document.activeElement;
+                                // $FlowFixMe: Not all elements have dataset property
+                                if (currentElement.dataset.controltype === 'programStep') {
+                                    const index = parseInt(currentElement.dataset.stepnumber, 10);
+                                    if (index != null) {
+                                        if (this.programBlockEditorRef.current) {
+                                            this.programBlockEditorRef.current.setFocusAfterDelete(index);
                                         }
+                                        const newProgramSequence = this.state.programSequence.deleteStep(index);
+                                        this.handleProgramSequenceChange(newProgramSequence);
                                     }
                                 }
                             }
                             break;
                         case("deleteAll"): {
-                            const newProgramSequence = this.state.programSequence.updateProgram([]);
-                            this.handleProgramSequenceChange(newProgramSequence);
+                            if (!this.editingIsDisabled()) {
+                                const newProgramSequence = this.state.programSequence.updateProgram([]);
+                                this.handleProgramSequenceChange(newProgramSequence);
+                            }
                             break;
                         }
                         case("announceScene"):
@@ -699,7 +704,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("refreshScene"):
-                            if (this.state.runningState === 'stopped' || this.state.runningState === 'paused') {
+                            if (!this.editingIsDisabled()) {
                                 this.handleRefresh();
                             }
                             break;
@@ -1052,10 +1057,7 @@ export class App extends React.Component<AppProps, AppState> {
                                     onChange={this.handleTogglePenDown}/>
                                 <div className='App__refreshButton-container'>
                                     <RefreshButton
-                                        disabled={
-                                            !(this.state.runningState === 'stopped'
-                                            || this.state.runningState === 'paused')
-                                        }
+                                        disabled={this.editingIsDisabled()}
                                         onClick={this.handleRefresh}
                                     />
                                 </div>
@@ -1067,18 +1069,13 @@ export class App extends React.Component<AppProps, AppState> {
                             <FormattedMessage id='WorldSelector.heading' />
                         </h2>
                         <WorldSelector
-                            disabled={
-                                !(this.state.runningState === 'stopped'
-                                || this.state.runningState === 'paused')
-                            }
+                            disabled={this.editingIsDisabled()}
                             world={this.state.settings.world}
                             onSelect={this.handleChangeWorld}
                         />
                         <CharacterPositionController
                             characterState={this.state.characterState}
-                            editingDisabled={
-                                !(this.state.runningState === 'stopped'
-                                || this.state.runningState === 'paused')}
+                            editingDisabled={this.editingIsDisabled()}
                             world={this.state.settings.world}
                             onChangeCharacterPosition={this.handleChangeCharacterPosition}
                             onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
@@ -1088,7 +1085,7 @@ export class App extends React.Component<AppProps, AppState> {
                         <ActionsMenu
                             allowedActions={this.state.allowedActions}
                             changeHandler={this.handleToggleAllowedCommand}
-                            editingDisabled={this.state.runningState === 'running'}
+                            editingDisabled={this.editingIsDisabled()}
                             intl={this.props.intl}
                             usedActions={this.state.usedActions}
                         />
@@ -1109,11 +1106,10 @@ export class App extends React.Component<AppProps, AppState> {
                     </div>
                     <div className='App__program-block-editor'>
                         <ProgramBlockEditor
+                            ref={this.programBlockEditorRef}
                             actionPanelStepIndex={this.state.actionPanelStepIndex}
                             characterState={this.state.characterState}
-                            editingDisabled={
-                                !(this.state.runningState === 'stopped'
-                                || this.state.runningState === 'paused')}
+                            editingDisabled={this.editingIsDisabled()}
                             programSequence={this.state.programSequence}
                             runningState={this.state.runningState}
                             selectedAction={this.state.selectedAction}
