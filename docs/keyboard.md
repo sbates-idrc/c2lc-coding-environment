@@ -12,6 +12,7 @@ The default key bindings are as follows:
 | ---- | ------- |
 | Alt + A | addCommand |
 | Alt + B | addCommandToBeginning |
+| Alt + D | deleteCurrentStep |
 | Alt + E | addCommandToEnd |
 | Alt + I | announceScene |
 | Alt + P | playPauseProgram |
@@ -38,6 +39,7 @@ The default key bindings are as follows:
 | Alt + X, C, M, U | moveCharacterUp |
 | Alt + X, C, T, L | turnCharacterLeft |
 | Alt + X, C, T, R | turnCharacterRight |
+| Alt + X, D | deleteAll |
 | Alt + X, F, A | focusActions |
 | Alt + X, F, C | focusCharacterPositionControls |
 | Alt + X, F, H | focusAppHeader |
@@ -60,6 +62,7 @@ key binding scheme is provided as well.  Those key bindings are as follows.
 | ---- | ------- |
 | Ctrl + Alt + A | addCommand |
 | Ctrl + Alt + B | addCommandToBeginning |
+| Ctrl + Alt + D | deleteCurrentStep |
 | Ctrl + Alt + E | addCommandToEnd |
 | Ctrl + Alt + I | announceScene |
 | Ctrl + Alt + P | playPauseProgram |
@@ -86,6 +89,7 @@ key binding scheme is provided as well.  Those key bindings are as follows.
 | Ctrl + Alt + X, C, M, U | moveCharacterUp |
 | Ctrl + Alt + X, C, T, L | turnCharacterLeft |
 | Ctrl + Alt + X, C, T, R | turnCharacterRight |
+| Ctrl + Alt + X, D | deleteAll |
 | Ctrl + Alt + X, F, A | focusActions |
 | Ctrl + Alt + X, F, C | focusCharacterPositionControls |
 | Ctrl + Alt + X, F, H | focusAppHeader |
