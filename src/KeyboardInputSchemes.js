@@ -84,53 +84,54 @@ export type KeyboardInputSchemesType = {
 
 const ExtendedKeyboardSequences: KeyboardInputScheme = {
     extraSettings: {
-        keyDef: { code: "KeyX", altKey: true, hidden: true},
+        keyDef: { code: "KeyX", key: "x", altKey: true, hidden: true},
         audioFeedback: {
-            keyDef: { code: "KeyX"},
+            keyDef: { code: "KeyX", key: "x"},
             actionName: "toggleFeedbackAnnouncements"
         },
         focusChange: {
             keyDef: {
-                code: "KeyF"
+                code: "KeyF",
+                key: "f"
             },
             actions: {
-                keyDef: { code: "KeyA"},
+                keyDef: { code: "KeyA", key: "a" },
                 actionName: "focusActions"
             },
             appHeader: {
-                keyDef: { code: "KeyH"},
+                keyDef: { code: "KeyH", key: "h" },
                 actionName: "focusAppHeader"
             },
             addNodeToggle: {
-                keyDef: { code: "KeyT"},
+                keyDef: { code: "KeyT", key: "t" },
                 actionName: "focusAddNodeToggle"
             },
             characterPositionControls: {
-                keyDef: { code: "KeyC", hidden: true},
+                keyDef: { code: "KeyC", key: "c", hidden: true},
                 actionName: "focusCharacterPositionControls"
             },
             playShare: {
-                keyDef: { code: "KeyP"},
+                keyDef: { code: "KeyP", key: "p" },
                 actionName: "focusPlayShare"
             },
             programSequence: {
-                keyDef: { code: "KeyQ"},
+                keyDef: { code: "KeyQ", key: "q" },
                 actionName: "focusProgramSequence"
             },
             scene: {
-                keyDef: { code: "KeyS"},
+                keyDef: { code: "KeyS", key: "s" },
                 actionName: "focusScene"
             },
             worldSelector: {
-                keyDef: { code: "KeyW"},
+                keyDef: { code: "KeyW", key: "w" },
                 actionName: "focusWorldSelector"
             }
         },
 
         selectedActionChange: {
-            keyDef: { code: "KeyA"},
+            keyDef: { code: "KeyA", key: "a" },
             forward: {
-                keyDef: { code: "KeyF"},
+                keyDef: { code: "KeyF", key: "f" },
                 forward1: {
                     keyDef: { key: "1"},
                     actionName: "selectForward1"
@@ -145,7 +146,7 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 }
             },
             backward: {
-                keyDef: { code: "KeyB"},
+                keyDef: { code: "KeyB", key: "b" },
                 backward1: {
                     keyDef: { key: "1"},
                     actionName: "selectBackward1"
@@ -160,7 +161,7 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 }
             },
             left: {
-                keyDef: { code: "KeyL"},
+                keyDef: { code: "KeyL", key: "l" },
                 left45: {
                     keyDef: { key: "1"},
                     actionName: "selectLeft45"
@@ -175,7 +176,7 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 }
             },
             right: {
-                keyDef: { code: "KeyR"},
+                keyDef: { code: "KeyR", key: "r" },
                 right45: {
                     keyDef: { key: "1"},
                     actionName: "selectRight45"
@@ -192,34 +193,34 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
         },
 
         characterPosition: {
-            keyDef: { code: "KeyC"},
+            keyDef: { code: "KeyC", key: "c" },
             move: {
-                keyDef: { code: "KeyM" },
+                keyDef: { code: "KeyM", key: "m" },
                 left: {
-                    keyDef: { code: "KeyL" },
+                    keyDef: { code: "KeyL", key: "l" },
                     actionName: "moveCharacterLeft"
                 },
                 right: {
-                    keyDef: { code: "KeyR" },
+                    keyDef: { code: "KeyR", key: "r" },
                     actionName: "moveCharacterRight"
                 },
                 up: {
-                    keyDef: { code: "KeyU" },
+                    keyDef: { code: "KeyU", key: "u" },
                     actionName: "moveCharacterUp"
                 },
                 down: {
-                    keyDef: { code: "KeyD" },
+                    keyDef: { code: "KeyD", key: "d" },
                     actionName: "moveCharacterDown"
                 }
             },
             turn: {
-                keyDef: { code: "KeyT" },
+                keyDef: { code: "KeyT", key: "t" },
                 left: {
-                    keyDef: { code: "KeyL" },
+                    keyDef: { code: "KeyL", key: "l" },
                     actionName: "turnCharacterLeft"
                 },
                 right: {
-                    keyDef: { code: "KeyR" },
+                    keyDef: { code: "KeyR", key: "r" },
                     actionName: "turnCharacterRight"
                 }
             }
@@ -238,7 +239,7 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
         },
 
         deleteAll: {
-            keyDef: { code: "KeyD" },
+            keyDef: { code: "KeyD", key: "d" },
             actionName: "deleteAll"
         }
     }
@@ -246,19 +247,19 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
 
 const VoiceOverInputScheme: KeyboardInputScheme = Object.assign({
     addCommandToBeginning: {
-        keyDef: { code: "KeyB", altKey: true},
+        keyDef: { code: "KeyB", key: "b", altKey: true},
         actionName: "addCommandToBeginning"
     },
     addCommandToEnd: {
-        keyDef: { code: "KeyE", altKey: true},
+        keyDef: { code: "KeyE", key: "e", altKey: true},
         actionName: "addCommandToEnd"
     },
     deleteCurrentStep: {
-        keyDef: { code: "KeyD", altKey: true},
+        keyDef: { code: "KeyD", key: "d", altKey: true},
         actionName: "deleteCurrentStep"
     },
     announceScene: {
-        keyDef: { code: "KeyI", altKey: true},
+        keyDef: { code: "KeyI", key: "i", altKey: true},
         actionName: "announceScene"
     },
     decreaseProgramSpeed: {
@@ -270,11 +271,11 @@ const VoiceOverInputScheme: KeyboardInputScheme = Object.assign({
         actionName: "increaseProgramSpeed"
     },
     playPauseProgram: {
-        keyDef: { code: "KeyP", altKey: true},
+        keyDef: { code: "KeyP", key: "p", altKey: true},
         actionName: "playPauseProgram"
     },
     refreshScene: {
-        keyDef: { code: "KeyR", altKey: true},
+        keyDef: { code: "KeyR", key: "r", altKey: true},
         actionName: "refreshScene"
     },
     showHide: {
@@ -282,7 +283,7 @@ const VoiceOverInputScheme: KeyboardInputScheme = Object.assign({
         actionName: "showHide"
     },
     stopProgram: {
-        keyDef: { code: "KeyS", altKey: true},
+        keyDef: { code: "KeyS", key: "s", altKey: true},
         actionName: "stopProgram"
     }
 }, ExtendedKeyboardSequences);
@@ -307,19 +308,19 @@ const NvdaExtendedKeyboardSequences = extend(ExtendedKeyboardSequences, {
 
 const NvdaInputScheme = Object.assign({
     addCommandToBeginning: {
-        keyDef: { code: "KeyB", altKey: true, ctrlKey: true},
+        keyDef: { code: "KeyB", key: "b", altKey: true, ctrlKey: true},
         actionName: "addCommandToBeginning"
     },
     addCommandToEnd: {
-        keyDef: { code: "KeyE", altKey: true, ctrlKey: true},
+        keyDef: { code: "KeyE", key: "e", altKey: true, ctrlKey: true},
         actionName: "addCommandToEnd"
     },
     deleteCurrentStep: {
-        keyDef: { code: "KeyD", altKey: true, ctrlKey: true},
+        keyDef: { code: "KeyD", key: "d", altKey: true, ctrlKey: true},
         actionName: "deleteCurrentStep"
     },
     announceScene: {
-        keyDef: {code: "KeyI", altKey: true, ctrlKey: true},
+        keyDef: {code: "KeyI", key: "i", altKey: true, ctrlKey: true},
         actionName: "announceScene"
     },
     decreaseProgramSpeed: {
@@ -331,11 +332,11 @@ const NvdaInputScheme = Object.assign({
         actionName: "increaseProgramSpeed"
     },
     playPauseProgram: {
-        keyDef: { code: "KeyP", altKey: true, ctrlKey: true},
+        keyDef: { code: "KeyP", key: "p", altKey: true, ctrlKey: true},
         actionName: "playPauseProgram"
     },
     refreshScene: {
-        keyDef: { code: "KeyR", altKey: true, ctrlKey: true },
+        keyDef: { code: "KeyR", key: "r", altKey: true, ctrlKey: true },
         actionName: "refreshScene"
     },
     showHide: {
@@ -343,7 +344,7 @@ const NvdaInputScheme = Object.assign({
         actionName: "showHide"
     },
     stopProgram: {
-        keyDef: {code: "KeyS", altKey: true, ctrlKey: true},
+        keyDef: {code: "KeyS", key: "s", altKey: true, ctrlKey: true},
         actionName: "stopProgram"
     },
 }, NvdaExtendedKeyboardSequences);
