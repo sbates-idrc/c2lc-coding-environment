@@ -659,16 +659,16 @@ export class App extends React.Component<AppProps, AppState> {
                                 if (currentElement.dataset.controltype === 'programStep') {
                                     const index = parseInt(currentElement.dataset.stepnumber, 10) + 1;
                                     if (index != null) {
-                                        // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
-                                        const newProgramSequence = this.state.programSequence.insertStep(index, this.state.selectedAction);
-                                        this.handleProgramSequenceChange(newProgramSequence);
+                                        if (this.programBlockEditorRef.current) {
+                                            this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(index);
+                                        }
                                     }
                                 } else if (currentElement.dataset.controltype ==='addNode') {
                                     const index = parseInt(currentElement.dataset.stepnumber, 10);
                                     if (index != null) {
-                                        // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
-                                        const newProgramSequence = this.state.programSequence.insertStep(index, this.state.selectedAction);
-                                        this.handleProgramSequenceChange(newProgramSequence);
+                                        if (this.programBlockEditorRef.current) {
+                                            this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(index);
+                                        }
                                     }
                                 }
                             }
