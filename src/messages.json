@@ -110,7 +110,7 @@
         "KeyboardInputModal.Description.addCommandToBeginning": "Press {key} to add the selected command to the beginning of the program.",
         "KeyboardInputModal.Description.addCommandToEnd": "Press {key} to add the selected command to the end of the program.",
         "KeyboardInputModal.Description.announceScene": "Press {key} to announce the character position and orientation.",
-        "KeyboardInputModal.Description.deleteCurrentStep": "Press {key} to delete currently focused step.",
+        "KeyboardInputModal.Description.deleteCurrentStep": "Press {key} to delete the currently focused step.",
         "KeyboardInputModal.Description.decreaseProgramSpeed": "Press {key} to make the program play slower.",
         "KeyboardInputModal.Description.increaseProgramSpeed": "Press {key} to make the program play faster.",
         "KeyboardInputModal.Description.playPauseProgram": "Press {key} to play or pause the program.",
