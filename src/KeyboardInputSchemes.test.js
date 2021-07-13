@@ -70,16 +70,6 @@ it('Should be able to handle a partial sequence', () => {
     expect(result).toBe("partial");
 });
 
-it('Should be able to handle escaping out of a sequence', () => {
-    const completeValidSequence = [
-        new KeyboardEvent('keydown', { code: "KeyX", altKey: true}),
-        new KeyboardEvent('keydown', { key: "Escape"})
-    ];
-
-    const result = findKeyboardEventSequenceMatches(completeValidSequence, "voiceover");
-    expect(result).toBe(false);
-});
-
 // Uncomment these out (and add KeyboardInputSchemes to your imports) to generate
 // and output markdown representing the full set of key bindings.
 

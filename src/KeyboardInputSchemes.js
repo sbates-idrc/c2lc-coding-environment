@@ -415,16 +415,12 @@ export function findKeyboardEventSequenceMatches (events: Array<KeyboardEvent>, 
     let match = false;
 
     if (events.length) {
-        const lastEvent = events[events.length - 1];
-        // Escape is always a non-match and breaks the chain of partial matches.
-        if (lastEvent.key !== "Escape") {
-            for (const singleKeySequence of Object.values(keyboardInputScheme)) {
-                if (match === false || match === "partial") {
-                    // $FlowFixMe: Flow doesn't believe this matches our "or"ed set of allowed inputs.
-                    const keySequenceMatch = matchSingleInputSchemeLevel(events, singleKeySequence, 0);
-                    if (keySequenceMatch !== false) {
-                        match = keySequenceMatch;
-                    }
+        for (const singleKeySequence of Object.values(keyboardInputScheme)) {
+            if (match === false || match === "partial") {
+                // $FlowFixMe: Flow doesn't believe this matches our "or"ed set of allowed inputs.
+                const keySequenceMatch = matchSingleInputSchemeLevel(events, singleKeySequence, 0);
+                if (keySequenceMatch !== false) {
+                    match = keySequenceMatch;
                 }
             }
         }
