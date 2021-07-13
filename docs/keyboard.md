@@ -13,7 +13,7 @@ entering additional letters.
 
 In the instructions below, keys that need to be held at the same time are
 indicated using plus signs, and keys that need to be entered separately are
-divided using using commas. For example, the shortcut `Ctrl + Alt + X, X` is
+divided using commas. For example, the shortcut `Ctrl + Alt + x, x` is
 activated by holding control, alt, and x at the same time, releasing all keys,
 and then hitting the x key again by itself.
 
