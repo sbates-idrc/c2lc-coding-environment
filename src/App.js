@@ -653,16 +653,20 @@ export class App extends React.Component<AppProps, AppState> {
                             });
                             break;
                         case("addCommandToBeginning"):
-                            if (this.state.selectedAction) {
-                                const newProgramSequence = this.state.programSequence.insertStep(0, this.state.selectedAction);
-                                this.handleProgramSequenceChange(newProgramSequence);
+                            if (!this.editingIsDisabled()) {
+                                if (this.state.selectedAction) {
+                                    const newProgramSequence = this.state.programSequence.insertStep(0, this.state.selectedAction);
+                                    this.handleProgramSequenceChange(newProgramSequence);
+                                }
                             }
                             break;
                         case("addCommandToEnd"):
-                            if (this.state.selectedAction) {
-                                // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
-                                const newProgramSequence = this.state.programSequence.insertStep(this.state.programSequence.getProgramLength(), this.state.selectedAction);
-                                this.handleProgramSequenceChange(newProgramSequence);
+                            if (!this.editingIsDisabled()) {
+                                if (this.state.selectedAction) {
+                                    // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
+                                    const newProgramSequence = this.state.programSequence.insertStep(this.state.programSequence.getProgramLength(), this.state.selectedAction);
+                                    this.handleProgramSequenceChange(newProgramSequence);
+                                }
                             }
                             break;
                         case("deleteCurrentStep"):
@@ -780,22 +784,34 @@ export class App extends React.Component<AppProps, AppState> {
                             focusOnFirstElementWithClass("WorldIcon");
                             break;
                         case("moveCharacterLeft"):
-                            this.handleChangeCharacterPosition('left');
+                            if (!this.editingIsDisabled()) {
+                                this.handleChangeCharacterPosition('left');
+                            }
                             break;
                         case("moveCharacterRight"):
-                            this.handleChangeCharacterPosition('right');
+                            if (!this.editingIsDisabled()) {
+                                this.handleChangeCharacterPosition('right');
+                            }
                             break;
                         case("moveCharacterUp"):
-                            this.handleChangeCharacterPosition('up');
+                            if (!this.editingIsDisabled()) {
+                                this.handleChangeCharacterPosition('up');
+                            }
                             break;
                         case("moveCharacterDown"):
-                            this.handleChangeCharacterPosition('down');
+                            if (!this.editingIsDisabled()) {
+                                this.handleChangeCharacterPosition('down');
+                            }
                             break;
                         case("turnCharacterLeft"):
-                            this.handleChangeCharacterPosition('turnLeft');
+                            if (!this.editingIsDisabled()) {
+                                this.handleChangeCharacterPosition('turnLeft');
+                            }
                             break;
                         case("turnCharacterRight"):
-                            this.handleChangeCharacterPosition('turnRight');
+                            if (!this.editingIsDisabled()) {
+                                this.handleChangeCharacterPosition('turnRight');
+                            }
                             break;
                         default:
                             break;
