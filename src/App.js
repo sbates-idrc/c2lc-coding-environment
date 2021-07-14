@@ -653,21 +653,19 @@ export class App extends React.Component<AppProps, AppState> {
                             });
                             break;
                         case("addCommand"): {
-                            if (this.state.selectedAction) {
-                                const currentElement = document.activeElement;
-                                // $FlowFixMe: Not all elements have dataset property
-                                if (currentElement.dataset.controltype === 'programStep') {
-                                    const index = parseInt(currentElement.dataset.stepnumber, 10) + 1;
-                                    if (index != null) {
-                                        if (this.programBlockEditorRef.current) {
-                                            this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(index);
-                                        }
-                                    }
-                                } else if (currentElement.dataset.controltype ==='addNode') {
-                                    const index = parseInt(currentElement.dataset.stepnumber, 10);
-                                    if (index != null) {
-                                        if (this.programBlockEditorRef.current) {
-                                            this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(index);
+                            if (!this.editingIsDisabled()) {
+                                if (this.state.selectedAction) {
+                                    const currentElement = document.activeElement;
+                                    // $FlowFixMe: Not all elements have dataset property
+                                    if (currentElement.dataset.controltype === 'programStep' ||
+                                        currentElement.dataset.controltype === 'addNode') {
+                                        const index = currentElement.dataset.controltype === 'programStep' ?
+                                            parseInt(currentElement.dataset.stepnumber, 10) + 1:
+                                            parseInt(currentElement.dataset.stepnumber, 10);
+                                        if (index != null) {
+                                            if (this.programBlockEditorRef.current) {
+                                                this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(index);
+                                            }
                                         }
                                     }
                                 }
