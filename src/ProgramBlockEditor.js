@@ -117,6 +117,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     }
 
     setFocusAfterDelete(indexToDelete: number) {
+        const commandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.programSequence.getProgramStepAt(indexToDelete)});
+        this.props.audioManager.playAnnouncement('delete', this.props.intl, { command: commandString});
         // If there are steps following the one being deleted, focus the
         // next step. Otherwise, focus the final add node.
         if (indexToDelete < this.props.programSequence.getProgramLength() - 1) {
@@ -223,9 +225,6 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     };
 
     handleActionPanelDeleteStep = (index: number) => {
-        const commandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.programSequence.getProgramStepAt(index)});
-
-        this.props.audioManager.playAnnouncement('delete', this.props.intl, { command: commandString});
         this.setFocusAfterDelete(index);
         this.props.onChangeProgramSequence(
             this.props.programSequence.deleteStep(index)
