@@ -675,10 +675,8 @@ export class App extends React.Component<AppProps, AppState> {
                                     const index = parseInt(currentElement.dataset.stepnumber, 10);
                                     if (index != null) {
                                         if (this.programBlockEditorRef.current) {
-                                            this.programBlockEditorRef.current.setFocusAfterDelete(index);
+                                            this.programBlockEditorRef.current.deleteProgramStep(index);
                                         }
-                                        const newProgramSequence = this.state.programSequence.deleteStep(index);
-                                        this.handleProgramSequenceChange(newProgramSequence);
                                     }
                                 }
                             }
