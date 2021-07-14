@@ -128,6 +128,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
 
     insertSelectedCommandIntoProgram(index: number) {
         const selectedAction = this.props.selectedAction;
+        const commandString = this.props.intl.formatMessage({ id: "Announcement." + (selectedAction || "") });
+        this.props.audioManager.playAnnouncement('add', this.props.intl, { command: commandString});
         if (selectedAction) {
             this.focusCommandBlockIndex = index;
             this.scrollToAddNodeIndex = index + 1;
@@ -309,9 +311,6 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     };
 
     handleClickAddNode = (stepNumber: number) => {
-        const commandString = this.props.intl.formatMessage({ id: "Announcement." + (this.props.selectedAction || "") });
-
-        this.props.audioManager.playAnnouncement('add', this.props.intl, { command: commandString});
         this.insertSelectedCommandIntoProgram(stepNumber);
     };
 
@@ -379,10 +378,6 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
             });
 
             const closestAddNodeIndex = this.findAddNodeClosestToEvent(event);
-
-            const commandString = this.props.intl.formatMessage({ id: "Announcement." + (this.props.selectedAction || "") });
-            this.props.audioManager.playAnnouncement('add', this.props.intl, { command: commandString});
-
             this.insertSelectedCommandIntoProgram(closestAddNodeIndex);
         }
     }
