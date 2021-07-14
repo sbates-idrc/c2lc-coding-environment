@@ -62,6 +62,8 @@ follows.
 | Ctrl + Alt + x, f, q | focusProgramSequence |
 | Ctrl + Alt + x, f, s | focusScene |
 | Ctrl + Alt + x, f, t | focusAddNodeToggle |
+| Ctrl + Alt + x, f, x | focusCharacterColumnInput |
+| Ctrl + Alt + x, f, y | focusCharacterRowInput |
 | Ctrl + Alt + x, f, w | focusWorldSelector |
 | Ctrl + Alt + x, x | toggleFeedbackAnnouncements |
 
@@ -109,5 +111,7 @@ with the starting key of a sequence.  Those key bindings are as follows:
 | Alt + x, f, q | focusProgramSequence |
 | Alt + x, f, s | focusScene |
 | Alt + x, f, t | focusAddNodeToggle |
+| Alt + x, f, x | focusCharacterColumnInput |
+| Alt + x, f, y | focusCharacterRowInput |
 | Alt + x, f, w | focusWorldSelector |
 | Alt + x, x | toggleFeedbackAnnouncements |
