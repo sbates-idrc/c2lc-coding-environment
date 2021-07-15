@@ -655,17 +655,19 @@ export class App extends React.Component<AppProps, AppState> {
                         case("addCommandToBeginning"):
                             if (!this.editingIsDisabled()) {
                                 if (this.state.selectedAction) {
-                                    const newProgramSequence = this.state.programSequence.insertStep(0, this.state.selectedAction);
-                                    this.handleProgramSequenceChange(newProgramSequence);
+                                    if (this.programBlockEditorRef.current) {
+                                        this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(0);
+                                    }
                                 }
                             }
                             break;
                         case("addCommandToEnd"):
                             if (!this.editingIsDisabled()) {
                                 if (this.state.selectedAction) {
-                                    // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.selectedAction shouldn't be null.
-                                    const newProgramSequence = this.state.programSequence.insertStep(this.state.programSequence.getProgramLength(), this.state.selectedAction);
-                                    this.handleProgramSequenceChange(newProgramSequence);
+                                    const index = this.state.programSequence.getProgramLength();
+                                    if (this.programBlockEditorRef.current) {
+                                        this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(index);
+                                    }
                                 }
                             }
                             break;
@@ -677,10 +679,8 @@ export class App extends React.Component<AppProps, AppState> {
                                     const index = parseInt(currentElement.dataset.stepnumber, 10);
                                     if (index != null) {
                                         if (this.programBlockEditorRef.current) {
-                                            this.programBlockEditorRef.current.setFocusAfterDelete(index);
+                                            this.programBlockEditorRef.current.deleteProgramStep(index);
                                         }
-                                        const newProgramSequence = this.state.programSequence.deleteStep(index);
-                                        this.handleProgramSequenceChange(newProgramSequence);
                                     }
                                 }
                             }
@@ -770,6 +770,12 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("focusCharacterPositionControls"):
                             focusOnFirstElementWithClass("CharacterPositionController__character-position-button");
+                            break;
+                        case("focusCharacterColumnInput"):
+                            focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-column");
+                            break;
+                        case("focusCharacterRowInput"):
+                            focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-row");
                             break;
                         case("focusPlayShare"):
                             focusOnFirstElementWithClass("PlayButton--play");
