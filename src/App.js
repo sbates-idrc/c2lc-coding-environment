@@ -653,17 +653,21 @@ export class App extends React.Component<AppProps, AppState> {
                             });
                             break;
                         case("addCommandToBeginning"):
-                            if (this.state.selectedAction) {
-                                if (this.programBlockEditorRef.current) {
-                                    this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(0);
+                            if (!this.editingIsDisabled()) {
+                                if (this.state.selectedAction) {
+                                    if (this.programBlockEditorRef.current) {
+                                        this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(0);
+                                    }
                                 }
                             }
                             break;
                         case("addCommandToEnd"):
-                            if (this.state.selectedAction) {
-                                const index = this.state.programSequence.getProgramLength();
-                                if (this.programBlockEditorRef.current) {
-                                    this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(index);
+                            if (!this.editingIsDisabled()) {
+                                if (this.state.selectedAction) {
+                                    const index = this.state.programSequence.getProgramLength();
+                                    if (this.programBlockEditorRef.current) {
+                                        this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(index);
+                                    }
                                 }
                             }
                             break;
@@ -786,22 +790,34 @@ export class App extends React.Component<AppProps, AppState> {
                             focusOnFirstElementWithClass("WorldIcon");
                             break;
                         case("moveCharacterLeft"):
-                            this.handleChangeCharacterPosition('left');
+                            if (!this.editingIsDisabled()) {
+                                this.handleChangeCharacterPosition('left');
+                            }
                             break;
                         case("moveCharacterRight"):
-                            this.handleChangeCharacterPosition('right');
+                            if (!this.editingIsDisabled()) {
+                                this.handleChangeCharacterPosition('right');
+                            }
                             break;
                         case("moveCharacterUp"):
-                            this.handleChangeCharacterPosition('up');
+                            if (!this.editingIsDisabled()) {
+                                this.handleChangeCharacterPosition('up');
+                            }
                             break;
                         case("moveCharacterDown"):
-                            this.handleChangeCharacterPosition('down');
+                            if (!this.editingIsDisabled()) {
+                                this.handleChangeCharacterPosition('down');
+                            }
                             break;
                         case("turnCharacterLeft"):
-                            this.handleChangeCharacterPosition('turnLeft');
+                            if (!this.editingIsDisabled()) {
+                                this.handleChangeCharacterPosition('turnLeft');
+                            }
                             break;
                         case("turnCharacterRight"):
-                            this.handleChangeCharacterPosition('turnRight');
+                            if (!this.editingIsDisabled()) {
+                                this.handleChangeCharacterPosition('turnRight');
+                            }
                             break;
                         default:
                             break;
