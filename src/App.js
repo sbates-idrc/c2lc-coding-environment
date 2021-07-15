@@ -767,6 +767,12 @@ export class App extends React.Component<AppProps, AppState> {
                         case("focusCharacterPositionControls"):
                             focusOnFirstElementWithClass("CharacterPositionController__character-position-button");
                             break;
+                        case("focusCharacterColumnInput"):
+                            focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-column");
+                            break;
+                        case("focusCharacterRowInput"):
+                            focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-row");
+                            break;
                         case("focusPlayShare"):
                             focusOnFirstElementWithClass("PlayButton--play");
                             break;
