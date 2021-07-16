@@ -499,7 +499,6 @@ export class App extends React.Component<AppProps, AppState> {
     // Handlers
 
     handleProgramSequenceChange = (programSequence: ProgramSequence) => {
-        console.log(programSequence.getProgram());
         const usedActions: ActionToggleRegister = this.calculateUsedActions(programSequence);
         this.setState({
             programSequence: programSequence,
