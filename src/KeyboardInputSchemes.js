@@ -45,6 +45,8 @@ export type ActionName =
     | "focusAppHeader"
     | "focusAddNodeToggle"
     | "focusCharacterPositionControls"
+    | "focusCharacterColumnInput"
+    | "focusCharacterRowInput"
     | "focusPlayShare"
     | "focusProgramSequence"
     | "focusScene"
@@ -106,8 +108,16 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 actionName: "focusAddNodeToggle"
             },
             characterPositionControls: {
-                keyDef: { code: "KeyC", key: "c", hidden: true},
+                keyDef: { code: "KeyC", key: "c" },
                 actionName: "focusCharacterPositionControls"
+            },
+            characterPositionColumnInput: {
+                keyDef: { code: "KeyX", key: "x" },
+                actionName: "focusCharacterColumnInput"
+            },
+            characterPositionRowInput: {
+                keyDef: { code: "KeyX", key: "y" },
+                actionName: "focusCharacterRowInput"
             },
             playShare: {
                 keyDef: { code: "KeyP", key: "p" },
