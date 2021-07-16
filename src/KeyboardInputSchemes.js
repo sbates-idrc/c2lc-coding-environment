@@ -242,7 +242,7 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
         },
 
         changeTheme: {
-            keyDef: { code: "KeyT"},
+            keyDef: { code: "KeyT", key: "t" },
             default: {
                 keyDef: { key: "1"},
                 actionName: "changeToDefaultTheme"
