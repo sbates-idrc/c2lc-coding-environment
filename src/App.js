@@ -791,15 +791,19 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("swapCurrentStepWithPreviousStep"):
                             if (!this.editingIsDisabled()) {
-                                if (this.programBlockEditorRef.current) {
-                                    this.programBlockEditorRef.current.handleActionPanelMoveToPreviousStep(this.state.actionPanelStepIndex);
+                                if (this.state.actionPanelStepIndex != null) {
+                                    if (this.programBlockEditorRef.current) {
+                                        this.programBlockEditorRef.current.handleActionPanelMoveToPreviousStep(this.state.actionPanelStepIndex);
+                                    }
                                 }
                             }
                             break;
                         case("swapCurrentStepWithNextStep"):
                             if (!this.editingIsDisabled()) {
-                                if (this.programBlockEditorRef.current) {
-                                    this.programBlockEditorRef.current.handleActionPanelMoveToNextStep(this.state.actionPanelStepIndex);
+                                if (this.state.actionPanelStepIndex != null) {
+                                    if (this.programBlockEditorRef.current) {
+                                        this.programBlockEditorRef.current.handleActionPanelMoveToNextStep(this.state.actionPanelStepIndex);
+                                    }
                                 }
                             }
                             break;
