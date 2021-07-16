@@ -499,6 +499,7 @@ export class App extends React.Component<AppProps, AppState> {
     // Handlers
 
     handleProgramSequenceChange = (programSequence: ProgramSequence) => {
+        console.log(programSequence.getProgram());
         const usedActions: ActionToggleRegister = this.calculateUsedActions(programSequence);
         this.setState({
             programSequence: programSequence,
@@ -791,31 +792,15 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("swapCurrentStepWithPreviousStep"):
                             if (!this.editingIsDisabled()) {
-                                if (this.state.actionPanelStepIndex != null) {
-                                    const previousStepIndex = this.state.actionPanelStepIndex - 1;
-                                    if (this.state.programSequence.getProgramStepAt(previousStepIndex) != null) {
-                                        if (this.programBlockEditorRef.current) {
-                                            this.programBlockEditorRef.current.updateActionPanelPosition('moveToPreviousStep', previousStepIndex);
-                                        }
-                                        // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.actionPanelStepIndex shouldn't be null.
-                                        const newProgramSequence = this.state.programSequence.swapStep(this.state.actionPanelStepIndex, previousStepIndex);
-                                        this.handleProgramSequenceChange(newProgramSequence);
-                                    }
+                                if (this.programBlockEditorRef.current) {
+                                    this.programBlockEditorRef.current.handleActionPanelMoveToPreviousStep(this.state.actionPanelStepIndex);
                                 }
                             }
                             break;
                         case("swapCurrentStepWithNextStep"):
                             if (!this.editingIsDisabled()) {
-                                if (this.state.actionPanelStepIndex != null) {
-                                    const nextStepIndex = this.state.actionPanelStepIndex + 1;
-                                    if (this.state.programSequence.getProgramStepAt(nextStepIndex) != null) {
-                                        if (this.programBlockEditorRef.current) {
-                                            this.programBlockEditorRef.current.updateActionPanelPosition('moveToNextStep', nextStepIndex);
-                                        }
-                                        // $FlowFixMe: Flow doesn't understand that we've already ensured that this.state.actionPanelStepIndex shouldn't be null.
-                                        const newProgramSequence = this.state.programSequence.swapStep(this.state.actionPanelStepIndex, nextStepIndex);
-                                        this.handleProgramSequenceChange(newProgramSequence);
-                                    }
+                                if (this.programBlockEditorRef.current) {
+                                    this.programBlockEditorRef.current.handleActionPanelMoveToNextStep(this.state.actionPanelStepIndex);
                                 }
                             }
                             break;
