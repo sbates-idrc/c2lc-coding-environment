@@ -520,7 +520,8 @@ export class App extends React.Component<AppProps, AppState> {
                 this.setState((state) => {
                     return {
                         programSequence: state.programSequence.updateProgramCounter(0),
-                        runningState: 'running'
+                        runningState: 'running',
+                        actionPanelStepIndex: null
                     };
                 });
                 break;
