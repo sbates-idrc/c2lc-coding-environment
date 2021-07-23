@@ -299,7 +299,12 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         this.props.audioManager.playAnnouncement('moveToPrevious', this.props.intl);
         if (this.props.programSequence.getProgramStepAt(index - 1) != null) {
             const previousStepIndex = index - 1;
-            this.updateActionPanelPosition('moveToPreviousStep', previousStepIndex)
+            if (this.props.actionPanelStepIndex != null) {
+                this.updateActionPanelPosition('moveToPreviousStep', previousStepIndex)
+            } else {
+                this.focusCommandBlockIndex = index - 1;
+                this.scrollToAddNodeIndex = index;
+            }
             this.props.onChangeProgramSequence(
                 this.props.programSequence.swapStep(index, previousStepIndex)
             );
@@ -310,7 +315,12 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         this.props.audioManager.playAnnouncement('moveToNext', this.props.intl);
         if (this.props.programSequence.getProgramStepAt(index + 1) != null) {
             const nextStepIndex = index + 1;
-            this.updateActionPanelPosition('moveToNextStep', nextStepIndex);
+            if (this.props.actionPanelStepIndex) {
+                this.updateActionPanelPosition('moveToNextStep', nextStepIndex);
+            } else {
+                this.focusCommandBlockIndex = index + 1;
+                this.scrollToAddNodeIndex = index + 1;
+            }
             this.props.onChangeProgramSequence(
                 this.props.programSequence.swapStep(index, nextStepIndex)
             );

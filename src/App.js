@@ -791,18 +791,28 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("swapCurrentStepWithPreviousStep"):
                             if (!this.editingIsDisabled()) {
-                                if (this.state.actionPanelStepIndex != null) {
-                                    if (this.programBlockEditorRef.current) {
-                                        this.programBlockEditorRef.current.handleActionPanelMoveToPreviousStep(this.state.actionPanelStepIndex);
+                                const currentElement = document.activeElement;
+                                // $FlowFixMe: Not all elements have dataset property
+                                if (currentElement.dataset.controltype === 'programStep') {
+                                    const index = parseInt(currentElement.dataset.stepnumber, 10);
+                                    if (index != null) {
+                                        if (this.programBlockEditorRef.current) {
+                                            this.programBlockEditorRef.current.handleActionPanelMoveToPreviousStep(index);
+                                        }
                                     }
                                 }
                             }
                             break;
                         case("swapCurrentStepWithNextStep"):
                             if (!this.editingIsDisabled()) {
-                                if (this.state.actionPanelStepIndex != null) {
-                                    if (this.programBlockEditorRef.current) {
-                                        this.programBlockEditorRef.current.handleActionPanelMoveToNextStep(this.state.actionPanelStepIndex);
+                                const currentElement = document.activeElement;
+                                // $FlowFixMe: Not all elements have dataset property
+                                if (currentElement.dataset.controltype === 'programStep') {
+                                    const index = parseInt(currentElement.dataset.stepnumber, 10);
+                                    if (index != null) {
+                                        if (this.programBlockEditorRef.current) {
+                                            this.programBlockEditorRef.current.handleActionPanelMoveToNextStep(index);
+                                        }
                                     }
                                 }
                             }
