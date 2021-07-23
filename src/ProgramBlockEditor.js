@@ -170,17 +170,18 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     replaceProgramStep(index: number) {
         const currentProgramStep = this.props.programSequence.getProgramStepAt(index);
         const selectedAction = this.props.selectedAction;
+        // If currentProgramStep is different than selectedAction, replace currentProgramStep
         if (selectedAction != null && currentProgramStep !== selectedAction) {
             const oldCommandString = this.props.intl.formatMessage({ id: "Announcement." + currentProgramStep});
             //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
             const newCommandString = this.props.intl.formatMessage({ id: "Announcement." + selectedAction});
 
             this.props.audioManager.playAnnouncement('replace', this.props.intl, { oldCommand: oldCommandString, newCommand: newCommandString});
-
+            // Set up focus, scrolling, and animation
             this.focusCommandBlockIndex = index;
             this.scrollToAddNodeIndex = index + 1;
             this.setUpdatedCommandBlock(index);
-
+            // Make the change
             this.props.onChangeProgramSequence(
                 //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
                 this.props.programSequence.overwriteStep(index, selectedAction)
