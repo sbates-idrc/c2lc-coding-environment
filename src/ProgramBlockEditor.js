@@ -167,6 +167,27 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         }
     }
 
+    replaceProgramStep(index: number) {
+        const currentProgramStep = this.props.programSequence.getProgramStepAt(index);
+        const selectedAction = this.props.selectedAction;
+        if (selectedAction != null && currentProgramStep !== selectedAction) {
+            const oldCommandString = this.props.intl.formatMessage({ id: "Announcement." + currentProgramStep});
+            //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
+            const newCommandString = this.props.intl.formatMessage({ id: "Announcement." + selectedAction});
+
+            this.props.audioManager.playAnnouncement('replace', this.props.intl, { oldCommand: oldCommandString, newCommand: newCommandString});
+
+            this.focusCommandBlockIndex = index;
+            this.scrollToAddNodeIndex = index + 1;
+            this.setUpdatedCommandBlock(index);
+
+            this.props.onChangeProgramSequence(
+                //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
+                this.props.programSequence.overwriteStep(index, selectedAction)
+            );
+        }
+    }
+
     // END Methods to make program changes
     // ***********************************
 
@@ -260,22 +281,10 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     handleActionPanelReplaceStep = (index: number) => {
         if (this.props.selectedAction) {
             if (this.props.programSequence.getProgramStepAt(index) !== this.props.selectedAction) {
-                const oldCommandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.programSequence.getProgramStepAt(index)});
-                //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
-                const newCommandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.selectedAction});
-
-                this.props.audioManager.playAnnouncement('replace', this.props.intl, { oldCommand: oldCommandString, newCommand: newCommandString});
-
-                this.props.onChangeProgramSequence(
-                    //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
-                    this.props.programSequence.overwriteStep(index, this.props.selectedAction)
-                );
+                this.replaceProgramStep(index);
                 this.setState({
                     replaceIsActive: false
                 });
-                this.focusCommandBlockIndex = index;
-                this.scrollToAddNodeIndex = index + 1;
-                this.setUpdatedCommandBlock(index);
             } else {
                 this.setState({
                     replaceIsActive: true

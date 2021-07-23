@@ -685,6 +685,20 @@ export class App extends React.Component<AppProps, AppState> {
                                 }
                             }
                             break;
+                        case("replaceCurrentStep"):
+                            if (!this.editingIsDisabled()) {
+                                const currentElement = document.activeElement;
+                                // $FlowFixMe: Not all elements have dataset property
+                                if (currentElement.dataset.controltype === 'programStep') {
+                                    const index = parseInt(currentElement.dataset.stepnumber, 10);
+                                    if (index != null) {
+                                        if (this.programBlockEditorRef.current) {
+                                            this.programBlockEditorRef.current.handleActionPanelReplaceStep(index);
+                                        }
+                                    }
+                                }
+                            }
+                            break;
                         case("deleteAll"): {
                             if (!this.editingIsDisabled()) {
                                 const newProgramSequence = this.state.programSequence.updateProgram([]);

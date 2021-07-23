@@ -28,6 +28,7 @@ follows.
 | ---- | ------- |
 | Ctrl + Alt + b | addCommandToBeginning |
 | Ctrl + Alt + e | addCommandToEnd |
+| Ctrl + Alt + c | replaceCurrentStep |
 | Ctrl + Alt + d | deleteCurrentStep |
 | Ctrl + Alt + i | announceScene |
 | Ctrl + Alt + p | playPauseProgram |
@@ -77,6 +78,7 @@ with the starting key of a sequence.  Those key bindings are as follows:
 | ---- | ------- |
 | Alt + b | addCommandToBeginning |
 | Alt + e | addCommandToEnd |
+| Alt + c | replaceCurrentStep |
 | Alt + d | deleteCurrentStep |
 | Alt + i | announceScene |
 | Alt + p | playPauseProgram |

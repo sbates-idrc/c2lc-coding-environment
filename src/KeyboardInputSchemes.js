@@ -61,6 +61,7 @@ export type ActionName =
 
     // Update Program
     | "deleteAll"
+    | "replaceCurrentStep"
     ;
 
 type ActionKeyStep = {
@@ -274,6 +275,10 @@ const VoiceOverInputScheme: KeyboardInputScheme = Object.assign({
         keyDef: { code: "KeyR", key: "r", altKey: true},
         actionName: "refreshScene"
     },
+    replaceCurrentStep: {
+        keyDef: { code: "KeyC", key: "c", altKey: true },
+        actionName: "replaceCurrentStep"
+    },
     showHide: {
         keyDef: { key: "?"},
         actionName: "showHide"
@@ -334,6 +339,10 @@ const NvdaInputScheme = Object.assign({
     refreshScene: {
         keyDef: { code: "KeyR", key: "r", altKey: true, ctrlKey: true },
         actionName: "refreshScene"
+    },
+    replaceCurrentStep: {
+        keyDef: { code: "KeyC", key: "c", altKey: true, ctrlKey: true },
+        actionName: "replaceCurrentStep"
     },
     showHide: {
         keyDef: { key: "?", shiftKey: true },
