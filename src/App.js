@@ -43,6 +43,7 @@ import KeyboardInputModal from './KeyboardInputModal';
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent} from './KeyboardInputSchemes';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg'
+import ProgramChangeController from './ProgramChangeController';
 
 // Convenience function to focus on the first element with a given class, used
 // for keyboard shortcuts.
@@ -115,6 +116,7 @@ export class App extends React.Component<AppProps, AppState> {
     speedControlRef: { current: null | HTMLElement };
     programBlockEditorRef: { current: any };
     sequenceInProgress: Array<KeyboardEvent>;
+    programChangeController: ProgramChangeController;
 
     constructor(props: any) {
         super(props);
@@ -431,6 +433,9 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.focusTrapManager = new FocusTrapManager();
 
+        this.programChangeController = new ProgramChangeController(this,
+            this.props.intl, this.audioManager);
+
         this.speedControlRef = React.createRef();
         this.programBlockEditorRef = React.createRef();
     }
@@ -486,6 +491,7 @@ export class App extends React.Component<AppProps, AppState> {
         }, callback);
     }
 
+    // Calculate used actions
 
     calculateUsedActions = (programSequence: ProgramSequence): ActionToggleRegister => {
         // Calculate  "used actions".
@@ -504,6 +510,21 @@ export class App extends React.Component<AppProps, AppState> {
             programSequence: programSequence,
             usedActions: usedActions
         });
+    }
+
+    handleProgramBlockEditorInsertCommand = (index: number) => {
+        this.programChangeController.insertSelectedCommandIntoProgram(
+            this.programBlockEditorRef.current,
+            index
+        );
+    }
+
+    handleProgramBlockEditorDeleteStep = (index: number, command: string) => {
+        this.programChangeController.deleteProgramStep(
+            this.programBlockEditorRef.current,
+            index,
+            command
+        );
     }
 
     handleClickPlay = () => {
@@ -654,21 +675,20 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("addCommandToBeginning"):
                             if (!this.editingIsDisabled()) {
-                                if (this.state.selectedAction) {
-                                    if (this.programBlockEditorRef.current) {
-                                        this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(0);
-                                    }
-                                }
+                                this.programChangeController.insertSelectedCommandIntoProgram(
+                                    this.programBlockEditorRef.current,
+                                    0
+                                );
                             }
                             break;
                         case("addCommandToEnd"):
                             if (!this.editingIsDisabled()) {
-                                if (this.state.selectedAction) {
-                                    const index = this.state.programSequence.getProgramLength();
-                                    if (this.programBlockEditorRef.current) {
-                                        this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(index);
-                                    }
-                                }
+                                // TODO: Program length could change
+                                const index = this.state.programSequence.getProgramLength();
+                                this.programChangeController.insertSelectedCommandIntoProgram(
+                                    this.programBlockEditorRef.current,
+                                    index
+                                );
                             }
                             break;
                         case("deleteCurrentStep"):
@@ -678,9 +698,11 @@ export class App extends React.Component<AppProps, AppState> {
                                 if (currentElement.dataset.controltype === 'programStep') {
                                     const index = parseInt(currentElement.dataset.stepnumber, 10);
                                     if (index != null) {
-                                        if (this.programBlockEditorRef.current) {
-                                            this.programBlockEditorRef.current.deleteProgramStep(index);
-                                        }
+                                        this.programChangeController.deleteProgramStep(
+                                            this.programBlockEditorRef.current,
+                                            index,
+                                            currentElement.dataset.command
+                                        );
                                     }
                                 }
                             }
@@ -1143,6 +1165,8 @@ export class App extends React.Component<AppProps, AppState> {
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
+                            onInsertSelectedCommandIntoProgram={this.handleProgramBlockEditorInsertCommand}
+                            onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
                         />
                     </div>
                     <div className='App__playAndShare-background' />
