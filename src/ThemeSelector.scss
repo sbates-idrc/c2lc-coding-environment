@@ -1,6 +1,6 @@
 @import 'variables';
 
-.ThemeSelector {
+.ThemeSelector__modal {
     button.btn {
         width: 100%;
         background-color: #4C9990;
@@ -28,4 +28,92 @@
             background-color: #ED972C;
         }
     }
+}
+
+.ThemeSelector__modal {
+    width: min-content;
+}
+
+.ThemeSelector__title {
+    background-color: #F1F2F4;
+    border-radius: 0.3rem;
+    display: grid;
+    grid-template-columns: min-content min-content;
+    column-gap: 0.5rem;
+    align-items: center;
+    padding: 0.6rem 12rem 0.6rem 0.4rem;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.ThemeSelector__option {
+    display: grid;
+    grid-template-columns: min-content max-content;
+    column-gap: 0.5rem;
+    padding: 0.6rem 1.5rem;
+    font-weight: 500;
+    font-size: 14px;
+    color: #1E1E1E;
+    align-items: center;
+    label {
+        margin-bottom: 0;
+    }
+}
+
+.ThemeSelector__option.light {
+    background-color: #EBFAF8;
+}
+
+.ThemeSelector__option.dark {
+    background-color: #30444E;
+    color: #FFF;
+}
+
+.ThemeSelector__option.grayscale {
+    background-color: #D5D8DD;
+}
+
+.ThemeSelector__option.contrast {
+    background-color: #1E1E1E;
+    color: #FFF;
+}
+
+.ThemeSelector__footer {
+    display: grid;
+    grid-template-columns: min-content min-content;
+    column-gap: 0.5rem;
+    padding: 1rem;
+    justify-content: flex-end;
+}
+
+button.btn.ThemeSelector__button-cancel,
+button.btn.ThemeSelector__button-done {
+    border: 0;
+    padding: 0.2rem;
+    width: 5.5rem;
+
+    &:active {
+        background-color: #ED972C;
+    }
+
+    &:hover {
+        background-color: #F5C58A;
+        color: black;
+    }
+
+    &:focus {
+        box-shadow:
+            0 0 0 0.1rem #D5D8DD,
+            0 0 0 $c2lc-focus-indicator-width black;
+    }
+}
+
+button.btn.ThemeSelector__button-cancel {
+    color: #1E1E1E;
+    background-color: #F1F2F4;
+}
+
+button.btn.ThemeSelector__button-done {
+    color: #F1F2F4;
+    background-color: #4C9990;
 }
