@@ -2,8 +2,8 @@
 
 import type {IntlShape} from 'react-intl';
 import type {AudioManager} from './types';
-import App from './App';
-import ProgramBlockEditor from './ProgramBlockEditor';
+import {App} from './App';
+import {ProgramBlockEditor} from './ProgramBlockEditor';
 
 // The ProgramChangeController is responsible for making changes to the
 // App 'state.programSequence' and coordinating any user interface
@@ -21,14 +21,16 @@ export default class ProgramChangeController {
         this.audioManager = audioManager;
     }
 
-    insertSelectedCommandIntoProgram(programBlockEditor: ProgramBlockEditor,
+    insertSelectedCommandIntoProgram(programBlockEditor: ?ProgramBlockEditor,
         index: number) {
 
         this.app.setState((state) => {
             if (state.selectedAction) {
+                const selectedAction = state.selectedAction;
+
                 // Play the announcement
                 const commandString = this.intl.formatMessage({
-                    id: "Announcement." + (state.selectedAction || "")
+                    id: "Announcement." + (selectedAction || "")
                 });
                 this.audioManager.playAnnouncement(
                     'add',
@@ -45,7 +47,7 @@ export default class ProgramChangeController {
 
                 return {
                     programSequence: state.programSequence.insertStep(index,
-                        state.selectedAction)
+                        selectedAction)
                 };
             } else {
                 return {};
@@ -53,7 +55,7 @@ export default class ProgramChangeController {
         });
     }
 
-    deleteProgramStep(programBlockEditor: ProgramBlockEditor,
+    deleteProgramStep(programBlockEditor: ?ProgramBlockEditor,
         index: number, command: string) {
 
         // TODO: Check the command

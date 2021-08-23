@@ -42,10 +42,10 @@ type ProgramBlockEditorProps = {
     // TODO: Remove onChangeProgramSequence once we have callbacks
     //       for each specific change
     onChangeProgramSequence: (programSequence: ProgramSequence) => void,
-    onChangeActionPanelStepIndex: (index: ?number) => void,
-    onChangeAddNodeExpandedMode: (boolean) => void,
     onInsertSelectedCommandIntoProgram: (index: number) => void,
-    onDeleteProgramStep: (index: number, command: string) => void
+    onDeleteProgramStep: (index: number, command: string) => void,
+    onChangeActionPanelStepIndex: (index: ?number) => void,
+    onChangeAddNodeExpandedMode: (boolean) => void
 };
 
 type ProgramBlockEditorState = {
@@ -55,7 +55,7 @@ type ProgramBlockEditorState = {
     closestAddNodeIndex: number
 };
 
-class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, ProgramBlockEditorState> {
+export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, ProgramBlockEditorState> {
     commandBlockRefs: Map<number, HTMLElement>;
     addNodeRefs: Map<number, HTMLElement>;
     focusCommandBlockIndex: ?number;

@@ -694,15 +694,16 @@ export class App extends React.Component<AppProps, AppState> {
                         case("deleteCurrentStep"):
                             if (!this.editingIsDisabled()) {
                                 const currentElement = document.activeElement;
-                                // $FlowFixMe: Not all elements have dataset property
-                                if (currentElement.dataset.controltype === 'programStep') {
-                                    const index = parseInt(currentElement.dataset.stepnumber, 10);
-                                    if (index != null) {
-                                        this.programChangeController.deleteProgramStep(
-                                            this.programBlockEditorRef.current,
-                                            index,
-                                            currentElement.dataset.command
-                                        );
+                                if (currentElement) {
+                                    if (currentElement.dataset.controltype === 'programStep') {
+                                        const index = parseInt(currentElement.dataset.stepnumber, 10);
+                                        if (index != null) {
+                                            this.programChangeController.deleteProgramStep(
+                                                this.programBlockEditorRef.current,
+                                                index,
+                                                currentElement.dataset.command
+                                            );
+                                        }
                                     }
                                 }
                             }
@@ -1163,10 +1164,10 @@ export class App extends React.Component<AppProps, AppState> {
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
                             world={this.state.settings.world}
                             onChangeProgramSequence={this.handleProgramSequenceChange}
-                            onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
-                            onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
                             onInsertSelectedCommandIntoProgram={this.handleProgramBlockEditorInsertCommand}
                             onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
+                            onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
+                            onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
                         />
                     </div>
                     <div className='App__playAndShare-background' />
