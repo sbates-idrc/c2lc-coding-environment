@@ -670,6 +670,55 @@ describe('Autoscroll to show a step after the active program step', () => {
     })
 });
 
+test('focusCommandBlockAfterUpdate', () => {
+    expect.assertions(3);
+
+    const mockFocus = jest.fn();
+
+    window.HTMLElement.prototype.focus = mockFocus;
+
+    const { wrapper, programBlockEditorRef } = createMountProgramBlockEditor({
+        programSequence: new ProgramSequence(['forward1', 'forward2'], 0)
+    });
+
+    // When focusCommandBlockAfterUpdate is called
+    // $FlowFixMe: Ignore that 'current' might be null -- if it is, we want the test to fail
+    programBlockEditorRef.current.focusCommandBlockAfterUpdate(1);
+
+    // And the program is updated
+    wrapper.setProps({ programSequence: new ProgramSequence(['forward1', 'forward3', 'forward2'], 0) });
+
+    // Then the program step is focused
+    expect(mockFocus.mock.calls.length).toBe(1);
+    expect(mockFocus.mock.instances.length).toBe(1);
+    expect(mockFocus.mock.instances[0]).toBe(getProgramBlockAtPosition(wrapper, 1).getDOMNode());
+});
+
+test('focusAddNodeAfterUpdate', () => {
+    expect.assertions(3);
+
+    const mockFocus = jest.fn();
+
+    window.HTMLElement.prototype.focus = mockFocus;
+
+    const { wrapper, programBlockEditorRef } = createMountProgramBlockEditor({
+        programSequence: new ProgramSequence(['forward1', 'forward2'], 0),
+        addNodeExpandedMode: true
+    });
+
+    // When focusAddNodeAfterUpdate is called
+    // $FlowFixMe: Ignore that 'current' might be null -- if it is, we want the test to fail
+    programBlockEditorRef.current.focusAddNodeAfterUpdate(1);
+
+    // And the program is updated
+    wrapper.setProps({ programSequence: new ProgramSequence(['forward1'], 0) });
+
+    // Then the add-node is focused
+    expect(mockFocus.mock.calls.length).toBe(1);
+    expect(mockFocus.mock.instances.length).toBe(1);
+    expect(mockFocus.mock.instances[0]).toBe(getAddNodeButtonAtPosition(wrapper, 1).getDOMNode());
+});
+
 test('scrollToAddNodeAfterUpdate', () => {
     expect.assertions(4);
 
@@ -684,7 +733,7 @@ test('scrollToAddNodeAfterUpdate', () => {
     });
 
     // When scrollToAddNodeAfterUpdate is called
-    // $FlowFixMe: Ignore that current might be null -- if it is, we want test to fail
+    // $FlowFixMe: Ignore that 'current' might be null -- if it is, we want the test to fail
     programBlockEditorRef.current.scrollToAddNodeAfterUpdate(6);
 
     // And the program is updated
@@ -699,7 +748,7 @@ test('scrollToAddNodeAfterUpdate', () => {
     });
     expect(mockScrollIntoView.mock.instances.length).toBe(1);
 
-    // (The index used to get the add note button position is zero because the add nodes aren't expanded).
+    // (The index used to get the add node button position is zero because the add nodes aren't expanded).
     expect(mockScrollIntoView.mock.instances[0]).toBe(getAddNodeButtonAtPosition(wrapper, 0).getDOMNode());
 });
 
