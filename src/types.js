@@ -24,7 +24,7 @@ export type EditorMode = 'text' | 'block';
     "contrast" => A high-contrast black and white theme.
 
 */
-export type ThemeName = 'mixed' | 'light' | 'dark' | 'gray' | 'contrast';
+export type ThemeName = 'default' | 'light' | 'dark' | 'gray' | 'contrast';
 
 export type WorldName = 'default' | 'forest' | 'space';
 

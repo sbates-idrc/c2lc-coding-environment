@@ -1,7 +1,7 @@
 @import 'variables';
 
-/* "Mixed" Theme is the default, check _variables.scss for most colours. */
-body.mixed-theme {
+/* Check _variables.scss for most colours. */
+body.default-theme {
     // Change this in the theme to avoid side effects in other themes.
     .App__command-palette-command-container {
         &::-webkit-scrollbar {
@@ -325,7 +325,7 @@ body.dark-theme {
         }
     }
 
-    .App__header-keyboardMenuIcon {    
+    .App__header-menuIcon {
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
         }
@@ -595,7 +595,7 @@ body.dark-theme {
 
 
 /* Grayscale Theme */
-body.gray-theme {
+body.grayscale-theme {
     background-color: #FFF;
 
     .App__container {
@@ -606,7 +606,7 @@ body.gray-theme {
         background-color: #D5D8DD;
     }
 
-    .ThemeSelector {
+    .ThemeSelector__modal {
         button.btn {
             background-color: #F1F2F4;
             border-color: #F1F2F4;
@@ -654,7 +654,7 @@ body.gray-theme {
         color: #818A98;
     }
 
-    .App__header-keyboardMenuIcon {    
+    .App__header-menuIcon {
         background-color: #818A98;
         svg path {
             fill: white;
@@ -663,7 +663,7 @@ body.gray-theme {
         &:hover {
             background-color: #505862;
         }
-    
+
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
@@ -723,7 +723,7 @@ body.gray-theme {
             width: 1.9rem;
         }
     }
-    
+
     .KeyboardInputModal__content__toggle.ToggleSwitch--checked {
         background-color: #818A98;
     }
@@ -1356,15 +1356,14 @@ body.contrast-theme {
         color: white;
     }
 
-    .ThemeSelector {
+    .ThemeSelector__modal {
         button.btn {
             background-color: white;
             color: black;
-            border-color: white;
 
             &:hover:not(:active) {
                 background-color: black;
-                border: 2px solid white;
+                box-shadow: 0 0 0 2px white;
                 color: white;
             }
 
@@ -1373,7 +1372,7 @@ body.contrast-theme {
             }
 
             &:focus:not(:hover) {
-                border: 2px solid black;
+                box-shadow: 0 0 0 2px black;
             }
         }
 
@@ -1385,9 +1384,8 @@ body.contrast-theme {
         }
     }
 
-    .App__header-keyboardMenuIcon {    
+    .App__header-menuIcon {
         background-color: white;
-        border: 2px solid white;
 
         svg path {
             fill: black;
@@ -1400,7 +1398,7 @@ body.contrast-theme {
                 fill: white;
             }
         }
-    
+
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
             border: 2px solid black;
@@ -1451,7 +1449,7 @@ body.contrast-theme {
 
         &:hover:focus {
             box-shadow: 0 0 0 0.2rem black;
-        }        
+        }
     }
 
     .KeyboardInputModal__content__toggle.ToggleSwitch {
@@ -1471,7 +1469,7 @@ body.contrast-theme {
                     }
                 }
             }
-    
+
         }
 
         &:focus {

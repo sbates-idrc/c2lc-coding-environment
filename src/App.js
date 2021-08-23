@@ -42,7 +42,8 @@ import KeyboardInputModal from './KeyboardInputModal';
 
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent} from './KeyboardInputSchemes';
-import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg'
+import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
+import { ReactComponent as ThemeIcon } from './svg/Theme.svg';
 
 // Convenience function to focus on the first element with a given class, used
 // for keyboard shortcuts.
@@ -95,7 +96,8 @@ type AppState = {
     usedActions: ActionToggleRegister,
     keyBindingsEnabled: boolean,
     keyboardInputSchemeName: KeyboardInputSchemeName;
-    showKeyboardModal: boolean
+    showKeyboardModal: boolean,
+    showThemeSelectorModal: boolean
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -395,7 +397,7 @@ export class App extends React.Component<AppProps, AppState> {
             settings: {
                 language: 'en',
                 addNodeExpandedMode: true,
-                theme: 'mixed',
+                theme: 'default',
                 world: 'default'
             },
             dashConnectionStatus: 'notConnected',
@@ -412,6 +414,7 @@ export class App extends React.Component<AppProps, AppState> {
             usedActions: {},
             keyBindingsEnabled: true,
             showKeyboardModal: false,
+            showThemeSelectorModal: false,
             keyboardInputSchemeName: "nvda"
         };
 
@@ -763,7 +766,7 @@ export class App extends React.Component<AppProps, AppState> {
                             focusOnFirstElementWithClass("command-block");
                             break;
                         case("focusAppHeader"):
-                            focusOnFirstElementWithClass("App__header-keyboardMenuIcon");
+                            focusOnFirstElementWithClass("App__header-menuIcon");
                             break;
                         case("focusAddNodeToggle"):
                             focusOnFirstElementWithClass("ProgramBlockEditor__add-node-toggle-switch");
@@ -844,6 +847,22 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState((currentState: AppState) => {
             return { showKeyboardModal: !currentState.showKeyboardModal};
         });
+    }
+
+    handleChangeShowThemeSelectorModal = () => {
+        this.setState((currentState: AppState) => {
+            return { showThemeSelectorModal: !currentState.showThemeSelectorModal };
+        });
+    };
+
+    handleClickThemeSelectorIcon = () => {
+        this.handleChangeShowThemeSelectorModal();
+    }
+
+    handleKeyDownThemeSelectorIcon = (event: KeyboardEvent) => {
+        if (event.key === "Enter" || event.key === " ") {
+            this.handleChangeShowThemeSelectorModal();
+        }
     }
 
     // Focus trap escape key handling.
@@ -927,8 +946,15 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
+    handleSelectTheme = (theme: ThemeName) => {
+        this.setStateSettings({theme});
+    }
+
     handleChangeTheme = (theme: ThemeName) => {
-        this.setStateSettings({ theme });
+        this.setState({
+            showThemeSelectorModal: false,
+            settings: Object.assign({}, this.state.settings, {theme})
+        });
     }
 
     handleChangeWorld = (world: WorldName) => {
@@ -1024,14 +1050,25 @@ export class App extends React.Component<AppProps, AppState> {
                                     <FormattedMessage id='App.appHeading'/>
                                 </a>
                             </h1>
-                            <div
-                                className={"App__header-keyboardMenuIcon" + (this.state.keyBindingsEnabled ? "" : " App__header-keyboardMenuIcon--disabled")}
-                                tabIndex={0}
-                                aria-label={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
-                                onClick={this.handleKeyboardModalToggle}
-                                onKeyDown={this.handleKeyboardMenuIconKeydown}
-                            >
-                                <KeyboardModalToggleIcon/>
+                            <div className='App__header-menu'>
+                                <div
+                                    className={"App__header-menuIcon" + (this.state.keyBindingsEnabled ? "" : " App__header-menuIcon--disabled")}
+                                    tabIndex={0}
+                                    aria-label={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                                    onClick={this.handleKeyboardModalToggle}
+                                    onKeyDown={this.handleKeyboardMenuIconKeydown}
+                                >
+                                    <KeyboardModalToggleIcon/>
+                                </div>
+                                <div
+                                    className={"App__header-menuIcon" + (this.state.keyBindingsEnabled ? "" : " App__header-menuIcon--disabled")}
+                                    tabIndex={0}
+                                    aria-label={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                                    onClick={this.handleClickThemeSelectorIcon}
+                                    onKeyDown={this.handleKeyDownThemeSelectorIcon}
+                                >
+                                    <ThemeIcon />
+                                </div>
                             </div>
                             <div className='App__header-audio-toggle'>
                                 <div className='App__audio-toggle-switch'>
@@ -1050,7 +1087,6 @@ export class App extends React.Component<AppProps, AppState> {
                                 </DeviceConnectControl>
                                 */}
                             </div>
-                            <ThemeSelector onSelect={this.handleChangeTheme} />
                         </div>
                     </header>
                     {/* Dash connection removed for version 0.5
@@ -1193,6 +1229,11 @@ export class App extends React.Component<AppProps, AppState> {
                     onChangeKeyBindingsEnabled={this.handleChangeKeyBindingsEnabled}
                     onHide={this.handleKeyboardModalClose}
                 />
+                <ThemeSelector
+                    show={this.state.showThemeSelectorModal}
+                    currentTheme={this.state.settings.theme}
+                    onSelect={this.handleSelectTheme}
+                    onChange={this.handleChangeTheme}/>
             </React.Fragment>
         );
     }
@@ -1255,7 +1296,7 @@ export class App extends React.Component<AppProps, AppState> {
             }
 
             this.setStateSettings({
-                theme: Utils.getThemeFromString(themeQuery, 'mixed'),
+                theme: Utils.getThemeFromString(themeQuery, 'default'),
                 world: Utils.getWorldFromString(worldQuery, 'default')
             });
         } else {
@@ -1308,7 +1349,7 @@ export class App extends React.Component<AppProps, AppState> {
             }
 
             this.setStateSettings({
-                theme: Utils.getThemeFromString(localTheme, 'mixed'),
+                theme: Utils.getThemeFromString(localTheme, 'default'),
                 world: Utils.getWorldFromString(localWorld, 'default')
             });
         }
