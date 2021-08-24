@@ -27,24 +27,8 @@ export default class ProgramChangeController {
         this.app.setState((state) => {
             if (state.selectedAction) {
                 const selectedAction = state.selectedAction;
-
-                // Play the announcement
-                const commandString = this.intl.formatMessage({
-                    id: "Announcement." + (selectedAction || "")
-                });
-                this.audioManager.playAnnouncement(
-                    'add',
-                    this.intl,
-                    { command: commandString}
-                );
-
-                // Set up focus, scrolling, and animation
-                if (programBlockEditor) {
-                    programBlockEditor.focusCommandBlockAfterUpdate(index);
-                    programBlockEditor.scrollToAddNodeAfterUpdate(index + 1);
-                    programBlockEditor.setUpdatedCommandBlock(index);
-                }
-
+                this.playAnnouncementForAdd(selectedAction);
+                this.doActivitiesForAdd(programBlockEditor, index);
                 return {
                     programSequence: state.programSequence.insertStep(index,
                         selectedAction)
@@ -52,6 +36,20 @@ export default class ProgramChangeController {
             } else {
                 return {};
             }
+        });
+    }
+
+    addCommandToProgramEnd(programBlockEditor: ?ProgramBlockEditor,
+        command: string) {
+
+        this.app.setState((state) => {
+            this.playAnnouncementForAdd(command);
+            const index = state.programSequence.getProgramLength();
+            this.doActivitiesForAdd(programBlockEditor, index);
+            return {
+                programSequence: state.programSequence.insertStep(index,
+                    command)
+            };
         });
     }
 
@@ -85,6 +83,28 @@ export default class ProgramChangeController {
                 programSequence: state.programSequence.deleteStep(index)
             };
         });
+    }
+
+    // Internal methods
+
+    playAnnouncementForAdd(command: string) {
+        const commandString = this.intl.formatMessage({
+            id: "Announcement." + (command || "")
+        });
+        this.audioManager.playAnnouncement(
+            'add',
+            this.intl,
+            { command: commandString }
+        );
+    }
+
+    doActivitiesForAdd(programBlockEditor: ?ProgramBlockEditor, index: number) {
+        // Set up focus, scrolling, and animation
+        if (programBlockEditor) {
+            programBlockEditor.focusCommandBlockAfterUpdate(index);
+            programBlockEditor.scrollToAddNodeAfterUpdate(index + 1);
+            programBlockEditor.setUpdatedCommandBlock(index);
+        }
     }
 
 };

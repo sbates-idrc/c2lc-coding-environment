@@ -18,7 +18,7 @@ jest.mock('./App');
 jest.mock('./AudioManagerImpl');
 jest.mock('./ProgramBlockEditor');
 
-function createProgramChangeContoller() {
+function createProgramChangeController() {
     // $FlowFixMe: Jest mock API
     App.mockClear();
     // $FlowFixMe: Jest mock API
@@ -41,9 +41,9 @@ function createProgramChangeContoller() {
 
 test('Given there is a selectedAction, when insertSelectedCommandIntoProgram() is called, then the program should be updated and all expected activities invoked', (done) => {
 
-    expect.assertions(9);
+    expect.assertions(10);
 
-    const { controller, appMock, audioManagerMock } = createProgramChangeContoller();
+    const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
     appMock.setState.mockImplementation((callback) => {
         const newState = callback({
@@ -58,6 +58,9 @@ test('Given there is a selectedAction, when insertSelectedCommandIntoProgram() i
         // The announcement should be made
         expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
         expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('add');
+        expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
+            command: 'forward 3 squares'
+        });
 
         // The focus, scrolling, and animation should be set up
         // $FlowFixMe: Jest mock API
@@ -82,7 +85,7 @@ test('Given there is no selectedAction, when insertSelectedCommandIntoProgram() 
 
     expect.assertions(5);
 
-    const { controller, appMock, audioManagerMock } = createProgramChangeContoller();
+    const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
     appMock.setState.mockImplementation((callback) => {
         const newState = callback({
@@ -112,11 +115,52 @@ test('Given there is no selectedAction, when insertSelectedCommandIntoProgram() 
     controller.insertSelectedCommandIntoProgram(new ProgramBlockEditor(), 0);
 });
 
+test('When addCommandToProgramEnd() is called, then the program should be updated and all expected activities invoked', (done) => {
+
+    expect.assertions(10);
+
+    const { controller, appMock, audioManagerMock } = createProgramChangeController();
+
+    appMock.setState.mockImplementation((callback) => {
+        const newState = callback({
+            programSequence: new ProgramSequence(['forward1', 'forward2'], 0)
+        });
+
+        // The program should be updated
+        expect(newState.programSequence.getProgram()).toStrictEqual(
+            ['forward1', 'forward2', 'forward3']);
+
+        // The announcement should be made
+        expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
+        expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('add');
+        expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
+            command: 'forward 3 squares'
+        });
+
+        // The focus, scrolling, and animation should be set up
+        // $FlowFixMe: Jest mock API
+        const programBlockEditorMock = ProgramBlockEditor.mock.instances[0];
+        expect(programBlockEditorMock.focusCommandBlockAfterUpdate.mock.calls.length).toBe(1);
+        expect(programBlockEditorMock.focusCommandBlockAfterUpdate.mock.calls[0][0]).toBe(2);
+        expect(programBlockEditorMock.scrollToAddNodeAfterUpdate.mock.calls.length).toBe(1);
+        expect(programBlockEditorMock.scrollToAddNodeAfterUpdate.mock.calls[0][0]).toBe(3);
+        expect(programBlockEditorMock.setUpdatedCommandBlock.mock.calls.length).toBe(1);
+        expect(programBlockEditorMock.setUpdatedCommandBlock.mock.calls[0][0]).toBe(2);
+
+        done();
+    });
+
+    // $FlowFixMe: Jest mock API
+    ProgramBlockEditor.mockClear();
+    // $FlowFixMe: Jest mock API
+    controller.addCommandToProgramEnd(new ProgramBlockEditor(), 'forward3');
+});
+
 test('When deleteProgramStep() is called on a step not at the end, then focus is set to the step now at the deleted index', (done) => {
 
-    expect.assertions(6);
+    expect.assertions(7);
 
-    const { controller, appMock, audioManagerMock } = createProgramChangeContoller();
+    const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
     appMock.setState.mockImplementation((callback) => {
         const newState = callback({
@@ -130,6 +174,9 @@ test('When deleteProgramStep() is called on a step not at the end, then focus is
         // The announcement should be made
         expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
         expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('delete');
+        expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
+            command: 'forward 1 square'
+        });
 
         // The command block should be focused
         // $FlowFixMe: Jest mock API
@@ -149,9 +196,9 @@ test('When deleteProgramStep() is called on a step not at the end, then focus is
 
 test('When deleteProgramStep() is called on the step at the end, then focus is set to the add-node after the program', (done) => {
 
-    expect.assertions(6);
+    expect.assertions(7);
 
-    const { controller, appMock, audioManagerMock } = createProgramChangeContoller();
+    const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
     appMock.setState.mockImplementation((callback) => {
         const newState = callback({
@@ -165,6 +212,9 @@ test('When deleteProgramStep() is called on the step at the end, then focus is s
         // The announcement should be made
         expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
         expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('delete');
+        expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
+            command: 'forward 2 squares'
+        });
 
         // The add-node after the program should be focused
         // $FlowFixMe: Jest mock API
