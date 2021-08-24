@@ -49,7 +49,7 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
                 <div
                     className={`ThemeSelector__option ${theme}`}
                     key={`ThemeSelector__option-${theme}`}>
-                    <input type='radio' id={`theme-${theme}`} name='theme-option' value={theme}
+                    <input className='ThemeSelector__option-radio' type='radio' id={`theme-${theme}`} name='theme-option' value={theme}
                         checked={this.props.currentTheme === theme ? true : false}
                         onChange={this.handleOnSelect}/>
                     <label htmlFor={`theme-${theme}`}>
@@ -61,7 +61,7 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
         return themeGroup;
     }
 
-    componentDidUpdate(prevProps: ThemeSelectorProps, prevState: ThemeSelectorStates) {
+    componentDidUpdate(prevProps: ThemeSelectorProps, {}) {
         // When the modal first open up, remember the theme at that time
         if (prevProps.show !== this.props.show && this.props.show) {
             this.setState({
