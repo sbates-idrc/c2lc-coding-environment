@@ -61,7 +61,7 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
         return themeGroup;
     }
 
-    componentDidUpdate(prevProps: ThemeSelectorProps, {}) {
+    componentDidUpdate(prevProps: ThemeSelectorProps) {
         // When the modal first open up, remember the theme at that time
         if (prevProps.show !== this.props.show && this.props.show) {
             this.setState({
