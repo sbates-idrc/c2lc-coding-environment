@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import { createIntl, IntlProvider } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 import messages from './messages.json';
 import { configure, mount } from 'enzyme';
 import ModalFooter from './ModalFooter';
