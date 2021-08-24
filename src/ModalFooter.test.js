@@ -9,12 +9,6 @@ import ModalFooter from './ModalFooter';
 configure({ adapter: new Adapter()});
 
 function createMountModalFooter(props) {
-    const intl = createIntl({
-        locale: 'en',
-        defaultLocale: 'en',
-        messages: messages.en
-    });
-
     const mockOnClickCancel = jest.fn();
     const mockOnClickDone = jest.fn();
 
