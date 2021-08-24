@@ -21,12 +21,11 @@ export default class ProgramChangeController {
         this.audioManager = audioManager;
     }
 
-    insertSelectedCommandIntoProgram(programBlockEditor: ?ProgramBlockEditor,
-        index: number) {
+    insertSelectedActionIntoProgram(programBlockEditor: ?ProgramBlockEditor,
+        index: number, selectedAction: ?string) {
 
         this.app.setState((state) => {
-            if (state.selectedAction) {
-                const selectedAction = state.selectedAction;
+            if (selectedAction) {
                 this.playAnnouncementForAdd(selectedAction);
                 this.doActivitiesForAdd(programBlockEditor, index);
                 return {
@@ -39,6 +38,8 @@ export default class ProgramChangeController {
         });
     }
 
+    // TODO: Rename to addSelectedActionToProgramEnd
+    // TODO: Test if selectedAction is set
     addCommandToProgramEnd(programBlockEditor: ?ProgramBlockEditor,
         command: string) {
 

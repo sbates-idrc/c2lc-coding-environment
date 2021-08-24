@@ -512,10 +512,11 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleProgramBlockEditorInsertCommand = (index: number) => {
-        this.programChangeController.insertSelectedCommandIntoProgram(
+    handleProgramBlockEditorInsertSelectedAction = (index: number, selectedAction: ?string) => {
+        this.programChangeController.insertSelectedActionIntoProgram(
             this.programBlockEditorRef.current,
-            index
+            index,
+            selectedAction
         );
     }
 
@@ -675,9 +676,10 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("addCommandToBeginning"):
                             if (!this.editingIsDisabled()) {
-                                this.programChangeController.insertSelectedCommandIntoProgram(
+                                this.programChangeController.insertSelectedActionIntoProgram(
                                     this.programBlockEditorRef.current,
-                                    0
+                                    0,
+                                    this.state.selectedAction
                                 );
                             }
                             break;
@@ -1164,7 +1166,7 @@ export class App extends React.Component<AppProps, AppState> {
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
                             world={this.state.settings.world}
                             onChangeProgramSequence={this.handleProgramSequenceChange}
-                            onInsertSelectedCommandIntoProgram={this.handleProgramBlockEditorInsertCommand}
+                            onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
                             onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
                             onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}

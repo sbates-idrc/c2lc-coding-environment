@@ -42,7 +42,7 @@ type ProgramBlockEditorProps = {
     // TODO: Remove onChangeProgramSequence once we have callbacks
     //       for each specific change
     onChangeProgramSequence: (programSequence: ProgramSequence) => void,
-    onInsertSelectedCommandIntoProgram: (index: number) => void,
+    onInsertSelectedActionIntoProgram: (index: number, selectedAction: ?string) => void,
     onDeleteProgramStep: (index: number, command: string) => void,
     onChangeActionPanelStepIndex: (index: ?number) => void,
     onChangeAddNodeExpandedMode: (boolean) => void
@@ -298,7 +298,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     };
 
     handleClickAddNode = (stepNumber: number) => {
-        this.props.onInsertSelectedCommandIntoProgram(stepNumber);
+        this.props.onInsertSelectedActionIntoProgram(stepNumber,
+            this.props.selectedAction);
     };
 
     // TODO: Discuss removing this once we have a good way to test drag and drop.
@@ -365,7 +366,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             });
 
             const closestAddNodeIndex = this.findAddNodeClosestToEvent(event);
-            this.props.onInsertSelectedCommandIntoProgram(closestAddNodeIndex);
+            this.props.onInsertSelectedActionIntoProgram(closestAddNodeIndex,
+                this.props.selectedAction);
         }
     }
 

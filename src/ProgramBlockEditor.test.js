@@ -60,7 +60,7 @@ function createMountProgramBlockEditor(props) {
     const audioManagerMock = AudioManagerImpl.mock.instances[0];
 
     const mockChangeProgramSequenceHandler = jest.fn();
-    const mockInsertSelectedCommandIntoProgramHandler = jest.fn();
+    const mockInsertSelectedActionIntoProgramHandler = jest.fn();
     const mockDeleteProgramStepHandler = jest.fn();
     const mockChangeActionPanelStepIndex = jest.fn();
     const mockChangeAddNodeExpandedModeHandler = jest.fn();
@@ -78,7 +78,7 @@ function createMountProgramBlockEditor(props) {
                     ref: programBlockEditorRef,
                     audioManager: audioManagerInstance,
                     onChangeProgramSequence: mockChangeProgramSequenceHandler,
-                    onInsertSelectedCommandIntoProgram: mockInsertSelectedCommandIntoProgramHandler,
+                    onInsertSelectedActionIntoProgram: mockInsertSelectedActionIntoProgramHandler,
                     onDeleteProgramStep: mockDeleteProgramStepHandler,
                     onChangeActionPanelStepIndex: mockChangeActionPanelStepIndex,
                     onChangeAddNodeExpandedMode: mockChangeAddNodeExpandedModeHandler,
@@ -102,7 +102,7 @@ function createMountProgramBlockEditor(props) {
         programBlockEditorRef,
         audioManagerMock,
         mockChangeProgramSequenceHandler,
-        mockInsertSelectedCommandIntoProgramHandler,
+        mockInsertSelectedActionIntoProgramHandler,
         mockDeleteProgramStepHandler,
         mockChangeActionPanelStepIndex,
         mockChangeAddNodeExpandedModeHandler
@@ -307,11 +307,11 @@ describe('Delete All button', () => {
 });
 
 describe("Add program steps", () => {
-    test('When the add node at the end of the program is clicked, then the onInsertSelectedCommandIntoProgram callback should be called', () => {
-        expect.assertions(2);
+    test('When the add node at the end of the program is clicked, then the onInsertSelectedActionIntoProgram callback should be called', () => {
+        expect.assertions(3);
 
         // Given a program of 5 forwards and 'left45' as the selected command
-        const { wrapper, mockInsertSelectedCommandIntoProgramHandler } = createMountProgramBlockEditor({
+        const { wrapper, mockInsertSelectedActionIntoProgramHandler } = createMountProgramBlockEditor({
             programSequence: new ProgramSequence(['forward1', 'forward1', 'forward1', 'forward1', 'forward1'], 0),
             selectedAction: 'left45'
         });
@@ -321,17 +321,18 @@ describe("Add program steps", () => {
         const addNode = getAddNodeButtonAtPosition(wrapper, 0);
         addNode.simulate('click');
 
-        // Then the onInsertSelectedCommandIntoProgram callback should
-        // be called with index 5
-        expect(mockInsertSelectedCommandIntoProgramHandler.mock.calls.length).toBe(1);
-        expect(mockInsertSelectedCommandIntoProgramHandler.mock.calls[0][0]).toBe(5);
+        // Then the onInsertSelectedActionIntoProgram callback should
+        // be called with index 5 and selectedAaction 'left45'
+        expect(mockInsertSelectedActionIntoProgramHandler.mock.calls.length).toBe(1);
+        expect(mockInsertSelectedActionIntoProgramHandler.mock.calls[0][0]).toBe(5);
+        expect(mockInsertSelectedActionIntoProgramHandler.mock.calls[0][1]).toBe('left45');
     });
 
-    test('When the add node at the beginning of the program is clicked, then the onInsertSelectedCommandIntoProgram callback should be called', () => {
-        expect.assertions(2);
+    test('When the add node at the beginning of the program is clicked, then the onInsertSelectedActionIntoProgram callback should be called', () => {
+        expect.assertions(3);
 
         // Given a program of 5 forwards and 'left45' as the selected command
-        const { wrapper, mockInsertSelectedCommandIntoProgramHandler } = createMountProgramBlockEditor({
+        const { wrapper, mockInsertSelectedActionIntoProgramHandler } = createMountProgramBlockEditor({
             programSequence: new ProgramSequence(['forward1', 'forward1', 'forward1', 'forward1', 'forward1'], 0),
             selectedAction: 'left45',
             addNodeExpandedMode: true
@@ -341,17 +342,18 @@ describe("Add program steps", () => {
         const addNode = getAddNodeButtonAtPosition(wrapper, 0);
         addNode.simulate('click');
 
-        // Then the onInsertSelectedCommandIntoProgram callback should
-        // be called with index 0
-        expect(mockInsertSelectedCommandIntoProgramHandler.mock.calls.length).toBe(1);
-        expect(mockInsertSelectedCommandIntoProgramHandler.mock.calls[0][0]).toBe(0);
+        // Then the onInsertSelectedActionIntoProgram callback should
+        // be called with index 0 and selectedAaction 'left45'
+        expect(mockInsertSelectedActionIntoProgramHandler.mock.calls.length).toBe(1);
+        expect(mockInsertSelectedActionIntoProgramHandler.mock.calls[0][0]).toBe(0);
+        expect(mockInsertSelectedActionIntoProgramHandler.mock.calls[0][1]).toBe('left45');
     });
 
-    test('When an add node within the program is clicked, then the onInsertSelectedCommandIntoProgram callback should be called', () => {
-        expect.assertions(2);
+    test('When an add node within the program is clicked, then the onInsertSelectedActionIntoProgram callback should be called', () => {
+        expect.assertions(3);
 
         // Given a program of 5 forwards and 'left45' as the selected command
-        const { wrapper, mockInsertSelectedCommandIntoProgramHandler } = createMountProgramBlockEditor({
+        const { wrapper, mockInsertSelectedActionIntoProgramHandler } = createMountProgramBlockEditor({
             programSequence: new ProgramSequence(['forward1', 'forward1', 'forward1', 'forward1', 'forward1'], 0),
             selectedAction: 'left45',
             addNodeExpandedMode: true
@@ -361,10 +363,11 @@ describe("Add program steps", () => {
         const addNode = getAddNodeButtonAtPosition(wrapper, 3);
         addNode.simulate('click');
 
-        // Then the onInsertSelectedCommandIntoProgram callback should
-        // be called with index 3
-        expect(mockInsertSelectedCommandIntoProgramHandler.mock.calls.length).toBe(1);
-        expect(mockInsertSelectedCommandIntoProgramHandler.mock.calls[0][0]).toBe(3);
+        // Then the onInsertSelectedActionIntoProgram callback should
+        // be called with index 3 and selectedAaction 'left45'
+        expect(mockInsertSelectedActionIntoProgramHandler.mock.calls.length).toBe(1);
+        expect(mockInsertSelectedActionIntoProgramHandler.mock.calls[0][0]).toBe(3);
+        expect(mockInsertSelectedActionIntoProgramHandler.mock.calls[0][1]).toBe('left45');
     });
 });
 

@@ -39,7 +39,7 @@ function createProgramChangeController() {
     };
 }
 
-test('Given there is a selectedAction, when insertSelectedCommandIntoProgram() is called, then the program should be updated and all expected activities invoked', (done) => {
+test('Given there is a selectedAction, when insertSelectedActionIntoProgram() is called, then the program should be updated and all expected activities invoked', (done) => {
 
     expect.assertions(10);
 
@@ -47,8 +47,7 @@ test('Given there is a selectedAction, when insertSelectedCommandIntoProgram() i
 
     appMock.setState.mockImplementation((callback) => {
         const newState = callback({
-            programSequence: new ProgramSequence(['forward1', 'forward2'], 0),
-            selectedAction: 'forward3'
+            programSequence: new ProgramSequence(['forward1', 'forward2'], 0)
         });
 
         // The program should be updated
@@ -78,10 +77,11 @@ test('Given there is a selectedAction, when insertSelectedCommandIntoProgram() i
     // $FlowFixMe: Jest mock API
     ProgramBlockEditor.mockClear();
     // $FlowFixMe: Jest mock API
-    controller.insertSelectedCommandIntoProgram(new ProgramBlockEditor(), 1);
+    controller.insertSelectedActionIntoProgram(new ProgramBlockEditor(), 1,
+        'forward3');
 });
 
-test('Given there is no selectedAction, when insertSelectedCommandIntoProgram() is called, then no changes should be made', (done) => {
+test('Given there is no selectedAction, when insertSelectedActionIntoProgram() is called, then no changes should be made', (done) => {
 
     expect.assertions(5);
 
@@ -89,8 +89,7 @@ test('Given there is no selectedAction, when insertSelectedCommandIntoProgram() 
 
     appMock.setState.mockImplementation((callback) => {
         const newState = callback({
-            programSequence: new ProgramSequence([], 0),
-            selectedAction: null
+            programSequence: new ProgramSequence([], 0)
         });
 
         // The program should not be updated
@@ -112,7 +111,7 @@ test('Given there is no selectedAction, when insertSelectedCommandIntoProgram() 
     // $FlowFixMe: Jest mock API
     ProgramBlockEditor.mockClear();
     // $FlowFixMe: Jest mock API
-    controller.insertSelectedCommandIntoProgram(new ProgramBlockEditor(), 0);
+    controller.insertSelectedActionIntoProgram(new ProgramBlockEditor(), 0, null);
 });
 
 test('When addCommandToProgramEnd() is called, then the program should be updated and all expected activities invoked', (done) => {
