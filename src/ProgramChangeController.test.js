@@ -114,7 +114,7 @@ test('Given there is no selectedAction, when insertSelectedActionIntoProgram() i
     controller.insertSelectedActionIntoProgram(new ProgramBlockEditor(), 0, null);
 });
 
-test('When addCommandToProgramEnd() is called, then the program should be updated and all expected activities invoked', (done) => {
+test('Given there is a selectedAction, when addSelectedActionToProgramEnd() is called, then the program should be updated and all expected activities invoked', (done) => {
 
     expect.assertions(10);
 
@@ -152,7 +152,40 @@ test('When addCommandToProgramEnd() is called, then the program should be update
     // $FlowFixMe: Jest mock API
     ProgramBlockEditor.mockClear();
     // $FlowFixMe: Jest mock API
-    controller.addCommandToProgramEnd(new ProgramBlockEditor(), 'forward3');
+    controller.addSelectedActionToProgramEnd(new ProgramBlockEditor(), 'forward3');
+});
+
+test('Given there is no selectedAction, when addSelectedActionToProgramEnd() is called, then no changes should be made', (done) => {
+
+    expect.assertions(5);
+
+    const { controller, appMock, audioManagerMock } = createProgramChangeController();
+
+    appMock.setState.mockImplementation((callback) => {
+        const newState = callback({
+            programSequence: new ProgramSequence(['forward1', 'forward2'], 0)
+        });
+
+        // The program should not be updated
+        expect(newState).toStrictEqual({});
+
+        // No announcement should be made
+        expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(0);
+
+        // No methods on the ProgramBlockEditor should have been called
+        // $FlowFixMe: Jest mock API
+        const programBlockEditorMock = ProgramBlockEditor.mock.instances[0];
+        expect(programBlockEditorMock.focusCommandBlockAfterUpdate.mock.calls.length).toBe(0);
+        expect(programBlockEditorMock.scrollToAddNodeAfterUpdate.mock.calls.length).toBe(0);
+        expect(programBlockEditorMock.setUpdatedCommandBlock.mock.calls.length).toBe(0);
+
+        done();
+    });
+
+    // $FlowFixMe: Jest mock API
+    ProgramBlockEditor.mockClear();
+    // $FlowFixMe: Jest mock API
+    controller.addSelectedActionToProgramEnd(new ProgramBlockEditor(), null);
 });
 
 test('When deleteProgramStep() is called on a step not at the end, then focus is set to the step now at the deleted index', (done) => {

@@ -38,19 +38,21 @@ export default class ProgramChangeController {
         });
     }
 
-    // TODO: Rename to addSelectedActionToProgramEnd
-    // TODO: Test if selectedAction is set
-    addCommandToProgramEnd(programBlockEditor: ?ProgramBlockEditor,
-        command: string) {
+    addSelectedActionToProgramEnd(programBlockEditor: ?ProgramBlockEditor,
+        selectedAction: ?string) {
 
         this.app.setState((state) => {
-            this.playAnnouncementForAdd(command);
-            const index = state.programSequence.getProgramLength();
-            this.doActivitiesForAdd(programBlockEditor, index);
-            return {
-                programSequence: state.programSequence.insertStep(index,
-                    command)
-            };
+            if (selectedAction) {
+                this.playAnnouncementForAdd(selectedAction);
+                const index = state.programSequence.getProgramLength();
+                this.doActivitiesForAdd(programBlockEditor, index);
+                return {
+                    programSequence: state.programSequence.insertStep(index,
+                        selectedAction)
+                };
+            } else {
+                return {};
+            }
         });
     }
 

@@ -685,12 +685,10 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("addCommandToEnd"):
                             if (!this.editingIsDisabled()) {
-                                if (this.state.selectedAction) {
-                                    this.programChangeController.addCommandToProgramEnd(
-                                        this.programBlockEditorRef.current,
-                                        this.state.selectedAction
-                                    );
-                                }
+                                this.programChangeController.addSelectedActionToProgramEnd(
+                                    this.programBlockEditorRef.current,
+                                    this.state.selectedAction
+                                );
                             }
                             break;
                         case("deleteCurrentStep"):
