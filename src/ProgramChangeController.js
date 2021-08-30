@@ -59,32 +59,38 @@ export default class ProgramChangeController {
     deleteProgramStep(programBlockEditor: ?ProgramBlockEditor,
         index: number, command: string) {
 
-        // TODO: Check the command
-
         this.app.setState((state) => {
-            // Play the announcement
-            const commandString = this.intl.formatMessage({
-                id: "Announcement." + command
-            });
-            this.audioManager.playAnnouncement(
-                'delete',
-                this.intl,
-                { command: commandString }
-            );
+            // Check that the step to delete hasn't changed since the
+            // user made the deletion
+            if (command === state.programSequence.getProgramStepAt(index)) {
+                // Play the announcement
+                const commandString = this.intl.formatMessage({
+                    id: "Announcement." + command
+                });
+                this.audioManager.playAnnouncement(
+                    'delete',
+                    this.intl,
+                    { command: commandString }
+                );
 
-            // If there are steps following the one being deleted, focus the
-            // next step. Otherwise, focus the final add node.
-            if (programBlockEditor) {
-                if (index < state.programSequence.getProgramLength() - 1) {
-                    programBlockEditor.focusCommandBlockAfterUpdate(index);
-                } else {
-                    programBlockEditor.focusAddNodeAfterUpdate(index);
+                // If there are steps following the one being deleted, focus
+                // the next step. Otherwise, focus the final add node.
+                if (programBlockEditor) {
+                    if (index < state.programSequence.getProgramLength() - 1) {
+                        programBlockEditor.focusCommandBlockAfterUpdate(index);
+                    } else {
+                        programBlockEditor.focusAddNodeAfterUpdate(index);
+                    }
                 }
-            }
 
-            return {
-                programSequence: state.programSequence.deleteStep(index)
-            };
+                return {
+                    programSequence: state.programSequence.deleteStep(index)
+                };
+            } else {
+                // If the step to delete has changed, make no changes to the
+                // program
+                return {};
+            }
         });
     }
 

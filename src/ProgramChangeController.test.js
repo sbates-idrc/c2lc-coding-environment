@@ -262,4 +262,36 @@ describe('Test deleteProgramStep()', () => {
         // $FlowFixMe: Jest mock API
         controller.deleteProgramStep(new ProgramBlockEditor(), 1, 'forward2');
     });
+
+    test('When the step to delete has changed, then no changes to the program should be made', (done) => {
+        expect.assertions(4);
+
+        const { controller, appMock, audioManagerMock } = createProgramChangeController();
+
+        appMock.setState.mockImplementation((callback) => {
+            const newState = callback({
+                programSequence: new ProgramSequence(['forward1', 'forward2'], 0)
+            });
+
+            // The program should not be updated
+            expect(newState).toStrictEqual({});
+
+            // No announcement should be made
+            expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(0);
+
+            // No methods on the ProgramBlockEditor should have been called
+            // $FlowFixMe: Jest mock API
+            const programBlockEditorMock = ProgramBlockEditor.mock.instances[0];
+            expect(programBlockEditorMock.focusCommandBlockAfterUpdate.mock.calls.length).toBe(0);
+            expect(programBlockEditorMock.focusAddNodeAfterUpdate.mock.calls.length).toBe(0);
+
+            done();
+        });
+
+        // $FlowFixMe: Jest mock API
+        ProgramBlockEditor.mockClear();
+        // $FlowFixMe: Jest mock API
+        controller.deleteProgramStep(new ProgramBlockEditor(), 1, 'forward3');
+    });
+
 });
