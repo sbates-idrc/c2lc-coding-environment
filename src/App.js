@@ -506,7 +506,7 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleClickPlay = () => {
+    handlePlay = () => {
         switch (this.state.runningState) {
             case 'running':
                 this.setState({
@@ -536,7 +536,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     };
 
-    handleClickStop = () => {
+    handleStop = () => {
         this.setRunningState('stopRequested');
     }
 
@@ -711,7 +711,7 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("playPauseProgram"):
                             if (this.state.programSequence.getProgramLength() > 0) {
-                                this.handleClickPlay();
+                                this.handlePlay();
                             }
                             break;
                         case("refreshScene"):
@@ -721,7 +721,7 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("stopProgram"):
                             if (this.state.runningState !== 'stopped' && this.state.runningState !== 'stopRequested') {
-                                this.handleClickStop();
+                                this.handleStop();
                             }
                             break;
                         case("decreaseProgramSpeed"):
@@ -1163,14 +1163,14 @@ export class App extends React.Component<AppProps, AppState> {
                                     className='App__playControlButton'
                                     interpreterIsRunning={this.state.runningState === 'running'}
                                     disabled={this.state.programSequence.getProgramLength() === 0}
-                                    onClick={this.handleClickPlay}
+                                    onClick={this.handlePlay}
                                 />
                                 <StopButton
                                     className='App__playControlButton'
                                     disabled={
                                         this.state.runningState === 'stopped'
                                         || this.state.runningState === 'stopRequested'}
-                                    onClick={this.handleClickStop}/>
+                                    onClick={this.handleStop}/>
                                 <ProgramSpeedController
                                     rangeControlRef={this.speedControlRef}
                                     values={this.speedLookUp}
