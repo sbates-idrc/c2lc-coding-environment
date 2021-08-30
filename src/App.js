@@ -509,11 +509,17 @@ export class App extends React.Component<AppProps, AppState> {
     handleClickPlay = () => {
         switch (this.state.runningState) {
             case 'running':
-                this.setState({ runningState: 'pauseRequested' });
+                this.setState({
+                    runningState: 'pauseRequested',
+                    actionPanelStepIndex: null
+                });
                 break;
             case 'pauseRequested': // Fall through
             case 'paused':
-                this.setState({ runningState: 'running' });
+                this.setState({
+                    runningState: 'running',
+                    actionPanelStepIndex: null
+                });
                 break;
             case 'stopRequested': // Fall through
             case 'stopped':
