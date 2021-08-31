@@ -16,6 +16,7 @@ import DashDriver from './DashDriver';
 import * as FeatureDetection from './FeatureDetection';
 import FakeAudioManager from './FakeAudioManager';
 import FocusTrapManager from './FocusTrapManager';
+import IconButton from './IconButton';
 import Interpreter from './Interpreter';
 import PlayButton from './PlayButton';
 import ProgramBlockEditor from './ProgramBlockEditor';
@@ -508,21 +509,28 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleClickPlay = () => {
+    handlePlay = () => {
         switch (this.state.runningState) {
             case 'running':
-                this.setState({ runningState: 'pauseRequested' });
+                this.setState({
+                    runningState: 'pauseRequested',
+                    actionPanelStepIndex: null
+                });
                 break;
             case 'pauseRequested': // Fall through
             case 'paused':
-                this.setState({ runningState: 'running' });
+                this.setState({
+                    runningState: 'running',
+                    actionPanelStepIndex: null
+                });
                 break;
             case 'stopRequested': // Fall through
             case 'stopped':
                 this.setState((state) => {
                     return {
                         programSequence: state.programSequence.updateProgramCounter(0),
-                        runningState: 'running'
+                        runningState: 'running',
+                        actionPanelStepIndex: null
                     };
                 });
                 break;
@@ -531,7 +539,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
     };
 
-    handleClickStop = () => {
+    handleStop = () => {
         this.setRunningState('stopRequested');
     }
 
@@ -626,6 +634,11 @@ export class App extends React.Component<AppProps, AppState> {
     // TODO: Convert to use keyboardEventMatchesKeyDef for each command in turn.
     handleDocumentKeyDown = (e: KeyboardEvent) => {
         if (this.state.keyBindingsEnabled) {
+            if (e.key === 'Escape') {
+                this.sequenceInProgress = [];
+                return;
+            }
+
             const isOnlyModifier = ["Shift", "Control", "Alt"].indexOf(e.key) !== -1;
             let isRepeat = false;
             if (this.sequenceInProgress.length) {
@@ -706,7 +719,7 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("playPauseProgram"):
                             if (this.state.programSequence.getProgramLength() > 0) {
-                                this.handleClickPlay();
+                                this.handlePlay();
                             }
                             break;
                         case("refreshScene"):
@@ -716,7 +729,7 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("stopProgram"):
                             if (this.state.runningState !== 'stopped' && this.state.runningState !== 'stopRequested') {
-                                this.handleClickStop();
+                                this.handleStop();
                             }
                             break;
                         case("decreaseProgramSpeed"):
@@ -1051,15 +1064,14 @@ export class App extends React.Component<AppProps, AppState> {
                                     <FormattedMessage id='App.appHeading'/>
                                 </a>
                             </h1>
-                            <div
-                                className={"App__header-keyboardMenuIcon" + (this.state.keyBindingsEnabled ? "" : " App__header-keyboardMenuIcon--disabled")}
-                                tabIndex={0}
-                                aria-label={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                            <IconButton
+                                disabled={!this.state.keyBindingsEnabled}
+                                ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
                                 onClick={this.handleKeyboardModalToggle}
                                 onKeyDown={this.handleKeyboardMenuIconKeydown}
                             >
                                 <KeyboardModalToggleIcon/>
-                            </div>
+                            </IconButton>
                             <div className='App__header-audio-toggle'>
                                 <div className='App__audio-toggle-switch'>
                                     <AudioFeedbackToggleSwitch
@@ -1178,14 +1190,14 @@ export class App extends React.Component<AppProps, AppState> {
                                     className='App__playControlButton'
                                     interpreterIsRunning={this.state.runningState === 'running'}
                                     disabled={this.state.programSequence.getProgramLength() === 0}
-                                    onClick={this.handleClickPlay}
+                                    onClick={this.handlePlay}
                                 />
                                 <StopButton
                                     className='App__playControlButton'
                                     disabled={
                                         this.state.runningState === 'stopped'
                                         || this.state.runningState === 'stopRequested'}
-                                    onClick={this.handleClickStop}/>
+                                    onClick={this.handleStop}/>
                                 <ProgramSpeedController
                                     rangeControlRef={this.speedControlRef}
                                     values={this.speedLookUp}
