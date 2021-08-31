@@ -60,6 +60,13 @@ export type ActionName =
     | "turnCharacterLeft"
     | "turnCharacterRight"
 
+    // Change Theme
+    | "changeToDefaultTheme"
+    | "changeToLightTheme"
+    | "changeToDarkTheme"
+    | "changeToGrayscaleTheme"
+    | "changeToHighContrastTheme"
+
     // Update Program
     | "deleteAll"
     ;
@@ -232,6 +239,30 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     keyDef: { code: "KeyR", key: "r" },
                     actionName: "turnCharacterRight"
                 }
+            }
+        },
+
+        changeTheme: {
+            keyDef: { code: "KeyT", key: "t" },
+            default: {
+                keyDef: { key: "1"},
+                actionName: "changeToDefaultTheme"
+            },
+            light: {
+                keyDef: { key: "2"},
+                actionName: "changeToLightTheme"
+            },
+            dark: {
+                keyDef: { key: "3"},
+                actionName: "changeToDarkTheme"
+            },
+            grayscale: {
+                keyDef: { key: "4"},
+                actionName: "changeToGrayscaleTheme"
+            },
+            highContrast: {
+                keyDef: { key: "5"},
+                actionName: "changeToHighContrastTheme"
             }
         },
 
