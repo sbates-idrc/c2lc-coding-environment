@@ -95,7 +95,8 @@ type AppState = {
     usedActions: ActionToggleRegister,
     keyBindingsEnabled: boolean,
     keyboardInputSchemeName: KeyboardInputSchemeName;
-    showKeyboardModal: boolean
+    showKeyboardModal: boolean,
+    showWorldSelector: boolean
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -396,7 +397,7 @@ export class App extends React.Component<AppProps, AppState> {
                 language: 'en',
                 addNodeExpandedMode: true,
                 theme: 'mixed',
-                world: 'default'
+                world: 'Sketchpad'
             },
             dashConnectionStatus: 'notConnected',
             showDashConnectionError: false,
@@ -412,6 +413,7 @@ export class App extends React.Component<AppProps, AppState> {
             usedActions: {},
             keyBindingsEnabled: true,
             showKeyboardModal: false,
+            showWorldSelector: false,
             keyboardInputSchemeName: "nvda"
         };
 
@@ -931,10 +933,6 @@ export class App extends React.Component<AppProps, AppState> {
         this.setStateSettings({ theme });
     }
 
-    handleChangeWorld = (world: WorldName) => {
-        this.setStateSettings({ world });
-    }
-
     handleChangeCharacterPosition = (positionName: ?string) => {
         switch(positionName) {
             case 'turnLeft':
@@ -1004,6 +1002,35 @@ export class App extends React.Component<AppProps, AppState> {
 
     handleChangeKeyBindingsEnabled = (keyBindingsEnabled: boolean) => {
         this.setState({keyBindingsEnabled: keyBindingsEnabled});
+    }
+
+    //World handlers
+
+    handleChangeShowWorldSelector = () => {
+        this.setState((currentState: AppState) => {
+            return { showWorldSelector: !currentState.showWorldSelector };
+        });
+    };
+
+    handleClickWorldIcon = () => {
+        this.handleChangeShowWorldSelector();
+    }
+
+    handleKeyDownWorldIcon = (event: KeyboardEvent) => {
+        if (event.key === "Enter" || event.key === " ") {
+            this.handleChangeShowWorldSelector();
+        }
+    }
+
+    handleSelectWorld = (world: WorldName) => {
+        this.setStateSettings({world});
+    }
+
+    handleChangeWorld = (world: WorldName) => {
+        this.setState({
+            showWorldSelector: false,
+            settings: Object.assign({}, this.state.settings, {world})
+        });
     }
 
     render() {
@@ -1090,11 +1117,6 @@ export class App extends React.Component<AppProps, AppState> {
                         <h2 className='sr-only' >
                             <FormattedMessage id='WorldSelector.heading' />
                         </h2>
-                        <WorldSelector
-                            disabled={this.editingIsDisabled()}
-                            world={this.state.settings.world}
-                            onSelect={this.handleChangeWorld}
-                        />
                         <CharacterPositionController
                             characterState={this.state.characterState}
                             editingDisabled={this.editingIsDisabled()}
@@ -1193,6 +1215,11 @@ export class App extends React.Component<AppProps, AppState> {
                     onChangeKeyBindingsEnabled={this.handleChangeKeyBindingsEnabled}
                     onHide={this.handleKeyboardModalClose}
                 />
+                <WorldSelector
+                    show={this.state.showWorldSelector}
+                    currentWorld={this.state.settings.world}
+                    onChangeWorld={this.handleChangeWorld}
+                    onSelectWorld={this.handleSelectWorld}/>
             </React.Fragment>
         );
     }
@@ -1256,7 +1283,7 @@ export class App extends React.Component<AppProps, AppState> {
 
             this.setStateSettings({
                 theme: Utils.getThemeFromString(themeQuery, 'mixed'),
-                world: Utils.getWorldFromString(worldQuery, 'default')
+                world: Utils.getWorldFromString(worldQuery, 'Sketchpad')
             });
         } else {
             const localProgram = window.localStorage.getItem('c2lc-program');
@@ -1309,7 +1336,7 @@ export class App extends React.Component<AppProps, AppState> {
 
             this.setStateSettings({
                 theme: Utils.getThemeFromString(localTheme, 'mixed'),
-                world: Utils.getWorldFromString(localWorld, 'default')
+                world: Utils.getWorldFromString(localWorld, 'Sketchpad')
             });
         }
 
