@@ -43,6 +43,7 @@ import KeyboardInputModal from './KeyboardInputModal';
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent} from './KeyboardInputSchemes';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg'
+import ProgramChangeController from './ProgramChangeController';
 
 // Convenience function to focus on the first element with a given class, used
 // for keyboard shortcuts.
@@ -115,6 +116,7 @@ export class App extends React.Component<AppProps, AppState> {
     speedControlRef: { current: null | HTMLElement };
     programBlockEditorRef: { current: any };
     sequenceInProgress: Array<KeyboardEvent>;
+    programChangeController: ProgramChangeController;
 
     constructor(props: any) {
         super(props);
@@ -431,6 +433,9 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.focusTrapManager = new FocusTrapManager();
 
+        this.programChangeController = new ProgramChangeController(this,
+            this.props.intl, this.audioManager);
+
         this.speedControlRef = React.createRef();
         this.programBlockEditorRef = React.createRef();
     }
@@ -486,6 +491,7 @@ export class App extends React.Component<AppProps, AppState> {
         }, callback);
     }
 
+    // Calculate used actions
 
     calculateUsedActions = (programSequence: ProgramSequence): ActionToggleRegister => {
         // Calculate  "used actions".
@@ -504,6 +510,22 @@ export class App extends React.Component<AppProps, AppState> {
             programSequence: programSequence,
             usedActions: usedActions
         });
+    }
+
+    handleProgramBlockEditorInsertSelectedAction = (index: number, selectedAction: ?string) => {
+        this.programChangeController.insertSelectedActionIntoProgram(
+            this.programBlockEditorRef.current,
+            index,
+            selectedAction
+        );
+    }
+
+    handleProgramBlockEditorDeleteStep = (index: number, command: string) => {
+        this.programChangeController.deleteProgramStep(
+            this.programBlockEditorRef.current,
+            index,
+            command
+        );
     }
 
     handlePlay = () => {
@@ -666,32 +688,33 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("addCommandToBeginning"):
                             if (!this.editingIsDisabled()) {
-                                if (this.state.selectedAction) {
-                                    if (this.programBlockEditorRef.current) {
-                                        this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(0);
-                                    }
-                                }
+                                this.programChangeController.insertSelectedActionIntoProgram(
+                                    this.programBlockEditorRef.current,
+                                    0,
+                                    this.state.selectedAction
+                                );
                             }
                             break;
                         case("addCommandToEnd"):
                             if (!this.editingIsDisabled()) {
-                                if (this.state.selectedAction) {
-                                    const index = this.state.programSequence.getProgramLength();
-                                    if (this.programBlockEditorRef.current) {
-                                        this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(index);
-                                    }
-                                }
+                                this.programChangeController.addSelectedActionToProgramEnd(
+                                    this.programBlockEditorRef.current,
+                                    this.state.selectedAction
+                                );
                             }
                             break;
                         case("deleteCurrentStep"):
                             if (!this.editingIsDisabled()) {
                                 const currentElement = document.activeElement;
-                                // $FlowFixMe: Not all elements have dataset property
-                                if (currentElement.dataset.controltype === 'programStep') {
-                                    const index = parseInt(currentElement.dataset.stepnumber, 10);
-                                    if (index != null) {
-                                        if (this.programBlockEditorRef.current) {
-                                            this.programBlockEditorRef.current.deleteProgramStep(index);
+                                if (currentElement) {
+                                    if (currentElement.dataset.controltype === 'programStep') {
+                                        const index = parseInt(currentElement.dataset.stepnumber, 10);
+                                        if (index != null) {
+                                            this.programChangeController.deleteProgramStep(
+                                                this.programBlockEditorRef.current,
+                                                index,
+                                                currentElement.dataset.command
+                                            );
                                         }
                                     }
                                 }
@@ -1153,6 +1176,8 @@ export class App extends React.Component<AppProps, AppState> {
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
                             world={this.state.settings.world}
                             onChangeProgramSequence={this.handleProgramSequenceChange}
+                            onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
+                            onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
                             onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
                         />
