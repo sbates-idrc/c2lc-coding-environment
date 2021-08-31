@@ -244,7 +244,7 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
 
 const VoiceOverInputScheme: KeyboardInputScheme = Object.assign({
     addCommand: {
-        keyDef: { code: "KeyA", altKey: true},
+        keyDef: { code: "KeyA", key: "a", altKey: true},
         actionName: "addCommand"
     },
     addCommandToBeginning: {
@@ -309,7 +309,7 @@ const NvdaExtendedKeyboardSequences = extend(ExtendedKeyboardSequences, {
 
 const NvdaInputScheme = Object.assign({
     addCommand: {
-        keyDef: { code: "KeyA", altKey: true, ctrlKey: true},
+        keyDef: { code: "KeyA", key: "a", altKey: true, ctrlKey: true},
         actionName: "addCommand"
     },
     addCommandToBeginning: {
