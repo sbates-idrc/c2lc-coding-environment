@@ -13,6 +13,7 @@ export type KeyDef = {
 
 export type ActionName =
     // Single Key Commands
+    | "addCommand"
     | "addCommandToBeginning"
     | "addCommandToEnd"
     | "deleteCurrentStep"
@@ -273,6 +274,10 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
 }
 
 const VoiceOverInputScheme: KeyboardInputScheme = Object.assign({
+    addCommand: {
+        keyDef: { code: "KeyA", key: "a", altKey: true},
+        actionName: "addCommand"
+    },
     addCommandToBeginning: {
         keyDef: { code: "KeyB", key: "b", altKey: true},
         actionName: "addCommandToBeginning"
@@ -334,6 +339,10 @@ const NvdaExtendedKeyboardSequences = extend(ExtendedKeyboardSequences, {
 });
 
 const NvdaInputScheme = Object.assign({
+    addCommand: {
+        keyDef: { code: "KeyA", key: "a", altKey: true, ctrlKey: true},
+        actionName: "addCommand"
+    },
     addCommandToBeginning: {
         keyDef: { code: "KeyB", key: "b", altKey: true, ctrlKey: true},
         actionName: "addCommandToBeginning"
@@ -457,12 +466,14 @@ export function findKeyboardEventSequenceMatches (events: Array<KeyboardEvent>, 
     const keyboardInputScheme = KeyboardInputSchemes[keyboardInputSchemeName];
     let match = false;
 
-    for (const singleKeySequence of Object.values(keyboardInputScheme)) {
-        if (match === false || match === "partial") {
-            // $FlowFixMe: Flow doesn't believe this matches our "or"ed set of allowed inputs.
-            const keySequenceMatch = matchSingleInputSchemeLevel(events, singleKeySequence, 0);
-            if (keySequenceMatch !== false) {
-                match = keySequenceMatch;
+    if (events.length) {
+        for (const singleKeySequence of Object.values(keyboardInputScheme)) {
+            if (match === false || match === "partial") {
+                // $FlowFixMe: Flow doesn't believe this matches our "or"ed set of allowed inputs.
+                const keySequenceMatch = matchSingleInputSchemeLevel(events, singleKeySequence, 0);
+                if (keySequenceMatch !== false) {
+                    match = keySequenceMatch;
+                }
             }
         }
     }
