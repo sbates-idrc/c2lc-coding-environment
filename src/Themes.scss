@@ -325,7 +325,7 @@ body.dark-theme {
         }
     }
 
-    .App__header-keyboardMenuIcon {    
+    .IconButton {    
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
         }
@@ -654,7 +654,7 @@ body.gray-theme {
         color: #818A98;
     }
 
-    .App__header-keyboardMenuIcon {    
+    .IconButton {    
         background-color: #818A98;
         svg path {
             fill: white;
@@ -1385,9 +1385,8 @@ body.contrast-theme {
         }
     }
 
-    .App__header-keyboardMenuIcon {    
+    .IconButton {    
         background-color: white;
-        border: 2px solid white;
 
         svg path {
             fill: black;
@@ -1402,8 +1401,9 @@ body.contrast-theme {
         }
     
         &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-            border: 2px solid black;
+            box-shadow: 
+                0 0 0 2px black,
+                0 0 0 6px white;
         }
     }
 
