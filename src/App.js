@@ -686,6 +686,27 @@ export class App extends React.Component<AppProps, AppState> {
                                 return { announcementsEnabled: !(currentState.announcementsEnabled) };
                             });
                             break;
+                        case("addCommand"): {
+                            if (!this.editingIsDisabled()) {
+                                const currentElement = document.activeElement;
+                                if (currentElement) {
+                                    if (currentElement.dataset.controltype === 'programStep' ||
+                                        currentElement.dataset.controltype === 'addNode') {
+                                        const index = currentElement.dataset.controltype === 'programStep' ?
+                                            parseInt(currentElement.dataset.stepnumber, 10) + 1:
+                                            parseInt(currentElement.dataset.stepnumber, 10);
+                                        if (index != null) {
+                                            this.programChangeController.insertSelectedActionIntoProgram(
+                                                this.programBlockEditorRef.current,
+                                                index,
+                                                this.state.selectedAction
+                                            );
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        }
                         case("addCommandToBeginning"):
                             if (!this.editingIsDisabled()) {
                                 this.programChangeController.insertSelectedActionIntoProgram(
