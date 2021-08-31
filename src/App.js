@@ -688,18 +688,19 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("addCommand"): {
                             if (!this.editingIsDisabled()) {
-                                if (this.state.selectedAction) {
-                                    const currentElement = document.activeElement;
-                                    // $FlowFixMe: Not all elements have dataset property
+                                const currentElement = document.activeElement;
+                                if (currentElement) {
                                     if (currentElement.dataset.controltype === 'programStep' ||
                                         currentElement.dataset.controltype === 'addNode') {
                                         const index = currentElement.dataset.controltype === 'programStep' ?
                                             parseInt(currentElement.dataset.stepnumber, 10) + 1:
                                             parseInt(currentElement.dataset.stepnumber, 10);
                                         if (index != null) {
-                                            if (this.programBlockEditorRef.current) {
-                                                this.programBlockEditorRef.current.insertSelectedCommandIntoProgram(index);
-                                            }
+                                            this.programChangeController.insertSelectedActionIntoProgram(
+                                                this.programBlockEditorRef.current,
+                                                index,
+                                                this.state.selectedAction
+                                            );
                                         }
                                     }
                                 }
