@@ -1419,9 +1419,7 @@ export class App extends React.Component<AppProps, AppState> {
             || this.state.characterState !== prevState.characterState
             || this.state.settings.theme !== prevState.settings.theme
             || this.state.allowedActions !== prevState.allowedActions
-            || this.state.settings.world !== prevState.settings.world
-            || this.state.keyBindingsEnabled !== prevState.keyBindingsEnabled
-            || this.state.keyboardInputSchemeName !== prevState.keyboardInputSchemeName) {
+            || this.state.settings.world !== prevState.settings.world) {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedAllowedActions = this.allowedActionsSerializer.serialize(this.state.allowedActions);
@@ -1453,6 +1451,10 @@ export class App extends React.Component<AppProps, AppState> {
             window.localStorage.setItem('c2lc-theme', this.state.settings.theme);
             window.localStorage.setItem('c2lc-allowedActions', serializedAllowedActions);
             window.localStorage.setItem('c2lc-world', this.state.settings.world)
+        }
+
+        if (this.state.keyBindingsEnabled !== prevState.keyBindingsEnabled
+            || this.state.keyboardInputSchemeName !== prevState.keyboardInputSchemeName) {
             window.localStorage.setItem('c2lc-keyBindingsEnabled', this.state.keyBindingsEnabled);
             window.localStorage.setItem('c2lc-keyboardInputSchemeName', this.state.keyboardInputSchemeName);
         }

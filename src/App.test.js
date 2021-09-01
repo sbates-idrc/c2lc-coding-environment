@@ -90,6 +90,9 @@ it('Should not change showKeyboardModal when key bindings are disabled and quest
     window.document.dispatchEvent(new KeyboardEvent('keydown', { key: "?"}))
 
     expect(app.state().showKeyboardModal).toBe(false);
+
+    // With the persistence, it seems like we have to manually reset this to avoid breaking the next test.
+    app.setState({ keyBindingsEnabled: true});
 });
 
 it('Should be able to handle escaping out of a sequence', () => {
