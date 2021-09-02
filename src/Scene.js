@@ -52,8 +52,7 @@ class Scene extends React.Component<SceneProps, {}> {
                     key={`grid-cell-label-${i}`}
                     dominantBaseline='middle'
                     x={-0.5}
-                    // Center each gridcell with height of 8.25
-                    y={8.25*i - 4.125}>
+                    y={i*10 - 5}>
                     {i}
                 </text>
             )
@@ -76,7 +75,7 @@ class Scene extends React.Component<SceneProps, {}> {
                     aria-hidden='true'
                     key={`grid-cell-label-${String.fromCharCode(64+i)}`}
                     textAnchor='middle'
-                    x={8.25*i - 4.125}
+                    x={i*10 - 5}
                     y={0.5}>
                     {String.fromCharCode(64+i)}
                 </text>
@@ -252,10 +251,8 @@ class Scene extends React.Component<SceneProps, {}> {
                         className='Scene__row-header'>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
-                            viewBox='-2 0 3 135'>
-                            <rect x={-1.3} y={0} width={3} height={135} />
+                            viewBox={`-2 0 3 ${height * 10}`}>
                             {rowLabels}
-
                         </svg>
                     </div>
                     <div
@@ -265,8 +262,7 @@ class Scene extends React.Component<SceneProps, {}> {
                         className='Scene__column-header'>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
-                            viewBox='0 -2 217.5 3'>
-                            <rect x={0} y={-0.5} width={217.5} height={3} />
+                            viewBox={`0 -2 ${width * 10} 3`}>
                             {columnLabels}
                         </svg>
                     </div>
