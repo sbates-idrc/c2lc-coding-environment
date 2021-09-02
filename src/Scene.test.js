@@ -106,11 +106,11 @@ describe('When the Scene renders', () => {
         // Row labels
 
         expect(findGridLabels(sceneWrapper).get(0).props.x).toBe(-0.5);
-        expect(findGridLabels(sceneWrapper).get(0).props.y).toBe(4.125);
+        expect(findGridLabels(sceneWrapper).get(0).props.y).toBe(5);
 
         // Column labels
 
-        expect(findGridLabels(sceneWrapper).get(1).props.x).toBe(4.125);
+        expect(findGridLabels(sceneWrapper).get(1).props.x).toBe(5);
         expect(findGridLabels(sceneWrapper).get(1).props.y).toBe(0.5);
 
         // Grid lines
@@ -137,17 +137,17 @@ describe('When the Scene renders', () => {
         // Row labels
 
         expect(findGridLabels(sceneWrapper).get(0).props.x).toBe(-0.5);
-        expect(findGridLabels(sceneWrapper).get(0).props.y).toBe(4.125);
+        expect(findGridLabels(sceneWrapper).get(0).props.y).toBe(5);
         expect(findGridLabels(sceneWrapper).get(1).props.x).toBe(-0.5);
-        expect(findGridLabels(sceneWrapper).get(1).props.y).toBe(12.375);
+        expect(findGridLabels(sceneWrapper).get(1).props.y).toBe(15);
 
         // Column labels
 
-        expect(findGridLabels(sceneWrapper).get(2).props.x).toBe(4.125);
+        expect(findGridLabels(sceneWrapper).get(2).props.x).toBe(5);
         expect(findGridLabels(sceneWrapper).get(2).props.y).toBe(0.5);
-        expect(findGridLabels(sceneWrapper).get(3).props.x).toBe(12.375);
+        expect(findGridLabels(sceneWrapper).get(3).props.x).toBe(15);
         expect(findGridLabels(sceneWrapper).get(3).props.y).toBe(0.5);
-        expect(findGridLabels(sceneWrapper).get(4).props.x).toBe(20.625);
+        expect(findGridLabels(sceneWrapper).get(4).props.x).toBe(25);
         expect(findGridLabels(sceneWrapper).get(4).props.y).toBe(0.5);
 
         // Grid lines
