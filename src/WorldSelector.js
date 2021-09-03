@@ -1,99 +1,115 @@
 // @flow
 
 import React from 'react';
+import classNames from 'classnames';
+import ModalHeader from './ModalHeader';
+import ModalFooter from './ModalFooter';
+import { Modal } from 'react-bootstrap';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { ReactComponent as WorldIcon } from './svg/World.svg';
 import type { WorldName } from './types';
 import type { IntlShape } from 'react-intl';
-import { injectIntl } from 'react-intl';
-
-import AriaDisablingButton from './AriaDisablingButton';
-// TODO: uncomment this when we need to distinguish ourselves from another set of buttons in the right panel.
-// import {ReactComponent as HeaderIcon} from './svg/SelectWorld.svg'
-import {ReactComponent as RabbitIcon} from './svg/Rabbit.svg';
-import {ReactComponent as RobotIcon} from './svg/Robot.svg';
-import { ReactComponent as SpaceShipIcon } from './svg/SpaceShip.svg';
-
 import './WorldSelector.scss';
 
 type WorldSelectorProps = {
+    show: boolean,
+    currentWorld: WorldName,
     intl: IntlShape,
-    world: WorldName,
-    disabled: boolean,
-    onSelect: (value: WorldName) => void
+    onChange: (world: WorldName) => void,
+    onSelect: (world: WorldName) => void
 };
 
+type WorldSelectorState = {
+    selectedWorld: WorldName
+}
 
-class WorldSelector extends React.Component<WorldSelectorProps, {}> {
-    static defaultProps = {
-        disabled: false
-    };
-
-    handleCharacterClick = (event: Event) => {
-        event.preventDefault();
-        // $FlowFixMe: Flow doesn't get what we're doing stashing a value on the element.
-        this.props.onSelect(event.currentTarget.value);
+class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorState> {
+    availableWorldOptions: Array<WorldName>;
+    constructor(props: WorldSelectorProps) {
+        super(props);
+        this.state = {
+            selectedWorld: props.currentWorld
+        }
+        this.availableWorldOptions = ['Sketchpad', 'Space', 'Jungle', 'DeepOcean'];
     }
 
-    handleCharacterKeyDown = (event: KeyboardEvent) => {
-        const toggleKeys = [' ', 'Enter'];
+    handleOnSelect = (e: Event) => {
+        // $FlowFixMe: value is missing in EventTarget
+        this.props.onSelect(e.target.value);
+    };
 
-        if (!this.props.disabled && toggleKeys.indexOf(event.key) !== -1) {
-            event.preventDefault();
-            // $FlowFixMe: Flow doesn't get what we're doing stashing a value on the element.
-            this.props.onSelect(event.currentTarget.value);
+    handleCancel = () => {
+        this.props.onChange(this.state.selectedWorld);
+    }
+
+    handleDone = () => {
+        this.props.onChange(this.props.currentWorld);
+    };
+
+    renderWorldOptions = () => {
+        const worldOptions = [];
+        for (const world of this.availableWorldOptions) {
+            const classes = classNames(
+                'WorldSelector__option-image',
+                this.props.currentWorld === world && 'WorldSelector__option--selected'
+            );
+            worldOptions.push(
+                <div
+                    className='WorldSelector__option-container'
+                    key={`WorldSelector__option-${world}`}>
+                    <div className={classes}>
+                    </div>
+                    <div className='WorldSelector__option-row'>
+                        <input
+                            className='WorldSelector__option-radio'
+                            type='radio'
+                            id={`world-${world}`}
+                            name='world-option'
+                            value={world}
+                            checked={this.props.currentWorld === world ? true : false}
+                            onChange={this.handleOnSelect}/>
+                        <label htmlFor={`world-${world}`}>
+                            <FormattedMessage id={`WorldSelector.option.${world}`} />
+                        </label>
+                    </div>
+                </div>
+            );
+        }
+        return worldOptions;
+    }
+
+    componentDidUpdate(prevProps: WorldSelectorProps) {
+        // When the modal first open up, remember the world at that time
+        if (prevProps.show !== this.props.show && this.props.show) {
+            this.setState({
+                selectedWorld: this.props.currentWorld
+            });
         }
     }
 
     render() {
         return (
-            <div className='WorldSelector'>
-                {/*
-
-                    TODO: uncomment this when we need to distinguish ourselves from another set of buttons in the right
-                          panel.
-
-                    <HeaderIcon
-                        aria-label={this.props.intl.formatMessage({id:'WorldSelector.world'})}
-                        className="HeaderIcon"
-                    />
-
-                */}
-                <AriaDisablingButton
-                    aria-label={this.props.intl.formatMessage({id:'WorldSelector.world.default'})}
-                    aria-pressed={this.props.world === 'default'}
-                    className={"WorldIcon" + (this.props.world === 'default' ? " WorldIcon--selected" : "") }
-                    disabled={this.props.disabled}
-                    disabledClassName='WorldIcon--disabled'
-                    onClick={this.handleCharacterClick}
-                    onKeyDown={this.handleCharacterKeyDown}
-                    value="default"
-                >
-                    <RobotIcon/>
-                </AriaDisablingButton>
-                <AriaDisablingButton
-                    aria-label={this.props.intl.formatMessage({id:'WorldSelector.world.forest'})}
-                    aria-pressed={this.props.world === 'forest'}
-                    className={"WorldIcon" + (this.props.world === 'forest' ? " WorldIcon--selected" : "") }
-                    disabled={this.props.disabled}
-                    disabledClassName='WorldIcon--disabled'
-                    onClick={this.handleCharacterClick}
-                    onKeyDown={this.handleCharacterKeyDown}
-                    value="forest"
-                >
-                    <RabbitIcon/>
-                </AriaDisablingButton>
-                <AriaDisablingButton
-                    aria-label={this.props.intl.formatMessage({id:'WorldSelector.world.space'})}
-                    aria-pressed={this.props.world === 'space'}
-                    className={"WorldIcon" + (this.props.world === 'space' ? " WorldIcon--selected" : "") }
-                    disabled={this.props.disabled}
-                    disabledClassName='WorldIcon--disabled'
-                    onClick={this.handleCharacterClick}
-                    onKeyDown={this.handleCharacterKeyDown}
-                    value="space"
-                >
-                    <SpaceShipIcon/>
-                </AriaDisablingButton>
-            </div>
+            <Modal show={this.props.show}>
+                <ModalHeader
+                    title={this.props.intl.formatMessage({
+                        id: 'WorldSelector.Title'
+                    })}>
+                    <WorldIcon />
+                </ModalHeader>
+                <Modal.Body>
+                    <div className='WorldSelector__prompt'>
+                        <FormattedMessage id={'WorldSelector.Prompt'} />
+                    </div>
+                    <div className='WorldSelector__options'>
+                        {this.renderWorldOptions()}
+                    </div>
+                </Modal.Body>
+                <ModalFooter
+                    hasCancel={true}
+                    onClickCancel={this.handleCancel}
+                    onClickDone={this.handleDone}
+                />
+            </Modal>
         );
     }
 }
