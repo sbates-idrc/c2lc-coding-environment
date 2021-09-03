@@ -1133,9 +1133,9 @@ export class App extends React.Component<AppProps, AppState> {
                         </h2>
                         <div className="App__world-selector">
                             <IconButton
-                                    ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelector' })}
-                                    onClick={this.handleClickWorldIcon}
-                                    onKeyDown={this.handleKeyDownWorldIcon}
+                                ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelector' })}
+                                onClick={this.handleClickWorldIcon}
+                                onKeyDown={this.handleKeyDownWorldIcon}
                             >
                                 <WorldIcon />
                             </IconButton>
