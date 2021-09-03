@@ -16,11 +16,11 @@ type CharacterAriaLiveProps = {
 
 class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
     getCharacterAriaLabel() {
-        if (this.props.world === 'space') {
+        if (this.props.world === 'Space') {
             return this.props.intl.formatMessage(
                 {id:'CharacterAriaLive.spaceShipCharacter'}
             );
-        } else if (this.props.world === 'forest') {
+        } else if (this.props.world === 'Jungle') {
             return this.props.intl.formatMessage(
                 {id:'CharacterAriaLive.rabbitCharacter'}
             );

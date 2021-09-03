@@ -192,11 +192,13 @@
         "ThemeSelector.theme.gray": "Grayscale",
         "ThemeSelector.theme.light": "Light",
         "ThemeSelector.theme.mixed": "Default",
-        "WorldSelector.heading": "World Selector",
-        "WorldSelector.world": "World",
-        "WorldSelector.world.default": "Default",
-        "WorldSelector.world.forest": "Forest",
-        "WorldSelector.world.space": "Space"
+        "WorldSelector": "World Selector",
+        "WorldSelector.Prompt": "Select a background for your scene.",
+        "WorldSelector.option.Jungle": "Jungle",
+        "WorldSelector.option.Sketchpad": "Sketchpad",
+        "WorldSelector.option.Space": "Space",
+        "WorldSelector.option.DeepOcean": "Deep Ocean",
+        "WorldSelector.Title": "Scene Background"
     },
     "fr": {
         "App.blockMode": "Block in French",

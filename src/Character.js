@@ -14,7 +14,7 @@ type CharacterProps = {
 
 export default class Character extends React.Component<CharacterProps, {}> {
     getThemedCharacter = () => {
-        if (this.props.world === 'space') {
+        if (this.props.world === 'Space') {
             return (
                 <SpaceShipIcon
                     className='Character__icon'
@@ -23,7 +23,7 @@ export default class Character extends React.Component<CharacterProps, {}> {
                     width={this.props.width}
                     height={this.props.width} />
             )
-        } else if (this.props.world === 'forest') {
+        } else if (this.props.world === 'Jungle') {
             return (
                 <RabbitIcon
                     className='Character__icon'

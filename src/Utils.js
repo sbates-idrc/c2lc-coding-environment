@@ -45,8 +45,13 @@ function getThemeFromString(themeQuery: ?string, defaultThemeName: ThemeName): T
 
 function getWorldFromString(worldQuery: ?string, defaultWorldName: WorldName): WorldName {
     switch (worldQuery) {
-        case('space'): return 'space';
-        case('forest'): return 'forest';
+        // Convert old world names to the new world names
+        case('space'): return 'Space';
+        case('forest'): return 'Jungle';
+        // New world names
+        case('Space'): return 'Space';
+        case('Jungle'): return 'Jungle';
+        case('DeepOcean'): return 'DeepOcean';
         default: return defaultWorldName;
     }
 }

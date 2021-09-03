@@ -76,6 +76,15 @@
     stroke-width: 0.02;
 }
 
+.Scene__grid-line--Space,
+.Scene__grid-line--DeepOcean {
+    stroke: #8BA2C0;
+}
+
+.Scene__grid-line--Jungle {
+    stroke: #F9F2EC;
+}
+
 .Scene__grid-label {
     fill: #555;
     font: 600 2.5px sans-serif;
@@ -85,4 +94,13 @@
     stroke-width: 0.05;
     stroke-linecap: round;
     stroke: #505862;
+}
+
+.Scene__path-line--Space,
+.Scene__path-line--DeepOcean {
+    stroke: #8BA2C0;
+}
+
+.Scene__path-line--Jungle {
+    stroke: #F9F2EC;
 }

@@ -43,7 +43,8 @@ import KeyboardInputModal from './KeyboardInputModal';
 
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent} from './KeyboardInputSchemes';
-import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg'
+import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
+import { ReactComponent as WorldIcon } from './svg/World.svg';
 
 // Convenience function to focus on the first element with a given class, used
 // for keyboard shortcuts.
@@ -1108,6 +1109,7 @@ export class App extends React.Component<AppProps, AppState> {
                         <Scene
                             dimensions={this.state.sceneDimensions}
                             characterState={this.state.characterState}
+                            theme={this.state.settings.theme}
                             world={this.state.settings.world}
                         />
                         <div className='App__scene-controls'>
@@ -1129,6 +1131,15 @@ export class App extends React.Component<AppProps, AppState> {
                         <h2 className='sr-only' >
                             <FormattedMessage id='WorldSelector.heading' />
                         </h2>
+                        <div className="App__world-selector">
+                            <IconButton
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelector' })}
+                                    onClick={this.handleClickWorldIcon}
+                                    onKeyDown={this.handleKeyDownWorldIcon}
+                            >
+                                <WorldIcon />
+                            </IconButton>
+                        </div>
                         <CharacterPositionController
                             characterState={this.state.characterState}
                             editingDisabled={this.editingIsDisabled()}
@@ -1230,8 +1241,8 @@ export class App extends React.Component<AppProps, AppState> {
                 <WorldSelector
                     show={this.state.showWorldSelector}
                     currentWorld={this.state.settings.world}
-                    onChangeWorld={this.handleChangeWorld}
-                    onSelectWorld={this.handleSelectWorld}/>
+                    onChange={this.handleChangeWorld}
+                    onSelect={this.handleSelectWorld}/>
             </React.Fragment>
         );
     }

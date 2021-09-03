@@ -424,6 +424,18 @@ body.dark-theme {
         stroke: #33717F;
     }
 
+    .Scene__grid-line.Scene__grid-line--Space,
+    .Scene__grid-line.Scene__grid-line--DeepOcean,
+    .Scene__path-line.Scene__path-line--Space,
+    .Scene__path-line.Scene__path-line--DeepOcean {
+        stroke: #8BA2C0;
+    }
+
+    .Scene__grid-line.Scene__grid-line--Jungle,
+    .Scene__path-line.Scene__path-line--Jungle {
+        stroke: #F9F2EC;
+    }
+
     .Scene__grid-line {
         stroke: #30444E;
     }
@@ -896,6 +908,21 @@ body.gray-theme {
     }
 
     .Scene__path-line {
+        stroke: #505862;
+    }
+
+    .Scene__grid-line.Scene__grid-line--Space,
+    .Scene__grid-line.Scene__grid-line--DeepOcean,
+    .Scene__grod-line.Scene__grid-line--Jungle {
+        stroke: #FFF;
+    }
+
+    .Scene__path-line.Scene__path-line--Space {
+        stroke: #3A3F46;
+    }
+
+    .Scene__path-line.Scene__path-line--Jungle,
+    .Scene__path-line.Scene__path-line--DeepOcean {
         stroke: #505862;
     }
 
@@ -1750,6 +1777,12 @@ body.contrast-theme {
 
     .Scene__grid-line, .Scene__path-line {
         stroke: white;
+    }
+
+    .Scene__path-line.Scene__path-line--Space,
+    .Scene__path-line.Scene__path-line--Jungle,
+    .Scene__path-line.Scene__path-line--DeepOcean {
+        stroke: #FFF500;
     }
 
     .Character__icon-background {

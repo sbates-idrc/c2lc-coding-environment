@@ -26,7 +26,7 @@ export type EditorMode = 'text' | 'block';
 */
 export type ThemeName = 'mixed' | 'light' | 'dark' | 'gray' | 'contrast';
 
-export type WorldName = 'default' | 'forest' | 'space';
+export type WorldName = 'Sketchpad' | 'Space' | 'Jungle' | 'DeepOcean';
 
 export type Program = Array<string>;
 

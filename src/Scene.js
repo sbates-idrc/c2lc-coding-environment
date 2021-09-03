@@ -9,11 +9,24 @@ import type {IntlShape} from 'react-intl';
 
 import './Scene.scss';
 
-import type {WorldName} from './types';
+import { ReactComponent as Space } from './svg/Space.svg';
+import { ReactComponent as Jungle } from './svg/Jungle.svg';
+import { ReactComponent as DeepOcean } from './svg/DeepOcean.svg';
+
+import { ReactComponent as SpaceGray } from './svg/Space-gray.svg';
+import { ReactComponent as JungleGray } from './svg/Jungle-gray.svg';
+import { ReactComponent as DeepOceanGray } from './svg/DeepOcean-gray.svg';
+
+import { ReactComponent as SpaceContrast } from './svg/Space-contrast.svg';
+import { ReactComponent as JungleContrast } from './svg/Jungle-contrast.svg';
+import { ReactComponent as DeepOceanContrast } from './svg/DeepOcean-contrast.svg';
+
+import type {ThemeName, WorldName} from './types';
 
 export type SceneProps = {
     dimensions: SceneDimensions,
     characterState: CharacterState,
+    theme: ThemeName,
     world: WorldName,
     intl: IntlShape
 };
@@ -37,7 +50,7 @@ class Scene extends React.Component<SceneProps, {}> {
             yOffset += 1;
             if (i < this.props.dimensions.getHeight()) {
                 grid.push(<line
-                    className='Scene__grid-line'
+                    className={`Scene__grid-line Scene__grid-line--${this.props.world}`}
                     key={`grid-cell-row-${i}`}
                     x1={this.props.dimensions.getMinX() - 0.5}
                     y1={yOffset}
@@ -63,7 +76,7 @@ class Scene extends React.Component<SceneProps, {}> {
             xOffset += 1;
             if (i < this.props.dimensions.getWidth()) {
                 grid.push(<line
-                    className='Scene__grid-line'
+                    className={`Scene__grid-line Scene__grid-line--${this.props.world}`}
                     key={`grid-cell-column-${i}`}
                     x1={xOffset}
                     y1={this.props.dimensions.getMinY() - 0.5}
@@ -88,7 +101,7 @@ class Scene extends React.Component<SceneProps, {}> {
     drawCharacterPath() {
         return this.props.characterState.path.map((pathSegment, i) => {
             return <line
-                className='Scene__path-line'
+                className={`Scene__path-line Scene__path-line--${this.props.world}`}
                 key={`path-${i}`}
                 x1={pathSegment.x1}
                 y1={pathSegment.y1}
@@ -135,6 +148,37 @@ class Scene extends React.Component<SceneProps, {}> {
             return this.props.intl.formatMessage({id: 'RelativeDirection.7'});
         } else {
             throw new Error(`Unrecognized xPos: ${xPos} or yPos: ${yPos}`);
+        }
+    }
+
+    getBackground(x: number, y: number, width: number, height: number) {
+        switch(this.props.world) {
+            case('Space'):
+                if (this.props.theme === 'gray') {
+                    return <SpaceGray className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
+                } else if (this.props.theme === 'contrast') {
+                    return <SpaceContrast className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
+                } else {
+                    return <Space className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
+                }
+            case('Jungle'):
+                if (this.props.theme === 'gray') {
+                    return <JungleGray className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
+                } else if (this.props.theme === 'contrast') {
+                    return <JungleContrast className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
+                } else {
+                    return <Jungle className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
+                }
+            case('DeepOcean'):
+                if (this.props.theme === 'gray') {
+                    return <DeepOceanGray className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
+                } else if (this.props.theme === 'contrast') {
+                    return <DeepOceanContrast className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
+                } else {
+                    return <DeepOcean className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
+                }
+            default:
+                return <></>
         }
     }
 
@@ -285,6 +329,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                     <rect x={minX} y={minY} width={width} height={height} />
                                 </clipPath>
                             </defs>
+                            {this.getBackground(minX, minY, width, height)}
                             {grid}
                             <g clipPath='url(#Scene-clippath)'>
                                 {this.drawCharacterPath()}
