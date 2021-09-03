@@ -13,6 +13,7 @@ export type KeyDef = {
 
 export type ActionName =
     // Single Key Commands
+    | "addCommand"
     | "addCommandToBeginning"
     | "addCommandToEnd"
     | "deleteCurrentStep"
@@ -58,6 +59,13 @@ export type ActionName =
     | "moveCharacterDown"
     | "turnCharacterLeft"
     | "turnCharacterRight"
+
+    // Change Theme
+    | "changeToDefaultTheme"
+    | "changeToLightTheme"
+    | "changeToDarkTheme"
+    | "changeToGrayscaleTheme"
+    | "changeToHighContrastTheme"
 
     // Update Program
     | "deleteAll"
@@ -234,6 +242,30 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             }
         },
 
+        changeTheme: {
+            keyDef: { code: "KeyT", key: "t" },
+            default: {
+                keyDef: { key: "1"},
+                actionName: "changeToDefaultTheme"
+            },
+            light: {
+                keyDef: { key: "2"},
+                actionName: "changeToLightTheme"
+            },
+            dark: {
+                keyDef: { key: "3"},
+                actionName: "changeToDarkTheme"
+            },
+            grayscale: {
+                keyDef: { key: "4"},
+                actionName: "changeToGrayscaleTheme"
+            },
+            highContrast: {
+                keyDef: { key: "5"},
+                actionName: "changeToHighContrastTheme"
+            }
+        },
+
         deleteAll: {
             keyDef: { code: "KeyD", key: "d" },
             actionName: "deleteAll"
@@ -242,6 +274,10 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
 }
 
 const VoiceOverInputScheme: KeyboardInputScheme = Object.assign({
+    addCommand: {
+        keyDef: { code: "KeyA", key: "a", altKey: true},
+        actionName: "addCommand"
+    },
     addCommandToBeginning: {
         keyDef: { code: "KeyB", key: "b", altKey: true},
         actionName: "addCommandToBeginning"
@@ -303,6 +339,10 @@ const NvdaExtendedKeyboardSequences = extend(ExtendedKeyboardSequences, {
 });
 
 const NvdaInputScheme = Object.assign({
+    addCommand: {
+        keyDef: { code: "KeyA", key: "a", altKey: true, ctrlKey: true},
+        actionName: "addCommand"
+    },
     addCommandToBeginning: {
         keyDef: { code: "KeyB", key: "b", altKey: true, ctrlKey: true},
         actionName: "addCommandToBeginning"
