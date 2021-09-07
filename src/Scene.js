@@ -344,6 +344,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                 />
                                 <Character
                                     world={this.props.world}
+                                    theme={this.props.theme}
                                     transform={characterTransform}
                                     width={0.9}
                                 />

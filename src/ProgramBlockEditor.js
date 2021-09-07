@@ -17,8 +17,9 @@ import ToggleSwitch from './ToggleSwitch';
 import { ReactComponent as AddIcon } from './svg/Add.svg';
 import { ReactComponent as DeleteAllIcon } from './svg/DeleteAll.svg';
 import { ReactComponent as RobotIcon } from './svg/Robot.svg';
-import { ReactComponent as SpaceShipIcon } from './svg/SpaceShip.svg';
-import { ReactComponent as RabbitIcon } from './svg/Rabbit.svg';
+import { ReactComponent as SpaceShipContrastIcon } from './svg/SpaceShip-contrast.svg';
+import { ReactComponent as SafariJeepContrastIcon } from './svg/SafariJeep-contrast.svg';
+import { ReactComponent as SubmarineContrastIcon } from './svg/Submarine-contrast.svg';
 import './ProgramBlockEditor.scss';
 
 // TODO: Send focus to Delete toggle button on close of Delete All confirmation
@@ -530,10 +531,12 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     }
 
     getWorldCharacter() {
-        if (this.props.world === 'space') {
-            return <SpaceShipIcon className='ProgramBlockEditor__character-column-character' />
-        } else if (this.props.world === 'forest') {
-            return <RabbitIcon className='ProgramBlockEditor__character-column-character' />
+        if (this.props.world === 'Space') {
+            return <SpaceShipContrastIcon className='ProgramBlockEditor__character-column-character' />
+        } else if (this.props.world === 'Jungle') {
+            return <SafariJeepContrastIcon className='ProgramBlockEditor__character-column-character' />
+        } else if (this.props.world === 'DeepOcean') {
+            return <SubmarineContrastIcon className='ProgramBlockEditor__character-column-character' />
         } else {
             return <RobotIcon className='ProgramBlockEditor__character-column-character' />
         }
