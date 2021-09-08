@@ -7,20 +7,36 @@ import ModalFooter from './ModalFooter';
 import { Modal } from 'react-bootstrap';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
-import type { WorldName } from './types';
+import { ReactComponent as SketchpadThumbnail } from './svg/SketchpadThumbnail.svg';
+
+import { ReactComponent as SpaceThumbnail } from './svg/SpaceThumbnail.svg';
+import { ReactComponent as JungleThumbnail } from './svg/JungleThumbnail.svg';
+import { ReactComponent as DeepOceanThumbnail } from './svg/DeepOceanThumbnail.svg';
+
+import { ReactComponent as SpaceThumbnailGray } from './svg/SpaceThumbnail-gray.svg';
+import { ReactComponent as JungleThumbnailGray } from './svg/JungleThumbnail-gray.svg';
+import { ReactComponent as DeepOceanThumbnailGray } from './svg/DeepOceanThumbnail-gray.svg';
+
+import { ReactComponent as SpaceThumbnailContrast } from './svg/SpaceThumbnail-contrast.svg';
+import { ReactComponent as JungleThumbnailContrast } from './svg/JungleThumbnail-contrast.svg';
+import { ReactComponent as DeepOceanThumbnailContrast } from './svg/DeepOceanThumbnail-contrast.svg';
+
+import type { WorldName, ThemeName } from './types';
 import type { IntlShape } from 'react-intl';
 import './WorldSelector.scss';
 
 type WorldSelectorProps = {
     show: boolean,
     currentWorld: WorldName,
+    theme: ThemeName,
     intl: IntlShape,
     onChange: (world: WorldName) => void,
     onSelect: (world: WorldName) => void
 };
 
 type WorldSelectorState = {
-    selectedWorld: WorldName
+    selectedWorld: WorldName,
+    focusedWorld: ?WorldName
 }
 
 class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorState> {
@@ -28,7 +44,8 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     constructor(props: WorldSelectorProps) {
         super(props);
         this.state = {
-            selectedWorld: props.currentWorld
+            selectedWorld: props.currentWorld,
+            focusedWorld: null
         }
         this.availableWorldOptions = ['Sketchpad', 'Space', 'Jungle', 'DeepOcean'];
     }
@@ -46,18 +63,64 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
         this.props.onChange(this.props.currentWorld);
     };
 
+    onFocusWorld = (e: Event) => {
+        // $FlowFixMe event target doesn't know value
+        const focusedWorld = e.target.value;
+        if (focusedWorld) {
+            this.setState({ focusedWorld });
+        }
+    }
+
+    onBlurWorld = () => {
+        this.setState({
+            focusedWorld: null
+        });
+    }
+
+    renderWorldThumbnail = (worldName: WorldName) => {
+        if (worldName === 'Space') {
+            if (this.props.theme === 'gray') {
+                console.log('is gray');
+                return <SpaceThumbnailGray />
+            } else if (this.props.theme === 'contrast') {
+                return <SpaceThumbnailContrast />
+            } else {
+                return <SpaceThumbnail />
+            }
+        } else if (worldName === 'Jungle') {
+            if (this.props.theme === 'gray') {
+                return <JungleThumbnailGray />
+            } else if (this.props.theme === 'contrast') {
+                return <JungleThumbnailContrast />
+            } else {
+                return <JungleThumbnail />
+            }
+        } else if (worldName === 'DeepOcean') {
+            if (this.props.theme === 'gray') {
+                return <DeepOceanThumbnailGray />
+            } else if (this.props.theme === 'contrast') {
+                return <DeepOceanThumbnailContrast />
+            } else {
+                return <DeepOceanThumbnail />
+            }
+        } else {
+            return <SketchpadThumbnail />
+        }
+    }
+
     renderWorldOptions = () => {
         const worldOptions = [];
         for (const world of this.availableWorldOptions) {
             const classes = classNames(
                 'WorldSelector__option-image',
-                this.props.currentWorld === world && 'WorldSelector__option--selected'
+                this.state.focusedWorld === world && 'WorldSelector__option--selected'
             );
             worldOptions.push(
                 <div
                     className='WorldSelector__option-container'
                     key={`WorldSelector__option-${world}`}>
                     <div className={classes}>
+                        {this.renderWorldThumbnail(world)}
                     </div>
                     <div className='WorldSelector__option-row'>
                         <input
@@ -67,7 +130,9 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                             name='world-option'
                             value={world}
                             checked={this.props.currentWorld === world ? true : false}
-                            onChange={this.handleOnSelect}/>
+                            onChange={this.handleOnSelect}
+                            onFocus={this.onFocusWorld}
+                            onBlur={this.onBlurWorld}/>
                         <label htmlFor={`world-${world}`}>
                             <FormattedMessage id={`WorldSelector.option.${world}`} />
                         </label>

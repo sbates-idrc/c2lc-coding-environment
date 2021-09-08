@@ -20,10 +20,16 @@
 }
 
 .WorldSelector__option-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 10px;
     width: 5.6rem;
     height: 5.6rem;
-    background-color: gray;
+    svg {
+        width: 5rem;
+        height: 5rem;
+    }
 }
 
 .WorldSelector__option-radio {

@@ -1302,6 +1302,7 @@ export class App extends React.Component<AppProps, AppState> {
                 <WorldSelector
                     show={this.state.showWorldSelector}
                     currentWorld={this.state.settings.world}
+                    theme={this.state.settings.theme}
                     onChange={this.handleChangeWorld}
                     onSelect={this.handleSelectWorld}/>
             </React.Fragment>
