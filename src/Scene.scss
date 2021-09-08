@@ -4,13 +4,16 @@
 .Scene__container {
     position: relative;
     height: 100%;
-    width: 100%;
+    /*width: 100%;*/
+    /*max-width: 970px;*/
+    max-width: max-content;
     display: grid;
     grid-template-columns: 30px auto;
     grid-template-rows: 30px auto;
     background-color: #CCE6E2;
     border: 2px solid #CCE6E2;
     border-radius: 3px;
+    background-color: #cce6e2;
 }
 
 .Scene {
@@ -21,11 +24,15 @@
     overflow: scroll;
     background-color: #FFF;
     display: inline-block;
-    box-sizing: border-box;
+    box-sizing: content-box;
+    /*background-color: #cce6e2;*/
+    background-color: #30444e; /* default theme */
+    max-width: max-content;
 }
 
 .Scene > svg {
     width: $c2lc-scene-width;
+    background-color: #ffffff;
 }
 
 .Scene__row-header {

@@ -104,7 +104,7 @@ body {
     grid-row-end: 3;
     min-height: 12rem;
     min-width: 19.5rem;
-    max-width: 78rem;
+    max-width: max-content;
 }
 
 .App__scene-controls {
