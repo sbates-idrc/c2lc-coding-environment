@@ -80,7 +80,6 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     renderWorldThumbnail = (worldName: WorldName) => {
         if (worldName === 'Space') {
             if (this.props.theme === 'gray') {
-                console.log('is gray');
                 return <SpaceThumbnailGray />
             } else if (this.props.theme === 'contrast') {
                 return <SpaceThumbnailContrast />

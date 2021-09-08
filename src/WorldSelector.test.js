@@ -56,10 +56,6 @@ function getWorldSelectorThumbnailIcon(wrapper) {
     return wrapper.find('.WorldSelector__option-image');
 }
 
-function getSelectedWorldThumbnailIcon(wrapper) {
-    return wrapper.find('.WorldSelector__option-image--selected');
-}
-
 function getCancelButton(wrapper) {
     return wrapper.find('.ModalFooter__cancelButton');
 }
