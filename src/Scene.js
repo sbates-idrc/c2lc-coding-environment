@@ -4,23 +4,10 @@ import React from 'react';
 import CharacterState from './CharacterState';
 import Character from './Character';
 import SceneDimensions from './SceneDimensions';
+import { getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
-
 import './Scene.scss';
-
-import { ReactComponent as Space } from './svg/Space.svg';
-import { ReactComponent as Jungle } from './svg/Jungle.svg';
-import { ReactComponent as DeepOcean } from './svg/DeepOcean.svg';
-
-import { ReactComponent as SpaceGray } from './svg/Space-gray.svg';
-import { ReactComponent as JungleGray } from './svg/Jungle-gray.svg';
-import { ReactComponent as DeepOceanGray } from './svg/DeepOcean-gray.svg';
-
-import { ReactComponent as SpaceContrast } from './svg/Space-contrast.svg';
-import { ReactComponent as JungleContrast } from './svg/Jungle-contrast.svg';
-import { ReactComponent as DeepOceanContrast } from './svg/DeepOcean-contrast.svg';
-
 import type {ThemeName, WorldName} from './types';
 
 export type SceneProps = {
@@ -153,33 +140,46 @@ class Scene extends React.Component<SceneProps, {}> {
     }
 
     getBackground(x: number, y: number, width: number, height: number) {
-        switch(this.props.world) {
-            case('Space'):
-                if (this.props.theme === 'gray') {
-                    return <SpaceGray className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
-                } else if (this.props.theme === 'contrast') {
-                    return <SpaceContrast className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
-                } else {
-                    return <Space className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
-                }
-            case('Jungle'):
-                if (this.props.theme === 'gray') {
-                    return <JungleGray className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
-                } else if (this.props.theme === 'contrast') {
-                    return <JungleContrast className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
-                } else {
-                    return <Jungle className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
-                }
-            case('DeepOcean'):
-                if (this.props.theme === 'gray') {
-                    return <DeepOceanGray className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
-                } else if (this.props.theme === 'contrast') {
-                    return <DeepOceanContrast className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
-                } else {
-                    return <DeepOcean className='Scene__background' x={x} y={y} width={width} height={height} preserveAspectRatio='none' />;
-                }
-            default:
-                return <></>
+        const worldProperties = getWorldProperties(this.props.world);
+        if (this.props.theme === 'gray') {
+            if (worldProperties.backgroundGray) {
+                return React.createElement(worldProperties.backgroundGray, {
+                    className: 'Scene__background',
+                    x: x,
+                    y: y,
+                    width: width,
+                    height: height,
+                    preserveAspectRatio: 'none'
+                });
+            } else {
+                return <></>;
+            }
+        } else if (this.props.theme === 'contrast') {
+            if (worldProperties.backgroundContrast) {
+                return React.createElement(worldProperties.backgroundContrast, {
+                    className: 'Scene__background',
+                    x: x,
+                    y: y,
+                    width: width,
+                    height: height,
+                    preserveAspectRatio: 'none'
+                });
+            } else {
+                return <></>;
+            }
+        } else {
+            if (worldProperties.background) {
+                return React.createElement(worldProperties.background, {
+                    className: 'Scene__background',
+                    x: x,
+                    y: y,
+                    width: width,
+                    height: height,
+                    preserveAspectRatio: 'none'
+                });
+            } else {
+                return <></>;
+            }
         }
     }
 
