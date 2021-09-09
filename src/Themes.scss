@@ -838,8 +838,17 @@ body.gray-theme {
         fill: #818A98;
     }
 
-    .Character__icon-background {
+    .Character__icon-background-Sketchpad {
         fill: #818A98;
+    }
+
+    .Character__icon-background-Space,
+    .Character__icon-background-Jungle {
+        fill: #505862;
+    }
+
+    .Character__icon-background-DeepOcean {
+        fill: #67717E;
     }
 
     .CharacterPositionController__character-column {
@@ -1785,7 +1794,10 @@ body.contrast-theme {
         stroke: #FFF500;
     }
 
-    .Character__icon-background {
+    .Character__icon-background-Sketchpad,
+    .Character__icon-background-Space,
+    .Character__icon-background-Jungle,
+    .Character__icon-background-DeepOcean {
         fill: white;
     }
 
