@@ -397,7 +397,7 @@ body.dark-theme {
 
     .Scene__container {
         background-color: #33717F;
-        border: 2px solid #33717F;
+        border: $c2lc-scene-border-width solid #33717F;
     }
 
     .Scene {
@@ -897,7 +897,7 @@ body.gray-theme {
 
     .Scene__container {
         background-color: #D5D8DD;
-        border: 2px solid #D5D8DD;
+        border: $c2lc-scene-border-width solid #D5D8DD;
     }
 
     .Scene__background {
@@ -1765,7 +1765,7 @@ body.contrast-theme {
 
     .Scene__container {
         background-color: white;
-        border: 2px solid white;
+        border: $c2lc-scene-border-width solid white;
     }
 
     .Scene {
