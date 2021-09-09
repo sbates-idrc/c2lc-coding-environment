@@ -425,15 +425,24 @@ body.dark-theme {
     }
 
     .Scene__grid-line.Scene__grid-line--Space,
-    .Scene__grid-line.Scene__grid-line--DeepOcean,
-    .Scene__path-line.Scene__path-line--Space,
-    .Scene__path-line.Scene__path-line--DeepOcean {
+    .Scene__grid-line.Scene__grid-line--DeepOcean {
         stroke: #8BA2C0;
     }
 
-    .Scene__grid-line.Scene__grid-line--Jungle,
-    .Scene__path-line.Scene__path-line--Jungle {
+    .Scene__path-line.Scene__path-line--Space {
+        stroke: #F1AE5B;
+    }
+
+    .Scene__path-line.Scene__path-line--DeepOcean {
+        stroke: #A4D0DA;
+    }
+
+    .Scene__grid-line.Scene__grid-line--Jungle {
         stroke: #F9F2EC;
+    }
+
+    .Scene__path-line.Scene__path-line--Jungle {
+        stroke: #784234;
     }
 
     .Scene__grid-line {

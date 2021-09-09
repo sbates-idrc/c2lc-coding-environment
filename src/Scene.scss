@@ -97,11 +97,14 @@
     stroke: #505862;
 }
 
-.Scene__path-line--Space,
+.Scene__path-line--Space {
+    stroke: #F1AE5B;
+}
+
 .Scene__path-line--DeepOcean {
-    stroke: #8BA2C0;
+    stroke: #A4D0DA;
 }
 
 .Scene__path-line--Jungle {
-    stroke: #F9F2EC;
+    stroke: #784234;
 }
