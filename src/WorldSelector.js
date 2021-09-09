@@ -31,8 +31,7 @@ type WorldSelectorProps = {
     theme: ThemeName,
     intl: IntlShape,
     onChange: (world: WorldName) => void,
-    onSelect: (world: WorldName) => void,
-    onHide: () => void
+    onSelect: (world: WorldName) => void
 };
 
 type WorldSelectorState = {
