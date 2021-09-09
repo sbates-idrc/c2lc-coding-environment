@@ -11,6 +11,7 @@ configure({ adapter: new Adapter() });
 
 const defaultWorldSelectorProps = {
     currentWorld: 'Sketchpad',
+    theme: 'mixed',
     show: true
 };
 
@@ -51,6 +52,10 @@ function getWorldSelectorRadioButton(wrapper) {
     return wrapper.find('.WorldSelector__option-radio');
 }
 
+function getWorldSelectorThumbnailIcon(wrapper) {
+    return wrapper.find('.WorldSelector__option-image');
+}
+
 function getCancelButton(wrapper) {
     return wrapper.find('.ModalFooter__cancelButton');
 }
@@ -80,6 +85,31 @@ describe('When rendering selector options', () => {
         // Deep Ocean world
         expect(selectorOptions.get(3).props.value).toBe('DeepOcean');
         expect(selectorOptions.get(3).props.checked).toBe(false);
+    });
+    test('Thumbnail icons get rendered with the selector options', () => {
+        const { wrapper } = createMountWorldSelector();
+        let selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
+
+        expect(selectorThumbnails.get(0).props.children.type.render().props.children).toBe('SketchpadThumbnail.svg');
+        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('SpaceThumbnail.svg');
+        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('JungleThumbnail.svg');
+        expect(selectorThumbnails.get(3).props.children.type.render().props.children).toBe('DeepOceanThumbnail.svg');
+
+        // Grayscale theme
+        wrapper.setProps({theme: 'gray'});
+        selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
+
+        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('SpaceThumbnail-gray.svg');
+        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('JungleThumbnail-gray.svg');
+        expect(selectorThumbnails.get(3).props.children.type.render().props.children).toBe('DeepOceanThumbnail-gray.svg');
+
+        // High contrast theme
+        wrapper.setProps({theme: 'contrast'});
+        selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
+
+        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('SpaceThumbnail-contrast.svg');
+        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('JungleThumbnail-contrast.svg');
+        expect(selectorThumbnails.get(3).props.children.type.render().props.children).toBe('DeepOceanThumbnail-contrast.svg');
     });
 });
 

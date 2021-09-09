@@ -397,7 +397,7 @@ body.dark-theme {
 
     .Scene__container {
         background-color: #33717F;
-        border: 2px solid #33717F;
+        border: $c2lc-scene-border-width solid #33717F;
     }
 
     .Scene {
@@ -425,15 +425,24 @@ body.dark-theme {
     }
 
     .Scene__grid-line.Scene__grid-line--Space,
-    .Scene__grid-line.Scene__grid-line--DeepOcean,
-    .Scene__path-line.Scene__path-line--Space,
-    .Scene__path-line.Scene__path-line--DeepOcean {
+    .Scene__grid-line.Scene__grid-line--DeepOcean {
         stroke: #8BA2C0;
     }
 
-    .Scene__grid-line.Scene__grid-line--Jungle,
-    .Scene__path-line.Scene__path-line--Jungle {
+    .Scene__path-line.Scene__path-line--Space {
+        stroke: #F1AE5B;
+    }
+
+    .Scene__path-line.Scene__path-line--DeepOcean {
+        stroke: #A4D0DA;
+    }
+
+    .Scene__grid-line.Scene__grid-line--Jungle {
         stroke: #F9F2EC;
+    }
+
+    .Scene__path-line.Scene__path-line--Jungle {
+        stroke: #784234;
     }
 
     .Scene__grid-line {
@@ -838,8 +847,17 @@ body.gray-theme {
         fill: #818A98;
     }
 
-    .Character__icon-background {
+    .Character__icon-background-Sketchpad {
         fill: #818A98;
+    }
+
+    .Character__icon-background-Space,
+    .Character__icon-background-Jungle {
+        fill: #505862;
+    }
+
+    .Character__icon-background-DeepOcean {
+        fill: #67717E;
     }
 
     .CharacterPositionController__character-column {
@@ -888,7 +906,7 @@ body.gray-theme {
 
     .Scene__container {
         background-color: #D5D8DD;
-        border: 2px solid #D5D8DD;
+        border: $c2lc-scene-border-width solid #D5D8DD;
     }
 
     .Scene__background {
@@ -1756,7 +1774,7 @@ body.contrast-theme {
 
     .Scene__container {
         background-color: white;
-        border: 2px solid white;
+        border: $c2lc-scene-border-width solid white;
     }
 
     .Scene {
@@ -1785,7 +1803,10 @@ body.contrast-theme {
         stroke: #FFF500;
     }
 
-    .Character__icon-background {
+    .Character__icon-background-Sketchpad,
+    .Character__icon-background-Space,
+    .Character__icon-background-Jungle,
+    .Character__icon-background-DeepOcean {
         fill: white;
     }
 

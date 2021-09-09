@@ -130,7 +130,7 @@ export class App extends React.Component<AppProps, AppState> {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
         };
 
-        this.sceneDimensions = new SceneDimensions(1, 26, 1, 16);
+        this.sceneDimensions = new SceneDimensions(1, 12, 1, 8);
 
         // Begin facing East
         this.startingCharacterState = new CharacterState(1, 1, 2, [], this.sceneDimensions);
@@ -1302,6 +1302,7 @@ export class App extends React.Component<AppProps, AppState> {
                 <WorldSelector
                     show={this.state.showWorldSelector}
                     currentWorld={this.state.settings.world}
+                    theme={this.state.settings.theme}
                     onChange={this.handleChangeWorld}
                     onSelect={this.handleSelectWorld}/>
             </React.Fragment>
