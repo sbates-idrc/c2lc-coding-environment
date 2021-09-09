@@ -31,7 +31,8 @@ type WorldSelectorProps = {
     theme: ThemeName,
     intl: IntlShape,
     onChange: (world: WorldName) => void,
-    onSelect: (world: WorldName) => void
+    onSelect: (world: WorldName) => void,
+    onHide: () => void
 };
 
 type WorldSelectorState = {
@@ -80,30 +81,30 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     renderWorldThumbnail = (worldName: WorldName) => {
         if (worldName === 'Space') {
             if (this.props.theme === 'gray') {
-                return <SpaceThumbnailGray />
+                return <SpaceThumbnailGray aria-hidden='true'/>
             } else if (this.props.theme === 'contrast') {
-                return <SpaceThumbnailContrast />
+                return <SpaceThumbnailContrast aria-hidden='true'/>
             } else {
-                return <SpaceThumbnail />
+                return <SpaceThumbnail aria-hidden='true'/>
             }
         } else if (worldName === 'Jungle') {
             if (this.props.theme === 'gray') {
-                return <JungleThumbnailGray />
+                return <JungleThumbnailGray aria-hidden='true'/>
             } else if (this.props.theme === 'contrast') {
-                return <JungleThumbnailContrast />
+                return <JungleThumbnailContrast aria-hidden='true'/>
             } else {
-                return <JungleThumbnail />
+                return <JungleThumbnail aria-hidden='true'/>
             }
         } else if (worldName === 'DeepOcean') {
             if (this.props.theme === 'gray') {
-                return <DeepOceanThumbnailGray />
+                return <DeepOceanThumbnailGray aria-hidden='true'/>
             } else if (this.props.theme === 'contrast') {
-                return <DeepOceanThumbnailContrast />
+                return <DeepOceanThumbnailContrast aria-hidden='true'/>
             } else {
-                return <DeepOceanThumbnail />
+                return <DeepOceanThumbnail aria-hidden='true'/>
             }
         } else {
-            return <SketchpadThumbnail />
+            return <SketchpadThumbnail aria-hidden='true'/>
         }
     }
 
@@ -153,12 +154,14 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
 
     render() {
         return (
-            <Modal show={this.props.show}>
+            <Modal
+                show={this.props.show}
+                onHide={this.handleCancel}>
                 <ModalHeader
                     title={this.props.intl.formatMessage({
                         id: 'WorldSelector.Title'
                     })}>
-                    <WorldIcon />
+                    <WorldIcon aria-hidden='true' />
                 </ModalHeader>
                 <Modal.Body>
                     <div className='WorldSelector__prompt'>

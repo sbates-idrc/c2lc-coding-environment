@@ -193,6 +193,7 @@
         "ThemeSelector.theme.light": "Light",
         "ThemeSelector.theme.mixed": "Default",
         "WorldSelector": "World Selector",
+        "WorldSelector.heading": "World Selector",
         "WorldSelector.Prompt": "Select a background for your scene.",
         "WorldSelector.option.Jungle": "Jungle",
         "WorldSelector.option.Sketchpad": "Sketchpad",

@@ -334,7 +334,7 @@ class Scene extends React.Component<SceneProps, {}> {
                             <g clipPath='url(#Scene-clippath)'>
                                 {this.drawCharacterPath()}
                                 <rect
-                                    className="Character__icon-background"
+                                    className={`Character__icon-background-${this.props.world}`}
                                     x={-0.5}
                                     y={-0.5}
                                     height={1}
