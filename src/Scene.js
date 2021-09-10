@@ -5,6 +5,7 @@ import CharacterState from './CharacterState';
 import Character from './Character';
 import SceneDimensions from './SceneDimensions';
 import { getWorldProperties } from './Worlds';
+import { getBackgroundInfo } from './BackgroundInfo';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import './Scene.scss';
@@ -200,6 +201,21 @@ class Scene extends React.Component<SceneProps, {}> {
                 }
             )
         } else {
+            const backgroundInfo = getBackgroundInfo(this.props.world, xPos - 1, yPos - 1);
+            if (backgroundInfo) {
+                const itemOnGridCell = this.props.intl.formatMessage({ id: backgroundInfo });
+                return this.props.intl.formatMessage(
+                    { id: 'Scene.inBoundsOnItem' },
+                    {
+                        numColumns: this.props.dimensions.getWidth(),
+                        numRows: this.props.dimensions.getHeight(),
+                        xPos: String.fromCharCode(64 + xPos),
+                        yPos: Math.trunc(yPos),
+                        direction,
+                        item: itemOnGridCell
+                    }
+                )
+            }
             return this.props.intl.formatMessage(
                 { id: 'Scene.inBounds' },
                 {

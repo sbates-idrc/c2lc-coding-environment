@@ -2,6 +2,7 @@
 
 import React from 'react';
 import CharacterState from './CharacterState';
+import { getBackgroundInfo } from './BackgroundInfo';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import type { RunningState, WorldName } from './types';
@@ -15,50 +16,46 @@ type CharacterAriaLiveProps = {
 };
 
 class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
-    getCharacterAriaLabel() {
-        if (this.props.world === 'Space') {
-            return this.props.intl.formatMessage(
-                {id:'CharacterAriaLive.spaceShipCharacter'}
-            );
-        } else if (this.props.world === 'Jungle') {
-            return this.props.intl.formatMessage(
-                {id:'CharacterAriaLive.rabbitCharacter'}
-            );
-        } else {
-            return this.props.intl.formatMessage(
-                {id:'CharacterAriaLive.robotCharacter'}
-            );
-        }
-    }
-
     setCharacterMovingAriaLive() {
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
-        const character = this.getCharacterAriaLabel();
 
         // $FlowFixMe: Flow doesn't know that elements have innerText.
         ariaLiveRegion.innerText=this.props.intl.formatMessage(
-            {id:'CharacterAriaLive.movementAriaLabel'},
-            { character }
+            {id:'CharacterAriaLive.movementAriaLabel'}
         );
     }
 
     updateCharacterPositionAriaLive() {
         const characterState = this.props.characterState;
-        const xPos = characterState.getColumnLabel();
-        const yPos = characterState.getRowLabel();
+        const columnLabel = characterState.getColumnLabel();
+        const rowLabel = characterState.getRowLabel();
+        const { xPos, yPos } = characterState;
         const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
-        const character = this.getCharacterAriaLabel();
-        // $FlowFixMe: Flow doesn't know that elements have innerText.
-        ariaLiveRegion.innerText=this.props.intl.formatMessage(
-            {id:'CharacterAriaLive.positionAriaLabel'},
-            {
-                character,
-                xPos,
-                yPos,
-                direction
-            }
-        );
+        const backgroundInfo = getBackgroundInfo(this.props.world, xPos - 1, yPos - 1);
+        if (backgroundInfo) {
+            const itemOnGridCell = this.props.intl.formatMessage({ id: backgroundInfo });
+            // $FlowFixMe: Flow doesn't know that elements have innerText.
+            ariaLiveRegion.innerText = this.props.intl.formatMessage(
+                {id:'CharacterAriaLive.positionAriaLabelWithItem'},
+                {
+                    columnLabel,
+                    rowLabel,
+                    direction,
+                    item: itemOnGridCell
+                }
+            )
+        } else {
+            // $FlowFixMe: Flow doesn't know that elements have innerText.
+            ariaLiveRegion.innerText=this.props.intl.formatMessage(
+                {id:'CharacterAriaLive.positionAriaLabel'},
+                {
+                    columnLabel,
+                    rowLabel,
+                    direction
+                }
+            );
+        }
     }
 
     render() {
