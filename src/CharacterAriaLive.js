@@ -2,7 +2,7 @@
 
 import React from 'react';
 import CharacterState from './CharacterState';
-import { getBackgroundInfo } from './BackgroundInfo';
+import { getBackgroundInfo } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import type { RunningState, WorldName } from './types';
