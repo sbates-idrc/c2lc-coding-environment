@@ -3,7 +3,6 @@
 import React from 'react';
 import { getWorldProperties } from './Worlds';
 import type { WorldName } from './types';
-import './Character.scss';
 
 type CharacterProps = {
     world: WorldName,

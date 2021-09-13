@@ -8,6 +8,7 @@ import { getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import './Scene.scss';
+import './Worlds.scss';
 import type {ThemeName, WorldName} from './types';
 
 export type SceneProps = {
@@ -332,7 +333,7 @@ class Scene extends React.Component<SceneProps, {}> {
                             <g clipPath='url(#Scene-clippath)'>
                                 {this.drawCharacterPath()}
                                 <rect
-                                    className={`Character__icon-background-${this.props.world}`}
+                                    className={`Character-background--${this.props.world}`}
                                     x={-0.5}
                                     y={-0.5}
                                     height={1}

@@ -420,39 +420,6 @@ body.dark-theme {
         fill: white;
     }
 
-    .Scene__grid-line, .Scene__path-line {
-        stroke: #33717F;
-    }
-
-    .Scene__grid-line.Scene__grid-line--Space,
-    .Scene__grid-line.Scene__grid-line--DeepOcean {
-        stroke: #8BA2C0;
-    }
-
-    .Scene__path-line.Scene__path-line--Space {
-        stroke: #F1AE5B;
-    }
-
-    .Scene__path-line.Scene__path-line--DeepOcean {
-        stroke: #A4D0DA;
-    }
-
-    .Scene__grid-line.Scene__grid-line--Jungle {
-        stroke: #F9F2EC;
-    }
-
-    .Scene__path-line.Scene__path-line--Jungle {
-        stroke: #784234;
-    }
-
-    .Scene__grid-line {
-        stroke: #30444E;
-    }
-
-    .Scene__path-line {
-        stroke: white;
-    }
-
     .PenDownToggleSwitch:focus {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
@@ -847,19 +814,6 @@ body.gray-theme {
         fill: #818A98;
     }
 
-    .Character__icon-background-Sketchpad {
-        fill: #818A98;
-    }
-
-    .Character__icon-background-Space,
-    .Character__icon-background-Jungle {
-        fill: #505862;
-    }
-
-    .Character__icon-background-DeepOcean {
-        fill: #67717E;
-    }
-
     .CharacterPositionController__character-column {
         border-top: 1px solid #9DA4AF;
     }
@@ -919,29 +873,6 @@ body.gray-theme {
 
     .Scene__column-header, .Scene__row-header {
         fill: #D5D8DD;
-    }
-
-    .Scene__grid-line, .Scene__path-line {
-        stroke: #D5D8DD;
-    }
-
-    .Scene__path-line {
-        stroke: #505862;
-    }
-
-    .Scene__grid-line.Scene__grid-line--Space,
-    .Scene__grid-line.Scene__grid-line--DeepOcean,
-    .Scene__grod-line.Scene__grid-line--Jungle {
-        stroke: #FFF;
-    }
-
-    .Scene__path-line.Scene__path-line--Space {
-        stroke: #3A3F46;
-    }
-
-    .Scene__path-line.Scene__path-line--Jungle,
-    .Scene__path-line.Scene__path-line--DeepOcean {
-        stroke: #505862;
     }
 
     .PenDownToggleSwitch.ToggleSwitch {
@@ -1790,23 +1721,6 @@ body.contrast-theme {
     }
 
     .Scene__column-header, .Scene__row-header {
-        fill: white;
-    }
-
-    .Scene__grid-line, .Scene__path-line {
-        stroke: white;
-    }
-
-    .Scene__path-line.Scene__path-line--Space,
-    .Scene__path-line.Scene__path-line--Jungle,
-    .Scene__path-line.Scene__path-line--DeepOcean {
-        stroke: #FFF500;
-    }
-
-    .Character__icon-background-Sketchpad,
-    .Character__icon-background-Space,
-    .Character__icon-background-Jungle,
-    .Character__icon-background-DeepOcean {
         fill: white;
     }
 

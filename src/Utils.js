@@ -44,6 +44,7 @@ function getThemeFromString(themeQuery: ?string, defaultThemeName: ThemeName): T
 }
 
 function getWorldFromString(worldQuery: ?string, defaultWorldName: WorldName): WorldName {
+    // TODO: Instead of listing the known worlds here, check with Worlds.js
     switch (worldQuery) {
         // Convert old world names to the new world names
         case('space'): return 'Space';
