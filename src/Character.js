@@ -1,47 +1,26 @@
 // @flow
 
 import React from 'react';
-import { ReactComponent as RobotIcon } from './svg/Robot.svg';
-import { ReactComponent as SpaceShipIcon } from './svg/SpaceShip.svg';
-import { ReactComponent as RabbitIcon } from './svg/Rabbit.svg';
+import { getWorldProperties } from './Worlds';
+import type { WorldName } from './types';
 import './Character.scss';
 
 type CharacterProps = {
-    world: string,
+    world: WorldName,
     transform: string,
     width: number,
 };
 
 export default class Character extends React.Component<CharacterProps, {}> {
     getThemedCharacter = () => {
-        if (this.props.world === 'Space') {
-            return (
-                <SpaceShipIcon
-                    className='Character__icon'
-                    x={-this.props.width/2}
-                    y={-this.props.width/2}
-                    width={this.props.width}
-                    height={this.props.width} />
-            )
-        } else if (this.props.world === 'Jungle') {
-            return (
-                <RabbitIcon
-                    className='Character__icon'
-                    x={-this.props.width/2}
-                    y={-this.props.width/2}
-                    width={this.props.width}
-                    height={this.props.width} />
-            )
-        } else {
-            return (
-                <RobotIcon
-                    className='Character__icon'
-                    x={-this.props.width/2}
-                    y={-this.props.width/2}
-                    width={this.props.width}
-                    height={this.props.width} />
-            )
-        }
+        const worldProperties = getWorldProperties(this.props.world);
+        return React.createElement(worldProperties.character, {
+            className: 'Character__icon',
+            x: -this.props.width/2,
+            y: -this.props.width/2,
+            width: this.props.width,
+            height: this.props.width
+        });
     }
 
     render() {

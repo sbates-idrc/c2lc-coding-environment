@@ -29,13 +29,19 @@ import { ReactComponent as SpaceThumbnail } from './svg/SpaceThumbnail.svg';
 import { ReactComponent as SpaceThumbnailGray } from './svg/SpaceThumbnail-gray.svg';
 import { ReactComponent as SpaceThumbnailContrast } from './svg/SpaceThumbnail-contrast.svg';
 
+// Characters
+import { ReactComponent as RabbitIcon } from './svg/Rabbit.svg';
+import { ReactComponent as RobotIcon } from './svg/Robot.svg';
+import { ReactComponent as SpaceShipIcon } from './svg/SpaceShip.svg';
+
 export type WorldProperties = {
     background: any,
     backgroundGray: any,
     backgroundContrast: any,
     thumbnail: any,
     thumbnailGray: any,
-    thumbnailContrast: any
+    thumbnailContrast: any,
+    character: any
 };
 
 const worlds = {
@@ -45,7 +51,8 @@ const worlds = {
         backgroundContrast: DeepOceanContrast,
         thumbnail: DeepOceanThumbnail,
         thumbnailGray: DeepOceanThumbnailGray,
-        thumbnailContrast: DeepOceanThumbnailContrast
+        thumbnailContrast: DeepOceanThumbnailContrast,
+        character: RobotIcon
     },
     'Jungle': {
         background: Jungle,
@@ -53,7 +60,8 @@ const worlds = {
         backgroundContrast: JungleContrast,
         thumbnail: JungleThumbnail,
         thumbnailGray: JungleThumbnailGray,
-        thumbnailContrast: JungleThumbnailContrast
+        thumbnailContrast: JungleThumbnailContrast,
+        character: RabbitIcon
     },
     'Sketchpad': {
         background: null,
@@ -61,7 +69,8 @@ const worlds = {
         backgroundContrast: null,
         thumbnail: SketchpadThumbnail,
         thumbnailGray: SketchpadThumbnail,
-        thumbnailContrast: SketchpadThumbnail
+        thumbnailContrast: SketchpadThumbnail,
+        character: RobotIcon
     },
     'Space': {
         background: Space,
@@ -69,7 +78,8 @@ const worlds = {
         backgroundContrast: SpaceContrast,
         thumbnail: SpaceThumbnail,
         thumbnailGray: SpaceThumbnailGray,
-        thumbnailContrast: SpaceThumbnailContrast
+        thumbnailContrast: SpaceThumbnailContrast,
+        character: SpaceShipIcon
     }
 };
 
