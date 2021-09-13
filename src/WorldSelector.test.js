@@ -168,4 +168,23 @@ describe('When the done button is clicked', () => {
         expect(mockOnChange.mock.calls.length).toBe(1);
         expect(mockOnChange.mock.calls[0][0]).toBe('Space');
     })
-})
+});
+
+test('When one of the thumbnail images is clicked, onSelect prop gets called', () => {
+    expect.assertions(4);
+    const { wrapper, mockOnSelect } = createMountWorldSelector();
+    const selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
+    const sketchPadThumbnailImage = selectorThumbnails.at(0);
+    const spaceThumbnailImage = selectorThumbnails.at(1);
+    const jungleThumbnailImage = selectorThumbnails.at(2);
+    const deepOceanThumbnailImage = selectorThumbnails.at(3);
+
+    sketchPadThumbnailImage.simulate('click');
+    expect(mockOnSelect.mock.calls[0][0]).toBe('Sketchpad');
+    spaceThumbnailImage.simulate('click');
+    expect(mockOnSelect.mock.calls[1][0]).toBe('Space');
+    jungleThumbnailImage.simulate('click');
+    expect(mockOnSelect.mock.calls[2][0]).toBe('Jungle');
+    deepOceanThumbnailImage.simulate('click');
+    expect(mockOnSelect.mock.calls[3][0]).toBe('DeepOcean');
+});
