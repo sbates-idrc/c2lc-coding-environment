@@ -70,7 +70,7 @@ describe('Character position gets updated on character-position div', () => {
         wrapper.setProps({ runningState: 'stopRequested', world: 'Space' });
         // $FlowFixMe: Flow doesn't know about character-position div
         expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('A character at column A, row 1 facing right on the Earth');
-        wrapper.setProps({ runningState: 'running', world: 'default' });
+        wrapper.setProps({ runningState: 'running', world: 'Sketchpad' });
         // $FlowFixMe: Flow doesn't know about character-position div
         expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('A character is moving');
         wrapper.setProps({ runningState: 'stopped' });
