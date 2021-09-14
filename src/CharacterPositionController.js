@@ -5,23 +5,22 @@ import type {IntlShape} from 'react-intl';
 import React from 'react';
 import CharacterState from './CharacterState';
 import classNames from 'classnames';
-import { ReactComponent as RobotIcon } from './svg/Robot.svg';
-import { ReactComponent as SpaceShipContrastIcon } from './svg/SpaceShip-contrast.svg';
-import { ReactComponent as SafariJeepContrastIcon } from './svg/SafariJeep-contrast.svg';
-import { ReactComponent as SubmarineContrastIcon } from './svg/Submarine-contrast.svg';
+import { getWorldCharacter } from './Worlds';
 import { ReactComponent as MovePositionUp } from './svg/MovePositionUp.svg';
 import { ReactComponent as MovePositionRight } from './svg/MovePositionRight.svg';
 import { ReactComponent as MovePositionDown } from './svg/MovePositionDown.svg';
 import { ReactComponent as MovePositionLeft } from './svg/MovePositionLeft.svg';
 import { ReactComponent as TurnPositionRight } from './svg/TurnPositionRight.svg';
 import { ReactComponent as TurnPositionLeft } from './svg/TurnPositionLeft.svg';
+import type { ThemeName, WorldName } from './types';
 import './CharacterPositionController.scss';
 
 type CharacterPositionControllerProps = {
     intl: IntlShape,
     characterState: CharacterState,
     editingDisabled: boolean,
-    world: string,
+    theme: ThemeName,
+    world: WorldName,
     onChangeCharacterPosition: (direction: ?string) => void,
     onChangeCharacterXPosition: (columnLabel: string) => void,
     onChangeCharacterYPosition: (rowLabel: string) => void
@@ -101,23 +100,10 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
 
     getWorldCharacter() {
         const transform = `rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
-        if (this.props.world === 'Space') {
-            return <SpaceShipContrastIcon
-                transform={transform}
-                className='CharacterPositionController__character-column-character' />
-        } else if (this.props.world === 'Jungle') {
-            return <SafariJeepContrastIcon
-                transform={transform}
-                className='CharacterPositionController__character-column-character' />
-        } else if (this.props.world === 'DeepOcean') {
-            return <SubmarineContrastIcon
-                transform={transform}
-                className='CharacterPositionController__character-column-character' />
-        } else {
-            return <RobotIcon
-                transform={transform}
-                className='CharacterPositionController__character-column-character' />
-        }
+        return getWorldCharacter(this.props.theme, this.props.world, {
+            className: 'CharacterPositionController__character-column-character',
+            transform: transform
+        });
     }
 
     render() {

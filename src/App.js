@@ -1202,6 +1202,7 @@ export class App extends React.Component<AppProps, AppState> {
                         <CharacterPositionController
                             characterState={this.state.characterState}
                             editingDisabled={this.editingIsDisabled()}
+                            theme={this.state.settings.theme}
                             world={this.state.settings.world}
                             onChangeCharacterPosition={this.handleChangeCharacterPosition}
                             onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
@@ -1243,6 +1244,7 @@ export class App extends React.Component<AppProps, AppState> {
                             audioManager={this.audioManager}
                             focusTrapManager={this.focusTrapManager}
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
+                            theme={this.state.settings.theme}
                             world={this.state.settings.world}
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
