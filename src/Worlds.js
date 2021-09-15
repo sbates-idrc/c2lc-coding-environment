@@ -104,15 +104,15 @@ export function getWorldProperties(world: WorldName): WorldProperties {
 export function getWorldCharacter(theme: ThemeName, world: WorldName, props: any) {
     const worldProperties = worlds[world];
     if (theme === 'gray') {
-        if (worldProperties.characterGray) {
+        if (worldProperties && worldProperties.characterGray) {
             return React.createElement(worldProperties.characterGray, props);
         }
     } else if (theme === 'contrast') {
-        if (worldProperties.characterContrast) {
+        if (worldProperties && worldProperties.characterContrast) {
             return React.createElement(worldProperties.characterContrast, props);
         }
     } else {
-        if (worldProperties.character) {
+        if (worldProperties && worldProperties.character) {
             return React.createElement(worldProperties.character, props);
         }
     }
