@@ -147,10 +147,6 @@ body.light-theme {
         background-color: white;
     }
 
-    .Character__icon-background {
-        fill: #4C9990;
-    }
-
     .ProgramBlockEditor__container {
         border: 2px solid #CCE6E2;
         background-color: #CCE6E2;
@@ -404,10 +400,6 @@ body.dark-theme {
         background-color: #22343C;
     }
 
-    .Scene__background {
-        background-color: #33717F;
-    }
-
     .Scene__header-corner {
         background-color: #33717F;
     }
@@ -426,10 +418,6 @@ body.dark-theme {
 
     .RefreshButton:focus {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-    }
-
-    .Character__icon-background {
-        fill: #4C9990;
     }
 
     .CharacterPositionController__character-column {
@@ -861,10 +849,6 @@ body.gray-theme {
     .Scene__container {
         background-color: #D5D8DD;
         border: $c2lc-scene-border-width solid #D5D8DD;
-    }
-
-    .Scene__background {
-        background-color: #D5D8DD;
     }
 
     .Scene__header-corner {
@@ -1710,10 +1694,6 @@ body.contrast-theme {
 
     .Scene {
         background-color: black;
-    }
-
-    .Scene__background {
-        background-color: white;
     }
 
     .Scene__header-corner {
