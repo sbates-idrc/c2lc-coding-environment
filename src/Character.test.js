@@ -9,6 +9,7 @@ configure({ adapter: new Adapter() });
 
 const defaultCharacterProps = {
     world: 'Sketchpad',
+    theme: 'light',
     transform: '',
     width: 3
 };
