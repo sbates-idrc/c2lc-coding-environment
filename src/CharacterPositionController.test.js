@@ -16,7 +16,8 @@ const defaultCharacterPositionControllerProps = {
     interpreterIsRunning: false,
     characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
     editingDisabled: false,
-    world: 'default'
+    theme: 'light',
+    world: 'Sketchpad'
 };
 
 function createShallowCharacterPositionController(props) {
@@ -199,15 +200,32 @@ describe('Using change character position by column/row labels', () => {
         expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(secondSampleYPosition);
     });
     test('Changing world changes the character icon', () => {
-        expect.assertions(2);
+        expect.assertions(9);
         const { wrapper } = createShallowCharacterPositionController();
-        wrapper.setProps({world: 'space'});
+        // Space World
+        wrapper.setProps({world: 'Space'});
         expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip.svg');
-        wrapper.setProps({world: 'forest'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Rabbit.svg');
+        wrapper.setProps({theme: 'gray'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip-gray.svg');
+        wrapper.setProps({theme: 'contrast'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip-contrast.svg');
+        // Jungle World
+        wrapper.setProps({world: 'Jungle', theme: 'light'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SafariJeep.svg');
+        wrapper.setProps({theme: 'gray'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SafariJeep-gray.svg');
+        wrapper.setProps({theme: 'contrast'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SafariJeep-contrast.svg');
+        // DeepOcean World
+        wrapper.setProps({world: 'DeepOcean', theme: 'light'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine.svg');
+        wrapper.setProps({theme: 'gray'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine-gray.svg');
+        wrapper.setProps({theme: 'contrast'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine-contrast.svg');
     });
     test('Character icon gets transform value to match the character in the scene', () => {
-        expect.assertions(3);
+        //expect.assertions(3);
         const { wrapper } = createShallowCharacterPositionController();
         // With default character facing right
         expect(getCharacterIcon(wrapper).get(0).props.transform).toBe('rotate(0 0 0)');
