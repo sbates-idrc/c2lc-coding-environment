@@ -1080,19 +1080,17 @@ export class App extends React.Component<AppProps, AppState> {
 
     //World handlers
 
-    handleChangeShowWorldSelector = () => {
-        this.setState((currentState: AppState) => {
-            return { showWorldSelector: !currentState.showWorldSelector };
-        });
-    };
-
     handleClickWorldIcon = () => {
-        this.handleChangeShowWorldSelector();
+        this.setState({
+            showWorldSelector: true
+        });
     }
 
     handleKeyDownWorldIcon = (event: KeyboardEvent) => {
         if (event.key === "Enter" || event.key === " ") {
-            this.handleChangeShowWorldSelector();
+            this.setState({
+                showWorldSelector: true
+            });
         }
     }
 
