@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import ModalFooter from './ModalFooter';
+import ModalHeader from './ModalHeader';
+import { Modal } from 'react-bootstrap';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 
@@ -188,14 +190,13 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
                 role="dialog"
                 dialogClassName='KeyboardInputModal'
             >
+                <ModalHeader
+                    title={this.props.intl.formatMessage({
+                        id: 'KeyboardInputModal.Title'
+                    })}>
+                    <KeyboardIcon />
+                </ModalHeader>
                 <Modal.Body className='KeyboardInputModal__content'>
-                    <h2 className="KeyboardInputModal__content__title">
-                        <KeyboardIcon/>
-                        <div>
-                            <FormattedMessage id='KeyboardInputModal.Title'/>
-                        </div>
-                    </h2>
-
                     <div className="KeyboardInputModal__content__toggleBar">
                         <div className="KeyboardInputModal__content__toggleBar__label">
                             <FormattedMessage id='KeyboardInputModal.Toggle.Label'/>
@@ -223,16 +224,11 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
                     <ul className={"KeyboardInputModal__content__list" + (this.state.keyBindingsEnabled ? "": " KeyboardInputModal__content__list--disabled")}>
                         {this.renderKeyBindings()}
                     </ul>
-
-                    <div className="KeyboardInputModal__content__footer">
-                        <Button className="KeyboardInputModal__content__cancelButton" onClick={this.cancelChanges}>
-                            <FormattedMessage id="KeyboardInputModal.Cancel"/>
-                        </Button>
-
-                        <Button className="KeyboardInputModal__content__doneButton" onClick={this.saveChanges}>
-                            <FormattedMessage id="KeyboardInputModal.Done"/>
-                        </Button>
-                    </div>
+                    <ModalFooter
+                        hasCancel={true}
+                        onClickCancel={this.cancelChanges}
+                        onClickDone={this.saveChanges}
+                    />
                 </Modal.Body>
             </Modal>);
     }

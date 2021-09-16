@@ -8,7 +8,7 @@ import Character from './Character';
 configure({ adapter: new Adapter() });
 
 const defaultCharacterProps = {
-    world: 'default',
+    world: 'Sketchpad',
     transform: '',
     width: 3
 };
@@ -33,19 +33,19 @@ function findCharacter(wrapper) {
 }
 
 describe('Right character should render based on theme props', () => {
-    test('default', () => {
+    test('Sketchpad', () => {
         expect.assertions(1);
         const wrapper = createMountCharacter();
         expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('Robot.svg');
     });
-    test('forest', () => {
+    test('Jungle', () => {
         expect.assertions(1);
-        const wrapper = createMountCharacter({world: 'forest'});
+        const wrapper = createMountCharacter({world: 'Jungle'});
         expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('Rabbit.svg');
     });
-    test('space', () => {
+    test('Space', () => {
         expect.assertions(1);
-        const wrapper = createMountCharacter({world: 'space'});
+        const wrapper = createMountCharacter({world: 'Space'});
         expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('SpaceShip.svg');
     });
 })

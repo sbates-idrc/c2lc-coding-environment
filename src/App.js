@@ -16,6 +16,7 @@ import DashDriver from './DashDriver';
 import * as FeatureDetection from './FeatureDetection';
 import FakeAudioManager from './FakeAudioManager';
 import FocusTrapManager from './FocusTrapManager';
+import IconButton from './IconButton';
 import Interpreter from './Interpreter';
 import PlayButton from './PlayButton';
 import ProgramBlockEditor from './ProgramBlockEditor';
@@ -30,7 +31,8 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ShareButton from './ShareButton';
 import ActionsMenu from './ActionsMenu';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName, WorldName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
+import type { WorldName } from './Worlds';
 import WorldSelector from './WorldSelector';
 import * as Utils from './Utils';
 import './App.scss';
@@ -42,7 +44,8 @@ import KeyboardInputModal from './KeyboardInputModal';
 
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent} from './KeyboardInputSchemes';
-import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg'
+import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
+import { ReactComponent as WorldIcon } from './svg/World.svg';
 import ProgramChangeController from './ProgramChangeController';
 
 // Convenience function to focus on the first element with a given class, used
@@ -96,7 +99,8 @@ type AppState = {
     usedActions: ActionToggleRegister,
     keyBindingsEnabled: boolean,
     keyboardInputSchemeName: KeyboardInputSchemeName;
-    showKeyboardModal: boolean
+    showKeyboardModal: boolean,
+    showWorldSelector: boolean
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -398,7 +402,7 @@ export class App extends React.Component<AppProps, AppState> {
                 language: 'en',
                 addNodeExpandedMode: true,
                 theme: 'mixed',
-                world: 'default'
+                world: 'Sketchpad'
             },
             dashConnectionStatus: 'notConnected',
             showDashConnectionError: false,
@@ -414,6 +418,7 @@ export class App extends React.Component<AppProps, AppState> {
             usedActions: {},
             keyBindingsEnabled: true,
             showKeyboardModal: false,
+            showWorldSelector: false,
             keyboardInputSchemeName: "nvda"
         };
 
@@ -1002,10 +1007,6 @@ export class App extends React.Component<AppProps, AppState> {
         this.setStateSettings({ theme });
     }
 
-    handleChangeWorld = (world: WorldName) => {
-        this.setStateSettings({ world });
-    }
-
     handleChangeCharacterPosition = (positionName: ?string) => {
         switch(positionName) {
             case 'turnLeft':
@@ -1077,6 +1078,35 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({keyBindingsEnabled: keyBindingsEnabled});
     }
 
+    //World handlers
+
+    handleClickWorldIcon = () => {
+        this.setState({
+            showWorldSelector: true
+        });
+    }
+
+    handleKeyDownWorldIcon = (event: KeyboardEvent) => {
+        if (event.key === "Enter" || event.key === " ") {
+            this.setState({
+                showWorldSelector: true
+            });
+        }
+    }
+
+    handleSelectWorld = (world: WorldName) => {
+        this.setStateSettings({world});
+    }
+
+    handleChangeWorld = (world: WorldName) => {
+        this.setState((state) => {
+            return {
+                showWorldSelector: false,
+                settings: Object.assign({}, state.settings, {world})
+            };
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -1095,15 +1125,14 @@ export class App extends React.Component<AppProps, AppState> {
                                     <FormattedMessage id='App.appHeading'/>
                                 </a>
                             </h1>
-                            <div
-                                className={"App__header-keyboardMenuIcon" + (this.state.keyBindingsEnabled ? "" : " App__header-keyboardMenuIcon--disabled")}
-                                tabIndex={0}
-                                aria-label={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                            <IconButton
+                                disabled={!this.state.keyBindingsEnabled}
+                                ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
                                 onClick={this.handleKeyboardModalToggle}
                                 onKeyDown={this.handleKeyboardMenuIconKeydown}
                             >
                                 <KeyboardModalToggleIcon/>
-                            </div>
+                            </IconButton>
                             <div className='App__header-audio-toggle'>
                                 <div className='App__audio-toggle-switch'>
                                     <AudioFeedbackToggleSwitch
@@ -1140,6 +1169,7 @@ export class App extends React.Component<AppProps, AppState> {
                         <Scene
                             dimensions={this.state.sceneDimensions}
                             characterState={this.state.characterState}
+                            theme={this.state.settings.theme}
                             world={this.state.settings.world}
                         />
                         <div className='App__scene-controls'>
@@ -1161,11 +1191,15 @@ export class App extends React.Component<AppProps, AppState> {
                         <h2 className='sr-only' >
                             <FormattedMessage id='WorldSelector.heading' />
                         </h2>
-                        <WorldSelector
-                            disabled={this.editingIsDisabled()}
-                            world={this.state.settings.world}
-                            onSelect={this.handleChangeWorld}
-                        />
+                        <div className="App__world-selector">
+                            <IconButton
+                                ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelector' })}
+                                onClick={this.handleClickWorldIcon}
+                                onKeyDown={this.handleKeyDownWorldIcon}
+                            >
+                                <WorldIcon />
+                            </IconButton>
+                        </div>
                         <CharacterPositionController
                             characterState={this.state.characterState}
                             editingDisabled={this.editingIsDisabled()}
@@ -1266,6 +1300,12 @@ export class App extends React.Component<AppProps, AppState> {
                     onChangeKeyBindingsEnabled={this.handleChangeKeyBindingsEnabled}
                     onHide={this.handleKeyboardModalClose}
                 />
+                <WorldSelector
+                    show={this.state.showWorldSelector}
+                    currentWorld={this.state.settings.world}
+                    theme={this.state.settings.theme}
+                    onChange={this.handleChangeWorld}
+                    onSelect={this.handleSelectWorld}/>
             </React.Fragment>
         );
     }
@@ -1329,7 +1369,7 @@ export class App extends React.Component<AppProps, AppState> {
 
             this.setStateSettings({
                 theme: Utils.getThemeFromString(themeQuery, 'mixed'),
-                world: Utils.getWorldFromString(worldQuery, 'default')
+                world: Utils.getWorldFromString(worldQuery, 'Sketchpad')
             });
         } else {
             const localProgram = window.localStorage.getItem('c2lc-program');
@@ -1382,7 +1422,7 @@ export class App extends React.Component<AppProps, AppState> {
 
             this.setStateSettings({
                 theme: Utils.getThemeFromString(localTheme, 'mixed'),
-                world: Utils.getWorldFromString(localWorld, 'default')
+                world: Utils.getWorldFromString(localWorld, 'Sketchpad')
             });
         }
 

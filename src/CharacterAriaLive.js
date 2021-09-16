@@ -4,7 +4,8 @@ import React from 'react';
 import CharacterState from './CharacterState';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
-import type { RunningState, WorldName } from './types';
+import type { RunningState } from './types';
+import type { WorldName } from './Worlds';
 
 type CharacterAriaLiveProps = {
     intl: IntlShape,
@@ -16,11 +17,11 @@ type CharacterAriaLiveProps = {
 
 class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
     getCharacterAriaLabel() {
-        if (this.props.world === 'space') {
+        if (this.props.world === 'Space') {
             return this.props.intl.formatMessage(
                 {id:'CharacterAriaLive.spaceShipCharacter'}
             );
-        } else if (this.props.world === 'forest') {
+        } else if (this.props.world === 'Jungle') {
             return this.props.intl.formatMessage(
                 {id:'CharacterAriaLive.rabbitCharacter'}
             );

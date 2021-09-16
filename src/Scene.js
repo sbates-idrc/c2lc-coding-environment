@@ -4,16 +4,18 @@ import React from 'react';
 import CharacterState from './CharacterState';
 import Character from './Character';
 import SceneDimensions from './SceneDimensions';
+import { getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
-
 import './Scene.scss';
-
-import type {WorldName} from './types';
+import './Worlds.scss';
+import type { ThemeName } from './types';
+import type { WorldName } from './Worlds';
 
 export type SceneProps = {
     dimensions: SceneDimensions,
     characterState: CharacterState,
+    theme: ThemeName,
     world: WorldName,
     intl: IntlShape
 };
@@ -37,7 +39,7 @@ class Scene extends React.Component<SceneProps, {}> {
             yOffset += 1;
             if (i < this.props.dimensions.getHeight()) {
                 grid.push(<line
-                    className='Scene__grid-line'
+                    className={`Scene__grid-line Scene__grid-line--${this.props.world}`}
                     key={`grid-cell-row-${i}`}
                     x1={this.props.dimensions.getMinX() - 0.5}
                     y1={yOffset}
@@ -63,7 +65,7 @@ class Scene extends React.Component<SceneProps, {}> {
             xOffset += 1;
             if (i < this.props.dimensions.getWidth()) {
                 grid.push(<line
-                    className='Scene__grid-line'
+                    className={`Scene__grid-line Scene__grid-line--${this.props.world}`}
                     key={`grid-cell-column-${i}`}
                     x1={xOffset}
                     y1={this.props.dimensions.getMinY() - 0.5}
@@ -89,7 +91,7 @@ class Scene extends React.Component<SceneProps, {}> {
     drawCharacterPath() {
         return this.props.characterState.path.map((pathSegment, i) => {
             return <line
-                className='Scene__path-line'
+                className={`Scene__path-line Scene__path-line--${this.props.world}`}
                 key={`path-${i}`}
                 x1={pathSegment.x1}
                 y1={pathSegment.y1}
@@ -136,6 +138,50 @@ class Scene extends React.Component<SceneProps, {}> {
             return this.props.intl.formatMessage({id: 'RelativeDirection.7'});
         } else {
             throw new Error(`Unrecognized xPos: ${xPos} or yPos: ${yPos}`);
+        }
+    }
+
+    getBackground(x: number, y: number, width: number, height: number) {
+        const worldProperties = getWorldProperties(this.props.world);
+        if (this.props.theme === 'gray') {
+            if (worldProperties.backgroundGray) {
+                return React.createElement(worldProperties.backgroundGray, {
+                    className: 'Scene__background',
+                    x: x,
+                    y: y,
+                    width: width,
+                    height: height,
+                    preserveAspectRatio: 'none'
+                });
+            } else {
+                return <></>;
+            }
+        } else if (this.props.theme === 'contrast') {
+            if (worldProperties.backgroundContrast) {
+                return React.createElement(worldProperties.backgroundContrast, {
+                    className: 'Scene__background',
+                    x: x,
+                    y: y,
+                    width: width,
+                    height: height,
+                    preserveAspectRatio: 'none'
+                });
+            } else {
+                return <></>;
+            }
+        } else {
+            if (worldProperties.background) {
+                return React.createElement(worldProperties.background, {
+                    className: 'Scene__background',
+                    x: x,
+                    y: y,
+                    width: width,
+                    height: height,
+                    preserveAspectRatio: 'none'
+                });
+            } else {
+                return <></>;
+            }
         }
     }
 
@@ -283,11 +329,12 @@ class Scene extends React.Component<SceneProps, {}> {
                                     <rect x={minX} y={minY} width={width} height={height} />
                                 </clipPath>
                             </defs>
+                            {this.getBackground(minX, minY, width, height)}
                             {grid}
                             <g clipPath='url(#Scene-clippath)'>
                                 {this.drawCharacterPath()}
                                 <rect
-                                    className="Character__icon-background"
+                                    className={`Character-background--${this.props.world}`}
                                     x={-0.5}
                                     y={-0.5}
                                     height={1}
