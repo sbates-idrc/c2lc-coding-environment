@@ -111,7 +111,7 @@ export class App extends React.Component<AppProps, AppState> {
     interpreter: Interpreter;
     audioManager: AudioManager;
     focusTrapManager: FocusTrapManager;
-    startingCharacterState: CharacterState;
+    startingCharacterStates: any;
     programSerializer: ProgramSerializer;
     characterStateSerializer: CharacterStateSerializer;
     allowedActionsSerializer: AllowedActionsSerializer;
@@ -134,7 +134,12 @@ export class App extends React.Component<AppProps, AppState> {
         this.sceneDimensions = new SceneDimensions(1, 12, 1, 8);
 
         // Begin facing East
-        this.startingCharacterState = new CharacterState(1, 1, 2, [], this.sceneDimensions);
+        this.startingCharacterStates = {
+            'Sketchpad': new CharacterState(1, 1, 2, [], this.sceneDimensions),
+            'Space': new CharacterState(1, 2, 2, [], this.sceneDimensions),
+            'Jungle': new CharacterState(1, 2, 2, [], this.sceneDimensions),
+            'DeepOcean': new CharacterState(1, 2, 2, [], this.sceneDimensions)
+        };
 
         this.interpreter = new Interpreter(1000, this);
 
@@ -397,7 +402,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.state = {
             programSequence: new ProgramSequence([], 0),
-            characterState: this.startingCharacterState,
+            characterState: this.startingCharacterStates['Sketchpad'],
             settings: {
                 language: 'en',
                 addNodeExpandedMode: true,
@@ -998,8 +1003,9 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleRefresh = () => {
+        const currentWorld = this.state.settings.world;
         this.setState({
-            characterState: this.startingCharacterState
+            characterState: this.startingCharacterStates[currentWorld]
         });
     }
 
