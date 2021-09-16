@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import { configure, mount, shallow } from 'enzyme';
+import { configure, mount, shallow, ReactWrapper } from 'enzyme';
 import { createIntl, IntlProvider } from 'react-intl';
 import CharacterState from './CharacterState';
 import SceneDimensions from './SceneDimensions';
@@ -93,15 +93,15 @@ function createMountCharacterPositionController(props) {
     };
 }
 
-function getCharacterPositionButton(characterPositionControllerWrapper, directionName) {
+function getCharacterPositionButton(characterPositionControllerWrapper: ReactWrapper<HTMLElement>, directionName: string): ReactWrapper<HTMLElement> {
     return characterPositionControllerWrapper.find('.CharacterPositionController__character-position-button').filter({value: directionName}).at(0);
 }
 
-function getCharacterPositionCoordinateBoxes(characterPositionControllerWrapper) {
+function getCharacterPositionCoordinateBoxes(characterPositionControllerWrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
     return characterPositionControllerWrapper.find('.ProgramBlock__character-position-coordinate-box');
 }
 
-function getCharacterIcon(characterPositionControllerWrapper) {
+function getCharacterIcon(characterPositionControllerWrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
     return characterPositionControllerWrapper.find('.CharacterPositionController__character-column-character');
 }
 
