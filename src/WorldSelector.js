@@ -8,7 +8,8 @@ import { Modal } from 'react-bootstrap';
 import { getWorldProperties } from './Worlds';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
-import type { WorldName, ThemeName } from './types';
+import type { ThemeName } from './types';
+import type { WorldName } from './Worlds';
 import type { IntlShape } from 'react-intl';
 import './WorldSelector.scss';
 

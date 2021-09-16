@@ -9,7 +9,8 @@ import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import './Scene.scss';
 import './Worlds.scss';
-import type {ThemeName, WorldName} from './types';
+import type { ThemeName } from './types';
+import type { WorldName } from './Worlds';
 
 export type SceneProps = {
     dimensions: SceneDimensions,

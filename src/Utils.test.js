@@ -24,10 +24,11 @@ test('Test getWorldFromString', () => {
 
     expect(getWorldFromString('', 'Sketchpad')).toBe('Sketchpad');
     expect(getWorldFromString(null, 'Sketchpad')).toBe('Sketchpad');
+
+    expect(getWorldFromString('DeepOcean', 'Sketchpad')).toBe('DeepOcean');
+    expect(getWorldFromString('Jungle', 'Sketchpad')).toBe('Jungle');
     expect(getWorldFromString('Sketchpad', 'Sketchpad')).toBe('Sketchpad');
     expect(getWorldFromString('Space', 'Sketchpad')).toBe('Space');
-    expect(getWorldFromString('Jungle', 'Sketchpad')).toBe('Jungle');
-    expect(getWorldFromString('DeepOcean', 'Sketchpad')).toBe('DeepOcean');
 });
 
 test('Test extend', () => {

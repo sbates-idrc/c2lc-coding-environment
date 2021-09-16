@@ -1,6 +1,8 @@
 // @flow
 
-import type { ThemeName, WorldName } from './types';
+import { isWorldName } from './Worlds';
+import type { ThemeName } from './types';
+import type { WorldName } from './Worlds';
 
 let idCounter: number = 0;
 
@@ -44,16 +46,20 @@ function getThemeFromString(themeQuery: ?string, defaultThemeName: ThemeName): T
 }
 
 function getWorldFromString(worldQuery: ?string, defaultWorldName: WorldName): WorldName {
-    // TODO: Instead of listing the known worlds here, check with Worlds.js
     switch (worldQuery) {
         // Convert old world names to the new world names
-        case('space'): return 'Space';
-        case('forest'): return 'Jungle';
-        // New world names
-        case('Space'): return 'Space';
-        case('Jungle'): return 'Jungle';
-        case('DeepOcean'): return 'DeepOcean';
-        default: return defaultWorldName;
+        case('space'):
+            return 'Space';
+        case('forest'):
+            return 'Jungle';
+        // If 'worldQuery' is a known world name, use it,
+        // otherwise return 'defaultWorldName'
+        default:
+            if (isWorldName(worldQuery)) {
+                return ((worldQuery: any): WorldName);
+            } else {
+                return defaultWorldName;
+            }
     }
 }
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { getWorldProperties } from './Worlds';
-import type { WorldName } from './types';
+import type { WorldName } from './Worlds';
 
 type CharacterProps = {
     world: WorldName,
