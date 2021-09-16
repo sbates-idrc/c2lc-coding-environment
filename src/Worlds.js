@@ -122,4 +122,5 @@ export function getWorldCharacter(theme: ThemeName, world: WorldName, props: any
             return React.createElement(worldProperties.character, props);
         }
     }
+    return React.createElement(Robot, props);
 }
