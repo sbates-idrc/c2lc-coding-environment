@@ -18,9 +18,10 @@ test('Test getThemeFromString', () => {
 });
 
 test('Test getWorldFromString', () => {
-    //World names before 0.9 release
-    expect(getWorldFromString('space', 'Sketchpad')).toBe('Space');
+    // World names before 0.9 release
+    expect(getWorldFromString('default', 'Sketchpad')).toBe('Sketchpad');
     expect(getWorldFromString('forest', 'Sketchpad')).toBe('Jungle');
+    expect(getWorldFromString('space', 'Sketchpad')).toBe('Space');
 
     expect(getWorldFromString('', 'Sketchpad')).toBe('Sketchpad');
     expect(getWorldFromString(null, 'Sketchpad')).toBe('Sketchpad');
