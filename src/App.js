@@ -1099,9 +1099,11 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleChangeWorld = (world: WorldName) => {
-        this.setState({
-            showWorldSelector: false,
-            settings: Object.assign({}, this.state.settings, {world})
+        this.setState((state) => {
+            return {
+                showWorldSelector: false,
+                settings: Object.assign({}, state.settings, {world})
+            };
         });
     }
 
