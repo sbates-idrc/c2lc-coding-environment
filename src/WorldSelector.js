@@ -100,14 +100,14 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                         <input
                             className='WorldSelector__option-radio'
                             type='radio'
-                            id={`world-${world}`}
+                            id={`WorldSelector__input-world-${world}`}
                             name='world-option'
                             value={world}
                             checked={this.props.currentWorld === world ? true : false}
                             onChange={this.handleOnSelect}
                             onFocus={this.onFocusWorld}
                             onBlur={this.onBlurWorld}/>
-                        <label htmlFor={`world-${world}`}>
+                        <label htmlFor={`WorldSelector__input-world-${world}`}>
                             <FormattedMessage id={`WorldSelector.option.${world}`} />
                         </label>
                     </div>
