@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import type { ThemeName, WorldName } from './types';
+import type { ThemeName } from './types';
 
 // DeepOcean
 import { ReactComponent as DeepOcean } from './svg/DeepOcean.svg';
@@ -96,6 +96,12 @@ const worlds = {
         characterContrast: SpaceShipContrast
     }
 };
+
+export type WorldName = $Keys<typeof worlds>;
+
+export function isWorldName(str: ?string): boolean {
+    return worlds.hasOwnProperty(str);
+}
 
 export function getWorldProperties(world: WorldName): WorldProperties {
     return worlds[world];

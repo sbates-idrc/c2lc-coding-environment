@@ -2,7 +2,8 @@
 
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
-import type {AudioManager, RunningState, ThemeName, WorldName} from './types';
+import type {AudioManager, RunningState, ThemeName} from './types';
+import type { WorldName } from './Worlds';
 import React from 'react';
 import CharacterState from './CharacterState';
 import ConfirmDeleteAllModal from './ConfirmDeleteAllModal';

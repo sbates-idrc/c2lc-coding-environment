@@ -358,10 +358,14 @@ describe('When Scene gets scrolled', () => {
 
 describe('Scene background changes when world and theme change', () => {
     test('world property changes to Sketchpad(default)', () => {
-        expect.assertions(1);
+        expect.assertions(3);
         const sceneWrapper = createMountScene();
         const sceneBackground = findSceneBackground(sceneWrapper);
         // Renders no background
+        expect(sceneBackground.get(0)).toBe(undefined);
+        sceneWrapper.setProps({theme: 'gray'});
+        expect(sceneBackground.get(0)).toBe(undefined);
+        sceneWrapper.setProps({theme: 'contrast'});
         expect(sceneBackground.get(0)).toBe(undefined);
     });
     test('world property changes to Space', () => {

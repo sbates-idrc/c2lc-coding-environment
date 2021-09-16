@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { getWorldCharacter } from './Worlds';
-import type { ThemeName, WorldName } from './types';
-import './Character.scss';
+import type { ThemeName } from './types';
+import type { WorldName } from './Worlds';
 
 type CharacterProps = {
     world: WorldName,

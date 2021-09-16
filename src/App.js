@@ -31,7 +31,8 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ShareButton from './ShareButton';
 import ActionsMenu from './ActionsMenu';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName, WorldName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
+import type { WorldName } from './Worlds';
 import WorldSelector from './WorldSelector';
 import * as Utils from './Utils';
 import './App.scss';
@@ -1079,19 +1080,17 @@ export class App extends React.Component<AppProps, AppState> {
 
     //World handlers
 
-    handleChangeShowWorldSelector = () => {
-        this.setState((currentState: AppState) => {
-            return { showWorldSelector: !currentState.showWorldSelector };
-        });
-    };
-
     handleClickWorldIcon = () => {
-        this.handleChangeShowWorldSelector();
+        this.setState({
+            showWorldSelector: true
+        });
     }
 
     handleKeyDownWorldIcon = (event: KeyboardEvent) => {
         if (event.key === "Enter" || event.key === " ") {
-            this.handleChangeShowWorldSelector();
+            this.setState({
+                showWorldSelector: true
+            });
         }
     }
 
@@ -1100,9 +1099,11 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleChangeWorld = (world: WorldName) => {
-        this.setState({
-            showWorldSelector: false,
-            settings: Object.assign({}, this.state.settings, {world})
+        this.setState((state) => {
+            return {
+                showWorldSelector: false,
+                settings: Object.assign({}, state.settings, {world})
+            };
         });
     }
 

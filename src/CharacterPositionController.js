@@ -12,7 +12,8 @@ import { ReactComponent as MovePositionDown } from './svg/MovePositionDown.svg';
 import { ReactComponent as MovePositionLeft } from './svg/MovePositionLeft.svg';
 import { ReactComponent as TurnPositionRight } from './svg/TurnPositionRight.svg';
 import { ReactComponent as TurnPositionLeft } from './svg/TurnPositionLeft.svg';
-import type { ThemeName, WorldName } from './types';
+import type { ThemeName } from './types';
+import type { WorldName } from './Worlds';
 import './CharacterPositionController.scss';
 
 type CharacterPositionControllerProps = {
