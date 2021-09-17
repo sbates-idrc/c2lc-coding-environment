@@ -136,7 +136,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
         if (prevState.focusedWorld !== this.state.focusedWorld) {
             const currentFocusedWorld =  this.state.focusedWorld;
             if (currentFocusedWorld) {
-                const currentRadioButton = document.getElementById(`world-${currentFocusedWorld}`);
+                const currentRadioButton = document.getElementById(`WorldSelector__input-world-${currentFocusedWorld}`);
                 if (currentRadioButton) {
                     currentRadioButton.focus();
                 }
