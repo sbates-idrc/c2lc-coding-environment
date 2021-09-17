@@ -1,12 +1,20 @@
 // @flow
+
 import { getWorldCharacter, getWorldProperties, isWorldName } from './Worlds';
 
+import { ReactComponent as Submarine } from './svg/Submarine.svg';
+import { ReactComponent as SubmarineGray } from './svg/Submarine-gray.svg';
+import { ReactComponent as SubmarineContrast } from './svg/Submarine-contrast.svg';
+
 test('isWorldName', () => {
-    expect.assertions(4);
+    expect.assertions(7);
     expect(isWorldName('DeepOcean')).toBe(true);
     expect(isWorldName('Jungle')).toBe(true);
     expect(isWorldName('Sketchpad')).toBe(true)
     expect(isWorldName('Space')).toBe(true);
+    expect(isWorldName('')).toBe(false);
+    expect(isWorldName(null)).toBe(false);
+    expect(isWorldName('UNKNOWN')).toBe(false);
 });
 
 test('getWorldProperties', () => {
@@ -18,24 +26,8 @@ test('getWorldProperties', () => {
 });
 
 test('getWorldCharacter', () => {
-    expect.assertions(14);
-    // Sketchpad world character
-    expect(getWorldCharacter('light', 'Sketchpad', {}).type.render().props.children).toBe('Robot.svg');
-    expect(getWorldCharacter('gray', 'Sketchpad', {}).type.render().props.children).toBe('Robot.svg');
-    expect(getWorldCharacter('contrast', 'Sketchpad', {}).type.render().props.children).toBe('Robot.svg');
-    // DeepOcean world character
-    expect(getWorldCharacter('light', 'DeepOcean', {}).type.render().props.children).toBe('Submarine.svg');
-    expect(getWorldCharacter('gray', 'DeepOcean', {}).type.render().props.children).toBe('Submarine-gray.svg');
-    expect(getWorldCharacter('contrast', 'DeepOcean', {}).type.render().props.children).toBe('Submarine-contrast.svg');
-    // Jungle world character
-    expect(getWorldCharacter('light', 'Jungle', {}).type.render().props.children).toBe('SafariJeep.svg');
-    expect(getWorldCharacter('gray', 'Jungle', {}).type.render().props.children).toBe('SafariJeep-gray.svg');
-    expect(getWorldCharacter('contrast', 'Jungle', {}).type.render().props.children).toBe('SafariJeep-contrast.svg');
-    // Space world character
-    expect(getWorldCharacter('light', 'Space', {}).type.render().props.children).toBe('SpaceShip.svg');
-    expect(getWorldCharacter('gray', 'Space', {}).type.render().props.children).toBe('SpaceShip-gray.svg');
-    expect(getWorldCharacter('contrast', 'Space', {}).type.render().props.children).toBe('SpaceShip-contrast.svg');
-    // getWorldCharacter API also takes additional properties
-    expect(getWorldCharacter('contrast', 'Sketchpad', {width: 10}).props.width).toBe(10);
-    expect(getWorldCharacter('contrast', 'Sketchpad', {x: 5}).props.x).toBe(5);
+    expect.assertions(3);
+    expect(getWorldCharacter('light', 'DeepOcean')).toBe(Submarine);
+    expect(getWorldCharacter('gray', 'DeepOcean')).toBe(SubmarineGray);
+    expect(getWorldCharacter('contrast', 'DeepOcean')).toBe(SubmarineContrast);
 });

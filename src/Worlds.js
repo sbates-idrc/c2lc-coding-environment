@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import * as React from 'react';
 import type { ThemeName } from './types';
 
 // DeepOcean
@@ -41,13 +41,13 @@ import { ReactComponent as SpaceShipGray } from './svg/SpaceShip-gray.svg';
 import { ReactComponent as SpaceShipContrast } from './svg/SpaceShip-contrast.svg';
 
 export type WorldProperties = {
-    background: any,
-    backgroundGray: any,
-    backgroundContrast: any,
-    thumbnail: any,
-    thumbnailGray: any,
-    thumbnailContrast: any,
-    character: any
+    background: ?React.ComponentType<{}>,
+    backgroundGray: ?React.ComponentType<{}>,
+    backgroundContrast: ?React.ComponentType<{}>,
+    thumbnail: React.ComponentType<{}>,
+    thumbnailGray: React.ComponentType<{}>,
+    thumbnailContrast: React.ComponentType<{}>,
+    character: React.ComponentType<{}>
 };
 
 const worlds = {
@@ -107,20 +107,13 @@ export function getWorldProperties(world: WorldName): WorldProperties {
     return worlds[world];
 }
 
-export function getWorldCharacter(theme: ThemeName, world: WorldName, props: any) {
+export function getWorldCharacter(theme: ThemeName, world: WorldName): React.ComponentType<{}> {
     const worldProperties = worlds[world];
     if (theme === 'gray') {
-        if (worldProperties && worldProperties.characterGray) {
-            return React.createElement(worldProperties.characterGray, props);
-        }
+        return worldProperties.characterGray;
     } else if (theme === 'contrast') {
-        if (worldProperties && worldProperties.characterContrast) {
-            return React.createElement(worldProperties.characterContrast, props);
-        }
+        return worldProperties.characterContrast;
     } else {
-        if (worldProperties && worldProperties.character) {
-            return React.createElement(worldProperties.character, props);
-        }
+        return worldProperties.character;
     }
-    return React.createElement(Robot, props);
 }

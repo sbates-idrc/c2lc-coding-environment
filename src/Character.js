@@ -14,13 +14,12 @@ type CharacterProps = {
 
 export default class Character extends React.Component<CharacterProps, {}> {
     render() {
+        const character = getWorldCharacter(this.props.theme, this.props.world);
         return (
             <g
                 className='Character'
                 transform={this.props.transform}>
-                {getWorldCharacter(
-                    this.props.theme,
-                    this.props.world,
+                {React.createElement(character,
                     {
                         className: 'Character__icon',
                         x: -this.props.width/2,

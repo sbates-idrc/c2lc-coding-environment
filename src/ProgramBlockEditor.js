@@ -534,6 +534,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
         contents.push(this.makeEndOfProgramAddNodeSection(this.props.programSequence.getProgramLength()));
 
+        const character = getWorldCharacter(this.props.theme, this.props.world);
+
         return (
             <div className='ProgramBlockEditor__container'>
                 <div className='ProgramBlockEditor__header'>
@@ -568,9 +570,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                         aria-hidden='true'
                         className='ProgramBlockEditor__character-column-character-container'
                         role='img'>
-                        {getWorldCharacter(
-                            this.props.theme,
-                            this.props.world,
+                        {React.createElement(
+                            character,
                             { className: 'ProgramBlockEditor__character-column-character' }
                         )}
                     </div>
