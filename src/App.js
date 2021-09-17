@@ -416,7 +416,7 @@ export class App extends React.Component<AppProps, AppState> {
             runningState: 'stopped',
             allowedActions: allowedActions,
             usedActions: {},
-            keyBindingsEnabled: true,
+            keyBindingsEnabled: false,
             showKeyboardModal: false,
             showWorldSelector: false,
             keyboardInputSchemeName: "nvda"
