@@ -60,7 +60,7 @@ describe('Character position gets updated on character-position div', () => {
         expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('A character at column B, row 1 facing right');
         wrapper.setProps({runningState: 'stopped', world: 'Space', characterState: new CharacterState(3, 1, 2, [], new SceneDimensions(1, 100, 1, 100))});
         // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('A character at column C, row 1 facing right on the Moon');
+        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('A character at column C, row 1 facing right on the Earth');
     });
     test('When runningState prop is changed', () => {
         const wrapper = createMountCharacterAriaLive();

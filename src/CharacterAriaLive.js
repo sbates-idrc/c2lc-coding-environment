@@ -5,7 +5,8 @@ import CharacterState from './CharacterState';
 import { getBackgroundInfo } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
-import type { RunningState, WorldName } from './types';
+import type { RunningState } from './types';
+import type { WorldName } from './Worlds';
 
 type CharacterAriaLiveProps = {
     intl: IntlShape,
