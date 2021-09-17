@@ -1391,7 +1391,7 @@ export class App extends React.Component<AppProps, AppState> {
         const localKeyBindingsEnabled = window.localStorage.getItem('c2lc-keyBindingsEnabled');
         const localKeyboardInputSchemeName = window.localStorage.getItem('c2lc-keyboardInputSchemeName');
 
-        if (localKeyBindingsEnabled !== null) {
+        if (localKeyBindingsEnabled != null) {
             try {
                 this.setState({
                     keyBindingsEnabled: JSON.parse(localKeyBindingsEnabled)
@@ -1405,7 +1405,7 @@ export class App extends React.Component<AppProps, AppState> {
             }
         }
 
-        if (localKeyboardInputSchemeName !== null) {
+        if (localKeyboardInputSchemeName != null) {
             this.setState({
                 keyboardInputSchemeName: localKeyboardInputSchemeName
             });
