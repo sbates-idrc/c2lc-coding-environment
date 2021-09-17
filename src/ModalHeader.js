@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Modal } from 'react-bootstrap';
-import { injectIntl } from 'react-intl';
 import './ModalHeader.scss';
 
 type ModalHeaderProps = {
@@ -10,7 +9,7 @@ type ModalHeaderProps = {
     children?: any
 };
 
-class ModalHeader extends React.Component<ModalHeaderProps, {}> {
+export default class ModalHeader extends React.Component<ModalHeaderProps, {}> {
     render() {
         return (
             <Modal.Title className='ModalHeader'>
@@ -20,5 +19,3 @@ class ModalHeader extends React.Component<ModalHeaderProps, {}> {
         );
     }
 }
-
-export default injectIntl(ModalHeader);

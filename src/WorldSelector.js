@@ -5,23 +5,11 @@ import classNames from 'classnames';
 import ModalHeader from './ModalHeader';
 import ModalFooter from './ModalFooter';
 import { Modal } from 'react-bootstrap';
+import { getWorldProperties } from './Worlds';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
-import { ReactComponent as SketchpadThumbnail } from './svg/SketchpadThumbnail.svg';
-
-import { ReactComponent as SpaceThumbnail } from './svg/SpaceThumbnail.svg';
-import { ReactComponent as JungleThumbnail } from './svg/JungleThumbnail.svg';
-import { ReactComponent as DeepOceanThumbnail } from './svg/DeepOceanThumbnail.svg';
-
-import { ReactComponent as SpaceThumbnailGray } from './svg/SpaceThumbnail-gray.svg';
-import { ReactComponent as JungleThumbnailGray } from './svg/JungleThumbnail-gray.svg';
-import { ReactComponent as DeepOceanThumbnailGray } from './svg/DeepOceanThumbnail-gray.svg';
-
-import { ReactComponent as SpaceThumbnailContrast } from './svg/SpaceThumbnail-contrast.svg';
-import { ReactComponent as JungleThumbnailContrast } from './svg/JungleThumbnail-contrast.svg';
-import { ReactComponent as DeepOceanThumbnailContrast } from './svg/DeepOceanThumbnail-contrast.svg';
-
-import type { WorldName, ThemeName } from './types';
+import type { ThemeName } from './types';
+import type { WorldName } from './Worlds';
 import type { IntlShape } from 'react-intl';
 import './WorldSelector.scss';
 
@@ -87,32 +75,19 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     }
 
     renderWorldThumbnail = (worldName: WorldName) => {
-        if (worldName === 'Space') {
-            if (this.props.theme === 'gray') {
-                return <SpaceThumbnailGray aria-hidden='true'/>
-            } else if (this.props.theme === 'contrast') {
-                return <SpaceThumbnailContrast aria-hidden='true'/>
-            } else {
-                return <SpaceThumbnail aria-hidden='true'/>
-            }
-        } else if (worldName === 'Jungle') {
-            if (this.props.theme === 'gray') {
-                return <JungleThumbnailGray aria-hidden='true'/>
-            } else if (this.props.theme === 'contrast') {
-                return <JungleThumbnailContrast aria-hidden='true'/>
-            } else {
-                return <JungleThumbnail aria-hidden='true'/>
-            }
-        } else if (worldName === 'DeepOcean') {
-            if (this.props.theme === 'gray') {
-                return <DeepOceanThumbnailGray aria-hidden='true'/>
-            } else if (this.props.theme === 'contrast') {
-                return <DeepOceanThumbnailContrast aria-hidden='true'/>
-            } else {
-                return <DeepOceanThumbnail aria-hidden='true'/>
-            }
+        const worldProperties = getWorldProperties(worldName);
+        if (this.props.theme === 'gray') {
+            return React.createElement(worldProperties.thumbnailGray, {
+                'aria-hidden': 'true'
+            });
+        } else if (this.props.theme === 'contrast') {
+            return React.createElement(worldProperties.thumbnailContrast, {
+                'aria-hidden': 'true'
+            });
         } else {
-            return <SketchpadThumbnail aria-hidden='true'/>
+            return React.createElement(worldProperties.thumbnail, {
+                'aria-hidden': 'true'
+            });
         }
     }
 
@@ -134,14 +109,14 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                         <input
                             className='WorldSelector__option-radio'
                             type='radio'
-                            id={`world-${world}`}
+                            id={`WorldSelector__input-world-${world}`}
                             name='world-option'
                             value={world}
                             checked={this.props.currentWorld === world}
                             onChange={this.handleOnSelect}
                             onFocus={this.onFocusWorld}
                             onBlur={this.onBlurWorld}/>
-                        <label htmlFor={`world-${world}`}>
+                        <label htmlFor={`WorldSelector__input-world-${world}`}>
                             <FormattedMessage id={`WorldSelector.option.${world}`} />
                         </label>
                     </div>
