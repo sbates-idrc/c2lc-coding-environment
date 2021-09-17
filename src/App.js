@@ -33,6 +33,7 @@ import ShareButton from './ShareButton';
 import ActionsMenu from './ActionsMenu';
 import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
+import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
 import * as Utils from './Utils';
 import './App.scss';
@@ -111,7 +112,6 @@ export class App extends React.Component<AppProps, AppState> {
     interpreter: Interpreter;
     audioManager: AudioManager;
     focusTrapManager: FocusTrapManager;
-    startingCharacterStates: any;
     programSerializer: ProgramSerializer;
     characterStateSerializer: CharacterStateSerializer;
     allowedActionsSerializer: AllowedActionsSerializer;
@@ -121,6 +121,7 @@ export class App extends React.Component<AppProps, AppState> {
     programBlockEditorRef: { current: any };
     sequenceInProgress: Array<KeyboardEvent>;
     programChangeController: ProgramChangeController;
+    defaultWorld: WorldName;
 
     constructor(props: any) {
         super(props);
@@ -132,14 +133,6 @@ export class App extends React.Component<AppProps, AppState> {
         };
 
         this.sceneDimensions = new SceneDimensions(1, 12, 1, 8);
-
-        // Begin facing East
-        this.startingCharacterStates = {
-            'Sketchpad': new CharacterState(1, 1, 2, [], this.sceneDimensions),
-            'Space': new CharacterState(1, 2, 2, [], this.sceneDimensions),
-            'Jungle': new CharacterState(1, 2, 2, [], this.sceneDimensions),
-            'DeepOcean': new CharacterState(1, 2, 2, [], this.sceneDimensions)
-        };
 
         this.interpreter = new Interpreter(1000, this);
 
@@ -154,6 +147,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.pushStateTimeoutID = null;
 
         this.sequenceInProgress = [];
+
+        this.defaultWorld = 'Sketchpad';
 
         this.interpreter.addCommandHandler(
             'forward1',
@@ -402,12 +397,12 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.state = {
             programSequence: new ProgramSequence([], 0),
-            characterState: this.startingCharacterStates['Sketchpad'],
+            characterState: this.makeStartingCharacterState(this.defaultWorld),
             settings: {
                 language: 'en',
                 addNodeExpandedMode: true,
                 theme: 'mixed',
-                world: 'Sketchpad'
+                world: this.defaultWorld
             },
             dashConnectionStatus: 'notConnected',
             showDashConnectionError: false,
@@ -1002,10 +997,21 @@ export class App extends React.Component<AppProps, AppState> {
         return commandBlocks;
     }
 
+    makeStartingCharacterState(world: WorldName): CharacterState {
+        const worldProperties = getWorldProperties(world);
+        return new CharacterState(
+            worldProperties.startingX,
+            worldProperties.startingY,
+            worldProperties.startingDirection,
+            [],
+            this.sceneDimensions
+        );
+    }
+
     handleRefresh = () => {
         const currentWorld = this.state.settings.world;
         this.setState({
-            characterState: this.startingCharacterStates[currentWorld]
+            characterState: this.makeStartingCharacterState(currentWorld)
         });
     }
 
@@ -1377,7 +1383,7 @@ export class App extends React.Component<AppProps, AppState> {
 
             this.setStateSettings({
                 theme: Utils.getThemeFromString(themeQuery, 'mixed'),
-                world: Utils.getWorldFromString(worldQuery, 'Sketchpad')
+                world: Utils.getWorldFromString(worldQuery, this.defaultWorld)
             });
         } else {
             const localProgram = window.localStorage.getItem('c2lc-program');
@@ -1430,7 +1436,7 @@ export class App extends React.Component<AppProps, AppState> {
 
             this.setStateSettings({
                 theme: Utils.getThemeFromString(localTheme, 'mixed'),
-                world: Utils.getWorldFromString(localWorld, 'Sketchpad')
+                world: Utils.getWorldFromString(localWorld, this.defaultWorld)
             });
         }
 
