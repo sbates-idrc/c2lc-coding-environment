@@ -202,7 +202,7 @@ class Scene extends React.Component<SceneProps, {}> {
                 }
             )
         } else {
-            const backgroundInfo = getBackgroundInfo(this.props.world, xPos - 1, yPos - 1);
+            const backgroundInfo = getBackgroundInfo(this.props.world, yPos - 1, xPos - 1);
             if (backgroundInfo) {
                 const itemOnGridCell = this.props.intl.formatMessage({ id: backgroundInfo });
                 return this.props.intl.formatMessage(

@@ -33,7 +33,7 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
         const { xPos, yPos } = characterState;
         const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
-        const backgroundInfo = getBackgroundInfo(this.props.world, xPos - 1, yPos - 1);
+        const backgroundInfo = getBackgroundInfo(this.props.world, yPos - 1, xPos - 1);
         if (backgroundInfo) {
             const itemOnGridCell = this.props.intl.formatMessage({ id: backgroundInfo });
             // $FlowFixMe: Flow doesn't know that elements have innerText.
