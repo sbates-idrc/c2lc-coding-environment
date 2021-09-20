@@ -228,7 +228,11 @@ export function getBackgroundInfo(world: WorldName, columnLabel: string, rowLabe
     const worldBackgroundInfo = worlds[world].backgroundInfo;
     if (worldBackgroundInfo) {
         const cellKey = columnLabel + rowLabel;
-        return worldBackgroundInfo[cellKey];
+        if (worldBackgroundInfo.hasOwnProperty(cellKey)) {
+            return worldBackgroundInfo[cellKey];
+        } else {
+            return null;
+        }
     }
     return null;
 }

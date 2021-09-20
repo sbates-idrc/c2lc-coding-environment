@@ -38,5 +38,5 @@ test('getBackgroundInfo', () => {
     expect(getBackgroundInfo('Jungle', 'G', '1')).toBe('giraffe');
     expect(getBackgroundInfo('DeepOcean', 'I', '7')).toBe('treasure');
     expect(getBackgroundInfo('Space', 'A', '1')).toBe('earth');
-    expect(getBackgroundInfo('Space', 'G', '1')).toBeUndefined();
+    expect(getBackgroundInfo('Space', 'G', '1')).toBe(null);
 });
