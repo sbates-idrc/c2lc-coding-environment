@@ -187,9 +187,12 @@ class Scene extends React.Component<SceneProps, {}> {
 
     generateAriaLabel() {
         const { xPos, yPos } = this.props.characterState;
+        const characterState = this.props.characterState;
+        const columnLabel = characterState.getColumnLabel();
+        const rowLabel = characterState.getRowLabel();
         const numColumns = this.props.dimensions.getWidth();
         const numRows = this.props.dimensions.getHeight();
-        const direction = this.getDirectionWords(this.props.characterState.direction);
+        const direction = this.getDirectionWords(characterState.direction);
         if (this.props.dimensions.getBoundsStateX(xPos) !== 'inBounds'
             || this.props.dimensions.getBoundsStateY(yPos) !== 'inBounds') {
             return this.props.intl.formatMessage(
@@ -202,16 +205,16 @@ class Scene extends React.Component<SceneProps, {}> {
                 }
             )
         } else {
-            const backgroundInfo = getBackgroundInfo(this.props.world, yPos - 1, xPos - 1);
+            const backgroundInfo = getBackgroundInfo(this.props.world, columnLabel, rowLabel);
             if (backgroundInfo) {
-                const itemOnGridCell = this.props.intl.formatMessage({ id: backgroundInfo });
+                const itemOnGridCell = this.props.intl.formatMessage({ id: `${this.props.world}.${backgroundInfo}` });
                 return this.props.intl.formatMessage(
                     { id: 'Scene.inBoundsOnItem' },
                     {
                         numColumns: this.props.dimensions.getWidth(),
                         numRows: this.props.dimensions.getHeight(),
-                        xPos: String.fromCharCode(64 + xPos),
-                        yPos: Math.trunc(yPos),
+                        xPos: columnLabel,
+                        yPos: rowLabel,
                         direction,
                         item: itemOnGridCell
                     }
@@ -222,8 +225,8 @@ class Scene extends React.Component<SceneProps, {}> {
                 {
                     numColumns: this.props.dimensions.getWidth(),
                     numRows: this.props.dimensions.getHeight(),
-                    xPos: String.fromCharCode(64 + xPos),
-                    yPos: Math.trunc(yPos),
+                    xPos: columnLabel,
+                    yPos: rowLabel,
                     direction
                 }
             )

@@ -30,12 +30,11 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
         const characterState = this.props.characterState;
         const columnLabel = characterState.getColumnLabel();
         const rowLabel = characterState.getRowLabel();
-        const { xPos, yPos } = characterState;
         const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
-        const backgroundInfo = getBackgroundInfo(this.props.world, yPos - 1, xPos - 1);
+        const backgroundInfo = getBackgroundInfo(this.props.world, columnLabel, rowLabel);
         if (backgroundInfo) {
-            const itemOnGridCell = this.props.intl.formatMessage({ id: backgroundInfo });
+            const itemOnGridCell = this.props.intl.formatMessage({ id: `${this.props.world}.${backgroundInfo}` });
             // $FlowFixMe: Flow doesn't know that elements have innerText.
             ariaLiveRegion.innerText = this.props.intl.formatMessage(
                 {id:'CharacterAriaLive.positionAriaLabelWithItem'},
