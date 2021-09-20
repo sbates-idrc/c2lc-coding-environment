@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import ModalHeader from './ModalHeader';
 import ModalFooter from './ModalFooter';
 import { Modal } from 'react-bootstrap';
-import { getWorldProperties } from './Worlds';
+import { getWorldThumbnail } from './Worlds';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
 import type { ThemeName } from './types';
@@ -74,21 +74,9 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
         });
     }
 
-    renderWorldThumbnail = (worldName: WorldName) => {
-        const worldProperties = getWorldProperties(worldName);
-        if (this.props.theme === 'gray') {
-            return React.createElement(worldProperties.thumbnailGray, {
-                'aria-hidden': 'true'
-            });
-        } else if (this.props.theme === 'contrast') {
-            return React.createElement(worldProperties.thumbnailContrast, {
-                'aria-hidden': 'true'
-            });
-        } else {
-            return React.createElement(worldProperties.thumbnail, {
-                'aria-hidden': 'true'
-            });
-        }
+    renderWorldThumbnail = (world: WorldName) => {
+        const worldThumbnail = getWorldThumbnail(this.props.theme, world);
+        return React.createElement(worldThumbnail, { 'aria-hidden': 'true' });
     }
 
     renderWorldOptions = () => {
