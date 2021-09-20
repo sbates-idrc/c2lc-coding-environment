@@ -1,6 +1,6 @@
 // @flow
 
-import { getWorldCharacter, getWorldThumbnail, getWorldProperties, isWorldName } from './Worlds';
+import { getBackgroundInfo, getWorldCharacter, getWorldThumbnail, getWorldProperties, isWorldName } from './Worlds';
 
 import { ReactComponent as Submarine } from './svg/Submarine.svg';
 import { ReactComponent as SubmarineGray } from './svg/Submarine-gray.svg';
@@ -42,3 +42,11 @@ test('getWorldThumbnail', () => {
     expect(getWorldThumbnail('gray', 'Space')).toBe(SpaceThumbnailGray);
     expect(getWorldThumbnail('contrast', 'Space')).toBe(SpaceThumbnailContrast);
 })
+test('getBackgroundInfo', () => {
+    expect.assertions(5);
+    expect(getBackgroundInfo('Sketchpad', 'B', '1')).toBe(null);
+    expect(getBackgroundInfo('Jungle', 'G', '1')).toBe('giraffe');
+    expect(getBackgroundInfo('DeepOcean', 'I', '7')).toBe('treasure');
+    expect(getBackgroundInfo('Space', 'A', '1')).toBe('earth');
+    expect(getBackgroundInfo('Space', 'G', '1')).toBe(null);
+});

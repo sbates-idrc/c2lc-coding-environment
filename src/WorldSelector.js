@@ -51,6 +51,15 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
         this.props.onChange(this.props.currentWorld);
     };
 
+    handleOnClickThumbnail = (e: Event) => {
+        // $FlowFixMe event target doesn't know dataset
+        const world = e.currentTarget.dataset.world;
+        this.props.onSelect(world);
+        this.setState({
+            focusedWorld: world
+        });
+    }
+
     onFocusWorld = (e: Event) => {
         // $FlowFixMe event target doesn't know value
         const focusedWorld = e.target.value;
@@ -81,7 +90,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                 <div
                     className='WorldSelector__option-container'
                     key={`WorldSelector__option-${world}`}>
-                    <div className={classes}>
+                    <div className={classes} data-world={world} onClick={this.handleOnClickThumbnail}>
                         {this.renderWorldThumbnail(world)}
                     </div>
                     <div className='WorldSelector__option-row'>
@@ -91,7 +100,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                             id={`WorldSelector__input-world-${world}`}
                             name='world-option'
                             value={world}
-                            checked={this.props.currentWorld === world ? true : false}
+                            checked={this.props.currentWorld === world}
                             onChange={this.handleOnSelect}
                             onFocus={this.onFocusWorld}
                             onBlur={this.onBlurWorld}/>
@@ -105,12 +114,21 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
         return worldOptions;
     }
 
-    componentDidUpdate(prevProps: WorldSelectorProps) {
+    componentDidUpdate(prevProps: WorldSelectorProps, prevState: WorldSelectorState) {
         // When the modal first open up, remember the world at that time
         if (prevProps.show !== this.props.show && this.props.show) {
             this.setState({
                 selectedWorld: this.props.currentWorld
             });
+        }
+        if (prevState.focusedWorld !== this.state.focusedWorld) {
+            const currentFocusedWorld =  this.state.focusedWorld;
+            if (currentFocusedWorld) {
+                const currentRadioButton = document.getElementById(`WorldSelector__input-world-${currentFocusedWorld}`);
+                if (currentRadioButton) {
+                    currentRadioButton.focus();
+                }
+            }
         }
     }
 

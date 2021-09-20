@@ -2,6 +2,7 @@
 
 import React from 'react';
 import CharacterState from './CharacterState';
+import { getBackgroundInfo } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import type { RunningState } from './types';
@@ -27,19 +28,34 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
 
     updateCharacterPositionAriaLive() {
         const characterState = this.props.characterState;
-        const xPos = characterState.getColumnLabel();
-        const yPos = characterState.getRowLabel();
+        const columnLabel = characterState.getColumnLabel();
+        const rowLabel = characterState.getRowLabel();
         const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
-        // $FlowFixMe: Flow doesn't know that elements have innerText.
-        ariaLiveRegion.innerText=this.props.intl.formatMessage(
-            {id:'CharacterAriaLive.positionAriaLabel'},
-            {
-                xPos,
-                yPos,
-                direction
-            }
-        );
+        const backgroundInfo = getBackgroundInfo(this.props.world, columnLabel, rowLabel);
+        if (backgroundInfo) {
+            const itemOnGridCell = this.props.intl.formatMessage({ id: `${this.props.world}.${backgroundInfo}` });
+            // $FlowFixMe: Flow doesn't know that elements have innerText.
+            ariaLiveRegion.innerText = this.props.intl.formatMessage(
+                {id:'CharacterAriaLive.positionAriaLabelWithItem'},
+                {
+                    columnLabel,
+                    rowLabel,
+                    direction,
+                    item: itemOnGridCell
+                }
+            )
+        } else {
+            // $FlowFixMe: Flow doesn't know that elements have innerText.
+            ariaLiveRegion.innerText=this.props.intl.formatMessage(
+                {id:'CharacterAriaLive.positionAriaLabel'},
+                {
+                    columnLabel,
+                    rowLabel,
+                    direction
+                }
+            );
+        }
     }
 
     render() {
