@@ -1,33 +1,33 @@
 // @flow
 
 import React from 'react';
-import { getWorldProperties } from './Worlds';
+import { getWorldCharacter } from './Worlds';
+import type { ThemeName } from './types';
 import type { WorldName } from './Worlds';
 
 type CharacterProps = {
     world: WorldName,
+    theme: ThemeName,
     transform: string,
     width: number,
 };
 
 export default class Character extends React.Component<CharacterProps, {}> {
-    getThemedCharacter = () => {
-        const worldProperties = getWorldProperties(this.props.world);
-        return React.createElement(worldProperties.character, {
-            className: 'Character__icon',
-            x: -this.props.width/2,
-            y: -this.props.width/2,
-            width: this.props.width,
-            height: this.props.width
-        });
-    }
-
     render() {
+        const character = getWorldCharacter(this.props.theme, this.props.world);
         return (
             <g
                 className='Character'
                 transform={this.props.transform}>
-                {this.getThemedCharacter()}
+                {React.createElement(character,
+                    {
+                        className: 'Character__icon',
+                        x: -this.props.width/2,
+                        y: -this.props.width/2,
+                        width: this.props.width,
+                        height: this.props.width
+                    }
+                )}
             </g>
         );
     }

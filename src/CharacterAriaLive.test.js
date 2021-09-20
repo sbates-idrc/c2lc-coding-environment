@@ -54,27 +54,27 @@ describe('Character position gets updated on character-position div', () => {
             characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100))
         });
         // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('Robot character at column A, row 1 facing right');
+        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('A character at column A, row 1 facing right');
         wrapper.setProps({runningState: 'stopped', world: 'Jungle', characterState: new CharacterState(2, 1, 2, [], new SceneDimensions(1, 100, 1, 100))});
         // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('Rabbit character at column B, row 1 facing right');
+        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('A character at column B, row 1 facing right');
         wrapper.setProps({runningState: 'stopped', world: 'Space', characterState: new CharacterState(3, 1, 2, [], new SceneDimensions(1, 100, 1, 100))});
         // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('Space Ship character at column C, row 1 facing right');
+        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('A character at column C, row 1 facing right on the Moon');
     });
     test('When runningState prop is changed', () => {
         const wrapper = createMountCharacterAriaLive();
         wrapper.setProps({ runningState: 'pauseRequested', world: 'Jungle' });
         // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('Rabbit character at column A, row 1 facing right');
+        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('A character at column A, row 1 facing right');
         wrapper.setProps({ runningState: 'stopRequested', world: 'Space' });
         // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('Space Ship character at column A, row 1 facing right');
-        wrapper.setProps({ runningState: 'running', world: 'default' });
+        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('A character at column A, row 1 facing right on the Earth');
+        wrapper.setProps({ runningState: 'running', world: 'Sketchpad' });
         // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('Robot character is moving');
+        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('A character is moving');
         wrapper.setProps({ runningState: 'stopped' });
         // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('Robot character at column A, row 1 facing right');
+        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('A character at column A, row 1 facing right');
     })
 });
