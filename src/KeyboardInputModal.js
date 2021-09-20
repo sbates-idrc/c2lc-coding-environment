@@ -232,6 +232,16 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
                 </Modal.Body>
             </Modal>);
     }
+
+    // Required to avoid a phantom state where we persist the defaults even after they are updated from local storage.
+    componentDidUpdate (prevProps) {
+        if (prevProps.keyBindingsEnabled !== this.props.keyBindingsEnabled || prevProps.keyboardInputSchemeName !== this.props.keyboardInputSchemeName) {
+            this.setState({
+                keyBindingsEnabled: this.props.keyBindingsEnabled,
+                keyboardInputSchemeName: this.props.keyboardInputSchemeName
+            });
+        }
+    }
 }
 
 export default injectIntl(KeyboardInputModal);

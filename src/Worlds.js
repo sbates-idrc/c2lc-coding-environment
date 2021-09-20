@@ -47,7 +47,10 @@ export type WorldProperties = {
     thumbnail: React.ComponentType<{}>,
     thumbnailGray: React.ComponentType<{}>,
     thumbnailContrast: React.ComponentType<{}>,
-    character: React.ComponentType<{}>
+    character: React.ComponentType<{}>,
+    startingX: number,
+    startingY: number,
+    startingDirection: number
 };
 
 const worlds = {
@@ -97,7 +100,10 @@ const worlds = {
         thumbnailContrast: DeepOceanThumbnailContrast,
         character: Submarine,
         characterGray: SubmarineGray,
-        characterContrast: SubmarineContrast
+        characterContrast: SubmarineContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2 // East
     },
     'Jungle': {
         background: Jungle,
@@ -146,7 +152,10 @@ const worlds = {
         thumbnailContrast: JungleThumbnailContrast,
         character: SafariJeep,
         characterGray: SafariJeepGray,
-        characterContrast: SafariJeepContrast
+        characterContrast: SafariJeepContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2 // East
     },
     'Sketchpad': {
         background: null,
@@ -158,7 +167,10 @@ const worlds = {
         thumbnailContrast: SketchpadThumbnail,
         character: Robot,
         characterGray: Robot,
-        characterContrast: Robot
+        characterContrast: Robot,
+        startingX: 1,
+        startingY: 1,
+        startingDirection: 2 // East
     },
     'Space': {
         background: Space,
@@ -195,7 +207,10 @@ const worlds = {
         thumbnailContrast: SpaceThumbnailContrast,
         character: SpaceShip,
         characterGray: SpaceShipGray,
-        characterContrast: SpaceShipContrast
+        characterContrast: SpaceShipContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2 // East
     }
 };
 

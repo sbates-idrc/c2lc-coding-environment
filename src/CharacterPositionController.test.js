@@ -225,7 +225,7 @@ describe('Using change character position by column/row labels', () => {
         expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine-contrast.svg');
     });
     test('Character icon gets transform value to match the character in the scene', () => {
-        //expect.assertions(3);
+        expect.assertions(3);
         const { wrapper } = createShallowCharacterPositionController();
         // With default character facing right
         expect(getCharacterIcon(wrapper).get(0).props.transform).toBe('rotate(0 0 0)');
