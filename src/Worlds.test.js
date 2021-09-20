@@ -33,8 +33,8 @@ test('getWorldCharacter', () => {
 });
 
 test('getBackgroundInfo', () => {
-    expect(getBackgroundInfo('Sketchpad', 0, 1)).toBe(null);
-    expect(getBackgroundInfo('Jungle', 0, 6)).toBe('Jungle.giraffe');
-    expect(getBackgroundInfo('DeepOcean', 6, 7)).toBe('DeepOcean.treasure');
-    expect(getBackgroundInfo('Space', 1, 0)).toBe('Space.earth');
+    expect(getBackgroundInfo('Sketchpad', 'B', '1')).toBe(null);
+    expect(getBackgroundInfo('Jungle', 'G', '1')).toBe('giraffe');
+    expect(getBackgroundInfo('DeepOcean', 'I', '7')).toBe('treasure');
+    expect(getBackgroundInfo('Space', 'A', '1')).toBe('earth');
 });
