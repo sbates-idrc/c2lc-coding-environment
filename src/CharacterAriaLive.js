@@ -16,30 +16,12 @@ type CharacterAriaLiveProps = {
 };
 
 class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
-    getCharacterAriaLabel() {
-        if (this.props.world === 'Space') {
-            return this.props.intl.formatMessage(
-                {id:'CharacterAriaLive.spaceShipCharacter'}
-            );
-        } else if (this.props.world === 'Jungle') {
-            return this.props.intl.formatMessage(
-                {id:'CharacterAriaLive.rabbitCharacter'}
-            );
-        } else {
-            return this.props.intl.formatMessage(
-                {id:'CharacterAriaLive.robotCharacter'}
-            );
-        }
-    }
-
     setCharacterMovingAriaLive() {
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
-        const character = this.getCharacterAriaLabel();
 
         // $FlowFixMe: Flow doesn't know that elements have innerText.
         ariaLiveRegion.innerText=this.props.intl.formatMessage(
-            {id:'CharacterAriaLive.movementAriaLabel'},
-            { character }
+            {id:'CharacterAriaLive.movementAriaLabel'}
         );
     }
 
@@ -49,12 +31,10 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
         const yPos = characterState.getRowLabel();
         const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
-        const character = this.getCharacterAriaLabel();
         // $FlowFixMe: Flow doesn't know that elements have innerText.
         ariaLiveRegion.innerText=this.props.intl.formatMessage(
             {id:'CharacterAriaLive.positionAriaLabel'},
             {
-                character,
                 xPos,
                 yPos,
                 direction
