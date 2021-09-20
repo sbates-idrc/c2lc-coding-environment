@@ -132,3 +132,14 @@ export function getWorldCharacter(theme: ThemeName, world: WorldName): React.Com
         return worldProperties.character;
     }
 }
+
+export function getWorldThumbnail(theme: ThemeName, world: WorldName): React.ComponentType<{}> {
+    const worldProperties = worlds[world];
+    if (theme === 'gray') {
+        return worldProperties.thumbnailGray;
+    } else if (theme === 'contrast') {
+        return worldProperties.thumbnailContrast;
+    } else {
+        return worldProperties.thumbnail;
+    }
+}
