@@ -40,18 +40,21 @@ import { ReactComponent as SpaceShip } from './svg/SpaceShip.svg';
 import { ReactComponent as SpaceShipGray } from './svg/SpaceShip-gray.svg';
 import { ReactComponent as SpaceShipContrast } from './svg/SpaceShip-contrast.svg';
 
-export type WorldProperties = {
+export type WorldProperties = {|
     background: ?React.ComponentType<{}>,
     backgroundGray: ?React.ComponentType<{}>,
     backgroundContrast: ?React.ComponentType<{}>,
+    backgroundInfo: ?{ [string]: string },
     thumbnail: React.ComponentType<{}>,
     thumbnailGray: React.ComponentType<{}>,
     thumbnailContrast: React.ComponentType<{}>,
     character: React.ComponentType<{}>,
+    characterGray: React.ComponentType<{}>,
+    characterContrast: React.ComponentType<{}>,
     startingX: number,
     startingY: number,
     startingDirection: number
-};
+|};
 
 const worlds = {
     'DeepOcean': {
