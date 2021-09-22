@@ -295,9 +295,9 @@ body.light-theme {
         }
     }
 
-    button.btn.ShareButton {
-        background-color: #F1F2F4;
+    .ShareButton {
         color: black;
+        background-color: #F1F2F4;
     }
 }
 
@@ -586,7 +586,6 @@ body.gray-theme {
             &:hover:not(:active) {
                 background: #505862;
                 color: White;
-
             }
 
             &:focus {
@@ -1276,7 +1275,8 @@ body.gray-theme {
         color: black;
 
         &:hover {
-            background-color:#D5D8DD;
+            background: #505862;
+            color: White;
         }
 
         &:focus {
