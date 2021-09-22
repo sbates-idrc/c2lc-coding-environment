@@ -1465,7 +1465,7 @@ export class App extends React.Component<AppProps, AppState> {
             }
         }
 
-        if (localKeyboardInputSchemeName != null) {
+        if (localKeyboardInputSchemeName === 'controlalt' || localKeyboardInputSchemeName === 'alt') {
             this.setState({
                 keyboardInputSchemeName: localKeyboardInputSchemeName
             });
