@@ -1,16 +1,16 @@
 @import '_variables';
 
-.modal {
-    border-radius: 0.25rem;
-}
-
-.modal-body {
-    border-radius: 0.25rem;
-    padding: 0;
-}
-
 .KeyboardInputModal {
     max-width: 75%;
+
+    .modal {
+        border-radius: 0.25rem;
+    }
+    
+    .modal-body {
+        border-radius: 0.25rem;
+        padding: 0;
+    }
 }
 
 .KeyboardInputModal__content {
