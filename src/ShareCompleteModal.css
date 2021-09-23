@@ -2,8 +2,13 @@
     border-radius: 0.25rem;
 }
 
-.ShareCompleteModal__content {
+.ShareCompleteModal.modal-dialog {
+    max-width: 550px;
+}
+
+.ShareCompleteModal__content,.ShareCompleteModal .modal-content {
     background-color: yellow;
+    margin: 0 auto;
 }
 
 .ShareCompleteModal__content.modal-body {
