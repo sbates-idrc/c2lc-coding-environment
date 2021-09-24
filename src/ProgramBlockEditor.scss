@@ -12,7 +12,7 @@
     border-radius: 3px;
     display: grid;
     height: 100%;
-    grid-template-columns: min-content auto;
+    grid-template-columns: 3rem auto;
     grid-template-rows: min-content auto;
 }
 
@@ -90,14 +90,11 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed {
     background-color: #000;
 }
 
-button.btn.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled {
+button.btn.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled,
+button.btn.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled:hover,
+button.btn.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled:active {
     background-color: $c2lc-disabled-background-color;
     cursor: default;
-}
-
-button.btn.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled:active:focus {
-    background-color: $c2lc-disabled-background-color;
-    box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
 }
 
 button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEditor__program-deleteAll-button--disabled,
@@ -131,106 +128,27 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
 .ProgramBlockEditor__character-column {
     align-items: center;
     background-color: #30444E;
-    border: 0px;
     border-right: 1px solid #19282F;
     border-radius: 3px 0 0 3px;
     box-shadow: 2px 0px 1px #8F8F8F;
     display: flex;
-    flex-direction: column;
-    grid-column-start: 1;
-    grid-column-end: 2;
     justify-content: center;
-    padding-top: 2rem;
-    pointer-events: none;
     padding: 0 0.5rem;
 }
 
 .ProgramBlockEditor__character-column-character-container {
-    position: relative;
-    border-radius: 50%;
-    background-color: #FFF;
+    box-sizing: border-box;
+    height: 45px;
+    width: 45px;
+    border-radius: 4px;
+    background-color: #22343C;
+    border: 2px solid #22343C;
 }
 
 .ProgramBlockEditor__character-column-character {
     width: 2.5rem;
     height: 2.5rem;
     padding: 0.4rem;
-}
-
-.ProgramBlockEditor__character-turn-positions {
-    display: flex;
-    width: 100%;
-    justify-content: space-around;
-    position: relative;
-    top: 0.5rem;
-    height: 2rem;
-}
-
-.ProgramBlockEditor__character-turn-positions > svg {
-    fill: black;
-}
-
-.ProgramBlockEditor__character-turn-positions > .ProgramBlockEditor__character-position-button--disabled {
-    fill: $c2lc-disabled-background-color;
-}
-
-.ProgramBlockEditor__character-move-position-sides {
-    display: flex;
-    align-items: center;
-    height: 2rem;
-}
-
-.ProgramBlockEditor__character-position-button {
-    position: relative;
-    z-index: 1;
-    pointer-events: all;
-    stroke: #4C9990;
-    width: 2.5rem;
-    height: 2rem;
-}
-
-.ProgramBlockEditor__character-move-position-sides > svg {
-    width: 2rem;
-    height: 2.5rem;
-}
-
-.ProgramBlockEditor__character-turn-positions {
-    svg path.filled {
-        fill: #4C9990;
-        stroke: none;
-    }
-}
-
-.ProgramBlockEditor__character-position-button:focus {
-    outline: $c2lc-focus-indicator-width solid $c2lc-focus-indicator-color;
-}
-
-.ProgramBlockEditor__character-position-button--disabled {
-    stroke: $c2lc-disabled-foreground-color;
-    cursor: default;
-}
-
-.ProgramBlockEditor__character-move-position-coordinate {
-    display: flex;
-    width: 100%;
-    justify-content: space-around;
-}
-
-.ProgramBlock__character-position-coordinate-box {
-    width: 2rem;
-    height: 2rem;
-    text-align: center;
-    pointer-events: all;
-    margin-bottom: 0.25rem;
-}
-
-.ProgramBlock__character-position-coordinate-box:focus {
-    outline: $c2lc-focus-indicator-width solid $c2lc-focus-indicator-color;
-}
-
-.ProgramBlock__character-position-coordinate-box--disabled {
-    color: $c2lc-disabled-background-color;
-    pointer-events: none;
 }
 
 .ProgramBlockEditor__program-sequence-scroll-container {
@@ -288,6 +206,30 @@ button.ProgramBlockEditor__program-block--active {
 button.ProgramBlockEditor__program-block--paused {
     animation-timing-function: ease;
     animation: pausedAnimation 2s infinite;
+}
+
+button.ProgramBlockEditor__program-block--updated.btn-command-block--forward1,
+button.ProgramBlockEditor__program-block--updated.btn-command-block--forward2,
+button.ProgramBlockEditor__program-block--updated.btn-command-block--forward3 {
+    @include updatedProgramAnimation($c2lc-forward-command-color, 'forward', 'default');
+}
+
+button.ProgramBlockEditor__program-block--updated.btn-command-block--backward1,
+button.ProgramBlockEditor__program-block--updated.btn-command-block--backward2,
+button.ProgramBlockEditor__program-block--updated.btn-command-block--backward3 {
+    @include updatedProgramAnimation($c2lc-backward-command-color, 'backward', 'default');
+}
+
+button.ProgramBlockEditor__program-block--updated.btn-command-block--left45,
+button.ProgramBlockEditor__program-block--updated.btn-command-block--left90,
+button.ProgramBlockEditor__program-block--updated.btn-command-block--left180 {
+    @include updatedProgramAnimation($c2lc-left-command-color, 'left', 'default');
+}
+
+button.ProgramBlockEditor__program-block--updated.btn-command-block--right45,
+button.ProgramBlockEditor__program-block--updated.btn-command-block--right90,
+button.ProgramBlockEditor__program-block--updated.btn-command-block--right180 {
+    @include updatedProgramAnimation($c2lc-right-command-color, 'right', 'default');
 }
 
 .ProgramBlockEditor__action-panel-container-outer {

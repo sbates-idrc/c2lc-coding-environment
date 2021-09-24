@@ -1,0 +1,181 @@
+/* DeepOcean */
+
+.Character-background--DeepOcean {
+    fill: #003C50;
+    stroke: none;
+}
+
+.Scene__grid-line--DeepOcean {
+    stroke: #8BA2C0;
+}
+
+.Scene__path-line--DeepOcean {
+    stroke: #A4D0DA;
+}
+
+body.gray-theme {
+    .Character-background--DeepOcean {
+        fill: #67717E;
+    }
+
+    .Scene__grid-line--DeepOcean {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--DeepOcean {
+        stroke: #505862;
+    }
+}
+
+body.contrast-theme {
+    .Character-background--DeepOcean {
+        fill: #FFFFFF;
+    }
+
+    .Scene__grid-line--DeepOcean {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--DeepOcean {
+        stroke: #FFF500;
+    }
+}
+
+/* Jungle */
+
+.Character-background--Jungle {
+    fill: #FFE5B4;
+    stroke: none;
+}
+
+.Scene__grid-line--Jungle {
+    stroke: #F9F2EC;
+}
+
+.Scene__path-line--Jungle {
+    stroke: #784234;
+}
+
+body.gray-theme {
+    .Character-background--Jungle {
+        fill: #505862;
+    }
+
+    .Scene__grid-line--Jungle {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--Jungle {
+        stroke: #505862;
+    }
+}
+
+body.contrast-theme {
+    .Character-background--Jungle {
+        fill: #FFFFFF;
+    }
+
+    .Scene__grid-line--Jungle {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--Jungle {
+        stroke: #FFF500;
+    }
+}
+
+/* Sketchpad */
+
+.Character-background--Sketchpad {
+    fill: #4C9990;
+    stroke: none;
+}
+
+.Scene__grid-line--Sketchpad {
+    stroke: #F1F2F4;
+}
+
+.Scene__path-line--Sketchpad {
+    stroke: #505862;
+}
+
+body.dark-theme {
+    .Scene__grid-line--Sketchpad {
+        stroke: #30444E;
+    }
+
+    .Scene__path-line--Sketchpad {
+        stroke: #FFFFFF;
+    }
+}
+
+body.gray-theme {
+    .Character-background--Sketchpad {
+        fill: #818A98;
+    }
+
+    .Scene__grid-line--Sketchpad {
+        stroke: #D5D8DD;
+    }
+
+    .Scene__path-line--Sketchpad {
+        stroke: #505862;
+    }
+}
+
+body.contrast-theme {
+    .Character-background--Sketchpad {
+        fill: #FFFFFF;
+    }
+
+    .Scene__grid-line--Sketchpad {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--Sketchpad {
+        stroke: #FFFFFF;
+    }
+}
+
+/* Space */
+
+.Character-background--Space {
+    fill: #1B2432;
+    stroke: none;
+}
+
+.Scene__grid-line--Space {
+    stroke: #8BA2C0;
+}
+
+.Scene__path-line--Space {
+    stroke: #F1AE5B;
+}
+
+body.gray-theme {
+    .Character-background--Space {
+        fill: #505862;
+    }
+
+    .Scene__grid-line--Space {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--Space {
+        stroke: #3A3F46;
+    }
+}
+
+body.contrast-theme {
+    .Character-background--Space {
+        fill: #FFFFFF;
+    }
+
+    .Scene__grid-line--Space {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--Space {
+        stroke: #FFF500;
+    }
+}

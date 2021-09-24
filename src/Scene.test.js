@@ -13,9 +13,10 @@ import CharacterState from './CharacterState';
 configure({ adapter: new Adapter() });
 
 const defaultSceneProps = {
-    dimensions: new SceneDimensions(1, 1),
-    characterState: new CharacterState(0, 0, 2, [], new SceneDimensions(1, 1)),
-    theme: 'default'
+    dimensions: new SceneDimensions(1, 1, 1, 1),
+    characterState: new CharacterState(0, 0, 2, [], new SceneDimensions(1, 1, 1, 1)),
+    theme: 'mixed',
+    world: 'Sketchpad'
 };
 
 function createMountScene(props) {
@@ -65,20 +66,16 @@ function findCharacterPath(sceneWrapper) {
     return sceneWrapper.find('.Scene__path-line');
 }
 
-function findRowDecorations(sceneWrapper) {
-    return sceneWrapper.find('.Scene__row-decoration');
-}
-
-function findColumnDecorations(sceneWrapper) {
-    return sceneWrapper.find('.Scene__column-decoration');
-}
-
 function findRowHeader(sceneWrapper) {
     return sceneWrapper.find('.Scene__row-header');
 }
 
 function findColumnHeader(sceneWrapper) {
     return sceneWrapper.find('.Scene__column-header');
+}
+
+function findSceneBackground(sceneWrapper) {
+    return sceneWrapper.find('.Scene__background');
 }
 
 // TODO: This function is reproducing logic from Scene (the 0.8) and
@@ -95,32 +92,9 @@ function calculateCharacterDimensions() {
 }
 
 describe('When the Scene renders', () => {
-    test('with width = 0, height = 0', () => {
-        expect.assertions(1);
-        const sceneWrapper = createMountScene();
-        sceneWrapper.setProps({ dimensions: new SceneDimensions(0, 0) });
-        expect(findGridLines(sceneWrapper).length).toBe(0);
-    })
-
-    test('With width = 0, height = 2', () => {
-        expect.assertions(1);
-        const sceneWrapper = createMountScene({
-            dimensions: new SceneDimensions(0, 2)
-        });
-        expect(findGridLines(sceneWrapper).length).toBe(0);
-    });
-
-    test('With width = 2, height = 0', () => {
-        expect.assertions(1);
-        const sceneWrapper = createMountScene({
-            dimensions: new SceneDimensions(2, 0)
-        });
-        expect(findGridLines(sceneWrapper).length).toBe(0);
-    });
-
     test('With width = 1, height = 1', () => {
-        expect.assertions(13);
-        const dimensions = new SceneDimensions(1, 1);
+        expect.assertions(7);
+        const dimensions = new SceneDimensions(1, 1, 1, 1);
         const sceneWrapper = createMountScene({
             dimensions: dimensions
         });
@@ -128,7 +102,7 @@ describe('When the Scene renders', () => {
         // Scene viewbox
 
         expect(findScene(sceneWrapper).get(0).props.children.props.viewBox)
-            .toBe(`${dimensions.getMinX()} ${dimensions.getMinY()} ${dimensions.getWidth()} ${dimensions.getHeight()}`);
+            .toBe(`${dimensions.getMinX() - 0.5} ${dimensions.getMinY() - 0.5} ${dimensions.getWidth()} ${dimensions.getHeight()}`);
 
         // Grid labels
 
@@ -137,24 +111,12 @@ describe('When the Scene renders', () => {
         // Row labels
 
         expect(findGridLabels(sceneWrapper).get(0).props.x).toBe(-0.5);
-        expect(findGridLabels(sceneWrapper).get(0).props.y).toBe(4.125);
-
-        // Row decorations
-
-        expect(findRowDecorations(sceneWrapper).get(0).props.cx).toBe(-0.7);
-        expect(findRowDecorations(sceneWrapper).get(0).props.cy).toBe(4.125);
-        expect(findRowDecorations(sceneWrapper).get(0).props.r).toBe(2);
+        expect(findGridLabels(sceneWrapper).get(0).props.y).toBe(5);
 
         // Column labels
 
-        expect(findGridLabels(sceneWrapper).get(1).props.x).toBe(4.125);
+        expect(findGridLabels(sceneWrapper).get(1).props.x).toBe(5);
         expect(findGridLabels(sceneWrapper).get(1).props.y).toBe(0.5);
-
-        // Column decorations
-
-        expect(findColumnDecorations(sceneWrapper).get(0).props.cx).toBe(4.125);
-        expect(findColumnDecorations(sceneWrapper).get(0).props.cy).toBe(0);
-        expect(findColumnDecorations(sceneWrapper).get(0).props.r).toBe(2);
 
         // Grid lines
 
@@ -162,8 +124,8 @@ describe('When the Scene renders', () => {
     });
 
     test('With width = 3, height = 2', () => {
-        expect.assertions(40);
-        const dimensions = new SceneDimensions(3, 2);
+        expect.assertions(25);
+        const dimensions = new SceneDimensions(1, 3, 1, 2);
         const sceneWrapper = createMountScene({
             dimensions: dimensions
         });
@@ -171,7 +133,7 @@ describe('When the Scene renders', () => {
         // Scene viewbox
 
         expect(findScene(sceneWrapper).get(0).props.children.props.viewBox)
-            .toBe(`${dimensions.getMinX()} ${dimensions.getMinY()} ${dimensions.getWidth()} ${dimensions.getHeight()}`);
+            .toBe(`${dimensions.getMinX() - 0.5} ${dimensions.getMinY() - 0.5} ${dimensions.getWidth()} ${dimensions.getHeight()}`);
 
         // Grid labels
 
@@ -180,40 +142,18 @@ describe('When the Scene renders', () => {
         // Row labels
 
         expect(findGridLabels(sceneWrapper).get(0).props.x).toBe(-0.5);
-        expect(findGridLabels(sceneWrapper).get(0).props.y).toBe(4.125);
+        expect(findGridLabels(sceneWrapper).get(0).props.y).toBe(5);
         expect(findGridLabels(sceneWrapper).get(1).props.x).toBe(-0.5);
-        expect(findGridLabels(sceneWrapper).get(1).props.y).toBe(12.375);
-
-        // Row decorations
-
-        expect(findRowDecorations(sceneWrapper).get(0).props.cx).toBe(-0.7);
-        expect(findRowDecorations(sceneWrapper).get(0).props.cy).toBe(4.125);
-        expect(findRowDecorations(sceneWrapper).get(0).props.r).toBe(2);
-        expect(findRowDecorations(sceneWrapper).get(1).props.cx).toBe(-0.7);
-        expect(findRowDecorations(sceneWrapper).get(1).props.cy).toBe(12.375);
-        expect(findRowDecorations(sceneWrapper).get(1).props.r).toBe(2);
-
+        expect(findGridLabels(sceneWrapper).get(1).props.y).toBe(15);
 
         // Column labels
 
-        expect(findGridLabels(sceneWrapper).get(2).props.x).toBe(4.125);
+        expect(findGridLabels(sceneWrapper).get(2).props.x).toBe(5);
         expect(findGridLabels(sceneWrapper).get(2).props.y).toBe(0.5);
-        expect(findGridLabels(sceneWrapper).get(3).props.x).toBe(12.375);
+        expect(findGridLabels(sceneWrapper).get(3).props.x).toBe(15);
         expect(findGridLabels(sceneWrapper).get(3).props.y).toBe(0.5);
-        expect(findGridLabels(sceneWrapper).get(4).props.x).toBe(20.625);
+        expect(findGridLabels(sceneWrapper).get(4).props.x).toBe(25);
         expect(findGridLabels(sceneWrapper).get(4).props.y).toBe(0.5);
-
-        // Column decorations
-
-        expect(findColumnDecorations(sceneWrapper).get(0).props.cx).toBe(4.125);
-        expect(findColumnDecorations(sceneWrapper).get(0).props.cy).toBe(0);
-        expect(findColumnDecorations(sceneWrapper).get(0).props.r).toBe(2);
-        expect(findColumnDecorations(sceneWrapper).get(1).props.cx).toBe(12.375);
-        expect(findColumnDecorations(sceneWrapper).get(1).props.cy).toBe(0);
-        expect(findColumnDecorations(sceneWrapper).get(1).props.r).toBe(2);
-        expect(findColumnDecorations(sceneWrapper).get(2).props.cx).toBe(20.625);
-        expect(findColumnDecorations(sceneWrapper).get(2).props.cy).toBe(0);
-        expect(findColumnDecorations(sceneWrapper).get(2).props.r).toBe(2);
 
         // Grid lines
 
@@ -250,7 +190,7 @@ describe('The ARIA label should tell there is a character with its position', ()
         [1, 2, 6, 'Scene, 17 by 9 grid with a character at column A, row 2 facing left'],
         [1, 2, 7, 'Scene, 17 by 9 grid with a character at column A, row 2 facing upper left']
     ])('x=%f, y=%f, direction=%i', (x, y, direction, expectedLabel) => {
-        const sceneDimensions = new SceneDimensions(17, 9);
+        const sceneDimensions = new SceneDimensions(1, 17, 1, 9);
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
             characterState: new CharacterState(x, y, direction, [], sceneDimensions)
@@ -263,7 +203,7 @@ describe('When the Scene renders', () => {
     test('Should render the character component', () => {
         expect.assertions(5);
         const sceneWrapper = createMountScene({
-            dimensions: new SceneDimensions(1, 1)
+            dimensions: new SceneDimensions(1, 1, 1, 1)
         });
         const expectedCharacterDimensions = calculateCharacterDimensions();
         expect(findCharacterIcon(sceneWrapper).hostNodes().length).toBe(1);
@@ -278,7 +218,7 @@ describe('When the Scene renders', () => {
     });
 });
 
-describe('When the character renders, transform should apply', (sceneDimensions = new SceneDimensions(100, 100)) => {
+describe('When the character renders, transform should apply', (sceneDimensions = new SceneDimensions(1, 100, 1, 100)) => {
     test('When xPos = 1, yPos = 1, direction = 2', () => {
         expect.assertions(1);
         const sceneWrapper = createMountScene({
@@ -314,7 +254,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
 describe('When the Character has a path, it is drawn on the Scene', () => {
     test('When there is no path segment', () => {
         expect.assertions(1);
-        const sceneDimensions = new SceneDimensions(1000, 1000);
+        const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
         const sceneWrapper = createMountScene({
             characterState: new CharacterState(0, 0, 2, [], sceneDimensions)
         });
@@ -324,7 +264,7 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
 
     test('When there is one path segment', () => {
         expect.assertions(5);
-        const sceneDimensions = new SceneDimensions(1000, 1000)
+        const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000)
         const sceneWrapper = createMountScene({
             characterState: new CharacterState(0, 0, 2, [{x1: 100, y1: 200, x2: 300, y2: 400}], sceneDimensions)
         });
@@ -338,7 +278,7 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
 
     test('When there are two path segments', () => {
         expect.assertions(9);
-        const sceneDimensions = new SceneDimensions(1000, 1000);
+        const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
         const sceneWrapper = createMountScene({
             characterState:
                 new CharacterState(0, 0, 2, [
@@ -413,5 +353,55 @@ describe('When Scene gets scrolled', () => {
         scene.simulate('scroll');
         expect(rowHeader.ref.currentTarget.scrollTop).toBe(200);
         expect(columnHeader.ref.currentTarget.scrollLeft).toBe(200);
+    });
+});
+
+describe('Scene background changes when world and theme change', () => {
+    test('world property changes to Sketchpad(default)', () => {
+        expect.assertions(3);
+        const sceneWrapper = createMountScene();
+        const sceneBackground = findSceneBackground(sceneWrapper);
+        // Renders no background
+        expect(sceneBackground.get(0)).toBe(undefined);
+        sceneWrapper.setProps({theme: 'gray'});
+        expect(sceneBackground.get(0)).toBe(undefined);
+        sceneWrapper.setProps({theme: 'contrast'});
+        expect(sceneBackground.get(0)).toBe(undefined);
+    });
+    test('world property changes to Space', () => {
+        expect.assertions(3);
+        const sceneWrapper = createMountScene({world: 'Space'});
+        let sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('Space.svg');
+        sceneWrapper.setProps({theme: 'gray'});
+        sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('Space-gray.svg');
+        sceneWrapper.setProps({theme: 'contrast'});
+        sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('Space-contrast.svg');
+    });
+    test('world property changes to Jungle', () => {
+        expect.assertions(3);
+        const sceneWrapper = createMountScene({world: 'Jungle'});
+        let sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('Jungle.svg');
+        sceneWrapper.setProps({theme: 'gray'});
+        sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('Jungle-gray.svg');
+        sceneWrapper.setProps({theme: 'contrast'});
+        sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('Jungle-contrast.svg');
+    });
+    test('world property changes to DeepOcean', () => {
+        expect.assertions(3);
+        const sceneWrapper = createMountScene({world: 'DeepOcean'});
+        let sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('DeepOcean.svg');
+        sceneWrapper.setProps({theme: 'gray'});
+        sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('DeepOcean-gray.svg');
+        sceneWrapper.setProps({theme: 'contrast'});
+        sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('DeepOcean-contrast.svg');
     });
 });
