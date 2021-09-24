@@ -27,6 +27,9 @@ import { ReactComponent as SafariJeepContrast } from './svg/SafariJeep-contrast.
 
 // Sketchpad
 import { ReactComponent as SketchpadThumbnail } from './svg/SketchpadThumbnail.svg';
+import { ReactComponent as SketchpadThumbnailDark } from './svg/SketchpadThumbnail-dark.svg';
+import { ReactComponent as SketchpadThumbnailGray } from './svg/SketchpadThumbnail-gray.svg';
+import { ReactComponent as SketchpadThumbnailContrast } from './svg/SketchpadThumbnail-contrast.svg';
 import { ReactComponent as Robot } from './svg/Robot.svg';
 
 // Space
@@ -46,6 +49,7 @@ export type WorldProperties = {|
     backgroundContrast: ?React.ComponentType<{}>,
     backgroundInfo: ?{ [string]: string },
     thumbnail: React.ComponentType<{}>,
+    thumbnailDark: React.ComponentType<{}>,
     thumbnailGray: React.ComponentType<{}>,
     thumbnailContrast: React.ComponentType<{}>,
     character: React.ComponentType<{}>,
@@ -104,6 +108,7 @@ const worlds: {|
             L8: 'fish'
         },
         thumbnail: DeepOceanThumbnail,
+        thumbnailDark: DeepOceanThumbnail,
         thumbnailGray: DeepOceanThumbnailGray,
         thumbnailContrast: DeepOceanThumbnailContrast,
         character: Submarine,
@@ -156,6 +161,7 @@ const worlds: {|
             L8: 'bush'
         },
         thumbnail: JungleThumbnail,
+        thumbnailDark: JungleThumbnail,
         thumbnailGray: JungleThumbnailGray,
         thumbnailContrast: JungleThumbnailContrast,
         character: SafariJeep,
@@ -171,8 +177,9 @@ const worlds: {|
         backgroundContrast: null,
         backgroundInfo: null,
         thumbnail: SketchpadThumbnail,
-        thumbnailGray: SketchpadThumbnail,
-        thumbnailContrast: SketchpadThumbnail,
+        thumbnailDark: SketchpadThumbnailDark,
+        thumbnailGray: SketchpadThumbnailGray,
+        thumbnailContrast: SketchpadThumbnailContrast,
         character: Robot,
         characterGray: Robot,
         characterContrast: Robot,
@@ -211,6 +218,7 @@ const worlds: {|
             E8: 'star'
         },
         thumbnail: SpaceThumbnail,
+        thumbnailDark: SpaceThumbnail,
         thumbnailGray: SpaceThumbnailGray,
         thumbnailContrast: SpaceThumbnailContrast,
         character: SpaceShip,
@@ -262,6 +270,8 @@ export function getWorldThumbnail(theme: ThemeName, world: WorldName): React.Com
         return worldProperties.thumbnailGray;
     } else if (theme === 'contrast') {
         return worldProperties.thumbnailContrast;
+    } else if (theme === 'dark') {
+        return worldProperties.thumbnailDark;
     } else {
         return worldProperties.thumbnail;
     }
