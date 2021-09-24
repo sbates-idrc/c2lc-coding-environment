@@ -1138,7 +1138,6 @@ export class App extends React.Component<AppProps, AppState> {
                                 </a>
                             </h1>
                             <IconButton
-                                disabled={!this.state.keyBindingsEnabled}
                                 ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
                                 onClick={this.handleKeyboardModalToggle}
                                 onKeyDown={this.handleKeyboardMenuIconKeydown}
