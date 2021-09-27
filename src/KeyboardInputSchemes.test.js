@@ -1,4 +1,15 @@
-import {keyboardEventMatchesKeyDef, findKeyboardEventSequenceMatches} from './KeyboardInputSchemes';
+// @flow
+
+import {keyboardEventMatchesKeyDef, findKeyboardEventSequenceMatches, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
+
+it('isKeyboardInputSchemeName', () => {
+    expect.assertions(5);
+    expect(isKeyboardInputSchemeName('controlalt')).toBe(true);
+    expect(isKeyboardInputSchemeName('alt')).toBe(true);
+    expect(isKeyboardInputSchemeName('')).toBe(false);
+    expect(isKeyboardInputSchemeName(null)).toBe(false);
+    expect(isKeyboardInputSchemeName('UNKNOWN')).toBe(false);
+});
 
 it('Should be able to handle unmodified keys', ()  => {
     const keyDef = { key: "?" };

@@ -44,7 +44,7 @@ import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
 import KeyboardInputModal from './KeyboardInputModal';
 
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
-import {findKeyboardEventSequenceMatches, isRepeatedEvent} from './KeyboardInputSchemes';
+import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
 import ProgramChangeController from './ProgramChangeController';
@@ -1454,7 +1454,7 @@ export class App extends React.Component<AppProps, AppState> {
         if (localKeyBindingsEnabled != null) {
             try {
                 this.setState({
-                    keyBindingsEnabled: JSON.parse(localKeyBindingsEnabled)
+                    keyBindingsEnabled: !!(JSON.parse(localKeyBindingsEnabled))
                 });
             }
             catch(err) {
@@ -1465,7 +1465,7 @@ export class App extends React.Component<AppProps, AppState> {
             }
         }
 
-        if (localKeyboardInputSchemeName === 'controlalt' || localKeyboardInputSchemeName === 'alt') {
+        if (isKeyboardInputSchemeName(localKeyboardInputSchemeName)) {
             this.setState({
                 keyboardInputSchemeName: localKeyboardInputSchemeName
             });

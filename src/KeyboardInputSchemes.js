@@ -3,6 +3,10 @@ import {extend} from './Utils';
 
 export type KeyboardInputSchemeName = "controlalt" | "alt";
 
+export function isKeyboardInputSchemeName(str: ?string): boolean {
+    return str === 'controlalt' || str === 'alt';
+}
+
 export type KeyDef = {
     code?: string,
     key?: string,
@@ -338,7 +342,7 @@ const ControlAltExtendedKeyboardSequences = extend(ExtendedKeyboardSequences, {
     }
 });
 
-const ControlAltScheme = Object.assign({
+const ControlAltInputScheme = Object.assign({
     addCommand: {
         keyDef: { code: "KeyA", key: "a", altKey: true, ctrlKey: true},
         actionName: "addCommand"
@@ -386,7 +390,7 @@ const ControlAltScheme = Object.assign({
 }, ControlAltExtendedKeyboardSequences);
 
 export const KeyboardInputSchemes:KeyboardInputSchemesType = {
-    "controlalt": ControlAltScheme,
+    "controlalt": ControlAltInputScheme,
     "alt": AltInputScheme
 };
 
