@@ -1,6 +1,6 @@
 <svg width="106" height="106" viewBox="0 0 106 106" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="106" height="106" fill="#E5E5E5"/>
-<rect x="1.00732" y="0.5" width="104.493" height="105" rx="10.5" fill="#22343C" stroke="#1E1E1E"/>
+<rect className='thumbnail-background' x="1.00732" y="0.5" width="104.493" height="105" rx="10.5" fill="#22343C" stroke="#1E1E1E"/>
 <path d="M105 35.2761L1 35.2761" stroke="#546D79"/>
 <line x1="36.5049" y1="1" x2="36.5049" y2="105" stroke="#546D79"/>
 <line x1="72.0171" y1="1" x2="72.0171" y2="105" stroke="#546D79"/>

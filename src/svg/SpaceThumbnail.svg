@@ -1,6 +1,6 @@
 <svg width="102" height="102" viewBox="0 0 102 102" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="102" height="102" fill="#E5E5E5"/>
-<rect x="0.5" y="0.5" width="101" height="101" rx="10.5" fill="#2D3D53" stroke="#1E1E1E"/>
+<rect className='thumbnail-background' x="0.5" y="0.5" width="101" height="101" rx="10.5" fill="#2D3D53" stroke="#1E1E1E"/>
 <circle cx="90.6572" cy="22" r="3" fill="#8BA2C0"/>
 <circle cx="28.2335" cy="82.9115" r="2.12955" transform="rotate(135 28.2335 82.9115)" fill="#8BA2C0"/>
 <circle cx="88.1572" cy="67.5" r="4.5" fill="#8BA2C0"/>

@@ -84,6 +84,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
         for (const world of this.availableWorldOptions) {
             const classes = classNames(
                 'WorldSelector__option-image',
+                `WorldSelector__option-image--${world}`,
                 this.state.focusedWorld === world && 'WorldSelector__option--selected'
             );
             worldOptions.push(
