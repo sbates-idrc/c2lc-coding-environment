@@ -341,6 +341,7 @@ body.dark-theme {
     }
 
     .App__command-palette-command-container {
+        background-color: #22343C;
         &::-webkit-scrollbar {
             background-color: #30444E;
         }
@@ -354,7 +355,7 @@ body.dark-theme {
     }
 
     .ActionsMenu__header {
-        background-color: #33717F;
+        background-color: #30444E;
         color: white;
     }
 
@@ -377,7 +378,8 @@ body.dark-theme {
     }
 
     .App__world-container {
-        background-color: #33717F;
+        background-color: #30444E;
+        border: 2px solid #33717F;
     }
 
 
@@ -392,7 +394,7 @@ body.dark-theme {
     }
 
     .Scene__container {
-        background-color: #33717F;
+        background-color: #30444E;
         border: $c2lc-scene-border-width solid #33717F;
     }
 
@@ -421,13 +423,13 @@ body.dark-theme {
     }
 
     .CharacterPositionController__character-column {
-        background-color: #33717F;
-        border-top: 1px solid #19282F;
+        background-color: #30444E;
+        border-top: 1px solid #33717F;
     }
 
     .CharacterPositionController__character-turn-positions {
         svg path.filled {
-            fill: white;
+            fill: #4C9990;
             stroke: none;
         }
         .CharacterPositionController__character-position-button--disabled {
@@ -441,7 +443,7 @@ body.dark-theme {
     }
 
     .CharacterPositionController__character-position-button {
-        stroke: white;
+        stroke: #4C9990;
         &:focus {
             outline: $c2lc-focus-indicator-width solid white;
         }
@@ -487,7 +489,7 @@ body.dark-theme {
     }
 
     .ProgramBlockEditor__header {
-        background-color: #33717F;
+        background-color: #30444E;
         color: #EBFAF8;
     }
 
