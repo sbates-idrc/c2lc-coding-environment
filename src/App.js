@@ -924,8 +924,8 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleToggleAllowedCommand = (event: Event, commandName: string) => {
-        if (this.state.programSequence.usesAction[commandName]) {
+    handleToggleAllowedCommand = (event: Event, commandName: CommandName) => {
+        if (this.state.programSequence.usesAction(commandName)) {
             event.preventDefault();
         }
         else {

@@ -14,7 +14,7 @@ import type {ActionToggleRegister, CommandName} from './types';
 
 type ActionsMenuProps = {
     intl: IntlShape,
-    changeHandler?: (event: Event, commandName: string) => void,
+    changeHandler?: (event: Event, commandName: CommandName) => void,
     editingDisabled?: boolean,
     // TODO: Flesh this definition out.
     menuItems: {},
