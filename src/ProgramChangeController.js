@@ -28,9 +28,13 @@ export default class ProgramChangeController {
             if (selectedAction) {
                 this.playAnnouncementForAdd(selectedAction);
                 this.doActivitiesForAdd(programBlockEditor, index);
+
+                const newProgramSequence = state.programSequence.insertStep(index,selectedAction);
+                const newUsedActions = this.app.calculateUsedActions(newProgramSequence);
+
                 return {
-                    programSequence: state.programSequence.insertStep(index,
-                        selectedAction)
+                    programSequence: newProgramSequence,
+                    usedActions: newUsedActions
                 };
             } else {
                 return {};
@@ -46,9 +50,11 @@ export default class ProgramChangeController {
                 this.playAnnouncementForAdd(selectedAction);
                 const index = state.programSequence.getProgramLength();
                 this.doActivitiesForAdd(programBlockEditor, index);
+                const newProgramSequence = state.programSequence.insertStep(index,selectedAction);
+                const newUsedActions = this.app.calculateUsedActions(newProgramSequence);
                 return {
-                    programSequence: state.programSequence.insertStep(index,
-                        selectedAction)
+                    programSequence: newProgramSequence,
+                    usedActions: newUsedActions
                 };
             } else {
                 return {};
@@ -83,8 +89,13 @@ export default class ProgramChangeController {
                     }
                 }
 
+                const newProgramSequence = state.programSequence.deleteStep(index);
+                const newUsedActions = this.app.calculateUsedActions(newProgramSequence);
+
+
                 return {
-                    programSequence: state.programSequence.deleteStep(index)
+                    programSequence: newProgramSequence,
+                    usedActions: newUsedActions
                 };
             } else {
                 // If the step to delete has changed, make no changes to the
