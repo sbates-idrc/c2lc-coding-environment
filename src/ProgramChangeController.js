@@ -28,7 +28,6 @@ export default class ProgramChangeController {
             if (selectedAction) {
                 this.playAnnouncementForAdd(selectedAction);
                 this.doActivitiesForAdd(programBlockEditor, index);
-
                 return {
                     programSequence: state.programSequence.insertStep(index,selectedAction)
                 };
