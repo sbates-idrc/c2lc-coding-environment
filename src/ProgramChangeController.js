@@ -29,7 +29,8 @@ export default class ProgramChangeController {
                 this.playAnnouncementForAdd(selectedAction);
                 this.doActivitiesForAdd(programBlockEditor, index);
                 return {
-                    programSequence: state.programSequence.insertStep(index,selectedAction)
+                    programSequence: state.programSequence.insertStep(index,
+                        selectedAction)
                 };
             } else {
                 return {};
@@ -46,7 +47,8 @@ export default class ProgramChangeController {
                 const index = state.programSequence.getProgramLength();
                 this.doActivitiesForAdd(programBlockEditor, index);
                 return {
-                    programSequence: state.programSequence.insertStep(index,selectedAction),
+                    programSequence: state.programSequence.insertStep(index,
+                        selectedAction)
                 };
             } else {
                 return {};
