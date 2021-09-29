@@ -117,6 +117,10 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     componentDidUpdate(prevProps: WorldSelectorProps, prevState: WorldSelectorState) {
         // When the modal first open up, remember the world at that time
         if (prevProps.show !== this.props.show && this.props.show) {
+            const selectedWorld = document.getElementById(`WorldSelector__input-world-${this.props.currentWorld}`);
+            if (selectedWorld) {
+                selectedWorld.focus();
+            }
             this.setState({
                 selectedWorld: this.props.currentWorld
             });
@@ -135,9 +139,11 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     render() {
         return (
             <Modal
+                aria-labelledby='WorldSelector'
                 show={this.props.show}
                 onHide={this.handleCancel}>
                 <ModalHeader
+                    id='WorldSelector'
                     title={this.props.intl.formatMessage({
                         id: 'WorldSelector.Title'
                     })}>

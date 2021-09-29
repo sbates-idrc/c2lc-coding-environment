@@ -18,6 +18,7 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
     render() {
         return (
             <Modal
+                aria-labelledby='deleteAll-button'
                 show={this.props.show}
                 onHide={this.props.onCancel}
                 size='lg'
@@ -25,7 +26,7 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
                 centered>
                 <Modal.Body className='ConfirmDeleteAllModal__content'>
                     <div className='ConfirmDeleteAllModal__header'>
-                        <span role='img' aria-label={this.props.intl.formatMessage({id:'ConfirmDeleteAllModal.warning'})} >
+                        <span role='img' aria-hidden='true' >
                             <ErrorIcon className='ConfirmDeleteAllModal__warning-svg' />
                         </span>
                         <FormattedMessage id='ConfirmDeleteAllModal.title' />
@@ -37,6 +38,7 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
                             <FormattedMessage id='ConfirmDeleteAllModal.cancelButton' />
                         </Button>
                         <Button
+                            id='deleteAll-button'
                             className='ConfirmDeleteAllModal__option-button'
                             onClick={this.props.onConfirm}>
                             <FormattedMessage id='ConfirmDeleteAllModal.confirmButton' />
@@ -45,6 +47,16 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
                 </Modal.Body>
             </Modal>
         );
+    }
+
+    componentDidUpdate (prevProps: ConfirmDeleteAllModalProps) {
+        if (prevProps.show !== this.props.show && this.props.show) {
+            const deleteAllButton = document.getElementById('deleteAll-button');
+            if (deleteAllButton) {
+                deleteAllButton.focus();
+            }
+
+        }
     }
 }
 
