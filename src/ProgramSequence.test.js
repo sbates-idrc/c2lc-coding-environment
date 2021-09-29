@@ -29,6 +29,21 @@ test('incrementProgramCounter should increment programCounter by 1', () => {
     expect(programSequence.getProgramCounter()).toBe(1);
 });
 
+test('usesAction should return true when an action is part of the sequence.', () => {
+    expect.assertions(1);
+    const program = ['left90'];
+    const programSequence = new ProgramSequence(program, 0);
+    expect(programSequence.usesAction('left90')).toBe(true);
+});
+
+test('usesAction should return false when an action is not part of the sequence.', () => {
+    expect.assertions(1);
+    const program = ['backward3'];
+    const programSequence = new ProgramSequence(program, 0);
+    expect(programSequence.usesAction('forward1')).toBe(false);
+});
+
+
 test.each([
     [[], 0, 0, [], 0],
     [['forward1'], 0, 0, [], 0],
