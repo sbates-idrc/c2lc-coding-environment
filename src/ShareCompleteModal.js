@@ -28,6 +28,12 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
                 <Modal.Body className='ShareCompleteModal__content'>
                     <FormattedMessage id='ShareCompleteModal.shareComplete' />
                 </Modal.Body>
+
+                <div className="ShareCompleteModal__footer">
+                    <button onClick={this.props.onHide}>
+                        <FormattedMessage id='ShareCompleteModal.confirmButton' />
+                    </button>
+                </div>
             </Modal>);
     }
 }

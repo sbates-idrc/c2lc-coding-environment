@@ -203,6 +203,7 @@
         "RelativeDirection.7": "to the upper left of",
         "ShareButton": "Share",
         "ShareCompleteModal.shareComplete": "The URL for your program has been copied to the clipboard.",
+        "ShareCompleteModal.confirmButton": "OK",
         "Space.aliens": "the Aliens",
         "Space.asteroid": "an asteroid",
         "Space.earth": "the Earth",
