@@ -186,15 +186,13 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
             <Modal
                 onHide={this.cancelChanges}
                 show={this.props.show}
-                aria-modal={true}
-                role="dialog"
                 dialogClassName='KeyboardInputModal'
             >
                 <ModalHeader
                     title={this.props.intl.formatMessage({
                         id: 'KeyboardInputModal.Title'
                     })}>
-                    <KeyboardIcon />
+                    <KeyboardIcon aria-hidden='true'/>
                 </ModalHeader>
                 <Modal.Body className='KeyboardInputModal__content'>
                     <div className="KeyboardInputModal__content__toggleBar">
