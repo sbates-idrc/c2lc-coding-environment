@@ -20,12 +20,10 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
     setCharacterMovingAriaLive() {
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
 
-        const characterLabel = this.props.intl.formatMessage({ id: this.props.world + ".character"})
-
         // $FlowFixMe: Flow doesn't know that elements have innerText.
         ariaLiveRegion.innerText=this.props.intl.formatMessage(
             {id:'CharacterAriaLive.movementAriaLabel'},
-            {character: characterLabel}
+            {world: this.props.world}
         );
     }
 
@@ -36,7 +34,6 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
         const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
         const backgroundInfo = getBackgroundInfo(this.props.world, columnLabel, rowLabel);
-        const characterLabel = this.props.intl.formatMessage({ id: this.props.world + ".character"})
         if (backgroundInfo) {
             const itemOnGridCell = this.props.intl.formatMessage({ id: `${this.props.world}.${backgroundInfo}` });
             // $FlowFixMe: Flow doesn't know that elements have innerText.
@@ -47,7 +44,7 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
                     rowLabel,
                     direction,
                     item: itemOnGridCell,
-                    character: characterLabel
+                    world: this.props.world
                 }
             )
         } else {
@@ -58,7 +55,7 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
                     columnLabel,
                     rowLabel,
                     direction,
-                    character: characterLabel
+                    world: this.props.world
                 }
             );
         }
