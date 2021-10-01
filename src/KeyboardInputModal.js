@@ -243,11 +243,11 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
             });
         }
         if (prevProps.show !== this.props.show && this.props.show) {
+            // TODO: Implement a common function to set focus on an element with an id in Untils.js
             const keyboardShortcutsToggle = document.getElementById('keyboardInputModal__toggle');
             if (keyboardShortcutsToggle) {
                 keyboardShortcutsToggle.focus();
             }
-
         }
     }
 }

@@ -51,11 +51,11 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
 
     componentDidUpdate (prevProps: ConfirmDeleteAllModalProps) {
         if (prevProps.show !== this.props.show && this.props.show) {
+            // TODO: Implement a common function to set focus on an element with an id in Untils.js
             const deleteAllButton = document.getElementById('deleteAll-button');
             if (deleteAllButton) {
                 deleteAllButton.focus();
             }
-
         }
     }
 }
