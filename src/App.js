@@ -809,7 +809,7 @@ export class App extends React.Component<AppProps, AppState> {
                             focusOnFirstElementWithClass("command-block");
                             break;
                         case("focusAppHeader"):
-                            focusOnFirstElementWithClass("App__header-keyboardMenuIcon");
+                            focusOnFirstElementWithClass("keyboard-shortcut-focus__app-header");
                             break;
                         case("focusAddNodeToggle"):
                             focusOnFirstElementWithClass("ProgramBlockEditor__add-node-toggle-switch");
@@ -833,7 +833,7 @@ export class App extends React.Component<AppProps, AppState> {
                             focusOnFirstElementWithClass("PenDownToggleSwitch");
                             break;
                         case("focusWorldSelector"):
-                            focusOnFirstElementWithClass("WorldIcon");
+                            focusOnFirstElementWithClass("keyboard-shortcut-focus__world-selector");
                             break;
                         case("moveCharacterLeft"):
                             if (!this.editingIsDisabled()) {
@@ -1117,7 +1117,9 @@ export class App extends React.Component<AppProps, AppState> {
                     <header className='App__header'>
                         <div className='App__header-row'>
                             <h1 className='App__app-heading'>
-                                <a href='https://weavly.org'
+                                <a
+                                    className='keyboard-shortcut-focus__app-header'
+                                    href='https://weavly.org'
                                     aria-label={this.props.intl.formatMessage({id: 'App.appHeading.link'})}
                                     target='_blank'
                                     rel='noopener noreferrer'>
@@ -1192,6 +1194,7 @@ export class App extends React.Component<AppProps, AppState> {
                         </h2>
                         <div className="App__world-selector">
                             <IconButton
+                                className='keyboard-shortcut-focus__world-selector'
                                 ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelector' })}
                                 onClick={this.handleClickWorldIcon}
                                 onKeyDown={this.handleKeyDownWorldIcon}
