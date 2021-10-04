@@ -44,7 +44,7 @@ import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
 import KeyboardInputModal from './KeyboardInputModal';
 
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
-import {findKeyboardEventSequenceMatches, isRepeatedEvent} from './KeyboardInputSchemes';
+import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
 import ProgramChangeController from './ProgramChangeController';
@@ -97,7 +97,6 @@ type AppState = {
     drawingEnabled: boolean,
     runningState: RunningState,
     allowedActions: ActionToggleRegister,
-    usedActions: ActionToggleRegister,
     keyBindingsEnabled: boolean,
     keyboardInputSchemeName: KeyboardInputSchemeName;
     showKeyboardModal: boolean,
@@ -126,7 +125,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '0.9';
+        this.version = '0.9.1';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -415,11 +414,10 @@ export class App extends React.Component<AppProps, AppState> {
             drawingEnabled: true,
             runningState: 'stopped',
             allowedActions: allowedActions,
-            usedActions: {},
             keyBindingsEnabled: false,
             showKeyboardModal: false,
             showWorldSelector: false,
-            keyboardInputSchemeName: "nvda"
+            keyboardInputSchemeName: "controlalt"
         };
 
         // For FakeRobotDriver, replace with:
@@ -496,24 +494,11 @@ export class App extends React.Component<AppProps, AppState> {
         }, callback);
     }
 
-    // Calculate used actions
-
-    calculateUsedActions = (programSequence: ProgramSequence): ActionToggleRegister => {
-        // Calculate  "used actions".
-        const usedActions = {};
-        programSequence.program.forEach((commandName) => {
-            usedActions[commandName] = true;
-        });
-        return usedActions;
-    }
-
     // Handlers
 
     handleProgramSequenceChange = (programSequence: ProgramSequence) => {
-        const usedActions: ActionToggleRegister = this.calculateUsedActions(programSequence);
         this.setState({
-            programSequence: programSequence,
-            usedActions: usedActions
+            programSequence: programSequence
         });
     }
 
@@ -939,8 +924,8 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleToggleAllowedCommand = (event: Event, commandName: string) => {
-        if (this.state.usedActions[commandName]) {
+    handleToggleAllowedCommand = (event: Event, commandName: CommandName) => {
+        if (this.state.programSequence.usesAction(commandName)) {
             event.preventDefault();
         }
         else {
@@ -1232,8 +1217,8 @@ export class App extends React.Component<AppProps, AppState> {
                             allowedActions={this.state.allowedActions}
                             changeHandler={this.handleToggleAllowedCommand}
                             editingDisabled={this.editingIsDisabled()}
+                            programSequence={this.state.programSequence}
                             intl={this.props.intl}
-                            usedActions={this.state.usedActions}
                         />
                         <div className='App__command-palette-command-container'>
                             <div className='App__command-palette-commands'>
@@ -1347,11 +1332,8 @@ export class App extends React.Component<AppProps, AppState> {
             if (programQuery != null) {
                 try {
                     const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(programQuery), 0);
-                    const usedActions: ActionToggleRegister = this.calculateUsedActions(programSequence);
-
                     this.setState({
-                        programSequence: programSequence,
-                        usedActions: usedActions
+                        programSequence: programSequence
                     });
                 } catch(err) {
                     /* eslint-disable no-console */
@@ -1401,10 +1383,8 @@ export class App extends React.Component<AppProps, AppState> {
             if (localProgram != null) {
                 try {
                     const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(localProgram), 0);
-                    const usedActions: ActionToggleRegister = this.calculateUsedActions(programSequence);
                     this.setState({
-                        programSequence: programSequence,
-                        usedActions: usedActions
+                        programSequence: programSequence
                     });
                 } catch(err) {
                     /* eslint-disable no-console */
@@ -1454,7 +1434,7 @@ export class App extends React.Component<AppProps, AppState> {
         if (localKeyBindingsEnabled != null) {
             try {
                 this.setState({
-                    keyBindingsEnabled: JSON.parse(localKeyBindingsEnabled)
+                    keyBindingsEnabled: !!(JSON.parse(localKeyBindingsEnabled))
                 });
             }
             catch(err) {
@@ -1465,7 +1445,7 @@ export class App extends React.Component<AppProps, AppState> {
             }
         }
 
-        if (localKeyboardInputSchemeName != null) {
+        if (isKeyboardInputSchemeName(localKeyboardInputSchemeName)) {
             this.setState({
                 keyboardInputSchemeName: localKeyboardInputSchemeName
             });
