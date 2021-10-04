@@ -38,13 +38,21 @@
 }
 
 button.btn.ConfirmDeleteAllModal__option-button {
+    &.confirm {
+        background-color: #33717F;
+        border: 2px solid #33717F;
+        color: #EBFAF8;
+    }
+    &.cancel {
+        background-color: #CCE6E2;
+        border: 2px solid #CCE6E2;
+        color: #1E1E1E;
+    }
+}
+
+button.btn.ConfirmDeleteAllModal__option-button {
     width: 11rem;
     margin-bottom: 1.5rem;
-
-
-    background-color: #4C9990;
-    border: 2px solid #4C9990;
-    color: #EBFAF8;
 
     &:hover {
         background-color: #F5C58A;

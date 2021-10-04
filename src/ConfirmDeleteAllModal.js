@@ -32,12 +32,12 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
                     </div>
                     <div className='ConfirmDeleteAllModal__footer'>
                         <Button
-                            className='ConfirmDeleteAllModal__option-button'
+                            className='ConfirmDeleteAllModal__option-button cancel'
                             onClick={this.props.onCancel}>
                             <FormattedMessage id='ConfirmDeleteAllModal.cancelButton' />
                         </Button>
                         <Button
-                            className='ConfirmDeleteAllModal__option-button'
+                            className='ConfirmDeleteAllModal__option-button confirm'
                             onClick={this.props.onConfirm}>
                             <FormattedMessage id='ConfirmDeleteAllModal.confirmButton' />
                         </Button>
