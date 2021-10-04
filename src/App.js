@@ -925,6 +925,8 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleToggleAllowedCommand = (event: Event, commandName: CommandName) => {
+        // TODO: Use the function form of setState() as the new state
+        //       depends on the current state
         const currentIsAllowed = this.state.allowedActions[commandName];
         if (this.state.programSequence.usesAction(commandName) && currentIsAllowed) {
             event.preventDefault();
