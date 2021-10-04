@@ -5,6 +5,11 @@
     stroke: none;
 }
 
+.CharacterPositionController__character-column-character-container--DeepOcean,
+.ProgramBlockEditor__character-column-character-container--DeepOcean {
+    background-color: #003C50;
+}
+
 .Scene__grid-line--DeepOcean {
     stroke: #8BA2C0;
 }
@@ -16,6 +21,11 @@
 body.gray-theme {
     .Character-background--DeepOcean {
         fill: #67717E;
+    }
+
+    .CharacterPositionController__character-column-character-container--DeepOcean,
+    .ProgramBlockEditor__character-column-character-container--DeepOcean {
+        background-color: #67717E;
     }
 
     .Scene__grid-line--DeepOcean {
@@ -32,12 +42,17 @@ body.contrast-theme {
         fill: #FFFFFF;
     }
 
+    .CharacterPositionController__character-column-character-container--DeepOcean,
+    .ProgramBlockEditor__character-column-character-container--DeepOcean {
+        background-color: #FFFFFF;
+    }
+
     .Scene__grid-line--DeepOcean {
-        stroke: #FFFFFF;
+        stroke: #0078FF;
     }
 
     .Scene__path-line--DeepOcean {
-        stroke: #FFF500;
+        stroke: #FF0000;
     }
 }
 
@@ -46,6 +61,11 @@ body.contrast-theme {
 .Character-background--Jungle {
     fill: #FFE5B4;
     stroke: none;
+}
+
+.CharacterPositionController__character-column-character-container--Jungle,
+.ProgramBlockEditor__character-column-character-container--Jungle {
+    background-color: #FFE5B4;
 }
 
 .Scene__grid-line--Jungle {
@@ -61,6 +81,11 @@ body.gray-theme {
         fill: #505862;
     }
 
+    .CharacterPositionController__character-column-character-container--Jungle,
+    .ProgramBlockEditor__character-column-character-container--Jungle {
+        background-color: #505862;
+    }
+
     .Scene__grid-line--Jungle {
         stroke: #FFFFFF;
     }
@@ -75,12 +100,17 @@ body.contrast-theme {
         fill: #FFFFFF;
     }
 
+    .CharacterPositionController__character-column-character-container--Jungle,
+    .ProgramBlockEditor__character-column-character-container--Jungle {
+        background-color: #FFFFFF;
+    }
+
     .Scene__grid-line--Jungle {
-        stroke: #FFFFFF;
+        stroke: #0078FF;
     }
 
     .Scene__path-line--Jungle {
-        stroke: #FFF500;
+        stroke: #FF0000;
     }
 }
 
@@ -89,6 +119,11 @@ body.contrast-theme {
 .Character-background--Sketchpad {
     fill: #4C9990;
     stroke: none;
+}
+
+.CharacterPositionController__character-column-character-container--Sketchpad,
+.ProgramBlockEditor__character-column-character-container--Sketchpad {
+    background-color: #4C9990;
 }
 
 .Scene__grid-line--Sketchpad {
@@ -114,6 +149,11 @@ body.gray-theme {
         fill: #818A98;
     }
 
+    .CharacterPositionController__character-column-character-container--Sketchpad,
+    .ProgramBlockEditor__character-column-character-container--Sketchpad {
+        background-color: #818A98;
+    }
+
     .Scene__grid-line--Sketchpad {
         stroke: #D5D8DD;
     }
@@ -128,12 +168,17 @@ body.contrast-theme {
         fill: #FFFFFF;
     }
 
+    .CharacterPositionController__character-column-character-container--Sketchpad,
+    .ProgramBlockEditor__character-column-character-container--Sketchpad {
+        background-color: #FFFFFF;
+    }
+
     .Scene__grid-line--Sketchpad {
-        stroke: #FFFFFF;
+        stroke: #0078FF;
     }
 
     .Scene__path-line--Sketchpad {
-        stroke: #FFFFFF;
+        stroke: #FF0000;
     }
 }
 
@@ -142,6 +187,11 @@ body.contrast-theme {
 .Character-background--Space {
     fill: #1B2432;
     stroke: none;
+}
+
+.CharacterPositionController__character-column-character-container--Space,
+.ProgramBlockEditor__character-column-character-container--Space {
+    background-color: #1B2432;
 }
 
 .Scene__grid-line--Space {
@@ -155,6 +205,11 @@ body.contrast-theme {
 body.gray-theme {
     .Character-background--Space {
         fill: #505862;
+    }
+
+    .CharacterPositionController__character-column-character-container--Space,
+    .ProgramBlockEditor__character-column-character-container--Space {
+        background-color: #505862;
     }
 
     .Scene__grid-line--Space {
@@ -171,11 +226,16 @@ body.contrast-theme {
         fill: #FFFFFF;
     }
 
+    .CharacterPositionController__character-column-character-container--Space,
+    .ProgramBlockEditor__character-column-character-container--Space {
+        background-color: #FFFFFF;
+    }
+
     .Scene__grid-line--Space {
-        stroke: #FFFFFF;
+        stroke: #0078FF;
     }
 
     .Scene__path-line--Space {
-        stroke: #FFF500;
+        stroke: #FF0000;
     }
 }
