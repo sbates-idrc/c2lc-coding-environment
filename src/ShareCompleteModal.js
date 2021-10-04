@@ -36,6 +36,15 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
                 </div>
             </Modal>);
     }
+
+    componentDidUpdate(prevProps: ShareCompleteModalProps) {
+        if (prevProps.show !== this.props.show && this.props.show) {
+            const confirmButtonRef = document.querySelector(".ShareCompleteModal button");
+            if(confirmButtonRef) {
+                confirmButtonRef.focus();
+            }
+        }
+    }
 }
 
 export default injectIntl(ShareCompleteModal);

@@ -34,11 +34,6 @@ class ShareButton extends React.Component<ShareButtonProps, ShareButtonState> {
         // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
         navigator.clipboard.writeText(currentUrl).then(() => {
             this.setState({ showShareComplete: true})
-
-            const confirmButtonRef = document.querySelector(".ShareCompleteModal button");
-            if(confirmButtonRef) {
-                confirmButtonRef.focus();
-            }
         });
     }
 
