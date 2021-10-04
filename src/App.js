@@ -925,12 +925,12 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleToggleAllowedCommand = (event: Event, commandName: CommandName) => {
-        if (this.state.programSequence.usesAction(commandName)) {
+        const currentIsAllowed = this.state.allowedActions[commandName];
+        if (this.state.programSequence.usesAction(commandName) && currentIsAllowed) {
             event.preventDefault();
         }
         else {
             const newAllowedActions= Object.assign({}, this.state.allowedActions);
-            const currentIsAllowed = this.state.allowedActions[commandName];
             newAllowedActions[commandName] = !currentIsAllowed;
             this.setState({ allowedActions: newAllowedActions})
         }
