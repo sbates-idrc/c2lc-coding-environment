@@ -1,5 +1,6 @@
 .ShareCompleteModal {
     border-radius: 0.25rem;
+    background-color: yellow;
 }
 
 .ShareCompleteModal.modal-dialog {
@@ -13,4 +14,17 @@
 
 .ShareCompleteModal__content.modal-body {
     padding: 1rem;
+}
+
+.ShareCompleteModal__footer {
+    padding-top: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    background-color: yellow;
+}
+
+.ShareCompleteModal__footer button {
+    margin-left: auto;
+    background-color: black;
+    color: white;
 }
