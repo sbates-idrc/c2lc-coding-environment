@@ -628,9 +628,6 @@ body.gray-theme {
 
     .IconButton {
         background-color: #818A98;
-        svg path {
-            fill: white;
-        }
 
         &:hover {
             background-color: #505862;
@@ -638,6 +635,23 @@ body.gray-theme {
 
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+
+        .App__header-keyboard-icon {
+            path {
+                fill: white;
+            }
+        }
+
+        .App__world-selector-icon {
+            stroke: white;
+            rect,
+            path {
+                stroke: white;
+            }
+            circle {
+                fill: white;
+            }
         }
     }
 
@@ -1337,15 +1351,24 @@ body.contrast-theme {
     .IconButton {
         background-color: white;
 
-        svg path {
-            fill: black;
-        }
-
         &:hover {
             background-color: black;
 
-            svg path {
-                fill: white;
+            .App__header-keyboard-icon {
+                path {
+                    fill: white;
+                }
+            }
+
+            .App__world-selector-icon {
+                stroke: white;
+                rect,
+                path {
+                    stroke: white;
+                }
+                circle {
+                    fill: white;
+                }
             }
         }
 
@@ -1353,6 +1376,23 @@ body.contrast-theme {
             box-shadow:
                 0 0 0 2px black,
                 0 0 0 6px white;
+        }
+
+        .App__header-keyboard-icon {
+            path {
+                fill: black;
+            }
+        }
+
+        .App__world-selector-icon {
+            stroke: black;
+            rect,
+            path {
+                stroke: black;
+            }
+            circle {
+                fill: black;
+            }
         }
     }
 
