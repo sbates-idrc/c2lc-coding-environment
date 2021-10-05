@@ -5,6 +5,11 @@
     stroke: none;
 }
 
+.CharacterPositionController__character-column-character-container--DeepOcean,
+.ProgramBlockEditor__character-column-character-container--DeepOcean {
+    background-color: #003C50;
+}
+
 .Scene__grid-line--DeepOcean {
     stroke: #8BA2C0;
 }
@@ -24,6 +29,11 @@
 body.gray-theme {
     .Character-background--DeepOcean {
         fill: #67717E;
+    }
+
+    .CharacterPositionController__character-column-character-container--DeepOcean,
+    .ProgramBlockEditor__character-column-character-container--DeepOcean {
+        background-color: #67717E;
     }
 
     .Scene__grid-line--DeepOcean {
@@ -48,12 +58,17 @@ body.contrast-theme {
         fill: #FFFFFF;
     }
 
+    .CharacterPositionController__character-column-character-container--DeepOcean,
+    .ProgramBlockEditor__character-column-character-container--DeepOcean {
+        background-color: #FFFFFF;
+    }
+
     .Scene__grid-line--DeepOcean {
-        stroke: #FFFFFF;
+        stroke: #0078FF;
     }
 
     .Scene__path-line--DeepOcean {
-        stroke: #FFF500;
+        stroke: #FF0000;
     }
 
     .WorldSelector__option-image--DeepOcean:hover {
@@ -85,6 +100,11 @@ body.contrast-theme {
     stroke: none;
 }
 
+.CharacterPositionController__character-column-character-container--Jungle,
+.ProgramBlockEditor__character-column-character-container--Jungle {
+    background-color: #FFE5B4;
+}
+
 .Scene__grid-line--Jungle {
     stroke: #F9F2EC;
 }
@@ -104,6 +124,11 @@ body.contrast-theme {
 body.gray-theme {
     .Character-background--Jungle {
         fill: #505862;
+    }
+
+    .CharacterPositionController__character-column-character-container--Jungle,
+    .ProgramBlockEditor__character-column-character-container--Jungle {
+        background-color: #505862;
     }
 
     .Scene__grid-line--Jungle {
@@ -128,12 +153,17 @@ body.contrast-theme {
         fill: #FFFFFF;
     }
 
+    .CharacterPositionController__character-column-character-container--Jungle,
+    .ProgramBlockEditor__character-column-character-container--Jungle {
+        background-color: #FFFFFF;
+    }
+
     .Scene__grid-line--Jungle {
-        stroke: #FFFFFF;
+        stroke: #0078FF;
     }
 
     .Scene__path-line--Jungle {
-        stroke: #FFF500;
+        stroke: #FF0000;
     }
 
     .WorldSelector__option-image--Jungle:hover {
@@ -175,6 +205,11 @@ body.contrast-theme {
     stroke: none;
 }
 
+.CharacterPositionController__character-column-character-container--Sketchpad,
+.ProgramBlockEditor__character-column-character-container--Sketchpad {
+    background-color: #4C9990;
+}
+
 .Scene__grid-line--Sketchpad {
     stroke: #F1F2F4;
 }
@@ -206,6 +241,11 @@ body.gray-theme {
         fill: #818A98;
     }
 
+    .CharacterPositionController__character-column-character-container--Sketchpad,
+    .ProgramBlockEditor__character-column-character-container--Sketchpad {
+        background-color: #818A98;
+    }
+
     .Scene__grid-line--Sketchpad {
         stroke: #D5D8DD;
     }
@@ -228,12 +268,17 @@ body.contrast-theme {
         fill: #FFFFFF;
     }
 
+    .CharacterPositionController__character-column-character-container--Sketchpad,
+    .ProgramBlockEditor__character-column-character-container--Sketchpad {
+        background-color: #FFFFFF;
+    }
+
     .Scene__grid-line--Sketchpad {
-        stroke: #FFFFFF;
+        stroke: #0078FF;
     }
 
     .Scene__path-line--Sketchpad {
-        stroke: #FFFFFF;
+        stroke: #FF0000;
     }
 
     .WorldSelector__option-image--Sketchpad:hover {
@@ -266,6 +311,11 @@ body.contrast-theme {
     stroke: none;
 }
 
+.CharacterPositionController__character-column-character-container--Space,
+.ProgramBlockEditor__character-column-character-container--Space {
+    background-color: #1B2432;
+}
+
 .Scene__grid-line--Space {
     stroke: #8BA2C0;
 }
@@ -285,6 +335,11 @@ body.contrast-theme {
 body.gray-theme {
     .Character-background--Space {
         fill: #505862;
+    }
+
+    .CharacterPositionController__character-column-character-container--Space,
+    .ProgramBlockEditor__character-column-character-container--Space {
+        background-color: #505862;
     }
 
     .Scene__grid-line--Space {
@@ -309,12 +364,17 @@ body.contrast-theme {
         fill: #FFFFFF;
     }
 
+    .CharacterPositionController__character-column-character-container--Space,
+    .ProgramBlockEditor__character-column-character-container--Space {
+        background-color: #FFFFFF;
+    }
+
     .Scene__grid-line--Space {
-        stroke: #FFFFFF;
+        stroke: #0078FF;
     }
 
     .Scene__path-line--Space {
-        stroke: #FFF500;
+        stroke: #FF0000;
     }
 
     .WorldSelector__option-image--Space:hover {
