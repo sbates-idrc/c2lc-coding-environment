@@ -32,36 +32,6 @@
     }
 }
 
-.WorldSelector__option-radio {
-    position: relative;
-    appearance: none;
-    outline: none;
-    // No clean way to customize radio button with css,
-    // Use before to create the outter ring, and after to create the inner circle
-    &:before {
-        content: " ";
-        display: inline-block;
-        position: relative;
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        border: 1px solid #9DA4AF;
-        background-color: transparent;
-    }
-
-    &:checked:after {
-        content: " ";
-        display: block;
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        top: 6px;
-        left: 3px;
-        background-color: #1E1E1E;
-    }
-}
-
 .WorldSelector__option--selected {
     box-shadow: 0 0 0 $c2lc-focus-indicator-width #000;
 }
