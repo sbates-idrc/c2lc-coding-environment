@@ -33,7 +33,7 @@ import ShareButton from './ShareButton';
 import ActionsMenu from './ActionsMenu';
 import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
-import { getWorldProperties, getWorldThumbnail } from './Worlds';
+import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
 import * as Utils from './Utils';
 import './App.scss';
@@ -1201,12 +1201,6 @@ export class App extends React.Component<AppProps, AppState> {
                             >
                                 <WorldIcon />
                             </IconButton>
-                            <div className='App__world-preview'>
-                                {React.createElement(
-                                    getWorldThumbnail(this.state.settings.theme, this.state.settings.world),
-                                    {'aria-hidden': 'true'}
-                                )}
-                            </div>
                         </div>
                         <CharacterPositionController
                             characterState={this.state.characterState}
