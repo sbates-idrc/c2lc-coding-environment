@@ -151,7 +151,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                     })}>
                     <WorldIcon aria-hidden='true' />
                 </ModalHeader>
-                <Modal.Body>
+                <Modal.Body className='WorldSelector__content'>
                     <div className='WorldSelector__prompt'>
                         <FormattedMessage id={'WorldSelector.Prompt'} />
                     </div>
