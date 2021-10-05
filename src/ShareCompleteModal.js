@@ -38,6 +38,7 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
     }
 
     componentDidUpdate(prevProps: ShareCompleteModalProps) {
+        /* istanbul ignore next */
         if (prevProps.show !== this.props.show && this.props.show) {
             const confirmButtonRef = document.getElementById("ShareCompleteModal__confirmButton");
             if(confirmButtonRef) {
