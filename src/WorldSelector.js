@@ -105,7 +105,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                             onFocus={this.onFocusWorld}
                             onBlur={this.onBlurWorld}/>
                         <label htmlFor={`WorldSelector__input-world-${world}`}>
-                            <FormattedMessage id={`WorldSelector.option.${world}`} />
+                            <FormattedMessage id={`${world}.name`} />
                         </label>
                     </div>
                 </div>
