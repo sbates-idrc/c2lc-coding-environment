@@ -194,6 +194,8 @@ class Scene extends React.Component<SceneProps, {}> {
         const numRows = this.props.dimensions.getHeight();
         const direction = this.getDirectionWords(characterState.direction);
 
+        const characterLabel = this.props.intl.formatMessage({id: this.props.world + ".character"});
+
         if (this.props.dimensions.getBoundsStateX(xPos) !== 'inBounds'
             || this.props.dimensions.getBoundsStateY(yPos) !== 'inBounds') {
             return this.props.intl.formatMessage(
@@ -203,7 +205,8 @@ class Scene extends React.Component<SceneProps, {}> {
                     numRows,
                     direction,
                     relativeDirection: this.getRelativeDirection(xPos, yPos),
-                    world: this.props.world
+                    world: this.props.world,
+                    character: characterLabel
                 }
             )
         } else {
@@ -219,7 +222,8 @@ class Scene extends React.Component<SceneProps, {}> {
                         yPos: rowLabel,
                         direction,
                         item: itemOnGridCell,
-                        world: this.props.world
+                        world: this.props.world,
+                        character: characterLabel
                     }
                 )
             }
@@ -231,7 +235,8 @@ class Scene extends React.Component<SceneProps, {}> {
                     xPos: columnLabel,
                     yPos: rowLabel,
                     direction,
-                    world: this.props.world
+                    world: this.props.world,
+                    character: characterLabel
                 }
             )
         }
