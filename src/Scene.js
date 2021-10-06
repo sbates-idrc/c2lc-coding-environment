@@ -312,7 +312,10 @@ class Scene extends React.Component<SceneProps, {}> {
 
         // Subtract 90 degrees from the character bearing as the character
         // image is drawn upright when it is facing East
-        const characterTransform = `translate(${this.props.characterState.xPos} ${this.props.characterState.yPos}) rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
+        let characterTransform = `translate(${this.props.characterState.xPos} ${this.props.characterState.yPos}) rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
+        if (this.props.characterState.direction > 3) {
+            characterTransform += ` scale(1 -1)`
+        }
 
         // For the background, use the same translation, but skip the rotate.
         const characterBackgroundTransform = `translate(${this.props.characterState.xPos} ${this.props.characterState.yPos})`;

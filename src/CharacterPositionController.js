@@ -100,7 +100,11 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
     }
 
     getWorldCharacter() {
-        const transform = `rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
+        let transform = `rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
+        if (this.props.characterState.direction > 3) {
+            transform += ` scale(1 -1)`
+        }
+
         const character = getWorldCharacter(this.props.theme, this.props.world);
         return React.createElement(character, {
             className: 'CharacterPositionController__character-column-character',

@@ -231,7 +231,7 @@ describe('Using change character position by column/row labels', () => {
         expect(getCharacterIcon(wrapper).get(0).props.transform).toBe('rotate(0 0 0)');
         // Set characterState prop to make the character face down
         wrapper.setProps({characterState: new CharacterState(1, 1, 4, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).get(0).props.transform).toBe('rotate(90 0 0)');
+        expect(getCharacterIcon(wrapper).get(0).props.transform).toBe('rotate(90 0 0) scale(1 -1)');
         // Set characterState prop to make the character face up
         wrapper.setProps({characterState: new CharacterState(1, 1, 0, [], new SceneDimensions(1, 100, 1, 100))});
         expect(getCharacterIcon(wrapper).get(0).props.transform).toBe('rotate(-90 0 0)');
