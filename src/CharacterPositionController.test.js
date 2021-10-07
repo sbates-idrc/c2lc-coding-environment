@@ -224,16 +224,16 @@ describe('Using change character position by column/row labels', () => {
         wrapper.setProps({theme: 'contrast'});
         expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine-contrast.svg');
     });
-    test('Character icon gets transform value to match the character in the scene', () => {
+    test('Character icon gets class names to rotate and/or flip itself', () => {
         expect.assertions(3);
         const { wrapper } = createShallowCharacterPositionController();
         // With default character facing right
-        expect(getCharacterIcon(wrapper).get(0).props.transform).toBe('rotate(0 0 0)');
+        expect(getCharacterIcon(wrapper).get(0).props.className).toMatch(/CharacterPositionController__character-column-character--angle2/);
         // Set characterState prop to make the character face down
         wrapper.setProps({characterState: new CharacterState(1, 1, 4, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).get(0).props.transform).toBe('rotate(90 0 0) scale(1 -1)');
+        expect(getCharacterIcon(wrapper).get(0).props.className).toMatch(/CharacterPositionController__character-column-character--angle4/);
         // Set characterState prop to make the character face up
         wrapper.setProps({characterState: new CharacterState(1, 1, 0, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).get(0).props.transform).toBe('rotate(-90 0 0)');
+        expect(getCharacterIcon(wrapper).get(0).props.className).toMatch(/CharacterPositionController__character-column-character--angle0/);
     })
 });
