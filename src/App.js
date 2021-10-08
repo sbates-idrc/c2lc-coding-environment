@@ -734,13 +734,14 @@ export class App extends React.Component<AppProps, AppState> {
                         case("replaceCurrentStep"):
                             if (!this.editingIsDisabled()) {
                                 const currentElement = document.activeElement;
+                                let index = this.state.actionPanelStepIndex;
                                 // $FlowFixMe: Not all elements have dataset property
                                 if (currentElement.dataset.controltype === 'programStep') {
-                                    const index = parseInt(currentElement.dataset.stepnumber, 10);
-                                    if (index != null) {
-                                        if (this.programBlockEditorRef.current) {
-                                            this.programBlockEditorRef.current.handleActionPanelReplaceStep(index);
-                                        }
+                                    index = parseInt(currentElement.dataset.stepnumber, 10);
+                                }
+                                if (index != null) {
+                                    if (this.programBlockEditorRef.current) {
+                                        this.programBlockEditorRef.current.handleActionPanelReplaceStep(index);
                                     }
                                 }
                             }
