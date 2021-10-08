@@ -270,7 +270,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         if (this.props.programSequence.getProgramStepAt(index + 1) != null) {
             const nextStepIndex = index + 1;
             this.setState({
-                focusedActionPanelOptionName: 'moveToPreviousStep'
+                focusedActionPanelOptionName: 'moveToNextStep'
             });
             this.props.onChangeActionPanelStepIndex(nextStepIndex);
             this.props.onChangeProgramSequence(
