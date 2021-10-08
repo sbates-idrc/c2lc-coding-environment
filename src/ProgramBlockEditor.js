@@ -150,11 +150,6 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         this.props.onChangeActionPanelStepIndex(null);
     }
 
-    updateActionPanelPosition(actionPanelOptionName: string, index: number) {
-        this.setState({ focusedActionPanelOptionName: actionPanelOptionName });
-        this.props.onChangeActionPanelStepIndex(index);
-    }
-
     setCommandBlockRef(programStepNumber: number, element: ?HTMLElement) {
         if (element) {
             this.commandBlockRefs.set(programStepNumber, element);
@@ -260,12 +255,10 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         this.props.audioManager.playAnnouncement('moveToPrevious', this.props.intl);
         if (this.props.programSequence.getProgramStepAt(index - 1) != null) {
             const previousStepIndex = index - 1;
-            if (this.props.actionPanelStepIndex != null) {
-                this.updateActionPanelPosition('moveToPreviousStep', previousStepIndex)
-            } else {
-                this.focusCommandBlockIndex = index - 1;
-                this.scrollToAddNodeIndex = index;
-            }
+            this.setState({
+                focusedActionPanelOptionName: 'moveToPreviousStep'
+            });
+            this.props.onChangeActionPanelStepIndex(previousStepIndex);
             this.props.onChangeProgramSequence(
                 this.props.programSequence.swapStep(index, previousStepIndex)
             );
@@ -276,12 +269,10 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         this.props.audioManager.playAnnouncement('moveToNext', this.props.intl);
         if (this.props.programSequence.getProgramStepAt(index + 1) != null) {
             const nextStepIndex = index + 1;
-            if (this.props.actionPanelStepIndex) {
-                this.updateActionPanelPosition('moveToNextStep', nextStepIndex);
-            } else {
-                this.focusCommandBlockIndex = index + 1;
-                this.scrollToAddNodeIndex = index + 1;
-            }
+            this.setState({
+                focusedActionPanelOptionName: 'moveToPreviousStep'
+            });
+            this.props.onChangeActionPanelStepIndex(nextStepIndex);
             this.props.onChangeProgramSequence(
                 this.props.programSequence.swapStep(index, nextStepIndex)
             );
