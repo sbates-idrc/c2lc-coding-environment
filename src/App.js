@@ -838,8 +838,11 @@ export class App extends React.Component<AppProps, AppState> {
                         case("swapCurrentStepWithPreviousStep"):
                             if (!this.editingIsDisabled()) {
                                 const currentElement = document.activeElement;
+                                let index = this.state.actionPanelStepIndex;
                                 // $FlowFixMe: Not all elements have dataset property
-                                const index = parseInt(currentElement.dataset.stepnumber, 10) || this.state.actionPanelStepIndex;
+                                if (currentElement.dataset.controltype === 'programStep') {
+                                    index = parseInt(currentElement.dataset.stepnumber, 10);
+                                }
                                 if (index != null && index > 0) {
                                     if (this.programBlockEditorRef.current) {
                                         this.programBlockEditorRef.current.handleActionPanelMoveToPreviousStep(index);
@@ -850,8 +853,11 @@ export class App extends React.Component<AppProps, AppState> {
                         case("swapCurrentStepWithNextStep"):
                             if (!this.editingIsDisabled()) {
                                 const currentElement = document.activeElement;
+                                let index = this.state.actionPanelStepIndex;
                                 // $FlowFixMe: Not all elements have dataset property
-                                const index = parseInt(currentElement.dataset.stepnumber, 10) || this.state.actionPanelStepIndex;
+                                if (currentElement.dataset.controltype === 'programStep') {
+                                    index = parseInt(currentElement.dataset.stepnumber, 10);
+                                }
                                 if (index != null && index < this.state.programSequence.getProgramLength() - 1) {
                                     if (this.programBlockEditorRef.current) {
                                         this.programBlockEditorRef.current.handleActionPanelMoveToNextStep(index);
