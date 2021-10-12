@@ -231,12 +231,12 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                     //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
                     this.props.programSequence.overwriteStep(index, this.props.selectedAction)
                 );
-                this.setState({
-                    replaceIsActive: false
-                });
                 this.focusCommandBlockIndex = index;
                 this.scrollToAddNodeIndex = index + 1;
                 this.setUpdatedCommandBlock(index);
+                this.setState({
+                    replaceIsActive: false
+                });
             } else {
                 this.setState({
                     replaceIsActive: true
