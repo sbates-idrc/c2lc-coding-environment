@@ -2,7 +2,8 @@
 
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
-import type {AudioManager, RunningState} from './types';
+import type {AudioManager, RunningState, ThemeName} from './types';
+import type { WorldName } from './Worlds';
 import React from 'react';
 import CharacterState from './CharacterState';
 import ConfirmDeleteAllModal from './ConfirmDeleteAllModal';
@@ -16,15 +17,7 @@ import ProgramSequence from './ProgramSequence';
 import ToggleSwitch from './ToggleSwitch';
 import { ReactComponent as AddIcon } from './svg/Add.svg';
 import { ReactComponent as DeleteAllIcon } from './svg/DeleteAll.svg';
-import { ReactComponent as RobotIcon } from './svg/Robot.svg';
-import { ReactComponent as SpaceShipIcon } from './svg/SpaceShip.svg';
-import { ReactComponent as RabbitIcon } from './svg/Rabbit.svg';
-import { ReactComponent as MovePositionUp } from './svg/MovePositionUp.svg';
-import { ReactComponent as MovePositionRight } from './svg/MovePositionRight.svg';
-import { ReactComponent as MovePositionDown } from './svg/MovePositionDown.svg';
-import { ReactComponent as MovePositionLeft } from './svg/MovePositionLeft.svg';
-import { ReactComponent as TurnPositionRight } from './svg/TurnPositionRight.svg';
-import { ReactComponent as TurnPositionLeft } from './svg/TurnPositionLeft.svg';
+import { getWorldCharacter } from './Worlds';
 import './ProgramBlockEditor.scss';
 
 // TODO: Send focus to Delete toggle button on close of Delete All confirmation
@@ -42,13 +35,13 @@ type ProgramBlockEditorProps = {
     audioManager: AudioManager,
     focusTrapManager: FocusTrapManager,
     addNodeExpandedMode: boolean,
-    // Bring back in C2LC-289
-    // theme: string,
-    world: string,
-    onChangeCharacterPosition: (direction: ?string) => void,
-    onChangeCharacterXPosition: (columnLabel: string) => void,
-    onChangeCharacterYPosition: (rowLabel: string) => void,
+    theme: ThemeName,
+    world: WorldName,
+    // TODO: Remove onChangeProgramSequence once we have callbacks
+    //       for each specific change
     onChangeProgramSequence: (programSequence: ProgramSequence) => void,
+    onInsertSelectedActionIntoProgram: (index: number, selectedAction: ?string) => void,
+    onDeleteProgramStep: (index: number, command: string) => void,
     onChangeActionPanelStepIndex: (index: ?number) => void,
     onChangeAddNodeExpandedMode: (boolean) => void
 };
@@ -57,18 +50,16 @@ type ProgramBlockEditorState = {
     showConfirmDeleteAll: boolean,
     focusedActionPanelOptionName: ?string,
     replaceIsActive: boolean,
-    closestAddNodeIndex: number,
-    prevPropsCharacterState: CharacterState,
-    characterColumnLabel: string,
-    characterRowLabel: string
+    closestAddNodeIndex: number
 };
 
-class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, ProgramBlockEditorState> {
+export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, ProgramBlockEditorState> {
     commandBlockRefs: Map<number, HTMLElement>;
     addNodeRefs: Map<number, HTMLElement>;
     focusCommandBlockIndex: ?number;
     focusAddNodeIndex: ?number;
     scrollToAddNodeIndex: ?number;
+    updatedCommandBlockIndex: ?number;
     programSequenceContainerRef: { current: null | HTMLDivElement };
     lastCalculatedClosestAddNode: number;
 
@@ -79,29 +70,14 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         this.focusCommandBlockIndex = null;
         this.focusAddNodeIndex = null;
         this.scrollToAddNodeIndex = null;
+        this.updatedCommandBlockIndex = null;
         this.programSequenceContainerRef = React.createRef();
         this.lastCalculatedClosestAddNode = Date.now();
         this.state = {
             showConfirmDeleteAll : false,
             focusedActionPanelOptionName: null,
             replaceIsActive: false,
-            closestAddNodeIndex: -1,
-            prevPropsCharacterState: this.props.characterState,
-            characterColumnLabel: this.props.characterState.getColumnLabel(),
-            characterRowLabel: this.props.characterState.getRowLabel()
-        }
-    }
-
-    static getDerivedStateFromProps(props: ProgramBlockEditorProps, state: ProgramBlockEditorState) {
-        if (props.characterState !== state.prevPropsCharacterState) {
-            const currentCharacterState = props.characterState;
-            return {
-                prevPropsCharacterState: currentCharacterState,
-                characterColumnLabel: currentCharacterState.getColumnLabel(),
-                characterRowLabel: currentCharacterState.getRowLabel()
-            };
-        } else {
-            return null;
+            closestAddNodeIndex: -1
         }
     }
 
@@ -131,14 +107,27 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         return this.props.selectedAction != null;
     }
 
-    insertSelectedCommandIntoProgram(index: number) {
-        if (this.props.selectedAction) {
-            this.focusCommandBlockIndex = index;
-            this.scrollToAddNodeIndex = index + 1;
-            this.props.onChangeProgramSequence(
-                this.props.programSequence.insertStep(index, this.props.selectedAction)
-            );
+    setUpdatedCommandBlock(index: number) {
+        this.updatedCommandBlockIndex = index;
+        // Remove the animation class, if it exists, from the current
+        // block at the index, to ensure that the animation (re)starts from
+        // the beginning.
+        const element = this.commandBlockRefs.get(index);
+        if (element) {
+            element.classList.remove('ProgramBlockEditor__program-block--updated');
         }
+    }
+
+    focusCommandBlockAfterUpdate(index: number) {
+        this.focusCommandBlockIndex = index;
+    }
+
+    focusAddNodeAfterUpdate(index: number) {
+        this.focusAddNodeIndex = index;
+    }
+
+    scrollToAddNodeAfterUpdate(index: number) {
+        this.scrollToAddNodeIndex = index;
     }
 
     programStepIsActive(programStepNumber: number) {
@@ -224,19 +213,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     };
 
     handleActionPanelDeleteStep = (index: number) => {
-        const commandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.programSequence.getProgramStepAt(index)});
-
-        this.props.audioManager.playAnnouncement('delete', this.props.intl, { command: commandString});
-        // If there are steps following the one being deleted, focus the
-        // next step. Otherwise, focus the final add node.
-        if (index < this.props.programSequence.getProgramLength() - 1) {
-            this.focusCommandBlockIndex = index;
-        } else {
-            this.focusAddNodeIndex = index;
-        }
-        this.props.onChangeProgramSequence(
-            this.props.programSequence.deleteStep(index)
-        );
+        this.props.onDeleteProgramStep(index,
+            this.props.programSequence.getProgramStepAt(index));
         this.closeActionPanel();
     };
 
@@ -258,6 +236,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                 });
                 this.focusCommandBlockIndex = index;
                 this.scrollToAddNodeIndex = index + 1;
+                this.setUpdatedCommandBlock(index);
             } else {
                 this.setState({
                     replaceIsActive: true
@@ -312,11 +291,13 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         }
     };
 
-    handleClickAddNode = (stepNumber: number) => {
-        const commandString = this.props.intl.formatMessage({ id: "Announcement." + (this.props.selectedAction || "") });
+    handleProgramCommandBlockAnimationEnd = (e: SyntheticEvent<HTMLButtonElement>) => {
+        e.currentTarget.classList.remove('ProgramBlockEditor__program-block--updated');
+    };
 
-        this.props.audioManager.playAnnouncement('add', this.props.intl, { command: commandString});
-        this.insertSelectedCommandIntoProgram(stepNumber);
+    handleClickAddNode = (stepNumber: number) => {
+        this.props.onInsertSelectedActionIntoProgram(stepNumber,
+            this.props.selectedAction);
     };
 
     // TODO: Discuss removing this once we have a good way to test drag and drop.
@@ -383,11 +364,8 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
             });
 
             const closestAddNodeIndex = this.findAddNodeClosestToEvent(event);
-
-            const commandString = this.props.intl.formatMessage({ id: "Announcement." + (this.props.selectedAction || "") });
-            this.props.audioManager.playAnnouncement('add', this.props.intl, { command: commandString});
-
-            this.insertSelectedCommandIntoProgram(closestAddNodeIndex);
+            this.props.onInsertSelectedActionIntoProgram(closestAddNodeIndex,
+                this.props.selectedAction);
         }
     }
 
@@ -402,53 +380,6 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
             replaceIsActive: false
         });
     };
-
-    handleClickCharacterPosition = (e) => {
-        this.handleChangeCharacterPosition(e.currentTarget.getAttribute('value'));
-    }
-
-    handleKeyDownCharacterPosition = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        if (e.key === ' ' || e.key === 'Enter') {
-            e.preventDefault();
-            this.handleChangeCharacterPosition(e.currentTarget.getAttribute('value'));
-        }
-    }
-
-    handleChangeCharacterPosition = (positionName: ?string) => {
-        this.props.onChangeCharacterPosition(positionName);
-    }
-
-    handleChangeCharacterPositionLabel = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        if (e.currentTarget.name === 'xPosition') {
-            this.setState({
-                characterColumnLabel: e.currentTarget.value
-            });
-        } else if (e.currentTarget.name === 'yPosition'){
-            this.setState({
-                characterRowLabel: e.currentTarget.value
-            });
-        }
-    }
-
-    handleBlurCharacterPositionBox = (e: SyntheticEvent<HTMLInputElement>) => {
-        if (e.currentTarget.name === 'xPosition') {
-            this.props.onChangeCharacterXPosition(this.state.characterColumnLabel);
-        } else if (e.currentTarget.name === 'yPosition'){
-            this.props.onChangeCharacterYPosition(this.state.characterRowLabel);
-        }
-    }
-
-    handleUpdateCharacterPosition = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        const enterKey = 'Enter';
-        if (e.key === enterKey) {
-            e.preventDefault();
-            if (e.currentTarget.name === 'xPosition') {
-                this.props.onChangeCharacterXPosition(this.state.characterColumnLabel);
-            } else if (e.currentTarget.name === 'yPosition'){
-                this.props.onChangeCharacterYPosition(this.state.characterRowLabel);
-            }
-        }
-    }
 
     // Rendering
 
@@ -491,6 +422,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                 ref={ (element) => { this.setCommandBlockRef(programStepNumber, element) } }
                 key={`${programStepNumber}-${command}`}
                 data-stepnumber={programStepNumber}
+                data-controltype='programStep'
                 data-command={command}
                 data-actionpanelgroup={true}
                 className={classes}
@@ -499,6 +431,7 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                 aria-expanded={hasActionPanelControl}
                 disabled={this.props.editingDisabled}
                 onClick={this.handleClickStep}
+                onAnimationEnd={this.handleProgramCommandBlockAnimationEnd}
             />
         );
     }
@@ -574,11 +507,12 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     }
 
     makeEndOfProgramAddNodeSection(programStepNumber: number) {
+        const isEmptyProgram = this.props.programSequence.getProgramLength() === 0;
         return (
             <React.Fragment key={'endOfProgramAddNodeSection'}>
                 <div className='ProgramBlockEditor__program-block-connector'/>
                 <AddNode
-                    aria-label={this.makeAddNodeAriaLabel(programStepNumber, true)}
+                    aria-label={this.makeAddNodeAriaLabel(programStepNumber, !isEmptyProgram)}
                     ref={ (element) => this.setAddNodeRef(programStepNumber, element) }
                     expandedMode={true}
                     isDraggingCommand={this.props.isDraggingCommand}
@@ -593,39 +527,14 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
         )
     }
 
-    getWorldCharacter() {
-        const transform = `rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
-        if (this.props.world === 'space') {
-            return <SpaceShipIcon
-                transform={transform}
-                className='ProgramBlockEditor__character-column-character' />
-        } else if (this.props.world === 'forest') {
-            return <RabbitIcon
-                transform={transform}
-                className='ProgramBlockEditor__character-column-character' />
-        } else {
-            return <RobotIcon
-                transform={transform}
-                className='ProgramBlockEditor__character-column-character' />
-        }
-    }
-
     render() {
         const contents = this.props.programSequence.getProgram().map((command, stepNumber) => {
             return this.makeProgramBlockSection(stepNumber, command);
         });
 
-        const characterPositionButtonClassName = classNames(
-            'ProgramBlockEditor__character-position-button',
-            this.props.editingDisabled && 'ProgramBlockEditor__character-position-button--disabled'
-        );
-
-        const characterPositionTextInputClassName = classNames(
-            'ProgramBlock__character-position-coordinate-box',
-            this.props.editingDisabled && 'ProgramBlock__character-position-coordinate-box--disabled'
-        );
-
         contents.push(this.makeEndOfProgramAddNodeSection(this.props.programSequence.getProgramLength()));
+
+        const character = getWorldCharacter(this.props.theme, this.props.world);
 
         return (
             <div className='ProgramBlockEditor__container'>
@@ -657,99 +566,15 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
                     </div>
                 </div>
                 <div className='ProgramBlockEditor__character-column'>
-                    <div className='ProgramBlockEditor__character-turn-positions'>
-                        <TurnPositionLeft
-                            className={characterPositionButtonClassName}
-                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.trunLeft'})}
-                            aria-disabled={this.props.editingDisabled}
-                            role='button'
-                            tabIndex='0'
-                            value='turnLeft'
-                            onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
-                            onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
-                        <TurnPositionRight
-                            className={characterPositionButtonClassName}
-                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.trunRight'})}
-                            aria-disabled={this.props.editingDisabled}
-                            role='button'
-                            tabIndex='0'
-                            value='turnRight'
-                            onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
-                            onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
-                    </div>
-                    <div className='ProgramBlockEditor__character-move-position-top'>
-                        <MovePositionUp
-                            className={characterPositionButtonClassName}
-                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.moveUp'})}
-                            aria-disabled={this.props.editingDisabled}
-                            role='button'
-                            tabIndex='0'
-                            value='up'
-                            onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
-                            onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
-                    </div>
-                    <div className='ProgramBlockEditor__character-move-position-sides'>
-                        <MovePositionLeft
-                            className={characterPositionButtonClassName}
-                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.moveLeft'})}
-                            aria-disabled={this.props.editingDisabled}
-                            role='button'
-                            tabIndex='0'
-                            value='left'
-                            onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
-                            onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
-                        <div
-                            aria-hidden='true'
-                            className='ProgramBlockEditor__character-column-character-container'
-                            role='img'>
-                            {this.getWorldCharacter()}
-                        </div>
-                        <MovePositionRight
-                            className={characterPositionButtonClassName}
-                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.moveRight'})}
-                            aria-disabled={this.props.editingDisabled}
-                            role='button'
-                            tabIndex='0'
-                            value='right'
-                            onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
-                            onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
-                    </div>
-                    <div className='ProgramBlockEditor__character-move-position-bottom'>
-                        <MovePositionDown
-                            className={characterPositionButtonClassName}
-                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.moveDown'})}
-                            aria-disabled={this.props.editingDisabled}
-                            role='button'
-                            tabIndex='0'
-                            value='down'
-                            onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPosition : undefined}
-                            onClick={!this.props.editingDisabled ? this.handleClickCharacterPosition : undefined} />
-                    </div>
-                    <div className='ProgramBlockEditor__character-move-position-coordinate'>
-                        <input
-                            name='xPosition'
-                            className={characterPositionTextInputClassName}
-                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.columnPosition'})}
-                            aria-disabled={this.props.editingDisabled}
-                            maxLength='1'
-                            size='2'
-                            type='text'
-                            value={this.state.characterColumnLabel}
-                            onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : () => {}}
-                            onKeyDown={this.handleUpdateCharacterPosition}
-                            onBlur={this.handleBlurCharacterPositionBox} />
-                        <input
-                            name='yPosition'
-                            className={characterPositionTextInputClassName}
-                            aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.editPosition.rowPosition'})}
-                            aria-disabled={this.props.editingDisabled}
-                            maxLength='2'
-                            size='2'
-                            type='text'
-                            value={this.state.characterRowLabel}
-                            onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : () => {}}
-                            onKeyDown={this.handleUpdateCharacterPosition}
-                            onBlur={this.handleBlurCharacterPositionBox} />
+                    <div
+                        aria-hidden='true'
+                        className={`ProgramBlockEditor__character-column-character-container
+                            ProgramBlockEditor__character-column-character-container--${this.props.world}`}
+                        role='img'>
+                        {React.createElement(
+                            character,
+                            { className: 'ProgramBlockEditor__character-column-character' }
+                        )}
                     </div>
                 </div>
                 <div
@@ -799,6 +624,13 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
             }
             this.focusAddNodeIndex = null;
         }
+        if (this.updatedCommandBlockIndex != null) {
+            const element = this.commandBlockRefs.get(this.updatedCommandBlockIndex);
+            if (element) {
+                element.classList.add('ProgramBlockEditor__program-block--updated');
+            }
+            this.updatedCommandBlockIndex = null;
+        }
         if (this.props.runningState === 'running') {
             const activeProgramStepNum = this.props.programSequence.getProgramCounter();
 
@@ -839,4 +671,4 @@ class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, Progra
     }
 }
 
-export default injectIntl(ProgramBlockEditor);
+export default injectIntl(ProgramBlockEditor, { forwardRef: true });
