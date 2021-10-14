@@ -86,5 +86,27 @@ function extend(...toMerge:Object) {
     return merged;
 }
 
+function focusById (elementId: string) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.focus();
+    }
+}
 
-export { extend, generateId, makeDelayedPromise, generateEncodedProgramURL, getThemeFromString, getWorldFromString };
+function focusByQuerySelector (querySelector: string) {
+    const element = document.querySelector(querySelector);
+    if(element) {
+        element.focus();
+    }
+}
+
+// Convenience function to focus on the first element with a given class, used
+// for keyboard shortcuts.
+function focusOnFirstElementWithClass (className: string) {
+    const elements = document.getElementsByClassName(className);
+    if (elements.length) {
+        elements[0].focus();
+    }
+}
+
+export { extend, focusById, focusByQuerySelector, focusOnFirstElementWithClass, generateId, makeDelayedPromise, generateEncodedProgramURL, getThemeFromString, getWorldFromString };

@@ -49,15 +49,6 @@ import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
 import ProgramChangeController from './ProgramChangeController';
 
-// Convenience function to focus on the first element with a given class, used
-// for keyboard shortcuts.
-function focusOnFirstElementWithClass (className) {
-    const elements = document.getElementsByClassName(className);
-    if (elements.length) {
-        elements[0].focus();
-    }
-}
-
 /* Dash connection removed for version 0.5
 import BluetoothApiWarning from './BluetoothApiWarning';
 import DeviceConnectControl from './DeviceConnectControl';
@@ -806,34 +797,34 @@ export class App extends React.Component<AppProps, AppState> {
                             this.setState({ "selectedAction": "right180" });
                             break;
                         case("focusActions"):
-                            focusOnFirstElementWithClass("command-block");
+                            Utils.focusOnFirstElementWithClass("command-block");
                             break;
                         case("focusAppHeader"):
-                            focusOnFirstElementWithClass("keyboard-shortcut-focus__app-header");
+                            Utils.focusOnFirstElementWithClass("keyboard-shortcut-focus__app-header");
                             break;
                         case("focusAddNodeToggle"):
-                            focusOnFirstElementWithClass("ProgramBlockEditor__add-node-toggle-switch");
+                            Utils.focusOnFirstElementWithClass("ProgramBlockEditor__add-node-toggle-switch");
                             break;
                         case("focusCharacterPositionControls"):
-                            focusOnFirstElementWithClass("CharacterPositionController__character-position-button");
+                            Utils.focusOnFirstElementWithClass("CharacterPositionController__character-position-button");
                             break;
                         case("focusCharacterColumnInput"):
-                            focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-column");
+                            Utils.focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-column");
                             break;
                         case("focusCharacterRowInput"):
-                            focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-row");
+                            Utils.focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-row");
                             break;
                         case("focusPlayShare"):
-                            focusOnFirstElementWithClass("PlayButton--play");
+                            Utils.focusOnFirstElementWithClass("PlayButton--play");
                             break;
                         case("focusProgramSequence"):
-                            focusOnFirstElementWithClass("AddNode__expanded-button");
+                            Utils.focusOnFirstElementWithClass("AddNode__expanded-button");
                             break;
                         case("focusScene"):
-                            focusOnFirstElementWithClass("PenDownToggleSwitch");
+                            Utils.focusOnFirstElementWithClass("PenDownToggleSwitch");
                             break;
                         case("focusWorldSelector"):
-                            focusOnFirstElementWithClass("keyboard-shortcut-focus__world-selector");
+                            Utils.focusOnFirstElementWithClass("keyboard-shortcut-focus__world-selector");
                             break;
                         case("moveCharacterLeft"):
                             if (!this.editingIsDisabled()) {
