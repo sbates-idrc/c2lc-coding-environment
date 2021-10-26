@@ -1178,12 +1178,6 @@ export class App extends React.Component<AppProps, AppState> {
                                     className='App__penDown-toggle-switch'
                                     value={this.state.drawingEnabled}
                                     onChange={this.handleTogglePenDown}/>
-                                <div className='App__refreshButton-container'>
-                                    <RefreshButton
-                                        disabled={this.editingIsDisabled()}
-                                        onClick={this.handleRefresh}
-                                    />
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -1274,6 +1268,11 @@ export class App extends React.Component<AppProps, AppState> {
                                         this.state.runningState === 'stopped'
                                         || this.state.runningState === 'stopRequested'}
                                     onClick={this.handleStop}/>
+                                <RefreshButton
+                                    className='App__playControlButton'
+                                    disabled={this.editingIsDisabled()}
+                                    onClick={this.handleRefresh}
+                                />
                                 <ProgramSpeedController
                                     rangeControlRef={this.speedControlRef}
                                     values={this.speedLookUp}
