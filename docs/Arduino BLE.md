@@ -19,7 +19,7 @@ This repository does not contain any Arduino code, but rather connects to an Ard
 - Download and install the desktop Arduino IDE (latest version is 1.8.13 at time of writing) from https://www.arduino.cc/en/software
 - Add support for your particular Arduino board
   - For example, for the Arduino UNO WiFi Rev 2, install the Arduino megaAVR Core as described at https://www.arduino.cc/en/Guide/ArduinoUnoWiFiRev2
-- Install the ArduinoBLE library using the Library Manager found under Tools / Manage Libraries... (latest version is 1.1.3 at time of writing)
+- Install the ArduinoBLE library using the Library Manager found under Tools / Manage Libraries... (latest version is 1.2.1 at time of writing; version 1.1.3 does not work with Windows 10, version 1.2.1 does work)
 
 ## Step 2: Connect the Arduino and upload the WifiNINA firmware
 
