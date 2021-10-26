@@ -1172,13 +1172,13 @@ export class App extends React.Component<AppProps, AppState> {
                             theme={this.state.settings.theme}
                             world={this.state.settings.world}
                         />
-                        <div className='App__scene-controls'>
-                            <div className='App__scene-controls-group'>
-                                <PenDownToggleSwitch
-                                    className='App__penDown-toggle-switch'
-                                    value={this.state.drawingEnabled}
-                                    onChange={this.handleTogglePenDown}/>
-                            </div>
+                    </div>
+                    <div className='App__scene-controls'>
+                        <div className='App__scene-controls-group'>
+                            <PenDownToggleSwitch
+                                className='App__penDown-toggle-switch'
+                                value={this.state.drawingEnabled}
+                                onChange={this.handleTogglePenDown}/>
                         </div>
                     </div>
                     <div className="App__world-container">
