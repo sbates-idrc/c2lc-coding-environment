@@ -588,9 +588,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                         <h3 className='sr-only' >
                             <FormattedMessage id='ProgramSequence.heading' />
                         </h3>
-                        <div aria-hidden='true' className='ProgramBlockEditor__start-indicator'>
-                            {this.props.intl.formatMessage({id:'ProgramBlockEditor.startIndicator'})}
-                        </div>
+                        <div role='img' className='ProgramBlockEditor__start-indicator' aria-label={this.props.intl.formatMessage({id:'ProgramBlockEditor.startIndicator'})}></div>
                         {contents}
                     </div>
                 </div>
