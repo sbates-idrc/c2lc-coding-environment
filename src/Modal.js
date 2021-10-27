@@ -2,21 +2,23 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import { injectIntl } from 'react-intl';
 import './Modal.scss';
 
 type ModalProps = {
     show: boolean,
     focusElementSelector: string,
     focusOnCloseSelector: string,
-    ariaLabel: ?string,
-    ariaLabelledById: ?string,
-    ariaDescribedById: ?string,
-    children: any,
+    ariaLabel?: string,
+    ariaLabelledById?: string,
+    ariaDescribedById?: string,
+    children?: any,
     onClose: () => void
 };
 
 class Modal extends React.Component<ModalProps, {}> {
+    modalRef: { current: any };
+    lastFocus: any;
+    ignoreFocusChanges: boolean;
     constructor(props: ModalProps) {
         super(props);
         this.modalRef = React.createRef();
@@ -24,7 +26,7 @@ class Modal extends React.Component<ModalProps, {}> {
         this.ignoreFocusChanges = false;
     }
 
-    focusFirstDescendant = (element) => {
+    focusFirstDescendant = (element: any) => {
         for (let i = 0; i < element.childNodes.length; i++) {
             const child = element.childNodes[i];
             if (this.attemptFocus(child) ||
@@ -36,7 +38,7 @@ class Modal extends React.Component<ModalProps, {}> {
         return false;
     };
 
-    focusLastDescendant = (element) => {
+    focusLastDescendant = (element: any) => {
         for (let i = element.childNodes.length - 1; i >= 0; i--) {
             const child = element.childNodes[i];
             if (this.attemptFocus(child) ||
@@ -48,7 +50,7 @@ class Modal extends React.Component<ModalProps, {}> {
         return false;
     };
 
-    attemptFocus = (element) => {
+    attemptFocus = (element: any) => {
         this.ignoreFocusChanges = true;
         try {
             element.focus();
@@ -76,17 +78,18 @@ class Modal extends React.Component<ModalProps, {}> {
     }
 
     handleOnClose = () => {
+        // $FlowFixMe: flow thinks document.body can be null
         document.body.classList.remove('modal-opened');
-        const focusElementOnClose = document.querySelector(this.props.focusOnCloseSelector);
         this.props.onClose();
-        if (focusElementOnClose) {
-            focusElementOnClose.focus();
-        }
     }
 
     handleOnPressEscapeKey = (event: Event) => {
+        // $FlowFixMe: flow doesn't know key property
         if (event.key === 'Escape') {
             this.handleOnClose();
+        } else {
+            // $FlowFixMe event target doesn't know nativeEvent
+            event.nativeEvent.stopImmediatePropagation();
         }
     }
 
@@ -107,7 +110,7 @@ class Modal extends React.Component<ModalProps, {}> {
                 onFocus={this.handleFocusTrap}
                 onKeyDown={this.handleOnPressEscapeKey}
                 onClick={this.handleOnClickBackdrop}>
-                <div tabIndex='0' />
+                <div className='Modal__focusTrap' tabIndex='0' />
                 <div
                     ref={this.modalRef}
                     className="Modal"
@@ -118,13 +121,14 @@ class Modal extends React.Component<ModalProps, {}> {
                     aria-modal='true'>
                     {this.props.children}
                 </div>
-                <div tabIndex='0' />
+                <div className='Modal__focusTrap' tabIndex='0' />
             </div>
         );
     }
 
     componentDidUpdate(prevProps: ModalProps) {
         if (this.props.show !== prevProps.show && this.props.show) {
+            // $FlowFixMe: flow thinks document.body can be null
             document.body.classList.add('modal-opened');
             const focusElement = document.querySelector(this.props.focusElementSelector);
             if (focusElement) {
@@ -137,7 +141,13 @@ class Modal extends React.Component<ModalProps, {}> {
                 this.focusFirstDescendant(this.modalRef.current);
             }
         }
+        if (this.props.show !== prevProps.show && !this.props.show) {
+            const focusElementOnClose = document.querySelector(this.props.focusOnCloseSelector);
+            if (focusElementOnClose) {
+                focusElementOnClose.focus();
+            }
+        }
     }
 }
 
-export default injectIntl(Modal);
+export default Modal;
