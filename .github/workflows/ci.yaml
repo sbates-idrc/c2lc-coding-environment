@@ -58,5 +58,4 @@ jobs:
       - name: Flow Type Coverage (test coverage threshold)
         run: npx flow-coverage-report --config .flowcoverage-tests-threshold
       - name: Lint Documentation
-        run: npx markdownlint-cli2 "./**/*.md" "#node_modules" "#src/vendor" 
-
+        run: npm run markdownlint
