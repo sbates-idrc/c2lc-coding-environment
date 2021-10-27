@@ -39,7 +39,7 @@ function findModal(modalWrapper) {
     return modalWrapper.find('.Modal');
 }
 
-function findModalBcakdrop(modalWrapper) {
+function findModalBackdrop(modalWrapper) {
     return modalWrapper.find('.Modal__backdrop');
 }
 
@@ -68,20 +68,20 @@ describe('Modal closes on two different actions', () => {
     test('On press Escape key', () => {
         expect.assertions(1);
         const { wrapper, mockOnClose } = createMountModal();
-        const modalBackdrop = findModalBcakdrop(wrapper);
+        const modalBackdrop = findModalBackdrop(wrapper);
         modalBackdrop.simulate('keyDown', {key: 'Escape'});
         expect(mockOnClose.mock.calls.length).toBe(1);
     });
     test('On clicking Backdrop', () => {
         expect.assertions(1);
         const { wrapper, mockOnClose } = createMountModal();
-        const modalBackdrop = findModalBcakdrop(wrapper);
+        const modalBackdrop = findModalBackdrop(wrapper);
         modalBackdrop.simulate('click');
         expect(mockOnClose.mock.calls.length).toBe(1);
     });
 });
 
-describe('Focus logics', () => {
+describe('Focus logic', () => {
     test('When the modal opens, focus is set on element specified by "focusElementSelector" prop', () => {
         expect.assertions(1);
         const wrapper = mount(
@@ -103,52 +103,59 @@ describe('Focus logics', () => {
         // make sure to detach after attach to body
         wrapper.detach();
     });
-    // TODO: Fix these test cases
-    // test('When the modal closes, focus is set on element specified by "focusOnCloseSelector" prop', () => {
-    //     expect.assertions(1);
-    //     const button = document.createElement('button');
-    //     button.setAttribute('id', 'focusOnClose');
-    //     document.body.appendChild(button);
-    //     const wrapper = mount(
-    //         <Modal
-    //             show={true}
-    //             focusElementSelector='.focusElement'
-    //             focusOnCloseSelector='#focusOnClose'
-    //             onClose={jest.fn()}/>,
-    //         // $FlowFixMe: document.body may be a null
-    //         {attachTo: document.body}
-    //     );
-    //     const modalBackdrop = findModalBcakdrop(wrapper);
-    //     wrapper.setProps({show: false});
-    //     console.log(document.activeElement)
-    //     // make sure to detach after attach to body
-    //     wrapper.detach();
-    // });
-    // test('Focus is trapped within the modal', () => {
-    //     //expect.assertions(3);
-    //     const wrapper = mount(
-    //         <Modal
-    //             show={false}
-    //             focusElementSelector='.Modal__focusTrap:nth-child(2)'
-    //             focusOnCloseSelector='.onCloseElement'
-    //             onClose={() => {}}>
-    //             <div>
-    //                 <button className='button1'>button1</button>
-    //                 <button className='button2'>button2</button>
-    //             </div>
-    //         </Modal>,
-    //         // $FlowFixMe: document.body may be a null
-    //         {attachTo: document.body}
-    //     );
-    //     const modalBackdrop = findModalBcakdrop(wrapper);
-    //     console.log(modalBackdrop.get(0));
-    //     modalBackdrop.simulate('focus');
-    //     expect(wrapper.find('.button1').is(':focus')).toBe(true);
-    //     modalBackdrop.simulate('focus');
-    //     expect(wrapper.find('.button2').is(':focus')).toBe(true);
-    //     modalBackdrop.simulate('focus');
-    //     expect(wrapper.find('.button1').is(':focus')).toBe(true);
-    //     // make sure to detach after attach to body
-    //     wrapper.detach();
-    // });
+    test('When the modal closes, focus is set on element specified by "focusOnCloseSelector" prop', () => {
+        expect.assertions(1);
+        const wrapper = mount(
+            <div>
+                <Modal
+                    show={true}
+                    focusElementSelector='.focusElement'
+                    focusOnCloseSelector='#focusOnClose'
+                    onClose={jest.fn()}/>
+                <button id='focusOnClose'>focus</button>
+            </div>,
+            // $FlowFixMe: document.body may be a null
+            {attachTo: document.body}
+        );
+        wrapper.setProps({
+            children:
+            <React.Fragment>
+                <Modal
+                    show={false}
+                    focusElementSelector='.focusElement'
+                    focusOnCloseSelector='#focusOnClose'
+                    onClose={jest.fn()}/>
+                <button id='focusOnClose'>focus</button>
+            </React.Fragment>
+        });
+        expect(wrapper.find('#focusOnClose').is(':focus')).toBe(true);
+        // make sure to detach after attach to body
+        wrapper.detach();
+    });
+    test('Focus is trapped within the modal', () => {
+        expect.assertions(3);
+        const wrapper = mount(
+            <Modal
+                show={false}
+                focusElementSelector='.Modal__focusTrap:nth-child(2)'
+                focusOnCloseSelector='.onCloseElement'
+                onClose={() => {}}>
+                <div>
+                    <button className='button1'>button1</button>
+                    <button className='button2'>button2</button>
+                </div>
+            </Modal>,
+            // $FlowFixMe: document.body may be a null
+            {attachTo: document.body}
+        );
+        const modalBackdrop = findModalBackdrop(wrapper);
+        modalBackdrop.simulate('focus');
+        expect(wrapper.find('.button1').is(':focus')).toBe(true);
+        modalBackdrop.simulate('focus');
+        expect(wrapper.find('.button2').is(':focus')).toBe(true);
+        modalBackdrop.simulate('focus');
+        expect(wrapper.find('.button1').is(':focus')).toBe(true);
+        // make sure to detach after attach to body
+        wrapper.detach();
+    });
 });
