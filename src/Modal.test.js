@@ -43,10 +43,6 @@ function findModalBcakdrop(modalWrapper) {
     return modalWrapper.find('.Modal__backdrop');
 }
 
-function findModalFocusTrap(modalWrapper) {
-    return modalWrapper.find('.Modal__focusTrap');
-}
-
 describe('Modal component takes 3 aria related attributes as an option property', () => {
     test('ariaLabel', () => {
         expect.assertions(1);
