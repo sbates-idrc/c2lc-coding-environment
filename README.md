@@ -1,21 +1,20 @@
-# Coding to Learn and Create - Inclusive Coding Environment
+# Weavly
 
-The Inclusive Coding Environment is a new educational coding tool designed for
-learners with disabilities. The Environment can be used with a mouse,
-touchscreen, or keyboard, and supports assistive technologies such as screen
-readers. It is a web application that works in a browser.
+Weavly is a new educational coding tool designed for learners with
+disabilities. It can be used with a mouse, touchscreen, or keyboard,
+and supports assistive technologies such as screen readers. It is a web
+application that works in a browser.
 
-![inclusive coding environment UI](./inclusive-coding-env.png)
+![screenshot of Weavly](./inclusive-coding-env.png)
 
-To try the latest version of the Inclusive Coding Environment, visit our
-[coding environment online](https://build.codelearncreate.org/).
+To try the latest version, visit [Weavly online](https://create.weavly.org/).
 
 ## Installation for Developers
 
 Running this project requires [npm and Node.js](https://www.npmjs.com/get-npm).
-Many of the scripts used in this package require npx, which is included with
+Many of the scripts used in Weavly require npx, which is included with
 npm 5.2.0 or higher. Once you download or fork the source code, you will need to
-install the required dependencies using a command like:
+install the required dependencies using the command:
 
 ```shell
 npm install
@@ -23,20 +22,20 @@ npm install
 
 ## Start the application
 
-To start the app in development mode, use a command like:
+To start the app in development mode, use the command:
 
 ```shell
 npm start
 ```
 
 A URL like [http://localhost:3000](http://localhost:3000) will be displayed in
-the console output, open that URL with a browser to see the Coding Environment
+the console output, open that URL with a browser to see Weavly
 in action. The browser window will reload if you add or change files. You will
 also see any errors in the console (see [our Contributor's guide for details](./docs/contributing.md)).
 
 ## Testing
 
-To run the tests in this package, use a command like:
+To run the tests for this project, use the command:
 
 ```shell
 npm test
@@ -53,13 +52,13 @@ Contributions are welcome! For more details about contributing, please see
 
 ## License
 
-The Inclusive Coding Environment is open source software, distributed under the
-[BSD-3](LICENSE.txt) license.
+Weavly is open source software, distributed under the [BSD-3](LICENSE.txt)
+license.
 
 ## Dependencies
 
 We would like to thank these amazing open source projects and libraries that we
-use in the Inclusive Coding Environment:
+use in Weavly:
 
 | Dependency | License |
 | :--------- | :------ |
@@ -71,5 +70,5 @@ use in the Inclusive Coding Environment:
 | [github.com/KyleAMathews/typefaces/tree/master/packages/roboto](https://github.com/KyleAMathews/typefaces/tree/master/packages/roboto) | MIT License |
 | [github.com/react-bootstrap/react-bootstrap](https://github.com/react-bootstrap/react-bootstrap) | MIT License |
 | [github.com/sass/node-sass](https://github.com/sass/node-sass) | MIT License |
-| [github.com/Tonejs/Tone.js][https://github.com/Tonejs/Tone.js]| [MIT License](https://github.com/Tonejs/Tone.js/blob/dev/LICENSE.md)|
+| [github.com/Tonejs/Tone.js](https://github.com/Tonejs/Tone.js) | [MIT License](https://github.com/Tonejs/Tone.js/blob/dev/LICENSE.md)|
 | [loading.io](https://loading.io/) | [Loading.io Free License](https://loading.io/license/#free-license) |
