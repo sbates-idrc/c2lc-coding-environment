@@ -132,18 +132,20 @@ class TopDownManager extends React.Component<{}, TopDownManagerState> {
         };
     }
 
-    handleFirstComponentClick (Event: event) {
-        this.setState((state, props) => ({
-            firstComponentClick: state.firstComponentClicks + 1
-        }));        
-    } 
+    handleFirstComponentClick = (Event: event) => {
+        this.setState((state, props) => {
+            return {
+                firstComponentClick: state.firstComponentClicks + 1
+            }
+        });
+    }
 
-    handleSecondComponentClick (Event: event) {
+    handleSecondComponentClick = (Event: event) => {
         this.setState((state, props) => {
             return {
                 secondComponentClick: state.secondComponentClicks + 1
             }
-        }));        
+        });
     }
 
     render() {
@@ -169,8 +171,8 @@ Where possible, code conventions are enforced by running ESLint. Many of the
 rules we use are inherited from [a common configuration for React apps](https://www.npmjs.com/package/eslint-config-react-app).
 Additional rules can be found in our [`package.json` file](../package.json).
 
-You can check your work in progress against our coding conventions using a
-command like:
+You can check your work in progress against our coding conventions using the
+command:
 
 ```shell
 npx eslint .
@@ -184,8 +186,8 @@ request.
 
 We are using [Flow](https://flow.org/) as our static type checker. Contributions
 are expected to include Flow type annotations and to ensure that both the type
-checks and type coverage checks pass. You can run the type checks using a
-command like:
+checks and type coverage checks pass. You can run the type checks using the
+command:
 
 ```shell
 npx flow
@@ -193,7 +195,7 @@ npx flow
 
 We use a package called `flow-coverage-report` to test how much of our work
 includes type annotations. To see the current level of coverage (and confirm
-whether your changes meet our coverage threshold), you can use a command like:
+whether your changes meet our coverage threshold), you can use the command:
 
 ```shell
 npx flow-coverage-report --config .flowcoverage-main-threshold
@@ -210,14 +212,14 @@ and [Enzyme](https://enzymejs.github.io/enzyme/). The tests for a given
 component should match the component's name, so tests for `MyClass.js` would be
 stored in `MyClass.test.js`.
 
-Tests can be run using a command like:
+Tests can be run using the command:
 
 ```shell
 npm test
 ```
 
 To check that your work in progress meets our standards for test code coverage,
-you can use a command like:
+you can use the command:
 
 ```shell
 npm test -- --watchAll --coverage
