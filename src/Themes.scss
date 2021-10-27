@@ -1157,6 +1157,14 @@ body.gray-theme {
         }
     }
 
+    button.btn.RefreshButton {
+        svg {
+            path.inner-circle {
+                stroke: none;
+            }
+        }
+    }
+
     button.btn.PlayButton--disabled, button.btn.StopButton--disabled, button.btn.RefreshButton--disabled {
         background-color: #D5D8DD;
 
@@ -1973,12 +1981,16 @@ body.contrast-theme {
                 }
             }
         }
-
         svg {
             path.inner-circle {
                 fill: white;
-            }
-            circle, path.triangle, path.refresh-icon {
+            }    
+        }
+    }
+
+    button.btn.PlayButton, button.btn.StopButton {
+        svg {
+            circle, path.triangle {
                 fill: black;
             }
         }
@@ -1991,6 +2003,18 @@ body.contrast-theme {
             }
             circle, path.triangle, rect, path.refresh-icon {
                 fill: #8E8E8E;
+            }
+        }
+    }
+
+    button.btn.RefreshButton--disabled {
+        svg {
+            rect.refresh-icon {
+                fill: white;
+                stroke: #8E8E8E;
+            }
+            line.refresh-icon {
+                stroke: #8E8E8E;
             }
         }
     }

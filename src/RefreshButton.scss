@@ -45,9 +45,10 @@ button.btn.RefreshButton.RefreshButton--disabled:active {
 }
 
 button.btn.RefreshButton--disabled svg {
-    stroke: $c2lc-disabled-foreground-color;
+    stroke: $c2lc-disabled-foreground-color;        
 
     circle {
+        stroke: none;
         fill: #67717E;
     }
 
