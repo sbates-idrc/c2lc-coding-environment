@@ -4,7 +4,7 @@ import React from 'react';
 import classNames from 'classnames';
 import ModalHeader from './ModalHeader';
 import ModalFooter from './ModalFooter';
-import { Modal } from 'react-bootstrap';
+import Modal from './Modal';
 import { getWorldThumbnail } from './Worlds';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
@@ -63,8 +63,15 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     onFocusWorld = (e: Event) => {
         // $FlowFixMe event target doesn't know value
         const focusedWorld = e.target.value;
+        const worldSelectorOptions = document.querySelector('.WorldSelector__options');
         if (focusedWorld) {
-            this.setState({ focusedWorld });
+            // $FlowFixMe event target doesn't know relatedTarget
+            if (!worldSelectorOptions.contains(e.relatedTarget)) {
+                this.handleOnSelect(e);
+                this.setState({ focusedWorld });
+            } else {
+                this.setState({ focusedWorld });
+            }
         }
     }
 
@@ -118,11 +125,6 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     componentDidUpdate(prevProps: WorldSelectorProps, prevState: WorldSelectorState) {
         // When the modal first open up, remember the world at that time
         if (prevProps.show !== this.props.show && this.props.show) {
-            // TODO: Implement a common function to set focus on an element with an id in Untils.js
-            const selectedWorld = document.getElementById(`WorldSelector__input-world-${this.props.currentWorld}`);
-            if (selectedWorld) {
-                selectedWorld.focus();
-            }
             this.setState({
                 selectedWorld: this.props.currentWorld
             });
@@ -141,9 +143,12 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     render() {
         return (
             <Modal
-                aria-labelledby='WorldSelector'
                 show={this.props.show}
-                onHide={this.handleCancel}>
+                focusElementSelector={`#WorldSelector__input-world-${this.props.currentWorld}`}
+                focusOnCloseSelector='.IconButton.keyboard-shortcut-focus__world-selector'
+                ariaLabelledById='WorldSelector'
+                ariaDescribedById='WorldSelectorDesc'
+                onClose={this.handleCancel}>
                 <ModalHeader
                     id='WorldSelector'
                     title={this.props.intl.formatMessage({
@@ -151,14 +156,14 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                     })}>
                     <WorldIcon aria-hidden='true' />
                 </ModalHeader>
-                <Modal.Body className='WorldSelector__content'>
-                    <div className='WorldSelector__prompt'>
+                <div className='WorldSelector__content'>
+                    <div id='WorldSelectorDesc'className='WorldSelector__prompt'>
                         <FormattedMessage id={'WorldSelector.Prompt'} />
                     </div>
                     <div className='WorldSelector__options'>
                         {this.renderWorldOptions()}
                     </div>
-                </Modal.Body>
+                </div>
                 <ModalFooter
                     hasCancel={true}
                     onClickCancel={this.handleCancel}
