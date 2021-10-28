@@ -183,7 +183,7 @@
         "ProgramBlockEditor.lastBlock": "Add selected action {command} to the end of the program",
         "ProgramBlockEditor.blocks.noCommandSelected": "Make sure an action is selected",
         "ProgramBlockEditor.command": "{command}, position {index} of current program",
-        "ProgramBlockEditor.program.deleteAll": "Clear and start new program",
+        "ProgramBlockEditor.program.deleteAll": "Delete all steps of your program",
         "ProgramBlockEditor.programHeading": "Program",
         "ProgramBlockEditor.startIndicator": "Start",
         "ProgramTextEditor.programLabel": "Program:",
