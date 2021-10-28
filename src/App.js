@@ -1256,6 +1256,11 @@ export class App extends React.Component<AppProps, AppState> {
                         </h2>
                         <div className='App__playControl-container'>
                             <div className='App__playButton-container'>
+                                <RefreshButton
+                                    className='App__playControlButton'
+                                    disabled={this.editingIsDisabled()}
+                                    onClick={this.handleRefresh}
+                                />
                                 <PlayButton
                                     className='App__playControlButton'
                                     interpreterIsRunning={this.state.runningState === 'running'}
@@ -1268,11 +1273,6 @@ export class App extends React.Component<AppProps, AppState> {
                                         this.state.runningState === 'stopped'
                                         || this.state.runningState === 'stopRequested'}
                                     onClick={this.handleStop}/>
-                                <RefreshButton
-                                    className='App__playControlButton'
-                                    disabled={this.editingIsDisabled()}
-                                    onClick={this.handleRefresh}
-                                />
                                 <ProgramSpeedController
                                     rangeControlRef={this.speedControlRef}
                                     values={this.speedLookUp}
