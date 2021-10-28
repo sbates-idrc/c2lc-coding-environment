@@ -1173,14 +1173,6 @@ export class App extends React.Component<AppProps, AppState> {
                             world={this.state.settings.world}
                         />
                     </div>
-                    <div className='App__scene-controls'>
-                        <div className='App__scene-controls-group'>
-                            <PenDownToggleSwitch
-                                className='App__penDown-toggle-switch'
-                                value={this.state.drawingEnabled}
-                                onChange={this.handleTogglePenDown}/>
-                        </div>
-                    </div>
                     <div className="App__world-container">
                         <h2 className='sr-only' >
                             <FormattedMessage id='WorldSelector.heading' />
@@ -1195,6 +1187,14 @@ export class App extends React.Component<AppProps, AppState> {
                                 <WorldIcon />
                             </IconButton>
                         </div>
+
+                        <div className='App__scene-controls-group'>
+                            <PenDownToggleSwitch
+                                className='App__penDown-toggle-switch'
+                                value={this.state.drawingEnabled}
+                                onChange={this.handleTogglePenDown}/>
+                        </div>
+
                         <CharacterPositionController
                             characterState={this.state.characterState}
                             editingDisabled={this.editingIsDisabled()}

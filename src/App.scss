@@ -12,7 +12,7 @@ body {
     background-color: #FFF;
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: 1fr min-content minmax(auto, calc(#{$c2lc-scene-border-width} + #{$c2lc-scene-border-width} + #{$c2lc-scene-row-header-width} + #{$c2lc-scene-width} + #{$c2lc-scene-space-for-scrollbar} + #{$c2lc-app-scene-container-margin-right})) min-content min-content 1fr;
+    grid-template-columns: 1fr min-content minmax(auto, calc(#{$c2lc-scene-border-width} + #{$c2lc-scene-border-width} + #{$c2lc-scene-row-header-width} + #{$c2lc-scene-width} + #{$c2lc-scene-space-for-scrollbar} + #{$c2lc-app-scene-container-margin-right})) min-content 1fr;
     grid-template-rows: auto auto 1fr 4.5rem;
     row-gap: 0.25rem;
     height: 100vh;
@@ -101,46 +101,25 @@ body {
     grid-column-end: 4;
     grid-row-start: 1;
     grid-row-end: 3;
-    min-height: 12rem;
-    min-width: 19.5rem;
-}
-
-.App__scene-controls {
-    background-color: #CCE6E2;
-    position: relative;
-    grid-column-start: 4;
-    grid-column-end: 5;
-    grid-row-start: 1;
-    grid-row-end: 3;
     margin-right: $c2lc-app-scene-container-margin-right;
-    margin-top: 0.25rem;
-    min-width: 6.5rem;
-    padding-bottom: 0.75rem;
+    min-height: 12rem;
+    min-width: 19.5rem; 
 }
 
 .App__scene-controls-group {
-    height: 100%;
-    display:flex;
-    flex-direction:column;
-    align-items: center;
-    justify-self: end;
-    margin: auto 0;
-
-    .PenDownToggleSwitch {
-        margin-top: auto;
-    }
+    margin: 1rem auto;
 }
 
 .App__world-container {
     display: grid;
-    grid-column-start: 5;
-    grid-column-end: 6;
+    grid-column-start: 4;
+    grid-column-end: 5;
     grid-row-start: 1;
     grid-row-end: 3;
     border-radius: 3px;
     margin-right: 0.5rem;
     margin-top: 0.25rem;
-    grid-template-rows: 1fr min-content;
+    grid-template-rows: 1fr min-content min-content;
     background-color: #CCE6E2;
 }
 
@@ -148,6 +127,7 @@ body {
     display: flex;
     flex-direction: column;
     margin-top: 1rem;
+    border-bottom: 1px solid #88C3BC;
 }
 
 .App__command-palette {
@@ -193,7 +173,7 @@ body {
 .App__program-block-editor {
     margin-right: 0.5rem;
     grid-column-start: 3;
-    grid-column-end: 6;
+    grid-column-end: 5;
     grid-row-start: 3;
     grid-row-end: 4;
     height: auto;
@@ -202,7 +182,7 @@ body {
 .App__playAndShare-background {
     background-color: #D5D8DD;
     grid-column-start: 1;
-    grid-column-end: 6;
+    grid-column-end: 5;
     grid-row-start: 4;
     grid-row-end: 5;
     box-shadow: inset 0px 7px 3px -3px rgba(0, 0, 0, 0.25);
