@@ -97,11 +97,11 @@ body {
 .App__scene-container {
     position: relative;
     margin-top: 0.25rem;
+    margin-right: $c2lc-app-scene-container-margin-right;
     grid-column-start: 3;
     grid-column-end: 4;
     grid-row-start: 1;
     grid-row-end: 3;
-    margin-right: $c2lc-app-scene-container-margin-right;
     min-height: 12rem;
     min-width: 19.5rem; 
 }
@@ -182,7 +182,7 @@ body {
 .App__playAndShare-background {
     background-color: #D5D8DD;
     grid-column-start: 1;
-    grid-column-end: 5;
+    grid-column-end: 6;
     grid-row-start: 4;
     grid-row-end: 5;
     box-shadow: inset 0px 7px 3px -3px rgba(0, 0, 0, 0.25);
