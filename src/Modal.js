@@ -50,7 +50,7 @@ class Modal extends React.Component<ModalProps, {}> {
         return false;
     };
 
-    attemptFocus = (element: any) => {
+    attemptFocus = (element: HTMLElement): boolean => {
         this.ignoreFocusChanges = true;
         try {
             element.focus();
@@ -115,9 +115,9 @@ class Modal extends React.Component<ModalProps, {}> {
                     ref={this.modalRef}
                     className="Modal"
                     role='dialog'
-                    aria-label={this.props.ariaLabel ? this.props.ariaLabel : undefined}
-                    aria-labelledby={this.props.ariaLabelledById ? this.props.ariaLabelledById : undefined}
-                    aria-describedby={this.props.ariaDescribedById ? this.props.ariaDescribedById : undefined}
+                    aria-label={this.props.ariaLabel}
+                    aria-labelledby={this.props.ariaLabelledById}
+                    aria-describedby={this.props.ariaDescribedById}
                     aria-modal='true'>
                     {this.props.children}
                 </div>
@@ -127,24 +127,25 @@ class Modal extends React.Component<ModalProps, {}> {
     }
 
     componentDidUpdate(prevProps: ModalProps) {
-        if (this.props.show !== prevProps.show && this.props.show) {
-            // $FlowFixMe: flow thinks document.body can be null
-            document.body.classList.add('modal-opened');
-            const focusElement = document.querySelector(this.props.focusElementSelector);
-            if (focusElement) {
-                try {
-                    focusElement.focus();
-                } catch (e) {
+        if (this.props.show !== prevProps.show) {
+            if (this.props.show) {
+                // $FlowFixMe: flow thinks document.body can be null
+                document.body.classList.add('modal-opened');
+                const focusElement = document.querySelector(this.props.focusElementSelector);
+                if (focusElement) {
+                    try {
+                        focusElement.focus();
+                    } catch (e) {
+                    }
+                    this.lastFocus = focusElement;
+                } else {
+                    this.focusFirstDescendant(this.modalRef.current);
                 }
-                this.lastFocus = focusElement;
             } else {
-                this.focusFirstDescendant(this.modalRef.current);
-            }
-        }
-        if (this.props.show !== prevProps.show && !this.props.show) {
-            const focusElementOnClose = document.querySelector(this.props.focusOnCloseSelector);
-            if (focusElementOnClose) {
-                focusElementOnClose.focus();
+                const focusElementOnClose = document.querySelector(this.props.focusOnCloseSelector);
+                if (focusElementOnClose) {
+                    focusElementOnClose.focus();
+                }
             }
         }
     }
