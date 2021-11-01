@@ -3,8 +3,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import ModalHeader from './ModalHeader';
-import ModalFooter from './ModalFooter';
-import Modal from './Modal';
+import ModalWithFooter from './ModalWithFooter';
 import { getWorldThumbnail } from './Worlds';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
@@ -142,13 +141,17 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
 
     render() {
         return (
-            <Modal
+            <ModalWithFooter
                 show={this.props.show}
                 focusElementSelector={`#WorldSelector__input-world-${this.props.currentWorld}`}
                 focusOnCloseSelector='.IconButton.keyboard-shortcut-focus__world-selector'
                 ariaLabelledById='WorldSelector'
                 ariaDescribedById='WorldSelectorDesc'
-                onClose={this.handleCancel}>
+                onClose={this.handleCancel}
+                buttonProperties={[
+                    {label: this.props.intl.formatMessage({id: 'ModalFooter.Cancel'}), onClick: this.handleCancel, isPrimary: false},
+                    {label: this.props.intl.formatMessage({id: 'ModalFooter.Done'}), onClick: this.handleDone, isPrimary: true}
+                ]}>
                 <ModalHeader
                     id='WorldSelector'
                     title={this.props.intl.formatMessage({
@@ -164,12 +167,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                         {this.renderWorldOptions()}
                     </div>
                 </div>
-                <ModalFooter
-                    hasCancel={true}
-                    onClickCancel={this.handleCancel}
-                    onClickDone={this.handleDone}
-                />
-            </Modal>
+            </ModalWithFooter>
         );
     }
 }
