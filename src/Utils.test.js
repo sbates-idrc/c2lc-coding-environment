@@ -47,9 +47,9 @@ test('Test focusByQuerySelector', () => {
     // Test fixture with three focusable elements.
     const testFixture = mount(
         <div>
-            <a className="first" href="#">First</a>
-            <a className="second" href="#">Second</a>
-            <a className="third" href="#">Third</a>
+            <a className="first" href="http://create.weavly.org/">First</a>
+            <a className="second" href="http://create.weavly.org/">Second</a>
+            <a className="third" href="http://create.weavly.org/">Third</a>
         </div>,
         // $FlowFixMe:  Flow is worried that document.body might not exist.
         {attachTo: document.body}
