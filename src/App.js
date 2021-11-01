@@ -797,34 +797,34 @@ export class App extends React.Component<AppProps, AppState> {
                             this.setState({ "selectedAction": "right180" });
                             break;
                         case("focusActions"):
-                            Utils.focusOnFirstElementWithClass("command-block");
+                            Utils.focusByQuerySelector(".command-block");
                             break;
                         case("focusAppHeader"):
-                            Utils.focusOnFirstElementWithClass("keyboard-shortcut-focus__app-header");
+                            Utils.focusByQuerySelector(".keyboard-shortcut-focus__app-header");
                             break;
                         case("focusAddNodeToggle"):
-                            Utils.focusOnFirstElementWithClass("ProgramBlockEditor__add-node-toggle-switch");
+                            Utils.focusByQuerySelector(".ProgramBlockEditor__add-node-toggle-switch");
                             break;
                         case("focusCharacterPositionControls"):
-                            Utils.focusOnFirstElementWithClass("CharacterPositionController__character-position-button");
+                            Utils.focusByQuerySelector(".CharacterPositionController__character-position-button");
                             break;
                         case("focusCharacterColumnInput"):
-                            Utils.focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-column");
+                            Utils.focusByQuerySelector(".ProgramBlock__character-position-coordinate-box-column");
                             break;
                         case("focusCharacterRowInput"):
-                            Utils.focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-row");
+                            Utils.focusByQuerySelector(".ProgramBlock__character-position-coordinate-box-row");
                             break;
                         case("focusPlayShare"):
-                            Utils.focusOnFirstElementWithClass("PlayButton--play");
+                            Utils.focusByQuerySelector(".PlayButton--play");
                             break;
                         case("focusProgramSequence"):
-                            Utils.focusOnFirstElementWithClass("AddNode__expanded-button");
+                            Utils.focusByQuerySelector(".AddNode__expanded-button");
                             break;
                         case("focusScene"):
-                            Utils.focusOnFirstElementWithClass("PenDownToggleSwitch");
+                            Utils.focusByQuerySelector(".PenDownToggleSwitch");
                             break;
                         case("focusWorldSelector"):
-                            Utils.focusOnFirstElementWithClass("keyboard-shortcut-focus__world-selector");
+                            Utils.focusByQuerySelector(".keyboard-shortcut-focus__world-selector");
                             break;
                         case("moveCharacterLeft"):
                             if (!this.editingIsDisabled()) {

@@ -3,7 +3,7 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
-import { focusById } from './Utils';
+import { focusByQuerySelector } from './Utils';
 
 import './ShareCompleteModal.css';
 
@@ -41,7 +41,7 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
     componentDidUpdate(prevProps: ShareCompleteModalProps) {
         /* istanbul ignore next */
         if (prevProps.show !== this.props.show && this.props.show) {
-            focusById("ShareCompleteModal__confirmButton");
+            focusByQuerySelector("#ShareCompleteModal__confirmButton");
         }
     }
 }

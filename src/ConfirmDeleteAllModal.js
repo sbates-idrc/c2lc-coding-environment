@@ -5,7 +5,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import { ReactComponent as ErrorIcon } from './svg/Error.svg';
-import { focusById } from './Utils';
+import { focusByQuerySelector } from './Utils';
 import './ConfirmDeleteAllModal.scss';
 
 type ConfirmDeleteAllModalProps = {
@@ -52,7 +52,7 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
 
     componentDidUpdate (prevProps: ConfirmDeleteAllModalProps) {
         if (prevProps.show !== this.props.show && this.props.show) {
-            focusById('deleteAll-button');
+            focusByQuerySelector('#deleteAll-button');
         }
     }
 }
