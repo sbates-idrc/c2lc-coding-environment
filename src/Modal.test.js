@@ -40,7 +40,7 @@ function findModal(modalWrapper) {
 }
 
 function findModalBackdrop(modalWrapper) {
-    return modalWrapper.find('.Modal__backdrop');
+    return modalWrapper.find('.Modal__container');
 }
 
 describe('Modal component takes 3 aria related attributes as an option property', () => {
@@ -81,6 +81,7 @@ describe('Modal closes on two different actions', () => {
     });
 });
 
+//TODO: Find a better pattern to ensure detach is always done
 describe('Focus logic', () => {
     test('When the modal opens, focus is set on element specified by "focusElementSelector" prop', () => {
         expect.assertions(1);
@@ -149,6 +150,7 @@ describe('Focus logic', () => {
             {attachTo: document.body}
         );
         const modalBackdrop = findModalBackdrop(wrapper);
+        // Focus event is fired on the modal container
         modalBackdrop.simulate('focus');
         expect(wrapper.find('.button1').is(':focus')).toBe(true);
         modalBackdrop.simulate('focus');

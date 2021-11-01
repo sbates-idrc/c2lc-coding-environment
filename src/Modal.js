@@ -16,7 +16,7 @@ type ModalProps = {
 };
 
 class Modal extends React.Component<ModalProps, {}> {
-    modalRef: { current: any };
+    modalRef: { current: null | Element };
     lastFocus: any;
     ignoreFocusChanges: boolean;
     constructor(props: ModalProps) {
@@ -66,14 +66,18 @@ class Modal extends React.Component<ModalProps, {}> {
         if (this.ignoreFocusChanges) {
             return;
         }
-        if (this.modalRef.current.contains(event.target)) {
-            this.lastFocus = event.target;
-        } else {
-            this.focusFirstDescendant(this.modalRef.current);
-            if (this.lastFocus === document.activeElement) {
-                this.focusLastDescendant(this.modalRef.current);
+        // Add guard cases to check if properties exist
+        if (this.modalRef.current) {
+            // $FlowIgnore: EventTarget is incompatible with Node
+            if (this.modalRef.current.contains(event.target)) {
+                this.lastFocus = event.target;
+            } else {
+                this.focusFirstDescendant(this.modalRef.current);
+                if (this.lastFocus === document.activeElement) {
+                    this.focusLastDescendant(this.modalRef.current);
+                }
+                this.lastFocus = document.activeElement;
             }
-            this.lastFocus = document.activeElement;
         }
     }
 
@@ -83,30 +87,36 @@ class Modal extends React.Component<ModalProps, {}> {
         this.props.onClose();
     }
 
+    // rename it to be handleKeyDown
     handleOnPressEscapeKey = (event: Event) => {
         // $FlowFixMe: flow doesn't know key property
         if (event.key === 'Escape') {
             this.handleOnClose();
         } else {
+            // Ignore all other key presses than the escape key to prevent
+            // keyboard shortcuts to be fired
             // $FlowFixMe event target doesn't know nativeEvent
             event.nativeEvent.stopImmediatePropagation();
         }
     }
 
     handleOnClickBackdrop = (event: Event) => {
-        if (!this.modalRef.current.contains(event.target)) {
-            this.handleOnClose();
+        if (this.modalRef.current) {
+            // $FlowIgnore: EventTarget is incompatible with Node
+            if (!this.modalRef.current.contains(event.target)) {
+                this.handleOnClose();
+            }
         }
     }
 
     render() {
-        const backdropClass = classNames(
-            'Modal__backdrop',
+        const containerClass = classNames(
+            'Modal__container',
             this.props.show && 'active'
         );
         return (
             <div
-                className={backdropClass}
+                className={containerClass}
                 onFocus={this.handleFocusTrap}
                 onKeyDown={this.handleOnPressEscapeKey}
                 onClick={this.handleOnClickBackdrop}>
@@ -135,10 +145,18 @@ class Modal extends React.Component<ModalProps, {}> {
                 if (focusElement) {
                     try {
                         focusElement.focus();
+                        this.lastFocus = focusElement;
                     } catch (e) {
+                        /* eslint-disable no-console */
+                        console.log('Modal.componentDidUpdate: Unable to focus focusElement');
+                        console.log(e.name);
+                        console.log(e.message);
+                        /* eslint-enable no-console */
                     }
-                    this.lastFocus = focusElement;
                 } else {
+                    /* eslint-disable no-console */
+                    console.log('Modal.componentDidUpdate: Focus first focusable element');
+                    /* eslint-enable no-console */
                     this.focusFirstDescendant(this.modalRef.current);
                 }
             } else {

@@ -2,7 +2,7 @@
     overflow: hidden;
 }
 
-.Modal__backdrop {
+.Modal__container {
     z-index: 100;
     background: rgba(0, 0, 0, 0.3);
     display: none;
@@ -20,7 +20,6 @@
 
 .Modal {
     box-sizing: border-box;
-    border: 1px solid #000;
     border-radius: 0.3rem;
     background-color: #FFF;
     position: absolute;
