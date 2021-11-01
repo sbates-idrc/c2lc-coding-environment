@@ -44,6 +44,8 @@ test('Test extend', () => {
 });
 
 test('Test focusByQuerySelector', () => {
+    expect.assertions(2);
+
     // Test fixture with three focusable elements.
     const testFixture = mount(
         <div>
