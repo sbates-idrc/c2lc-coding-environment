@@ -10,16 +10,30 @@ type IconButtonProps = {
     className?: string,
     children: any,
     disabled?: boolean,
+    disabledClassName?: string,
     ariaLabel: string,
     onClick: () => void,
-    onKeyDown: (e: KeyboardEvent) => void
+    onKeyDown: () => void
 };
 
 class IconButton extends React.Component<IconButtonProps, {}> {
+    handleKeyDown = (event: KeyboardEvent) => {
+        if (!this.props.disabled && (event.key === "Enter" || event.key === " ")) {
+            event.preventDefault();
+            this.props.onKeyDown();
+        }
+    }
+
+    handleClick = () => {
+        if (!this.props.disabled) {
+            this.props.onClick();
+        }
+    }
+
     render() {
         const classes = classNames(
             "IconButton",
-            this.props.disabled && "IconButton--disabled",
+            this.props.disabled && (this.props.disabledClassName || "IconButton--disabled"),
             this.props.className
         );
         return (
@@ -28,8 +42,8 @@ class IconButton extends React.Component<IconButtonProps, {}> {
                 className={classes}
                 role='button'
                 tabIndex={0}
-                onClick={this.props.onClick}
-                onKeyDown={this.props.onKeyDown}
+                onClick={this.handleClick}
+                onKeyDown={this.handleKeyDown}
             >
                 {this.props.children}
             </div>

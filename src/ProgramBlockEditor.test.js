@@ -15,6 +15,7 @@ import SceneDimensions from './SceneDimensions';
 import messages from './messages.json';
 import ProgramBlockEditor from './ProgramBlockEditor';
 import ToggleSwitch from './ToggleSwitch';
+import IconButton from './IconButton';
 
 // Mocks
 jest.mock('./AudioManagerImpl');
@@ -113,7 +114,7 @@ function confirmDeleteAllModalIsOpen(programBlockEditorWrapper): boolean {
 }
 
 function getProgramDeleteAllButton(programBlockEditorWrapper) {
-    return programBlockEditorWrapper.find(AriaDisablingButton)
+    return programBlockEditorWrapper.find(IconButton)
         .filter('.ProgramBlockEditor__program-deleteAll-button');
 }
 

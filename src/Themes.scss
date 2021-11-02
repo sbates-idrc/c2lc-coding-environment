@@ -287,7 +287,7 @@ body.light-theme {
         background-color: #D5D8DD;
     }
 
-    button.btn.PlayButton, button.btn.StopButton {
+    button.btn.PlayButton, .StopButton {
         svg {
             circle, path.triangle {
                 fill: #3A3F46;
@@ -545,7 +545,7 @@ body.dark-theme {
         background-color: #30444e;
     }
 
-    button.btn.PlayButton:focus, button.btn.StopButton:focus {
+    button.btn.PlayButton:focus, .StopButton:focus {
         border: none;
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
@@ -884,7 +884,7 @@ body.gray-theme {
         background-color: #818A98;
     }
 
-    button.btn.RefreshButton {
+    .RefreshButton {
         background-color: #818A98;
         svg path {
             fill: white;
@@ -899,9 +899,9 @@ body.gray-theme {
         }
     }
 
-    button.btn.RefreshButton--disabled,
-    button.btn.RefreshButton--disabled:hover,
-    button.btn.RefreshButton--disabled:focus {
+    .RefreshButton--disabled,
+    .RefreshButton--disabled:hover,
+    .RefreshButton--disabled:focus {
         background-color: #9DA4AF;
         svg path {
             fill: #D5D8DD;
@@ -1150,7 +1150,7 @@ body.gray-theme {
         background-color: #D5D8DD;
     }
 
-    button.btn.PlayButton, button.btn.StopButton {
+    button.btn.PlayButton, .StopButton {
         box-shadow: none;
 
         svg {
@@ -1185,7 +1185,7 @@ body.gray-theme {
         }
     }
 
-    button.btn.PlayButton--disabled, button.btn.StopButton--disabled {
+    button.btn.PlayButton--disabled, .StopButton--disabled {
         background-color: #D5D8DD;
 
         svg {
@@ -1748,9 +1748,9 @@ body.contrast-theme {
         }
     }
 
-    button.btn.RefreshButton--disabled,
-    button.btn.RefreshButton--disabled:hover,
-    button.btn.RefreshButton--disabled:active {
+    .RefreshButton--disabled,
+    .RefreshButton--disabled:hover,
+    .RefreshButton--disabled:active {
         background-color: white;
         border: 2px solid black;
         svg path {
@@ -2025,7 +2025,7 @@ body.contrast-theme {
         color: white;
     }
 
-    button.btn.PlayButton, button.btn.StopButton {
+    button.btn.PlayButton, .StopButton {
         &:hover {
             background-color: white;
             svg {
@@ -2045,7 +2045,7 @@ body.contrast-theme {
         }
     }
 
-    button.btn.PlayButton--play.PlayButton--disabled, button.btn.StopButton--disabled {
+    button.btn.PlayButton--play.PlayButton--disabled, .StopButton--disabled {
         svg {
             path {
                 fill: white;

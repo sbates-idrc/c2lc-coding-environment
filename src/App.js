@@ -891,12 +891,6 @@ export class App extends React.Component<AppProps, AppState> {
         }
     };
 
-    handleKeyboardMenuIconKeydown = (event: KeyboardEvent) => {
-        if (event.key === "Enter" || event.key === " ") {
-            this.handleKeyboardModalToggle();
-        }
-    }
-
     handleKeyboardModalClose = () => {
         this.setState({showKeyboardModal: false});
     };
@@ -1085,12 +1079,10 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleKeyDownWorldIcon = (event: KeyboardEvent) => {
-        if (event.key === "Enter" || event.key === " ") {
-            this.setState({
-                showWorldSelector: true
-            });
-        }
+    handleKeyDownWorldIcon = () => {
+        this.setState({
+            showWorldSelector: true
+        });
     }
 
     handleSelectWorld = (world: WorldName) => {
@@ -1127,9 +1119,10 @@ export class App extends React.Component<AppProps, AppState> {
                                 </a>
                             </h1>
                             <IconButton
+                                className="App__header-keyboardMenuIcon"
                                 ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
                                 onClick={this.handleKeyboardModalToggle}
-                                onKeyDown={this.handleKeyboardMenuIconKeydown}
+                                onKeyDown={this.handleKeyboardModalToggle}
                             >
                                 <KeyboardModalToggleIcon/>
                             </IconButton>
