@@ -62,15 +62,8 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     onFocusWorld = (e: Event) => {
         // $FlowFixMe event target doesn't know value
         const focusedWorld = e.target.value;
-        const worldSelectorOptions = document.querySelector('.WorldSelector__options');
         if (focusedWorld) {
-            // $FlowFixMe event target doesn't know relatedTarget
-            if (!worldSelectorOptions.contains(e.relatedTarget)) {
-                this.handleOnSelect(e);
-                this.setState({ focusedWorld });
-            } else {
-                this.setState({ focusedWorld });
-            }
+            this.setState({ focusedWorld });
         }
     }
 

@@ -52,6 +52,10 @@ class Modal extends React.Component<ModalProps, {}> {
 
     attemptFocus = (element: HTMLElement): boolean => {
         this.ignoreFocusChanges = true;
+        // $FlowFixMe: properties type and checked is missing in HTMLElement
+        if (element.type === 'radio' && !element.checked) {
+            return false;
+        }
         try {
             element.focus();
         }
