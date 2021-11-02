@@ -48,7 +48,7 @@ class ModalWithFooter extends React.Component<ModalWithFooterProps, {}> {
                 ariaDescribedById={this.props.ariaDescribedById}
                 onClose={this.props.onClose}>
                 {this.props.children}
-                <div className="ModalWithFooter">
+                <div className="ModalWithFooter__footer">
                     {this.renderFooterButtons()}
                 </div>
             </Modal>
