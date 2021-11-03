@@ -86,9 +86,9 @@ function extend(...toMerge:Object) {
     return merged;
 }
 
-function focusByQuerySelector (querySelector: string) {
-    const element = document.querySelector(querySelector);
-    if(element) {
+function focusByQuerySelector (selectors: string) {
+    const element = document.querySelector(selectors);
+    if (element) {
         element.focus();
     }
 }
