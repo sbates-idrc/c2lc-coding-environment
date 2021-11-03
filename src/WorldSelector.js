@@ -11,6 +11,7 @@ import { ReactComponent as WorldIcon } from './svg/World.svg';
 import type { ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import type { IntlShape } from 'react-intl';
+import { focusByQuerySelector } from './Utils';
 import './WorldSelector.scss';
 
 type WorldSelectorProps = {
@@ -120,11 +121,8 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     componentDidUpdate(prevProps: WorldSelectorProps, prevState: WorldSelectorState) {
         // When the modal first open up, remember the world at that time
         if (prevProps.show !== this.props.show && this.props.show) {
-            // TODO: Implement a common function to set focus on an element with an id in Untils.js
-            const selectedWorld = document.getElementById(`WorldSelector__input-world-${this.props.currentWorld}`);
-            if (selectedWorld) {
-                selectedWorld.focus();
-            }
+            focusByQuerySelector(`#WorldSelector__input-world-${this.props.currentWorld}`);
+
             this.setState({
                 selectedWorld: this.props.currentWorld
             });
@@ -132,10 +130,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
         if (prevState.focusedWorld !== this.state.focusedWorld) {
             const currentFocusedWorld =  this.state.focusedWorld;
             if (currentFocusedWorld) {
-                const currentRadioButton = document.getElementById(`WorldSelector__input-world-${currentFocusedWorld}`);
-                if (currentRadioButton) {
-                    currentRadioButton.focus();
-                }
+                focusByQuerySelector(`#WorldSelector__input-world-${currentFocusedWorld}`);
             }
         }
     }
