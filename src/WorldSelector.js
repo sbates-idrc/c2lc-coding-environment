@@ -87,6 +87,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                 `WorldSelector__option-image--${world}`,
                 this.state.focusedWorld === world && 'WorldSelector__option--selected'
             );
+            const ariaLabel = this.props.intl.formatMessage({ id: world + ".label"});
             worldOptions.push(
                 <div
                     className='WorldSelector__option-container'
@@ -101,6 +102,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                             id={`WorldSelector__input-world-${world}`}
                             name='world-option'
                             value={world}
+                            aria-label={ariaLabel}
                             checked={this.props.currentWorld === world}
                             onChange={this.handleOnSelect}
                             onFocus={this.onFocusWorld}
