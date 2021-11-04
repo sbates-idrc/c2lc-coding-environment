@@ -77,12 +77,6 @@
     margin-left: 1.5rem;
 }
 
-.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled,
-.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled:hover,
-.ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled:active {
-    background-color: $c2lc-disabled-background-color;
-    cursor: default;
-}
 
 .ProgramBlockEditor__program-deleteAll-button svg {
     stroke: #000;

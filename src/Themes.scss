@@ -413,10 +413,6 @@ body.dark-theme {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
 
-    .RefreshButton:focus {
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-    }
-
     .CharacterPositionController__character-column {
         background-color: #30444E;
         border-top: 1px solid #33717F;
@@ -490,11 +486,6 @@ body.dark-theme {
 
     .ProgramBlockEditor__add-node-toggle-switch:focus {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-    }
-
-    button.btn.ProgramBlockEditor__program-deleteAll-button:focus {
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-
     }
 
     .ProgramBlockEditor__program-sequence-scroll-container {
@@ -632,7 +623,7 @@ body.gray-theme {
             fill: white;
         }
 
-        &:hover {
+        &:hover:not(.IconButton--disabled) {
             background-color: #505862;
         }
 
@@ -884,25 +875,13 @@ body.gray-theme {
         background-color: #818A98;
     }
 
-    .RefreshButton {
-        background-color: #818A98;
-        svg path {
-            fill: white;
-        }
-
-        &:hover {
-            background-color: #505862;
-        }
-
-        &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
-        }
+    .RefreshButton svg path {
+        fill: white;
     }
 
     .RefreshButton--disabled,
     .RefreshButton--disabled:hover,
     .RefreshButton--disabled:focus {
-        background-color: #9DA4AF;
         svg path {
             fill: #D5D8DD;
         }
@@ -994,24 +973,13 @@ body.gray-theme {
         background-color: #818A98;
     }
 
-    button.btn.ProgramBlockEditor__program-deleteAll-button {
-        background-color: #818A98;
-        svg path {
-            stroke: white;
-        }
-
-        &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
-        }
-
-        &:hover {
-            background-color: #505862;
-        }
+    .ProgramBlockEditor__program-deleteAll-button  svg path {
+        stroke: white;
+        fill: inherit;
     }
 
-    button.btn.ProgramBlockEditor__program-deleteAll-button--disabled,
-    button.btn.ProgramBlockEditor__program-deleteAll-button--disabled:hover {
-        background-color: #9DA4AF;
+    .ProgramBlockEditor__program-deleteAll-button--disabled,
+    .ProgramBlockEditor__program-deleteAll-button--disabled:hover {
         svg path {
             stroke: #D5D8DD;
         }
@@ -1341,7 +1309,7 @@ body.contrast-theme {
             fill: black;
         }
 
-        &:hover {
+        &:hover:not(.IconButton--disabled) {
             background-color: black;
 
             svg path {
@@ -1725,34 +1693,14 @@ body.contrast-theme {
         }
     }
 
-    .RefreshButton {
-        background-color: white;
-        border: 2px solid black;
-        padding: 0.4rem;
-        svg path {
-            fill: black;
-            stroke: none;
-        }
-
-        &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-            border: 2px solid black;
-        }
-
-        &:hover:not(:active) {
-            background-color: black;
-            border: 2px solid white;
-            svg path {
-                fill: white;
-            }
-        }
+    .RefreshButton svg path {
+        fill: black;
+        stroke: none;
     }
 
     .RefreshButton--disabled,
     .RefreshButton--disabled:hover,
     .RefreshButton--disabled:active {
-        background-color: white;
-        border: 2px solid black;
         svg path {
             fill: #818A98;
         }
@@ -1860,6 +1808,7 @@ body.contrast-theme {
         border: 2px solid black;
         svg path {
             stroke: #818A98;
+            fill:inherit;
         }
     }
 

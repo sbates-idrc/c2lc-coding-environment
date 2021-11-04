@@ -6,43 +6,10 @@
 }
 
 .RefreshButton svg path {
+    fill: black;
     stroke: none;
-}
-
-.RefreshButton {
-    background-color: #4C9990;
-    border: 0;
-    border-radius: 50%;
-    margin-bottom: auto;
-
-    svg path {
-        fill: black;
-    }
-
-    &:active {
-        background-color: #ED972C;
-    }
-
-    &:focus {
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
-    }
-}
-
-.RefreshButton.RefreshButton--disabled,
-.RefreshButton.RefreshButton--disabled:hover,
-.RefreshButton.RefreshButton--disabled:active {
-    background-color: $c2lc-disabled-background-color;
-    cursor: default;
 }
 
 .RefreshButton--disabled svg {
     stroke: $c2lc-disabled-foreground-color;
-}
-
-.RefreshButton:hover {
-    background-color: #F1AE5B;
-}
-
-.RefreshButton:hover:not(:focus) {
-    box-shadow: none;
 }

@@ -33,7 +33,8 @@ class IconButton extends React.Component<IconButtonProps, {}> {
     render() {
         const classes = classNames(
             "IconButton",
-            this.props.disabled && (this.props.disabledClassName || "IconButton--disabled"),
+            this.props.disabled && "IconButton--disabled",
+            this.props.disabled && this.props.disabledClassName,
             this.props.className
         );
         return (
