@@ -74,19 +74,7 @@
 }
 
 .ProgramBlockEditor__program-deleteAll-button {
-    background-color: #4C9990;
-    border: none;
-    border-radius: 50%;
-    box-shadow: none;
     margin-left: 1.5rem;
-
-    &:focus {
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
-    }
-}
-
-.ProgramBlockEditor__program-deleteAll-button--pressed {
-    background-color: #000;
 }
 
 .ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled,
@@ -94,11 +82,6 @@
 .ProgramBlockEditor__program-deleteAll-button.ProgramBlockEditor__program-deleteAll-button--disabled:active {
     background-color: $c2lc-disabled-background-color;
     cursor: default;
-}
-
-.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEditor__program-deleteAll-button--disabled,
-.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEditor__program-deleteAll-button--disabled:active:focus {
-    background-color: $c2lc-disabled-background-color;
 }
 
 .ProgramBlockEditor__program-deleteAll-button svg {
@@ -111,11 +94,6 @@
 
 .ProgramBlockEditor__program-deleteAll-button:hover {
     background-color: #F1AE5B;
-}
-
-.ProgramBlockEditor__program-deleteAll-button--pressed svg,
-.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEditor__program-deleteAll-button--disabled svg {
-    stroke: #FFF;
 }
 
 .ProgramBlockEditor__program-deleteAll-button-svg {
