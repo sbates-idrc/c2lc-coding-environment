@@ -38,6 +38,7 @@ class IconButton extends React.Component<IconButtonProps, {}> {
         );
         return (
             <div
+                aria-disabled={this.props.disabled}
                 aria-label={this.props.ariaLabel}
                 className={classes}
                 role='button'

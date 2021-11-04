@@ -98,6 +98,13 @@ describe('An IconButton can be disabled', () => {
             expect(clickHandler.mock.calls.length).toBe(0);
         });
 
+        test('Then aria-disabled should be set to true', () => {
+            expect.assertions(1);
+            const {wrapper} = createShallowIconButton({ disabled: true });
+
+            expect(wrapper.props()['aria-disabled']).toBe(true);
+        });
+
     })
 });
 
