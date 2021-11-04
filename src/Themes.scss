@@ -1834,7 +1834,7 @@ body.contrast-theme {
         }
     }
 
-    button.btn.ProgramBlockEditor__program-deleteAll-button {
+    .ProgramBlockEditor__program-deleteAll-button {
         background-color: black;
         border: 2px solid white;
         svg path {
@@ -1854,8 +1854,8 @@ body.contrast-theme {
         }
     }
 
-    button.btn.ProgramBlockEditor__program-deleteAll-button--disabled,
-    button.btn.ProgramBlockEditor__program-deleteAll-button--disabled:hover {
+    .ProgramBlockEditor__program-deleteAll-button--disabled,
+    .ProgramBlockEditor__program-deleteAll-button--disabled:hover {
         background-color: white;
         border: 2px solid black;
         svg path {
