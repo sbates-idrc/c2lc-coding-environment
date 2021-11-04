@@ -896,10 +896,8 @@ export class App extends React.Component<AppProps, AppState> {
     };
 
     handleKeyboardModalToggle = () => {
-        this.setState((currentState: AppState) => {
-            return { showKeyboardModal: !currentState.showKeyboardModal};
-        });
-    }
+        this.setState({ showKeyboardModal: true});
+    };
 
     // Focus trap escape key handling.
     handleRootKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
