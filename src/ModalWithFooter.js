@@ -15,7 +15,7 @@ type ModalWithFooterProps = {
     ariaDescribedById?: string,
     children?: any,
     onClose: () => void,
-    buttonProperties: Array<{label: string, onClick: () => void, isPrimary: boolean}>
+    buttonProperties: Array<{id?: string, label: string, onClick: () => void, isPrimary: boolean}>
 };
 
 class ModalWithFooter extends React.Component<ModalWithFooterProps, {}> {
@@ -28,6 +28,7 @@ class ModalWithFooter extends React.Component<ModalWithFooterProps, {}> {
             );
             footerButtons.push(
                 <Button
+                    id={buttonProp.id}
                     key={`footerButton-${footerButtons.length}`}
                     className={buttonClassName}
                     onClick={buttonProp.onClick}>
