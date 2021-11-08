@@ -56,11 +56,8 @@ class Modal extends React.Component<ModalProps, {}> {
         if (element.type === 'radio' && !element.checked) {
             return false;
         }
-        try {
+        if (element.focus) {
             element.focus();
-        }
-        catch (e) {
-            return false;
         }
         this.ignoreFocusChanges = false;
         return (document.activeElement === element);
@@ -146,17 +143,14 @@ class Modal extends React.Component<ModalProps, {}> {
                 // $FlowFixMe: flow thinks document.body can be null
                 document.body.classList.add('modal-opened');
                 const focusElement = document.querySelector(this.props.focusElementSelector);
-                if (focusElement) {
-                    try {
+                if (focusElement && focusElement.focus) {
+                    // When using VoiceOver in Chrome browser, setting focus on componentDidUpdate
+                    // makes VoiceOver navigation stuck. Using setTimeout to detach setting focus from
+                    // componentDidUpdate appears to work around the issue.
+                    setTimeout(() => {
                         focusElement.focus();
                         this.lastFocus = focusElement;
-                    } catch (e) {
-                        /* eslint-disable no-console */
-                        console.log('Modal.componentDidUpdate: Unable to focus focusElement');
-                        console.log(e.name);
-                        console.log(e.message);
-                        /* eslint-enable no-console */
-                    }
+                    }, 0);
                 } else {
                     /* eslint-disable no-console */
                     console.log('Modal.componentDidUpdate: Focus first focusable element');
