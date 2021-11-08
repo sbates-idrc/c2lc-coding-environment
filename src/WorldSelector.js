@@ -10,6 +10,7 @@ import { ReactComponent as WorldIcon } from './svg/World.svg';
 import type { ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import type { IntlShape } from 'react-intl';
+import { focusByQuerySelector } from './Utils';
 import './WorldSelector.scss';
 
 type WorldSelectorProps = {
@@ -86,6 +87,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                 `WorldSelector__option-image--${world}`,
                 this.state.focusedWorld === world && 'WorldSelector__option--selected'
             );
+            const ariaLabel = this.props.intl.formatMessage({ id: world + ".label"});
             worldOptions.push(
                 <div
                     className='WorldSelector__option-container'
@@ -100,6 +102,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                             id={`WorldSelector__input-world-${world}`}
                             name='world-option'
                             value={world}
+                            aria-label={ariaLabel}
                             checked={this.props.currentWorld === world}
                             onChange={this.handleOnSelect}
                             onFocus={this.onFocusWorld}
@@ -124,10 +127,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
         if (prevState.focusedWorld !== this.state.focusedWorld) {
             const currentFocusedWorld =  this.state.focusedWorld;
             if (currentFocusedWorld) {
-                const currentRadioButton = document.getElementById(`WorldSelector__input-world-${currentFocusedWorld}`);
-                if (currentRadioButton) {
-                    currentRadioButton.focus();
-                }
+                focusByQuerySelector(`#WorldSelector__input-world-${currentFocusedWorld}`);
             }
         }
     }
@@ -142,8 +142,8 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                 ariaDescribedById='WorldSelectorDesc'
                 onClose={this.handleCancel}
                 buttonProperties={[
-                    {label: this.props.intl.formatMessage({id: 'ModalFooter.Cancel'}), onClick: this.handleCancel, isPrimary: false},
-                    {label: this.props.intl.formatMessage({id: 'ModalFooter.Done'}), onClick: this.handleDone, isPrimary: true}
+                    {label: this.props.intl.formatMessage({id: 'WorldSelector.Cancel'}), onClick: this.handleCancel, isPrimary: false},
+                    {label: this.props.intl.formatMessage({id: 'WorldSelector.Done'}), onClick: this.handleDone, isPrimary: true}
                 ]}>
                 <ModalHeader
                     id='WorldSelector'
