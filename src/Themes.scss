@@ -293,11 +293,6 @@ body.light-theme {
             }
         }
     }
-
-    .ShareButton {
-        color: black;
-        background-color: #F1F2F4;
-    }
 }
 
 
@@ -550,16 +545,59 @@ body.dark-theme {
     }
 
     .ProgramSpeedController__slider {
+        &:hover {
+            &::-webkit-slider-thumb {
+                background-color: #F1AE5B;
+                box-shadow: -8rem 0 0 8rem #F1AE5B;
+            }
+        
+            &::-moz-range-thumb {
+                background-color: #F1AE5B;
+            }
+           
+            &::-moz-range-progress {
+                background-color: #F1AE5B; 
+            }
+            
+            &::-ms-fill-lower {
+                background-color: #F1AE5B; 
+            }
+        }
+
         &:focus {
             outline-color: white;
+        }
+
+        &::-webkit-slider-thumb {
+            background-color: #CCE6E2;
+            box-shadow: -8rem 0 0 8rem #CCE6E2;
+        }
+
+        &::-moz-range-thumb {
+            background-color: #CCE6E2;
+            box-shadow: -8rem 0 0 8rem #CCE6E2;
+        }
+
+        &::-moz-range-progress {
+            background-color: #CCE6E2;
+        }
+        
+        &::-ms-fill-lower {
+            background-color: #CCE6E2; 
         }
     }
 
     button.btn.ShareButton {
+        background-color: #CCE6E2;
+        color: #1E1E1E;
         &:focus {
             box-shadow:
                 0 0 0 0.1rem #30444E,
                 0 0 0 $c2lc-focus-indicator-width white;
+        }
+        &:hover {
+            background-color: #F5C58A;
+            color: black;
         }
     }
 
@@ -1218,26 +1256,26 @@ body.gray-theme {
 
         &::-webkit-slider-thumb {
             border: 2px solid #67717E;
-            background-color: white;
-            box-shadow: -8rem 0 0 8rem white;
+            background-color: #F1F2F4;
+            box-shadow: -8rem 0 0 8rem #F1F2F4;
         }
 
         &::-moz-range-thumb {
             border-radius: 0;
             border: 2px solid black;
-            background-color: white;
-            box-shadow: -8rem 0 0 8rem white;
+            background-color: #F1F2F4;
+            box-shadow: -8rem 0 0 8rem #F1F2F4;
         }
 
         &::-moz-range-progress {
-            background-color: white;
+            background-color: #F1F2F4;
         }
         &::-moz-range-track {
             background-color: #67717E;
         }
 
         &::-ms-fill-lower {
-            background-color: white;
+            background-color: #F1F2F4;
         }
 
         &::-ms-fill-upper {

@@ -60,26 +60,26 @@
 
     &::-webkit-slider-thumb {
         -webkit-appearance: none;
-        background-color: #F97953;
+        background-color: #33717F;
         border: 2px solid black;
         border-radius: 0;
-        box-shadow: -8rem 0 0 8rem #F97953;
+        box-shadow: -8rem 0 0 8rem #33717F;
         height: 12px;
         width: 12px;
     }
 
     &::-moz-range-thumb {
-        background-color: #F97953;
+        background-color: #33717F;
         border: 2px solid black;
         border-radius: 0;
-        box-shadow: -8rem 0 0 8rem #F97953;
+        box-shadow: -8rem 0 0 8rem #33717F;
         height: 16px;
         width: 16px;
     }
    
     &::-moz-range-progress {
         height:16px;
-        background-color: #F97953; 
+        background-color: #33717F; 
         overflow: hidden;
     }
     
@@ -90,7 +90,7 @@
     }
 
     &::-ms-fill-lower {
-        background-color: #F97953; 
+        background-color: #33717F; 
     }
 
     &::-ms-fill-upper {  
