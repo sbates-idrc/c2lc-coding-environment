@@ -10,6 +10,7 @@ import type {KeyDef, KeyboardInputScheme, KeyboardInputSchemeName} from './Keybo
 import {KeyboardInputSchemes, getLabelMessageKeyFromKeyDef, getIconMessageKeyFromKeyDef} from './KeyboardInputSchemes';
 
 import ToggleSwitch from './ToggleSwitch';
+import { focusByQuerySelector } from './Utils';
 
 import { ReactComponent as KeyboardIcon} from './svg/Keyboard.svg'
 
@@ -184,11 +185,13 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
     render () {
         return(
             <Modal
+                aria-labelledby='KeyboardInputModal'
                 onHide={this.cancelChanges}
                 show={this.props.show}
                 dialogClassName='KeyboardInputModal'
             >
                 <ModalHeader
+                    id='KeyboardInputModal'
                     title={this.props.intl.formatMessage({
                         id: 'KeyboardInputModal.Title'
                     })}>
@@ -204,6 +207,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
                                 <FormattedMessage id='KeyboardInputModal.Toggle.Off'/>
                             </div>
                             <ToggleSwitch
+                                id='keyboardInputModal__toggle'
                                 ariaLabel={this.props.intl.formatMessage({id: "KeyboardInputModal.Toggle.AriaLabel"})}
                                 className="KeyboardInputModal__content__toggle"
                                 contentsTrue=""
@@ -232,12 +236,15 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
     }
 
     // Required to avoid a phantom state where we persist the defaults even after they are updated from local storage.
-    componentDidUpdate (prevProps) {
+    componentDidUpdate (prevProps: KeyboardInputModalProps) {
         if (prevProps.keyBindingsEnabled !== this.props.keyBindingsEnabled || prevProps.keyboardInputSchemeName !== this.props.keyboardInputSchemeName) {
             this.setState({
                 keyBindingsEnabled: this.props.keyBindingsEnabled,
                 keyboardInputSchemeName: this.props.keyboardInputSchemeName
             });
+        }
+        if (prevProps.show !== this.props.show && this.props.show) {
+            focusByQuerySelector('#keyboardInputModal__toggle');
         }
     }
 }
