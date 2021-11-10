@@ -228,12 +228,12 @@ describe('Using change character position by column/row labels', () => {
         expect.assertions(3);
         const { wrapper } = createShallowCharacterPositionController();
         // With default character facing right
-        expect(getCharacterIcon(wrapper).get(0).props.className).toMatch(/CharacterPositionController__character-column-character--angle2/);
+        expect(getCharacterIcon(wrapper).get(0).props.className).toMatch(/Character--angle2/);
         // Set characterState prop to make the character face down
         wrapper.setProps({characterState: new CharacterState(1, 1, 4, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).get(0).props.className).toMatch(/CharacterPositionController__character-column-character--angle4/);
+        expect(getCharacterIcon(wrapper).get(0).props.className).toMatch(/Character--angle4/);
         // Set characterState prop to make the character face up
         wrapper.setProps({characterState: new CharacterState(1, 1, 0, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).get(0).props.className).toMatch(/CharacterPositionController__character-column-character--angle0/);
+        expect(getCharacterIcon(wrapper).get(0).props.className).toMatch(/Character--angle0/);
     })
 });

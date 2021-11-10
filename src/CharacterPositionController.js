@@ -105,7 +105,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         // https://stackoverflow.com/questions/48248512/svg-transform-rotate180-does-not-work-in-safari-11
         const worldCharacterClassName = classNames(
             'CharacterPositionController__character-column-character',
-            'CharacterPositionController__character-column-character--angle' + this.props.characterState.direction
+            'Character--angle' + this.props.characterState.direction
         );
 
         const character = getWorldCharacter(this.props.theme, this.props.world);

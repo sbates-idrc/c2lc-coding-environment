@@ -227,7 +227,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
-            .toBe('translate(1 1) rotate(0 0 0)');
+            .toBe('translate(1 1)');
     });
     test('When xPos = 10, yPos = 8, direction = 4', () => {
         expect.assertions(1);
@@ -237,7 +237,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
-            .toBe('translate(10 8) rotate(90 0 0) scale(1 -1)');
+            .toBe('translate(10 8)');
     });
     test('When xPos = 1, yPos = 9, direction = 0', () => {
         expect.assertions(1);
@@ -247,7 +247,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
-            .toBe('translate(1 9) rotate(-90 0 0)');
+            .toBe('translate(1 9)');
     });
 });
 

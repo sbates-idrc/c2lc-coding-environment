@@ -4,8 +4,12 @@ import React from 'react';
 import { getWorldCharacter } from './Worlds';
 import type { ThemeName } from './types';
 import type { WorldName } from './Worlds';
+import classNames from 'classnames';
+
+import './Character.scss';
 
 type CharacterProps = {
+    className?: string,
     world: WorldName,
     theme: ThemeName,
     transform: string,
@@ -15,9 +19,14 @@ type CharacterProps = {
 export default class Character extends React.Component<CharacterProps, {}> {
     render() {
         const character = getWorldCharacter(this.props.theme, this.props.world);
+        const characterClassNames = classNames(
+            'Character',
+            this.props.className
+        );
+
         return (
             <g
-                className='Character'
+                className={characterClassNames}
                 transform={this.props.transform}>
                 {React.createElement(character,
                     {

@@ -1,0 +1,39 @@
+// N:  0
+.Character--angle0 {
+    transform: rotate(-90deg);
+}
+
+// NE: 1
+.Character--angle1 {
+    transform: rotate(-45deg);
+}
+
+// E:  2
+// .Character--angle2 {
+//     transform: rotate(0deg);
+// }
+
+// SE: 3
+.Character--angle3 {
+    transform: rotate(45deg);
+}
+
+// S:  4
+.Character--angle4 {
+    transform: rotate(90deg) scaleY(-1);
+}
+
+// SW: 5
+.Character--angle5 {
+    transform: rotate(135deg) scaleY(-1);
+}
+
+// W:  6
+.Character--angle6 {
+    transform: rotate(180deg) scaleY(-1);
+}
+
+// NW: 7
+.Character--angle7 {
+    transform: rotate(225deg) scaleY(-1);
+}
