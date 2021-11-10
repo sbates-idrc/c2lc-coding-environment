@@ -286,11 +286,26 @@ body.light-theme {
         background-color: #D5D8DD;
     }
 
-    button.btn.PlayButton, .StopButton {
+    button.btn.PlayButton {
         svg {
             circle, path.triangle {
                 fill: #3A3F46;
             }
+        }
+    }
+
+    .StopButton {
+        box-shadow: 0 0 0 0.2rem #3A3F46;
+
+        svg rect {
+            fill: #3A3F46;
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.2rem #3A3F46,
+                0 0 0 0.4rem #D5D8DD,
+                0 0 0 0.6rem black;
         }
     }
 
@@ -535,9 +550,30 @@ body.dark-theme {
         background-color: #30444e;
     }
 
-    button.btn.PlayButton:focus, .StopButton:focus {
+    button.btn.PlayButton:focus {
         border: none;
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    }
+
+    .StopButton:focus {
+        box-shadow:
+            0 0 0 0.2rem black,
+            0 0 0 0.4rem white;
+    }
+
+    .StopButton--disabled {
+        background-color: #D5D8DD;
+        box-shadow: 0 0 0 0.2rem #67717E;
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.2rem #67717E,
+                0 0 0 0.4rem white;
+        }
+
+        svg rect {
+            fill: #30444E;
+        }
     }
 
     .ProgramSpeedController__slider {
@@ -1126,7 +1162,7 @@ body.gray-theme {
         background-color: #D5D8DD;
     }
 
-    button.btn.PlayButton, .StopButton {
+    button.btn.PlayButton {
         box-shadow: none;
 
         svg {
@@ -1161,7 +1197,7 @@ body.gray-theme {
         }
     }
 
-    button.btn.PlayButton--disabled, .StopButton--disabled {
+    button.btn.PlayButton--disabled {
         background-color: #D5D8DD;
 
         svg {
@@ -1171,6 +1207,37 @@ body.gray-theme {
             circle, path.triangle {
                 fill: #9DA4AF;
             }
+        }
+    }
+
+    .StopButton {
+        box-shadow: 0 0 0 0.2rem #67717E;
+
+        svg rect {
+            fill: #30444E;
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.2rem #67717E,
+                0 0 0 0.4rem #D5D8DD,
+                0 0 0 0.6rem #67717E;
+        }        
+    }
+
+    .StopButton:not(:hover):not(.StopButton--disabled) {
+        background-color: white;
+    }
+
+    .StopButton--disabled {
+        background-color: #D5D8DD;
+        box-shadow: 0 0 0 0.2rem #9DA4AF;
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.2rem #9DA4AF,
+                0 0 0 0.3rem #D5D8DD,
+                0 0 0 0.5rem #505862;
         }
     }
 
@@ -2011,7 +2078,7 @@ body.contrast-theme {
         color: white;
     }
 
-    button.btn.PlayButton, .StopButton {
+    button.btn.PlayButton {
         &:hover {
             background-color: white;
             svg {
@@ -2031,7 +2098,7 @@ body.contrast-theme {
         }
     }
 
-    button.btn.PlayButton--play.PlayButton--disabled, .StopButton--disabled {
+    button.btn.PlayButton--play.PlayButton--disabled {
         svg {
             path {
                 fill: white;
@@ -2039,6 +2106,45 @@ body.contrast-theme {
             circle, path.triangle, rect {
                 fill: #8E8E8E;
             }
+        }
+    }
+
+    .StopButton {
+        box-shadow: 0 0 0 0.2rem black;
+
+        svg rect {
+            fill: black;
+        }
+
+        &:hover:not(.StopButton--disabled) {
+            background-color: #8E8E8E;
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.2rem black,
+                0 0 0 0.4rem white,
+                0 0 0 0.6rem black;
+        }        
+    }
+
+    .StopButton:not(:hover):not(.StopButton--disabled) {
+        background-color: white;
+    }
+
+    .StopButton--disabled {
+        background-color: white;
+        box-shadow: 0 0 0 0.2rem #8E8E8E;
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.2rem #8E8E8E,
+                0 0 0 0.4rem white,
+                0 0 0 0.6rem black;
+        }
+
+        svg rect {
+            fill: #8E8E8E;
         }
     }
 
