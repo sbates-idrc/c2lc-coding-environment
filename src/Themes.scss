@@ -286,10 +286,13 @@ body.light-theme {
         background-color: #D5D8DD;
     }
 
-    button.btn.PlayButton, button.btn.StopButton {
+    button.btn.PlayButton--disabled, button.btn.StopButton--disabled {
         svg {
-            circle, path.triangle {
-                fill: #3A3F46;
+            circle {
+                fill: #67717E;
+            }
+            path.triangle, rect {
+                fill: #505862;
             }
         }
     }
@@ -553,6 +556,7 @@ body.dark-theme {
         
             &::-moz-range-thumb {
                 background-color: #F1AE5B;
+                box-shadow: -8rem 0 0 8rem #F1AE5B;
             }
            
             &::-moz-range-progress {
@@ -1196,18 +1200,18 @@ body.gray-theme {
         background-color: #D5D8DD;
     }
 
-    button.btn.PlayButton, button.btn.StopButton {
+    button.btn.PlayButton:not(.PlayButton--disabled), button.btn.StopButton:not(.StopButton--disabled) {
         box-shadow: none;
 
         svg {
             path.inner-circle {
-                fill: white;
+                fill: #FFFFFF;
             }
             circle {
                 fill: #67717E;
             }
-            path.triangle {
-                fill: #30444E;
+            path.triangle, rect {
+                fill: #1E1E1E;
             }
         }
 
@@ -1224,8 +1228,8 @@ body.gray-theme {
                 circle {
                     fill: #67717E;
                 }
-                path.triangle {
-                    fill: #30444E;
+                path.triangle, rect {
+                    fill: #1E1E1E;
                 }
             }
         }
@@ -1238,8 +1242,11 @@ body.gray-theme {
             path.inner-circle {
                 fill: #D5D8DD;
             }
-            circle, path.triangle {
+            circle {
                 fill: #9DA4AF;
+            }
+            path.triangle, rect {
+                fill: #67717E;
             }
         }
     }
@@ -1303,18 +1310,6 @@ body.gray-theme {
 
         &:focus {
             outline-color: #505862;
-        }
-    }
-
-
-    button.btn.PlayButton--play.PlayButton--disabled {
-        background-color: inherit;
-        cursor: default;
-
-        svg {
-            path.triangle {
-                fill: #30444E;
-            }
         }
     }
 
@@ -2096,29 +2091,32 @@ body.contrast-theme {
         color: white;
     }
 
-    button.btn.PlayButton, button.btn.StopButton {
+    button.btn.PlayButton:not(.PlayButton--disabled), button.btn.StopButton:not(.StopButton--disabled) {
         &:hover {
-            background-color: white;
             svg {
                 path.inner-circle {
-                    fill: #9DA4AF;
+                    fill: #1E1E1E;
+                }
+
+                path.triangle, rect {
+                    fill: #FFFFFF;
                 }
             }
         }
 
         svg {
             path.inner-circle {
-                fill: white;
+                fill: #FFFFFF;
             }
             circle, path.triangle {
-                fill: black;
+                fill: #1E1E1E;
             }
         }
     }
 
     button.btn.PlayButton--play.PlayButton--disabled, button.btn.StopButton--disabled {
         svg {
-            path {
+            path.inner-circle {
                 fill: white;
             }
             circle, path.triangle, rect {

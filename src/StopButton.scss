@@ -16,8 +16,8 @@ button.btn.StopButton {
     margin: auto 0;
     margin-right: 1.9rem;
 
-    svg circle {
-        fill: black
+    svg circle, rect {
+        fill: #1E1E1E;
     }
 }
 
@@ -42,6 +42,10 @@ button.btn.StopButton.StopButton--disabled {
 
         path.inner-circle {
             fill: #B9BEC6;
+        }
+
+        rect {
+            fill: #67717E;
         }
     }
 }
