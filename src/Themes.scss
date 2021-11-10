@@ -171,7 +171,6 @@ body.light-theme {
     }
 
     .ProgramBlockEditor__start-indicator {
-        color: white;
         background-color: black;
     }
 
@@ -619,9 +618,6 @@ body.gray-theme {
 
     .IconButton {
         background-color: #818A98;
-        svg path {
-            fill: white;
-        }
 
         &:hover:not(.IconButton--disabled) {
             background-color: #505862;
@@ -629,6 +625,23 @@ body.gray-theme {
 
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+
+        .App__header-keyboard-icon {
+            path {
+                fill: white;
+            }
+        }
+
+        .App__world-selector-icon {
+            stroke: white;
+            rect,
+            path {
+                stroke: white;
+            }
+            circle {
+                fill: white;
+            }
         }
     }
 
@@ -1027,11 +1040,6 @@ body.gray-theme {
     }
 
     .ProgramBlockEditor__start-indicator {
-        background-color: #818A98;
-        color: white;
-    }
-
-    .ProgramBlockEditor__start-indicator {
         border-color: #818A98;
         background-color: #818A98;
     }
@@ -1312,8 +1320,21 @@ body.contrast-theme {
         &:hover:not(.IconButton--disabled) {
             background-color: black;
 
-            svg path {
-                fill: white;
+            .App__header-keyboard-icon {
+                path {
+                    fill: white;
+                }
+            }
+
+            .App__world-selector-icon {
+                stroke: white;
+                rect,
+                path {
+                    stroke: white;
+                }
+                circle {
+                    fill: white;
+                }
             }
         }
 
@@ -1321,6 +1342,23 @@ body.contrast-theme {
             box-shadow:
                 0 0 0 2px black,
                 0 0 0 6px white;
+        }
+
+        .App__header-keyboard-icon {
+            path {
+                fill: black;
+            }
+        }
+
+        .App__world-selector-icon {
+            stroke: black;
+            rect,
+            path {
+                stroke: black;
+            }
+            circle {
+                fill: black;
+            }
         }
     }
 
@@ -1859,7 +1897,6 @@ body.contrast-theme {
     .ProgramBlockEditor__start-indicator {
         border-color: white;
         background-color: white;
-        color: black;
     }
 
     .ProgramBlockEditor__program-block-connector {
