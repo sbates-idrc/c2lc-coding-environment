@@ -10,7 +10,7 @@ configure({ adapter: new Adapter()});
 function createMountModalWithFooter(props) {
     const defaultModalWithFooterProps = {
         show: true,
-        focusElementSelector: 'focusElement',
+        focusOnOpenSelector: 'focusOnOpen',
         focusOnCloseSelector: 'focusOnClose',
         onClose: () => {}
     };

@@ -4,9 +4,13 @@ import React from 'react';
 import classNames from 'classnames';
 import './Modal.scss';
 
+// This Modal component is based on W3C modal component examples
+// W3C modal examples: https://www.w3.org/TR/wai-aria-practices-1.1/examples/dialog-modal/js/dialog.js
+// W3C License: https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
+
 type ModalProps = {
     show: boolean,
-    focusElementSelector: string,
+    focusOnOpenSelector: string,
     focusOnCloseSelector: string,
     ariaLabel?: string,
     ariaLabelledById?: string,
@@ -19,10 +23,11 @@ class Modal extends React.Component<ModalProps, {}> {
     modalRef: { current: null | Element };
     lastFocus: any;
     ignoreFocusChanges: boolean;
+
     constructor(props: ModalProps) {
         super(props);
         this.modalRef = React.createRef();
-        this.lastFocus = document.querySelector(this.props.focusElementSelector);
+        this.lastFocus = document.querySelector(this.props.focusOnOpenSelector);
         this.ignoreFocusChanges = false;
     }
 
@@ -67,7 +72,6 @@ class Modal extends React.Component<ModalProps, {}> {
         if (this.ignoreFocusChanges) {
             return;
         }
-        // Add guard cases to check if properties exist
         if (this.modalRef.current) {
             // $FlowIgnore: EventTarget is incompatible with Node
             if (this.modalRef.current.contains(event.target)) {
@@ -89,7 +93,7 @@ class Modal extends React.Component<ModalProps, {}> {
     }
 
     // rename it to be handleKeyDown
-    handleOnPressEscapeKey = (event: Event) => {
+    handleKeyDown = (event: Event) => {
         // $FlowFixMe: flow doesn't know key property
         if (event.key === 'Escape') {
             this.handleOnClose();
@@ -119,7 +123,7 @@ class Modal extends React.Component<ModalProps, {}> {
             <div
                 className={containerClass}
                 onFocus={this.handleFocusTrap}
-                onKeyDown={this.handleOnPressEscapeKey}
+                onKeyDown={this.handleKeyDown}
                 onClick={this.handleOnClickBackdrop}>
                 <div className='Modal__focusTrap' tabIndex='0' />
                 <div
@@ -142,7 +146,7 @@ class Modal extends React.Component<ModalProps, {}> {
             if (this.props.show) {
                 // $FlowFixMe: flow thinks document.body can be null
                 document.body.classList.add('modal-opened');
-                const focusElement = document.querySelector(this.props.focusElementSelector);
+                const focusElement = document.querySelector(this.props.focusOnOpenSelector);
                 if (focusElement && focusElement.focus) {
                     // When using VoiceOver in Chrome browser, setting focus on componentDidUpdate
                     // makes VoiceOver navigation stuck. Using setTimeout to detach setting focus from

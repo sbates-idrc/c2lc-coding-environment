@@ -136,7 +136,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
         return (
             <ModalWithFooter
                 show={this.props.show}
-                focusElementSelector={`#WorldSelector__input-world-${this.props.currentWorld}`}
+                focusOnOpenSelector={`#WorldSelector__input-world-${this.props.currentWorld}`}
                 focusOnCloseSelector='.IconButton.keyboard-shortcut-focus__world-selector'
                 ariaLabelledById='WorldSelector'
                 ariaDescribedById='WorldSelectorDesc'

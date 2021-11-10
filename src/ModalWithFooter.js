@@ -8,7 +8,7 @@ import './ModalWithFooter.scss';
 
 type ModalWithFooterProps = {
     show: boolean,
-    focusElementSelector: string,
+    focusOnOpenSelector: string,
     focusOnCloseSelector: string,
     ariaLabel?: string,
     ariaLabelledById?: string,
@@ -42,7 +42,7 @@ class ModalWithFooter extends React.Component<ModalWithFooterProps, {}> {
         return (
             <Modal
                 show={this.props.show}
-                focusElementSelector={this.props.focusElementSelector}
+                focusOnOpenSelector={this.props.focusOnOpenSelector}
                 focusOnCloseSelector={this.props.focusOnCloseSelector}
                 ariaLabel={this.props.ariaLabel}
                 ariaLabelledById={this.props.ariaLabelledById}

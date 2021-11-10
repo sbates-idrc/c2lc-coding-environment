@@ -9,7 +9,7 @@ configure({ adapter: new Adapter() });
 
 const defaultModalProps = {
     show: true,
-    focusElementSelector: '.focusElement',
+    focusOnOpenSelector: '.focusElement',
     focusOnCloseSelector: '.onCloseElement',
 };
 
@@ -84,13 +84,13 @@ describe('Modal closes on two different actions', () => {
 //TODO: Find a better pattern to ensure detach is always done
 describe('Focus logic', () => {
     jest.spyOn(global, 'setTimeout');
-    test('When the modal opens, focus is set on element specified by "focusElementSelector" prop', () => {
+    test('When the modal opens, focus is set on element specified by "focusOnOpenSelector" prop', () => {
         expect.assertions(1);
         const mockFocus = jest.fn();
         const wrapper = mount(
             <Modal
                 show={false}
-                focusElementSelector='.button1'
+                focusOnOpenSelector='.button1'
                 focusOnCloseSelector='.onCloseElement'
                 onClose={() => {}}>
                 <div>
@@ -115,7 +115,7 @@ describe('Focus logic', () => {
             <div>
                 <Modal
                     show={true}
-                    focusElementSelector='.focusElement'
+                    focusOnOpenSelector='.focusElement'
                     focusOnCloseSelector='#focusOnClose'
                     onClose={jest.fn()}/>
                 <button id='focusOnClose'>focus</button>
@@ -128,7 +128,7 @@ describe('Focus logic', () => {
             <React.Fragment>
                 <Modal
                     show={false}
-                    focusElementSelector='.focusElement'
+                    focusOnOpenSelector='.focusElement'
                     focusOnCloseSelector='#focusOnClose'
                     onClose={jest.fn()}/>
                 <button id='focusOnClose'>focus</button>
@@ -143,7 +143,7 @@ describe('Focus logic', () => {
         const wrapper = mount(
             <Modal
                 show={false}
-                focusElementSelector='.focusElement'
+                focusOnOpenSelector='.focusElement'
                 focusOnCloseSelector='.onCloseElement'
                 onClose={() => {}}>
                 <div>
