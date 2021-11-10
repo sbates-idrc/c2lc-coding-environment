@@ -49,7 +49,7 @@ describe('ModalWithFooter renders buttons with properties specified in buttonPro
         const primaryButtonOnClick = jest.fn();
         const wrapper = createMountModalWithFooter({
             buttonProperties: [
-                {label: secondaryButtonLabel, onClick: secondaryButtonOnClick, isPrimary: false},
+                {label: secondaryButtonLabel, onClick: secondaryButtonOnClick},
                 {label: primaryButtonLabel, onClick: primaryButtonOnClick, isPrimary: true}
             ]
         });
@@ -72,7 +72,7 @@ describe('ModalWithFooter renders buttons with properties specified in buttonPro
         const secondaryButtonOnClick = jest.fn();
         const wrapper = createMountModalWithFooter({
             buttonProperties: [
-                {label: secondaryButtonLabel, onClick: secondaryButtonOnClick, isPrimary: false}
+                {label: secondaryButtonLabel, onClick: secondaryButtonOnClick}
             ]
         });
         const footerButtons = getFooterButtons(wrapper);
@@ -120,8 +120,8 @@ describe('ModalWithFooter renders buttons with properties specified in buttonPro
         const wrapper = createMountModalWithFooter({
             buttonProperties: [
                 {label: firstPrimaryButtonLabel, onClick: firstPrimaryButtonOnClick, isPrimary: true},
-                {label: firstSecondaryButtonLabel, onClick: firstSecondaryButtonOnClick, isPrimary: false},
-                {label: secondSecondaryButtonLabel, onClick: secondSecondaryButtonOnClick, isPrimary: false},
+                {label: firstSecondaryButtonLabel, onClick: firstSecondaryButtonOnClick},
+                {label: secondSecondaryButtonLabel, onClick: secondSecondaryButtonOnClick},
                 {label: secondPrimaryButtonLabel, onClick: secondPrimaryButtonOnClick, isPrimary: true}
             ]
         });

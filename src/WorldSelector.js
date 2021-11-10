@@ -142,7 +142,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                 ariaDescribedById='WorldSelectorDesc'
                 onClose={this.handleCancel}
                 buttonProperties={[
-                    {label: this.props.intl.formatMessage({id: 'WorldSelector.Cancel'}), onClick: this.handleCancel, isPrimary: false},
+                    {label: this.props.intl.formatMessage({id: 'WorldSelector.Cancel'}), onClick: this.handleCancel},
                     {label: this.props.intl.formatMessage({id: 'WorldSelector.Done'}), onClick: this.handleDone, isPrimary: true}
                 ]}>
                 <ModalHeader

@@ -26,7 +26,7 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
                 onClose={this.props.onCancel}
                 buttonProperties={
                     [
-                        {label: this.props.intl.formatMessage({id: 'ConfirmDeleteAllModal.cancelButton'}), onClick: this.props.onCancel, isPrimary: false},
+                        {label: this.props.intl.formatMessage({id: 'ConfirmDeleteAllModal.cancelButton'}), onClick: this.props.onCancel},
                         {id: 'DeleteAll-done', label: this.props.intl.formatMessage({id: 'ConfirmDeleteAllModal.confirmButton'}), onClick: this.props.onConfirm, isPrimary: true}
                     ]
                 }>

@@ -15,7 +15,7 @@ type ModalWithFooterProps = {
     ariaDescribedById?: string,
     children?: any,
     onClose: () => void,
-    buttonProperties: Array<{id?: string, label: string, onClick: () => void, isPrimary: boolean}>
+    buttonProperties: Array<{id?: string, label: string, onClick: () => void, isPrimary?: boolean}>
 };
 
 class ModalWithFooter extends React.Component<ModalWithFooterProps, {}> {
