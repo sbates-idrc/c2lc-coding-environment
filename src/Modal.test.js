@@ -139,11 +139,11 @@ describe('Focus logic', () => {
             </React.Fragment>
         });
         expect(wrapper.find('#focusOnClose').is(':focus')).toBe(true);
-        // make sure to detach after attach to body
+        // make sure to detach after attach
         wrapper.detach();
     });
     test('Focus is trapped within the modal', () => {
-        //expect.assertions(3);
+        expect.assertions(3);
         const wrapper = mount(
             <Modal
                 show={false}
@@ -165,7 +165,7 @@ describe('Focus logic', () => {
         expect(wrapper.find('.button2').is(':focus')).toBe(true);
         modalContainer.simulate('focus');
         expect(wrapper.find('.button1').is(':focus')).toBe(true);
-        // make sure to detach after attach to body
+        // make sure to detach after attach
         wrapper.detach();
     });
 });
