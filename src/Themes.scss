@@ -2133,19 +2133,19 @@ body.contrast-theme {
 
         &::-webkit-slider-thumb {
             border: 2px solid black;
-            background-color: white;
-            box-shadow: -8rem 0 0 8rem white;
+            background-color: #0078FF;
+            box-shadow: -8rem 0 0 8rem #0078FF;
         }
 
         &::-moz-range-thumb {
             border-radius: 0;
             border: 2px solid black;
-            background-color: white;
-            box-shadow: -8rem 0 0 8rem white;
+            background-color: #0078FF;
+            box-shadow: -8rem 0 0 8rem #0078FF;
         }
 
         &::-moz-range-progress {
-            background-color: white;
+            background-color: #0078FF;
         }
 
         &::-moz-range-track {
@@ -2153,7 +2153,7 @@ body.contrast-theme {
         }
 
         &::-ms-fill-lower {
-            background-color: white;
+            background-color: #0078FF;
         }
 
         &::-ms-fill-upper {
@@ -2162,20 +2162,20 @@ body.contrast-theme {
 
         &:hover {
             &::-webkit-slider-thumb {
-                background-color: #9DA4AF;
-                box-shadow: -8rem 0 0 8rem #9DA4AF;
+                background-color: #FF0000;
+                box-shadow: -8rem 0 0 8rem #FF0000;
             }
             &::-moz-range-thumb {
-                background-color: #9DA4AF;
-                box-shadow: -8rem 0 0 8rem #9DA4AF;
+                background-color: #FF0000;
+                box-shadow: -8rem 0 0 8rem #FF0000;
             }
 
             &::-moz-range-progress {
-                background-color: #9DA4AF;
+                background-color: #FF0000;
             }
 
             &::-ms-fill-lower {
-                background-color: #9DA4AF;
+                background-color: #FF0000;
             }
         }
     }
