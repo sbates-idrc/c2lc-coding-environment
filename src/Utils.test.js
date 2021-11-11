@@ -68,6 +68,6 @@ test('Test focusByQuerySelector', () => {
     // $FlowFixMe: Flow is worried that document.activeElement might not exist.
     expect(secondElement.html()).toEqual(document.activeElement.outerHTML);
 
-    // make sure to detach after attach to body
+    // make sure to detach after attach
     testFixture.detach();
 });
