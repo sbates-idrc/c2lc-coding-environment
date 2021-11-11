@@ -4,9 +4,12 @@ import React from 'react';
 import classNames from 'classnames';
 import './Modal.scss';
 
-// This Modal component is based on W3C modal component examples
-// W3C modal examples: https://www.w3.org/TR/wai-aria-practices-1.1/examples/dialog-modal/js/dialog.js
-// W3C License: https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
+// This software or document includes material copied from or derived from
+// WAI-ARIA Authoring Practices 1.1 Modal Dialog Example
+// https://www.w3.org/TR/wai-aria-practices-1.1/examples/dialog-modal/dialog.html
+// Copyright © 2019 W3C® (MIT, ERCIM, Keio, Beihang).
+// Source code: https://www.w3.org/TR/wai-aria-practices-1.1/examples/dialog-modal/js/dialog.js
+// License: https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
 
 type ModalProps = {
     show: boolean,
