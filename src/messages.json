@@ -188,7 +188,6 @@
         "ProgramBlockEditor.command": "{command}, position {index} of current program",
         "ProgramBlockEditor.program.deleteAll": "Delete all steps of your program",
         "ProgramBlockEditor.programHeading": "Program",
-        "ProgramBlockEditor.startIndicator": "Start",
         "ProgramTextEditor.programLabel": "Program:",
         "ProgramSequence.heading": "Program Sequence",
         "ProgramSpeedController.slider": "Program play speed",

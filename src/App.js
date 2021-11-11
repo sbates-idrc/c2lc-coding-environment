@@ -1122,7 +1122,7 @@ export class App extends React.Component<AppProps, AppState> {
                                 onClick={this.handleKeyboardModalToggle}
                                 onKeyDown={this.handleKeyboardMenuIconKeydown}
                             >
-                                <KeyboardModalToggleIcon/>
+                                <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
                             </IconButton>
                             <div className='App__header-audio-toggle'>
                                 <div className='App__audio-toggle-switch'>
@@ -1189,7 +1189,7 @@ export class App extends React.Component<AppProps, AppState> {
                                 onClick={this.handleClickWorldIcon}
                                 onKeyDown={this.handleKeyDownWorldIcon}
                             >
-                                <WorldIcon />
+                                <WorldIcon className='App__world-selector-icon'/>
                             </IconButton>
                         </div>
                         <CharacterPositionController
