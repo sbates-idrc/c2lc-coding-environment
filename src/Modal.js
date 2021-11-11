@@ -34,6 +34,14 @@ class Modal extends React.Component<ModalProps, {}> {
         this.ignoreFocusChanges = false;
     }
 
+    querySelectorInModal(selectors: string) {
+        if (this.modalRef.current) {
+            return this.modalRef.current.querySelector(selectors);
+        } else {
+            return null;
+        }
+    }
+
     focusFirstDescendant = (element: any) => {
         for (let i = 0; i < element.childNodes.length; i++) {
             const child = element.childNodes[i];
@@ -149,7 +157,7 @@ class Modal extends React.Component<ModalProps, {}> {
             if (this.props.show) {
                 // $FlowFixMe: flow thinks document.body can be null
                 document.body.classList.add('modal-opened');
-                const focusElement = document.querySelector(this.props.focusOnOpenSelector);
+                const focusElement = this.querySelectorInModal(this.props.focusOnOpenSelector);
                 if (focusElement && focusElement.focus) {
                     // When using VoiceOver in Chrome browser, setting focus on componentDidUpdate
                     // makes VoiceOver navigation stuck. Using setTimeout to detach setting focus from
