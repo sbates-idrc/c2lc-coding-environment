@@ -348,12 +348,12 @@ body.dark-theme {
         color: #F1AE5B;
     }
 
-    .ActionsMenu__header {
+    .App_ActionsMenu__header {
         background-color: #30444E;
         color: white;
     }
 
-    .ActionsMenu__toggle-button {
+    .App_ActionsMenu__toggle-button {
         &:focus {
             box-shadow:
                 0 0 0 0.1rem white;
@@ -364,7 +364,7 @@ body.dark-theme {
         }
     }
 
-    .ActionsMenu__menu {
+    .App_ActionsMenu__menu {
         background-color: #22343C;
         border: 2px solid #33717F;
         box-shadow: 0px 4px 4px #22262A;
@@ -732,7 +732,7 @@ body.gray-theme {
         }
     }
 
-    .ActionsMenu__header {
+    .App_ActionsMenu__header {
         background-color: #D5D8DD;
     }
 
@@ -1518,7 +1518,7 @@ body.contrast-theme {
         }
     }
 
-    .ActionsMenu__header {
+    .App_ActionsMenu__header {
         background-color: white;
     }
 

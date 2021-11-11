@@ -1,37 +1,33 @@
 // @flow
 import React from 'react';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
+import ModalWithFooter from './ModalWithFooter';
 
-import ActionsMenuToggle from './ActionsMenuToggle';
 import ActionsMenuItem from './ActionsMenuItem';
-import FocusTrapManager from './FocusTrapManager';
 import ProgramSequence from './ProgramSequence';
 
-import './ActionsMenu.scss';
-
 import type {ActionToggleRegister, CommandName} from './types';
+import ModalHeader from './ModalHeader';
+import {extend} from './Utils';
 
-type ActionsMenuProps = {
+type ActionsSimplificationModalProps = {
     intl: IntlShape,
-    changeHandler?: (event: Event, commandName: CommandName) => void,
-    editingDisabled?: boolean,
+    onCancel: () => void,
+    onConfirm: (allowedActions: ActionToggleRegister) => void,
     // TODO: Flesh this definition out.
     menuItems: {},
     programSequence: ProgramSequence,
+    allowedActions: ActionToggleRegister,
+    show: boolean
+};
+
+type ActionsSimplificationProps = {
     allowedActions: ActionToggleRegister
-};
+}
 
-type ActionsMenuState = {
-    showMenu: boolean
-};
-
-class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
-    focusTrapManager: FocusTrapManager;
-
+class ActionsSimplificationModal extends React.Component<ActionsSimplificationModalProps, ActionsSimplificationProps> {
     static defaultProps = {
-        changeHandler: () => {},
-        editingDisabled: false,
         menuItems: {
             forward1: {
                 isAllowed: true,
@@ -84,60 +80,62 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
         }
     }
 
-    constructor (props: ActionsMenuProps) {
+    constructor(props: ActionsSimplificationModalProps) {
         super(props);
-        this.focusTrapManager = new FocusTrapManager();
-        this.focusTrapManager.setFocusTrap(this.handleCloseActionMenuFocusTrap, [".focus-trap-ActionsMenuItem__checkbox"], ".focus-trap-ActionsMenu__toggle-button");
-        this.state = { showMenu: false };
+        this.state = {
+            allowedActions: this.props.allowedActions
+        }
     }
 
     render() {
+        const cancelButtonProperties = {
+            label: this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.cancel'},),
+            onClick: this.props.onCancel
+        };
+        const saveButtonProperties = {
+            id: 'ActionSimplificationModal-done',
+            label: this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.save'},),
+            onClick: this.saveChanges
+        };
         return (
-            <React.Fragment>
-                <div className='ActionsMenu__header'>
-                    <h2 className='ActionsMenu__header-heading'>
-                        <FormattedMessage id='ActionsMenu.title' />
-                    </h2>
-                    <ActionsMenuToggle
-                        className='ActionsMenu__header-toggle'
-                        intl={this.props.intl}
-                        editingDisabled={!!this.props.editingDisabled}
-                        handleShowHideMenu={this.showHideMenu}
-                        showMenu={this.state.showMenu}
-                    />
+            <ModalWithFooter
+                show={this.props.show}
+                focusOnOpenSelector={'#ActionSimplificationModal-done'}
+                focusOnCloseSelector={'.App__ActionsMenu__toggle-button'}
+                onClose={this.props.onCancel}
+                buttonProperties={[cancelButtonProperties, saveButtonProperties]}
+            >
+                <ModalHeader
+                    id='ActionsSimplificationModal'
+                    title={this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.title'})}
+                />
 
-                    { (!this.props.editingDisabled && this.state.showMenu) ? this.generateMenu(): undefined}
-                </div>
+                {this.generateMenu()}
+            </ModalWithFooter>
 
-            </React.Fragment>
         );
     }
 
-    /* istanbul ignore next */
-    handleCloseActionMenuFocusTrap = () => {
-        this.setState({ showMenu: false });
+    saveChanges = () => {
+        this.props.onConfirm(this.state.allowedActions);
     }
 
-    showHideMenu = () => {
-        if (!this.props.editingDisabled) {
-            this.setState((state) => {
-                return { showMenu: !(state.showMenu)}
-            });
-        }
+    toggleSingleItem = (itemKey: string) => {
+        this.setState((prevState) => {
+            const newAllowedActions = extend({}, prevState.allowedActions);
+            newAllowedActions[itemKey] = !(newAllowedActions[itemKey])
+            return { allowedActions: newAllowedActions};
+        });
     }
 
     generateMenu = () => {
         const actionsMenuItems = [];
         // TODO: Discuss how to evolve this into a deeper structure when we add groups and things other than actions.
         Object.keys(this.props.menuItems).forEach((itemKey: CommandName) => {
-            const isAllowed: boolean = !!this.props.allowedActions[itemKey];
+            const isAllowed: boolean = !!this.state.allowedActions[itemKey];
             const isUsed: boolean = this.props.programSequence.usesAction(itemKey);
-            // TODO: Add a mechanism for values to come back to us.
-            const itemChangeHandler = (event: Event) => {
-                /* istanbul ignore next */
-                if (this.props.changeHandler) {
-                    this.props.changeHandler(event, itemKey);
-                }
+            const itemChangeHandler = () => {
+                this.toggleSingleItem(itemKey);
             };
             actionsMenuItems.push(
                 <ActionsMenuItem
@@ -152,11 +150,9 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
         });
 
         return (<React.Fragment>
-            <div className="focus-escape-ActionsMenu" onClick={this.showHideMenu}/>
             <div
-                id="ActionsMenu"
-                className="ActionsMenu__menu"
-                onKeyDown={this.focusTrapManager.handleKeyDown}
+                id="ActionsSimplificationModal"
+                className="ActionsSimplificationModal__menu"
             >
                 {actionsMenuItems}
             </div>
@@ -164,4 +160,4 @@ class ActionsMenu extends React.Component<ActionsMenuProps, ActionsMenuState> {
     }
 }
 
-export default injectIntl(ActionsMenu);
+export default injectIntl(ActionsSimplificationModal);

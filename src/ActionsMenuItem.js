@@ -20,17 +20,17 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
         const commandName = this.props.intl.formatMessage({ id: `Command.${this.props.itemKey}` });
         const commandNameShort = this.props.intl.formatMessage({ id: `Command.short.${this.props.itemKey}` });
 
-        const actionNameKey = this.props.isAllowed ? "ActionsMenu.item.action.show" : "ActionsMenu.item.action.hide";
+        const actionNameKey = this.props.isAllowed ? "ActionsMenuItem.action.show" : "ActionsMenuItem.action.hide";
         const actionName = this.props.intl.formatMessage({ id: actionNameKey });
 
         // If we're used, show one message. If we're not, show another that differs based on `isAllowed`.
-        const showHideLabelKey = this.props.isUsed ? "ActionsMenu.item.usedItemToggleLabel" : "ActionsMenu.item.unusedItemToggleLabel";
+        const showHideLabelKey = this.props.isUsed ? "ActionsMenuItem.usedItemToggleLabel" : "ActionsMenuItem.unusedItemToggleLabel";
         const showHideLabel = this.props.intl.formatMessage(
             { id: showHideLabelKey },
             { action: actionName, commandName: commandName }
         );
 
-        const showHideAriaLabelKey = this.props.isUsed ? "ActionsMenu.item.usedItemToggleAriaLabel" : "ActionsMenu.item.unusedItemToggleAriaLabel";
+        const showHideAriaLabelKey = this.props.isUsed ? "ActionsMenuItem.usedItemToggleAriaLabel" : "ActionsMenuItem.unusedItemToggleAriaLabel";
         const showHideAriaLabel = this.props.intl.formatMessage(
             { id: showHideAriaLabelKey },
             { action: actionName, commandName: commandName }
