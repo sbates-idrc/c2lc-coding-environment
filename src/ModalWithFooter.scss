@@ -3,7 +3,7 @@
 .ModalWithFooter__footer {
     display: flex;
     column-gap: 1rem;
-    padding: 1.5rem 1rem 1.5rem 0;
+    padding: 1.5rem 1rem 1.5rem 5rem;
     justify-content: flex-end;
 }
 
@@ -30,7 +30,6 @@ button.btn.ModalWithFooter__primaryButton {
 }
 
 button.btn.ModalWithFooter__secondaryButton {
-    margin-left: 5rem;
     background-color: #CCE6E2;
     color: #1E1E1E;
 }
