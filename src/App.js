@@ -860,7 +860,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("changeToDefaultTheme"):
-                            this.setStateSettings({theme: "mixed"});
+                            this.setStateSettings({theme: "default"});
                             break;
                         case("changeToLightTheme"):
                             this.setStateSettings({theme: "light"});
