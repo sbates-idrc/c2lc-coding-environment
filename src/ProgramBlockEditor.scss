@@ -141,7 +141,6 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
     height: 45px;
     width: 45px;
     border-radius: 4px;
-    background-color: #22343C;
     border: 2px solid #22343C;
 }
 
@@ -173,15 +172,9 @@ button.btn.ProgramBlockEditor__program-deleteAll-button--pressed.ProgramBlockEdi
 }
 
 .ProgramBlockEditor__start-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
     background-color: #D5D8DD;
-    color: black;
-    width: 2.5rem;
+    width: 10px;
     height: 2.5rem;
-    min-width: 45px;
     min-height: 45px;
     border-radius: 0.2rem;
 }
