@@ -10,6 +10,9 @@ import ProgramSequence from './ProgramSequence';
 import type {ActionToggleRegister, CommandName} from './types';
 import ModalHeader from './ModalHeader';
 import {extend} from './Utils';
+import {ReactComponent as SimplificationIcon} from './svg/Simplification.svg'
+
+import './ActionsSimplificationModal.scss';
 
 type ActionsSimplificationModalProps = {
     intl: IntlShape,
@@ -90,7 +93,7 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
     render() {
         const cancelButtonProperties = {
             label: this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.cancel'},),
-            onClick: this.props.onCancel
+            onClick: this.handleClickCancel
         };
         const saveButtonProperties = {
             id: 'ActionSimplificationModal-done',
@@ -108,12 +111,21 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
                 <ModalHeader
                     id='ActionsSimplificationModal'
                     title={this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.title'})}
-                />
+                >
+                    <SimplificationIcon aria-hidden='true'/>
+                </ModalHeader>
 
                 {this.generateMenu()}
             </ModalWithFooter>
 
         );
+    }
+
+    handleClickCancel = () => {
+        this.setState({
+            allowedActions: this.props.allowedActions
+        });
+        this.props.onCancel();
     }
 
     saveChanges = () => {
@@ -157,6 +169,15 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
                 {actionsMenuItems}
             </div>
         </React.Fragment>);
+    }
+
+    // Required to avoid a phantom state where we persist the defaults even after they are updated from local storage.
+    componentDidUpdate (prevProps: ActionsSimplificationModalProps) {
+        if (prevProps.allowedActions !== this.props.allowedActions) {
+            this.setState({
+                allowedActions: this.props.allowedActions
+            });
+        }
     }
 }
 

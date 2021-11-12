@@ -75,6 +75,18 @@ body.light-theme {
         }
     }
 
+    .ActionsMenuItem__icon:not(.ActionsMenuItem__icon--hidden)
+    {
+        svg {
+            path, circle, rect {
+                stroke: white;
+            }
+            circle, path.filled {
+                fill: white;
+            }
+        }
+    }
+
     // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
     #command-block--backward1, .btn-command-block--backward1,
     #command-block--backward2, .btn-command-block--backward2,
@@ -83,6 +95,12 @@ body.light-theme {
 
         &:hover, &:focus {
             background-color: #07586A;
+        }
+    }
+
+    .ActionsMenuItem__icon--backward1, .ActionsMenuItem__icon--backward2, .ActionsMenuItem__icon--backward3 {
+        &:not(.ActionsMenuItem__icon--disabled) {
+            background-color: #33717F;
         }
     }
 
@@ -97,6 +115,12 @@ body.light-theme {
         }
     }
 
+    .ActionsMenuItem__icon--forward1, .ActionsMenuItem__icon--forward2 .ActionsMenuItem__icon--forward3 {
+        &:not(.ActionsMenuItem__icon--disabled) {
+            background-color: #4C9990;
+        }
+    }
+
     // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
     #command-block--left45, .btn-command-block--left45,
     #command-block--left90, .btn-command-block--left90,
@@ -108,6 +132,12 @@ body.light-theme {
         }
     }
 
+    .ActionsMenuItem__icon--left45, .ActionsMenuItem__icon--left90, .ActionsMenuItem__icon--left180 {
+        &:not(.ActionsMenuItem__icon--disabled) {
+            background-color: #D37D12;
+        }
+    }
+
     // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
     #command-block--right45, .btn-command-block--right45,
     #command-block--right90, .btn-command-block--right90,
@@ -116,6 +146,12 @@ body.light-theme {
 
         &:hover, &:focus {
             background-color: #952A1B;
+        }
+    }
+
+    .ActionsMenuItem__icon--right45, .ActionsMenuItem__icon--right90, .ActionsMenuItem__icon--right180 {
+        &:not(.ActionsMenuItem__icon--disabled) {
+            background-color: #C13925;
         }
     }
 
@@ -348,12 +384,12 @@ body.dark-theme {
         color: #F1AE5B;
     }
 
-    .App_ActionsMenu__header {
+    .App__ActionsMenu__header {
         background-color: #30444E;
         color: white;
     }
 
-    .App_ActionsMenu__toggle-button {
+    .App__ActionsMenu__toggle-button {
         &:focus {
             box-shadow:
                 0 0 0 0.1rem white;
@@ -364,7 +400,7 @@ body.dark-theme {
         }
     }
 
-    .App_ActionsMenu__menu {
+    .App__ActionsMenu__menu {
         background-color: #22343C;
         border: 2px solid #33717F;
         box-shadow: 0px 4px 4px #22262A;
@@ -732,7 +768,7 @@ body.gray-theme {
         }
     }
 
-    .App_ActionsMenu__header {
+    .App__ActionsMenu__header {
         background-color: #D5D8DD;
     }
 
@@ -780,6 +816,20 @@ body.gray-theme {
 
         &.command-block--pressed {
             border: 3px solid #505862;
+        }
+    }
+
+    .ActionsMenuItem__icon:not(.ActionsMenuItem__icon--disabled) {
+        background-color: #818A98;
+        border-color: #818A98;
+
+        svg {
+            path, circle, rect {
+                stroke: white;
+            }
+            circle, path.filled {
+                fill: white;
+            }
         }
     }
 
@@ -1518,7 +1568,7 @@ body.contrast-theme {
         }
     }
 
-    .App_ActionsMenu__header {
+    .App__ActionsMenu__header {
         background-color: white;
     }
 
@@ -1603,6 +1653,20 @@ body.contrast-theme {
 
         &:not(:disabled):not(.disabled):active {
             background-color: black;
+        }
+    }
+
+    .ActionsMenuItem__icon:not(.ActionsMenuItem__icon--disabled) {
+        background-color: white;
+        border: 1px solid black;
+
+        svg {
+            path, circle {
+                stroke: black;
+            }
+            circle, path.filled {
+                fill: black;
+            }
         }
     }
 

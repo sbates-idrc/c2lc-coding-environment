@@ -4,6 +4,11 @@ import React from 'react';
 import { injectIntl } from 'react-intl';
 import type { IntlShape } from 'react-intl';
 
+import classNames from 'classnames';
+import {commandBlockIconTypes} from './CommandBlock';
+
+import {ReactComponent as HiddenIcon} from './svg/Hidden.svg'
+
 import './ActionsMenuItem.scss';
 
 type ActionsMenuItemProps = {
@@ -17,18 +22,16 @@ type ActionsMenuItemProps = {
 export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} > {
     render () {
         // We don't use FormattedMessage as we are working with a complex chain of templates.
-        const commandName = this.props.intl.formatMessage({ id: `Command.${this.props.itemKey}` });
+        let commandName = this.props.intl.formatMessage({ id: `Command.${this.props.itemKey}` });
+        const usedLabel = this.props.intl.formatMessage({ id: 'ActionsMenuItem.usedItemToggleLabel' });
+        if (this.props.isUsed) {
+            commandName += " " + usedLabel;
+        }
+
         const commandNameShort = this.props.intl.formatMessage({ id: `Command.short.${this.props.itemKey}` });
 
         const actionNameKey = this.props.isAllowed ? "ActionsMenuItem.action.show" : "ActionsMenuItem.action.hide";
         const actionName = this.props.intl.formatMessage({ id: actionNameKey });
-
-        // If we're used, show one message. If we're not, show another that differs based on `isAllowed`.
-        const showHideLabelKey = this.props.isUsed ? "ActionsMenuItem.usedItemToggleLabel" : "ActionsMenuItem.unusedItemToggleLabel";
-        const showHideLabel = this.props.intl.formatMessage(
-            { id: showHideLabelKey },
-            { action: actionName, commandName: commandName }
-        );
 
         const showHideAriaLabelKey = this.props.isUsed ? "ActionsMenuItem.usedItemToggleAriaLabel" : "ActionsMenuItem.unusedItemToggleAriaLabel";
         const showHideAriaLabel = this.props.intl.formatMessage(
@@ -36,11 +39,26 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
             { action: actionName, commandName: commandName }
         );
 
+        const textClassNames = classNames(
+            'ActionsMenuItem__text',
+            !this.props.isAllowed && 'ActionsMenuItem__text--disabled'
+        );
+
+        const iconClassNames = classNames(
+            'ActionsMenuItem__icon',
+            'ActionsMenuItem__icon--' + this.props.itemKey,
+            !this.props.isAllowed && 'ActionsMenuItem__icon--disabled'
+        );
+
+        // $FlowFixMe: Flow is confused about what itemKey is.
+        let icon = null;
+        const iconType = this.props.isAllowed ? commandBlockIconTypes.get(this.props.itemKey) : HiddenIcon;
+        if (iconType) {
+            icon = React.createElement(iconType);
+        }
+
         return (
             <div className="ActionsMenuItem">
-                <div className={'ActionsMenuItem__text' + (this.props.isAllowed ? '' : ' ActionsMenuItem__text--disabled')}>
-                    {commandNameShort}
-                </div>
                 <div className="ActionsMenuItem__option">
                     <input
                         className="ActionsMenuItem__checkbox focus-trap-ActionsMenuItem__checkbox"
@@ -51,9 +69,12 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
                         aria-disabled={this.props.isUsed}
                         onChange={this.props.onChange}
                     />
-                    <label htmlFor={commandNameShort} className="ActionsMenuItem__option-label">
-                        {showHideLabel}
-                    </label>
+                </div>
+                <div className={textClassNames} onClick={this.props.onChange}>
+                    {commandName}
+                </div>
+                <div className={iconClassNames} onClick={this.props.onChange}>
+                    {icon}
                 </div>
             </div>
         );
