@@ -1894,11 +1894,12 @@ body.contrast-theme {
             stroke: white;
         }
 
-        &:hover {
+        &:hover:not(.ProgramBlockEditor__program-deleteAll-button--disabled) {
             background-color: white;
             border: 2px solid black;
             svg path {
                 stroke: black;
+                fill: inherit;
             }
         }
 

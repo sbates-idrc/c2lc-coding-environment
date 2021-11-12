@@ -5,13 +5,13 @@
     width: 2rem;
     font-size: 1.2rem;
 
-    box-shadow: 0 0 0 0.2rem black;
+    box-shadow: 0 0 0 0.2rem #1E1E1E;
 
     &:focus {
         box-shadow:
-            0 0 0 0.2rem black,
+            0 0 0 0.2rem #1E1E1E,
             0 0 0 0.4rem #D5D8DD,
-            0 0 0 0.6rem black;
+            0 0 0 0.6rem #1E1E1E;
         outline: none;
     }
 }
@@ -27,7 +27,7 @@
         box-shadow:
             0 0 0 0.2rem #67717E,
             0 0 0 0.4rem #D5D8DD,
-            0 0 0 0.6rem black;
+            0 0 0 0.6rem #1E1E1E;
     }
 
     svg rect {
