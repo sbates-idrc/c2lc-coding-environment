@@ -11,6 +11,7 @@ import { ReactComponent as WorldIcon } from './svg/World.svg';
 import type { ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import type { IntlShape } from 'react-intl';
+import { focusByQuerySelector } from './Utils';
 import './WorldSelector.scss';
 
 type WorldSelectorProps = {
@@ -84,8 +85,10 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
         for (const world of this.availableWorldOptions) {
             const classes = classNames(
                 'WorldSelector__option-image',
+                `WorldSelector__option-image--${world}`,
                 this.state.focusedWorld === world && 'WorldSelector__option--selected'
             );
+            const ariaLabel = this.props.intl.formatMessage({ id: world + ".label"});
             worldOptions.push(
                 <div
                     className='WorldSelector__option-container'
@@ -100,12 +103,13 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                             id={`WorldSelector__input-world-${world}`}
                             name='world-option'
                             value={world}
+                            aria-label={ariaLabel}
                             checked={this.props.currentWorld === world}
                             onChange={this.handleOnSelect}
                             onFocus={this.onFocusWorld}
                             onBlur={this.onBlurWorld}/>
                         <label htmlFor={`WorldSelector__input-world-${world}`}>
-                            <FormattedMessage id={`WorldSelector.option.${world}`} />
+                            <FormattedMessage id={`${world}.name`} />
                         </label>
                     </div>
                 </div>
@@ -117,6 +121,8 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     componentDidUpdate(prevProps: WorldSelectorProps, prevState: WorldSelectorState) {
         // When the modal first open up, remember the world at that time
         if (prevProps.show !== this.props.show && this.props.show) {
+            focusByQuerySelector(`#WorldSelector__input-world-${this.props.currentWorld}`);
+
             this.setState({
                 selectedWorld: this.props.currentWorld
             });
@@ -124,10 +130,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
         if (prevState.focusedWorld !== this.state.focusedWorld) {
             const currentFocusedWorld =  this.state.focusedWorld;
             if (currentFocusedWorld) {
-                const currentRadioButton = document.getElementById(`WorldSelector__input-world-${currentFocusedWorld}`);
-                if (currentRadioButton) {
-                    currentRadioButton.focus();
-                }
+                focusByQuerySelector(`#WorldSelector__input-world-${currentFocusedWorld}`);
             }
         }
     }
@@ -135,15 +138,17 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     render() {
         return (
             <Modal
+                aria-labelledby='WorldSelector'
                 show={this.props.show}
                 onHide={this.handleCancel}>
                 <ModalHeader
+                    id='WorldSelector'
                     title={this.props.intl.formatMessage({
                         id: 'WorldSelector.Title'
                     })}>
                     <WorldIcon aria-hidden='true' />
                 </ModalHeader>
-                <Modal.Body>
+                <Modal.Body className='WorldSelector__content'>
                     <div className='WorldSelector__prompt'>
                         <FormattedMessage id={'WorldSelector.Prompt'} />
                     </div>

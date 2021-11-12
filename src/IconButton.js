@@ -4,14 +4,10 @@ import * as React from 'react';
 import classNames from 'classnames';
 import './IconButton.scss';
 
-// TODO: Rename the IconButton 'disabled' property
-//       The name 'disabled' suggests that the property determines the
-//       enabled/disabled state of the button, whereas it styles the
-//       button to indicate if the feature that the button refers to
-//       is enabled or disabled (such as the keyboard shortcuts being
-//       enabled or disabled).
+// TODO: Implement disabled semantics for IconButton
 
 type IconButtonProps = {
+    className?: string,
     children: any,
     disabled?: boolean,
     ariaLabel: string,
@@ -23,7 +19,8 @@ class IconButton extends React.Component<IconButtonProps, {}> {
     render() {
         const classes = classNames(
             "IconButton",
-            this.props.disabled && "IconButton--disabled"
+            this.props.disabled && "IconButton--disabled",
+            this.props.className
         );
         return (
             <div

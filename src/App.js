@@ -33,7 +33,7 @@ import ShareButton from './ShareButton';
 import ActionsMenu from './ActionsMenu';
 import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
-import { getWorldProperties, getWorldThumbnail } from './Worlds';
+import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
 import * as Utils from './Utils';
 import './App.scss';
@@ -48,15 +48,6 @@ import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputScheme
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
 import ProgramChangeController from './ProgramChangeController';
-
-// Convenience function to focus on the first element with a given class, used
-// for keyboard shortcuts.
-function focusOnFirstElementWithClass (className) {
-    const elements = document.getElementsByClassName(className);
-    if (elements.length) {
-        elements[0].focus();
-    }
-}
 
 /* Dash connection removed for version 0.5
 import BluetoothApiWarning from './BluetoothApiWarning';
@@ -125,7 +116,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '0.9.1';
+        this.version = '1.0';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -806,34 +797,34 @@ export class App extends React.Component<AppProps, AppState> {
                             this.setState({ "selectedAction": "right180" });
                             break;
                         case("focusActions"):
-                            focusOnFirstElementWithClass("command-block");
+                            Utils.focusByQuerySelector(".command-block");
                             break;
                         case("focusAppHeader"):
-                            focusOnFirstElementWithClass("App__header-keyboardMenuIcon");
+                            Utils.focusByQuerySelector(".keyboard-shortcut-focus__app-header");
                             break;
                         case("focusAddNodeToggle"):
-                            focusOnFirstElementWithClass("ProgramBlockEditor__add-node-toggle-switch");
+                            Utils.focusByQuerySelector(".ProgramBlockEditor__add-node-toggle-switch");
                             break;
                         case("focusCharacterPositionControls"):
-                            focusOnFirstElementWithClass("CharacterPositionController__character-position-button");
+                            Utils.focusByQuerySelector(".CharacterPositionController__character-position-button");
                             break;
                         case("focusCharacterColumnInput"):
-                            focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-column");
+                            Utils.focusByQuerySelector(".ProgramBlock__character-position-coordinate-box-column");
                             break;
                         case("focusCharacterRowInput"):
-                            focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-row");
+                            Utils.focusByQuerySelector(".ProgramBlock__character-position-coordinate-box-row");
                             break;
                         case("focusPlayShare"):
-                            focusOnFirstElementWithClass("PlayButton--play");
+                            Utils.focusByQuerySelector(".PlayButton--play");
                             break;
                         case("focusProgramSequence"):
-                            focusOnFirstElementWithClass("AddNode__expanded-button");
+                            Utils.focusByQuerySelector(".AddNode__expanded-button");
                             break;
                         case("focusScene"):
-                            focusOnFirstElementWithClass("PenDownToggleSwitch");
+                            Utils.focusByQuerySelector(".PenDownToggleSwitch");
                             break;
                         case("focusWorldSelector"):
-                            focusOnFirstElementWithClass("WorldIcon");
+                            Utils.focusByQuerySelector(".keyboard-shortcut-focus__world-selector");
                             break;
                         case("moveCharacterLeft"):
                             if (!this.editingIsDisabled()) {
@@ -925,12 +916,14 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleToggleAllowedCommand = (event: Event, commandName: CommandName) => {
-        if (this.state.programSequence.usesAction(commandName)) {
+        // TODO: Use the function form of setState() as the new state
+        //       depends on the current state
+        const currentIsAllowed = this.state.allowedActions[commandName];
+        if (this.state.programSequence.usesAction(commandName) && currentIsAllowed) {
             event.preventDefault();
         }
         else {
             const newAllowedActions= Object.assign({}, this.state.allowedActions);
-            const currentIsAllowed = this.state.allowedActions[commandName];
             newAllowedActions[commandName] = !currentIsAllowed;
             this.setState({ allowedActions: newAllowedActions})
         }
@@ -1115,7 +1108,9 @@ export class App extends React.Component<AppProps, AppState> {
                     <header className='App__header'>
                         <div className='App__header-row'>
                             <h1 className='App__app-heading'>
-                                <a href='https://weavly.org'
+                                <a
+                                    className='keyboard-shortcut-focus__app-header'
+                                    href='https://weavly.org'
                                     aria-label={this.props.intl.formatMessage({id: 'App.appHeading.link'})}
                                     target='_blank'
                                     rel='noopener noreferrer'>
@@ -1123,12 +1118,11 @@ export class App extends React.Component<AppProps, AppState> {
                                 </a>
                             </h1>
                             <IconButton
-                                disabled={!this.state.keyBindingsEnabled}
                                 ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
                                 onClick={this.handleKeyboardModalToggle}
                                 onKeyDown={this.handleKeyboardMenuIconKeydown}
                             >
-                                <KeyboardModalToggleIcon/>
+                                <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
                             </IconButton>
                             <div className='App__header-audio-toggle'>
                                 <div className='App__audio-toggle-switch'>
@@ -1190,18 +1184,13 @@ export class App extends React.Component<AppProps, AppState> {
                         </h2>
                         <div className="App__world-selector">
                             <IconButton
+                                className='keyboard-shortcut-focus__world-selector'
                                 ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelector' })}
                                 onClick={this.handleClickWorldIcon}
                                 onKeyDown={this.handleKeyDownWorldIcon}
                             >
-                                <WorldIcon />
+                                <WorldIcon className='App__world-selector-icon'/>
                             </IconButton>
-                            <div className='App__world-preview'>
-                                {React.createElement(
-                                    getWorldThumbnail(this.state.settings.theme, this.state.settings.world),
-                                    {'aria-hidden': 'true'}
-                                )}
-                            </div>
                         </div>
                         <CharacterPositionController
                             characterState={this.state.characterState}

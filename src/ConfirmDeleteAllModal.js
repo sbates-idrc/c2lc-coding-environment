@@ -5,6 +5,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import { ReactComponent as ErrorIcon } from './svg/Error.svg';
+import { focusByQuerySelector } from './Utils';
 import './ConfirmDeleteAllModal.scss';
 
 type ConfirmDeleteAllModalProps = {
@@ -18,6 +19,7 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
     render() {
         return (
             <Modal
+                aria-labelledby='deleteAll-button'
                 show={this.props.show}
                 onHide={this.props.onCancel}
                 size='lg'
@@ -25,19 +27,20 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
                 centered>
                 <Modal.Body className='ConfirmDeleteAllModal__content'>
                     <div className='ConfirmDeleteAllModal__header'>
-                        <span role='img' aria-label={this.props.intl.formatMessage({id:'ConfirmDeleteAllModal.warning'})} >
+                        <span role='img' aria-hidden='true' >
                             <ErrorIcon className='ConfirmDeleteAllModal__warning-svg' />
                         </span>
                         <FormattedMessage id='ConfirmDeleteAllModal.title' />
                     </div>
                     <div className='ConfirmDeleteAllModal__footer'>
                         <Button
-                            className='ConfirmDeleteAllModal__option-button'
+                            className='ConfirmDeleteAllModal__option-button cancel'
                             onClick={this.props.onCancel}>
                             <FormattedMessage id='ConfirmDeleteAllModal.cancelButton' />
                         </Button>
                         <Button
-                            className='ConfirmDeleteAllModal__option-button'
+                            id='deleteAll-button'
+                            className='ConfirmDeleteAllModal__option-button confirm'
                             onClick={this.props.onConfirm}>
                             <FormattedMessage id='ConfirmDeleteAllModal.confirmButton' />
                         </Button>
@@ -45,6 +48,12 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
                 </Modal.Body>
             </Modal>
         );
+    }
+
+    componentDidUpdate (prevProps: ConfirmDeleteAllModalProps) {
+        if (prevProps.show !== this.props.show && this.props.show) {
+            focusByQuerySelector('#deleteAll-button');
+        }
     }
 }
 
