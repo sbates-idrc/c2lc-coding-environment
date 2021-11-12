@@ -1,15 +1,11 @@
 @import '_variables';
 
-.KeyboardInputModal {
-    max-width: 75%;
-}
-
 .KeyboardInputModal__content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-top: 1rem;
+    overflow: auto;
+    width: 45rem;
+    max-height: 30rem;
     padding: 0;
+    padding-top: 0.5rem;
 }
 
 .KeyboardInputModal__content__toggleBar {
