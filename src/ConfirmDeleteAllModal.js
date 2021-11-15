@@ -20,18 +20,18 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
         return (
             <ModalWithFooter
                 show={this.props.show}
-                focusOnOpenSelector={'#DeleteAll-done'}
+                focusOnOpenSelector={'#ConformDeleteAllModal-confirm'}
                 focusOnCloseSelector={'.ProgramBlockEditor__program-deleteAll-button'}
                 ariaLabel={this.props.intl.formatMessage({id: 'ConfirmDeleteAllModal.confirmButton'})}
                 onClose={this.props.onCancel}
                 buttonProperties={
                     [
                         {label: this.props.intl.formatMessage({id: 'ConfirmDeleteAllModal.cancelButton'}), onClick: this.props.onCancel},
-                        {id: 'DeleteAll-done', label: this.props.intl.formatMessage({id: 'ConfirmDeleteAllModal.confirmButton'}), onClick: this.props.onConfirm, isPrimary: true}
+                        {id: 'ConformDeleteAllModal-confirm', label: this.props.intl.formatMessage({id: 'ConfirmDeleteAllModal.confirmButton'}), onClick: this.props.onConfirm, isPrimary: true}
                     ]
                 }>
                 <ModalHeader
-                    id='WorldSelector'
+                    id='ConfirmDeleteAllModal'
                     title={this.props.intl.formatMessage({
                         id: 'ConfirmDeleteAllModal.title'
                     })}>
