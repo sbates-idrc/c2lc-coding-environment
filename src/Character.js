@@ -6,7 +6,6 @@ import type { ThemeName } from './types';
 import type { WorldName } from './Worlds';
 
 type CharacterProps = {
-    className?: string,
     world: WorldName,
     theme: ThemeName,
     transform: string,
@@ -16,7 +15,6 @@ type CharacterProps = {
 export default class Character extends React.Component<CharacterProps, {}> {
     render() {
         const character = getWorldCharacter(this.props.theme, this.props.world);
-
         return (
             <g
                 className='Character'
