@@ -232,7 +232,7 @@
         "ThemeSelector.theme.mixed": "Default",
         "WorldSelector": "World Selector",
         "WorldSelector.Cancel": "Cancel",
-        "WorldSelector.Done": "Done",
+        "WorldSelector.Save": "Save",
         "WorldSelector.heading": "World Selector",
         "WorldSelector.Prompt": "Select a background for your scene.",
         "WorldSelector.Title": "Scene Background"

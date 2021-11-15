@@ -22,7 +22,7 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
                 show={this.props.show}
                 focusOnOpenSelector={'#ConformDeleteAllModal-confirm'}
                 focusOnCloseSelector={'.ProgramBlockEditor__program-deleteAll-button'}
-                ariaLabel={this.props.intl.formatMessage({id: 'ConfirmDeleteAllModal.confirmButton'})}
+                ariaLabel={this.props.intl.formatMessage({ id: 'ConfirmDeleteAllModal.title' })}
                 onClose={this.props.onCancel}
                 buttonProperties={
                     [
