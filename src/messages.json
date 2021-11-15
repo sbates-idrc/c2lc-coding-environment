@@ -76,7 +76,7 @@
         "CommandPalette.shortMovementsTitle": "Move",
         "CommandPalette.soundsTitle": "Sounds",
         "ConfirmDeleteAllModal.cancelButton": "Cancel",
-        "ConfirmDeleteAllModal.confirmButton": "Delete All",
+        "ConfirmDeleteAllModal.confirmButton": "Delete",
         "ConfirmDeleteAllModal.content": "Are you sure you want to delete all steps of your program?",
         "ConfirmDeleteAllModal.title": "Delete Program",
         "CharacterPositionController.editPosition.turnLeft": "Turn the character left",
