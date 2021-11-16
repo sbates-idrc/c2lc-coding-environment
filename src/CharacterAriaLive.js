@@ -85,6 +85,8 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
             else if (this.props.runningState === "running") {
                 this.setCharacterMovingAriaLive();
             }
+        } else if (prevProps.world !== this.props.world) {
+            this.updateCharacterPositionAriaLive();
         }
     }
 
