@@ -4,6 +4,7 @@ import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount } from 'enzyme';
 import Modal from './Modal';
+import { makeTestDiv } from './TestUtils';
 
 configure({ adapter: new Adapter() });
 
@@ -83,10 +84,7 @@ describe('Modal closes on two different actions', () => {
 
 //TODO: Find a better pattern to ensure detach is always done
 describe('Focus logic', () => {
-    jest.spyOn(global, 'setTimeout');
-    test('When the modal opens, focus is set on element specified by "focusOnOpenSelector" prop', () => {
-        expect.assertions(1);
-        const mockFocus = jest.fn();
+    test('When the modal opens, focus is set on element specified by "focusOnOpenSelector" prop', (done) => {
         const wrapper = mount(
             <Modal
                 show={false}
@@ -94,20 +92,27 @@ describe('Focus logic', () => {
                 focusOnCloseSelector='.onCloseElement'
                 onClose={() => {}}>
                 <div>
-                    <button onFocus={mockFocus} className='button1'>button1</button>
+                    <button className='button1'>button1</button>
                     <button className='button2'>button2</button>
                 </div>
             </Modal>,
-            // $FlowFixMe: document.body may be a null
-            {attachTo: document.body}
+            {attachTo: makeTestDiv()}
         );
-        wrapper.setProps({show: true});
-        // TODO: Find a way to check that focus is on button1, either with :focus selector or
-        // onFocus mock function on the button is called
-        expect(setTimeout).toHaveBeenCalledTimes(1);
 
-        // make sure to detach after attach to body
-        wrapper.detach();
+        // Callback to verify that the expected element is focused
+        const focusCallback = () => {
+            // Detach from the document
+            wrapper.detach();
+
+            // Complete the test
+            done();
+        };
+
+        // Register our focus callback
+        // $FlowFixMe: querySelector may return null, but no need to handle this case explicitly as the test will fail
+        document.querySelector('.button1').addEventListener('focus', focusCallback);
+
+        wrapper.setProps({show: true});
     });
     test('When the modal closes, focus is set on element specified by "focusOnCloseSelector" prop', () => {
         expect.assertions(1);
@@ -120,8 +125,7 @@ describe('Focus logic', () => {
                     onClose={jest.fn()}/>
                 <button id='focusOnClose'>focus</button>
             </div>,
-            // $FlowFixMe: document.body may be a null
-            {attachTo: document.body}
+            {attachTo: makeTestDiv()}
         );
         wrapper.setProps({
             children:
@@ -135,11 +139,11 @@ describe('Focus logic', () => {
             </React.Fragment>
         });
         expect(wrapper.find('#focusOnClose').is(':focus')).toBe(true);
-        // make sure to detach after attach to body
+        // make sure to detach after attach
         wrapper.detach();
     });
     test('Focus is trapped within the modal', () => {
-        //expect.assertions(3);
+        expect.assertions(3);
         const wrapper = mount(
             <Modal
                 show={false}
@@ -151,11 +155,9 @@ describe('Focus logic', () => {
                     <button className='button2'>button2</button>
                 </div>
             </Modal>,
-            // $FlowFixMe: document.body may be a null
-            {attachTo: document.body}
+            {attachTo: makeTestDiv()}
         );
         const modalContainer = findModalContainer(wrapper);
-        //console.log(modalBackdrop.get(0));
         // Focus event is fired on the modal container
         modalContainer.simulate('focus');
         expect(wrapper.find('.button1').is(':focus')).toBe(true);
@@ -163,7 +165,7 @@ describe('Focus logic', () => {
         expect(wrapper.find('.button2').is(':focus')).toBe(true);
         modalContainer.simulate('focus');
         expect(wrapper.find('.button1').is(':focus')).toBe(true);
-        // make sure to detach after attach to body
+        // make sure to detach after attach
         wrapper.detach();
     });
 });
