@@ -305,7 +305,7 @@ body.light-theme {
             box-shadow:
                 0 0 0 0.2rem #3A3F46,
                 0 0 0 0.4rem #D5D8DD,
-                0 0 0 0.6rem black;
+                0 0 0 0.6rem #1E1E1E;
         }
     }
 
@@ -1798,10 +1798,20 @@ body.contrast-theme {
         }
     }
 
-    .RefreshButton svg path {
-        fill: black;
-        stroke: none;
-    }
+    .RefreshButton {
+        svg path {
+            fill: black;
+            stroke: none;
+        }
+        &:hover:not(.RefreshButton--disabled) {
+            &:not(:focus) {
+                box-shadow: 0 0 0 2px white;
+            }
+            svg path {
+                fill: white;
+            }
+        }
+}
 
     .RefreshButton--disabled,
     .RefreshButton--disabled:hover,
