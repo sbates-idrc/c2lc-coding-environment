@@ -22,7 +22,7 @@ type ActionsMenuItemProps = {
 export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} > {
     render () {
         // We don't use FormattedMessage as we are working with a complex chain of templates.
-        let commandName = this.props.intl.formatMessage({ id: `Command.${this.props.itemKey}` });
+        let commandName = this.props.intl.formatMessage({ id: `ActionsMenuItem.command.${this.props.itemKey}` });
         const usedLabel = this.props.intl.formatMessage({ id: 'ActionsMenuItem.usedItemToggleLabel' });
         if (this.props.isUsed) {
             commandName += " " + usedLabel;
