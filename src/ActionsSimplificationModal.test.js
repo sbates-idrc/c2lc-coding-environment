@@ -55,57 +55,84 @@ function createActionsMenu(props) {
         }
     );
 
+    const modal = wrapper.children().at(0).instance();
+
     return {
         wrapper,
+        modal,
         mockOnCancel,
         mockOnConfirm
     };
 };
 
-it('Renders without crashing.', () => {
-    createActionsMenu();
+describe("When a checkbox is clicked.", () => {
+    test("The associated item should be toggled.", () => {
+        expect.assertions(3);
+
+        const {wrapper, modal} = createActionsMenu();
+
+        expect(modal.state.allowedActions.left90).toBe(true);
+
+        const left90Checkbox = wrapper.find('#actions-menu-item-left90');
+        left90Checkbox.simulate('change');
+
+        expect(modal.state.allowedActions.left90).toBe(false);
+
+        left90Checkbox.simulate('change');
+        expect(modal.state.allowedActions.left90).toBe(true);
+
+        wrapper.unmount();
+    });
 });
 
-// TODO: Refactor these.
+describe("When the cancel button is clicked.", ()=> {
+    test("The proposed changes should be discarded.", () => {
+        expect.assertions(3);
 
-// it("Can be toggled open.", () => {
-//     const { wrapper } = createActionsMenu();
-//     const actionsMenu = wrapper.children().at(0);
+        const {wrapper, modal} = createActionsMenu();
 
-//     const actionsMenuToggle = actionsMenu.find(ActionsMenuToggle);
-//     actionsMenuToggle.simulate("click");
+        expect(modal.state.allowedActions.left90).toBe(true);
 
-//     expect(actionsMenu.state("showMenu")).toBe(true);
+        const left90Checkbox = wrapper.find('#actions-menu-item-left90');
+        left90Checkbox.simulate('change');
 
-//     const actionsMenuItems = wrapper.find(ActionsMenuItem);
-//     expect(actionsMenuItems.length).toBe(12);
-// });
+        expect(modal.state.allowedActions.left90).toBe(false);
 
-// it("Cannot be toggled open when editing is disabled.", () => {
-//     const { wrapper } = createActionsMenu({ editingDisabled: true });
-//     const actionsMenu = wrapper.children().at(0);
-//     const actionsMenuToggle = wrapper.find(ActionsMenuToggle);
+        const cancelButton = wrapper.find("Button.ModalWithFooter__secondaryButton");
+        cancelButton.simulate('click');
+        expect(modal.state.allowedActions.left90).toBe(true);
 
-//     actionsMenuToggle.simulate("click");
+        wrapper.unmount();
+    });
+    test("The supplied callback should be called.", () => {
+        expect.assertions(1);
 
-//     expect(actionsMenu.state("showMenu")).toBe(false);
+        const {wrapper, mockOnCancel} = createActionsMenu();
 
-//     const actionsMenuItems = wrapper.find(ActionsMenuItem);
-//     expect(actionsMenuItems.length).toBe(0);
-// });
+        const cancelButton = wrapper.find("Button.ModalWithFooter__secondaryButton");
+        cancelButton.simulate('click');
 
-// TODO: Refactor to make a change, then test both cancel and save.
+        expect(mockOnCancel.mock.calls.length).toBe(1);
 
-// it("Can be used to toggle individual items.", () => {
-//     const { wrapper, mockChangeHandler } = createActionsMenu();
-//     const actionsMenuToggle = wrapper.find(ActionsMenuToggle);
-//     actionsMenuToggle.simulate("click");
+        wrapper.unmount();
+    });
+});
 
-//     const checkboxes = wrapper.find("input");
-//     const firstCheckbox = checkboxes.first();
+describe("When the done button is clicked.", ()=> {
+    test("The supplied callback should be called with the updated data.", () => {
+        expect.assertions(2);
 
-//     firstCheckbox.simulate("change");
+        const {wrapper, mockOnConfirm} = createActionsMenu();
 
-//     expect(mockChangeHandler.mock.calls.length).toBe(1);
-//     expect(mockChangeHandler.mock.calls[0][1]).toBe("forward1");
-// });
+        const left90Checkbox = wrapper.find('#actions-menu-item-left90');
+        left90Checkbox.simulate('change');
+
+        const saveButton = wrapper.find("Button#ActionSimplificationModal-done");
+        saveButton.simulate('click');
+
+        expect(mockOnConfirm.mock.calls.length).toBe(1);
+        expect(mockOnConfirm.mock.calls[0][0].left90).toBe(false);
+
+        wrapper.unmount();
+    });
+});

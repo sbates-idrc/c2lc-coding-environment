@@ -29,6 +29,7 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
         }
 
         const commandNameShort = this.props.intl.formatMessage({ id: `Command.short.${this.props.itemKey}` });
+        const checkboxId = "actions-menu-item-" + commandNameShort.replace(/ /g, "");
 
         const actionNameKey = this.props.isAllowed ? "ActionsMenuItem.action.show" : "ActionsMenuItem.action.hide";
         const actionName = this.props.intl.formatMessage({ id: actionNameKey });
@@ -64,7 +65,7 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
                         className="ActionsMenuItem__checkbox focus-trap-ActionsMenuItem__checkbox"
                         type="checkbox"
                         aria-label={showHideAriaLabel}
-                        id={commandNameShort}
+                        id={checkboxId}
                         checked={this.props.isAllowed}
                         aria-disabled={this.props.isUsed}
                         onChange={this.props.onChange}

@@ -25,11 +25,11 @@ type ActionsSimplificationModalProps = {
     show: boolean
 };
 
-type ActionsSimplificationProps = {
+type ActionsSimplificationModalState = {
     allowedActions: ActionToggleRegister
 }
 
-class ActionsSimplificationModal extends React.Component<ActionsSimplificationModalProps, ActionsSimplificationProps> {
+class ActionsSimplificationModal extends React.Component<ActionsSimplificationModalProps, ActionsSimplificationModalState> {
     static defaultProps = {
         menuItems: {
             forward1: {
@@ -93,10 +93,12 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
     render() {
         const cancelButtonProperties = {
             label: this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.cancel'},),
+            isPrimary: false,
             onClick: this.handleClickCancel
         };
         const saveButtonProperties = {
             id: 'ActionSimplificationModal-done',
+            isPrimary: true,
             label: this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.save'},),
             onClick: this.saveChanges
         };
