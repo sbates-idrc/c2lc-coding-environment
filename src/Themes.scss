@@ -560,8 +560,8 @@ body.dark-theme {
 
     .StopButton:focus {
         box-shadow:
-            0 0 0 0.2rem black,
-            0 0 0 0.4rem white;
+            0 0 0 0.2rem #1E1E1E,
+            0 0 0 0.4rem #FFFFFF;
     }
 
     .ProgramSpeedController__slider {
@@ -1221,7 +1221,7 @@ body.gray-theme {
     }
 
     .StopButton:not(:hover):not(.StopButton--disabled) {
-        background-color: white;
+        background-color: #FFFFFF;
     }
 
     .StopButton--disabled {
@@ -2120,7 +2120,7 @@ body.contrast-theme {
     }
 
     .StopButton {
-        box-shadow: 0 0 0 0.2rem black;
+        box-shadow: 0 0 0 0.2rem #1E1E1E;
 
         svg rect {
             fill: #FFFFFF;
@@ -2128,7 +2128,7 @@ body.contrast-theme {
 
         &:hover:not(.StopButton--disabled) {
             box-shadow:
-                0 0 0 0.2rem black,
+                0 0 0 0.2rem #1E1E1E,
                 0 0 0 0.4rem white;
 
             svg rect {
@@ -2139,28 +2139,28 @@ body.contrast-theme {
 
         &:focus {
             box-shadow:
-                0 0 0 0.2rem black,
-                0 0 0 0.4rem white,
-                0 0 0 0.6rem black;
+                0 0 0 0.2rem #1E1E1E,
+                0 0 0 0.4rem #FFFFFF,
+                0 0 0 0.6rem #1E1E1E;
         }        
     }
 
     .StopButton:not(:hover):not(.StopButton--disabled) {
-        background-color: white;
+        background-color: #FFFFFF;
         svg rect {
-            fill: black;
+            fill: #1E1E1E;
         }
     }
 
     .StopButton--disabled {
-        background-color: white;
+        background-color: #FFFFFF;
         box-shadow: 0 0 0 0.2rem #8E8E8E;
 
         &:focus {
             box-shadow:
                 0 0 0 0.2rem #8E8E8E,
-                0 0 0 0.4rem white,
-                0 0 0 0.6rem black;
+                0 0 0 0.4rem #FFFFFF,
+                0 0 0 0.6rem #1E1E1E;
         }
 
         svg rect {
