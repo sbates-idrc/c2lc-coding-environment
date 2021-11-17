@@ -175,7 +175,6 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
         return (<select
             className="KeyboardInputModal__content__schemeDropdown"
             defaultValue={this.state.keyboardInputSchemeName}
-            disabled={!this.state.keyBindingsEnabled}
             onChange={this.handleChangeKeyboardInputSchemeName}>
             {selectOptionElements}
         </select>);
@@ -235,7 +234,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
 
                     {this.renderKeyboardSchemeMenu()}
 
-                    <ul className={"KeyboardInputModal__content__list" + (this.state.keyBindingsEnabled ? "": " KeyboardInputModal__content__list--disabled")}>
+                    <ul className="KeyboardInputModal__content__list">
                         {this.renderKeyBindings()}
                     </ul>
                 </div>
