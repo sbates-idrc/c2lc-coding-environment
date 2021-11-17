@@ -66,7 +66,6 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
                         aria-label={showHideAriaLabel}
                         id={checkboxId}
                         checked={this.props.isAllowed}
-                        aria-disabled={this.props.isUsed}
                         onChange={this.props.onChange}
                     />
                 </div>
