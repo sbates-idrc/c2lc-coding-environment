@@ -1240,6 +1240,7 @@ export class App extends React.Component<AppProps, AppState> {
                             </h2>
 
                             <div className="App__ActionsMenu__toggle-button"
+                                aria-label={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
                                 disabled={!this.editingIsDisabled()}
                                 role="button"
                                 onClick={this.handleClickActionsSimplificationIcon}
