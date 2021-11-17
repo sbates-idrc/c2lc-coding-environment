@@ -110,7 +110,7 @@ function createMountProgramBlockEditor(props) {
 }
 
 function confirmDeleteAllModalIsOpen(programBlockEditorWrapper): boolean {
-    return programBlockEditorWrapper.exists('.ConfirmDeleteAllModal');
+    return programBlockEditorWrapper.exists('.Modal__container.active #ConfirmDeleteAllModal');
 }
 
 function getProgramDeleteAllButton(programBlockEditorWrapper) {
