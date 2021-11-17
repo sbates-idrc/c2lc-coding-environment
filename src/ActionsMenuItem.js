@@ -34,9 +34,8 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
         const actionNameKey = this.props.isAllowed ? "ActionsMenuItem.action.show" : "ActionsMenuItem.action.hide";
         const actionName = this.props.intl.formatMessage({ id: actionNameKey });
 
-        const showHideAriaLabelKey = this.props.isUsed ? "ActionsMenuItem.usedItemToggleAriaLabel" : "ActionsMenuItem.unusedItemToggleAriaLabel";
         const showHideAriaLabel = this.props.intl.formatMessage(
-            { id: showHideAriaLabelKey },
+            { id: "ActionsMenuItem.itemToggleAriaLabel" },
             { action: actionName, commandName: commandName }
         );
 
