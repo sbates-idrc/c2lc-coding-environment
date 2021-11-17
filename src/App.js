@@ -1319,6 +1319,7 @@ export class App extends React.Component<AppProps, AppState> {
                 </div>
                 <CharacterAriaLive
                     ariaLiveRegionId='character-position'
+                    ariaHidden={this.state.showWorldSelector}
                     characterState={this.state.characterState}
                     runningState={this.state.runningState}
                     world={this.state.settings.world}/>
