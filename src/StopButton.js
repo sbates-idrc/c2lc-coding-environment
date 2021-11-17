@@ -28,7 +28,6 @@ class StopButton extends React.Component<StopButtonProps, {}> {
                 disabledClassName='StopButton--disabled'
                 disabled={this.props.disabled}
                 onClick={this.props.onClick}
-                onKeyDown={this.props.onClick}
             >
                 <StopIcon className='StopButton-svg' />
             </IconButton>

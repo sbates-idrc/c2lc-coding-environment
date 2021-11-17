@@ -4,23 +4,20 @@ import * as React from 'react';
 import classNames from 'classnames';
 import './IconButton.scss';
 
-// TODO: Implement disabled semantics for IconButton
-
 type IconButtonProps = {
     className?: string,
     children: any,
     disabled?: boolean,
     disabledClassName?: string,
     ariaLabel: string,
-    onClick: () => void,
-    onKeyDown: () => void
+    onClick: () => void
 };
 
 class IconButton extends React.Component<IconButtonProps, {}> {
     handleKeyDown = (event: KeyboardEvent) => {
         if (!this.props.disabled && (event.key === "Enter" || event.key === " ")) {
             event.preventDefault();
-            this.props.onKeyDown();
+            this.props.onClick();
         }
     }
 

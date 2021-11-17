@@ -9,7 +9,6 @@ configure({ adapter: new Adapter()});
 
 function createShallowIconButton(props) {
     const clickHandler = jest.fn();
-    const keyDownHandler = jest.fn();
     const wrapper = shallow(
         React.createElement(
             IconButton,
@@ -18,38 +17,37 @@ function createShallowIconButton(props) {
                     ariaLabel: "X marks the spot",
                     children: "X",
                     disabled: false,
-                    onClick: clickHandler,
-                    onKeyDown: keyDownHandler
+                    onClick: clickHandler
                 },
                 props
             )
         )
     );
-    return { wrapper, clickHandler, keyDownHandler };
+    return { wrapper, clickHandler };
 }
 
 describe('An IconButton can be disabled', () => {
     describe('Given disabled is false', () => {
         test('Then the button should be activatable with a space', () => {
             expect.assertions(2);
-            const {wrapper, keyDownHandler} = createShallowIconButton();
+            const {wrapper, clickHandler} = createShallowIconButton();
 
-            expect(keyDownHandler.mock.calls.length).toBe(0);
+            expect(clickHandler.mock.calls.length).toBe(0);
 
             wrapper.simulate('keyDown', { key: " ", preventDefault: () => {}});
 
-            expect(keyDownHandler.mock.calls.length).toBe(1);
+            expect(clickHandler.mock.calls.length).toBe(1);
         });
 
         test('Then the button should be activatable with the enter key', () => {
             expect.assertions(2);
-            const {wrapper, keyDownHandler} = createShallowIconButton();
+            const {wrapper, clickHandler} = createShallowIconButton();
 
-            expect(keyDownHandler.mock.calls.length).toBe(0);
+            expect(clickHandler.mock.calls.length).toBe(0);
 
             wrapper.simulate('keyDown', { key: "Enter", preventDefault: () => {}});
 
-            expect(keyDownHandler.mock.calls.length).toBe(1);
+            expect(clickHandler.mock.calls.length).toBe(1);
         });
 
         test('Then the button should be activatable with a click', () => {
@@ -62,29 +60,36 @@ describe('An IconButton can be disabled', () => {
 
             expect(clickHandler.mock.calls.length).toBe(1);
         });
+
+        test('Then aria-disabled should be set to false', () => {
+            expect.assertions(1);
+            const {wrapper} = createShallowIconButton();
+
+            expect(wrapper.props()['aria-disabled']).toBe(false);
+        });
     });
 
     describe('Given disabled is true', () => {
         test('Then the button should not be activatable with a space', () => {
             expect.assertions(2);
-            const {wrapper, keyDownHandler} = createShallowIconButton({ disabled: true });
+            const {wrapper, clickHandler} = createShallowIconButton({ disabled: true });
 
-            expect(keyDownHandler.mock.calls.length).toBe(0);
+            expect(clickHandler.mock.calls.length).toBe(0);
 
             wrapper.simulate('keyDown', { key: " ", preventDefault: () => {}});
 
-            expect(keyDownHandler.mock.calls.length).toBe(0);
+            expect(clickHandler.mock.calls.length).toBe(0);
         });
 
         test('Then the button should not be activatable with the enter key', () => {
             expect.assertions(2);
-            const {wrapper, keyDownHandler} = createShallowIconButton({ disabled: true });
+            const {wrapper, clickHandler} = createShallowIconButton({ disabled: true });
 
-            expect(keyDownHandler.mock.calls.length).toBe(0);
+            expect(clickHandler.mock.calls.length).toBe(0);
 
             wrapper.simulate('keyDown', { key: "Enter", preventDefault: () => {}});
 
-            expect(keyDownHandler.mock.calls.length).toBe(0);
+            expect(clickHandler.mock.calls.length).toBe(0);
         });
 
         test('Then the button should not be activatable with a click', () => {

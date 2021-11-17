@@ -22,7 +22,6 @@ class RefreshButton extends React.Component<RefreshButtonProps, {}> {
                 disabledClassName='RefreshButton--disabled'
                 disabled={this.props.disabled}
                 onClick={this.props.onClick}
-                onKeyDown={this.props.onClick}
             >
                 <RefreshIcon className='RefreshButton-svg' />
             </IconButton>

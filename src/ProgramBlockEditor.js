@@ -558,7 +558,6 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                                 disabledClassName='ProgramBlockEditor__program-deleteAll-button--disabled'
                                 disabled={this.props.editingDisabled}
                                 onClick={this.handleClickDeleteAll}
-                                onKeyDown={this.handleClickDeleteAll}
                                 key='deleteButton'
                             >
                                 <DeleteAllIcon className='ProgramBlockEditor__program-deleteAll-button-svg'/>

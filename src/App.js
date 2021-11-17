@@ -886,7 +886,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({showKeyboardModal: false});
     };
 
-    handleKeyboardModalToggle = () => {
+    handleClickKeyboardIcon = () => {
         this.setState({ showKeyboardModal: true});
     };
 
@@ -1068,12 +1068,6 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleKeyDownWorldIcon = () => {
-        this.setState({
-            showWorldSelector: true
-        });
-    }
-
     handleSelectWorld = (world: WorldName) => {
         this.setStateSettings({world});
     }
@@ -1110,8 +1104,7 @@ export class App extends React.Component<AppProps, AppState> {
                             <IconButton
                                 className="App__header-keyboardMenuIcon"
                                 ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
-                                onClick={this.handleKeyboardModalToggle}
-                                onKeyDown={this.handleKeyboardModalToggle}
+                                onClick={this.handleClickKeyboardIcon}
                             >
                                 <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
                             </IconButton>
@@ -1178,7 +1171,6 @@ export class App extends React.Component<AppProps, AppState> {
                                 className='keyboard-shortcut-focus__world-selector'
                                 ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelector' })}
                                 onClick={this.handleClickWorldIcon}
-                                onKeyDown={this.handleKeyDownWorldIcon}
                             >
                                 <WorldIcon className='App__world-selector-icon'/>
                             </IconButton>
