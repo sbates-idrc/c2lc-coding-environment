@@ -105,7 +105,7 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
         return (
             <ModalWithFooter
                 show={this.props.show}
-                focusOnOpenSelector={'#ActionSimplificationModal-done'}
+                focusOnOpenSelector={'#actions-menu-item-forward1'}
                 focusOnCloseSelector={'.App__ActionsMenu__toggle-button'}
                 onClose={this.props.onCancel}
                 buttonProperties={[cancelButtonProperties, saveButtonProperties]}
