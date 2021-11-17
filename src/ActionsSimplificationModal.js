@@ -92,7 +92,7 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
 
     render() {
         const cancelButtonProperties = {
-            label: this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.cancel'},),
+            label: this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.cancel'} ),
             isPrimary: false,
             onClick: this.handleClickCancel
         };
