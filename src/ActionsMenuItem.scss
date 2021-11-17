@@ -1,11 +1,25 @@
 @import 'variables';
 
 .ActionsMenuItem {
-    padding: 0 0.5rem;
+    padding: 0.5rem 0.5rem;
+    border-radius: 0.2rem;
     display: grid;
     grid-template-columns: min-content 1fr min-content;
     column-gap: 0.5rem;
+    row-gap: 0;
     align-items: center;
+
+    &:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
+        outline: none;
+    }
+
+    &:hover {
+        background-color: #F5C58A;
+        .ActionsMenuItem__icon {
+            box-shadow: 0 0 0 1px #1e1e1e;
+        }
+    }
 }
 
 .ActionsMenuItem__option {

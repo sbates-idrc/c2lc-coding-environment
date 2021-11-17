@@ -821,6 +821,16 @@ body.gray-theme {
         }
     }
 
+    .ActionsMenuItem {
+        &:hover {
+            background-color:#D5D8DD;
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 0.25rem #505862;
+        }
+    }
+
     .ActionsMenuItem__icon:not(.ActionsMenuItem__icon--disabled) {
         background-color: #818A98;
         border-color: #818A98;
@@ -1657,6 +1667,23 @@ body.contrast-theme {
 
         &:not(:disabled):not(.disabled):active {
             background-color: black;
+        }
+    }
+
+    .ActionsMenuItem {
+        &:focus {
+            box-shadow: 0 0 0 0.2rem black;
+        }
+
+        &:hover {
+            background-color: #1E1E1E;
+            color: white;
+        }
+
+        &:hover:focus {
+            box-shadow:
+                0 0 0 0.1rem white,
+                0 0 0 0.2rem black;
         }
     }
 

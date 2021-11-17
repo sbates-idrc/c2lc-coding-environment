@@ -20,6 +20,12 @@ type ActionsMenuItemProps = {
 }
 
 export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} > {
+    handleKeydown = (event: KeyboardEvent) => {
+        if (event.key === ' ' || event.key === 'Enter') {
+            this.props.onChange(event);
+        }
+    }
+
     render () {
         // We don't use FormattedMessage as we are working with a complex chain of templates.
         let commandName = this.props.intl.formatMessage({ id: `ActionsMenuItem.command.${this.props.itemKey}` });
@@ -58,21 +64,26 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
         }
 
         return (
-            <div className="ActionsMenuItem">
+            <div
+                className="ActionsMenuItem"
+                aria-label={showHideAriaLabel}
+                tabIndex={0}
+                onKeyDown={this.handleKeydown}
+                onClick={this.props.onChange}
+            >
                 <div className="ActionsMenuItem__option">
                     <input
                         className="ActionsMenuItem__checkbox"
                         type="checkbox"
-                        aria-label={showHideAriaLabel}
                         id={checkboxId}
                         checked={this.props.isAllowed}
-                        onChange={this.props.onChange}
+                        tabIndex={-1}
                     />
                 </div>
-                <div className={textClassNames} onClick={this.props.onChange}>
+                <div className={textClassNames}>
                     {commandName}
                 </div>
-                <div className={iconClassNames} onClick={this.props.onChange}>
+                <div className={iconClassNames}>
                     {icon}
                 </div>
             </div>
