@@ -33,6 +33,7 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
         this.copyURL();
     }
 
+    /* istanbul ignore next */
     handleKeyDown = (event: KeyboardEvent) => {
         if (event.key === ' ' || event.key === 'Enter') {
             event.preventDefault();
