@@ -286,16 +286,19 @@ body.light-theme {
         background-color: #D5D8DD;
     }
 
-    button.btn.PlayButton {
+    button.btn.PlayButton--disabled {
         svg {
-            circle, path.triangle {
+            circle {
+                fill: #67717E;
+            }
+            path.triangle {
                 fill: #3A3F46;
             }
         }
     }
 
-    .StopButton {
-        box-shadow: 0 0 0 0.2rem #3A3F46;
+    .StopButton--disabled {
+        box-shadow: 0 0 0 0.2rem #67717E;
 
         svg rect {
             fill: #3A3F46;
@@ -303,7 +306,7 @@ body.light-theme {
 
         &:focus {
             box-shadow:
-                0 0 0 0.2rem #3A3F46,
+                0 0 0 0.2rem #67717E,
                 0 0 0 0.4rem #D5D8DD,
                 0 0 0 0.6rem #1E1E1E;
         }
@@ -547,7 +550,7 @@ body.dark-theme {
     }
 
     .App__playAndShare-background {
-        background-color: #30444e;
+        background-color: #67717E;
     }
 
     button.btn.PlayButton:focus {
@@ -559,21 +562,6 @@ body.dark-theme {
         box-shadow:
             0 0 0 0.2rem black,
             0 0 0 0.4rem white;
-    }
-
-    .StopButton--disabled {
-        background-color: #D5D8DD;
-        box-shadow: 0 0 0 0.2rem #67717E;
-
-        &:focus {
-            box-shadow:
-                0 0 0 0.2rem #67717E,
-                0 0 0 0.4rem white;
-        }
-
-        svg rect {
-            fill: #30444E;
-        }
     }
 
     .ProgramSpeedController__slider {
@@ -1162,18 +1150,18 @@ body.gray-theme {
         background-color: #D5D8DD;
     }
 
-    button.btn.PlayButton {
+    button.btn.PlayButton:not(.PlayButton--disabled) {
         box-shadow: none;
 
         svg {
             path.inner-circle {
-                fill: white;
+                fill: #FFFFFF;
             }
             circle {
                 fill: #67717E;
             }
             path.triangle {
-                fill: #30444E;
+                fill: #1E1E1E;
             }
         }
 
@@ -1191,7 +1179,7 @@ body.gray-theme {
                     fill: #67717E;
                 }
                 path.triangle {
-                    fill: #30444E;
+                    fill: #1E1E1E;
                 }
             }
         }
@@ -1204,17 +1192,24 @@ body.gray-theme {
             path.inner-circle {
                 fill: #D5D8DD;
             }
-            circle, path.triangle {
+            circle {
                 fill: #9DA4AF;
+            }
+            path.triangle {
+                fill: #67717E;
             }
         }
     }
 
-    .StopButton {
+    .StopButton:not(.StopButton--disabled) {
         box-shadow: 0 0 0 0.2rem #67717E;
 
         svg rect {
-            fill: #30444E;
+            fill: #1E1E1E;
+        }
+
+        &:hover {
+            background-color: #9DA4AF;
         }
 
         &:focus {
@@ -1303,17 +1298,6 @@ body.gray-theme {
         }
     }
 
-
-    button.btn.PlayButton--play.PlayButton--disabled {
-        background-color: inherit;
-        cursor: default;
-
-        svg {
-            path.triangle {
-                fill: #30444E;
-            }
-        }
-    }
 
     button.btn.ShareButton {
         background-color: #F1F2F4;
@@ -2089,30 +2073,45 @@ body.contrast-theme {
         color: white;
     }
 
-    button.btn.PlayButton {
+    button.btn.PlayButton:not(.PlayButton--disabled) {
         &:hover {
-            background-color: white;
             svg {
                 path.inner-circle {
-                    fill: #9DA4AF;
+                    fill: #1E1E1E;
+                }
+                path.triangle {
+                    fill: #ffffff;
                 }
             }
         }
 
         svg {
             path.inner-circle {
-                fill: white;
+                fill: #FFFFFF;
             }
             circle, path.triangle {
-                fill: black;
+                fill: #1E1E1E;
+            }
+        }
+    }
+
+    button.btn.PlayButton--pause:not(.PlayButton--disabled) {
+        &:hover {
+            svg {
+                circle {
+                    fill: #FFFFFF;
+                }
+                path.inner-circle {
+                    fill: #1E1E1E;
+                }
             }
         }
     }
 
     button.btn.PlayButton--play.PlayButton--disabled {
         svg {
-            path {
-                fill: white;
+            path.inner-circle {
+                fill: #FFFFFF;
             }
             circle, path.triangle, rect {
                 fill: #8E8E8E;
@@ -2124,11 +2123,18 @@ body.contrast-theme {
         box-shadow: 0 0 0 0.2rem black;
 
         svg rect {
-            fill: black;
+            fill: #FFFFFF;
         }
 
         &:hover:not(.StopButton--disabled) {
-            background-color: #8E8E8E;
+            box-shadow:
+                0 0 0 0.2rem black,
+                0 0 0 0.4rem white;
+
+            svg rect {
+                fill: #ffffff
+            }
+            background-color: #1E1E1E;
         }
 
         &:focus {
@@ -2141,6 +2147,9 @@ body.contrast-theme {
 
     .StopButton:not(:hover):not(.StopButton--disabled) {
         background-color: white;
+        svg rect {
+            fill: black;
+        }
     }
 
     .StopButton--disabled {

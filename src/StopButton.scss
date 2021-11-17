@@ -21,17 +21,17 @@
 }
 
 .StopButton--disabled {
-    box-shadow: 0 0 0 0.2rem #67717E;
+    box-shadow: 0 0 0 0.2rem #9DA4AF;
 
     &:focus {
         box-shadow:
-            0 0 0 0.2rem #67717E,
+            0 0 0 0.2rem #9DA4AF,
             0 0 0 0.4rem #D5D8DD,
             0 0 0 0.6rem #1E1E1E;
     }
 
     svg rect {
-        fill: #30444E;
+        fill: #67717E;
     }
 }
 
