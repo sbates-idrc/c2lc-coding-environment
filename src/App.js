@@ -29,7 +29,6 @@ import PenDownToggleSwitch from './PenDownToggleSwitch';
 import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
-import ShareButton from './ShareButton';
 import ActionsMenu from './ActionsMenu';
 import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
@@ -42,6 +41,8 @@ import './vendor/dragdroptouch/DragDropTouch.js';
 import ThemeSelector from './ThemeSelector';
 import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
 import KeyboardInputModal from './KeyboardInputModal';
+import ShareModal from './ShareModal';
+import { ReactComponent as ShareIcon} from './svg/Share.svg';
 
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
@@ -91,7 +92,8 @@ type AppState = {
     keyBindingsEnabled: boolean,
     keyboardInputSchemeName: KeyboardInputSchemeName;
     showKeyboardModal: boolean,
-    showWorldSelector: boolean
+    showWorldSelector: boolean,
+    showShareModal: boolean
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -408,6 +410,7 @@ export class App extends React.Component<AppProps, AppState> {
             keyBindingsEnabled: false,
             showKeyboardModal: false,
             showWorldSelector: false,
+            showShareModal: false,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -1097,6 +1100,21 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
+    handleShareButtonClick = (event: Event) => {
+        event.preventDefault();
+        this.setState({ showShareModal: true});
+
+    }
+    handleShareButtonKeydown = (event: KeyboardEvent) => {
+        if (event.key === ' ' || event.key === 'Enter') {
+            this.handleShareButtonClick(event);
+        }
+    }
+
+    handleCloseShare = () => {
+        this.setState({ showShareModal: false });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -1273,7 +1291,16 @@ export class App extends React.Component<AppProps, AppState> {
                             </div>
                         </div>
                         <div className='App__shareButton-container'>
-                            <ShareButton/>
+                            <button
+                                className='App__ShareButton'
+                                onClick={this.handleShareButtonClick}
+                                onKeyDown={this.handleShareButtonKeydown}
+                            >
+                                <ShareIcon className='App__ShareButton__icon'/>
+                                <div className='App__ShareButton__label'>
+                                    {this.props.intl.formatMessage({id:'ShareButton'})}
+                                </div>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1301,6 +1328,11 @@ export class App extends React.Component<AppProps, AppState> {
                     theme={this.state.settings.theme}
                     onChange={this.handleChangeWorld}
                     onSelect={this.handleSelectWorld}/>
+                <ShareModal
+                    show={this.state.showShareModal}
+                    onConfirm={this.handleCloseShare}
+                    onCancel={this.handleCloseShare}
+                />
             </React.Fragment>
         );
     }

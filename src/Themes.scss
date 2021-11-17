@@ -555,7 +555,7 @@ body.dark-theme {
         }
     }
 
-    button.btn.ShareButton {
+    .App__ShareButton {
         &:focus {
             box-shadow:
                 0 0 0 0.1rem #30444E,
@@ -1144,6 +1144,21 @@ body.gray-theme {
         }
     }
 
+    .ShareModal__form__copyButton {
+        background-color: #aaa;
+        color: black;
+
+        &:hover {
+            background-color:#D5D8DD;
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.15rem #d5d8dd,
+                0 0 0 0.25rem #505862;
+        }
+    }
+
     @keyframes pausedGreyscaleAnimation {
         0% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width #505862;}
         50% {box-shadow: 0 0 0 $c2lc-active-button-width #505862;}
@@ -1282,13 +1297,19 @@ body.gray-theme {
         }
     }
 
-    button.btn.ShareButton {
+    .App__ShareButton {
         background-color: #F1F2F4;
-        color: black;
+        color: #1E1E1E;
+        svg path {
+            fill: #1E1E1E;
+        }
 
         &:hover {
             background: #505862;
-            color: White;
+            color: #ffffff;
+            svg path {
+                fill: #ffffff;
+            }
         }
 
         &:focus {
@@ -2148,7 +2169,28 @@ body.contrast-theme {
         }
     }
 
-    button.btn.ShareButton {
+    .App__ShareButton {
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem white,
+                0 0 0 0.2rem black;
+        }
+
+        &:hover {
+            background-color: white;
+            color: black;
+            box-shadow: 0 0 0 0.1rem black;
+        }
+
+        &:hover:focus {
+            box-shadow: 0 0 0 0.2rem black;
+        }
+    }
+
+    .ShareModal__form__copyButton {
+        background-color: black;
+        color: white;
+
         &:focus {
             box-shadow:
                 0 0 0 0.1rem white,

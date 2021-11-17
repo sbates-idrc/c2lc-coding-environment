@@ -1,0 +1,56 @@
+@import '_variables';
+
+.ShareModal__content {
+    padding: 2rem;
+    border-bottom: 1px solid #E4E7EB;
+}
+
+.ShareModal__form {
+    display: flex;
+    grid-template-columns: 1fr min-content;    
+    column-gap: 1rem;
+}
+
+.ShareModal__form__URL__container {
+    border: 1px solid #9DA4AF;
+    border-radius: 0.2rem;
+    max-width: 50vh;
+    padding: 0.5rem;
+}
+
+.ShareModal__form__URL {
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+.ShareModal__form__copyButton {
+    margin: auto;
+
+    background-color: #33717F;
+    border: 0;
+    border-radius: 0.2rem;
+    color: #FFFFFF;
+    font-weight: 400;
+    padding: 0.5rem 2rem;
+    width: 10rem;
+
+    display:flex;
+    grid-template-columns: 30% 70%;
+    column-gap: 0.5rem;
+    align-items: center;
+
+    &:active {
+        background-color: #ED972C;
+    }
+
+    &:focus {
+        box-shadow:
+            0 0 0 0.1rem #D5D8DD,
+            0 0 0 $c2lc-focus-indicator-width black;
+    }
+
+    &:hover {
+        background-color: #F5C58A;
+        color: #1E1E1E;
+    }
+}
