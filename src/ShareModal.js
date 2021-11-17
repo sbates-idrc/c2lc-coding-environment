@@ -24,7 +24,9 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
     copyURL = () => {
         // Copy the URL to the clipboard, see:
         // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
-        navigator.clipboard.writeText(document.location.href);
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(document.location.href);
+        }
     }
 
     componentDidMount() {
