@@ -22,6 +22,7 @@ type ActionsMenuItemProps = {
 export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} > {
     handleKeydown = (event: KeyboardEvent) => {
         if (event.key === ' ' || event.key === 'Enter') {
+            event.preventDefault();
             this.props.onChange(event);
         }
     }

@@ -53,11 +53,38 @@ it('Renders without crashing when it is flag as "not allowed".', () => {
     createActionsMenuItem({ isAllowed: false });
 });
 
-it("Passes along changes.", () => {
+it("Changes on click.", () => {
     const { wrapper, mockChangeHandler } = createActionsMenuItem();
 
-    const input = wrapper.find("input");
-    input.simulate("change");
+    const input = wrapper.find(".ActionsMenuItem");
+    input.simulate("click");
 
     expect(mockChangeHandler.mock.calls.length).toBe(1);
+});
+
+it("Changes on appropriate keydown.", () => {
+    const { wrapper, mockChangeHandler } = createActionsMenuItem();
+
+    const preventDefault = jest.fn();
+    const input = wrapper.find(".ActionsMenuItem");
+    input.simulate("keydown", { key: 'Enter', preventDefault: preventDefault});
+
+    expect(mockChangeHandler.mock.calls.length).toBe(1);
+    expect(preventDefault.mock.calls.length).toBe(1);
+
+    input.simulate("keydown", { key: ' ', preventDefault: preventDefault});
+    expect(mockChangeHandler.mock.calls.length).toBe(2);
+    expect(preventDefault.mock.calls.length).toBe(2);
+});
+
+it("Does not respond to irrelevant keydown.", () => {
+    const { wrapper, mockChangeHandler } = createActionsMenuItem();
+
+    const input = wrapper.find(".ActionsMenuItem");
+
+    const preventDefault = jest.fn();
+    input.simulate("keydown", { key: 'Tab', preventDefault: preventDefault});
+
+    expect(mockChangeHandler.mock.calls.length).toBe(0);
+    expect(preventDefault.mock.calls.length).toBe(0);
 });

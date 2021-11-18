@@ -74,11 +74,11 @@ describe("When a checkbox is clicked.", () => {
         expect(modal.state.allowedActions.left90).toBe(true);
 
         const left90Checkbox = wrapper.find('#actions-menu-item-left90');
-        left90Checkbox.simulate('change');
+        left90Checkbox.simulate('click');
 
         expect(modal.state.allowedActions.left90).toBe(false);
 
-        left90Checkbox.simulate('change');
+        left90Checkbox.simulate('click');
         expect(modal.state.allowedActions.left90).toBe(true);
 
         wrapper.unmount();
@@ -94,7 +94,7 @@ describe("When the cancel button is clicked.", ()=> {
         expect(modal.state.allowedActions.left90).toBe(true);
 
         const left90Checkbox = wrapper.find('#actions-menu-item-left90');
-        left90Checkbox.simulate('change');
+        left90Checkbox.simulate('click');
 
         expect(modal.state.allowedActions.left90).toBe(false);
 
@@ -125,7 +125,7 @@ describe("When the done button is clicked.", ()=> {
         const {wrapper, mockOnConfirm} = createActionsMenu();
 
         const left90Checkbox = wrapper.find('#actions-menu-item-left90');
-        left90Checkbox.simulate('change');
+        left90Checkbox.simulate('click');
 
         const saveButton = wrapper.find("Button#ActionSimplificationModal-done");
         saveButton.simulate('click');
