@@ -286,15 +286,35 @@ body.light-theme {
         background-color: #D5D8DD;
     }
 
-    button.btn.PlayButton--disabled, button.btn.StopButton--disabled {
+    button.btn.PlayButton--disabled {
         svg {
             circle {
                 fill: #67717E;
             }
-            path.triangle, rect {
+            path.triangle {
                 fill: #505862;
             }
         }
+    }
+
+    .StopButton--disabled {
+        box-shadow: 0 0 0 0.2rem #505862;
+
+        svg rect {
+            fill: #3A3F46;
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.2rem #505862,
+                0 0 0 0.4rem #D5D8DD,
+                0 0 0 0.6rem #1E1E1E;
+        }
+    }
+
+    .ShareButton {
+        color: black;
+        background-color: #F1F2F4;
     }
 }
 
@@ -410,10 +430,6 @@ body.dark-theme {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
 
-    .RefreshButton:focus {
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-    }
-
     .CharacterPositionController__character-column {
         background-color: #30444E;
         border-top: 1px solid #33717F;
@@ -489,11 +505,6 @@ body.dark-theme {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
 
-    button.btn.ProgramBlockEditor__program-deleteAll-button:focus {
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-
-    }
-
     .ProgramBlockEditor__program-sequence-scroll-container {
         background-color: #22343C;
     }
@@ -542,9 +553,23 @@ body.dark-theme {
         background-color: #67717E;
     }
 
-    button.btn.PlayButton:focus, button.btn.StopButton:focus {
+    button.btn.PlayButton:focus {
         border: none;
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    }
+
+    .StopButton:focus {
+        box-shadow:
+            0 0 0 0.2rem #1E1E1E,
+            0 0 0 0.4rem #67717E,
+            0 0 0 0.6rem #FFFFFF;
+    }
+
+    .StopButton.StopButton--disabled:focus {
+        box-shadow:
+            0 0 0 0.2rem #9DA4AF,
+            0 0 0 0.4rem #67717E,
+            0 0 0 0.6rem #FFFFFF;
     }
 
     .ProgramSpeedController__slider {
@@ -670,7 +695,7 @@ body.gray-theme {
     .IconButton {
         background-color: #818A98;
 
-        &:hover {
+        &:hover:not(.IconButton--disabled) {
             background-color: #505862;
         }
 
@@ -716,7 +741,9 @@ body.gray-theme {
     }
 
     button.btn.ModalFooter__cancelButton,
-    button.btn.ModalFooter__doneButton {
+    button.btn.ModalFooter__doneButton,
+    button.btn.ModalWithFooter__secondaryButton,
+    button.btn.ModalWithFooter__primaryButton {
         background-color: #aaa;
         color: black;
 
@@ -939,25 +966,13 @@ body.gray-theme {
         background-color: #818A98;
     }
 
-    button.btn.RefreshButton {
-        background-color: #818A98;
-        svg path {
-            fill: white;
-        }
-
-        &:hover {
-            background-color: #505862;
-        }
-
-        &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
-        }
+    .RefreshButton svg path {
+        fill: white;
     }
 
-    button.btn.RefreshButton--disabled,
-    button.btn.RefreshButton--disabled:hover,
-    button.btn.RefreshButton--disabled:focus {
-        background-color: #9DA4AF;
+    .RefreshButton--disabled,
+    .RefreshButton--disabled:hover,
+    .RefreshButton--disabled:focus {
         svg path {
             fill: #D5D8DD;
         }
@@ -1049,24 +1064,13 @@ body.gray-theme {
         background-color: #818A98;
     }
 
-    button.btn.ProgramBlockEditor__program-deleteAll-button {
-        background-color: #818A98;
-        svg path {
-            stroke: white;
-        }
-
-        &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
-        }
-
-        &:hover {
-            background-color: #505862;
-        }
+    .ProgramBlockEditor__program-deleteAll-button  svg path {
+        stroke: white;
+        fill: inherit;
     }
 
-    button.btn.ProgramBlockEditor__program-deleteAll-button--disabled,
-    button.btn.ProgramBlockEditor__program-deleteAll-button--disabled:hover {
-        background-color: #9DA4AF;
+    .ProgramBlockEditor__program-deleteAll-button--disabled,
+    .ProgramBlockEditor__program-deleteAll-button--disabled:hover {
         svg path {
             stroke: #D5D8DD;
         }
@@ -1200,7 +1204,7 @@ body.gray-theme {
         background-color: #D5D8DD;
     }
 
-    button.btn.PlayButton:not(.PlayButton--disabled), button.btn.StopButton:not(.StopButton--disabled) {
+    button.btn.PlayButton:not(.PlayButton--disabled) {
         box-shadow: none;
 
         svg {
@@ -1210,7 +1214,7 @@ body.gray-theme {
             circle {
                 fill: #67717E;
             }
-            path.triangle, rect {
+            path.triangle {
                 fill: #1E1E1E;
             }
         }
@@ -1228,14 +1232,14 @@ body.gray-theme {
                 circle {
                     fill: #67717E;
                 }
-                path.triangle, rect {
+                path.triangle {
                     fill: #1E1E1E;
                 }
             }
         }
     }
 
-    button.btn.PlayButton--disabled, button.btn.StopButton--disabled {
+    button.btn.PlayButton--disabled {
         background-color: #D5D8DD;
 
         svg {
@@ -1245,9 +1249,44 @@ body.gray-theme {
             circle {
                 fill: #9DA4AF;
             }
-            path.triangle, rect {
+            path.triangle {
                 fill: #67717E;
             }
+        }
+    }
+
+    .StopButton:not(.StopButton--disabled) {
+        box-shadow: 0 0 0 0.2rem #67717E;
+
+        svg rect {
+            fill: #1E1E1E;
+        }
+
+        &:hover {
+            background-color: #9DA4AF;
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.2rem #67717E,
+                0 0 0 0.4rem #D5D8DD,
+                0 0 0 0.6rem #67717E;
+        }        
+    }
+
+    .StopButton:not(:hover):not(.StopButton--disabled) {
+        background-color: #FFFFFF;
+    }
+
+    .StopButton--disabled {
+        background-color: #D5D8DD;
+        box-shadow: 0 0 0 0.2rem #9DA4AF;
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.2rem #9DA4AF,
+                0 0 0 0.3rem #D5D8DD,
+                0 0 0 0.5rem #505862;
         }
     }
 
@@ -1378,7 +1417,11 @@ body.contrast-theme {
     .IconButton {
         background-color: white;
 
-        &:hover {
+        svg path {
+            fill: black;
+        }
+
+        &:hover:not(.IconButton--disabled) {
             background-color: black;
 
             .App__header-keyboard-icon {
@@ -1449,7 +1492,9 @@ body.contrast-theme {
     }
 
     button.btn.ModalFooter__cancelButton,
-    button.btn.ModalFooter__doneButton {
+    button.btn.ModalFooter__doneButton,
+    button.btn.ModalWithFooter__secondaryButton,
+    button.btn.ModalWithFooter__primaryButton {
         background-color: black;
         color: white;
 
@@ -1793,33 +1838,23 @@ body.contrast-theme {
     }
 
     .RefreshButton {
-        background-color: white;
-        border: 2px solid black;
-        padding: 0.4rem;
         svg path {
             fill: black;
             stroke: none;
         }
-
-        &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-            border: 2px solid black;
-        }
-
-        &:hover:not(:active) {
-            background-color: black;
-            border: 2px solid white;
+        &:hover:not(.RefreshButton--disabled) {
+            &:not(:focus) {
+                box-shadow: 0 0 0 2px white;
+            }
             svg path {
                 fill: white;
             }
         }
-    }
+}
 
-    button.btn.RefreshButton--disabled,
-    button.btn.RefreshButton--disabled:hover,
-    button.btn.RefreshButton--disabled:active {
-        background-color: white;
-        border: 2px solid black;
+    .RefreshButton--disabled,
+    .RefreshButton--disabled:hover,
+    .RefreshButton--disabled:active {
         svg path {
             fill: #818A98;
         }
@@ -1901,18 +1936,19 @@ body.contrast-theme {
         }
     }
 
-    button.btn.ProgramBlockEditor__program-deleteAll-button {
+    .ProgramBlockEditor__program-deleteAll-button {
         background-color: black;
         border: 2px solid white;
         svg path {
             stroke: white;
         }
 
-        &:hover {
+        &:hover:not(.ProgramBlockEditor__program-deleteAll-button--disabled) {
             background-color: white;
             border: 2px solid black;
             svg path {
                 stroke: black;
+                fill: inherit;
             }
         }
 
@@ -1921,12 +1957,13 @@ body.contrast-theme {
         }
     }
 
-    button.btn.ProgramBlockEditor__program-deleteAll-button--disabled,
-    button.btn.ProgramBlockEditor__program-deleteAll-button--disabled:hover {
+    .ProgramBlockEditor__program-deleteAll-button--disabled,
+    .ProgramBlockEditor__program-deleteAll-button--disabled:hover {
         background-color: white;
         border: 2px solid black;
         svg path {
             stroke: #818A98;
+            fill:inherit;
         }
     }
 
@@ -2091,14 +2128,13 @@ body.contrast-theme {
         color: white;
     }
 
-    button.btn.PlayButton:not(.PlayButton--disabled), button.btn.StopButton:not(.StopButton--disabled) {
+    button.btn.PlayButton:not(.PlayButton--disabled) {
         &:hover {
             svg {
                 path.inner-circle {
                     fill: #1E1E1E;
                 }
-
-                path.triangle, rect {
+                path.triangle {
                     fill: #FFFFFF;
                 }
             }
@@ -2114,14 +2150,76 @@ body.contrast-theme {
         }
     }
 
-    button.btn.PlayButton--play.PlayButton--disabled, button.btn.StopButton--disabled {
+    button.btn.PlayButton--pause:not(.PlayButton--disabled) {
+        &:hover {
+            svg {
+                circle {
+                    fill: #FFFFFF;
+                }
+                path.inner-circle {
+                    fill: #1E1E1E;
+                }
+            }
+        }
+    }
+
+    button.btn.PlayButton--play.PlayButton--disabled {
         svg {
             path.inner-circle {
-                fill: white;
+                fill: #FFFFFF;
             }
             circle, path.triangle, rect {
                 fill: #8E8E8E;
             }
+        }
+    }
+
+    .StopButton {
+        box-shadow: 0 0 0 0.2rem #1E1E1E;
+
+        svg rect {
+            fill: #FFFFFF;
+        }
+
+        &:hover:not(.StopButton--disabled) {
+            box-shadow:
+                0 0 0 0.2rem #1E1E1E,
+                0 0 0 0.4rem white;
+
+            svg rect {
+                fill: #ffffff
+            }
+            background-color: #1E1E1E;
+        }
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.2rem #1E1E1E,
+                0 0 0 0.4rem #FFFFFF,
+                0 0 0 0.6rem #1E1E1E;
+        }        
+    }
+
+    .StopButton:not(:hover):not(.StopButton--disabled) {
+        background-color: #FFFFFF;
+        svg rect {
+            fill: #1E1E1E;
+        }
+    }
+
+    .StopButton--disabled {
+        background-color: #FFFFFF;
+        box-shadow: 0 0 0 0.2rem #8E8E8E;
+
+        &:focus {
+            box-shadow:
+                0 0 0 0.2rem #8E8E8E,
+                0 0 0 0.4rem #FFFFFF,
+                0 0 0 0.6rem #1E1E1E;
+        }
+
+        svg rect {
+            fill: #8E8E8E;
         }
     }
 

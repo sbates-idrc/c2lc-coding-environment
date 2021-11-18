@@ -228,7 +228,11 @@ body {
 
 .App__playControlButton {
     margin-right: 1.5rem;
+    &.StopButton {
+        margin-right: 1.9rem;
+    }
 }
+
 
 .App__shareButton-container {
     align-items: flex-end;
