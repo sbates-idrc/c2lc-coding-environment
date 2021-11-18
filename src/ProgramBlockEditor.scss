@@ -86,7 +86,7 @@
     stroke: $c2lc-disabled-foreground-color;
 }
 
-.ProgramBlockEditor__program-deleteAll-button:hover {
+.ProgramBlockEditor__program-deleteAll-button:hover:not(.ProgramBlockEditor__program-deleteAll-button--disabled) {
     background-color: #F1AE5B;
 }
 
