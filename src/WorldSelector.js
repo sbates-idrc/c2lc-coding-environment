@@ -2,6 +2,7 @@
 
 import React from 'react';
 import classNames from 'classnames';
+import ModalBody from './ModalBody';
 import ModalHeader from './ModalHeader';
 import ModalWithFooter from './ModalWithFooter';
 import { getWorldThumbnail } from './Worlds';
@@ -152,14 +153,16 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                     })}>
                     <WorldIcon aria-hidden='true' />
                 </ModalHeader>
-                <div className='WorldSelector__content'>
-                    <div id='WorldSelectorDesc'className='WorldSelector__prompt'>
-                        <FormattedMessage id={'WorldSelector.Prompt'} />
+                <ModalBody>
+                    <div className='WorldSelector__content'>
+                        <div id='WorldSelectorDesc'className='WorldSelector__prompt'>
+                            <FormattedMessage id={'WorldSelector.Prompt'} />
+                        </div>
+                        <div className='WorldSelector__options'>
+                            {this.renderWorldOptions()}
+                        </div>
                     </div>
-                    <div className='WorldSelector__options'>
-                        {this.renderWorldOptions()}
-                    </div>
-                </div>
+                </ModalBody>
             </ModalWithFooter>
         );
     }
