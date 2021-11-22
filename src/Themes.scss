@@ -298,23 +298,76 @@ body.light-theme {
     }
 
     .StopButton--disabled {
-        box-shadow: 0 0 0 0.2rem #505862;
+        box-shadow: 0 0 0 0.2rem #67717E;
 
         svg rect {
-            fill: #3A3F46;
+            fill: #505862;
         }
 
         &:focus {
             box-shadow:
-                0 0 0 0.2rem #505862,
+                0 0 0 0.2rem #67717E,
                 0 0 0 0.4rem #D5D8DD,
                 0 0 0 0.6rem #1E1E1E;
         }
     }
 
-    .ShareButton {
-        color: black;
-        background-color: #F1F2F4;
+    .ProgramSpeedController__slider {
+        &:hover {
+            &::-webkit-slider-thumb {
+                background-color: #F1AE5B;
+                box-shadow: -8rem 0 0 8rem #F1AE5B;
+            }
+        
+            &::-moz-range-thumb {
+                background-color: #F1AE5B;
+                box-shadow: -8rem 0 0 8rem #F1AE5B;
+            }
+           
+            &::-moz-range-progress {
+                background-color: #F1AE5B; 
+            }
+            
+            &::-ms-fill-lower {
+                background-color: #F1AE5B; 
+            }
+        }
+
+        &:focus {
+            outline-color: $c2lc-focus-indicator-color;
+        }
+
+        &::-webkit-slider-thumb {
+            background-color: #33717F;
+            box-shadow: -8rem 0 0 8rem #33717F;
+        }
+
+        &::-moz-range-thumb {
+            background-color: #33717F;
+            box-shadow: -8rem 0 0 8rem #33717F;
+        }
+
+        &::-moz-range-progress {
+            background-color: #33717F;
+        }
+        
+        &::-ms-fill-lower {
+            background-color: #33717F; 
+        }
+    }
+    
+    button.btn.ShareButton {
+        background-color: #33717F;
+        color: #FFFFFF;
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem #D5D8DD,
+                0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+        }
+        &:hover {
+            background-color: #F5C58A;
+            color: #1E1E1E;
+        }
     }
 }
 
@@ -549,10 +602,6 @@ body.dark-theme {
         }
     }
 
-    .App__playAndShare-background {
-        background-color: #67717E;
-    }
-
     button.btn.PlayButton:focus {
         border: none;
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
@@ -571,65 +620,6 @@ body.dark-theme {
             0 0 0 0.4rem #67717E,
             0 0 0 0.6rem #FFFFFF;
     }
-
-    .ProgramSpeedController__slider {
-        &:hover {
-            &::-webkit-slider-thumb {
-                background-color: #F1AE5B;
-                box-shadow: -8rem 0 0 8rem #F1AE5B;
-            }
-        
-            &::-moz-range-thumb {
-                background-color: #F1AE5B;
-                box-shadow: -8rem 0 0 8rem #F1AE5B;
-            }
-           
-            &::-moz-range-progress {
-                background-color: #F1AE5B; 
-            }
-            
-            &::-ms-fill-lower {
-                background-color: #F1AE5B; 
-            }
-        }
-
-        &:focus {
-            outline-color: white;
-        }
-
-        &::-webkit-slider-thumb {
-            background-color: #CCE6E2;
-            box-shadow: -8rem 0 0 8rem #CCE6E2;
-        }
-
-        &::-moz-range-thumb {
-            background-color: #CCE6E2;
-            box-shadow: -8rem 0 0 8rem #CCE6E2;
-        }
-
-        &::-moz-range-progress {
-            background-color: #CCE6E2;
-        }
-        
-        &::-ms-fill-lower {
-            background-color: #CCE6E2; 
-        }
-    }
-
-    button.btn.ShareButton {
-        background-color: #CCE6E2;
-        color: #1E1E1E;
-        &:focus {
-            box-shadow:
-                0 0 0 0.1rem #30444E,
-                0 0 0 $c2lc-focus-indicator-width white;
-        }
-        &:hover {
-            background-color: #F5C58A;
-            color: black;
-        }
-    }
-
 }
 
 
