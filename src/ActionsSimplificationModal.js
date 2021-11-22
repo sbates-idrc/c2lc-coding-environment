@@ -99,7 +99,7 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
         const saveButtonProperties = {
             id: 'ActionSimplificationModal-done',
             isPrimary: true,
-            label: this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.save'},),
+            label: this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.save'} ),
             onClick: this.saveChanges
         };
         return (

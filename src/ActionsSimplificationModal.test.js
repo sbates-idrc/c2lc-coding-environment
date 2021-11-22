@@ -136,3 +136,17 @@ describe("When the done button is clicked.", ()=> {
         wrapper.unmount();
     });
 });
+
+describe("When an item is toggled", () => {
+    test("Toggles the aria-checked property on change.", () => {
+        const { wrapper } = createActionsMenu();
+
+        const input = wrapper.find(".ActionsMenuItem").first();
+        expect(input.prop('aria-checked')).toBe(true);
+
+        input.simulate("click");
+
+        const updatedInput = wrapper.find(".ActionsMenuItem").first();
+        expect(updatedInput.prop('aria-checked')).toBe(false);
+    });
+})

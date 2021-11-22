@@ -28,14 +28,10 @@
     width: 1rem;
 }
 
-.ActionsMenuItem__text--disabled {
-    text-decoration: line-through;
-    color: #cccccc;
-}
-
 .ActionsMenuItem__icon {
     text-align: center;
     border-radius: 0.2rem;
+    box-shadow: 0 3px 4px 0 #1e1e1e, -1px 2px 4px;
     width: 2.5rem;
     height: 2.5rem;
     min-width: 45px;
@@ -49,37 +45,19 @@
     }
 }
 
-.ActionsMenuItem__icon--disabled {
-    padding-top: 0.5rem;
-
-    svg {
-        width: 1rem;
-        height: 1rem;
-        fill: #B9BEC6;
-        stroke: #B9BEC6;
-    }
-}
 
 .ActionsMenuItem__icon--forward1, .ActionsMenuItem__icon--forward2, .ActionsMenuItem__icon--forward3 {
-    &:not(.ActionsMenuItem__icon--disabled) {
-        background-color: $c2lc-forward-command-color;
-    }
+    background-color: $c2lc-forward-command-color;
 }
 
 .ActionsMenuItem__icon--backward1, .ActionsMenuItem__icon--backward2, .ActionsMenuItem__icon--backward3 {
-    &:not(.ActionsMenuItem__icon--disabled) {
-        background-color: $c2lc-backward-command-color;
-    }
+    background-color: $c2lc-backward-command-color;
 }
 
 .ActionsMenuItem__icon--left45, .ActionsMenuItem__icon--left90, .ActionsMenuItem__icon--left180 {
-    &:not(.ActionsMenuItem__icon--disabled) {
-        background-color: $c2lc-left-command-color;
-    }
+    background-color: $c2lc-left-command-color;
 }
 
 .ActionsMenuItem__icon--right45, .ActionsMenuItem__icon--right90, .ActionsMenuItem__icon--right180 {
-    &:not(.ActionsMenuItem__icon--disabled) {
-        background-color: $c2lc-right-command-color;
-    }
+    background-color: $c2lc-right-command-color;
 }

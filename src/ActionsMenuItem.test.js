@@ -57,7 +57,7 @@ it("Changes on click.", () => {
     const { wrapper, mockChangeHandler } = createActionsMenuItem();
 
     const input = wrapper.find(".ActionsMenuItem");
-    input.simulate("click");
+    input.simulate('click');
 
     expect(mockChangeHandler.mock.calls.length).toBe(1);
 });
@@ -87,4 +87,26 @@ it("Does not respond to irrelevant keydown.", () => {
 
     expect(mockChangeHandler.mock.calls.length).toBe(0);
     expect(preventDefault.mock.calls.length).toBe(0);
+});
+
+it("Does not allow disabling 'used' items.", () => {
+    const { wrapper, mockChangeHandler } = createActionsMenuItem({ isUsed: true });
+
+    const input = wrapper.find(".ActionsMenuItem");
+
+    const preventDefault = jest.fn();
+    input.simulate("keydown", { key: 'Enter', preventDefault: preventDefault});
+
+    expect(mockChangeHandler.mock.calls.length).toBe(0);
+    expect(preventDefault.mock.calls.length).toBe(0);
+});
+
+it("Allows reenabling 'used' items that are disabled.", () => {
+    const { wrapper, mockChangeHandler } = createActionsMenuItem({ isUsed: true, isAllowed: false });
+
+    const input = wrapper.find(".ActionsMenuItem");
+
+    input.simulate("click");
+
+    expect(mockChangeHandler.mock.calls.length).toBe(1);
 });

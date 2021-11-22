@@ -7,8 +7,6 @@ import type { IntlShape } from 'react-intl';
 import classNames from 'classnames';
 import {commandBlockIconTypes} from './CommandBlock';
 
-import {ReactComponent as HiddenIcon} from './svg/Hidden.svg'
-
 import './ActionsMenuItem.scss';
 
 type ActionsMenuItemProps = {
@@ -22,6 +20,13 @@ type ActionsMenuItemProps = {
 export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} > {
     handleKeydown = (event: KeyboardEvent) => {
         if (event.key === ' ' || event.key === 'Enter') {
+            this.handleChange(event);
+        }
+    }
+
+    handleChange = (event: Event) => {
+        // Always reenabled disallowed commands, but do not disable used ones.
+        if (!this.props.isAllowed || !this.props.isUsed) {
             event.preventDefault();
             this.props.onChange(event);
         }
@@ -38,28 +43,14 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
         const commandNameShort = this.props.intl.formatMessage({ id: `Command.short.${this.props.itemKey}` });
         const checkboxId = "actions-menu-item-" + commandNameShort.replace(/ /g, "");
 
-        const actionNameKey = this.props.isAllowed ? "ActionsMenuItem.action.show" : "ActionsMenuItem.action.hide";
-        const actionName = this.props.intl.formatMessage({ id: actionNameKey });
-
-        const showHideAriaLabel = this.props.intl.formatMessage(
-            { id: "ActionsMenuItem.itemToggleAriaLabel" },
-            { action: actionName, commandName: commandName }
-        );
-
-        const textClassNames = classNames(
-            'ActionsMenuItem__text',
-            !this.props.isAllowed && 'ActionsMenuItem__text--disabled'
-        );
-
         const iconClassNames = classNames(
             'ActionsMenuItem__icon',
-            'ActionsMenuItem__icon--' + this.props.itemKey,
-            !this.props.isAllowed && 'ActionsMenuItem__icon--disabled'
+            'ActionsMenuItem__icon--' + this.props.itemKey
         );
 
         // $FlowFixMe: Flow is confused about what itemKey is.
         let icon = null;
-        const iconType = this.props.isAllowed ? commandBlockIconTypes.get(this.props.itemKey) : HiddenIcon;
+        const iconType = commandBlockIconTypes.get(this.props.itemKey);
         if (iconType) {
             icon = React.createElement(iconType);
         }
@@ -67,21 +58,25 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
         return (
             <div
                 className="ActionsMenuItem"
-                aria-label={showHideAriaLabel}
+                role="checkbox"
+                aria-checked={this.props.isAllowed}
+                aria-label={commandName}
                 tabIndex={0}
                 onKeyDown={this.handleKeydown}
-                onClick={this.props.onChange}
+                onClick={this.handleChange}
             >
                 <div className="ActionsMenuItem__option">
                     <input
                         className="ActionsMenuItem__checkbox"
                         type="checkbox"
                         id={checkboxId}
+                        aria-hidden={true}
                         checked={this.props.isAllowed}
+                        readOnly={true}
                         tabIndex={-1}
                     />
                 </div>
-                <div className={textClassNames}>
+                <div className="ActionsMenuItem__text">
                     {commandName}
                 </div>
                 <div className={iconClassNames}>
