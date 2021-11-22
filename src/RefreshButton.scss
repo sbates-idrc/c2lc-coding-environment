@@ -5,44 +5,11 @@
     height: 1.4rem;
 }
 
-button.btn.RefreshButton svg path {
+.RefreshButton svg path {
+    fill: black;
     stroke: none;
 }
 
-button.btn.RefreshButton {
-    background-color: #4C9990;
-    border: 0;
-    border-radius: 50%;
-    padding: 0.5rem;
-
-    svg path {
-        fill: black;
-    }
-
-    &:active {
-        background-color: #ED972C;
-    }
-
-    &:focus {
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
-    }
-}
-
-button.btn.RefreshButton.RefreshButton--disabled,
-button.btn.RefreshButton.RefreshButton--disabled:hover,
-button.btn.RefreshButton.RefreshButton--disabled:active {
-    background-color: $c2lc-disabled-background-color;
-    cursor: default;
-}
-
-button.btn.RefreshButton--disabled svg {
+.RefreshButton--disabled svg {
     stroke: $c2lc-disabled-foreground-color;
-}
-
-button.btn.RefreshButton:hover {
-    background-color: #F1AE5B;
-}
-
-button.btn.RefreshButton:hover:not(:focus) {
-    box-shadow: none;
 }

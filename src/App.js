@@ -885,21 +885,13 @@ export class App extends React.Component<AppProps, AppState> {
         }
     };
 
-    handleKeyboardMenuIconKeydown = (event: KeyboardEvent) => {
-        if (event.key === "Enter" || event.key === " ") {
-            this.handleKeyboardModalToggle();
-        }
-    }
-
     handleKeyboardModalClose = () => {
         this.setState({showKeyboardModal: false});
     };
 
-    handleKeyboardModalToggle = () => {
-        this.setState((currentState: AppState) => {
-            return { showKeyboardModal: !currentState.showKeyboardModal};
-        });
-    }
+    handleClickKeyboardIcon = () => {
+        this.setState({ showKeyboardModal: true});
+    };
 
     // Focus trap escape key handling.
     handleRootKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
@@ -1079,14 +1071,6 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleKeyDownWorldIcon = (event: KeyboardEvent) => {
-        if (event.key === "Enter" || event.key === " ") {
-            this.setState({
-                showWorldSelector: true
-            });
-        }
-    }
-
     handleSelectWorld = (world: WorldName) => {
         this.setStateSettings({world});
     }
@@ -1136,9 +1120,9 @@ export class App extends React.Component<AppProps, AppState> {
                                 </a>
                             </h1>
                             <IconButton
+                                className="App__header-keyboardMenuIcon"
                                 ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
-                                onClick={this.handleKeyboardModalToggle}
-                                onKeyDown={this.handleKeyboardMenuIconKeydown}
+                                onClick={this.handleClickKeyboardIcon}
                             >
                                 <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
                             </IconButton>
@@ -1205,7 +1189,6 @@ export class App extends React.Component<AppProps, AppState> {
                                 className='keyboard-shortcut-focus__world-selector'
                                 ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelector' })}
                                 onClick={this.handleClickWorldIcon}
-                                onKeyDown={this.handleKeyDownWorldIcon}
                             >
                                 <WorldIcon className='App__world-selector-icon'/>
                             </IconButton>
