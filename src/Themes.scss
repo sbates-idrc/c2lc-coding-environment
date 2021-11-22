@@ -922,18 +922,6 @@ body.gray-theme {
         background-color: #818A98;
     }
 
-    .RefreshButton svg path {
-        fill: white;
-    }
-
-    .RefreshButton--disabled,
-    .RefreshButton--disabled:hover,
-    .RefreshButton--disabled:focus {
-        svg path {
-            fill: #D5D8DD;
-        }
-    }
-
     .WorldSelector {
         background-color: #D5D8DD;
     }
@@ -1160,6 +1148,18 @@ body.gray-theme {
         background-color: #D5D8DD;
     }
 
+    .RefreshButton svg path:not(.refresh-icon) {
+        fill: white;
+    }
+
+    .RefreshButton--disabled,
+    .RefreshButton--disabled:hover,
+    .RefreshButton--disabled:focus {
+        svg path:not(.refresh-icon) {
+            fill: #D5D8DD;
+        }
+    }
+
     button.btn.PlayButton:not(.PlayButton--disabled), .StopButton, .RefreshButton {
         box-shadow: none;
 
@@ -1195,14 +1195,6 @@ body.gray-theme {
         }
     }
 
-    button.btn.RefreshButton {
-        svg {
-            path.inner-circle {
-                stroke: none;
-            }
-        }
-    }
-
     button.btn.PlayButton--disabled, .StopButton--disabled, .RefreshButton--disabled {
         background-color: #D5D8DD;
 
@@ -1213,7 +1205,7 @@ body.gray-theme {
             circle {
                 fill: #9DA4AF;
             }
-            path.triangle {
+            path.triangle, path.refresh-icon {
                 fill: #67717E;
             }
         }
@@ -1802,29 +1794,6 @@ body.contrast-theme {
         }
     }
 
-    .RefreshButton {
-        svg path {
-            fill: black;
-            stroke: none;
-        }
-        &:hover:not(.RefreshButton--disabled) {
-            &:not(:focus) {
-                box-shadow: 0 0 0 2px white;
-            }
-            svg path {
-                fill: white;
-            }
-        }
-}
-
-    .RefreshButton--disabled,
-    .RefreshButton--disabled:hover,
-    .RefreshButton--disabled:active {
-        svg path {
-            fill: #818A98;
-        }
-    }
-
     .WorldSelector {
         background-color: black;
 
@@ -2093,6 +2062,44 @@ body.contrast-theme {
         color: white;
     }
 
+
+    .RefreshButton {
+        svg {
+            path:not(.refresh-icon) {
+                fill: white;
+            }
+            circle {
+                fill:black;
+            }
+        }
+
+        &:hover:not(.RefreshButton--disabled) {
+            &:not(:focus) {
+                box-shadow: 0 0 0 2px white;
+            }
+
+            svg {
+                .refresh-icon {
+                    fill: white;
+                }
+                path.inner-circle {
+                    fill: #1E1E1E;
+                }
+                circle {
+                    fill: black;
+                }
+            }
+        }
+    }
+
+    .RefreshButton--disabled,
+    .RefreshButton--disabled:hover,
+    .RefreshButton--disabled:active {
+        svg path:not(.refresh-icon) {
+            fill: #818A98;
+        }
+    }
+
     button.btn.PlayButton:not(.PlayButton--disabled) {
         &:hover {
             svg {
@@ -2111,7 +2118,7 @@ body.contrast-theme {
         }
     }
 
-    button.btn.PlayButton, .StopButton, .RefreshButton {
+    button.btn.PlayButton, .StopButton {
         svg {
             fill: #FFFFFF;
             circle, path.triangle {
@@ -2147,8 +2154,8 @@ body.contrast-theme {
     .RefreshButton--disabled {
         svg {
             rect.refresh-icon {
-                fill: white;
                 stroke: #8E8E8E;
+                fill: #ffffff;
             }
             line.refresh-icon {
                 stroke: #8E8E8E;
