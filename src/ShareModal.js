@@ -51,9 +51,9 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
         return(
             <ModalWithFooter
                 show={this.props.show}
-                focusOnOpenSelector={'#ShareModal-copy'}
-                focusOnCloseSelector={'.ProgramBlockEditor__program-deleteAll-button'}
-                ariaLabel={this.props.intl.formatMessage({ id: 'ConfirmDeleteAllModal.title' })}
+                focusOnOpenSelector={'.ShareModal__form__copyButton'}
+                focusOnCloseSelector={'.App__ShareButton'}
+                ariaLabel={this.props.intl.formatMessage({ id: 'ShareModal.title' })}
                 onClose={this.props.onCancel}
                 buttonProperties={buttonProperties}
             >

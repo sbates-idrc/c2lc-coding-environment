@@ -248,9 +248,7 @@ body {
     font-weight: 400;
     padding: 0.5rem 2rem;
     width: 10rem;
-
     display:flex;
-    grid-template-columns: 30% 70%;
     column-gap: 0.5rem;
     align-items: center;
 
@@ -261,7 +259,7 @@ body {
     &:focus {
         box-shadow:
             0 0 0 0.1rem #D5D8DD,
-            0 0 0 $c2lc-focus-indicator-width black;
+            0 0 0 $c2lc-focus-indicator-width #1E1E1E;
     }
 
     &:hover {
