@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import ModalBody from './ModalBody';
 import ModalHeader from './ModalHeader';
 import ModalWithFooter from './ModalWithFooter';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -37,9 +38,11 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
                     })}>
                     <DeleteIcon aria-hidden='true' />
                 </ModalHeader>
-                <div className='ConfirmDeleteAllModal__content'>
-                    <FormattedMessage id='ConfirmDeleteAllModal.content' />
-                </div>
+                <ModalBody>
+                    <div className='ConfirmDeleteAllModal__content'>
+                        <FormattedMessage id='ConfirmDeleteAllModal.content' />
+                    </div>
+                </ModalBody>
             </ModalWithFooter>
         );
     }

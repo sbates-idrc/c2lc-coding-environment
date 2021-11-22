@@ -5,11 +5,12 @@
     height: 1.7rem;
 }
 
-button.btn.RefreshButton svg path {
+.RefreshButton svg path {
+    fill: black;
     stroke: none;
 }
 
-button.btn.RefreshButton {
+.RefreshButton {
     background-color: transparent;
     border: none;
     border-radius: 50%;
@@ -38,13 +39,13 @@ button.btn.RefreshButton {
     }
 }
 
-button.btn.RefreshButton.RefreshButton--disabled,
-button.btn.RefreshButton.RefreshButton--disabled:hover,
-button.btn.RefreshButton.RefreshButton--disabled:active {
+.RefreshButton.RefreshButton--disabled,
+.RefreshButton.RefreshButton--disabled:hover,
+.RefreshButton.RefreshButton--disabled:active {
     cursor: default;
 }
 
-button.btn.RefreshButton--disabled svg {
+.RefreshButton--disabled svg {
     stroke: $c2lc-disabled-foreground-color;        
 
     circle {
@@ -57,12 +58,16 @@ button.btn.RefreshButton--disabled svg {
     }
 }
 
-button.btn.RefreshButton:hover {
+.RefreshButton:hover {
     svg path.inner-circle {
         fill: #F1AE5B;
     }
 }
 
-button.btn.RefreshButton:hover:not(:focus) {
+.RefreshButton:hover:not(:focus) {
     box-shadow: none;
+}
+
+.RefreshButton--disabled svg {
+    stroke: $c2lc-disabled-foreground-color;
 }
