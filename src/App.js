@@ -885,21 +885,13 @@ export class App extends React.Component<AppProps, AppState> {
         }
     };
 
-    handleKeyboardMenuIconKeydown = (event: KeyboardEvent) => {
-        if (event.key === "Enter" || event.key === " ") {
-            this.handleKeyboardModalToggle();
-        }
-    }
-
     handleKeyboardModalClose = () => {
         this.setState({showKeyboardModal: false});
     };
 
-    handleKeyboardModalToggle = () => {
-        this.setState((currentState: AppState) => {
-            return { showKeyboardModal: !currentState.showKeyboardModal};
-        });
-    }
+    handleClickKeyboardIcon = () => {
+        this.setState({ showKeyboardModal: true});
+    };
 
     handleChangeShowThemeSelectorModal = () => {
         this.setState((currentState: AppState) => {
@@ -909,12 +901,6 @@ export class App extends React.Component<AppProps, AppState> {
 
     handleClickThemeSelectorIcon = () => {
         this.handleChangeShowThemeSelectorModal();
-    }
-
-    handleKeyDownThemeSelectorIcon = (event: KeyboardEvent) => {
-        if (event.key === "Enter" || event.key === " ") {
-            this.handleChangeShowThemeSelectorModal();
-        }
     }
 
     // Focus trap escape key handling.
@@ -1102,14 +1088,6 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleKeyDownWorldIcon = (event: KeyboardEvent) => {
-        if (event.key === "Enter" || event.key === " ") {
-            this.setState({
-                showWorldSelector: true
-            });
-        }
-    }
-
     handleSelectWorld = (world: WorldName) => {
         this.setStateSettings({world});
     }
@@ -1145,16 +1123,16 @@ export class App extends React.Component<AppProps, AppState> {
                             </h1>
                             <div className='App__header-menu'>
                                 <IconButton
+                                    className="App__header-keyboardMenuIcon"
                                     ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
-                                    onClick={this.handleKeyboardModalToggle}
-                                    onKeyDown={this.handleKeyboardMenuIconKeydown}
+                                    onClick={this.handleClickKeyboardIcon}
                                 >
                                     <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
                                 </IconButton>
                                 <IconButton
+                                    className="App__header-themeSelectorIcon"
                                     ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
                                     onClick={this.handleClickThemeSelectorIcon}
-                                    onKeyDown={this.handleKeyDownThemeSelectorIcon}
                                 >
                                     <ThemeIcon className='App__header-theme-icon'/>
                                 </IconButton>
@@ -1221,7 +1199,6 @@ export class App extends React.Component<AppProps, AppState> {
                                 className='keyboard-shortcut-focus__world-selector'
                                 ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelector' })}
                                 onClick={this.handleClickWorldIcon}
-                                onKeyDown={this.handleKeyDownWorldIcon}
                             >
                                 <WorldIcon className='App__world-selector-icon'/>
                             </IconButton>
@@ -1313,6 +1290,7 @@ export class App extends React.Component<AppProps, AppState> {
                 </div>
                 <CharacterAriaLive
                     ariaLiveRegionId='character-position'
+                    ariaHidden={this.state.showWorldSelector}
                     characterState={this.state.characterState}
                     runningState={this.state.runningState}
                     world={this.state.settings.world}/>
