@@ -1,6 +1,8 @@
 @import '_variables';
 
 .KeyboardInputModal__content {
+    max-height: calc(100vh - 15rem);
+    overflow: auto;
     width: 45rem;
     padding: 0;
     padding-top: 0.5rem;
@@ -47,8 +49,6 @@
 }
 
 .KeyboardInputModal__content__list {
-    overflow: auto;
-    max-height: 65vh;
 
     background-color: #F1F2F4;
     padding: 1rem;
