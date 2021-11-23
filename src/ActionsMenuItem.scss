@@ -28,6 +28,10 @@
     width: 1rem;
 }
 
+.ActionsMenuItem__checkbox {
+    pointer-events: none;
+}
+
 .ActionsMenuItem__icon {
     text-align: center;
     border-radius: 0.2rem;
