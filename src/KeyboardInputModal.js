@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import ModalHeader from './ModalHeader';
+import ModalBody from './ModalBody';
 import ModalWithFooter from './ModalWithFooter';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
@@ -208,36 +209,38 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
                     <KeyboardIcon aria-hidden='true'/>
                 </ModalHeader>
 
-                <div className='KeyboardInputModal__content'>
-                    <div className="KeyboardInputModal__content__toggleBar">
-                        <div className="KeyboardInputModal__content__toggleBar__label">
-                            <FormattedMessage id='KeyboardInputModal.Toggle.Label'/>
-                        </div>
-                        <div className="KeyboardInputModal__content__toggleBar__toggle">
-                            <div>
-                                <FormattedMessage id='KeyboardInputModal.Toggle.Off'/>
+                <ModalBody>
+                    <div className='KeyboardInputModal__content'>
+                        <div className="KeyboardInputModal__content__toggleBar">
+                            <div className="KeyboardInputModal__content__toggleBar__label">
+                                <FormattedMessage id='KeyboardInputModal.Toggle.Label'/>
                             </div>
-                            <ToggleSwitch
-                                id='keyboardInputModal__toggle'
-                                ariaLabel={this.props.intl.formatMessage({id: "KeyboardInputModal.Toggle.AriaLabel"})}
-                                className="KeyboardInputModal__content__toggle"
-                                contentsTrue=""
-                                contentsFalse=""
-                                value={this.state.keyBindingsEnabled}
-                                onChange={this.handleChangeKeyBindingsEnabled}
-                            />
-                            <div>
-                                <FormattedMessage id='KeyboardInputModal.Toggle.On'/>
+                            <div className="KeyboardInputModal__content__toggleBar__toggle">
+                                <div>
+                                    <FormattedMessage id='KeyboardInputModal.Toggle.Off'/>
+                                </div>
+                                <ToggleSwitch
+                                    id='keyboardInputModal__toggle'
+                                    ariaLabel={this.props.intl.formatMessage({id: "KeyboardInputModal.Toggle.AriaLabel"})}
+                                    className="KeyboardInputModal__content__toggle"
+                                    contentsTrue=""
+                                    contentsFalse=""
+                                    value={this.state.keyBindingsEnabled}
+                                    onChange={this.handleChangeKeyBindingsEnabled}
+                                />
+                                <div>
+                                    <FormattedMessage id='KeyboardInputModal.Toggle.On'/>
+                                </div>
                             </div>
                         </div>
+
+                        {this.renderKeyboardSchemeMenu()}
+
+                        <ul className="KeyboardInputModal__content__list">
+                            {this.renderKeyBindings()}
+                        </ul>
                     </div>
-
-                    {this.renderKeyboardSchemeMenu()}
-
-                    <ul className="KeyboardInputModal__content__list">
-                        {this.renderKeyBindings()}
-                    </ul>
-                </div>
+                </ModalBody>
             </ModalWithFooter>);
     }
 
