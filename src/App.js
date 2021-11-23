@@ -1162,7 +1162,7 @@ export class App extends React.Component<AppProps, AppState> {
                             </IconButton>
                         </div>
 
-                        <div className='App__ PenDownToggleSwitch-container'>
+                        <div className='App__PenDownToggleSwitch-container'>
                             <PenDownToggleSwitch
                                 className='App__penDown-toggle-switch'
                                 value={this.state.drawingEnabled}
