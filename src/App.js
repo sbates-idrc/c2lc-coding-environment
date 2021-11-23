@@ -1131,7 +1131,7 @@ export class App extends React.Component<AppProps, AppState> {
                                 </IconButton>
                                 <IconButton
                                     className="App__header-themeSelectorIcon"
-                                    ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'ThemeSelector.iconButton' })}
                                     onClick={this.handleClickThemeSelectorIcon}
                                 >
                                     <ThemeIcon className='App__header-theme-icon'/>

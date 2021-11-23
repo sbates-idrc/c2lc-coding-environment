@@ -1,7 +1,8 @@
 // @flow
 
 import React from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import ModalWithFooter from './ModalWithFooter';
+import ModalHeader from './ModalHeader';
 import type { ThemeName } from './types';
 import type { IntlShape } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -72,31 +73,27 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
 
     render() {
         return (
-            <Modal
+            <ModalWithFooter
                 show={this.props.show}
-                onHide={this.handleCancel}
-                dialogClassName='ThemeSelector__modal'
-                centered>
-                <Modal.Title className='ThemeSelector__title'>
-                    <ThemeIcon aria-hidden={true}/>
-                    <FormattedMessage id='ThemeSelector.title' />
-                </Modal.Title>
-                <Modal.Body className='ThemeSelector__body'>
+                focusOnOpenSelector={`#theme-${this.props.currentTheme}`}
+                focusOnCloseSelector='.IconButton.themeSelector'
+                ariaLabelledById='ThemeSelector'
+                onClose={this.handleCancel}
+                buttonProperties={[
+                    {label: this.props.intl.formatMessage({id: 'ThemeSelector.cancelButton'}), onClick: this.handleCancel},
+                    {label: this.props.intl.formatMessage({id: 'ThemeSelector.doneButton'}), onClick: this.handleDone, isPrimary: true}
+                ]}>
+                <ModalHeader
+                    id='ThemeSelector'
+                    title={this.props.intl.formatMessage({
+                        id: 'ThemeSelector.title'
+                    })}>
+                    <ThemeIcon aria-hidden='true' />
+                </ModalHeader>
+                <div className='ThemeSelector__body'>
                     {this.renderThemeOptions()}
-                    <div className='ThemeSelector__footer'>
-                        <Button
-                            className='ThemeSelector__button-cancel'
-                            onClick={this.handleCancel}>
-                            <FormattedMessage id='ThemeSelector.cancelButton' />
-                        </Button>
-                        <Button
-                            className='ThemeSelector__button-done'
-                            onClick={this.handleDone}>
-                            <FormattedMessage id='ThemeSelector.doneButton' />
-                        </Button>
-                    </div>
-                </Modal.Body>
-            </Modal>
+                </div>
+            </ModalWithFooter>
         );
     }
 }
