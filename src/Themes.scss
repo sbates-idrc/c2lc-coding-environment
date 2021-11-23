@@ -301,6 +301,13 @@ body.light-theme {
         }
     }
 
+    .StopButton:focus {
+        box-shadow:
+            0 0 0 0.2rem #1E1E1E,
+            0 0 0 0.4rem #D5D8DD,
+            0 0 0 0.6rem #1E1E1E;
+    }
+
     .StopButton--disabled {
         box-shadow: 0 0 0 0.2rem #67717E;
 
@@ -604,11 +611,6 @@ body.dark-theme {
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
         }
-    }
-
-    button.btn.PlayButton:focus {
-        border: none;
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
 
     .StopButton:focus {
@@ -1246,6 +1248,10 @@ body.gray-theme {
             path.triangle {
                 fill: #67717E;
             }
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
     }
 
@@ -2133,6 +2139,9 @@ body.contrast-theme {
                 }
             }
         }
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+        }
 
         svg {
             path.inner-circle {
@@ -2155,6 +2164,9 @@ body.contrast-theme {
                 }
             }
         }
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+        }
     }
 
     button.btn.PlayButton--play.PlayButton--disabled {
@@ -2165,6 +2177,9 @@ body.contrast-theme {
             circle, path.triangle, rect {
                 fill: #8E8E8E;
             }
+        }
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
         }
     }
 
@@ -2269,6 +2284,10 @@ body.contrast-theme {
             &::-ms-fill-lower {
                 background-color: #FF0000;
             }
+        }
+
+        &:focus {
+            outline-color: #1E1E1E;
         }
     }
 
