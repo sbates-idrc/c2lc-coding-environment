@@ -72,9 +72,12 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
                         <p><FormattedMessage id='ShareModal.description2' /></p>
 
                         <div className='ShareModal__form'>
-                            <div className='ShareModal__form__URL__container'>
-                                <div className='ShareModal__form__URL'>{document.location.href}</div>
-                            </div>
+                            <input
+                                className='ShareModal__form__URL'
+                                type="text"
+                                value={document.location.href}
+                                readOnly={true}
+                            />
                             <button
                                 className='ShareModal__form__copyButton'
                                 onClick={this.copyURL}
