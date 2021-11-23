@@ -196,7 +196,7 @@
         "Scene.inBounds": "Scene, in {world}, {numColumns} by {numRows} grid with {character} at column {xPos}, row {yPos} facing {direction}",
         "Scene.inBoundsOnItem": "Scene, in {world}, {numColumns} by {numRows} grid with {character} at column {xPos}, row {yPos} facing {direction} on {item}",
         "Scene.outOfBounds": "Scene, in {world}, {numColumns} by {numRows} grid with {character} outside of the scene {relativeDirection} the scene, facing {direction}",
-        "ShareModal.cancel": "Cancel",
+        "ShareModal.close": "Close",
         "ShareModal.copy": "Copy link",
         "ShareModal.title": "Share Link",
         "ShareModal.description1": "A link to the program you created was copied to the clipboard.",
