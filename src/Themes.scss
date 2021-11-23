@@ -395,6 +395,10 @@ body.dark-theme {
     }
 
 
+    .App__world-selector {
+        border-color: #33717F;
+    }
+
     button.btn.command-block.command-block--pressed,
     button.btn.command-block.command-block--pressed:hover,
     button.btn.command-block.command-block--pressed:active {
@@ -599,6 +603,10 @@ body.gray-theme {
 
     .App__world-container {
         background-color: #D5D8DD;
+    }
+
+    .App__world-selector {
+        border-color: #9DA4AF;
     }
 
     .ThemeSelector {
@@ -1577,6 +1585,10 @@ body.contrast-theme {
 
     .App__world-container {
         background-color: black;
+    }
+
+    .App__world-selector {
+        border-color: #FFFFFF;
     }
 
     // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
