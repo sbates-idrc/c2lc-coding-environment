@@ -2,13 +2,14 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
+import ModalHeader from './ModalHeader';
+import ModalBody from './ModalBody';
 import ModalWithFooter from './ModalWithFooter';
 
 import ActionsMenuItem from './ActionsMenuItem';
 import ProgramSequence from './ProgramSequence';
 
 import type {ActionToggleRegister, CommandName} from './types';
-import ModalHeader from './ModalHeader';
 import {extend} from './Utils';
 import {ReactComponent as SimplificationIcon} from './svg/Simplification.svg'
 
@@ -163,14 +164,14 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
             );
         });
 
-        return (<React.Fragment>
+        return (<ModalBody>
             <div
                 id="ActionsSimplificationModal"
                 className="ActionsSimplificationModal__menu"
             >
                 {actionsMenuItems}
             </div>
-        </React.Fragment>);
+        </ModalBody>);
     }
 
     // Required to avoid a phantom state where we persist the defaults even after they are updated from local storage.
