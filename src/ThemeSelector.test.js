@@ -56,11 +56,11 @@ function getThemeSelectorRadioButton(wrapper) {
 }
 
 function getCancelButton(wrapper) {
-    return wrapper.find('.ThemeSelector__button-cancel');
+    return wrapper.find('.ModalWithFooter__secondaryButton');
 }
 
 function getDoneButton(wrapper) {
-    return wrapper.find('.ThemeSelector__button-done');
+    return wrapper.find('.ModalWithFooter__primaryButton');
 }
 
 describe('When rendering selector options', () => {
@@ -82,7 +82,7 @@ describe('When rendering selector options', () => {
         expect(selectorOptions.get(2).props.children[0].props.checked).toBe(false);
 
         // Grayscale Theme
-        expect(selectorOptions.get(3).props.className.includes('grayscale')).toBe(true);
+        expect(selectorOptions.get(3).props.className.includes('gray')).toBe(true);
         expect(selectorOptions.get(3).props.children[0].props.checked).toBe(false);
 
         // High Contrast Theme
@@ -92,42 +92,130 @@ describe('When rendering selector options', () => {
 });
 
 describe('When selecting a theme', () => {
-    test('should call onSelect prop', () => {
-        expect.assertions(10);
+    test('should call onSelect prop and update aria-checked property', () => {
+        expect.assertions(40);
         const { wrapper, mockOnSelect } = createMountThemeSelector();
-
-        const themeSelectorOptions = getThemeSelectorRadioButton(wrapper);
-        const defaultThemeSelector = themeSelectorOptions.at(0);
-        const lightThemeSelector = themeSelectorOptions.at(1);
-        const darkThemeSelector = themeSelectorOptions.at(2);
-        const grayScaleThemeSelector = themeSelectorOptions.at(3);
-        const highContrastThemeSelector = themeSelectorOptions.at(4);
-
         // Light Theme
-        lightThemeSelector.simulate('change');
+        const lightThemeSelector = getThemeSelectorOption(wrapper).at(1);
+        const lightThemeSelectorRadioButton = getThemeSelectorRadioButton(wrapper).get(1);
+        expect(lightThemeSelector.get(0).props['aria-checked']).toBe(false);
+        expect(lightThemeSelector.get(0).props.tabIndex).toBe(-1);
+        expect(lightThemeSelectorRadioButton.props.checked).toBe(false);
+        lightThemeSelector.simulate('click');
         expect(mockOnSelect.mock.calls.length).toBe(1);
         expect(mockOnSelect.mock.calls[0][0]).toBe('light');
+        wrapper.setProps({currentTheme: mockOnSelect.mock.calls[0][0]});
+        expect(wrapper.find('.ThemeSelector__option').get(1).props['aria-checked']).toBe(true);
+        expect(wrapper.find('.ThemeSelector__option').get(1).props.tabIndex).toBe(0);
+        expect(wrapper.find('.ThemeSelector__option-radio').get(1).props.checked).toBe(true);
 
         // Dark Theme
-        darkThemeSelector.simulate('change');
+        const darkThemeSelector = getThemeSelectorOption(wrapper).at(2);
+        const darkThemeSelectorRadioButton = getThemeSelectorRadioButton(wrapper).get(2);
+        expect(darkThemeSelector.get(0).props['aria-checked']).toBe(false);
+        expect(darkThemeSelector.get(0).props.tabIndex).toBe(-1);
+        expect(darkThemeSelectorRadioButton.props.checked).toBe(false);
+        darkThemeSelector.simulate('click');
         expect(mockOnSelect.mock.calls.length).toBe(2);
         expect(mockOnSelect.mock.calls[1][0]).toBe('dark');
+        wrapper.setProps({currentTheme: mockOnSelect.mock.calls[1][0]});
+        expect(wrapper.find('.ThemeSelector__option').get(2).props['aria-checked']).toBe(true);
+        expect(wrapper.find('.ThemeSelector__option').get(2).props.tabIndex).toBe(0);
+        expect(wrapper.find('.ThemeSelector__option-radio').get(2).props.checked).toBe(true);
 
         // Grayscale Theme
-        grayScaleThemeSelector.simulate('change');
+        const grayScaleThemeSelector = getThemeSelectorOption(wrapper).at(3);
+        const grayScaleThemeSelectorRadioButton = getThemeSelectorRadioButton(wrapper).get(3);
+        expect(grayScaleThemeSelector.get(0).props['aria-checked']).toBe(false);
+        expect(grayScaleThemeSelectorRadioButton.props.checked).toBe(false);
+        expect(grayScaleThemeSelector.get(0).props.tabIndex).toBe(-1);
+        grayScaleThemeSelector.simulate('click');
         expect(mockOnSelect.mock.calls.length).toBe(3);
-        expect(mockOnSelect.mock.calls[2][0]).toBe('grayscale');
+        expect(mockOnSelect.mock.calls[2][0]).toBe('gray');
+        wrapper.setProps({currentTheme: mockOnSelect.mock.calls[2][0]});
+        expect(wrapper.find('.ThemeSelector__option').get(3).props['aria-checked']).toBe(true);
+        expect(wrapper.find('.ThemeSelector__option').get(3).props.tabIndex).toBe(0);
+        expect(wrapper.find('.ThemeSelector__option-radio').get(3).props.checked).toBe(true);
 
         // High Contrast Theme
-        highContrastThemeSelector.simulate('change');
+        const highContrastThemeSelector = getThemeSelectorOption(wrapper).at(4);
+        const highContrastThemeSelectorRadioButton = getThemeSelectorRadioButton(wrapper).get(4);
+        expect(highContrastThemeSelector.get(0).props['aria-checked']).toBe(false);
+        expect(highContrastThemeSelector.get(0).props.tabIndex).toBe(-1);
+        expect(highContrastThemeSelectorRadioButton.props.checked).toBe(false);
+        highContrastThemeSelector.simulate('click');
         expect(mockOnSelect.mock.calls.length).toBe(4);
         expect(mockOnSelect.mock.calls[3][0]).toBe('contrast');
+        wrapper.setProps({currentTheme: mockOnSelect.mock.calls[3][0]});
+        expect(wrapper.find('.ThemeSelector__option').get(4).props['aria-checked']).toBe(true);
+        expect(wrapper.find('.ThemeSelector__option').get(4).props.tabIndex).toBe(0);
+        expect(wrapper.find('.ThemeSelector__option-radio').get(4).props.checked).toBe(true);
 
         // Default
-        defaultThemeSelector.simulate('change');
+        const defaultThemeSelector = getThemeSelectorOption(wrapper).at(0);
+        const defaultThemeSelectorRadioButton = getThemeSelectorRadioButton(wrapper).get(0);
+        expect(defaultThemeSelector.get(0).props['aria-checked']).toBe(false);
+        expect(defaultThemeSelector.get(0).props.tabIndex).toBe(-1);
+        expect(defaultThemeSelectorRadioButton.props.checked).toBe(false);
+        defaultThemeSelector.simulate('click');
         expect(mockOnSelect.mock.calls.length).toBe(5);
         expect(mockOnSelect.mock.calls[4][0]).toBe('default');
-    })
+        wrapper.setProps({currentTheme: mockOnSelect.mock.calls[4][0]});
+        expect(wrapper.find('.ThemeSelector__option').get(0).props['aria-checked']).toBe(true);
+        expect(wrapper.find('.ThemeSelector__option').get(0).props.tabIndex).toBe(0);
+        expect(wrapper.find('.ThemeSelector__option-radio').get(0).props.checked).toBe(true);
+    });
+
+    test('themes can be changed with arrow keys', () => {
+        expect.assertions(24);
+        const { wrapper, mockOnSelect } = createMountThemeSelector();
+        const defaultThemeSelector = getThemeSelectorOption(wrapper).at(0);
+        // From the top most item, arrow up and left traps keyboard navigation
+        defaultThemeSelector.simulate('keyDown', { key: "ArrowUp", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        expect(mockOnSelect.mock.calls.length).toBe(1);
+        expect(mockOnSelect.mock.calls[0][0]).toBe('contrast');
+        defaultThemeSelector.simulate('keyDown', { key: "ArrowLeft", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        expect(mockOnSelect.mock.calls.length).toBe(2);
+        expect(mockOnSelect.mock.calls[1][0]).toBe('contrast');
+        defaultThemeSelector.simulate('keyDown', { key: "ArrowDown", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        expect(mockOnSelect.mock.calls.length).toBe(3);
+        expect(mockOnSelect.mock.calls[2][0]).toBe('light');
+        defaultThemeSelector.simulate('keyDown', { key: "ArrowRight", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        expect(mockOnSelect.mock.calls.length).toBe(4);
+        expect(mockOnSelect.mock.calls[3][0]).toBe('light');
+
+        wrapper.setProps({currentTheme: 'contrast'});
+        // From the bottom most item, arrow down and right traps keyboard navigation
+        const highContrastThemeSelector = getThemeSelectorOption(wrapper).at(4);
+        highContrastThemeSelector.simulate('keyDown', { key: "ArrowUp", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        expect(mockOnSelect.mock.calls.length).toBe(5);
+        expect(mockOnSelect.mock.calls[4][0]).toBe('gray');
+        highContrastThemeSelector.simulate('keyDown', { key: "ArrowLeft", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        expect(mockOnSelect.mock.calls.length).toBe(6);
+        expect(mockOnSelect.mock.calls[5][0]).toBe('gray');
+        highContrastThemeSelector.simulate('keyDown', { key: "ArrowDown", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        expect(mockOnSelect.mock.calls.length).toBe(7);
+        expect(mockOnSelect.mock.calls[6][0]).toBe('default');
+        highContrastThemeSelector.simulate('keyDown', { key: "ArrowRight", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        expect(mockOnSelect.mock.calls.length).toBe(8);
+        expect(mockOnSelect.mock.calls[7][0]).toBe('default');
+
+        wrapper.setProps({currentTheme: 'dark'});
+        // else, arrow down and right would navigate to the next theme, and arrow up and left navigate to the previous theme
+        const darkThemeSelector = getThemeSelectorOption(wrapper).at(2);
+        highContrastThemeSelector.simulate('keyDown', { key: "ArrowUp", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        expect(mockOnSelect.mock.calls.length).toBe(9);
+        expect(mockOnSelect.mock.calls[8][0]).toBe('light');
+        highContrastThemeSelector.simulate('keyDown', { key: "ArrowLeft", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        expect(mockOnSelect.mock.calls.length).toBe(10);
+        expect(mockOnSelect.mock.calls[9][0]).toBe('light');
+        highContrastThemeSelector.simulate('keyDown', { key: "ArrowDown", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        expect(mockOnSelect.mock.calls.length).toBe(11);
+        expect(mockOnSelect.mock.calls[10][0]).toBe('gray');
+        highContrastThemeSelector.simulate('keyDown', { key: "ArrowRight", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        expect(mockOnSelect.mock.calls.length).toBe(12);
+        expect(mockOnSelect.mock.calls[11][0]).toBe('gray');
+    });
 });
 
 describe('When the cancel button is clicked', () => {

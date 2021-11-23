@@ -1,8 +1,10 @@
 // @flow
 
 import React from 'react';
+import ModalBody from './ModalBody';
 import ModalWithFooter from './ModalWithFooter';
 import ModalHeader from './ModalHeader';
+import { focusByQuerySelector } from './Utils';
 import type { ThemeName } from './types';
 import type { IntlShape } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -22,17 +24,59 @@ type ThemeSelectorStates = {
 };
 
 class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorStates> {
+    themeOptions: Array<any>;
     constructor (props: ThemeSelectorProps) {
         super(props);
         this.state = {
             selectedTheme: props.currentTheme
         };
+        this.themeOptions = ['default', 'light', 'dark', 'gray', 'contrast'];
     };
 
     handleOnSelect = (e: Event) => {
         // $FlowFixMe: value is missing in EventTarget
-        this.props.onSelect(e.target.value);
+        this.props.onSelect(e.target.dataset.theme);
     };
+
+    selectPreviousThemeAndFocus = () => {
+        const currentIndex = this.themeOptions.indexOf(this.props.currentTheme);
+        const previousTheme = currentIndex === 0 ?
+            this.themeOptions[this.themeOptions.length - 1] :
+            this.themeOptions[currentIndex - 1];
+        focusByQuerySelector(`.ThemeSelector__option.${previousTheme}`);
+        this.props.onSelect(previousTheme);
+    }
+
+    selectNextThemeAndFocus = () => {
+        const currentIndex = this.themeOptions.indexOf(this.props.currentTheme);
+        const nextTheme = currentIndex === this.themeOptions.length - 1 ?
+            this.themeOptions[0] :
+            this.themeOptions[currentIndex + 1];
+        focusByQuerySelector(`.ThemeSelector__option.${nextTheme}`);
+        this.props.onSelect(nextTheme);
+    }
+
+    handleKeyDown = (event: KeyboardEvent) => {
+        switch(event.key) {
+            case('ArrowUp'):
+                event.preventDefault();
+                this.selectPreviousThemeAndFocus();
+                break;
+            case('ArrowLeft'):
+                event.preventDefault();
+                this.selectPreviousThemeAndFocus();
+                break;
+            case('ArrowDown'):
+                event.preventDefault();
+                this.selectNextThemeAndFocus();
+                break;
+            case('ArrowRight'):
+                event.preventDefault();
+                this.selectNextThemeAndFocus();
+                break;
+            default: break;
+        }
+    }
 
     handleCancel = () => {
         this.props.onChange(this.state.selectedTheme);
@@ -42,20 +86,26 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
         this.props.onChange(this.props.currentTheme);
     };
 
-    renderThemeOptions() {
-        const themeOptions = ['default', 'light', 'dark', 'grayscale', 'contrast'];
+    renderThemeOptions = () => {
         const themeGroup = [];
-        for (const theme of themeOptions) {
+        for (const theme of this.themeOptions) {
+            const isChecked = this.props.currentTheme === theme;
             themeGroup.push(
                 <div
+                    role='radio'
+                    aria-checked={isChecked}
                     className={`ThemeSelector__option ${theme}`}
-                    key={`ThemeSelector__option-${theme}`}>
-                    <input className='ThemeSelector__option-radio' type='radio' id={`theme-${theme}`} name='theme-option' value={theme}
-                        checked={this.props.currentTheme === theme ? true : false}
-                        onChange={this.handleOnSelect}/>
-                    <label htmlFor={`theme-${theme}`}>
-                        <FormattedMessage id={`ThemeSelector.option.${theme}`} />
-                    </label>
+                    key={`ThemeSelector__option-${theme}`}
+                    data-theme={theme}
+                    tabIndex={isChecked ? 0 : -1}
+                    onClick={this.handleOnSelect}
+                    onKeyDown={this.handleKeyDown}>
+                    <input className='ThemeSelector__option-radio' type='radio' name='theme-option' value={theme}
+                        aria-hidden={true}
+                        checked={isChecked}
+                        readOnly={true}
+                        tabIndex={-1}/>
+                    <FormattedMessage id={`ThemeSelector.option.${theme}`} />
                 </div>
             );
         }
@@ -75,7 +125,7 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
         return (
             <ModalWithFooter
                 show={this.props.show}
-                focusOnOpenSelector={`#theme-${this.props.currentTheme}`}
+                focusOnOpenSelector={`.ThemeSelector__option.${this.props.currentTheme}`}
                 focusOnCloseSelector='.IconButton.themeSelector'
                 ariaLabelledById='ThemeSelector'
                 onClose={this.handleCancel}
@@ -90,9 +140,13 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
                     })}>
                     <ThemeIcon aria-hidden='true' />
                 </ModalHeader>
-                <div className='ThemeSelector__body'>
-                    {this.renderThemeOptions()}
-                </div>
+                <ModalBody>
+                    <div
+                        role='radiogroup'
+                        className='ThemeSelector__body'>
+                        {this.renderThemeOptions()}
+                    </div>
+                </ModalBody>
             </ModalWithFooter>
         );
     }
