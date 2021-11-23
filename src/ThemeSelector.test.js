@@ -203,16 +203,16 @@ describe('When selecting a theme', () => {
         wrapper.setProps({currentTheme: 'dark'});
         // else, arrow down and right would navigate to the next theme, and arrow up and left navigate to the previous theme
         const darkThemeSelector = getThemeSelectorOption(wrapper).at(2);
-        highContrastThemeSelector.simulate('keyDown', { key: "ArrowUp", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        darkThemeSelector.simulate('keyDown', { key: "ArrowUp", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
         expect(mockOnSelect.mock.calls.length).toBe(9);
         expect(mockOnSelect.mock.calls[8][0]).toBe('light');
-        highContrastThemeSelector.simulate('keyDown', { key: "ArrowLeft", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        darkThemeSelector.simulate('keyDown', { key: "ArrowLeft", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
         expect(mockOnSelect.mock.calls.length).toBe(10);
         expect(mockOnSelect.mock.calls[9][0]).toBe('light');
-        highContrastThemeSelector.simulate('keyDown', { key: "ArrowDown", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        darkThemeSelector.simulate('keyDown', { key: "ArrowDown", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
         expect(mockOnSelect.mock.calls.length).toBe(11);
         expect(mockOnSelect.mock.calls[10][0]).toBe('gray');
-        highContrastThemeSelector.simulate('keyDown', { key: "ArrowRight", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
+        darkThemeSelector.simulate('keyDown', { key: "ArrowRight", preventDefault: () => {}, nativeEvent: {stopImmediatePropagation: () => {}}});
         expect(mockOnSelect.mock.calls.length).toBe(12);
         expect(mockOnSelect.mock.calls[11][0]).toBe('gray');
     });
