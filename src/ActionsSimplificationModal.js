@@ -94,7 +94,7 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
         const cancelButtonProperties = {
             label: this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.cancel'} ),
             isPrimary: false,
-            onClick: this.handleClickCancel
+            onClick: this.handleOnCancel
         };
         const saveButtonProperties = {
             id: 'ActionSimplificationModal-done',
@@ -107,7 +107,7 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
                 show={this.props.show}
                 focusOnOpenSelector={'.ActionsMenuItem:first-of-type'}
                 focusOnCloseSelector={'.App__ActionsMenu__toggle-button'}
-                onClose={this.props.onCancel}
+                onClose={this.handleOnCancel}
                 buttonProperties={[cancelButtonProperties, saveButtonProperties]}
             >
                 <ModalHeader
@@ -123,7 +123,7 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
         );
     }
 
-    handleClickCancel = () => {
+    handleOnCancel = () => {
         this.setState({
             allowedActions: this.props.allowedActions
         });
