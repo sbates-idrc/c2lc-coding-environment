@@ -3,6 +3,7 @@ import React from 'react';
 import ModalHeader from './ModalHeader';
 import ModalBody from './ModalBody';
 import ModalWithFooter from './ModalWithFooter';
+import TextButton from './TextButton';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import {ReactComponent as ShareIcon} from './svg/Share.svg'
@@ -49,6 +50,8 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
             isPrimary: false
         }];
 
+        const copyButtonLabel = this.props.intl.formatMessage({ id: 'ShareModal.copy'});
+
         return(
             <ModalWithFooter
                 show={this.props.show}
@@ -78,13 +81,14 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
                                 value={document.location.href}
                                 readOnly={true}
                             />
-                            <button
+                            <TextButton
                                 className='ShareModal__form__copyButton'
+                                label={copyButtonLabel}
+                                isPrimary={true}
                                 onClick={this.copyURL}
-                                onKeyDown={this.handleKeyDown}
                             >
-                                <FormattedMessage id='ShareModal.copy'/>
-                            </button>
+                                {copyButtonLabel}
+                            </TextButton>
                         </div>
                     </div>
                 </ModalBody>

@@ -16,27 +16,7 @@
 }
 
 .ShareModal__form__copyButton {
-    background-color: #33717F;
-    border: 0;
-    border-radius: 0.2rem;
-    color: #FFFFFF;
-    font-weight: 400;
     padding: 0.5rem 2rem;
     align-items: center;
     white-space: nowrap;
-
-    &:active {
-        background-color: #ED972C;
-    }
-
-    &:focus {
-        box-shadow:
-            0 0 0 0.1rem #D5D8DD,
-            0 0 0 $c2lc-focus-indicator-width black;
-    }
-
-    &:hover {
-        background-color: #F5C58A;
-        color: #1E1E1E;
-    }    
 }
