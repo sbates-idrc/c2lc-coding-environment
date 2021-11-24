@@ -1,13 +1,55 @@
 @import 'variables';
 
-.RefreshButton-svg {
-    width: 1.4rem;
-    height: 1.4rem;
+.RefreshButton svg path {
+    stroke: none;
 }
 
-.RefreshButton svg path {
-    fill: black;
-    stroke: none;
+.RefreshButton {
+    background-color: inherit;
+    margin: auto 0;
+
+    svg {
+        path {
+            fill: #1E1E1E;
+        }
+        path.inner-circle {
+            fill: #F97953;
+        }
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
+    }
+
+    &:hover:not(.RefreshButton--disabled) {
+        background-color: inherit;
+        svg path.inner-circle {
+            fill: #F1AE5B;
+        }
+    }
+    
+    &:hover:not(:focus) {
+        box-shadow: none;
+    }
+}
+
+.RefreshButton.RefreshButton--disabled,
+.RefreshButton.RefreshButton--disabled:hover,
+.RefreshButton.RefreshButton--disabled:active {
+    cursor: default;
+}
+
+.RefreshButton--disabled svg {
+    stroke: $c2lc-disabled-foreground-color;        
+
+    circle {
+        stroke: none;
+        fill: #67717E;
+    }
+
+    path.inner-circle {
+        fill: #B9BEC6;
+    }
 }
 
 .RefreshButton--disabled svg {
