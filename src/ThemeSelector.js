@@ -126,7 +126,7 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
             <ModalWithFooter
                 show={this.props.show}
                 focusOnOpenSelector={`.ThemeSelector__option.${this.props.currentTheme}`}
-                focusOnCloseSelector='.IconButton.themeSelector'
+                focusOnCloseSelector='.IconButton.App__header-themeSelectorIcon'
                 ariaLabelledById='ThemeSelector'
                 onClose={this.handleCancel}
                 buttonProperties={[
