@@ -286,6 +286,12 @@ body.light-theme {
         background-color: #D5D8DD;
     }
 
+    .RefreshButton {
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+        }
+    }
+
     button.btn.PlayButton:focus {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
     }
@@ -2144,6 +2150,10 @@ body.contrast-theme {
                     fill: black;
                 }
             }
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
         }
     }
 
