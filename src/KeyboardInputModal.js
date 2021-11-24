@@ -174,7 +174,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
 
         return (<select
             className="KeyboardInputModal__content__schemeDropdown"
-            defaultValue={this.state.keyboardInputSchemeName}
+            value={this.state.keyboardInputSchemeName}
             onChange={this.handleChangeKeyboardInputSchemeName}>
             {selectOptionElements}
         </select>);
