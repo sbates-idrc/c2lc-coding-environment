@@ -10,7 +10,6 @@ import type {KeyDef, KeyboardInputScheme, KeyboardInputSchemeName} from './Keybo
 import {KeyboardInputSchemes, getLabelMessageKeyFromKeyDef, getIconMessageKeyFromKeyDef} from './KeyboardInputSchemes';
 
 import ToggleSwitch from './ToggleSwitch';
-import { focusByQuerySelector } from './Utils';
 
 import { ReactComponent as KeyboardIcon} from './svg/Keyboard.svg'
 
@@ -251,9 +250,6 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
                 keyBindingsEnabled: this.props.keyBindingsEnabled,
                 keyboardInputSchemeName: this.props.keyboardInputSchemeName
             });
-        }
-        if (prevProps.show !== this.props.show && this.props.show) {
-            focusByQuerySelector('#keyboardInputModal__toggle');
         }
     }
 }
