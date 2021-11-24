@@ -40,18 +40,22 @@
 }
 
 .RefreshButton--disabled svg {
-    stroke: $c2lc-disabled-foreground-color;        
+    .refresh-icon {
+        fill: #67717E;
+        stroke: #9DA4AF;        
+    }
 
     circle {
         stroke: none;
-        fill: #67717E;
+        fill: #9DA4AF;
     }
 
     path.inner-circle {
         fill: #B9BEC6;
     }
-}
 
-.RefreshButton--disabled svg {
-    stroke: $c2lc-disabled-foreground-color;
+    rect.refresh-icon {
+        stroke: #9DA4AF;
+        fill: #B9BEC6;
+    }
 }
