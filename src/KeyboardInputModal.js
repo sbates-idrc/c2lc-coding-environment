@@ -199,8 +199,8 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
                 ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.Title' })}
                 onClose={this.cancelChanges}
                 show={this.props.show}
-                focusOnOpenSelector={'#KeyboardInputModal-done'}
-                focusOnCloseSelector={'#keyboardInputModal__toggle'}
+                focusOnOpenSelector={'#keyboardInputModal__toggle'}
+                focusOnCloseSelector={'.focus-keyboardMenuIcon'}
                 buttonProperties={[cancelButtonProperties, doneButtonProperties]}
             >
                 <ModalHeader
