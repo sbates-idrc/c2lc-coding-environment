@@ -72,11 +72,12 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
                 show={this.props.show}
                 focusOnOpenSelector={'.ActionsMenuItem:first-of-type'}
                 focusOnCloseSelector={'.App__ActionsMenu__toggle-button'}
+                ariaLabelledById='ActionsSimplificationModal__header'
                 onClose={this.handleOnCancel}
                 buttonProperties={[cancelButtonProperties, saveButtonProperties]}
             >
                 <ModalHeader
-                    id='ActionsSimplificationModal'
+                    id='ActionsSimplificationModal__header'
                     title={this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.title'})}
                 >
                     <SimplificationIcon aria-hidden='true'/>
@@ -132,7 +133,6 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
 
         return (
             <div
-                id="ActionsSimplificationModal"
                 className="ActionsSimplificationModal__menu"
             >
                 {actionsMenuItems}
