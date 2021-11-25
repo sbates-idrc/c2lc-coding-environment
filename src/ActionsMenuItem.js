@@ -64,6 +64,7 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
                 role="checkbox"
                 aria-checked={this.props.isAllowed}
                 aria-label={commandName}
+                aria-disabled={isCheckboxDisabled}
                 tabIndex={0}
                 onKeyDown={this.handleKeydown}
                 onClick={this.handleChange}
