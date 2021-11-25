@@ -36,7 +36,6 @@ function createActionsMenu(props) {
             Object.assign(
                 {
                     show: true,
-                    editingDisabled: false,
                     allowedActions: mockAllowedActions,
                     programSequence: new ProgramSequence([], 0),
                     onCancel: mockOnCancel,
