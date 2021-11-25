@@ -20,7 +20,7 @@ type ActionsSimplificationModalProps = {
     onCancel: () => void,
     onConfirm: (allowedActions: ActionToggleRegister) => void,
     // TODO: Flesh this definition out.
-    menuItems: {},
+    menuItems: Array<CommandName>,
     programSequence: ProgramSequence,
     allowedActions: ActionToggleRegister,
     show: boolean
@@ -32,56 +32,20 @@ type ActionsSimplificationModalState = {
 
 class ActionsSimplificationModal extends React.Component<ActionsSimplificationModalProps, ActionsSimplificationModalState> {
     static defaultProps = {
-        menuItems: {
-            forward1: {
-                isAllowed: true,
-                labelKey: "Command.forward1"
-            },
-            forward2: {
-                isAllowed: true,
-                labelKey: "Command.forward2"
-            },
-            forward3: {
-                isAllowed: true,
-                labelKey: "Command.forward3"
-            },
-            backward1: {
-                isAllowed: true,
-                labelKey: "Command.backward1"
-            },
-            backward2: {
-                isAllowed: true,
-                labelKey: "Command.backward2"
-            },
-            backward3: {
-                isAllowed: true,
-                labelKey: "Command.backward3"
-            },
-            left45: {
-                isAllowed: true,
-                labelKey: "Command.left45"
-            },
-            left90: {
-                isAllowed: true,
-                labelKey: "Command.left90"
-            },
-            left180: {
-                isAllowed: true,
-                labelKey: "Command.left180"
-            },
-            right45: {
-                isAllowed: true,
-                labelKey: "Command.right45"
-            },
-            right90: {
-                isAllowed: true,
-                labelKey: "Command.right90"
-            },
-            right180: {
-                isAllowed: true,
-                labelKey: "Command.right180"
-            }
-        }
+        menuItems: [
+            'forward1',
+            'forward2',
+            'forward3',
+            'backward1',
+            'backward2',
+            'backward3',
+            'left45',
+            'left90',
+            'left180',
+            'right45',
+            'right90',
+            'right180'
+        ]
     }
 
     constructor(props: ActionsSimplificationModalProps) {
@@ -146,7 +110,7 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
     generateMenu = () => {
         const actionsMenuItems = [];
         // TODO: Discuss how to evolve this into a deeper structure when we add groups and things other than actions.
-        Object.keys(this.props.menuItems).forEach((itemKey: CommandName) => {
+        for (const itemKey of this.props.menuItems) {
             const isAllowed: boolean = !!this.state.allowedActions[itemKey];
             const isUsed: boolean = this.props.programSequence.usesAction(itemKey);
             const itemChangeHandler = () => {
@@ -162,7 +126,7 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
                     onChange={itemChangeHandler}
                 />
             );
-        });
+        }
 
         return (<ModalBody>
             <div
