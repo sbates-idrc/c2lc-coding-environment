@@ -55,6 +55,9 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
             icon = React.createElement(iconType);
         }
 
+        // Disable the checkbox if the button is allowed and used.
+        const isCheckboxDisabled = (this.props.isAllowed && this.props.isUsed);
+
         return (
             <div
                 className="ActionsMenuItem"
@@ -72,6 +75,7 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
                         id={checkboxId}
                         aria-hidden={true}
                         checked={this.props.isAllowed}
+                        disabled={isCheckboxDisabled}
                         readOnly={true}
                         tabIndex={-1}
                     />
