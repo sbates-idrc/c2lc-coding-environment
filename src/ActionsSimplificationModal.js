@@ -82,7 +82,9 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
                     <SimplificationIcon aria-hidden='true'/>
                 </ModalHeader>
 
-                {this.generateMenu()}
+                <ModalBody>
+                    {this.generateMenu()}
+                </ModalBody>
             </ModalWithFooter>
 
         );
@@ -128,14 +130,14 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
             );
         }
 
-        return (<ModalBody>
+        return (
             <div
                 id="ActionsSimplificationModal"
                 className="ActionsSimplificationModal__menu"
             >
                 {actionsMenuItems}
             </div>
-        </ModalBody>);
+        );
     }
 
     // Required to avoid a phantom state where we persist the defaults even after they are updated from local storage.
