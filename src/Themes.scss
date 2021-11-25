@@ -431,6 +431,10 @@ body.dark-theme {
     }
 
 
+    .App__world-selector {
+        border-color: #33717F;
+    }
+
     button.btn.command-block.command-block--pressed,
     button.btn.command-block.command-block--pressed:hover,
     button.btn.command-block.command-block--pressed:active {
@@ -635,6 +639,10 @@ body.gray-theme {
 
     .App__world-container {
         background-color: #D5D8DD;
+    }
+
+    .App__world-selector {
+        border-color: #9DA4AF;
     }
 
     .ThemeSelector {
@@ -982,18 +990,6 @@ body.gray-theme {
         background-color: #818A98;
     }
 
-    .RefreshButton svg path {
-        fill: white;
-    }
-
-    .RefreshButton--disabled,
-    .RefreshButton--disabled:hover,
-    .RefreshButton--disabled:focus {
-        svg path {
-            fill: #D5D8DD;
-        }
-    }
-
     .WorldSelector {
         background-color: #D5D8DD;
     }
@@ -1220,7 +1216,19 @@ body.gray-theme {
         background-color: #D5D8DD;
     }
 
-    button.btn.PlayButton:not(.PlayButton--disabled) {
+    .RefreshButton svg path:not(.refresh-icon) {
+        fill: white;
+    }
+
+    .RefreshButton--disabled,
+    .RefreshButton--disabled:hover,
+    .RefreshButton--disabled:focus {
+        svg path:not(.refresh-icon) {
+            fill: #D5D8DD;
+        }
+    }
+
+    button.btn.PlayButton:not(.PlayButton--disabled), .StopButton, .RefreshButton {
         box-shadow: none;
 
         svg {
@@ -1255,7 +1263,7 @@ body.gray-theme {
         }
     }
 
-    button.btn.PlayButton--disabled {
+    button.btn.PlayButton--disabled, .StopButton--disabled, .RefreshButton--disabled {
         background-color: #D5D8DD;
 
         svg {
@@ -1265,7 +1273,7 @@ body.gray-theme {
             circle {
                 fill: #9DA4AF;
             }
-            path.triangle {
+            path.triangle, path.refresh-icon {
                 fill: #67717E;
             }
         }
@@ -1639,6 +1647,10 @@ body.contrast-theme {
         background-color: black;
     }
 
+    .App__world-selector {
+        border-color: #FFFFFF;
+    }
+
     // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
     #command-block--backward1, .btn-command-block--backward1,
     #command-block--backward2, .btn-command-block--backward2,
@@ -1882,29 +1894,6 @@ body.contrast-theme {
                     stroke: black;
                 }
             }
-        }
-    }
-
-    .RefreshButton {
-        svg path {
-            fill: black;
-            stroke: none;
-        }
-        &:hover:not(.RefreshButton--disabled) {
-            &:not(:focus) {
-                box-shadow: 0 0 0 2px white;
-            }
-            svg path {
-                fill: white;
-            }
-        }
-}
-
-    .RefreshButton--disabled,
-    .RefreshButton--disabled:hover,
-    .RefreshButton--disabled:active {
-        svg path {
-            fill: #818A98;
         }
     }
 
@@ -2168,12 +2157,50 @@ body.contrast-theme {
     }
 
     .App__playAndShare-background {
-        background-color: white;
+        background-color: #FFFFFF;
     }
 
     .App__shareButton-container button {
-        background-color: black;
-        color: white;
+        background-color: #1E1E1E;
+        color: #FFFFFF;
+    }
+
+
+    .RefreshButton {
+        svg {
+            path:not(.refresh-icon) {
+                fill: white;
+            }
+            circle {
+                fill:black;
+            }
+        }
+
+        &:hover:not(.RefreshButton--disabled) {
+            &:not(:focus) {
+                box-shadow: 0 0 0 2px white;
+            }
+
+            svg {
+                .refresh-icon {
+                    fill: white;
+                }
+                path.inner-circle {
+                    fill: #1E1E1E;
+                }
+                circle {
+                    fill: black;
+                }
+            }
+        }
+    }
+
+    .RefreshButton--disabled,
+    .RefreshButton--disabled:hover,
+    .RefreshButton--disabled:active {
+        svg path:not(.refresh-icon) {
+            fill: #818A98;
+        }
     }
 
     button.btn.PlayButton:not(.PlayButton--disabled) {
@@ -2187,11 +2214,16 @@ body.contrast-theme {
                 }
             }
         }
-
         svg {
             path.inner-circle {
-                fill: #FFFFFF;
-            }
+                fill: white;
+            }    
+        }
+    }
+
+    button.btn.PlayButton, .StopButton {
+        svg {
+            fill: #FFFFFF;
             circle, path.triangle {
                 fill: #1E1E1E;
             }
@@ -2211,13 +2243,25 @@ body.contrast-theme {
         }
     }
 
-    button.btn.PlayButton--play.PlayButton--disabled {
+    button.btn.PlayButton--play.PlayButton--disabled, .StopButton--disabled, .RefreshButton--disabled {
         svg {
             path.inner-circle {
                 fill: #FFFFFF;
             }
-            circle, path.triangle, rect {
+            circle, path.triangle, rect, path.refresh-icon {
                 fill: #8E8E8E;
+            }
+        }
+    }
+
+    .RefreshButton--disabled {
+        svg {
+            rect.refresh-icon {
+                stroke: #8E8E8E;
+                fill: #ffffff;
+            }
+            line.refresh-icon {
+                stroke: #8E8E8E;
             }
         }
     }
