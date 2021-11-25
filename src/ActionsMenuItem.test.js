@@ -89,7 +89,7 @@ it("Does not respond to irrelevant keydown.", () => {
     expect(preventDefault.mock.calls.length).toBe(0);
 });
 
-it("Does not allow disabling 'used' items.", () => {
+it("Does not allow hiding 'used' items.", () => {
     const { wrapper, mockChangeHandler } = createActionsMenuItem({ isUsed: true });
 
     const input = wrapper.find(".ActionsMenuItem");
@@ -101,7 +101,7 @@ it("Does not allow disabling 'used' items.", () => {
     expect(preventDefault.mock.calls.length).toBe(0);
 });
 
-it("Allows reenabling 'used' items that are disabled.", () => {
+it("Allows reenabling 'used' items that are hidden.", () => {
     const { wrapper, mockChangeHandler } = createActionsMenuItem({ isUsed: true, isAllowed: false });
 
     const input = wrapper.find(".ActionsMenuItem");
@@ -110,3 +110,22 @@ it("Allows reenabling 'used' items that are disabled.", () => {
 
     expect(mockChangeHandler.mock.calls.length).toBe(1);
 });
+
+test.each([
+    // allowed, used , expectedDisabled
+    [  false  , false, false  ],
+    [  false  , true , false  ],
+    [  true   , false, false  ],
+    [  true   , true , true   ],
+])("The menu item is disabled when 'allowed' and 'used'.",
+    (allowed: boolean, used: boolean, expectedDisabled: boolean) => {
+        expect.assertions(2);
+        const { wrapper } = createActionsMenuItem({ isAllowed: allowed, isUsed: used });
+
+        const input = wrapper.find(".ActionsMenuItem");
+        expect(input.prop("aria-disabled")).toBe(expectedDisabled);
+
+        const checkbox = wrapper.find(".ActionsMenuItem__checkbox");
+        expect(checkbox.prop("disabled")).toBe(expectedDisabled);
+    }
+);
