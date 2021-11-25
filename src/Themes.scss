@@ -286,22 +286,56 @@ body.light-theme {
         background-color: #D5D8DD;
     }
 
+    .RefreshButton {
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+        }
+    }
+
+    .RefreshButton--disabled svg {
+        .refresh-icon {
+            fill: #505862;
+            stroke: #9DA4AF;        
+        }
+    
+        circle {
+            stroke: none;
+            fill: #67717E;
+        }
+
+        rect.refresh-icon {
+            stroke: #505862;
+            fill: #B9BEC6;
+        }
+    }
+
+    button.btn.PlayButton:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
+    }
+
     button.btn.PlayButton--disabled {
         svg {
             circle {
                 fill: #67717E;
             }
             path.triangle {
-                fill: #3A3F46;
+                fill: #505862;
             }
         }
+    }
+
+    .StopButton:focus {
+        box-shadow:
+            0 0 0 0.2rem #1E1E1E,
+            0 0 0 0.4rem #D5D8DD,
+            0 0 0 0.6rem #1E1E1E;
     }
 
     .StopButton--disabled {
         box-shadow: 0 0 0 0.2rem #67717E;
 
         svg rect {
-            fill: #3A3F46;
+            fill: #505862;
         }
 
         &:focus {
@@ -312,9 +346,62 @@ body.light-theme {
         }
     }
 
-    .ShareButton {
-        color: black;
-        background-color: #F1F2F4;
+    .ProgramSpeedController__slider {
+        &:hover {
+            &::-webkit-slider-thumb {
+                background-color: #F1AE5B;
+                box-shadow: -8rem 0 0 8rem #F1AE5B;
+            }
+        
+            &::-moz-range-thumb {
+                background-color: #F1AE5B;
+                box-shadow: -8rem 0 0 8rem #F1AE5B;
+            }
+           
+            &::-moz-range-progress {
+                background-color: #F1AE5B; 
+            }
+            
+            &::-ms-fill-lower {
+                background-color: #F1AE5B; 
+            }
+        }
+
+        &:focus {
+            outline-color: $c2lc-focus-indicator-color;
+        }
+
+        &::-webkit-slider-thumb {
+            background-color: #33717F;
+            box-shadow: -8rem 0 0 8rem #33717F;
+        }
+
+        &::-moz-range-thumb {
+            background-color: #33717F;
+            box-shadow: -8rem 0 0 8rem #33717F;
+        }
+
+        &::-moz-range-progress {
+            background-color: #33717F;
+        }
+        
+        &::-ms-fill-lower {
+            background-color: #33717F; 
+        }
+    }
+
+    .App__ShareButton {
+        background-color: #33717F;
+        color: #FFFFFF;
+        &:focus {
+            box-shadow:
+                0 0 0 0.1rem #D5D8DD,
+                0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+        }
+        &:hover {
+            background-color: #F5C58A;
+            color: #1E1E1E;
+        }
     }
 }
 
@@ -394,6 +481,10 @@ body.dark-theme {
         border: 2px solid #33717F;
     }
 
+
+    .App__world-selector {
+        border-color: #33717F;
+    }
 
     button.btn.command-block.command-block--pressed,
     button.btn.command-block.command-block--pressed:hover,
@@ -549,15 +640,6 @@ body.dark-theme {
         }
     }
 
-    .App__playAndShare-background {
-        background-color: #30444e;
-    }
-
-    button.btn.PlayButton:focus {
-        border: none;
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-    }
-
     .StopButton:focus {
         box-shadow:
             0 0 0 0.2rem #1E1E1E,
@@ -572,12 +654,6 @@ body.dark-theme {
             0 0 0 0.6rem #FFFFFF;
     }
 
-    .ProgramSpeedController__slider {
-        &:focus {
-            outline-color: white;
-        }
-    }
-
     .App__ShareButton {
         &:focus {
             box-shadow:
@@ -585,9 +661,7 @@ body.dark-theme {
                 0 0 0 $c2lc-focus-indicator-width white;
         }
     }
-
 }
-
 
 /* Grayscale Theme */
 body.gray-theme {
@@ -599,6 +673,10 @@ body.gray-theme {
 
     .App__world-container {
         background-color: #D5D8DD;
+    }
+
+    .App__world-selector {
+        border-color: #9DA4AF;
     }
 
     .ThemeSelector {
@@ -696,8 +774,8 @@ body.gray-theme {
         }
     }
 
-    button.btn.ModalFooter__cancelButton,
-    button.btn.ModalFooter__doneButton,
+    button.btn.ModalWithFooter__secondaryButton,
+    button.btn.ModalWithFooter__primaryButton,
     .TextButton {
         background-color: #aaa;
         color: black;
@@ -919,18 +997,6 @@ body.gray-theme {
 
     .PenDownToggleSwitch.ToggleSwitch--checked {
         background-color: #818A98;
-    }
-
-    .RefreshButton svg path {
-        fill: white;
-    }
-
-    .RefreshButton--disabled,
-    .RefreshButton--disabled:hover,
-    .RefreshButton--disabled:focus {
-        svg path {
-            fill: #D5D8DD;
-        }
     }
 
     .WorldSelector {
@@ -1174,7 +1240,19 @@ body.gray-theme {
         background-color: #D5D8DD;
     }
 
-    button.btn.PlayButton:not(.PlayButton--disabled) {
+    .RefreshButton svg path:not(.refresh-icon) {
+        fill: white;
+    }
+
+    .RefreshButton--disabled,
+    .RefreshButton--disabled:hover,
+    .RefreshButton--disabled:focus {
+        svg path:not(.refresh-icon) {
+            fill: #D5D8DD;
+        }
+    }
+
+    button.btn.PlayButton:not(.PlayButton--disabled), .StopButton, .RefreshButton:not(.RefreshButton--disabled) {
         box-shadow: none;
 
         svg {
@@ -1209,7 +1287,7 @@ body.gray-theme {
         }
     }
 
-    button.btn.PlayButton--disabled {
+    button.btn.PlayButton--disabled, .StopButton--disabled, .RefreshButton--disabled {
         background-color: #D5D8DD;
 
         svg {
@@ -1219,9 +1297,16 @@ body.gray-theme {
             circle {
                 fill: #9DA4AF;
             }
-            path.triangle {
+            path.triangle, path.refresh-icon {
                 fill: #67717E;
             }
+            rect.refresh-icon {
+                fill: #D5D8DD;
+            }
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
         }
     }
 
@@ -1272,26 +1357,26 @@ body.gray-theme {
 
         &::-webkit-slider-thumb {
             border: 2px solid #67717E;
-            background-color: white;
-            box-shadow: -8rem 0 0 8rem white;
+            background-color: #F1F2F4;
+            box-shadow: -8rem 0 0 8rem #F1F2F4;
         }
 
         &::-moz-range-thumb {
             border-radius: 0;
             border: 2px solid black;
-            background-color: white;
-            box-shadow: -8rem 0 0 8rem white;
+            background-color: #F1F2F4;
+            box-shadow: -8rem 0 0 8rem #F1F2F4;
         }
 
         &::-moz-range-progress {
-            background-color: white;
+            background-color: #F1F2F4;
         }
         &::-moz-range-track {
             background-color: #67717E;
         }
 
         &::-ms-fill-lower {
-            background-color: white;
+            background-color: #F1F2F4;
         }
 
         &::-ms-fill-upper {
@@ -1479,8 +1564,8 @@ body.contrast-theme {
         }
     }
 
-    button.btn.ModalFooter__cancelButton,
-    button.btn.ModalFooter__doneButton,
+    button.btn.ModalWithFooter__secondaryButton,
+    button.btn.ModalWithFooter__primaryButton,
     .TextButton {
         background-color: black;
         color: white;
@@ -1607,6 +1692,10 @@ body.contrast-theme {
 
     .App__world-container {
         background-color: black;
+    }
+
+    .App__world-selector {
+        border-color: #FFFFFF;
     }
 
     // Use both IDs and classnames here to overpower styles inherited from react-bootstrap's $theme-colors
@@ -1821,29 +1910,6 @@ body.contrast-theme {
                     stroke: black;
                 }
             }
-        }
-    }
-
-    .RefreshButton {
-        svg path {
-            fill: black;
-            stroke: none;
-        }
-        &:hover:not(.RefreshButton--disabled) {
-            &:not(:focus) {
-                box-shadow: 0 0 0 2px white;
-            }
-            svg path {
-                fill: white;
-            }
-        }
-}
-
-    .RefreshButton--disabled,
-    .RefreshButton--disabled:hover,
-    .RefreshButton--disabled:active {
-        svg path {
-            fill: #818A98;
         }
     }
 
@@ -2107,12 +2173,46 @@ body.contrast-theme {
     }
 
     .App__playAndShare-background {
-        background-color: white;
+        background-color: #FFFFFF;
     }
 
     .App__shareButton-container button {
-        background-color: black;
-        color: white;
+        background-color: #1E1E1E;
+        color: #FFFFFF;
+    }
+
+
+    .RefreshButton {
+        svg {
+            path:not(.refresh-icon) {
+                fill: white;
+            }
+            circle {
+                fill:black;
+            }
+        }
+
+        &:hover:not(.RefreshButton--disabled) {
+            &:not(:focus) {
+                box-shadow: 0 0 0 2px white;
+            }
+
+            svg {
+                .refresh-icon {
+                    fill: white;
+                }
+                path.inner-circle {
+                    fill: #1E1E1E;
+                }
+                circle {
+                    fill: black;
+                }
+            }
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+        }
     }
 
     button.btn.PlayButton:not(.PlayButton--disabled) {
@@ -2122,15 +2222,24 @@ body.contrast-theme {
                     fill: #1E1E1E;
                 }
                 path.triangle {
-                    fill: #ffffff;
+                    fill: #FFFFFF;
                 }
             }
+        }
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
         }
 
         svg {
             path.inner-circle {
-                fill: #FFFFFF;
-            }
+                fill: white;
+            }    
+        }
+    }
+
+    button.btn.PlayButton, .StopButton {
+        svg {
+            fill: #FFFFFF;
             circle, path.triangle {
                 fill: #1E1E1E;
             }
@@ -2148,15 +2257,36 @@ body.contrast-theme {
                 }
             }
         }
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+        }
     }
 
-    button.btn.PlayButton--play.PlayButton--disabled {
+    button.btn.PlayButton--play.PlayButton--disabled, .StopButton--disabled, .RefreshButton--disabled {
         svg {
             path.inner-circle {
                 fill: #FFFFFF;
             }
-            circle, path.triangle, rect {
+            circle, path.triangle, rect, path.refresh-icon {
                 fill: #8E8E8E;
+            }
+        }
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+        }
+    }
+
+    .RefreshButton--disabled {
+        svg {
+            rect.refresh-icon {
+                stroke: #8E8E8E;
+                fill: #FFFFFF;
+            }
+            line.refresh-icon {
+                stroke: #8E8E8E;
+            }
+            .refresh-icon {
+                stroke: #FFFFFF;
             }
         }
     }
@@ -2218,19 +2348,19 @@ body.contrast-theme {
 
         &::-webkit-slider-thumb {
             border: 2px solid black;
-            background-color: white;
-            box-shadow: -8rem 0 0 8rem white;
+            background-color: #0078FF;
+            box-shadow: -8rem 0 0 8rem #0078FF;
         }
 
         &::-moz-range-thumb {
             border-radius: 0;
             border: 2px solid black;
-            background-color: white;
-            box-shadow: -8rem 0 0 8rem white;
+            background-color: #0078FF;
+            box-shadow: -8rem 0 0 8rem #0078FF;
         }
 
         &::-moz-range-progress {
-            background-color: white;
+            background-color: #0078FF;
         }
 
         &::-moz-range-track {
@@ -2238,7 +2368,7 @@ body.contrast-theme {
         }
 
         &::-ms-fill-lower {
-            background-color: white;
+            background-color: #0078FF;
         }
 
         &::-ms-fill-upper {
@@ -2247,21 +2377,25 @@ body.contrast-theme {
 
         &:hover {
             &::-webkit-slider-thumb {
-                background-color: #9DA4AF;
-                box-shadow: -8rem 0 0 8rem #9DA4AF;
+                background-color: #FF0000;
+                box-shadow: -8rem 0 0 8rem #FF0000;
             }
             &::-moz-range-thumb {
-                background-color: #9DA4AF;
-                box-shadow: -8rem 0 0 8rem #9DA4AF;
+                background-color: #FF0000;
+                box-shadow: -8rem 0 0 8rem #FF0000;
             }
 
             &::-moz-range-progress {
-                background-color: #9DA4AF;
+                background-color: #FF0000;
             }
 
             &::-ms-fill-lower {
-                background-color: #9DA4AF;
+                background-color: #FF0000;
             }
+        }
+
+        &:focus {
+            outline-color: #1E1E1E;
         }
     }
 

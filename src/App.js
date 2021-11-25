@@ -1120,7 +1120,7 @@ export class App extends React.Component<AppProps, AppState> {
                                 </a>
                             </h1>
                             <IconButton
-                                className="App__header-keyboardMenuIcon"
+                                className="App__header-keyboardMenuIcon focus-keyboardMenuIcon"
                                 ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
                                 onClick={this.handleClickKeyboardIcon}
                             >
@@ -1165,20 +1165,6 @@ export class App extends React.Component<AppProps, AppState> {
                             theme={this.state.settings.theme}
                             world={this.state.settings.world}
                         />
-                        <div className='App__scene-controls'>
-                            <div className='App__scene-controls-group'>
-                                <PenDownToggleSwitch
-                                    className='App__penDown-toggle-switch'
-                                    value={this.state.drawingEnabled}
-                                    onChange={this.handleTogglePenDown}/>
-                                <div className='App__refreshButton-container'>
-                                    <RefreshButton
-                                        disabled={this.editingIsDisabled()}
-                                        onClick={this.handleRefresh}
-                                    />
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div className="App__world-container">
                         <h2 className='sr-only' >
@@ -1193,6 +1179,14 @@ export class App extends React.Component<AppProps, AppState> {
                                 <WorldIcon className='App__world-selector-icon'/>
                             </IconButton>
                         </div>
+
+                        <div className='App__PenDownToggleSwitch-container'>
+                            <PenDownToggleSwitch
+                                className='App__penDown-toggle-switch'
+                                value={this.state.drawingEnabled}
+                                onChange={this.handleTogglePenDown}/>
+                        </div>
+
                         <CharacterPositionController
                             characterState={this.state.characterState}
                             editingDisabled={this.editingIsDisabled()}
@@ -1254,6 +1248,11 @@ export class App extends React.Component<AppProps, AppState> {
                         </h2>
                         <div className='App__playControl-container'>
                             <div className='App__playButton-container'>
+                                <RefreshButton
+                                    className='App__playControlButton'
+                                    disabled={this.editingIsDisabled()}
+                                    onClick={this.handleRefresh}
+                                />
                                 <PlayButton
                                     className='App__playControlButton'
                                     interpreterIsRunning={this.state.runningState === 'running'}

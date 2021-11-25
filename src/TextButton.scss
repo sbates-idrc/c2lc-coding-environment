@@ -4,6 +4,8 @@
     border: 0;
     border-radius: 0.2rem;
     font-weight: 400;
+    background-color: #CCE6E2;
+    color: #1E1E1E;
     padding: 0.2rem;
     width: 8rem;
 
@@ -18,14 +20,18 @@
 
     &:focus {
         box-shadow:
-            0 0 0 0.1rem #D5D8DD,
-            0 0 0 $c2lc-focus-indicator-width black;
+            0 0 0 0.1rem #30444E,
+            0 0 0 $c2lc-focus-indicator-width #FFFFFF;
     }
 }
 
 .TextButton__secondaryButton {
     background-color: #CCE6E2;
     color: #1E1E1E;
+    &:hover {
+        background-color: #F5C58A;
+        color: #1E1E1E;
+    }
 }
 
 .TextButton__primaryButton {
