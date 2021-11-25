@@ -40,8 +40,7 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
             commandName += " " + usedLabel;
         }
 
-        const commandNameShort = this.props.intl.formatMessage({ id: `Command.short.${this.props.itemKey}` });
-        const checkboxId = "actions-menu-item-" + commandNameShort.replace(/ /g, "");
+        const checkboxId = `actions-menu-item-${this.props.itemKey}`;
 
         const iconClassNames = classNames(
             'ActionsMenuItem__icon',
