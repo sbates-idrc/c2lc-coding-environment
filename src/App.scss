@@ -37,7 +37,7 @@ body {
 }
 
 .App__header-menu {
-    // Uncomment background-color and border ladius later when we change all the setting
+    // Uncomment background-color and border radius later when we change all the setting
     // menu items as buttons
     // background-color: #CCE6E2;
     // border-radius: 3px;
@@ -116,6 +116,44 @@ body {
     border-bottom: 1px solid #88C3BC;
 }
 
+.App__ActionsMenu__header {
+    background-color: #CCE6E2;
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    padding: 0.4rem;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+    position:relative;
+}
+
+.App__ActionsMenu__header-heading {
+    font-size: inherit;
+    font-weight: bold;
+    grid-column-end: 2;
+    grid-column-start: 1;
+    margin: auto;
+}
+
+.App__ActionsMenu__toggle-button {
+    align-self: center;
+    grid-column-end: 4;
+    grid-column-start: 3;
+    justify-self: center;
+    width: 1.4em;
+    padding: 0.2rem;
+    border-radius: 5px;
+   
+    &:focus {
+        box-shadow:
+            0 0 0 0.1rem black;
+        outline: none;
+    }
+
+    svg {
+        height: 0.75rem;
+    }
+}
+
 .App__command-palette {
     background-color: #CCE6E2;
     border: 2px solid #CCE6E2;
@@ -166,7 +204,7 @@ body {
 }
 
 .App__playAndShare-background {
-    background-color: #D5D8DD;
+    background-color: #67717E;
     grid-column-start: 1;
     grid-column-end: 6;
     grid-row-start: 4;
