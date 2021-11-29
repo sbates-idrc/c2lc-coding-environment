@@ -719,6 +719,12 @@ body.gray-theme {
         color: #818A98;
     }
 
+    .IconButton.App__header-soundOptions {
+        svg path {
+            fill: #FFFFFF;
+        }
+    }
+
     .IconButton {
         background-color: #818A98;
 
@@ -1322,6 +1328,17 @@ body.gray-theme {
         }
     }
 
+    .ToggleSwitch:not(.ToggleSwitch--checked).SoundOptionsToggle {
+        background-color: #B9BEC6;
+    }
+
+    .ToggleSwitch.SoundOptionsToggle {
+        background-color: #818A98;
+        &:hover {
+            background-color: #505862;
+        }
+    }
+
     .ProgramSpeedController__container svg path {
         fill: #67717E;
     }
@@ -1442,6 +1459,17 @@ body.contrast-theme {
             &:not(:disabled):not(.disabled):active {
                 background-color: white;
                 color: black;
+            }
+        }
+    }
+
+    .IconButton.App__header-soundOptions {
+        svg path {
+            fill: #1E1E1E;
+        }
+        &:hover {
+            svg path {
+                fill: #FFFFFF;
             }
         }
     }
@@ -2295,6 +2323,47 @@ body.contrast-theme {
 
         svg rect {
             fill: #8E8E8E;
+        }
+    }
+
+    .ToggleSwitch:not(.ToggleSwitch--checked).SoundOptionsToggle {
+        box-shadow: 0 0 0 0.1rem #1E1E1E;
+        background-color: #FFFFFF;
+        .ToggleSwitch__switch-inner-circle {
+            background-color: #1E1E1E;
+        }
+        &:hover {
+            background-color: #1E1E1E;
+            .ToggleSwitch__switch-inner-circle {
+                background-color: #FFFFFF;
+            }
+        }
+        &:focus {
+            box-shadow: 
+                0 0 0 0.1rem #1E1E1E,
+                0 0 0 0.3rem #FFFFFF,
+                0 0 0 0.5rem #1E1E1E
+        }
+    }
+
+    .ToggleSwitch.SoundOptionsToggle {
+        box-shadow: 0 0 0 0.1rem #FFFFFF;
+        background-color: #1E1E1E;
+        .ToggleSwitch__switch-inner-circle {
+            background-color: #FFFFFF;
+        }
+        &:hover {
+            box-shadow: 0 0 0 0.1rem #1E1E1E;
+            background-color: #FFFFFF;
+            .ToggleSwitch__switch-inner-circle {
+                background-color: #1E1E1E;
+            }
+        }
+        &:focus {
+            box-shadow: 
+                0 0 0 0.1rem #1E1E1E,
+                0 0 0 0.3rem #FFFFFF,
+                0 0 0 0.5rem #1E1E1E
         }
     }
 
