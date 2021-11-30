@@ -896,14 +896,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showKeyboardModal: true});
     };
 
-    handleChangeShowThemeSelectorModal = () => {
-        this.setState((currentState: AppState) => {
-            return { showThemeSelectorModal: !currentState.showThemeSelectorModal };
-        });
-    };
-
     handleClickThemeSelectorIcon = () => {
-        this.handleChangeShowThemeSelectorModal();
+        this.setState({ showThemeSelectorModal: true });
     }
 
     // Focus trap escape key handling.
