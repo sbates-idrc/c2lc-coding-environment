@@ -82,7 +82,7 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
         this.props.onChange(this.state.selectedTheme);
     }
 
-    handleDone = () => {
+    handleSave = () => {
         this.props.onChange(this.props.currentTheme);
     };
 
@@ -131,7 +131,7 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
                 onClose={this.handleCancel}
                 buttonProperties={[
                     {label: this.props.intl.formatMessage({id: 'ThemeSelector.cancelButton'}), onClick: this.handleCancel},
-                    {label: this.props.intl.formatMessage({id: 'ThemeSelector.doneButton'}), onClick: this.handleDone, isPrimary: true}
+                    {label: this.props.intl.formatMessage({id: 'ThemeSelector.saveButton'}), onClick: this.handleSave, isPrimary: true}
                 ]}>
                 <ModalHeader
                     id='ThemeSelector'

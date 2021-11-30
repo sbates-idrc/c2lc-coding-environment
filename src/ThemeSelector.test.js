@@ -59,7 +59,7 @@ function getCancelButton(wrapper) {
     return wrapper.find('.ModalWithFooter__secondaryButton');
 }
 
-function getDoneButton(wrapper) {
+function getSaveButton(wrapper) {
     return wrapper.find('.ModalWithFooter__primaryButton');
 }
 
@@ -234,9 +234,9 @@ describe('When the done button is clicked', () => {
     test('The theme changed to the selected theme', () => {
         expect.assertions(2);
         const { wrapper, mockOnChange } = createMountThemeSelector({currentTheme: 'default'});
-        const doneButton = getDoneButton(wrapper).at(0);
+        const saveButton = getSaveButton(wrapper).at(0);
         wrapper.setProps({currentTheme: 'dark'});
-        doneButton.simulate('click');
+        saveButton.simulate('click');
         expect(mockOnChange.mock.calls.length).toBe(1);
         expect(mockOnChange.mock.calls[0][0]).toBe('dark');
     })
