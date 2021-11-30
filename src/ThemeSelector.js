@@ -33,7 +33,7 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
         this.themeOptions = ['default', 'light', 'dark', 'gray', 'contrast'];
     };
 
-    handleOnSelect = (e: Event) => {
+    handleClick = (e: Event) => {
         // $FlowFixMe: value is missing in EventTarget
         this.props.onSelect(e.target.dataset.theme);
     };
@@ -99,7 +99,7 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
                     key={`ThemeSelector__option-${theme}`}
                     data-theme={theme}
                     tabIndex={isChecked ? 0 : -1}
-                    onClick={this.handleOnSelect}
+                    onClick={this.handleClick}
                     onKeyDown={this.handleKeyDown}>
                     <input className='ThemeSelector__option-radio' type='radio' name='theme-option' value={theme}
                         aria-hidden={true}
