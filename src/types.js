@@ -17,7 +17,7 @@ export type EditorMode = 'text' | 'block';
 
     These theme names are shorthand for:
 
-    "mixed"    => A mixture of light and dark elements, with colour.
+    "default"  => A mixture of light and dark elements, with colour.
     "light"    => A light theme, with colour.
     "dark"     => A dark theme, with colour.
     "gray"     => A grayscale theme, without colour.
