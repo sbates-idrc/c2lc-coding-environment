@@ -20,7 +20,7 @@ type ThemeSelectorProps = {
 };
 
 type ThemeSelectorStates = {
-    selectedTheme: ThemeName
+    themeAtOpen: ThemeName
 };
 
 class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorStates> {
@@ -28,7 +28,7 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
     constructor (props: ThemeSelectorProps) {
         super(props);
         this.state = {
-            selectedTheme: props.currentTheme
+            themeAtOpen: props.currentTheme
         };
         this.themeOptions = ['default', 'light', 'dark', 'gray', 'contrast'];
     };
@@ -79,7 +79,8 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
     }
 
     handleCancel = () => {
-        this.props.onChange(this.state.selectedTheme);
+        // Reinstate the theme that was active when the dialog was opened
+        this.props.onChange(this.state.themeAtOpen);
     }
 
     handleSave = () => {
@@ -116,7 +117,7 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
         // When the modal first open up, remember the theme at that time
         if (prevProps.show !== this.props.show && this.props.show) {
             this.setState({
-                selectedTheme: this.props.currentTheme
+                themeAtOpen: this.props.currentTheme
             });
         }
     }
