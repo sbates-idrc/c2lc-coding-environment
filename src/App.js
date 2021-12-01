@@ -29,7 +29,7 @@ import PenDownToggleSwitch from './PenDownToggleSwitch';
 import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
-import ActionsMenu from './ActionsMenu';
+import ActionsSimplificationModal from './ActionsSimplificationModal';
 import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
@@ -48,6 +48,7 @@ import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
+import { ReactComponent as ActionsMenuToggleIcon } from './svg/ActionsMenuToggle.svg'
 import ProgramChangeController from './ProgramChangeController';
 
 /* Dash connection removed for version 0.5
@@ -93,7 +94,8 @@ type AppState = {
     keyboardInputSchemeName: KeyboardInputSchemeName;
     showKeyboardModal: boolean,
     showWorldSelector: boolean,
-    showShareModal: boolean
+    showShareModal: boolean,
+    showActionsSimplificationMenu: boolean
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -118,7 +120,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '1.0';
+        this.version = '1.1';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -411,6 +413,7 @@ export class App extends React.Component<AppProps, AppState> {
             showKeyboardModal: false,
             showWorldSelector: false,
             showShareModal: false,
+            showActionsSimplificationMenu: false,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -1063,6 +1066,35 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({keyBindingsEnabled: keyBindingsEnabled});
     }
 
+    handleClickActionsSimplificationIcon = () => {
+        if (!this.editingIsDisabled()) {
+            this.setState({
+                showActionsSimplificationMenu: true
+            });
+        }
+    }
+
+    handleKeyDownActionsSimplificationIcon = (event: KeyboardEvent) => {
+        if (!this.editingIsDisabled()) {
+            if (event.key === "Enter" || event.key === " ") {
+                this.setState({
+                    showActionsSimplificationMenu: true
+                });
+            }
+        }
+    }
+
+    handleChangeAllowedActions = (allowedActions: ActionToggleRegister) => {
+        this.setState({
+            showActionsSimplificationMenu: false,
+            allowedActions: allowedActions
+        });
+    }
+
+    handleCancelActionsSimplificationMenu = () => {
+        this.setState({ showActionsSimplificationMenu: false});
+    }
+
     //World handlers
 
     handleClickWorldIcon = () => {
@@ -1197,13 +1229,22 @@ export class App extends React.Component<AppProps, AppState> {
                             onChangeCharacterYPosition={this.handleChangeCharacterYPosition} />
                     </div>
                     <div className='App__command-palette'>
-                        <ActionsMenu
-                            allowedActions={this.state.allowedActions}
-                            changeHandler={this.handleToggleAllowedCommand}
-                            editingDisabled={this.editingIsDisabled()}
-                            programSequence={this.state.programSequence}
-                            intl={this.props.intl}
-                        />
+                        <div className='App__ActionsMenu__header'>
+                            <h2 className='App__ActionsMenu__header-heading'>
+                                <FormattedMessage id='ActionsMenu.title' />
+                            </h2>
+
+                            <div className="App__ActionsMenu__toggle-button"
+                                aria-label={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
+                                aria-disabled={this.editingIsDisabled()}
+                                role="button"
+                                onClick={this.handleClickActionsSimplificationIcon}
+                                onKeyDown={this.handleKeyDownActionsSimplificationIcon}
+                                tabIndex={0}
+                            >
+                                <ActionsMenuToggleIcon/>
+                            </div>
+                        </div>
                         <div className='App__command-palette-command-container'>
                             <div className='App__command-palette-commands'>
                                 {this.renderCommandBlocks([
@@ -1314,6 +1355,13 @@ export class App extends React.Component<AppProps, AppState> {
                     show={this.state.showShareModal}
                     onConfirm={this.handleCloseShare}
                     onCancel={this.handleCloseShare}
+                />
+                <ActionsSimplificationModal
+                    show={this.state.showActionsSimplificationMenu}
+                    onCancel={this.handleCancelActionsSimplificationMenu}
+                    onConfirm={this.handleChangeAllowedActions}
+                    allowedActions={this.state.allowedActions}
+                    programSequence={this.state.programSequence}
                 />
             </React.Fragment>
         );
