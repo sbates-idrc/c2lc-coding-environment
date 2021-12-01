@@ -46,6 +46,7 @@ import KeyboardInputModal from './KeyboardInputModal';
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
+import { ReactComponent as ThemeIcon } from './svg/Theme.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
 import { ReactComponent as ActionsMenuToggleIcon } from './svg/ActionsMenuToggle.svg'
 import ProgramChangeController from './ProgramChangeController';
@@ -90,8 +91,9 @@ type AppState = {
     runningState: RunningState,
     allowedActions: ActionToggleRegister,
     keyBindingsEnabled: boolean,
-    keyboardInputSchemeName: KeyboardInputSchemeName;
+    keyboardInputSchemeName: KeyboardInputSchemeName,
     showKeyboardModal: boolean,
+    showThemeSelectorModal: boolean,
     showWorldSelector: boolean,
     showActionsSimplificationMenu: boolean
 };
@@ -393,7 +395,7 @@ export class App extends React.Component<AppProps, AppState> {
             settings: {
                 language: 'en',
                 addNodeExpandedMode: true,
-                theme: 'mixed',
+                theme: 'default',
                 world: this.defaultWorld
             },
             dashConnectionStatus: 'notConnected',
@@ -409,6 +411,7 @@ export class App extends React.Component<AppProps, AppState> {
             allowedActions: allowedActions,
             keyBindingsEnabled: false,
             showKeyboardModal: false,
+            showThemeSelectorModal: false,
             showWorldSelector: false,
             showActionsSimplificationMenu: false,
             keyboardInputSchemeName: "controlalt"
@@ -860,7 +863,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("changeToDefaultTheme"):
-                            this.setStateSettings({theme: "mixed"});
+                            this.setStateSettings({theme: "default"});
                             break;
                         case("changeToLightTheme"):
                             this.setStateSettings({theme: "light"});
@@ -892,6 +895,10 @@ export class App extends React.Component<AppProps, AppState> {
     handleClickKeyboardIcon = () => {
         this.setState({ showKeyboardModal: true});
     };
+
+    handleClickThemeSelectorIcon = () => {
+        this.setState({ showThemeSelectorModal: true });
+    }
 
     // Focus trap escape key handling.
     handleRootKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
@@ -988,8 +995,15 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
+    handleSelectTheme = (theme: ThemeName) => {
+        this.setStateSettings({theme});
+    }
+
     handleChangeTheme = (theme: ThemeName) => {
-        this.setStateSettings({ theme });
+        this.setState({
+            showThemeSelectorModal: false,
+            settings: Object.assign({}, this.state.settings, {theme})
+        });
     }
 
     handleChangeCharacterPosition = (positionName: ?string) => {
@@ -1133,13 +1147,22 @@ export class App extends React.Component<AppProps, AppState> {
                                     <FormattedMessage id='App.appHeading'/>
                                 </a>
                             </h1>
-                            <IconButton
-                                className="App__header-keyboardMenuIcon focus-keyboardMenuIcon"
-                                ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
-                                onClick={this.handleClickKeyboardIcon}
-                            >
-                                <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
-                            </IconButton>
+                            <div className='App__header-menu'>
+                                <IconButton
+                                    className="App__header-keyboardMenuIcon"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                                    onClick={this.handleClickKeyboardIcon}
+                                >
+                                    <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
+                                </IconButton>
+                                <IconButton
+                                    className="App__header-themeSelectorIcon"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'ThemeSelector.iconButton' })}
+                                    onClick={this.handleClickThemeSelectorIcon}
+                                >
+                                    <ThemeIcon className='App__header-theme-icon'/>
+                                </IconButton>
+                            </div>
                             <div className='App__header-audio-toggle'>
                                 <div className='App__audio-toggle-switch'>
                                     <AudioFeedbackToggleSwitch
@@ -1157,7 +1180,6 @@ export class App extends React.Component<AppProps, AppState> {
                                 </DeviceConnectControl>
                                 */}
                             </div>
-                            <ThemeSelector onSelect={this.handleChangeTheme} />
                         </div>
                     </header>
                     {/* Dash connection removed for version 0.5
@@ -1318,6 +1340,11 @@ export class App extends React.Component<AppProps, AppState> {
                     onChangeKeyBindingsEnabled={this.handleChangeKeyBindingsEnabled}
                     onHide={this.handleKeyboardModalClose}
                 />
+                <ThemeSelector
+                    show={this.state.showThemeSelectorModal}
+                    currentTheme={this.state.settings.theme}
+                    onSelect={this.handleSelectTheme}
+                    onChange={this.handleChangeTheme}/>
                 <WorldSelector
                     show={this.state.showWorldSelector}
                     currentWorld={this.state.settings.world}
@@ -1390,7 +1417,7 @@ export class App extends React.Component<AppProps, AppState> {
             }
 
             this.setStateSettings({
-                theme: Utils.getThemeFromString(themeQuery, 'mixed'),
+                theme: Utils.getThemeFromString(themeQuery, 'default'),
                 world: Utils.getWorldFromString(worldQuery, this.defaultWorld)
             });
         } else {
@@ -1442,7 +1469,7 @@ export class App extends React.Component<AppProps, AppState> {
             }
 
             this.setStateSettings({
-                theme: Utils.getThemeFromString(localTheme, 'mixed'),
+                theme: Utils.getThemeFromString(localTheme, 'default'),
                 world: Utils.getWorldFromString(localWorld, this.defaultWorld)
             });
         }
