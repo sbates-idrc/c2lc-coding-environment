@@ -30,7 +30,7 @@ import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ShareButton from './ShareButton';
-import ActionsMenu from './ActionsMenu';
+import ActionsSimplificationModal from './ActionsSimplificationModal';
 import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
@@ -47,16 +47,8 @@ import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
+import { ReactComponent as ActionsMenuToggleIcon } from './svg/ActionsMenuToggle.svg'
 import ProgramChangeController from './ProgramChangeController';
-
-// Convenience function to focus on the first element with a given class, used
-// for keyboard shortcuts.
-function focusOnFirstElementWithClass (className) {
-    const elements = document.getElementsByClassName(className);
-    if (elements.length) {
-        elements[0].focus();
-    }
-}
 
 /* Dash connection removed for version 0.5
 import BluetoothApiWarning from './BluetoothApiWarning';
@@ -100,7 +92,8 @@ type AppState = {
     keyBindingsEnabled: boolean,
     keyboardInputSchemeName: KeyboardInputSchemeName;
     showKeyboardModal: boolean,
-    showWorldSelector: boolean
+    showWorldSelector: boolean,
+    showActionsSimplificationMenu: boolean
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -125,7 +118,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '0.9.1';
+        this.version = '1.0';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -417,6 +410,7 @@ export class App extends React.Component<AppProps, AppState> {
             keyBindingsEnabled: false,
             showKeyboardModal: false,
             showWorldSelector: false,
+            showActionsSimplificationMenu: false,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -806,34 +800,34 @@ export class App extends React.Component<AppProps, AppState> {
                             this.setState({ "selectedAction": "right180" });
                             break;
                         case("focusActions"):
-                            focusOnFirstElementWithClass("command-block");
+                            Utils.focusByQuerySelector(".command-block");
                             break;
                         case("focusAppHeader"):
-                            focusOnFirstElementWithClass("keyboard-shortcut-focus__app-header");
+                            Utils.focusByQuerySelector(".keyboard-shortcut-focus__app-header");
                             break;
                         case("focusAddNodeToggle"):
-                            focusOnFirstElementWithClass("ProgramBlockEditor__add-node-toggle-switch");
+                            Utils.focusByQuerySelector(".ProgramBlockEditor__add-node-toggle-switch");
                             break;
                         case("focusCharacterPositionControls"):
-                            focusOnFirstElementWithClass("CharacterPositionController__character-position-button");
+                            Utils.focusByQuerySelector(".CharacterPositionController__character-position-button");
                             break;
                         case("focusCharacterColumnInput"):
-                            focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-column");
+                            Utils.focusByQuerySelector(".ProgramBlock__character-position-coordinate-box-column");
                             break;
                         case("focusCharacterRowInput"):
-                            focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-row");
+                            Utils.focusByQuerySelector(".ProgramBlock__character-position-coordinate-box-row");
                             break;
                         case("focusPlayShare"):
-                            focusOnFirstElementWithClass("PlayButton--play");
+                            Utils.focusByQuerySelector(".PlayButton--play");
                             break;
                         case("focusProgramSequence"):
-                            focusOnFirstElementWithClass("AddNode__expanded-button");
+                            Utils.focusByQuerySelector(".AddNode__expanded-button");
                             break;
                         case("focusScene"):
-                            focusOnFirstElementWithClass("PenDownToggleSwitch");
+                            Utils.focusByQuerySelector(".PenDownToggleSwitch");
                             break;
                         case("focusWorldSelector"):
-                            focusOnFirstElementWithClass("keyboard-shortcut-focus__world-selector");
+                            Utils.focusByQuerySelector(".keyboard-shortcut-focus__world-selector");
                             break;
                         case("moveCharacterLeft"):
                             if (!this.editingIsDisabled()) {
@@ -891,21 +885,13 @@ export class App extends React.Component<AppProps, AppState> {
         }
     };
 
-    handleKeyboardMenuIconKeydown = (event: KeyboardEvent) => {
-        if (event.key === "Enter" || event.key === " ") {
-            this.handleKeyboardModalToggle();
-        }
-    }
-
     handleKeyboardModalClose = () => {
         this.setState({showKeyboardModal: false});
     };
 
-    handleKeyboardModalToggle = () => {
-        this.setState((currentState: AppState) => {
-            return { showKeyboardModal: !currentState.showKeyboardModal};
-        });
-    }
+    handleClickKeyboardIcon = () => {
+        this.setState({ showKeyboardModal: true});
+    };
 
     // Focus trap escape key handling.
     handleRootKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
@@ -1077,20 +1063,41 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({keyBindingsEnabled: keyBindingsEnabled});
     }
 
+    handleClickActionsSimplificationIcon = () => {
+        if (!this.editingIsDisabled()) {
+            this.setState({
+                showActionsSimplificationMenu: true
+            });
+        }
+    }
+
+    handleKeyDownActionsSimplificationIcon = (event: KeyboardEvent) => {
+        if (!this.editingIsDisabled()) {
+            if (event.key === "Enter" || event.key === " ") {
+                this.setState({
+                    showActionsSimplificationMenu: true
+                });
+            }
+        }
+    }
+
+    handleChangeAllowedActions = (allowedActions: ActionToggleRegister) => {
+        this.setState({
+            showActionsSimplificationMenu: false,
+            allowedActions: allowedActions
+        });
+    }
+
+    handleCancelActionsSimplificationMenu = () => {
+        this.setState({ showActionsSimplificationMenu: false});
+    }
+
     //World handlers
 
     handleClickWorldIcon = () => {
         this.setState({
             showWorldSelector: true
         });
-    }
-
-    handleKeyDownWorldIcon = (event: KeyboardEvent) => {
-        if (event.key === "Enter" || event.key === " ") {
-            this.setState({
-                showWorldSelector: true
-            });
-        }
     }
 
     handleSelectWorld = (world: WorldName) => {
@@ -1127,11 +1134,11 @@ export class App extends React.Component<AppProps, AppState> {
                                 </a>
                             </h1>
                             <IconButton
+                                className="App__header-keyboardMenuIcon focus-keyboardMenuIcon"
                                 ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
-                                onClick={this.handleKeyboardModalToggle}
-                                onKeyDown={this.handleKeyboardMenuIconKeydown}
+                                onClick={this.handleClickKeyboardIcon}
                             >
-                                <KeyboardModalToggleIcon/>
+                                <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
                             </IconButton>
                             <div className='App__header-audio-toggle'>
                                 <div className='App__audio-toggle-switch'>
@@ -1172,20 +1179,6 @@ export class App extends React.Component<AppProps, AppState> {
                             theme={this.state.settings.theme}
                             world={this.state.settings.world}
                         />
-                        <div className='App__scene-controls'>
-                            <div className='App__scene-controls-group'>
-                                <PenDownToggleSwitch
-                                    className='App__penDown-toggle-switch'
-                                    value={this.state.drawingEnabled}
-                                    onChange={this.handleTogglePenDown}/>
-                                <div className='App__refreshButton-container'>
-                                    <RefreshButton
-                                        disabled={this.editingIsDisabled()}
-                                        onClick={this.handleRefresh}
-                                    />
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div className="App__world-container">
                         <h2 className='sr-only' >
@@ -1196,11 +1189,18 @@ export class App extends React.Component<AppProps, AppState> {
                                 className='keyboard-shortcut-focus__world-selector'
                                 ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelector' })}
                                 onClick={this.handleClickWorldIcon}
-                                onKeyDown={this.handleKeyDownWorldIcon}
                             >
-                                <WorldIcon />
+                                <WorldIcon className='App__world-selector-icon'/>
                             </IconButton>
                         </div>
+
+                        <div className='App__PenDownToggleSwitch-container'>
+                            <PenDownToggleSwitch
+                                className='App__penDown-toggle-switch'
+                                value={this.state.drawingEnabled}
+                                onChange={this.handleTogglePenDown}/>
+                        </div>
+
                         <CharacterPositionController
                             characterState={this.state.characterState}
                             editingDisabled={this.editingIsDisabled()}
@@ -1211,13 +1211,22 @@ export class App extends React.Component<AppProps, AppState> {
                             onChangeCharacterYPosition={this.handleChangeCharacterYPosition} />
                     </div>
                     <div className='App__command-palette'>
-                        <ActionsMenu
-                            allowedActions={this.state.allowedActions}
-                            changeHandler={this.handleToggleAllowedCommand}
-                            editingDisabled={this.editingIsDisabled()}
-                            programSequence={this.state.programSequence}
-                            intl={this.props.intl}
-                        />
+                        <div className='App__ActionsMenu__header'>
+                            <h2 className='App__ActionsMenu__header-heading'>
+                                <FormattedMessage id='ActionsMenu.title' />
+                            </h2>
+
+                            <div className="App__ActionsMenu__toggle-button"
+                                aria-label={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
+                                aria-disabled={this.editingIsDisabled()}
+                                role="button"
+                                onClick={this.handleClickActionsSimplificationIcon}
+                                onKeyDown={this.handleKeyDownActionsSimplificationIcon}
+                                tabIndex={0}
+                            >
+                                <ActionsMenuToggleIcon/>
+                            </div>
+                        </div>
                         <div className='App__command-palette-command-container'>
                             <div className='App__command-palette-commands'>
                                 {this.renderCommandBlocks([
@@ -1262,6 +1271,11 @@ export class App extends React.Component<AppProps, AppState> {
                         </h2>
                         <div className='App__playControl-container'>
                             <div className='App__playButton-container'>
+                                <RefreshButton
+                                    className='App__playControlButton'
+                                    disabled={this.editingIsDisabled()}
+                                    onClick={this.handleRefresh}
+                                />
                                 <PlayButton
                                     className='App__playControlButton'
                                     interpreterIsRunning={this.state.runningState === 'running'}
@@ -1288,6 +1302,7 @@ export class App extends React.Component<AppProps, AppState> {
                 </div>
                 <CharacterAriaLive
                     ariaLiveRegionId='character-position'
+                    ariaHidden={this.state.showWorldSelector}
                     characterState={this.state.characterState}
                     runningState={this.state.runningState}
                     world={this.state.settings.world}/>
@@ -1309,6 +1324,13 @@ export class App extends React.Component<AppProps, AppState> {
                     theme={this.state.settings.theme}
                     onChange={this.handleChangeWorld}
                     onSelect={this.handleSelectWorld}/>
+                <ActionsSimplificationModal
+                    show={this.state.showActionsSimplificationMenu}
+                    onCancel={this.handleCancelActionsSimplificationMenu}
+                    onConfirm={this.handleChangeAllowedActions}
+                    allowedActions={this.state.allowedActions}
+                    programSequence={this.state.programSequence}
+                />
             </React.Fragment>
         );
     }
