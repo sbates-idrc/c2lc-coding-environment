@@ -25,7 +25,7 @@
     }
 }
 
-.TextButton__secondaryButton {
+.TextButton--secondaryButton {
     background-color: #CCE6E2;
     color: #1E1E1E;
     &:hover {
@@ -34,7 +34,7 @@
     }
 }
 
-.TextButton__primaryButton {
+.TextButton--primaryButton {
     background-color: #33717F;
     color: #FFFFFF;
 }

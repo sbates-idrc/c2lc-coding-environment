@@ -28,7 +28,7 @@ class TextButton extends React.Component<TextButtonProps, {}> {
         const classes = classNames(
             "TextButton",
             this.props.className,
-            this.props.isPrimary ? "TextButton__primaryButton" : "TextButton__secondaryButton"
+            this.props.isPrimary ? "TextButton--primaryButton" : "TextButton--secondaryButton"
         );
         return (
             <button
