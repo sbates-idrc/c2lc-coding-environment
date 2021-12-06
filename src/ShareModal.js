@@ -31,10 +31,6 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
         }
     }
 
-    componentDidMount() {
-        this.copyURL();
-    }
-
     render () {
         const buttonProperties = [{
             label: this.props.intl.formatMessage({id: 'ShareModal.close'}),
