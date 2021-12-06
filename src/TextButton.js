@@ -38,6 +38,7 @@ class TextButton extends React.Component<TextButtonProps, {}> {
         );
         return (
             <button
+                id={this.props.id}
                 aria-label={this.props.label}
                 className={classes}
                 onClick={this.handleClick}
