@@ -10,13 +10,13 @@ import {ReactComponent as ShareIcon} from './svg/Share.svg'
 
 import './ShareModal.scss';
 
-type ShareCompleteModalProps = {
+type ShareModalProps = {
     intl: IntlShape,
     show: boolean,
     onClose: () => void
 };
 
-class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
+class ShareModal extends React.Component<ShareModalProps, {}> {
     copyURL = () => {
         // Copy the URL to the clipboard, see:
         // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
@@ -78,4 +78,4 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
     }
 }
 
-export default injectIntl(ShareCompleteModal);
+export default injectIntl(ShareModal);
