@@ -45,7 +45,7 @@ import KeyboardInputModal from './KeyboardInputModal';
 
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
-import { ReactComponent as AudioIcon } from './svg/AudioOn.svg';
+import { ReactComponent as AudioIcon } from './svg/Audio.svg';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
 import { ReactComponent as ActionsMenuToggleIcon } from './svg/ActionsMenuToggle.svg'
