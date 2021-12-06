@@ -15,6 +15,7 @@ function createShallowToggleSwitch(props) {
             ToggleSwitch,
             Object.assign(
                 {
+                    disabled: false,
                     ariaLabel: '',
                     value: false,
                     className: undefined,
@@ -138,3 +139,13 @@ describe('When there is className property', () => {
         expect(toggleSwitch.prop('className').includes(className)).toBe(true);
     });
 });
+
+describe('When there is disabled property', () => {
+    test('aria-hidden should be set to true, with tabIndex=-1', () => {
+        expect.assertions(2);
+        const { wrapper } = createShallowToggleSwitch({ disabled: true });
+        const toggleSwitch = getToggleSwitch(wrapper);
+        expect(toggleSwitch.props()['aria-disabled']).toBe(true);
+        expect(toggleSwitch.props().tabIndex).toBe(-1); 
+    })
+})

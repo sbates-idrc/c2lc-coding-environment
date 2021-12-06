@@ -9,6 +9,11 @@
     column-gap: 0.6rem;
 }
 
+.SoundOptions__option--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 .ToggleSwitch:not(.ToggleSwitch--checked).SoundOptionsToggle {
     background-color: #B9BEC6;
 }

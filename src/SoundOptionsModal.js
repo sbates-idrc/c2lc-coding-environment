@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import classNames from 'classnames';
 import ModalBody from './ModalBody';
 import ModalHeader from './ModalHeader';
 import ModalWithFooter from './ModalWithFooter';
@@ -76,8 +77,13 @@ class SoundOptionsModal extends React.Component<SoundOptionsModalProps, SoundOpt
         ];
         for (let i=0; i< soundOptionsProps.length; i++) {
             const soundOptionProps = soundOptionsProps[i];
+            const isDisabled = soundOptionProps.id !== 'sound-options-allsounds' && !this.state.audioEnabled;
+            const optionContainerClassName = classNames(
+                'SoundOptions__option-container',
+                isDisabled && 'SoundOptions__option--disabled'
+            )
             soundOptions.push(
-                <div className='SoundOptions__option-container' key={soundOptionProps.id}>
+                <div className={optionContainerClassName} key={soundOptionProps.id}>
                     <div aria-hidden={true}>
                         {soundOptionProps.label}
                     </div>
@@ -86,6 +92,7 @@ class SoundOptionsModal extends React.Component<SoundOptionsModalProps, SoundOpt
                             {this.props.intl.formatMessage({ id: 'SoundOptionsModal.toggleOff' })}
                         </div>
                         <ToggleSwitch
+                            disabled={isDisabled}
                             className='SoundOptionsToggle'
                             id={soundOptionProps.id}
                             ariaLabel={soundOptionProps.label}

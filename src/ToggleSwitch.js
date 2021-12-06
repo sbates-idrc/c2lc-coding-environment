@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import './ToggleSwitch.scss';
 
 type ToggleSwitchProps = {
+    disabled?: boolean,
     id?: string,
     ariaLabel: string,
     value: boolean,
@@ -38,12 +39,13 @@ export default class ToggleSwitch extends React.Component<ToggleSwitchProps, {}>
         );
         return (
             <div
+                aria-disabled={this.props.disabled}
                 id={this.props.id}
                 className={classes}
                 role='switch'
                 aria-label={this.props.ariaLabel}
                 aria-checked={this.props.value}
-                tabIndex='0'
+                tabIndex={this.props.disabled ? -1 : 0}
                 onClick={this.handleClick}
                 onKeyDown={this.handleKeyDown}>
                 <div className='ToggleSwitch__switch-inner-circle' >
