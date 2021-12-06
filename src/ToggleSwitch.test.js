@@ -146,6 +146,6 @@ describe('When there is disabled property', () => {
         const { wrapper } = createShallowToggleSwitch({ disabled: true });
         const toggleSwitch = getToggleSwitch(wrapper);
         expect(toggleSwitch.props()['aria-disabled']).toBe(true);
-        expect(toggleSwitch.props().tabIndex).toBe(-1); 
+        expect(toggleSwitch.props().tabIndex).toBe(-1);
     })
 })

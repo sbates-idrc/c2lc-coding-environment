@@ -117,7 +117,7 @@ describe('When interacting with footer buttons', () => {
         const allSoundsToggle = getAudioToggleSwitches(wrapper).at(0);
         allSoundsToggle.simulate('click');
         expect(getWrapperState(wrapper).audioEnabled).toBe(false);
-        
+
         const cancelButton = getCancelButton(wrapper);
         cancelButton.at(0).simulate('click');
         expect(mockOnCancel.mock.calls.length).toBe(1);
@@ -129,7 +129,7 @@ describe('When interacting with footer buttons', () => {
     test('Pressing save button should update the toggle states', () => {
         expect.assertions(7);
         const { wrapper, mockOnSave } = createMountSoundOptionsModal({ audioEnabled: true, announcementsEnabled: true, sonificationEnabled: false });
-        
+
         const announcementsToggle = getAudioToggleSwitches(wrapper).at(1);
         const sonificationToggle = getAudioToggleSwitches(wrapper).at(2);
         announcementsToggle.simulate('click');
@@ -138,7 +138,7 @@ describe('When interacting with footer buttons', () => {
         const expectedAudioEnabled = true;
         const expectedAnnouncementsEnabled = false;
         const expectedSonificationEnabled = true;
-        
+
         const saveButton = getSaveButton(wrapper);
         saveButton.at(0).simulate('click');
         expect(mockOnSave.mock.calls.length).toBe(1);
