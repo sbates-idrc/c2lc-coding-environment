@@ -1135,11 +1135,6 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showShareModal: true});
 
     }
-    handleShareButtonKeydown = (event: KeyboardEvent) => {
-        if (event.key === ' ' || event.key === 'Enter') {
-            this.handleShareButtonClick(event);
-        }
-    }
 
     handleCloseShare = () => {
         this.setState({ showShareModal: false });
@@ -1339,7 +1334,6 @@ export class App extends React.Component<AppProps, AppState> {
                             <button
                                 className='App__ShareButton'
                                 onClick={this.handleShareButtonClick}
-                                onKeyDown={this.handleShareButtonKeydown}
                             >
                                 <ShareIcon className='App__ShareButton__icon'/>
                                 <div className='App__ShareButton__label'>
