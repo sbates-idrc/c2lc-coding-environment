@@ -1380,8 +1380,7 @@ export class App extends React.Component<AppProps, AppState> {
                     onSelect={this.handleSelectWorld}/>
                 <ShareModal
                     show={this.state.showShareModal}
-                    onConfirm={this.handleCloseShare}
-                    onCancel={this.handleCloseShare}
+                    onClose={this.handleCloseShare}
                 />
                 <ActionsSimplificationModal
                     show={this.state.showActionsSimplificationMenu}
