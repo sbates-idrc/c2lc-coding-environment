@@ -755,7 +755,7 @@ body.gray-theme {
         color: #818A98;
     }
 
-    .IconButton.App__header-soundOptions {
+    .App__header-menu > .IconButton {
         svg path {
             fill: #FFFFFF;
         }
@@ -770,12 +770,6 @@ body.gray-theme {
 
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
-        }
-
-        .App__header-keyboard-icon {
-            path {
-                fill: white;
-            }
         }
 
         .App__world-selector-icon {

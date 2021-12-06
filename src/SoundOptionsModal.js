@@ -117,7 +117,7 @@ class SoundOptionsModal extends React.Component<SoundOptionsModalProps, SoundOpt
                 show={this.props.show}
                 focusOnOpenSelector={'#sound-options-allsounds'}
                 focusOnCloseSelector={'.App__header-soundOptions'}
-                ariaLabel={this.props.intl.formatMessage({ id: 'SoundOptionsModal.title' })}
+                ariaLabelledById={'SoundOptionsModal'}
                 onClose={this.handleOnCancel}
                 buttonProperties={
                     [
