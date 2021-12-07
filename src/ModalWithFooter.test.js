@@ -28,11 +28,11 @@ function createMountModalWithFooter(props) {
 }
 
 function hasPrimaryButton(wrapper) {
-    return wrapper.exists('.TextButton__primaryButton');
+    return wrapper.exists('.TextButton--primaryButton');
 }
 
 function hasSecondaryButton(wrapper) {
-    return wrapper.exists('.TextButton__secondaryButton');
+    return wrapper.exists('.TextButton--secondaryButton');
 }
 
 function getFooterButtons(wrapper) {

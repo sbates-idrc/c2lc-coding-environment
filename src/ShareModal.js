@@ -10,19 +10,13 @@ import {ReactComponent as ShareIcon} from './svg/Share.svg'
 
 import './ShareModal.scss';
 
-type ShareCompleteModalProps = {
+type ShareModalProps = {
     intl: IntlShape,
     show: boolean,
-    onCancel: () => void,
-    onConfirm: () => void
+    onClose: () => void
 };
 
-class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
-    static defaultProps = {
-        show: false,
-        onCancel: () => {}
-    }
-
+class ShareModal extends React.Component<ShareModalProps, {}> {
     copyURL = () => {
         // Copy the URL to the clipboard, see:
         // https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
@@ -31,14 +25,10 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
         }
     }
 
-    componentDidMount() {
-        this.copyURL();
-    }
-
     render () {
         const buttonProperties = [{
             label: this.props.intl.formatMessage({id: 'ShareModal.close'}),
-            onClick: this.props.onCancel,
+            onClick: this.props.onClose,
             isPrimary: false
         }];
 
@@ -50,7 +40,7 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
                 focusOnOpenSelector={'.ShareModal__form__copyButton'}
                 focusOnCloseSelector={'.App__ShareButton'}
                 ariaLabel={this.props.intl.formatMessage({ id: 'ShareModal.title' })}
-                onClose={this.props.onCancel}
+                onClose={this.props.onClose}
                 buttonProperties={buttonProperties}
             >
                 <ModalHeader
@@ -88,4 +78,4 @@ class ShareCompleteModal extends React.Component<ShareCompleteModalProps, {}> {
     }
 }
 
-export default injectIntl(ShareCompleteModal);
+export default injectIntl(ShareModal);

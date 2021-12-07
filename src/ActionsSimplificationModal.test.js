@@ -97,7 +97,7 @@ describe("When the cancel button is clicked.", ()=> {
 
         expect(modal.state.allowedActions.left90).toBe(false);
 
-        const cancelButton = wrapper.find(".TextButton__secondaryButton");
+        const cancelButton = wrapper.find(".TextButton--secondaryButton");
         cancelButton.simulate('click');
         expect(modal.state.allowedActions.left90).toBe(true);
 
@@ -108,7 +108,7 @@ describe("When the cancel button is clicked.", ()=> {
 
         const {wrapper, mockOnCancel} = createActionsMenu();
 
-        const cancelButton = wrapper.find(".TextButton__secondaryButton");
+        const cancelButton = wrapper.find(".TextButton--secondaryButton");
         cancelButton.simulate('click');
 
         expect(mockOnCancel.mock.calls.length).toBe(1);
@@ -126,7 +126,7 @@ describe("When the done button is clicked.", ()=> {
         const left90Checkbox = wrapper.find('#actions-menu-item-left90');
         left90Checkbox.simulate('click');
 
-        const saveButton = wrapper.find(".TextButton__primaryButton");
+        const saveButton = wrapper.find(".TextButton--primaryButton");
         saveButton.simulate('click');
 
         expect(mockOnConfirm.mock.calls.length).toBe(1);

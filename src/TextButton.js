@@ -19,12 +19,6 @@ class TextButton extends React.Component<TextButtonProps, {}> {
         isPrimary: false
     };
 
-    handleKeyDown = (event: KeyboardEvent) => {
-        if (event.key === "Enter" || event.key === " ") {
-            this.handleClick(event);
-        }
-    }
-
     handleClick = (event: Event) => {
         event.preventDefault();
         this.props.onClick();
@@ -34,14 +28,14 @@ class TextButton extends React.Component<TextButtonProps, {}> {
         const classes = classNames(
             "TextButton",
             this.props.className,
-            this.props.isPrimary ? "TextButton__primaryButton" : "TextButton__secondaryButton"
+            this.props.isPrimary ? "TextButton--primaryButton" : "TextButton--secondaryButton"
         );
         return (
             <button
+                id={this.props.id}
                 aria-label={this.props.label}
                 className={classes}
                 onClick={this.handleClick}
-                onKeyDown={this.handleKeyDown}
             >
                 {this.props.children}
             </button>

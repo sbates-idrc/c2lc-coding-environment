@@ -11,12 +11,12 @@ configure({ adapter: new Adapter()});
 
 function getDeleteAllButton(confirmDeleteAllModalWrapper) {
     return confirmDeleteAllModalWrapper.find("button")
-        .filter('.TextButton__primaryButton').at(0);
+        .filter('.TextButton--primaryButton').at(0);
 }
 
 function getCancelButton(confirmDeleteAllModalWrapper) {
     return confirmDeleteAllModalWrapper.find("button")
-        .filter('.TextButton__secondaryButton').at(0);
+        .filter('.TextButton--secondaryButton').at(0);
 }
 
 function createMountDeleteAllModal() {

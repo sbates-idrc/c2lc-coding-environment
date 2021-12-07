@@ -22,7 +22,13 @@ class ModalWithFooter extends React.Component<ModalWithFooterProps, {}> {
     renderFooterButtons = () => {
         const footerButtons = [];
         for (const buttonProps of this.props.buttonProperties) {
-            const buttonPropsWithKey = Object.assign( buttonProps, { key: `footerButton-${footerButtons.length}`})
+            const buttonPropsWithKey = Object.assign(
+                {},
+                buttonProps,
+                {
+                    key: `footerButton-${footerButtons.length}`
+                }
+            );
             footerButtons.push(React.createElement(TextButton, buttonPropsWithKey, buttonProps.label));
         }
         return footerButtons;
