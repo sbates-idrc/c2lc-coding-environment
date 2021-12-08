@@ -8,6 +8,7 @@
     color: #1E1E1E;
     padding: 0.2rem;
     width: 8rem;
+    outline: 0;
 
     &:active {
         background-color: #ED972C;
@@ -20,8 +21,8 @@
 
     &:focus {
         box-shadow:
-            0 0 0 0.1rem #30444E,
-            0 0 0 $c2lc-focus-indicator-width #FFFFFF;
+            0 0 0 0.1rem #D5D8DD,
+            0 0 0 $c2lc-focus-indicator-width black;
     }
 }
 

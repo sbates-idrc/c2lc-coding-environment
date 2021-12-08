@@ -265,6 +265,7 @@ body {
     display:flex;
     column-gap: 0.5rem;
     align-items: center;
+    outline: 0;
 
     &:active {
         background-color: #ED972C;
