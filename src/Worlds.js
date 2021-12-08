@@ -3,6 +3,17 @@
 import * as React from 'react';
 import type { ThemeName } from './types';
 
+// BlueBot
+import { ReactComponent as BlueBotWorld } from './svg/BlueBotWorld.svg';
+import { ReactComponent as BlueBotWorldGray } from './svg/BlueBotWorldGray.svg';
+import { ReactComponent as BlueBotWorldContrast } from './svg/BlueBotWorldContrast.svg';
+import { ReactComponent as BlueBotThumbnail } from './svg/BlueBotThumbnail.svg';
+import { ReactComponent as BlueBotThumbnailGray } from './svg/BlueBotThumbnailGray.svg';
+import { ReactComponent as BlueBotThumbnailContrast } from './svg/BlueBotThumbnailContrast.svg';
+import { ReactComponent as BlueBot } from './svg/BlueBot.svg';
+import { ReactComponent as BlueBotGray } from './svg/BlueBotGray.svg';
+import { ReactComponent as BlueBotContrast } from './svg/BlueBotContrast.svg';
+
 // DeepOcean
 import { ReactComponent as DeepOcean } from './svg/DeepOcean.svg';
 import { ReactComponent as DeepOceanGray } from './svg/DeepOcean-gray.svg';
@@ -61,11 +72,54 @@ export type WorldProperties = {|
 |};
 
 const worlds: {|
+    'BlueBot': WorldProperties,
     'DeepOcean': WorldProperties,
     'Jungle': WorldProperties,
     'Sketchpad': WorldProperties,
     'Space': WorldProperties
 |} = {
+    'BlueBot': {
+        background: BlueBotWorld,
+        backgroundGray: BlueBotWorldGray,
+        backgroundContrast: BlueBotWorldContrast,
+        backgroundInfo : {
+            A1: 'plane',
+            A4: 'easterIsland',
+            A6: 'leaningTowerPisa',
+            B3: 'greatSphinx',
+            B8: 'stonehenge',
+            C2: 'greatPyramid',
+            C7: 'eiffelTower',
+            D5: 'fairyChimneys',
+            E2: 'colosseum',
+            E7: 'tajMahal',
+            F4: 'burAlArab',
+            F8: 'statueLiberty',
+            G1: 'floatingMarket',
+            G6: 'greatWall',
+            H3: 'windmill',
+            H5: 'cnTower',
+            I2: 'tableMountain',
+            I8: 'tokyoTower',
+            J4: 'niagaraFalls',
+            J6: 'grandCanyon',
+            K3: 'bigBen',
+            K7: 'operaHouse',
+            L1: 'machuPiccu',
+            L5: 'stBasils',
+            L8: 'train'
+        },
+        thumbnail: BlueBotThumbnail,
+        thumbnailDark: BlueBotThumbnail,
+        thumbnailGray: BlueBotThumbnailGray,
+        thumbnailContrast: BlueBotThumbnailContrast,
+        character: BlueBot,
+        characterGray: BlueBotGray,
+        characterContrast: BlueBotContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2 // East
+    },
     'DeepOcean': {
         background: DeepOcean,
         backgroundGray: DeepOceanGray,
