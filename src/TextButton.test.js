@@ -15,7 +15,6 @@ function createShallowIconButton(props) {
             Object.assign(
                 {
                     label: "X marks the spot",
-                    children: "X",
                     onClick: clickHandler
                 },
                 props

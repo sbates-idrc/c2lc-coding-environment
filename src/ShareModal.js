@@ -68,9 +68,7 @@ class ShareModal extends React.Component<ShareModalProps, {}> {
                                 label={copyButtonLabel}
                                 isPrimary={true}
                                 onClick={this.copyURL}
-                            >
-                                {copyButtonLabel}
-                            </TextButton>
+                            />
                         </div>
                     </div>
                 </ModalBody>
