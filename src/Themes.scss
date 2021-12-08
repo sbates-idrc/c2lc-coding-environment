@@ -437,6 +437,15 @@ body.light-theme {
         &:hover {
             background-color: #F5C58A;
             color: #1E1E1E;
+            svg path {
+                fill: #1E1E1E;
+            }
+        }
+    }
+
+    .App__ShareButton__icon {
+        path {
+            fill: #FFFFFF;
         }
     }
 }
@@ -2459,12 +2468,23 @@ body.contrast-theme {
             background-color: white;
             color: black;
             box-shadow: 0 0 0 0.1rem black;
+            svg path {
+                fill: black;
+            }
+
         }
 
         &:hover:focus {
             box-shadow: 0 0 0 0.2rem black;
         }
     }
+
+    .App__ShareButton__icon {
+        path {
+            fill: white;
+        }
+    }
+
 
     .ShareModal__form__copyButton {
         background-color: black;

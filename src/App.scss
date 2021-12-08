@@ -255,10 +255,10 @@ body {
 
 
 .App__ShareButton {
-    background-color: #33717F;
+    background-color: #CCE6E2;
     border: 0;
     border-radius: 0.2rem;
-    color: #FFFFFF;
+    color: #1E1E1E;
     font-weight: 400;
     padding: 0.5rem 2rem;
     width: 10rem;
@@ -272,8 +272,8 @@ body {
 
     &:focus {
         box-shadow:
-            0 0 0 0.1rem #D5D8DD,
-            0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+            0 0 0 0.1rem #30444E,
+            0 0 0 $c2lc-focus-indicator-width #FFFFFF;
     }
 
     &:hover {
@@ -289,7 +289,7 @@ body {
     width: 1rem;
     height: 1rem;
     path {
-        fill: #ffffff;
+        fill: #1E1E1E;
     }
 }
 
