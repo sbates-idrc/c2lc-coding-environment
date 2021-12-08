@@ -4,15 +4,15 @@ import * as React from 'react';
 import type { ThemeName } from './types';
 
 // BlueBot
-import { ReactComponent as BlueBotWorld } from './svg/BlueBotWorld.svg';
-import { ReactComponent as BlueBotWorldGray } from './svg/BlueBotWorldGray.svg';
-import { ReactComponent as BlueBotWorldContrast } from './svg/BlueBotWorldContrast.svg';
-import { ReactComponent as BlueBotThumbnail } from './svg/BlueBotThumbnail.svg';
-import { ReactComponent as BlueBotThumbnailGray } from './svg/BlueBotThumbnailGray.svg';
-import { ReactComponent as BlueBotThumbnailContrast } from './svg/BlueBotThumbnailContrast.svg';
-import { ReactComponent as BlueBot } from './svg/BlueBot.svg';
-import { ReactComponent as BlueBotGray } from './svg/BlueBotGray.svg';
-import { ReactComponent as BlueBotContrast } from './svg/BlueBotContrast.svg';
+import { ReactComponent as BlueBotRWorld } from './svg/BlueBotRWorld.svg';
+import { ReactComponent as BlueBotRWorldGray } from './svg/BlueBotRWorldGray.svg';
+import { ReactComponent as BlueBotRWorldContrast } from './svg/BlueBotRWorldContrast.svg';
+import { ReactComponent as BlueBotRThumbnail } from './svg/BlueBotRThumbnail.svg';
+import { ReactComponent as BlueBotRThumbnailGray } from './svg/BlueBotRThumbnailGray.svg';
+import { ReactComponent as BlueBotRThumbnailContrast } from './svg/BlueBotRThumbnailContrast.svg';
+import { ReactComponent as Bot } from './svg/Bot.svg';
+import { ReactComponent as BotGray } from './svg/BotGray.svg';
+import { ReactComponent as BotContrast } from './svg/BotContrast.svg';
 
 // DeepOcean
 import { ReactComponent as DeepOcean } from './svg/DeepOcean.svg';
@@ -72,16 +72,16 @@ export type WorldProperties = {|
 |};
 
 const worlds: {|
-    'BlueBot': WorldProperties,
+    'BlueBotR': WorldProperties,
     'DeepOcean': WorldProperties,
     'Jungle': WorldProperties,
     'Sketchpad': WorldProperties,
     'Space': WorldProperties
 |} = {
-    'BlueBot': {
-        background: BlueBotWorld,
-        backgroundGray: BlueBotWorldGray,
-        backgroundContrast: BlueBotWorldContrast,
+    'BlueBotR': {
+        background: BlueBotRWorld,
+        backgroundGray: BlueBotRWorldGray,
+        backgroundContrast: BlueBotRWorldContrast,
         backgroundInfo : {
             A1: 'plane',
             A4: 'easterIsland',
@@ -109,13 +109,13 @@ const worlds: {|
             L5: 'stBasils',
             L8: 'train'
         },
-        thumbnail: BlueBotThumbnail,
-        thumbnailDark: BlueBotThumbnail,
-        thumbnailGray: BlueBotThumbnailGray,
-        thumbnailContrast: BlueBotThumbnailContrast,
-        character: BlueBot,
-        characterGray: BlueBotGray,
-        characterContrast: BlueBotContrast,
+        thumbnail: BlueBotRThumbnail,
+        thumbnailDark: BlueBotRThumbnail,
+        thumbnailGray: BlueBotRThumbnailGray,
+        thumbnailContrast: BlueBotRThumbnailContrast,
+        character: Bot,
+        characterGray: BotGray,
+        characterContrast: BotContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2 // East

@@ -1,24 +1,24 @@
 /* BlueBot */
 
-.Character-background--BlueBot {
+.Character-background--BlueBotR {
     fill: #FFE5B4;
     stroke: none;
 }
 
-.CharacterPositionController__character-column-character-container--BlueBot,
-.ProgramBlockEditor__character-column-character-container--BlueBot {
+.CharacterPositionController__character-column-character-container--BlueBotR,
+.ProgramBlockEditor__character-column-character-container--BlueBotR {
     background-color: #FFE5B4;
 }
 
-.Scene__grid-line--BlueBot {
+.Scene__grid-line--BlueBotR {
     stroke: #F9F2EC;
 }
 
-.Scene__path-line--BlueBot {
+.Scene__path-line--BlueBotR {
     stroke: #784234;
 }
 
-.WorldSelector__option-image--BlueBot:hover {
+.WorldSelector__option-image--BlueBotR:hover {
     svg {
         .thumbnail-background {
             fill: #BCA490;
@@ -33,25 +33,25 @@
 }
 
 body.gray-theme {
-    .Character-background--BlueBot {
+    .Character-background--BlueBotR {
         fill: #505862;
         stroke: none;
     }
     
-    .CharacterPositionController__character-column-character-container--BlueBot,
-    .ProgramBlockEditor__character-column-character-container--BlueBot {
+    .CharacterPositionController__character-column-character-container--BlueBotR,
+    .ProgramBlockEditor__character-column-character-container--BlueBotR {
         background-color: #505862;
     }
     
-    .Scene__grid-line--BlueBot {
+    .Scene__grid-line--BlueBotR {
         stroke: #FFFFFF;
     }
     
-    .Scene__path-line--BlueBot {
+    .Scene__path-line--BlueBotR {
         stroke: #505862;
     }
     
-    .WorldSelector__option-image--BlueBot:hover {
+    .WorldSelector__option-image--BlueBotR:hover {
         svg {
             .thumbnail-background {
                 fill: #9DA0A6;
@@ -67,25 +67,25 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .Character-background--BlueBot {
+    .Character-background--BlueBotR {
         fill: #FFFFFF;
         stroke: none;
     }
 
-    .CharacterPositionController__character-column-character-container--BlueBot,
-    .ProgramBlockEditor__character-column-character-container--BlueBot {
+    .CharacterPositionController__character-column-character-container--BlueBotR,
+    .ProgramBlockEditor__character-column-character-container--BlueBotR {
         background-color: #FFFFFF;
     }
 
-    .Scene__grid-line--BlueBot {
+    .Scene__grid-line--BlueBotR {
         stroke: #0078FF;
     }
 
-    .Scene__path-line--BlueBot {
+    .Scene__path-line--BlueBotR {
         stroke: #FF0000;
     }
 
-    .WorldSelector__option-image--BlueBot:hover {
+    .WorldSelector__option-image--BlueBotR:hover {
         svg {
             .thumbnail-background {
                 fill: #1E1E1E;
