@@ -450,6 +450,10 @@ body.dark-theme {
         background-color: #18252C;
     }
 
+    .App__header-menu {
+        background-color: #30444E;
+    }
+
     .AudioFeedbackToggleSwitch {
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
@@ -728,6 +732,10 @@ body.gray-theme {
 
     .App__command-palette-heading {
         color: #818A98;
+    }
+
+    .App__header-menu {
+        background-color: #D5D8DD;
     }
 
     .App__header-menu > .IconButton {
@@ -1469,6 +1477,14 @@ body.contrast-theme {
 
     .App__header {
         background-color: black;
+    }
+
+    .App__header-menu {
+        background-color: #FFFFFF;
+    }
+
+    .App__header-menu > .IconButton {
+        box-shadow: 0 0 0 2px black;
     }
 
     .App__app-heading > a {

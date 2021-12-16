@@ -37,15 +37,14 @@ body {
 }
 
 .App__header-menu {
-    // Uncomment background-color and border radius later when we change all the setting
-    // menu items as buttons
-    // background-color: #CCE6E2;
-    // border-radius: 3px;
+    background-color: #CCE6E2;
+    border-radius: 3px;
     display: grid;
     grid-template-columns: min-content min-content;
     justify-content: center;
     column-gap: 0.7rem;
-    padding: 0.5rem 0;
+    row-gap: 0.7rem;
+    padding: 1rem 0;
 }
 
 .App__header-menu > .IconButton {

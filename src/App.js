@@ -1167,18 +1167,18 @@ export class App extends React.Component<AppProps, AppState> {
                                     <AudioIcon className='App__header-soundOptions-icon'/>
                                 </IconButton>
                                 <IconButton
-                                    className="App__header-keyboardMenuIcon"
-                                    ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
-                                    onClick={this.handleClickKeyboardIcon}
-                                >
-                                    <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
-                                </IconButton>
-                                <IconButton
                                     className="App__header-themeSelectorIcon"
                                     ariaLabel={this.props.intl.formatMessage({ id: 'ThemeSelector.iconButton' })}
                                     onClick={this.handleClickThemeSelectorIcon}
                                 >
                                     <ThemeIcon className='App__header-theme-icon'/>
+                                </IconButton>
+                                <IconButton
+                                    className="App__header-keyboardMenuIcon"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                                    onClick={this.handleClickKeyboardIcon}
+                                >
+                                    <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
                                 </IconButton>
                             </div>
                             {/* Dash connection removed for version 0.5
