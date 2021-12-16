@@ -47,6 +47,7 @@ import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
 import { ReactComponent as AudioIcon } from './svg/Audio.svg';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
+import { ReactComponent as ThemeIcon } from './svg/Theme.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
 import { ReactComponent as ActionsMenuToggleIcon } from './svg/ActionsMenuToggle.svg'
 import ProgramChangeController from './ProgramChangeController';
@@ -92,9 +93,10 @@ type AppState = {
     runningState: RunningState,
     allowedActions: ActionToggleRegister,
     keyBindingsEnabled: boolean,
-    keyboardInputSchemeName: KeyboardInputSchemeName;
+    keyboardInputSchemeName: KeyboardInputSchemeName,
     showKeyboardModal: boolean,
     showSoundOptionsModal: boolean,
+    showThemeSelectorModal: boolean,
     showWorldSelector: boolean,
     showActionsSimplificationMenu: boolean
 };
@@ -121,7 +123,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '1.0';
+        this.version = '1.2';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -396,7 +398,7 @@ export class App extends React.Component<AppProps, AppState> {
             settings: {
                 language: 'en',
                 addNodeExpandedMode: true,
-                theme: 'mixed',
+                theme: 'default',
                 world: this.defaultWorld
             },
             dashConnectionStatus: 'notConnected',
@@ -414,6 +416,7 @@ export class App extends React.Component<AppProps, AppState> {
             keyBindingsEnabled: false,
             showKeyboardModal: false,
             showSoundOptionsModal: false,
+            showThemeSelectorModal: false,
             showWorldSelector: false,
             showActionsSimplificationMenu: false,
             keyboardInputSchemeName: "controlalt"
@@ -865,7 +868,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("changeToDefaultTheme"):
-                            this.setStateSettings({theme: "mixed"});
+                            this.setStateSettings({theme: "default"});
                             break;
                         case("changeToLightTheme"):
                             this.setStateSettings({theme: "light"});
@@ -904,6 +907,10 @@ export class App extends React.Component<AppProps, AppState> {
 
     handleSoundOptionsModalClose = () => {
         this.setState({ showSoundOptionsModal: false });
+    }
+
+    handleClickThemeSelectorIcon = () => {
+        this.setState({ showThemeSelectorModal: true });
     }
 
     // Focus trap escape key handling.
@@ -999,8 +1006,15 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
+    handleSelectTheme = (theme: ThemeName) => {
+        this.setStateSettings({theme});
+    }
+
     handleChangeTheme = (theme: ThemeName) => {
-        this.setStateSettings({ theme });
+        this.setState({
+            showThemeSelectorModal: false,
+            settings: Object.assign({}, this.state.settings, {theme})
+        });
     }
 
     handleChangeCharacterPosition = (positionName: ?string) => {
@@ -1153,11 +1167,18 @@ export class App extends React.Component<AppProps, AppState> {
                                     <AudioIcon className='App__header-soundOptions-icon'/>
                                 </IconButton>
                                 <IconButton
-                                    className="App__header-keyboardMenuIcon focus-keyboardMenuIcon"
+                                    className="App__header-keyboardMenuIcon"
                                     ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
                                     onClick={this.handleClickKeyboardIcon}
                                 >
                                     <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
+                                </IconButton>
+                                <IconButton
+                                    className="App__header-themeSelectorIcon"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'ThemeSelector.iconButton' })}
+                                    onClick={this.handleClickThemeSelectorIcon}
+                                >
+                                    <ThemeIcon className='App__header-theme-icon'/>
                                 </IconButton>
                             </div>
                             {/* Dash connection removed for version 0.5
@@ -1170,7 +1191,6 @@ export class App extends React.Component<AppProps, AppState> {
                                 <FormattedMessage id='App.connectToDash' />
                             </DeviceConnectControl>
                             */}
-                            <ThemeSelector onSelect={this.handleChangeTheme} />
                         </div>
                     </header>
                     {/* Dash connection removed for version 0.5
@@ -1339,6 +1359,11 @@ export class App extends React.Component<AppProps, AppState> {
                     onCancel={this.handleSoundOptionsModalClose}
                     onChangeSoundOptions={this.handleChangeSoundOptions}
                 />
+                <ThemeSelector
+                    show={this.state.showThemeSelectorModal}
+                    currentTheme={this.state.settings.theme}
+                    onSelect={this.handleSelectTheme}
+                    onChange={this.handleChangeTheme}/>
                 <WorldSelector
                     show={this.state.showWorldSelector}
                     currentWorld={this.state.settings.world}
@@ -1411,7 +1436,7 @@ export class App extends React.Component<AppProps, AppState> {
             }
 
             this.setStateSettings({
-                theme: Utils.getThemeFromString(themeQuery, 'mixed'),
+                theme: Utils.getThemeFromString(themeQuery, 'default'),
                 world: Utils.getWorldFromString(worldQuery, this.defaultWorld)
             });
         } else {
@@ -1463,7 +1488,7 @@ export class App extends React.Component<AppProps, AppState> {
             }
 
             this.setStateSettings({
-                theme: Utils.getThemeFromString(localTheme, 'mixed'),
+                theme: Utils.getThemeFromString(localTheme, 'default'),
                 world: Utils.getWorldFromString(localWorld, this.defaultWorld)
             });
         }
