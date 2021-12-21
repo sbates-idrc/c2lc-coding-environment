@@ -31,28 +31,34 @@ export default class ProgramSequence {
         return this.program[index];
     }
 
+    // eslint-disable-next-line no-use-before-define
     updateProgram(program: Program): ProgramSequence {
         return new ProgramSequence(program, this.programCounter);
     }
 
+    // eslint-disable-next-line no-use-before-define
     updateProgramCounter(programCounter: number): ProgramSequence {
         return new ProgramSequence(this.program, programCounter);
     }
 
+    // eslint-disable-next-line no-use-before-define
     updateProgramAndProgramCounter(program: Program, programCounter: number): ProgramSequence {
         return new ProgramSequence(program, programCounter);
     }
 
+    // eslint-disable-next-line no-use-before-define
     incrementProgramCounter(): ProgramSequence {
         return new ProgramSequence(this.program, this.programCounter + 1);
     }
 
+    // eslint-disable-next-line no-use-before-define
     overwriteStep(index: number, command: string): ProgramSequence {
         const program = this.program.slice();
         program[index] = command;
         return this.updateProgram(program);
     }
 
+    // eslint-disable-next-line no-use-before-define
     insertStep(index: number, command: string): ProgramSequence {
         const program = this.program.slice();
         program.splice(index, 0, command);
@@ -63,6 +69,7 @@ export default class ProgramSequence {
         }
     }
 
+    // eslint-disable-next-line no-use-before-define
     deleteStep(index: number): ProgramSequence {
         const program = this.program.slice();
         program.splice(index, 1);
@@ -73,6 +80,7 @@ export default class ProgramSequence {
         }
     }
 
+    // eslint-disable-next-line no-use-before-define
     swapStep(indexFrom: number, indexTo: number): ProgramSequence {
         const program = this.program.slice();
         if (program[indexFrom] != null && program[indexTo] != null) {
