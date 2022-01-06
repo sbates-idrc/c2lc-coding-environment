@@ -18,7 +18,6 @@
     },
     "devDependencies": {
         "flow-bin": "0.142.0",
-        "flow-coverage-report": "0.8.0",
         "markdownlint-cli2": "0.3.2"
     },
     "scripts": {
