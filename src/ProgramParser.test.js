@@ -13,66 +13,66 @@ test('Parse unsupported character', () => {
 });
 
 test('Parse 1', () => {
-    expect((new ProgramParser()).parse('1')).toStrictEqual(['forward1']);
+    expect((new ProgramParser()).parse('1')).toStrictEqual([{block: 'forward1'}]);
 });
 
 test('Parse 2', () => {
-    expect((new ProgramParser()).parse('2')).toStrictEqual(['forward2']);
+    expect((new ProgramParser()).parse('2')).toStrictEqual([{block: 'forward2'}]);
 });
 
 test('Parse 3', () => {
-    expect((new ProgramParser()).parse('3')).toStrictEqual(['forward3']);
+    expect((new ProgramParser()).parse('3')).toStrictEqual([{block: 'forward3'}]);
 });
 
 test('Parse 4', () => {
-    expect((new ProgramParser()).parse('4')).toStrictEqual(['backward1']);
+    expect((new ProgramParser()).parse('4')).toStrictEqual([{block: 'backward1'}]);
 });
 
 test('Parse 5', () => {
-    expect((new ProgramParser()).parse('5')).toStrictEqual(['backward2']);
+    expect((new ProgramParser()).parse('5')).toStrictEqual([{block: 'backward2'}]);
 });
 
 test('Parse 6', () => {
-    expect((new ProgramParser()).parse('6')).toStrictEqual(['backward3']);
+    expect((new ProgramParser()).parse('6')).toStrictEqual([{block: 'backward3'}]);
 });
 
 test('Parse A', () => {
-    expect((new ProgramParser()).parse('A')).toStrictEqual(['left45']);
+    expect((new ProgramParser()).parse('A')).toStrictEqual([{block: 'left45'}]);
 });
 
 test('Parse B', () => {
-    expect((new ProgramParser()).parse('B')).toStrictEqual(['left90']);
+    expect((new ProgramParser()).parse('B')).toStrictEqual([{block: 'left90'}]);
 });
 
 test('Parse D', () => {
-    expect((new ProgramParser()).parse('D')).toStrictEqual(['left180']);
+    expect((new ProgramParser()).parse('D')).toStrictEqual([{block: 'left180'}]);
 });
 
 test('Parse a', () => {
-    expect((new ProgramParser()).parse('a')).toStrictEqual(['right45']);
+    expect((new ProgramParser()).parse('a')).toStrictEqual([{block: 'right45'}]);
 });
 
 test('Parse b', () => {
-    expect((new ProgramParser()).parse('b')).toStrictEqual(['right90']);
+    expect((new ProgramParser()).parse('b')).toStrictEqual([{block: 'right90'}]);
 });
 
 test('Parse d', () => {
-    expect((new ProgramParser()).parse('d')).toStrictEqual(['right180']);
+    expect((new ProgramParser()).parse('d')).toStrictEqual([{block: 'right180'}]);
 });
 
 test('Parse program with multiple commands', () => {
     expect((new ProgramParser()).parse('123456ABDabd')).toStrictEqual([
-        'forward1',
-        'forward2',
-        'forward3',
-        'backward1',
-        'backward2',
-        'backward3',
-        'left45',
-        'left90',
-        'left180',
-        'right45',
-        'right90',
-        'right180'
+        {block: 'forward1'},
+        {block: 'forward2'},
+        {block: 'forward3'},
+        {block: 'backward1'},
+        {block: 'backward2'},
+        {block: 'backward3'},
+        {block: 'left45'},
+        {block: 'left90'},
+        {block: 'left180'},
+        {block: 'right45'},
+        {block: 'right90'},
+        {block: 'right180'}
     ]);
 });

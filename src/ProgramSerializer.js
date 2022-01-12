@@ -13,7 +13,8 @@ export default class ProgramSerializer {
     serialize(program: Program): string {
         let programText = '';
         for (let i=0; i<program.length; i++) {
-            switch(program[i]) {
+            const programCommandBlock = program[i].block;
+            switch(programCommandBlock) {
                 case ('forward1') :
                     programText += '1';
                     break;
@@ -51,7 +52,7 @@ export default class ProgramSerializer {
                     programText += 'd'
                     break;
                 default:
-                    throw new Error(`Unrecognized program command when serializing program: ${program[i]}`);
+                    throw new Error(`Unrecognized program command when serializing program: ${programCommandBlock}`);
             }
         }
         return programText;

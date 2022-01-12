@@ -98,7 +98,8 @@ export default class Interpreter {
         });
     }
 
-    doCommand(command: string): Promise<any> {
+    doCommand(programStep: any): Promise<any> {
+        const command = programStep.block;
         const handlers = this.lookUpCommandHandlers(command);
         if (handlers.length === 0) {
             return Promise.reject(new Error(`Unknown command: ${command}`));

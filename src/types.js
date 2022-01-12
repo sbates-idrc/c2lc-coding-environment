@@ -26,7 +26,7 @@ export type EditorMode = 'text' | 'block';
 */
 export type ThemeName = 'default' | 'light' | 'dark' | 'gray' | 'contrast';
 
-export type Program = Array<string>;
+export type Program = Array<any>;
 
 // use running, paused, stopped
 export type RunningState = 'running' | 'stopRequested' | 'stopped' | 'pauseRequested' | 'paused';

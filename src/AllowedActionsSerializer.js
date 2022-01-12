@@ -18,7 +18,9 @@ export default class AllowedActionsSerializer {
         const registerAsProgram: Program = [];
         for (const [actionKey, isAllowed] of Object.entries(actionToggleRegister)) {
             if (isAllowed) {
-                registerAsProgram.push(actionKey);
+                registerAsProgram.push({
+                    block: actionKey
+                });
             }
         }
         return this.programSerializer.serialize(registerAsProgram);
@@ -28,7 +30,7 @@ export default class AllowedActionsSerializer {
         const program = this.programSerializer.deserialize(allowedActionsText);
         const actionToggleRegister = {};
         program.forEach((allowedActionKey) => {
-            actionToggleRegister[allowedActionKey] = true;
+            actionToggleRegister[allowedActionKey.block] = true;
         });
         return actionToggleRegister;
     }
