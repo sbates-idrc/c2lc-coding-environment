@@ -47,7 +47,7 @@ test('Step a program with 1 command', (done) => {
     interpreter.step(new ProgramSequence([{block: 'command'}], 0)).then(() => {
         expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
         // Test step at end of program
-        interpreter.step(new ProgramSequence([{blcok: 'command'}], 1)).then(() => {
+        interpreter.step(new ProgramSequence([{block: 'command'}], 1)).then(() => {
             expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
             expect(mockCommandHandler.mock.calls.length).toBe(1);
             done();
@@ -60,7 +60,7 @@ test('Step a program with 2 commands', (done) => {
     const mockCommandHandler = createMockCommandHandler();
     interpreter.addCommandHandler('command', 'test', mockCommandHandler);
 
-    interpreter.step(new ProgramSequence([{block: 'command'}, {blcok: 'command'}], 0)).then(() => {
+    interpreter.step(new ProgramSequence([{block: 'command'}, {block: 'command'}], 0)).then(() => {
         expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
         expect(mockCommandHandler.mock.calls.length).toBe(1);
         interpreter.step(new ProgramSequence([{block: 'command'}, {block: 'command'}], 1)).then(() => {

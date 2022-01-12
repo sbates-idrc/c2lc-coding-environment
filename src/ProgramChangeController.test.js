@@ -227,7 +227,7 @@ describe('Test deleteProgramStep()', () => {
     });
 
     test('When deleting the step at the end, then focus is set to the add-node after the program', (done) => {
-        //expect.assertions(7);
+        expect.assertions(7);
 
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
