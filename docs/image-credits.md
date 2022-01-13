@@ -3,13 +3,13 @@
 The "landmarks" world in Weavly uses a number of third-party images. Most of the
 images used on the World Landmarks map are designated as
 [CC0 1.0 Universal (CC0 1.0)](https://creativecommons.org/publicdomain/zero/1.0/).
-Here is the description for this designation: 
+Here is the description for this designation:
 
 > The person who associated a work with this deed has dedicated the work to the
 > public domain by waiving all of his or her rights to the work worldwide under
 > copyright law, including all related and neighboring rights, to the extent
 > allowed by law. You can copy, modify, distribute and perform the work, even
-> for commercial purposes, all without asking permission. 
+> for commercial purposes, all without asking permission.
 
 We have credited the author when this information was provided.
 
@@ -40,7 +40,6 @@ Click on the image thumbnail to view the original.
 | [![Machu Picchu](images/machu-picchu.jpg)](https://flic.kr/p/2bu4GkA) | Machu Picchu | [Wasif Malik](https://www.flickr.com/photos/wasifmalik/) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [![Moai Statues](images/moai-statues.jpg)](https://flic.kr/p/9iuVoX) | Moai Statues | [Mike B in Colorado](https://www.flickr.com/photos/63042497@N00/) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [![Niagara Falls](images/niagara-falls.jpg)](https://flic.kr/p/CtWtdh) | Niagara Falls | [Werner Bayer](https://www.flickr.com/photos/wbayercom/) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
-‘’ by  is marked with CC0 1.0.
 | [![Paşabağ](images/pasabag.jpg)](https://flic.kr/p/2aSC6Wq) | Paşabağ | [Feridun F. Alkaya](https://www.flickr.com/photos/feridun_f_alkaya/) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [![St. Basil’s Cathedral on Red Square in Moscow](images/st-basils-cathedral.jpg)](https://flic.kr/p/2jsKukd) | St. Basil’s Cathedral<br/>on Red Square in Moscow | [Artem Beliaikin](https://www.flickr.com/photos/artembali/) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
 | [![Statue of Liberty](images/statue-of-liberty.jpg)](https://flic.kr/p/21RsmfF) | Statue of Liberty | [Claudia Saffar](https://www.flickr.com/photos/153667655@N08/) | [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/) |
