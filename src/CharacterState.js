@@ -60,7 +60,6 @@ export default class CharacterState {
         return true;
     }
 
-    // eslint-disable-next-line no-use-before-define
     forward(distance: number, drawingEnabled: boolean): CharacterState {
         const movementResult = this.calculateMove(distance, this.direction, drawingEnabled);
         return new CharacterState(
@@ -72,7 +71,6 @@ export default class CharacterState {
         );
     }
 
-    // eslint-disable-next-line no-use-before-define
     backward(distance: number, drawingEnabled: boolean): CharacterState {
         const movementResult = this.calculateMove(distance,
                 C2lcMath.wrap(0, 8, this.direction + 4), drawingEnabled);
@@ -85,7 +83,6 @@ export default class CharacterState {
         );
     }
 
-    // eslint-disable-next-line no-use-before-define
     turnLeft(amountEighthsOfTurn: number): CharacterState {
         return new CharacterState(
             this.xPos,
@@ -96,7 +93,6 @@ export default class CharacterState {
         );
     }
 
-    // eslint-disable-next-line no-use-before-define
     turnRight(amountEighthsOfTurn: number): CharacterState {
         return new CharacterState(
             this.xPos,
@@ -107,7 +103,6 @@ export default class CharacterState {
         );
     }
 
-    // eslint-disable-next-line no-use-before-define
     moveUpPosition(): CharacterState {
         let yPos = 0;
         if (this.sceneDimensions.getBoundsStateY(this.yPos - 1) === 'outOfBoundsBelow') {
@@ -124,7 +119,6 @@ export default class CharacterState {
         );
     }
 
-    // eslint-disable-next-line no-use-before-define
     moveRightPosition(): CharacterState {
         let xPos = 0;
         if (this.sceneDimensions.getBoundsStateX(this.xPos + 1) === 'outOfBoundsAbove') {
@@ -141,7 +135,6 @@ export default class CharacterState {
         );
     }
 
-    // eslint-disable-next-line no-use-before-define
     moveDownPosition(): CharacterState {
         let yPos = 0;
         if (this.sceneDimensions.getBoundsStateY(this.yPos + 1) === 'outOfBoundsAbove') {
@@ -158,7 +151,6 @@ export default class CharacterState {
         );
     }
 
-    // eslint-disable-next-line no-use-before-define
     moveLeftPosition(): CharacterState {
         let xPos = 0;
         if (this.sceneDimensions.getBoundsStateY(this.xPos - 1) === 'outOfBoundsBelow') {
@@ -175,7 +167,6 @@ export default class CharacterState {
         );
     }
 
-    // eslint-disable-next-line no-use-before-define
     changeXPosition(columnLabel: string): CharacterState {
         let newXPos = this.xPos;
         if (columnLabel <= String.fromCharCode(64 + this.sceneDimensions.getWidth()) && columnLabel >='A') {
@@ -192,7 +183,6 @@ export default class CharacterState {
         );
     }
 
-    // eslint-disable-next-line no-use-before-define
     changeYPosition(rowLabel: number): CharacterState {
         let newYPos = this.yPos;
         if (rowLabel <= this.sceneDimensions.getHeight() && rowLabel >= 1) {
