@@ -1,6 +1,6 @@
 // @flow
 
-import type { CommandName, Program } from './types';
+import type { CommandName, Program, ProgramBlock } from './types';
 
 export default class ProgramSequence {
     program: Program;
@@ -23,11 +23,11 @@ export default class ProgramSequence {
         return this.programCounter;
     }
 
-    getCurrentProgramStep(): any {
+    getCurrentProgramStep(): ProgramBlock {
         return this.program[this.programCounter];
     }
 
-    getProgramStepAt(index: number): any {
+    getProgramStepAt(index: number): ProgramBlock {
         return this.program[index];
     }
 

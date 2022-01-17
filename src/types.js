@@ -26,7 +26,11 @@ export type EditorMode = 'text' | 'block';
 */
 export type ThemeName = 'default' | 'light' | 'dark' | 'gray' | 'contrast';
 
-export type Program = Array<any>;
+export type ProgramBlock = {
+    block: string
+};
+
+export type Program = Array<ProgramBlock>;
 
 // use running, paused, stopped
 export type RunningState = 'running' | 'stopRequested' | 'stopped' | 'pauseRequested' | 'paused';
@@ -124,5 +128,6 @@ export type ActionToggleRegister = {
     left180?: boolean,
     right45?: boolean,
     right90?: boolean,
-    right180?: boolean
+    right180?: boolean,
+    loop?: boolean
 };
