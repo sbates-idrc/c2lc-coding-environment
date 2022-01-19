@@ -93,4 +93,16 @@ function focusByQuerySelector (selectors: string) {
     }
 }
 
-export { extend, focusByQuerySelector, generateId, makeDelayedPromise, generateEncodedProgramURL, getThemeFromString, getWorldFromString };
+function generateLoopLabel (loopCounter: number): string {
+    let adjustedValue = loopCounter;
+    let loopLabel = '';
+    while (adjustedValue > 0) {
+        adjustedValue--;
+        loopLabel = String.fromCharCode(65 + adjustedValue % 26) + loopLabel;
+        adjustedValue = Math.floor(adjustedValue / 26);
+    }
+    return loopLabel;
+};
+
+
+export { extend, focusByQuerySelector, generateId, makeDelayedPromise, generateEncodedProgramURL, getThemeFromString, getWorldFromString, generateLoopLabel };

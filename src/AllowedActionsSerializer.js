@@ -49,6 +49,9 @@ export default class AllowedActionsSerializer {
                     case ('right180') :
                         serializedAllowedActions += 'd';
                         break;
+                    case ('loop') :
+                        serializedAllowedActions += 'l';
+                        break;
                     default:
                         throw new Error(`Unrecognized actionKey when serializing actionKey: ${actionKey}`);
                 }
@@ -96,6 +99,9 @@ export default class AllowedActionsSerializer {
                     break;
                 case 'd':
                     actionToggleRegister['right180'] = true;
+                    break;
+                case 'l':
+                    actionToggleRegister['loop'] = true;
                     break;
                 default:
                     throw new Error(`Unrecognized allowedActions text when deserialize text: ${allowedActionsText.charAt(i)}`);

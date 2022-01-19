@@ -1,14 +1,17 @@
 // @flow
 
+import { generateLoopLabel } from './Utils';
 import type { CommandName, Program, ProgramBlock } from './types';
 
 export default class ProgramSequence {
     program: Program;
     programCounter: number;
+    loopCounter: number;
 
-    constructor(program: Program, programCounter: number) {
+    constructor(program: Program, programCounter: number, loopCounter: number) {
         this.program = program;
         this.programCounter = programCounter;
+        this.loopCounter = loopCounter;
     }
 
     getProgram(): Program {
@@ -32,19 +35,19 @@ export default class ProgramSequence {
     }
 
     updateProgram(program: Program): ProgramSequence {
-        return new ProgramSequence(program, this.programCounter);
+        return new ProgramSequence(program, this.programCounter, this.loopCounter);
     }
 
     updateProgramCounter(programCounter: number): ProgramSequence {
-        return new ProgramSequence(this.program, programCounter);
+        return new ProgramSequence(this.program, programCounter, this.loopCounter);
     }
 
     updateProgramAndProgramCounter(program: Program, programCounter: number): ProgramSequence {
-        return new ProgramSequence(program, programCounter);
+        return new ProgramSequence(program, programCounter, this.loopCounter);
     }
 
     incrementProgramCounter(): ProgramSequence {
-        return new ProgramSequence(this.program, this.programCounter + 1);
+        return new ProgramSequence(this.program, this.programCounter + 1, this.loopCounter);
     }
 
     overwriteStep(index: number, command: string): ProgramSequence {
@@ -55,10 +58,26 @@ export default class ProgramSequence {
 
     insertStep(index: number, command: string): ProgramSequence {
         const program = this.program.slice();
-        const commandObject = {
-            block: command
-        };
-        program.splice(index, 0, commandObject);
+        if (command === 'loop') {
+            this.loopCounter++;
+            /* eslint-disable no-console */
+            console.log(this.loopCounter);
+            const loopStartObject = {
+                block: 'loopStart',
+                iterations: 1,
+                label: generateLoopLabel(this.loopCounter)
+            };
+            const loopEndObject = {
+                block: 'loopEnd',
+                label: generateLoopLabel(this.loopCounter)
+            };
+            program.splice(index, 0, loopStartObject, loopEndObject);
+        } else {
+            const commandObject = {
+                block: command
+            };
+            program.splice(index, 0, commandObject);
+        }
         if (index <= this.programCounter) {
             return this.updateProgramAndProgramCounter(program, this.programCounter + 1);
         } else {

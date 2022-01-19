@@ -34,22 +34,35 @@ export default class ProgramSerializer {
                     programText += '6';
                     break;
                 case ('left45') :
-                    programText += 'A'
+                    programText += 'A';
                     break;
                 case ('left90') :
-                    programText += 'B'
+                    programText += 'B';
                     break;
                 case ('left180') :
-                    programText += 'D'
+                    programText += 'D';
                     break;
                 case ('right45') :
-                    programText += 'a'
+                    programText += 'a';
                     break;
                 case ('right90') :
-                    programText += 'b'
+                    programText += 'b';
                     break;
                 case ('right180') :
-                    programText += 'd'
+                    programText += 'd';
+                    break;
+                case ('loopStart') :
+                    programText += 's';
+                    if (program[i].iterations && program[i].label) {
+                        const label = program[i].label;
+                        const iterations = program[i].iterations;
+                        programText += label;
+                        programText += iterations;
+                    }
+                    programText += 's';
+                    break;
+                case ('loopEnd') :
+                    programText += 'z';
                     break;
                 default:
                     throw new Error(`Unrecognized program command when serializing program: ${programCommandBlock}`);

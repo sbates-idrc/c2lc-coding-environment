@@ -6,6 +6,7 @@ type ProgramToken = 'forward1' | 'forward2' | 'forward3' |
                     'backward1' | 'backward2' | 'backward3' |
                     'left45' | 'left90' | 'left180' |
                     'right45' | 'right90' | 'right180' |
+                    'loopStart' | 'loopEnd' |
                     'eof';
 
 export default class ProgramParser {
@@ -72,6 +73,12 @@ export default class ProgramParser {
             case 'd':
                 this.nextCh();
                 return 'right180';
+            case 's':
+                this.nextCh();
+                return 'loopStart';
+            case 'z':
+                this.nextCh();
+                return 'loopEnd';
             default:
                 throw new Error(`Unexpected character: ${this.ch}`);
         }
