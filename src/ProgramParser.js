@@ -13,11 +13,15 @@ export default class ProgramParser {
     text: string;
     textIndex: number;
     ch: string;
+    currentLoopLabel: string;
+    currentLoopIterations: string;
 
     constructor() {
         this.text = '';
         this.textIndex = 0;
         this.ch = 'eof';
+        this.currentLoopLabel = '';
+        this.currentLoopIterations = '';
     }
 
     parse(text: string): Program {
@@ -28,6 +32,15 @@ export default class ProgramParser {
         const program  = [];
         let token = this.getToken();
         while (token !== 'eof') {
+            if (token === 'loopStart') {
+                program.push({
+                    block: token,
+                    iterations: parseInt(this.currentLoopIterations, 10),
+                    label: this.currentLoopLabel
+                });
+                this.currentLoopLabel = '';
+                this.currentLoopIterations = '';
+            }
             program.push({block: token});
             token = this.getToken();
         }
@@ -75,6 +88,14 @@ export default class ProgramParser {
                 return 'right180';
             case 's':
                 this.nextCh();
+                while(this.ch !== 's') {
+                    if (this.ch >= '0' && this.ch <= '9') {
+                        this.currentLoopIterations += this.ch;
+                    } else {
+                        this.currentLoopLabel += this.ch;
+                    }
+                    this.nextCh();
+                }
                 return 'loopStart';
             case 'z':
                 this.nextCh();
