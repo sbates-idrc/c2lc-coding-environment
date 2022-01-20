@@ -1,6 +1,6 @@
 // @flow
 
-import { extend, generateEncodedProgramURL, getThemeFromString, getWorldFromString, focusByQuerySelector } from './Utils.js';
+import { extend, generateEncodedProgramURL, getThemeFromString, getWorldFromString, focusByQuerySelector, generateLoopLabel, parseLoopLabel } from './Utils.js';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { mount, configure } from 'enzyme';
@@ -71,4 +71,24 @@ test('Test focusByQuerySelector', () => {
 
     // make sure to detach after attach
     testFixture.detach();
+});
+
+test('generateLoopLabel', () => {
+    expect(generateLoopLabel(1)).toEqual('A');
+    expect(generateLoopLabel(2)).toEqual('B');
+    expect(generateLoopLabel(26)).toEqual('Z');
+    expect(generateLoopLabel(27)).toEqual('AA');
+    expect(generateLoopLabel(28)).toEqual('AB');
+    expect(generateLoopLabel(52)).toEqual('AZ');
+    expect(generateLoopLabel(53)).toEqual('BA');
+});
+
+test('parseLoopLabel', () => {
+    expect(parseLoopLabel('A')).toEqual(1);
+    expect(parseLoopLabel('B')).toEqual(2);
+    expect(parseLoopLabel('Z')).toEqual(26);
+    expect(parseLoopLabel('AA')).toEqual(27);
+    expect(parseLoopLabel('AB')).toEqual(28);
+    expect(parseLoopLabel('AZ')).toEqual(52);
+    expect(parseLoopLabel('BA')).toEqual(53);
 });

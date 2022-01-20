@@ -43,8 +43,8 @@ export const commandBlockIconTypes = new Map<string, any>([
     ['right90', Right90],
     ['right180', Right180],
     ['loop', Loop],
-    ['loopStart', LoopStart],
-    ['loopEnd', LoopEnd]
+    ['startLoop', LoopStart],
+    ['endLoop', LoopEnd]
 ]);
 
 export default React.forwardRef<CommandBlockProps, Button>(

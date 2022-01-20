@@ -1,6 +1,7 @@
 // @flow
 
 import type {Program} from './types';
+import type {ProgramParserResult} from './ProgramParser';
 import ProgramParser from './ProgramParser';
 
 export default class ProgramSerializer {
@@ -51,7 +52,7 @@ export default class ProgramSerializer {
                 case ('right180') :
                     programText += 'd';
                     break;
-                case ('loopStart') :
+                case ('startLoop') :
                     programText += 's';
                     if (program[i].iterations && program[i].label) {
                         const label = program[i].label;
@@ -61,7 +62,7 @@ export default class ProgramSerializer {
                     }
                     programText += 's';
                     break;
-                case ('loopEnd') :
+                case ('endLoop') :
                     programText += 'z';
                     break;
                 default:
@@ -71,7 +72,7 @@ export default class ProgramSerializer {
         return programText;
     }
 
-    deserialize(programText: string): Program {
+    deserialize(programText: string): ProgramParserResult {
         return this.programParser.parse(programText);
     }
 };

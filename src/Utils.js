@@ -86,14 +86,14 @@ function extend(...toMerge:Object) {
     return merged;
 }
 
-function focusByQuerySelector (selectors: string) {
+function focusByQuerySelector(selectors: string) {
     const element = document.querySelector(selectors);
     if (element && element.focus) {
         element.focus();
     }
 }
 
-function generateLoopLabel (loopCounter: number): string {
+function generateLoopLabel(loopCounter: number): string {
     let adjustedValue = loopCounter;
     let loopLabel = '';
     while (adjustedValue > 0) {
@@ -104,5 +104,14 @@ function generateLoopLabel (loopCounter: number): string {
     return loopLabel;
 };
 
+function parseLoopLabel(label: string): number {
+    let n = 0;
+    while (label.length > 0) {
+        n *= 26;
+        n += label.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
+        label = label.substring(1);
+    }
+    return n;
+};
 
-export { extend, focusByQuerySelector, generateId, makeDelayedPromise, generateEncodedProgramURL, getThemeFromString, getWorldFromString, generateLoopLabel };
+export { extend, focusByQuerySelector, generateId, makeDelayedPromise, generateEncodedProgramURL, getThemeFromString, getWorldFromString, generateLoopLabel, parseLoopLabel };

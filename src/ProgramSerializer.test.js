@@ -32,8 +32,14 @@ test('Serializing an unsupported command should throw an Error', () => {
 
 test('Deserialize program', () => {
     const programSerializer = new ProgramSerializer();
-    expect(programSerializer.deserialize('')).toStrictEqual([]);
-    expect(programSerializer.deserialize('21a')).toStrictEqual([{block: 'forward2'}, {block: 'forward1'}, {block: 'right45'}]);
+    expect(programSerializer.deserialize('')).toStrictEqual({
+        program: [],
+        highestLoopNumber: 0
+    });
+    expect(programSerializer.deserialize('21a')).toStrictEqual({
+        program: [{block: 'forward2'}, {block: 'forward1'}, {block: 'right45'}],
+        highestLoopNumber: 0
+    });
 });
 
 test('Roundtrip program', () => {
@@ -43,5 +49,7 @@ test('Roundtrip program', () => {
         {block: 'left45'}, {block: 'left90'}, {block: 'left180'},
         {block: 'right45'}, {block: 'right90'}, {block: 'right180'}
     ];
-    expect(programSerializer.deserialize(programSerializer.serialize(program))).toStrictEqual(program);
+    const parseResult = programSerializer.deserialize(programSerializer.serialize(program));
+    expect(parseResult.program).toStrictEqual(program);
+    expect(parseResult.highestLoopNumber).toEqual(0);
 });

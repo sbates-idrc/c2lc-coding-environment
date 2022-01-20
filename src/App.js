@@ -381,7 +381,7 @@ export class App extends React.Component<AppProps, AppState> {
         );
 
         this.interpreter.addCommandHandler(
-            'loopStart',
+            'startLoop',
             'repeatCommand',
             (stepTimeMs) => {
                 /* eslint-disable no-console */
@@ -392,7 +392,7 @@ export class App extends React.Component<AppProps, AppState> {
         );
 
         this.interpreter.addCommandHandler(
-            'loopEnd',
+            'endLoop',
             'repeatCommand',
             (stepTimeMs) => {
                 /* eslint-disable no-console */
@@ -1406,7 +1406,12 @@ export class App extends React.Component<AppProps, AppState> {
 
             if (programQuery != null) {
                 try {
-                    const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(programQuery), 0, 0);
+                    const parseResult = this.programSerializer.deserialize(programQuery);
+                    const programSequence: ProgramSequence = new ProgramSequence(
+                        parseResult.program,
+                        0,
+                        parseResult.highestLoopNumber
+                    );
                     this.setState({
                         programSequence: programSequence
                     });
@@ -1457,7 +1462,12 @@ export class App extends React.Component<AppProps, AppState> {
 
             if (localProgram != null) {
                 try {
-                    const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(localProgram), 0, 0);
+                    const parseResult = this.programSerializer.deserialize(localProgram);
+                    const programSequence: ProgramSequence = new ProgramSequence(
+                        parseResult.program,
+                        0,
+                        parseResult.highestLoopNumber
+                    );
                     this.setState({
                         programSequence: programSequence
                     });

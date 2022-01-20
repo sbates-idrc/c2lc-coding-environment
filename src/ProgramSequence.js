@@ -62,16 +62,16 @@ export default class ProgramSequence {
             this.loopCounter++;
             /* eslint-disable no-console */
             console.log(this.loopCounter);
-            const loopStartObject = {
-                block: 'loopStart',
+            const startLoopObject = {
+                block: 'startLoop',
                 iterations: 1,
                 label: generateLoopLabel(this.loopCounter)
             };
-            const loopEndObject = {
-                block: 'loopEnd',
+            const endLoopObject = {
+                block: 'endLoop',
                 label: generateLoopLabel(this.loopCounter)
             };
-            program.splice(index, 0, loopStartObject, loopEndObject);
+            program.splice(index, 0, startLoopObject, endLoopObject);
         } else {
             const commandObject = {
                 block: command
