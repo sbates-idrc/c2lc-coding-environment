@@ -3,12 +3,6 @@
 import type { Program, ProgramBlock } from './types';
 import { parseLoopLabel } from './Utils';
 
-// TODO: Set label on endLoop blocks
-// TODO: If the loop label stack is empty when processing an endLoop,
-//       throw an Error: endLoop without startLoop
-// TODO: If the loop label stack is not empty at the end of the program,
-//       throw an Error: startLoop without endLoop
-
 export type ProgramParserResult = {
     program: Program,
     highestLoopNumber: number
@@ -20,6 +14,7 @@ export default class ProgramParser {
     ch: ?string;
     labelsUsed: Set<string>;
     highestLoopNumber: number;
+    loopLabels: Array<string>;
 
     constructor() {
         this.text = '';
@@ -27,6 +22,7 @@ export default class ProgramParser {
         this.ch = null;
         this.labelsUsed = new Set();
         this.highestLoopNumber = 0;
+        this.loopLabels = [];
     }
 
     parse(text: string): ProgramParserResult {
@@ -35,12 +31,16 @@ export default class ProgramParser {
         this.labelsUsed.clear();
         this.highestLoopNumber = 0;
         this.nextCh();
+        this.loopLabels = [];
 
         const program  = [];
         let block = this.getNextBlock();
         while (block) {
             program.push(block);
             block = this.getNextBlock();
+        }
+        if (this.loopLabels.length > 0) {
+            throw new Error('startLoop without endLoop');
         }
         return {
             program: program,
@@ -93,8 +93,7 @@ export default class ProgramParser {
             case 's':
                 return this.getStartLoop();
             case 'z':
-                this.nextCh();
-                return { block: 'endLoop' };
+                return this.getEndLoop();
             default:
                 throw new Error(`Unexpected character: ${this.ch}`);
         }
@@ -142,7 +141,7 @@ export default class ProgramParser {
 
         // Check the number of iterations
         if (iterations > 99) {
-            throw new Error(`Loop has too many iteraions: ${iterations}`);
+            throw new Error(`Loop has too many iterations: ${iterations}`);
         }
 
         // Check for terminating 's'
@@ -156,6 +155,9 @@ export default class ProgramParser {
         // Record the loop label
         this.labelsUsed.add(label);
 
+        // Stack the loop label for its endLoop pair
+        this.loopLabels.push(label);
+
         // Update highestLoopNumber as needed
         const loopNumber = parseLoopLabel(label);
         if (loopNumber > this.highestLoopNumber) {
@@ -166,6 +168,21 @@ export default class ProgramParser {
             block: 'startLoop',
             iterations: iterations,
             label: label
+        };
+    }
+
+    getEndLoop(): ProgramBlock {
+        // Consume the z
+        this.nextCh();
+
+        const loopLabel = this.loopLabels.pop();
+        // Program has more end loop blocks than start loop blocks
+        if (loopLabel == null) {
+            throw new Error("endLoop without startLoop");
+        }
+        return {
+            block: 'endLoop',
+            label: loopLabel
         };
     }
 

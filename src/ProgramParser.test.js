@@ -100,22 +100,30 @@ test('Parse d', () => {
 });
 
 test('Parse startLoop', () => {
-    expect((new ProgramParser()).parse('sA1s')).toStrictEqual({
+    expect((new ProgramParser()).parse('sA1sz')).toStrictEqual({
         program: [
             {
                 block: 'startLoop',
                 iterations: 1,
+                label: 'A'
+            },
+            {
+                block: 'endLoop',
                 label: 'A'
             }
         ],
         highestLoopNumber: 1
     });
 
-    expect((new ProgramParser()).parse('sAA12s')).toStrictEqual({
+    expect((new ProgramParser()).parse('sAA12sz')).toStrictEqual({
         program: [
             {
                 block: 'startLoop',
                 iterations: 12,
+                label: 'AA'
+            },
+            {
+                block: 'endLoop',
                 label: 'AA'
             }
         ],
@@ -152,7 +160,7 @@ test('Parse startLoop', () => {
 
     expect(() => {
         (new ProgramParser()).parse('sA100s');
-    }).toThrowError(/^Loop has too many iteraions: 100$/);
+    }).toThrowError(/^Loop has too many iterations: 100$/);
 
     expect(() => {
         (new ProgramParser()).parse('sA1');
@@ -161,6 +169,40 @@ test('Parse startLoop', () => {
     expect(() => {
         (new ProgramParser()).parse('sA1x');
     }).toThrowError(/^Missing startLoop terminating 's'$/);
+});
+
+test('Parse invalid loop', () => {
+    expect(() => {
+        (new ProgramParser()).parse('sA1szz');
+    }).toThrowError(/^endLoop without startLoop$/);
+
+    expect(() => {
+        (new ProgramParser()).parse('sA1szsB2s');
+    }).toThrowError(/^startLoop without endLoop$/);
+});
+
+test('Parse program with multiple loops', () => {
+    expect((new ProgramParser()).parse('sA1szsB1sz')).toStrictEqual({
+        program: [
+            {block: 'startLoop', iterations: 1, label: 'A'},
+            {block: 'endLoop', label: 'A'},
+            {block: 'startLoop', iterations: 1, label: 'B'},
+            {block: 'endLoop', label: 'B'},
+        ],
+        highestLoopNumber: 2
+    });
+});
+
+test('Parse program with nested loops', () => {
+    expect((new ProgramParser()).parse('sA1ssB2szz')).toStrictEqual({
+        program: [
+            {block: 'startLoop', iterations: 1, label: 'A'},
+            {block: 'startLoop', iterations: 2, label: 'B'},
+            {block: 'endLoop', label: 'B'},
+            {block: 'endLoop', label: 'A'}
+        ],
+        highestLoopNumber: 2
+    });
 });
 
 test('Parse program with multiple commands', () => {
@@ -179,7 +221,7 @@ test('Parse program with multiple commands', () => {
             {block: 'right90'},
             {block: 'right180'},
             {block: 'startLoop', iterations: 1, label: 'A'},
-            {block: 'endLoop'}
+            {block: 'endLoop', label: 'A'}
         ],
         highestLoopNumber: 1
     });
