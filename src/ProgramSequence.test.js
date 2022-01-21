@@ -78,18 +78,19 @@ test.each([
 );
 
 test.each([
-    [[], 0, 0, [{block: 'left45'}], 1],
-    [[{block: 'forward1'}], 0, 0, [{block: 'left45'}, {block: 'forward1'}], 1],
-    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 0, [{block: 'left45'}, {block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 2],
-    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 1, [{block: 'forward1'}, {block: 'left45'}, {block: 'forward2'}, {block: 'forward3'}], 2],
-    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 2, [{block: 'forward1'}, {block: 'forward2'}, {block: 'left45'}, {block: 'forward3'}], 1]
+    [[], 0, 0, [{block: 'left45'}], 1, 'left45'],
+    [[{block: 'forward1'}], 0, 0, [{block: 'left45'}, {block: 'forward1'}], 1, 'left45'],
+    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 0, [{block: 'left45'}, {block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 2, 'left45'],
+    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 1, [{block: 'forward1'}, {block: 'left45'}, {block: 'forward2'}, {block: 'forward3'}], 2, 'left45'],
+    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 2, [{block: 'forward1'}, {block: 'forward2'}, {block: 'left45'}, {block: 'forward3'}], 1, 'left45'],
+    [[], 0, 0, [{block: 'startLoop', iterations: 1, label: 'A'}, {block: 'endLoop', label: 'A'}], 1, 'loop']
 ])('insertStep',
     (program: Program, programCounter: number, index: number,
-        expectedProgram: Program, expectedProgramCounter: number) => {
+        expectedProgram: Program, expectedProgramCounter: number, commandName: string) => {
         expect.assertions(3);
         const programBefore = program.slice();
         const programSequence = new ProgramSequence(program, programCounter, 0);
-        const result = programSequence.insertStep(index, 'left45');
+        const result = programSequence.insertStep(index, commandName);
         expect(result.getProgram()).toStrictEqual(expectedProgram);
         expect(result.getProgramCounter()).toBe(expectedProgramCounter);
         expect(programSequence.getProgram()).toStrictEqual(programBefore);
