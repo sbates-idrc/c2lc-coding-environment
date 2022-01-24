@@ -27,7 +27,7 @@ export default class ProgramParser {
         const program  = [];
         let token = this.getToken();
         while (token !== 'eof') {
-            program.push(token);
+            program.push({block: token});
             token = this.getToken();
         }
         return program;

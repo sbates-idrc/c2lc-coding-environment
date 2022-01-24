@@ -1,6 +1,6 @@
 // @flow
 
-import type { CommandName, Program } from './types';
+import type { CommandName, Program, ProgramBlock } from './types';
 
 export default class ProgramSequence {
     program: Program;
@@ -23,11 +23,11 @@ export default class ProgramSequence {
         return this.programCounter;
     }
 
-    getCurrentProgramStep(): string {
+    getCurrentProgramStep(): ProgramBlock {
         return this.program[this.programCounter];
     }
 
-    getProgramStepAt(index: number): string {
+    getProgramStepAt(index: number): ProgramBlock {
         return this.program[index];
     }
 
@@ -49,13 +49,16 @@ export default class ProgramSequence {
 
     overwriteStep(index: number, command: string): ProgramSequence {
         const program = this.program.slice();
-        program[index] = command;
+        program[index] = {block: command};
         return this.updateProgram(program);
     }
 
     insertStep(index: number, command: string): ProgramSequence {
         const program = this.program.slice();
-        program.splice(index, 0, command);
+        const commandObject = {
+            block: command
+        };
+        program.splice(index, 0, commandObject);
         if (index <= this.programCounter) {
             return this.updateProgramAndProgramCounter(program, this.programCounter + 1);
         } else {
@@ -85,7 +88,7 @@ export default class ProgramSequence {
 
     usesAction(action: CommandName): boolean {
         for (let index = 0; index < this.program.length; index++) {
-            if (this.program[index] === action) { return true; }
+            if (this.program[index].block === action) { return true; }
         }
 
         return false;

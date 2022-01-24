@@ -214,14 +214,15 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
     handleActionPanelDeleteStep = (index: number) => {
         this.props.onDeleteProgramStep(index,
-            this.props.programSequence.getProgramStepAt(index));
+            this.props.programSequence.getProgramStepAt(index).block);
         this.closeActionPanel();
     };
 
     handleActionPanelReplaceStep = (index: number) => {
         if (this.props.selectedAction) {
-            if (this.props.programSequence.getProgramStepAt(index) !== this.props.selectedAction) {
-                const oldCommandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.programSequence.getProgramStepAt(index)});
+            const programStep = this.props.programSequence.getProgramStepAt(index);
+            if (programStep.block !== this.props.selectedAction) {
+                const oldCommandString = this.props.intl.formatMessage({ id: "Announcement." + programStep.block});
                 //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
                 const newCommandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.selectedAction});
 
@@ -253,8 +254,9 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
     handleActionPanelMoveToPreviousStep = (index: number) => {
         this.props.audioManager.playAnnouncement('moveToPrevious', this.props.intl);
-        if (this.props.programSequence.getProgramStepAt(index - 1) != null) {
-            const previousStepIndex = index - 1;
+        const previousStepIndex = index - 1;
+        const previousStep = this.props.programSequence.getProgramStepAt(previousStepIndex);
+        if (previousStep != null) {
             this.setState({
                 focusedActionPanelOptionName: 'moveToPreviousStep'
             });
@@ -267,8 +269,9 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
     handleActionPanelMoveToNextStep = (index: number) => {
         this.props.audioManager.playAnnouncement('moveToNext', this.props.intl);
-        if (this.props.programSequence.getProgramStepAt(index + 1) != null) {
-            const nextStepIndex = index + 1;
+        const nextStepIndex = index + 1;
+        const nextStep = this.props.programSequence.getProgramStepAt(nextStepIndex);
+        if (nextStep != null) {
             this.setState({
                 focusedActionPanelOptionName: 'moveToNextStep'
             });
@@ -454,8 +457,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                     { id: 'ProgramBlockEditor.betweenBlocks' },
                     {
                         command: this.props.intl.formatMessage({id: `Command.${this.props.selectedAction}`}),
-                        prevCommand: `${programStepNumber}, ${this.props.intl.formatMessage({id: `Command.${this.props.programSequence.getProgramStepAt(programStepNumber-1)}`})}`,
-                        postCommand: `${programStepNumber+1}, ${this.props.intl.formatMessage({id: `Command.${this.props.programSequence.getProgramStepAt(programStepNumber)}`})}`
+                        prevCommand: `${programStepNumber}, ${this.props.intl.formatMessage({id: `Command.${this.props.programSequence.getProgramStepAt(programStepNumber-1).block}`})}`,
+                        postCommand: `${programStepNumber+1}, ${this.props.intl.formatMessage({id: `Command.${this.props.programSequence.getProgramStepAt(programStepNumber).block}`})}`
                     }
                 );
             }
@@ -529,7 +532,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
     render() {
         const contents = this.props.programSequence.getProgram().map((command, stepNumber) => {
-            return this.makeProgramBlockSection(stepNumber, command);
+            return this.makeProgramBlockSection(stepNumber, command.block);
         });
 
         contents.push(this.makeEndOfProgramAddNodeSection(this.props.programSequence.getProgramLength()));
