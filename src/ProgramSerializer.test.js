@@ -52,10 +52,13 @@ test('Roundtrip program', () => {
     const programSerializer = new ProgramSerializer();
     const program = [
         {block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'},
+        {block: 'backward1'}, {block: 'backward2'}, {block: 'backward3'},
         {block: 'left45'}, {block: 'left90'}, {block: 'left180'},
-        {block: 'right45'}, {block: 'right90'}, {block: 'right180'}
+        {block: 'right45'}, {block: 'right90'}, {block: 'right180'},
+        {block: 'startLoop', iterations: 2, label: 'A'},
+        {block: 'endLoop', label: 'A'}
     ];
     const parseResult = programSerializer.deserialize(programSerializer.serialize(program));
     expect(parseResult.program).toStrictEqual(program);
-    expect(parseResult.highestLoopNumber).toEqual(0);
+    expect(parseResult.highestLoopNumber).toEqual(1);
 });

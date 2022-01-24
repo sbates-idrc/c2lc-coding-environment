@@ -19,6 +19,7 @@ test("Serialize allowed actions", () => {
     expect(serializer.serialize({ right45: true})).toStrictEqual('a');
     expect(serializer.serialize({ right90: true})).toStrictEqual('b');
     expect(serializer.serialize({ right180: true})).toStrictEqual('d');
+    expect(serializer.serialize({ loop: true})).toStrictEqual('l');
     expect(serializer.serialize({
         forward1: false,
         forward2: true,
@@ -31,8 +32,9 @@ test("Serialize allowed actions", () => {
         left180: false,
         right45: true,
         right90: false,
-        right180: true
-    })).toStrictEqual('246Bad');
+        right180: true,
+        loop: true
+    })).toStrictEqual('246Badl');
 });
 
 test('Serializing an unsupported actionKey should throw an Error', () => {
@@ -56,7 +58,8 @@ test("Deserialize allowed actions.", () => {
     expect(serializer.deserialize('a')).toStrictEqual({ right45: true });
     expect(serializer.deserialize('b')).toStrictEqual({ right90: true });
     expect(serializer.deserialize('d')).toStrictEqual({ right180: true });
-    expect(serializer.deserialize('123456ABDabd')).toStrictEqual({
+    expect(serializer.deserialize('l')).toStrictEqual({ loop: true });
+    expect(serializer.deserialize('123456ABDabdl')).toStrictEqual({
         forward1: true,
         forward2: true,
         forward3: true,
@@ -68,7 +71,8 @@ test("Deserialize allowed actions.", () => {
         left180: true,
         right45: true,
         right90: true,
-        right180: true
+        right180: true,
+        loop: true
     })
 });
 
