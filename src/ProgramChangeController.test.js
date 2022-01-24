@@ -47,7 +47,7 @@ describe('Test insertSelectedActionIntoProgram()', () => {
 
         appMock.setState.mockImplementation((callback) => {
             const newState = callback({
-                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0)
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0)
             });
 
             // The program should be updated
@@ -88,7 +88,7 @@ describe('Test insertSelectedActionIntoProgram()', () => {
 
         appMock.setState.mockImplementation((callback) => {
             const newState = callback({
-                programSequence: new ProgramSequence([], 0)
+                programSequence: new ProgramSequence([], 0, 0)
             });
 
             // The program should not be updated
@@ -122,7 +122,7 @@ describe('Test addSelectedActionToProgramEnd()', () => {
 
         appMock.setState.mockImplementation((callback) => {
             const newState = callback({
-                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0)
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0)
             });
 
             // The program should be updated
@@ -162,7 +162,7 @@ describe('Test addSelectedActionToProgramEnd()', () => {
 
         appMock.setState.mockImplementation((callback) => {
             const newState = callback({
-                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0)
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0)
             });
 
             // The program should not be updated
@@ -196,7 +196,7 @@ describe('Test deleteProgramStep()', () => {
 
         appMock.setState.mockImplementation((callback) => {
             const newState = callback({
-                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0)
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0)
             });
 
             // The program should be updated
@@ -233,7 +233,7 @@ describe('Test deleteProgramStep()', () => {
 
         appMock.setState.mockImplementation((callback) => {
             const newState = callback({
-                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0)
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0)
             });
 
             // The program should be updated
@@ -270,7 +270,7 @@ describe('Test deleteProgramStep()', () => {
 
         appMock.setState.mockImplementation((callback) => {
             const newState = callback({
-                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0)
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0)
             });
 
             // The program should not be updated

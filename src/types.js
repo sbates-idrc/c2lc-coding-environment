@@ -7,7 +7,8 @@ export type CommandName =
     'forward1' | 'forward2' | 'forward3' |
     'backward1' | 'backward2' | 'backward3' |
     'left45' | 'left90' | 'left180' |
-    'right45' | 'right90' | 'right180';
+    'right45' | 'right90' | 'right180' |
+    'loop';
 
 export type DeviceConnectionStatus = 'notConnected' | 'connecting' | 'connected';
 
@@ -27,7 +28,9 @@ export type EditorMode = 'text' | 'block';
 export type ThemeName = 'default' | 'light' | 'dark' | 'gray' | 'contrast';
 
 export type ProgramBlock = {
-    block: string
+    block: string,
+    iterations?: number,
+    label?: string
 };
 
 export type Program = Array<ProgramBlock>;

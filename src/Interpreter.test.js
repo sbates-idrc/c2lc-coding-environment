@@ -33,7 +33,7 @@ function createMockCommandHandler() {
 
 test('Stepping an empty program leaves the program counter at 0', (done) => {
     const { interpreter, appMock } = createInterpreter();
-    interpreter.step(new ProgramSequence([], 0)).then(() => {
+    interpreter.step(new ProgramSequence([], 0, 0)).then(() => {
         expect(appMock.incrementProgramCounter.mock.calls.length).toBe(0);
         done();
     });
@@ -44,10 +44,10 @@ test('Step a program with 1 command', (done) => {
     const mockCommandHandler = createMockCommandHandler();
     interpreter.addCommandHandler('command', 'test', mockCommandHandler);
 
-    interpreter.step(new ProgramSequence([{block: 'command'}], 0)).then(() => {
+    interpreter.step(new ProgramSequence([{block: 'command'}], 0, 0)).then(() => {
         expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
         // Test step at end of program
-        interpreter.step(new ProgramSequence([{block: 'command'}], 1)).then(() => {
+        interpreter.step(new ProgramSequence([{block: 'command'}], 1, 0)).then(() => {
             expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
             expect(mockCommandHandler.mock.calls.length).toBe(1);
             done();
@@ -60,14 +60,14 @@ test('Step a program with 2 commands', (done) => {
     const mockCommandHandler = createMockCommandHandler();
     interpreter.addCommandHandler('command', 'test', mockCommandHandler);
 
-    interpreter.step(new ProgramSequence([{block: 'command'}, {block: 'command'}], 0)).then(() => {
+    interpreter.step(new ProgramSequence([{block: 'command'}, {block: 'command'}], 0, 0)).then(() => {
         expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
         expect(mockCommandHandler.mock.calls.length).toBe(1);
-        interpreter.step(new ProgramSequence([{block: 'command'}, {block: 'command'}], 1)).then(() => {
+        interpreter.step(new ProgramSequence([{block: 'command'}, {block: 'command'}], 1, 0)).then(() => {
             expect(appMock.incrementProgramCounter.mock.calls.length).toBe(2);
             expect(mockCommandHandler.mock.calls.length).toBe(2);
             // Test step at end of program
-            interpreter.step(new ProgramSequence([{block: 'command'}, {block: 'command'}], 2)).then(() => {
+            interpreter.step(new ProgramSequence([{block: 'command'}, {block: 'command'}], 2, 0)).then(() => {
                 expect(appMock.incrementProgramCounter.mock.calls.length).toBe(2);
                 expect(mockCommandHandler.mock.calls.length).toBe(2);
                 done();
@@ -83,7 +83,7 @@ test('Step a program with 2 handlers for the same command', (done) => {
     interpreter.addCommandHandler('command', 'test', mockCommandHandler);
     interpreter.addCommandHandler('command', 'test2', anotherMockCommandHandler);
 
-    interpreter.step(new ProgramSequence([{block: 'command'}], 0)).then(() => {
+    interpreter.step(new ProgramSequence([{block: 'command'}], 0, 0)).then(() => {
         expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
         expect(mockCommandHandler.mock.calls.length).toBe(1);
         expect(anotherMockCommandHandler.mock.calls.length).toBe(1);
@@ -94,7 +94,7 @@ test('Step a program with 2 handlers for the same command', (done) => {
 test('Stepping a program with an unknown command rejects with Error', () => {
     const { interpreter } = createInterpreter();
 
-    return expect(interpreter.step(new ProgramSequence([{block: 'unknown-command'}], 0)))
+    return expect(interpreter.step(new ProgramSequence([{block: 'unknown-command'}], 0, 0)))
         .rejects.toThrow('Unknown command: unknown-command');
 });
 
@@ -120,7 +120,7 @@ test('Do a command with a program', (done) => {
     interpreter.doCommand({block: 'command'}).then(() => {
         expect(appMock.incrementProgramCounter.mock.calls.length).toBe(0);
         // Then step the program
-        interpreter.step(new ProgramSequence([{block: 'anotherCommand'}], 0)).then(() => {
+        interpreter.step(new ProgramSequence([{block: 'anotherCommand'}], 0, 0)).then(() => {
             expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
             done();
         });
@@ -138,7 +138,7 @@ test('startRun() Promise is rejected on first command error', (done) => {
     const { interpreter, appMock } = createInterpreter();
     appMock.getRunningState.mockImplementation(() => {return 'running'});
     appMock.getProgramSequence.mockImplementationOnce(() => {
-        return new ProgramSequence([{block: 'unknown-command1'}, {block: 'unknown-command2'}], 0);
+        return new ProgramSequence([{block: 'unknown-command1'}, {block: 'unknown-command2'}], 0, 0);
     });
     interpreter.startRun().catch((error) => {
         expect(appMock.incrementProgramCounter.mock.calls.length).toBe(0);
@@ -154,10 +154,10 @@ test('Run a program with one command from beginning to end without an error', (d
 
     appMock.getRunningState.mockImplementation(() => {return 'running'});
     appMock.getProgramSequence.mockImplementationOnce(() => {
-        return new ProgramSequence([{block: 'command'}], 0)
+        return new ProgramSequence([{block: 'command'}], 0, 0)
     });
     appMock.getProgramSequence.mockImplementationOnce(() => {
-        return new ProgramSequence([{block: 'command'}], 1)
+        return new ProgramSequence([{block: 'command'}], 1, 0)
     });
 
     interpreter.startRun().then(() => {
@@ -176,16 +176,16 @@ test('Run a program with three commands from beginning to end without an error',
 
     appMock.getRunningState.mockImplementation(() => {return 'running'});
     appMock.getProgramSequence.mockImplementationOnce(() => {
-        return new ProgramSequence([{block: 'command'}, {block: 'command'}, {block: 'command'}], 0)
+        return new ProgramSequence([{block: 'command'}, {block: 'command'}, {block: 'command'}], 0, 0)
     });
     appMock.getProgramSequence.mockImplementationOnce(() => {
-        return new ProgramSequence([{block: 'command'}, {block: 'command'}, {block: 'command'}], 1)
+        return new ProgramSequence([{block: 'command'}, {block: 'command'}, {block: 'command'}], 1, 0)
     });
     appMock.getProgramSequence.mockImplementationOnce(() => {
-        return new ProgramSequence([{block: 'command'}, {block: 'command'}, {block: 'command'}], 2)
+        return new ProgramSequence([{block: 'command'}, {block: 'command'}, {block: 'command'}], 2, 0)
     });
     appMock.getProgramSequence.mockImplementationOnce(() => {
-        return new ProgramSequence([{block: 'command'}, {block: 'command'}, {block: 'command'}], 3)
+        return new ProgramSequence([{block: 'command'}, {block: 'command'}, {block: 'command'}], 3, 0)
     });
 
     interpreter.startRun().then(() => {
@@ -208,7 +208,7 @@ test('Do not continue through program if runningState changes to stopped', (done
     appMock.getRunningState.mockImplementationOnce(() => {return 'stopped'});
 
     appMock.getProgramSequence.mockImplementationOnce(() => {
-        return new ProgramSequence([{block: 'command'}, {block: 'anotherCommand'}], 0)
+        return new ProgramSequence([{block: 'command'}, {block: 'anotherCommand'}], 0, 0)
     });
 
     interpreter.startRun().then(() => {

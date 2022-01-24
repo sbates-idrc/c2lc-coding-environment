@@ -37,7 +37,7 @@ function createActionsMenu(props) {
                 {
                     show: true,
                     allowedActions: mockAllowedActions,
-                    programSequence: new ProgramSequence([], 0),
+                    programSequence: new ProgramSequence([], 0, 0),
                     onCancel: mockOnCancel,
                     onConfirm: mockOnConfirm
                 },
