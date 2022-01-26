@@ -97,33 +97,33 @@ test('Step a program with a loop and a command', (done) => {
             {block: 'startLoop', iterations: 1, iterationsLeft: 0, label: 'A'},
             {block: 'command'},
             {block: 'endLoop', label: 'A'}
-            ], 1, 1)).then(() => {
+        ], 1, 1)).then(() => {
+            expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
+            expect(mockCommandHandler.mock.calls.length).toBe(1);
+            expect(appMock.decrementLoopIterations.mock.calls.length).toBe(1);
+            expect(appMock.updateProgramAndProgramCounter.mock.calls.length).toBe(0);
+            interpreter.step(new ProgramSequence([
+                {block: 'startLoop', iterations: 1, iterationsLeft: 0, label: 'A'},
+                {block: 'command'},
+                {block: 'endLoop', label: 'A'}
+            ], 2, 1)).then(() => {
                 expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
                 expect(mockCommandHandler.mock.calls.length).toBe(1);
                 expect(appMock.decrementLoopIterations.mock.calls.length).toBe(1);
-                expect(appMock.updateProgramAndProgramCounter.mock.calls.length).toBe(0);
+                expect(appMock.updateProgramAndProgramCounter.mock.calls.length).toBe(1);
                 interpreter.step(new ProgramSequence([
                     {block: 'startLoop', iterations: 1, iterationsLeft: 0, label: 'A'},
                     {block: 'command'},
                     {block: 'endLoop', label: 'A'}
-                ], 2, 1)).then(() => {
+                ], 3, 1)).then(() => {
                     expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
                     expect(mockCommandHandler.mock.calls.length).toBe(1);
                     expect(appMock.decrementLoopIterations.mock.calls.length).toBe(1);
                     expect(appMock.updateProgramAndProgramCounter.mock.calls.length).toBe(1);
-                    interpreter.step(new ProgramSequence([
-                        {block: 'startLoop', iterations: 1, iterationsLeft: 0, label: 'A'},
-                        {block: 'command'},
-                        {block: 'endLoop', label: 'A'}
-                    ], 3, 1)).then(() => {
-                        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
-                        expect(mockCommandHandler.mock.calls.length).toBe(1);
-                        expect(appMock.decrementLoopIterations.mock.calls.length).toBe(1);
-                        expect(appMock.updateProgramAndProgramCounter.mock.calls.length).toBe(1);
-                        done();
-                    })
-                });
+                    done();
+                })
             });
+        });
     });
 });
 
