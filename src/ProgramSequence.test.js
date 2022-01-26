@@ -15,15 +15,15 @@ test('ProgramSequence constructor should take program and programCounter paramet
 test('initiateProgramRun should set iterationsLeft on startLoop blocks, as well as set programCounter to 0', () => {
     expect.assertions(2);
     const program = [
-        {block: 'startLoop', iterations: 3, label: 'A'}, 
-        {block: 'startLoop', iterations: 2, label: 'B'}, 
-        {block: 'endLoop', label: 'B'}, 
+        {block: 'startLoop', iterations: 3, label: 'A'},
+        {block: 'startLoop', iterations: 2, label: 'B'},
+        {block: 'endLoop', label: 'B'},
         {block: 'endLoop', label: 'A'}
     ];
     const expectedProgram = [
-        {block: 'startLoop', iterations: 3, iterationsLeft: 3, label: 'A'}, 
-        {block: 'startLoop', iterations: 2, iterationsLeft: 2, label: 'B'}, 
-        {block: 'endLoop', label: 'B'}, 
+        {block: 'startLoop', iterations: 3, iterationsLeft: 3, label: 'A'},
+        {block: 'startLoop', iterations: 2, iterationsLeft: 2, label: 'B'},
+        {block: 'endLoop', label: 'B'},
         {block: 'endLoop', label: 'A'}
     ];
     const programSequence = new ProgramSequence(program, 3, 2);
@@ -156,15 +156,15 @@ test.each([
 test('decrementLoopIteration should decrease iterationsLeft of specified loop and increment programCounter by 1', () => {
     expect.assertions(2);
     const program = [
-        {block: 'startLoop', iterations: 3, iterationsLeft: 3, label: 'A'}, 
-        {block: 'startLoop', iterations: 2, iterationsLeft: 2, label: 'B'}, 
-        {block: 'endLoop', label: 'B'}, 
+        {block: 'startLoop', iterations: 3, iterationsLeft: 3, label: 'A'},
+        {block: 'startLoop', iterations: 2, iterationsLeft: 2, label: 'B'},
+        {block: 'endLoop', label: 'B'},
         {block: 'endLoop', label: 'A'}
     ];
     const expectedProgram = [
-        {block: 'startLoop', iterations: 3, iterationsLeft: 3, label: 'A'}, 
-        {block: 'startLoop', iterations: 2, iterationsLeft: 1, label: 'B'}, 
-        {block: 'endLoop', label: 'B'}, 
+        {block: 'startLoop', iterations: 3, iterationsLeft: 3, label: 'A'},
+        {block: 'startLoop', iterations: 2, iterationsLeft: 1, label: 'B'},
+        {block: 'endLoop', label: 'B'},
         {block: 'endLoop', label: 'A'}
     ]
     const programSequence = new ProgramSequence(program, 1, 2);
