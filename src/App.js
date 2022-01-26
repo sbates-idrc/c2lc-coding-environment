@@ -31,7 +31,7 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ShareButton from './ShareButton';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, Program, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -380,28 +380,6 @@ export class App extends React.Component<AppProps, AppState> {
             }
         );
 
-        this.interpreter.addCommandHandler(
-            'startLoop',
-            'repeatCommand',
-            (stepTimeMs) => {
-                /* eslint-disable no-console */
-                console.log('loop start');
-                /* eslint-enable no-console */
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'endLoop',
-            'repeatCommand',
-            (stepTimeMs) => {
-                /* eslint-disable no-console */
-                console.log('loop end');
-                /* eslint-enable no-console */
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
         // We have to calculate the allowed commands and initialise the state here because this is the point at which
         // the interpreter's commands are populated.
 
@@ -514,6 +492,22 @@ export class App extends React.Component<AppProps, AppState> {
         }, callback);
     }
 
+    updateProgramAndProgramCounter(index: number, program: Program, callback: () => void): void {
+        this.setState((state) => {
+            return {
+                programSequence: state.programSequence.updateProgramAndProgramCounter(program, index)
+            }
+        }, callback);
+    }
+
+    decrementLoopIterations(loopLabel: string, callback: () => void): void {
+        this.setState((state) => {
+            return {
+                programSequence: state.programSequence.decrementLoopIterations(loopLabel)
+            }
+        }, callback);
+    }
+
     // Handlers
 
     handleProgramSequenceChange = (programSequence: ProgramSequence) => {
@@ -557,7 +551,7 @@ export class App extends React.Component<AppProps, AppState> {
             case 'stopped':
                 this.setState((state) => {
                     return {
-                        programSequence: state.programSequence.updateProgramCounter(0),
+                        programSequence: state.programSequence.initiateProgramRun(),
                         runningState: 'running',
                         actionPanelStepIndex: null
                     };

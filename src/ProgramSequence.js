@@ -14,6 +14,17 @@ export default class ProgramSequence {
         this.loopCounter = loopCounter;
     }
 
+    initiateProgramRun(): ProgramSequence {
+        const program = this.program.slice();
+        for (let i = 0; i < program.length; i++) {
+            const { block } = program[i];
+            if (block === 'startLoop' && program[i].iterations != null) {
+                program[i] = Object.assign(program[i], {iterationsLeft: program[i].iterations});
+            }
+        }
+        return new ProgramSequence(program, 0, this.loopCounter);
+    }
+
     getProgram(): Program {
         return this.program;
     }
@@ -110,5 +121,23 @@ export default class ProgramSequence {
         }
 
         return false;
+    }
+
+    decrementLoopIterations(loopLabel: string): ProgramSequence {
+        const program = this.program.slice();
+        for (let i = 0; i < program.length; i++) {
+            const { block, iterations, iterationsLeft, label } = program[i];
+            if (block === 'startLoop' && label === loopLabel) {
+                if (iterationsLeft != null && iterationsLeft > 0) {
+                    program[i] = {
+                        block,
+                        iterations: iterations,
+                        iterationsLeft: iterationsLeft - 1,
+                        label
+                    };
+                }
+            }
+        }
+        return new ProgramSequence(program, this.programCounter + 1, this.loopCounter);
     }
 }
