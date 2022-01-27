@@ -389,7 +389,7 @@ const ControlAltInputScheme = Object.assign({
     },
 }, ControlAltExtendedKeyboardSequences);
 
-export const KeyboardInputSchemes:KeyboardInputSchemesType = {
+export const KeyboardInputSchemes: KeyboardInputSchemesType = {
     "controlalt": ControlAltInputScheme,
     "alt": AltInputScheme
 };
