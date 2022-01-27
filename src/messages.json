@@ -182,7 +182,7 @@
         "KeyboardInputModal.Scheme.Descriptions.alt": "Alt (Apple: Option)",
         "KeyboardInputModal.ShowHide.AriaLabel": "Display keyboard shortcuts menu",
         "KeyboardInputModal.Title": "Keyboard Shortcuts",
-        "KeyboardInputModal.Toggle.AriaLabel": "Turn keyboard shortcuts on or off",
+        "KeyboardInputModal.Toggle.AriaLabel": "Keyboard shortcuts toggle",
         "KeyboardInputModal.Toggle.Label": "Keyboard Shortcuts",
         "KeyboardInputModal.Toggle.Off": "Off",
         "KeyboardInputModal.Toggle.On": "On",
