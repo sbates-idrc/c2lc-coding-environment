@@ -54,14 +54,12 @@ function getAudioToggleSwitches(wrapper) {
     return wrapper.find(ToggleSwitch);
 }
 
-// TODO: Update getCancelButton once C2LC-520 gets merged
 function getCancelButton(wrapper) {
-    return wrapper.find('.ModalWithFooter__secondaryButton');
+    return wrapper.find('.TextButton--secondaryButton');
 }
 
-// TODO: Update getSaveButton once C2LC-520 gets merged
 function getSaveButton(wrapper) {
-    return wrapper.find('.ModalWithFooter__primaryButton');
+    return wrapper.find('.TextButton--primaryButton');
 }
 
 function getWrapperState(wrapper) {
