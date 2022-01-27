@@ -19,7 +19,7 @@ function processSingleLevel(singleLevel, accumulatedSequence) {
     let levelSequences = [];
     const levelAccumulatedSequence = accumulatedSequence.concat([singleLevel.keyDef]);
     if (singleLevel.actionName) {
-        levelAccumulatedSequence.push(singleLevel.actionName);
+        levelAccumulatedSequence.push(singleLevel.description || singleLevel.actionName);
         levelSequences.push(levelAccumulatedSequence);
     }
     else {
@@ -37,14 +37,14 @@ function displayKeyBindings() {
     let markdown = "";
     for (const [schemeName, keyboardInputScheme] of Object.entries(KeyboardInputSchemes)) {
         markdown += '## ' + schemeName + ' Key Bindings\n\n';
-        markdown += '| Keys | Command |\n'
+        markdown += '| Action | Keyboard Shortcut |\n'
         markdown += '| ---- | ------- |\n'
         for (const topLevelBinding of Object.values(keyboardInputScheme)) {
             const allSequences = processSingleLevel(topLevelBinding, []);
             const bindingEntries = [];
             for (const sequence of allSequences) {
                 const keys = sequence.slice(0, sequence.length - 1);
-                const commandName = sequence.slice(-1);
+                const description = sequence.slice(-1);
                 let bindingText = "";
                 for (const keyDef of keys) {
                     if (bindingText.length) {
@@ -58,7 +58,7 @@ function displayKeyBindings() {
                     }
                     bindingText += keyDef.key || (keyDef.code && keyDef.code.replace("Key", ""));
                 }
-                bindingEntries.push('| ' + bindingText + ' | ' + commandName + ' |');
+                bindingEntries.push('| ' + description + ' | ' + bindingText + ' |');
             }
             markdown += bindingEntries.sort().join('\n') + '\n';
         }

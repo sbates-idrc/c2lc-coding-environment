@@ -2,7 +2,6 @@
 import {extend} from './Utils';
 
 export type KeyboardInputSchemeName = "controlalt" | "alt";
-
 export function isKeyboardInputSchemeName(str: ?string): boolean {
     return str === 'controlalt' || str === 'alt';
 }
@@ -99,7 +98,8 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
         keyDef: { code: "KeyX", key: "x", altKey: true, hidden: true},
         audioFeedback: {
             keyDef: { code: "KeyX", key: "x"},
-            actionName: "toggleFeedbackAnnouncements"
+            actionName: "toggleFeedbackAnnouncements",
+            description: "Turn on/off audio feedback announcements"
         },
         focusChange: {
             keyDef: {
@@ -108,43 +108,53 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             },
             actions: {
                 keyDef: { code: "KeyA", key: "a" },
-                actionName: "focusActions"
+                actionName: "focusActions",
+                description: "Move focus to Actions panel"
             },
             appHeader: {
                 keyDef: { code: "KeyH", key: "h" },
-                actionName: "focusAppHeader"
+                actionName: "focusAppHeader",
+                description: "Move focus to the App Header"
             },
             addNodeToggle: {
                 keyDef: { code: "KeyT", key: "t" },
-                actionName: "focusAddNodeToggle"
+                actionName: "focusAddNodeToggle",
+                description: "Move focus to the Add Node Toggle"
             },
             characterPositionControls: {
                 keyDef: { code: "KeyC", key: "c" },
-                actionName: "focusCharacterPositionControls"
+                actionName: "focusCharacterPositionControls",
+                description: "Move focus to Character position controls"
             },
             characterPositionColumnInput: {
                 keyDef: { code: "KeyX", key: "x" },
-                actionName: "focusCharacterColumnInput"
+                actionName: "focusCharacterColumnInput",
+                description: "Move focus to the Character Column input field"
             },
             characterPositionRowInput: {
                 keyDef: { code: "KeyX", key: "y" },
-                actionName: "focusCharacterRowInput"
+                actionName: "focusCharacterRowInput",
+                description: "Move focus to the Character Row input field"
             },
             playShare: {
                 keyDef: { code: "KeyP", key: "p" },
-                actionName: "focusPlayShare"
+                actionName: "focusPlayShare",
+                description: "Move focus to Play and Share area"
             },
             programSequence: {
                 keyDef: { code: "KeyQ", key: "q" },
-                actionName: "focusProgramSequence"
+                actionName: "focusProgramSequence",
+                description: "Move focus to the Program sequence"
             },
             scene: {
                 keyDef: { code: "KeyS", key: "s" },
-                actionName: "focusScene"
+                actionName: "focusScene",
+                description: "Move focus to the Scene"
             },
             worldSelector: {
                 keyDef: { code: "KeyW", key: "w" },
-                actionName: "focusWorldSelector"
+                actionName: "focusWorldSelector",
+                description: "Move focus to the World Selector"
             }
         },
 
@@ -154,60 +164,72 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 keyDef: { code: "KeyF", key: "f" },
                 forward1: {
                     keyDef: { key: "1"},
-                    actionName: "selectForward1"
+                    actionName: "selectForward1",
+                    description: "Select Forward 1 square action block"
                 },
                 forward2: {
                     keyDef: { key: "2"},
-                    actionName: "selectForward2"
+                    actionName: "selectForward2",
+                    description: "Select Forward 2 squares action block"
                 },
                 forward3: {
                     keyDef: { key: "3"},
-                    actionName: "selectForward3"
+                    actionName: "selectForward3",
+                    description: "Select Forward 3 squares action block"
                 }
             },
             backward: {
                 keyDef: { code: "KeyB", key: "b" },
                 backward1: {
                     keyDef: { key: "1"},
-                    actionName: "selectBackward1"
+                    actionName: "selectBackward1",
+                    description: "Select Backward 1 square action block"
                 },
                 backward2: {
                     keyDef: { key: "2"},
-                    actionName: "selectBackward2"
+                    actionName: "selectBackward2",
+                    description: "Select Backward 2 squares action block"
                 },
                 backward3: {
                     keyDef: { key: "3"},
-                    actionName: "selectBackward3"
+                    actionName: "selectBackward3",
+                    description: "Select Backward 3 squares action block"
                 }
             },
             left: {
                 keyDef: { code: "KeyL", key: "l" },
                 left45: {
                     keyDef: { key: "1"},
-                    actionName: "selectLeft45"
+                    actionName: "selectLeft45",
+                    description: "Select Turn Left 45 degrees action block"
                 },
                 left90: {
                     keyDef: { key: "2"},
-                    actionName: "selectLeft90"
+                    actionName: "selectLeft90",
+                    description: "Select Turn Left 90 degrees action block"
                 },
                 left180: {
                     keyDef: { key: "3"},
-                    actionName: "selectLeft180"
+                    actionName: "selectLeft180",
+                    description: "Select Turn Left 180 degrees action block"
                 }
             },
             right: {
                 keyDef: { code: "KeyR", key: "r" },
                 right45: {
                     keyDef: { key: "1"},
-                    actionName: "selectRight45"
+                    actionName: "selectRight45",
+                    description: "Select Turn Right 45 degrees action block"
                 },
                 right90: {
                     keyDef: { key: "2"},
-                    actionName: "selectRight90"
+                    actionName: "selectRight90",
+                    description: "Select Turn Right 90 degrees action block"
                 },
                 right180: {
                     keyDef: { key: "3"},
-                    actionName: "selectRight180"
+                    actionName: "selectRight180",
+                    description: "Select Turn Right 180 degrees action block"
                 }
             }
         },
@@ -218,30 +240,36 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 keyDef: { code: "KeyM", key: "m" },
                 left: {
                     keyDef: { code: "KeyL", key: "l" },
-                    actionName: "moveCharacterLeft"
+                    actionName: "moveCharacterLeft",
+                    description: "Move character Left by using character positioning tool"
                 },
                 right: {
                     keyDef: { code: "KeyR", key: "r" },
-                    actionName: "moveCharacterRight"
+                    actionName: "moveCharacterRight",
+                    description: "Move character Right by using character positioning tool"
                 },
                 up: {
                     keyDef: { code: "KeyU", key: "u" },
-                    actionName: "moveCharacterUp"
+                    actionName: "moveCharacterUp",
+                    description: "Move character Up by using character positioning tool"
                 },
                 down: {
                     keyDef: { code: "KeyD", key: "d" },
-                    actionName: "moveCharacterDown"
+                    actionName: "moveCharacterDown",
+                    description: "Move character Down by using character positioning tool"
                 }
             },
             turn: {
                 keyDef: { code: "KeyT", key: "t" },
                 left: {
                     keyDef: { code: "KeyL", key: "l" },
-                    actionName: "turnCharacterLeft"
+                    actionName: "turnCharacterLeft",
+                    description: "Turn character Left 45 degrees by using character positioning tool"
                 },
                 right: {
                     keyDef: { code: "KeyR", key: "r" },
-                    actionName: "turnCharacterRight"
+                    actionName: "turnCharacterRight",
+                    description: "Turn character Right 45 degrees by using character positioning tool"
                 }
             }
         },
@@ -250,29 +278,35 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             keyDef: { code: "KeyT", key: "t" },
             default: {
                 keyDef: { key: "1"},
-                actionName: "changeToDefaultTheme"
+                actionName: "changeToDefaultTheme",
+                description: "Change the current visual theme to the Default theme"
             },
             light: {
                 keyDef: { key: "2"},
-                actionName: "changeToLightTheme"
+                actionName: "changeToLightTheme",
+                description: "Change the current visual theme to the Light theme"
             },
             dark: {
                 keyDef: { key: "3"},
-                actionName: "changeToDarkTheme"
+                actionName: "changeToDarkTheme",
+                description: "Change the current visual theme to the Dark theme"
             },
             grayscale: {
                 keyDef: { key: "4"},
-                actionName: "changeToGrayscaleTheme"
+                actionName: "changeToGrayscaleTheme",
+                description: "Change the current visual theme to the Grayscale theme"
             },
             highContrast: {
                 keyDef: { key: "5"},
-                actionName: "changeToHighContrastTheme"
+                actionName: "changeToHighContrastTheme",
+                description: "Change the current visual theme to the High Contrast theme"
             }
         },
 
         deleteAll: {
             keyDef: { code: "KeyD", key: "d" },
-            actionName: "deleteAll"
+            actionName: "deleteAll",
+            description: "Delete all action blocks in the program"
         }
     }
 }
@@ -345,47 +379,58 @@ const ControlAltExtendedKeyboardSequences = extend(ExtendedKeyboardSequences, {
 const ControlAltInputScheme = Object.assign({
     addCommand: {
         keyDef: { code: "KeyA", key: "a", altKey: true, ctrlKey: true},
-        actionName: "addCommand"
+        actionName: "addCommand",
+        description: "Add action block to a program"
     },
     addCommandToBeginning: {
         keyDef: { code: "KeyB", key: "b", altKey: true, ctrlKey: true},
-        actionName: "addCommandToBeginning"
+        actionName: "addCommandToBeginning",
+        description: "Add action block to the beginning of the program"
     },
     addCommandToEnd: {
         keyDef: { code: "KeyE", key: "e", altKey: true, ctrlKey: true},
-        actionName: "addCommandToEnd"
+        actionName: "addCommandToEnd",
+        description: "Add action block to the end of the program"
     },
     deleteCurrentStep: {
         keyDef: { code: "KeyD", key: "d", altKey: true, ctrlKey: true},
-        actionName: "deleteCurrentStep"
+        actionName: "deleteCurrentStep",
+        description: "Delete the most recent action block added to the program"
     },
     announceScene: {
         keyDef: {code: "KeyI", key: "i", altKey: true, ctrlKey: true},
-        actionName: "announceScene"
+        actionName: "announceScene",
+        description: "Initiate announcement of the scene"
     },
     decreaseProgramSpeed: {
         keyDef: { key: "<", shiftKey: true, hidden: true},
-        actionName: "decreaseProgramSpeed"
+        actionName: "decreaseProgramSpeed",
+        description: "Decrease the program speed"
     },
     increaseProgramSpeed: {
         keyDef: { key: ">", shiftKey: true, hidden: true},
-        actionName: "increaseProgramSpeed"
+        actionName: "increaseProgramSpeed",
+        description: "Increase the program speed"
     },
     playPauseProgram: {
         keyDef: { code: "KeyP", key: "p", altKey: true, ctrlKey: true},
-        actionName: "playPauseProgram"
+        actionName: "playPauseProgram",
+        description: "Activate play and pause of the program"
     },
     refreshScene: {
         keyDef: { code: "KeyR", key: "r", altKey: true, ctrlKey: true },
-        actionName: "refreshScene"
+        actionName: "refreshScene",
+        description: "Refresh the scene"
     },
     showHide: {
         keyDef: { key: "?", shiftKey: true },
-        actionName: "showHide"
+        actionName: "showHide",
+        description: "Show or hide keyboard shortcut menu"
     },
     stopProgram: {
         keyDef: {code: "KeyS", key: "s", altKey: true, ctrlKey: true},
-        actionName: "stopProgram"
+        actionName: "stopProgram",
+        description: "Stop the program from playing"
     },
 }, ControlAltExtendedKeyboardSequences);
 
