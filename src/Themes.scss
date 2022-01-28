@@ -463,12 +463,6 @@ body.dark-theme {
         background-color: #30444E;
     }
 
-    .AudioFeedbackToggleSwitch {
-        &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-        }
-    }
-
     .IconButton {
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
@@ -853,25 +847,6 @@ body.gray-theme {
 
     .KeyboardInputModal__content__toggle.ToggleSwitch--checked {
         background-color: #818A98;
-    }
-
-    .AudioFeedbackToggleSwitch {
-        background-color: #B9BEC6;
-
-        &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
-        }
-
-        &.ToggleSwitch--checked{
-            background-color: #818A98;
-        }
-
-        &:hover {
-            background-color: #505862;
-            .ToggleSwitch__switch-inner-circle {
-                background-color: #B9BEC6;
-            }
-        }
     }
 
     .App__ActionsMenu__header {
@@ -1530,7 +1505,8 @@ body.contrast-theme {
     }
 
     .App__header-menu {
-        background-color: #FFFFFF;
+        background-color: black;
+        outline: white solid 1px;
     }
 
     .App__header-menu > .IconButton {
@@ -1682,52 +1658,6 @@ body.contrast-theme {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
             border: 2px solid black;
         }
-
-        .ToggleSwitch__switch-inner-circle {
-            background-color: white;
-            svg {
-                path {
-                    fill: black;
-                }
-            }
-        }
-    }
-
-    .AudioFeedbackToggleSwitch {
-        background-color: black;
-        border: 2px solid white;
-        padding: 0.2rem;
-
-        &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-            border: 2px solid black;
-        }
-
-        .ToggleSwitch__switch-inner-circle {
-            background-color: white;
-            svg {
-                path {
-                    fill: black;
-                }
-            }
-        }
-
-        &.ToggleSwitch--checked:not(:hover), &:hover {
-            background-color: white;
-            .ToggleSwitch__switch-inner-circle {
-                background-color: black;
-                svg {
-                    path {
-                        fill: white;
-                    }
-                }
-            }
-        }
-    }
-
-    .AudioFeedbackToggleSwitch.ToggleSwitch--checked:not(:hover) {
-        background-color: black;
-        border: 2px solid white;
 
         .ToggleSwitch__switch-inner-circle {
             background-color: white;

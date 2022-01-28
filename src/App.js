@@ -912,6 +912,10 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showSoundOptionsModal: false });
     }
 
+    handleChangeSoundOptions = (audioEnabled: boolean, announcementsEnabled: boolean, sonificationEnabled: boolean) => {
+        this.setState({ audioEnabled, announcementsEnabled, sonificationEnabled, showSoundOptionsModal: false });
+    }
+
     handleClickThemeSelectorIcon = () => {
         this.setState({ showThemeSelectorModal: true });
     }
@@ -919,10 +923,6 @@ export class App extends React.Component<AppProps, AppState> {
     // Focus trap escape key handling.
     handleRootKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         this.focusTrapManager.handleKeyDown(e);
-    }
-
-    handleChangeSoundOptions = (audioEnabled: boolean, announcementsEnabled: boolean, sonificationEnabled: boolean) => {
-        this.setState({ audioEnabled, announcementsEnabled, sonificationEnabled, showSoundOptionsModal: false });
     }
 
     handleTogglePenDown = (drawingEnabled: boolean) => {
