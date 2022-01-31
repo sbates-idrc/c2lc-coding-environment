@@ -1506,7 +1506,7 @@ body.contrast-theme {
 
     .App__header-menu {
         background-color: black;
-        outline: white solid 1px;
+        border: 2px solid white;
     }
 
     .App__header-menu > .IconButton {
@@ -1831,7 +1831,7 @@ body.contrast-theme {
     }
 
     .App__world-container {
-        border: 1px solid white;
+        border: 2px solid white;
     }
 
     .CharacterPositionController__character-column {
