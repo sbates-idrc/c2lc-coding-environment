@@ -21,13 +21,13 @@ type SoundOptionsModalProps = {
     onChangeSoundOptions: ( audioEnabled: boolean, announcementsEnabled: boolean, sonificationEnabled: boolean ) => void
 };
 
-type SoundOptionsModalStates = {
+type SoundOptionsModalState = {
     audioEnabled: boolean,
     announcementsEnabled: boolean,
     sonificationEnabled: boolean
 };
 
-class SoundOptionsModal extends React.Component<SoundOptionsModalProps, SoundOptionsModalStates> {
+class SoundOptionsModal extends React.Component<SoundOptionsModalProps, SoundOptionsModalState> {
     constructor (props: SoundOptionsModalProps) {
         super(props);
         this.state = {
@@ -37,22 +37,16 @@ class SoundOptionsModal extends React.Component<SoundOptionsModalProps, SoundOpt
         };
     };
 
-    handleToggleAudioEnabled = () => {
-        this.setState({
-            audioEnabled: !this.state.audioEnabled
-        });
+    handleToggleAudioEnabled = (value: boolean) => {
+        this.setState({ audioEnabled: value });
     };
 
-    handleToggleAnnouncementsEnabled = () => {
-        this.setState({
-            announcementsEnabled: !this.state.announcementsEnabled
-        });
+    handleToggleAnnouncementsEnabled = (value: boolean) => {
+        this.setState({ announcementsEnabled: value });
     };
 
-    handleToggleSonificationEnabled = () => {
-        this.setState({
-            sonificationEnabled: !this.state.sonificationEnabled
-        });
+    handleToggleSonificationEnabled = (value: boolean) => {
+        this.setState({ sonificationEnabled: value });
     };
 
     handleOnSave = () => {
@@ -60,21 +54,32 @@ class SoundOptionsModal extends React.Component<SoundOptionsModalProps, SoundOpt
     }
 
     handleOnCancel = () => {
-        this.setState({
-            audioEnabled: this.props.audioEnabled,
-            announcementsEnabled: this.props.announcementsEnabled,
-            sonificationEnabled: this.props.sonificationEnabled
-        });
         this.props.onCancel();
     }
 
     renderSoundOptions = () => {
         const soundOptions = [];
         const soundOptionsProps = [
-            { id:'sound-options-allsounds', label: this.props.intl.formatMessage({ id: 'SoundOptionsModal.allSounds'}), toggleState: this.state.audioEnabled, onChange: this.handleToggleAudioEnabled },
-            { id:'sound-options-musicalSounds', label: this.props.intl.formatMessage({ id: 'SoundOptionsModal.musicalSounds' }), toggleState: this.state.sonificationEnabled, onChange: this.handleToggleSonificationEnabled },
-            { id:'sound-options-announcements', label: this.props.intl.formatMessage({ id: 'SoundOptionsModal.announcements' }), toggleState: this.state.announcementsEnabled, onChange: this.handleToggleAnnouncementsEnabled }
+            {
+                id:'sound-options-allsounds',
+                label: this.props.intl.formatMessage({ id: 'SoundOptionsModal.allSounds' }),
+                toggleState: this.state.audioEnabled,
+                onChange: this.handleToggleAudioEnabled
+            },
+            {
+                id:'sound-options-musicalSounds',
+                label: this.props.intl.formatMessage({ id: 'SoundOptionsModal.musicalSounds' }),
+                toggleState: this.state.sonificationEnabled,
+                onChange: this.handleToggleSonificationEnabled
+            },
+            {
+                id:'sound-options-announcements',
+                label: this.props.intl.formatMessage({ id: 'SoundOptionsModal.announcements' }),
+                toggleState: this.state.announcementsEnabled,
+                onChange: this.handleToggleAnnouncementsEnabled
+            }
         ];
+
         for (let i=0; i< soundOptionsProps.length; i++) {
             const soundOptionProps = soundOptionsProps[i];
             const isDisabled = soundOptionProps.id !== 'sound-options-allsounds' && !this.state.audioEnabled;
@@ -139,6 +144,16 @@ class SoundOptionsModal extends React.Component<SoundOptionsModalProps, SoundOpt
                 </ModalBody>
             </ModalWithFooter>
         );
+    }
+
+    componentDidUpdate(prevProps: SoundOptionsModalProps) {
+        if (prevProps.show !== this.props.show && this.props.show) {
+            this.setState({
+                audioEnabled: this.props.audioEnabled,
+                announcementsEnabled: this.props.announcementsEnabled,
+                sonificationEnabled: this.props.sonificationEnabled
+            });
+        }
     }
 }
 

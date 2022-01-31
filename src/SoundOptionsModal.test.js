@@ -54,6 +54,10 @@ function getAudioToggleSwitches(wrapper) {
     return wrapper.find(ToggleSwitch);
 }
 
+function getAudioToggleSwitchContainer(wrapper) {
+    return wrapper.find('.SoundOptions__option-container');
+}
+
 function getCancelButton(wrapper) {
     return wrapper.find('.TextButton--secondaryButton');
 }
@@ -65,6 +69,23 @@ function getSaveButton(wrapper) {
 function getWrapperState(wrapper) {
     return wrapper.children().at(0).instance().state;
 }
+
+test('When the show property of the modal is changed from false to true, update state of audio options from corresponding properties', () => {
+    expect.assertions(6);
+    const { wrapper } = createMountSoundOptionsModal({ show: false });
+    expect(getWrapperState(wrapper).audioEnabled).toBe(true);
+    expect(getWrapperState(wrapper).announcementsEnabled).toBe(true);
+    expect(getWrapperState(wrapper).sonificationEnabled).toBe(true);
+    wrapper.setProps({
+        audioEnabled: false,
+        announcementsEnabled: true,
+        sonificationEnabled: false,
+        show: true
+    });
+    expect(getWrapperState(wrapper).audioEnabled).toBe(false);
+    expect(getWrapperState(wrapper).announcementsEnabled).toBe(true);
+    expect(getWrapperState(wrapper).sonificationEnabled).toBe(false);
+})
 
 describe('When rendering audio toggles', () => {
     test('Three toggle switches should render in following order: "All Sounds", "Musical Sounds" and "Audio Announcements"', () => {
@@ -81,8 +102,8 @@ describe('When rendering audio toggles', () => {
         expect(audioToggleSwitches.get(2).props.id).toBe('sound-options-announcements');
         expect(audioToggleSwitches.get(2).props.value).toBe(true);
     });
-    test('Changing audioEnabled, announcementsEnabled and sonificationEnabled properties to false should turn off corresponding toggle siwtches', () => {
-        expect.assertions(8);
+    test('When the audioEnabled, announcementsEnabled, and sonificationEnabled properties are false, the corresponding toggle switches should be off', () => {
+        expect.assertions(10);
         const { wrapper } = createMountSoundOptionsModal({ audioEnabled: false, announcementsEnabled: false, sonificationEnabled: false });
         // Other options than allSounds should have disabled class when audioEnabled is false
         expect(wrapper.find('.SoundOptions__option--disabled').length).toBe(2);
@@ -91,15 +112,17 @@ describe('When rendering audio toggles', () => {
         expect(audioToggleSwitches.get(0).props.id).toBe('sound-options-allsounds');
         expect(audioToggleSwitches.get(0).props.value).toBe(false);
         expect(audioToggleSwitches.get(1).props.id).toBe('sound-options-musicalSounds');
+        expect(getAudioToggleSwitchContainer(wrapper).get(1).props.className.includes('SoundOptions__option--disabled')).toBe(true);
         expect(audioToggleSwitches.get(1).props.value).toBe(false);
         expect(audioToggleSwitches.get(2).props.id).toBe('sound-options-announcements');
+        expect(getAudioToggleSwitchContainer(wrapper).get(2).props.className.includes('SoundOptions__option--disabled')).toBe(true);
         expect(audioToggleSwitches.get(2).props.value).toBe(false);
     })
 });
 
 describe('When interacting with footer buttons', () => {
     test('Pressing cancel button should close the modal without changing toggle states', () => {
-        expect.assertions(10);
+        expect.assertions(7);
         const { wrapper, mockOnCancel } = createMountSoundOptionsModal();
         expect(getWrapperState(wrapper).audioEnabled).toBe(true);
         expect(getWrapperState(wrapper).announcementsEnabled).toBe(true);
@@ -119,10 +142,6 @@ describe('When interacting with footer buttons', () => {
         const cancelButton = getCancelButton(wrapper);
         cancelButton.at(0).simulate('click');
         expect(mockOnCancel.mock.calls.length).toBe(1);
-        // Reset all toggle state to the initial state from props
-        expect(getWrapperState(wrapper).audioEnabled).toBe(true);
-        expect(getWrapperState(wrapper).announcementsEnabled).toBe(true);
-        expect(getWrapperState(wrapper).sonificationEnabled).toBe(true);
     });
     test('Pressing save button should update the toggle states', () => {
         expect.assertions(7);
