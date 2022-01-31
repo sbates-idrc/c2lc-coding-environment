@@ -119,7 +119,9 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             addNodeToggle: {
                 keyDef: { code: "KeyT", key: "t" },
                 actionName: "focusAddNodeToggle",
-                description: "Move focus to the Add Node Toggle"
+                description: "Move focus to the Add Node Toggle",
+                icon: "A23.png",
+                altText: "Focus add node toggle icon"
             },
             characterPositionControls: {
                 keyDef: { code: "KeyC", key: "c" },
@@ -154,7 +156,9 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             worldSelector: {
                 keyDef: { code: "KeyW", key: "w" },
                 actionName: "focusWorldSelector",
-                description: "Move focus to the World Selector"
+                description: "Move focus to the World Selector",
+                icon: "A24.png",
+                altText: "Focus world selector icon"
             }
         },
 
@@ -165,7 +169,9 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 forward1: {
                     keyDef: { key: "1"},
                     actionName: "selectForward1",
-                    description: "Select Forward 1 square action block"
+                    description: "Select Forward 1 square action block",
+                    icon: "A10.png",
+                    altText: "Select forward 1 icon"
                 },
                 forward2: {
                     keyDef: { key: "2"},
@@ -183,7 +189,9 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 backward1: {
                     keyDef: { key: "1"},
                     actionName: "selectBackward1",
-                    description: "Select Backward 1 square action block"
+                    description: "Select Backward 1 square action block",
+                    icon: "A11.png",
+                    altText: "Select backward 1 icon"
                 },
                 backward2: {
                     keyDef: { key: "2"},
@@ -201,12 +209,16 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 left45: {
                     keyDef: { key: "1"},
                     actionName: "selectLeft45",
-                    description: "Select Turn Left 45 degrees action block"
+                    description: "Select Turn Left 45 degrees action block",
+                    icon: "A12.png",
+                    altText: "Select turn left 45 icon"
                 },
                 left90: {
                     keyDef: { key: "2"},
                     actionName: "selectLeft90",
-                    description: "Select Turn Left 90 degrees action block"
+                    description: "Select Turn Left 90 degrees action block",
+                    icon: "A13.png",
+                    altText: "Select turn left 90 icon"
                 },
                 left180: {
                     keyDef: { key: "3"},
@@ -219,12 +231,16 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 right45: {
                     keyDef: { key: "1"},
                     actionName: "selectRight45",
-                    description: "Select Turn Right 45 degrees action block"
+                    description: "Select Turn Right 45 degrees action block",
+                    icon: "A14.png",
+                    altText: "Select turn right 45 icon"
                 },
                 right90: {
                     keyDef: { key: "2"},
                     actionName: "selectRight90",
-                    description: "Select Turn Right 90 degrees action block"
+                    description: "Select Turn Right 90 degrees action block",
+                    icon: "A15.png",
+                    altText: "Select turn right 90 icon"
                 },
                 right180: {
                     keyDef: { key: "3"},
@@ -241,22 +257,30 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 left: {
                     keyDef: { code: "KeyL", key: "l" },
                     actionName: "moveCharacterLeft",
-                    description: "Move character Left by using character positioning tool"
+                    description: "Move character Left by using character positioning tool",
+                    icon: "A17.png",
+                    altText: "Move character left icon"
                 },
                 right: {
                     keyDef: { code: "KeyR", key: "r" },
                     actionName: "moveCharacterRight",
-                    description: "Move character Right by using character positioning tool"
+                    description: "Move character Right by using character positioning tool",
+                    icon: "A18.png",
+                    altText: "Move character right icon"
                 },
                 up: {
                     keyDef: { code: "KeyU", key: "u" },
                     actionName: "moveCharacterUp",
-                    description: "Move character Up by using character positioning tool"
+                    description: "Move character Up by using character positioning tool",
+                    icon: "A19.png",
+                    altText: "Move character up icon"
                 },
                 down: {
                     keyDef: { code: "KeyD", key: "d" },
                     actionName: "moveCharacterDown",
-                    description: "Move character Down by using character positioning tool"
+                    description: "Move character Down by using character positioning tool",
+                    icon: "A16.png",
+                    altText: "Move character down icon"
                 }
             },
             turn: {
@@ -264,12 +288,16 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 left: {
                     keyDef: { code: "KeyL", key: "l" },
                     actionName: "turnCharacterLeft",
-                    description: "Turn character Left 45 degrees by using character positioning tool"
+                    description: "Turn character Left 45 degrees by using character positioning tool",
+                    icon: "A20.png",
+                    altText: "Turn character left icon"
                 },
                 right: {
                     keyDef: { code: "KeyR", key: "r" },
                     actionName: "turnCharacterRight",
-                    description: "Turn character Right 45 degrees by using character positioning tool"
+                    description: "Turn character Right 45 degrees by using character positioning tool",
+                    icon: "A21.png",
+                    altText: "Turn character right icon"
                 }
             }
         },
@@ -279,34 +307,46 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             default: {
                 keyDef: { key: "1"},
                 actionName: "changeToDefaultTheme",
-                description: "Change the current visual theme to the Default theme"
+                description: "Change the current visual theme to the Default theme",
+                icon: "A25.png",
+                altText: "Change to default theme icon"
             },
             light: {
                 keyDef: { key: "2"},
                 actionName: "changeToLightTheme",
-                description: "Change the current visual theme to the Light theme"
+                description: "Change the current visual theme to the Light theme",
+                icon: "A26.png",
+                altText: "Change to light theme icon"
             },
             dark: {
                 keyDef: { key: "3"},
                 actionName: "changeToDarkTheme",
-                description: "Change the current visual theme to the Dark theme"
+                description: "Change the current visual theme to the Dark theme",
+                icon: "A27.png",
+                altText: "Change to dark theme icon"
             },
             grayscale: {
                 keyDef: { key: "4"},
                 actionName: "changeToGrayscaleTheme",
-                description: "Change the current visual theme to the Grayscale theme"
+                description: "Change the current visual theme to the Grayscale theme",
+                icon: "A28.png",
+                altText: "Change to grayscale theme icon"
             },
             highContrast: {
                 keyDef: { key: "5"},
                 actionName: "changeToHighContrastTheme",
-                description: "Change the current visual theme to the High Contrast theme"
+                description: "Change the current visual theme to the High Contrast theme",
+                icon: "A29.png",
+                altText: "Change to high contrast theme icon"
             }
         },
 
         deleteAll: {
             keyDef: { code: "KeyD", key: "d" },
             actionName: "deleteAll",
-            description: "Delete all action blocks in the program"
+            description: "Delete all action blocks in the program",
+            icon: "A22.png",
+            altText: "Delete all icon"
         }
     }
 }
@@ -380,17 +420,23 @@ const ControlAltInputScheme = Object.assign({
     addCommand: {
         keyDef: { code: "KeyA", key: "a", altKey: true, ctrlKey: true},
         actionName: "addCommand",
-        description: "Add action block to a program"
+        description: "Add action block to a program",
+        icon: "A01.png",
+        altText: "Add action icon"
     },
     addCommandToBeginning: {
         keyDef: { code: "KeyB", key: "b", altKey: true, ctrlKey: true},
         actionName: "addCommandToBeginning",
-        description: "Add action block to the beginning of the program"
+        description: "Add action block to the beginning of the program",
+        icon: "A02.png",
+        altText: "Add action to start icon"
     },
     addCommandToEnd: {
         keyDef: { code: "KeyE", key: "e", altKey: true, ctrlKey: true},
         actionName: "addCommandToEnd",
-        description: "Add action block to the end of the program"
+        description: "Add action block to the end of the program",
+        icon: "A03.png",
+        altText: "Add action to end icon"
     },
     deleteCurrentStep: {
         keyDef: { code: "KeyD", key: "d", altKey: true, ctrlKey: true},
@@ -405,32 +451,44 @@ const ControlAltInputScheme = Object.assign({
     decreaseProgramSpeed: {
         keyDef: { key: "<", shiftKey: true, hidden: true},
         actionName: "decreaseProgramSpeed",
-        description: "Decrease the program speed"
+        description: "Decrease the program speed",
+        icon: "A07.png",
+        altText: "Decrease speed icon"
     },
     increaseProgramSpeed: {
         keyDef: { key: ">", shiftKey: true, hidden: true},
         actionName: "increaseProgramSpeed",
-        description: "Increase the program speed"
+        description: "Increase the program speed",
+        icon: "A08.png",
+        altText: "Increase speed icon"
     },
     playPauseProgram: {
         keyDef: { code: "KeyP", key: "p", altKey: true, ctrlKey: true},
         actionName: "playPauseProgram",
-        description: "Activate play and pause of the program"
+        description: "Activate play and pause of the program",
+        icon: "A04.png",
+        altText: "Play or pause program icon"
     },
     refreshScene: {
         keyDef: { code: "KeyR", key: "r", altKey: true, ctrlKey: true },
         actionName: "refreshScene",
-        description: "Refresh the scene"
+        description: "Refresh the scene",
+        icon: "A05.png",
+        altText: "Refresh scene icon"
     },
     showHide: {
         keyDef: { key: "?", shiftKey: true },
         actionName: "showHide",
-        description: "Show or hide keyboard shortcut menu"
+        description: "Show or hide keyboard shortcut menu",
+        icon: "A09.png",
+        altText: "Show or hide keyboard shortcut menu icon"
     },
     stopProgram: {
         keyDef: {code: "KeyS", key: "s", altKey: true, ctrlKey: true},
         actionName: "stopProgram",
-        description: "Stop the program from playing"
+        description: "Stop the program from playing",
+        icon: "A06.png",
+        altText: "Stop program icon"
     },
 }, ControlAltExtendedKeyboardSequences);
 
