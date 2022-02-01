@@ -7,7 +7,7 @@
 import type {ActionToggleRegister, Program} from './types';
 import ProgramSerializer from './ProgramSerializer';
 
-export default class AllowedActionsSerializer {
+export default class DisallowedActionsSerializer {
     programSerializer: ProgramSerializer;
 
     constructor() {
@@ -24,11 +24,11 @@ export default class AllowedActionsSerializer {
         return this.programSerializer.serialize(registerAsProgram);
     }
 
-    deserialize(allowedActionsText: string): ActionToggleRegister {
-        const program = this.programSerializer.deserialize(allowedActionsText);
+    deserialize(disallowedActionsText: string): ActionToggleRegister {
+        const program = this.programSerializer.deserialize(disallowedActionsText);
         const actionToggleRegister = {};
-        program.forEach((allowedActionKey) => {
-            actionToggleRegister[allowedActionKey] = true;
+        program.forEach((disallowedActionKey) => {
+            actionToggleRegister[disallowedActionKey] = true;
         });
         return actionToggleRegister;
     }
