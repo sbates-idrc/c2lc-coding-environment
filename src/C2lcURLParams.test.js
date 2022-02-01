@@ -19,3 +19,8 @@ test('Given URL query parameters with special characters, get decoded param valu
     expect(urlParams.getTheme()).toBe('dark');
     expect(urlParams.getDisallowedActions()).toBe('("');
 });
+
+test('The old allowed actions parameter should be ignored.', () => {
+    const urlParams = new C2lcURLParams('?v=0.5&t=dark&p=f1f2&c=00b&a=f3');
+    expect(urlParams.getDisallowedActions()).toBe(null);
+})
