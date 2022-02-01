@@ -354,39 +354,62 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
 const AltInputScheme: KeyboardInputScheme = Object.assign({
     addCommand: {
         keyDef: { code: "KeyA", key: "a", altKey: true},
-        actionName: "addCommand"
+        actionName: "addCommand",
+        description: "Add action block to a program",
+        icon: "A01.png",
+        altText: "Add action icon"
     },
     addCommandToBeginning: {
         keyDef: { code: "KeyB", key: "b", altKey: true},
-        actionName: "addCommandToBeginning"
+        actionName: "addCommandToBeginning",
+        description: "Add action block to the beginning of the program",
+        icon: "A02.png",
+        altText: "Add action to start icon"
     },
     addCommandToEnd: {
         keyDef: { code: "KeyE", key: "e", altKey: true},
-        actionName: "addCommandToEnd"
+        actionName: "addCommandToEnd",
+        description: "Add action block to the end of the program",
+        icon: "A03.png",
+        altText: "Add action to end icon"
     },
     deleteCurrentStep: {
         keyDef: { code: "KeyD", key: "d", altKey: true},
-        actionName: "deleteCurrentStep"
+        actionName: "deleteCurrentStep",
+        description: "Delete the most recent action block added to the program"
     },
     announceScene: {
         keyDef: { code: "KeyI", key: "i", altKey: true},
-        actionName: "announceScene"
+        actionName: "announceScene",
+        description: "Initiate announcement of the scene"
     },
     decreaseProgramSpeed: {
         keyDef: { key: "<", hidden: true},
-        actionName: "decreaseProgramSpeed"
+        actionName: "decreaseProgramSpeed",
+        description: "Decrease the program speed",
+        icon: "A07.png",
+        altText: "Decrease speed icon"
     },
     increaseProgramSpeed: {
         keyDef: { key: ">", hidden: true},
-        actionName: "increaseProgramSpeed"
+        actionName: "increaseProgramSpeed",
+        description: "Increase the program speed",
+        icon: "A08.png",
+        altText: "Increase speed icon"
     },
     playPauseProgram: {
         keyDef: { code: "KeyP", key: "p", altKey: true},
-        actionName: "playPauseProgram"
+        actionName: "playPauseProgram",
+        description: "Activate play and pause of the program",
+        icon: "A04.png",
+        altText: "Play or pause program icon"
     },
     refreshScene: {
         keyDef: { code: "KeyR", key: "r", altKey: true},
-        actionName: "refreshScene"
+        actionName: "refreshScene",
+        description: "Refresh the scene",
+        icon: "A05.png",
+        altText: "Refresh scene icon"
     },
     showHide: {
         keyDef: { key: "?"},
@@ -416,65 +439,33 @@ const ControlAltExtendedKeyboardSequences = extend(ExtendedKeyboardSequences, {
     }
 });
 
-const ControlAltInputScheme = Object.assign({
+const ControlAltInputScheme = extend (AltInputScheme, {
     addCommand: {
-        keyDef: { code: "KeyA", key: "a", altKey: true, ctrlKey: true},
-        actionName: "addCommand",
-        description: "Add action block to a program",
-        icon: "A01.png",
-        altText: "Add action icon"
+        keyDef: { code: "KeyA", key: "a", altKey: true, ctrlKey: true}
     },
     addCommandToBeginning: {
-        keyDef: { code: "KeyB", key: "b", altKey: true, ctrlKey: true},
-        actionName: "addCommandToBeginning",
-        description: "Add action block to the beginning of the program",
-        icon: "A02.png",
-        altText: "Add action to start icon"
+        keyDef: { code: "KeyB", key: "b", altKey: true, ctrlKey: true}
     },
     addCommandToEnd: {
-        keyDef: { code: "KeyE", key: "e", altKey: true, ctrlKey: true},
-        actionName: "addCommandToEnd",
-        description: "Add action block to the end of the program",
-        icon: "A03.png",
-        altText: "Add action to end icon"
+        keyDef: { code: "KeyE", key: "e", altKey: true, ctrlKey: true}
     },
     deleteCurrentStep: {
-        keyDef: { code: "KeyD", key: "d", altKey: true, ctrlKey: true},
-        actionName: "deleteCurrentStep",
-        description: "Delete the most recent action block added to the program"
+        keyDef: { code: "KeyD", key: "d", altKey: true, ctrlKey: true}
     },
     announceScene: {
-        keyDef: {code: "KeyI", key: "i", altKey: true, ctrlKey: true},
-        actionName: "announceScene",
-        description: "Initiate announcement of the scene"
+        keyDef: {code: "KeyI", key: "i", altKey: true, ctrlKey: true}
     },
     decreaseProgramSpeed: {
-        keyDef: { key: "<", shiftKey: true, hidden: true},
-        actionName: "decreaseProgramSpeed",
-        description: "Decrease the program speed",
-        icon: "A07.png",
-        altText: "Decrease speed icon"
+        keyDef: { key: "<", shiftKey: true, hidden: true}
     },
     increaseProgramSpeed: {
-        keyDef: { key: ">", shiftKey: true, hidden: true},
-        actionName: "increaseProgramSpeed",
-        description: "Increase the program speed",
-        icon: "A08.png",
-        altText: "Increase speed icon"
+        keyDef: { key: ">", shiftKey: true, hidden: true}
     },
     playPauseProgram: {
-        keyDef: { code: "KeyP", key: "p", altKey: true, ctrlKey: true},
-        actionName: "playPauseProgram",
-        description: "Activate play and pause of the program",
-        icon: "A04.png",
-        altText: "Play or pause program icon"
+        keyDef: { code: "KeyP", key: "p", altKey: true, ctrlKey: true}
     },
     refreshScene: {
-        keyDef: { code: "KeyR", key: "r", altKey: true, ctrlKey: true },
-        actionName: "refreshScene",
-        description: "Refresh the scene",
-        icon: "A05.png",
-        altText: "Refresh scene icon"
+        keyDef: { code: "KeyR", key: "r", altKey: true, ctrlKey: true }
     },
     showHide: {
         keyDef: { key: "?", shiftKey: true },

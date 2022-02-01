@@ -73,8 +73,8 @@ function displayKeyBindings() {
             markdown += bindingEntries.sort().join('\n') + '\n';
         }
         markdown += "\n";
-        return markdown;
     }
+    return markdown;
 }
 
 function generateKeyboardDoc() {
