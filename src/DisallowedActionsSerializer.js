@@ -13,23 +13,11 @@ export default class DisallowedActionsSerializer {
         for (const [actionKey, isAllowed] of Object.entries(actionToggleRegister)) {
             if (isAllowed) {
                 switch (actionKey) {
-                    case ('forward1') :
+                    case ('forward') :
                         serializedAllowedActions += '1';
                         break;
-                    case ('forward2') :
-                        serializedAllowedActions += '2';
-                        break;
-                    case ('forward3') :
-                        serializedAllowedActions += '3';
-                        break;
-                    case ('backward1') :
+                    case ('backward') :
                         serializedAllowedActions += '4';
-                        break;
-                    case ('backward2') :
-                        serializedAllowedActions += '5';
-                        break;
-                    case ('backward3') :
-                        serializedAllowedActions += '6';
                         break;
                     case ('left45') :
                         serializedAllowedActions += 'A';
@@ -65,22 +53,10 @@ export default class DisallowedActionsSerializer {
         for (let i=0; i<allowedActionsText.length; i++) {
             switch(allowedActionsText.charAt(i)) {
                 case '1':
-                    actionToggleRegister['forward1'] = true;
-                    break;
-                case '2':
-                    actionToggleRegister['forward2'] = true;
-                    break;
-                case '3':
-                    actionToggleRegister['forward3'] = true;
+                    actionToggleRegister['forward'] = true;
                     break;
                 case '4':
-                    actionToggleRegister['backward1'] = true;
-                    break;
-                case '5':
-                    actionToggleRegister['backward2'] = true;
-                    break;
-                case '6':
-                    actionToggleRegister['backward3'] = true;
+                    actionToggleRegister['backward'] = true;
                     break;
                 case 'A':
                     actionToggleRegister['left45'] = true;

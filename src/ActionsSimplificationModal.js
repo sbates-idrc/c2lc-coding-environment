@@ -9,7 +9,7 @@ import ModalWithFooter from './ModalWithFooter';
 import ActionsMenuItem from './ActionsMenuItem';
 import ProgramSequence from './ProgramSequence';
 
-import type {ActionToggleRegister, CommandName} from './types';
+import type {ActionToggleRegister, DisplayedCommandName} from './types';
 import {extend} from './Utils';
 import {ReactComponent as SimplificationIcon} from './svg/Simplification.svg'
 
@@ -20,7 +20,7 @@ type ActionsSimplificationModalProps = {
     onCancel: () => void,
     onConfirm: (disallowedActions: ActionToggleRegister) => void,
     // TODO: Flesh this definition out.
-    menuItems: Array<CommandName>,
+    menuItems: Array<DisplayedCommandName>,
     programSequence: ProgramSequence,
     disallowedActions: ActionToggleRegister,
     show: boolean
@@ -33,12 +33,8 @@ type ActionsSimplificationModalState = {
 class ActionsSimplificationModal extends React.Component<ActionsSimplificationModalProps, ActionsSimplificationModalState> {
     static defaultProps = {
         menuItems: [
-            'forward1',
-            'forward2',
-            'forward3',
-            'backward1',
-            'backward2',
-            'backward3',
+            'forward',
+            'backward',
             'left45',
             'left90',
             'left180',

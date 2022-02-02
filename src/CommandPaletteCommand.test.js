@@ -22,7 +22,7 @@ const intl = createIntl({
     locale: 'en',
     defaultLocale: 'en',
     messages: {
-        'Command.forward1' : 'forward1'
+        'Command.forward' : 'forward'
     }
 });
 
@@ -30,7 +30,7 @@ test('Pressed state is false when selecedCommandName is null', () => {
     const wrapper = shallow(
         <CommandPaletteCommand.WrappedComponent
             intl={intl}
-            commandName='forward1'
+            commandName='forward'
             selectedCommandName={null}
             onChange={() => {}}/>
     );
@@ -42,7 +42,7 @@ test('Pressed state is false when selecedCommandName is another command', () => 
     const wrapper = shallow(
         <CommandPaletteCommand.WrappedComponent
             intl={intl}
-            commandName='forward1'
+            commandName='forward'
             selectedCommandName='left45'
             onChange={() => {}}/>
     );
@@ -54,8 +54,8 @@ test('Pressed state is true when selecedCommandName is this command', () => {
     const wrapper = shallow(
         <CommandPaletteCommand.WrappedComponent
             intl={intl}
-            commandName='forward1'
-            selectedCommandName='forward1'
+            commandName='forward'
+            selectedCommandName='forward'
             onChange={() => {}}/>
     );
     expect(hasPressedClass(wrapper)).toBe(true);
@@ -68,7 +68,7 @@ test('Clicking the button toggles selectedCommandName', () => {
     const wrapper = shallow(
         <CommandPaletteCommand.WrappedComponent
             intl={intl}
-            commandName='forward1'
+            commandName='forward'
             selectedCommandName={null}
             onChange={mockChangeHandler}/>
     );
@@ -79,9 +79,9 @@ test('Clicking the button toggles selectedCommandName', () => {
     button.simulate('click');
     // Verify that onChange is called with the commandName
     expect(mockChangeHandler.mock.calls.length).toBe(1);
-    expect(mockChangeHandler.mock.calls[0][0]).toBe('forward1');
+    expect(mockChangeHandler.mock.calls[0][0]).toBe('forward');
     // Update the selectedCommandName
-    wrapper.setProps({selectedCommandName: 'forward1'});
+    wrapper.setProps({selectedCommandName: 'forward'});
     wrapper.update();
     // Click again
     button.simulate('click');

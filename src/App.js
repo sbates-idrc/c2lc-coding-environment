@@ -31,7 +31,7 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ShareButton from './ShareButton';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -145,16 +145,16 @@ export class App extends React.Component<AppProps, AppState> {
         this.defaultWorld = 'Sketchpad';
 
         this.interpreter.addCommandHandler(
-            'forward1',
+            'forward',
             'moveCharacter',
             (stepTimeMs) => {
                 // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('forward1', this.props.intl);
+                // this.audioManager.playAnnouncement('forward', this.props.intl);
                 this.setState((state) => {
                     const newCharacterState = state.characterState.forward(1, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward1", stepTimeMs, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -204,16 +204,16 @@ export class App extends React.Component<AppProps, AppState> {
         );
 
         this.interpreter.addCommandHandler(
-            'backward1',
+            'backward',
             'moveCharacter',
             (stepTimeMs) => {
                 // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('backward1');
+                // this.audioManager.playAnnouncement('backward');
                 this.setState((state) => {
                     const newCharacterState = state.characterState.backward(1, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward1", stepTimeMs, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -784,23 +784,11 @@ export class App extends React.Component<AppProps, AppState> {
                         case("increaseProgramSpeed"):
                             this.changeProgramSpeedIndex(this.speedLookUp.indexOf(this.interpreter.stepTimeMs) + 1);
                             break;
-                        case("selectForward1"):
-                            this.setState({ "selectedAction": "forward1" });
+                        case("selectForward"):
+                            this.setState({ "selectedAction": "forward" });
                             break;
-                        case("selectForward2"):
-                            this.setState({ "selectedAction": "forward2" });
-                            break;
-                        case("selectForward3"):
-                            this.setState({ "selectedAction": "forward3" });
-                            break;
-                        case("selectBackward1"):
-                            this.setState({ "selectedAction": "backward1" });
-                            break;
-                        case("selectBackward2"):
-                            this.setState({ "selectedAction": "backward2" });
-                            break;
-                        case("selectBackward3"):
-                            this.setState({ "selectedAction": "backward3" });
+                        case("selectBackward"):
+                            this.setState({ "selectedAction": "backward" });
                             break;
                         case("selectLeft45"):
                             this.setState({ "selectedAction": "left45" });
@@ -935,7 +923,7 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleToggleAllowedCommand = (event: Event, commandName: CommandName) => {
+    handleToggleAllowedCommand = (event: Event, commandName: DisplayedCommandName) => {
         // TODO: Use the function form of setState() as the new state
         //       depends on the current state
         const currentIsDisallowed = this.state.disallowedActions[commandName];
@@ -963,7 +951,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.setStepTime(stepTimeMs);
     }
 
-    renderCommandBlocks = (commands: Array<CommandName>) => {
+    renderCommandBlocks = (commands: Array<DisplayedCommandName>) => {
         const commandBlocks = [];
 
         for (const [index, value] of commands.entries()) {
@@ -1271,15 +1259,19 @@ export class App extends React.Component<AppProps, AppState> {
                         </div>
                         <div className='App__command-palette-command-container'>
                             <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks(['forward'])}
+                            </div>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks(['backward'])}
+                            </div>
+                            <div className='App__command-palette-commands'>
                                 {this.renderCommandBlocks([
-                                    'forward1', 'forward2', 'forward3',
-                                    'backward1', 'backward2', 'backward3'
+                                    'left45', 'left90', 'left180'
                                 ])}
                             </div>
                             <div className='App__command-palette-commands'>
                                 {this.renderCommandBlocks([
-                                    'left45', 'left90', 'left180',
-                                    'right45', 'right90', 'right180',
+                                    'right45', 'right90', 'right180'
                                 ])}
                             </div>
                             <div className='App__command-palette-commands'>

@@ -31,12 +31,8 @@ export type ActionName =
     | "toggleFeedbackAnnouncements"
 
     // Select Command Sequences
-    | "selectForward1"
-    | "selectForward2"
-    | "selectForward3"
-    | "selectBackward1"
-    | "selectBackward2"
-    | "selectBackward3"
+    | "selectForward"
+    | "selectBackward"
     | "selectLeft45"
     | "selectLeft90"
     | "selectLeft180"
@@ -152,32 +148,16 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             keyDef: { code: "KeyA", key: "a" },
             forward: {
                 keyDef: { code: "KeyF", key: "f" },
-                forward1: {
+                forward: {
                     keyDef: { key: "1"},
-                    actionName: "selectForward1"
-                },
-                forward2: {
-                    keyDef: { key: "2"},
-                    actionName: "selectForward2"
-                },
-                forward3: {
-                    keyDef: { key: "3"},
-                    actionName: "selectForward3"
+                    actionName: "selectForward"
                 }
             },
             backward: {
                 keyDef: { code: "KeyB", key: "b" },
-                backward1: {
+                backward: {
                     keyDef: { key: "1"},
-                    actionName: "selectBackward1"
-                },
-                backward2: {
-                    keyDef: { key: "2"},
-                    actionName: "selectBackward2"
-                },
-                backward3: {
-                    keyDef: { key: "3"},
-                    actionName: "selectBackward3"
+                    actionName: "selectBackward"
                 }
             },
             left: {

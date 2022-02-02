@@ -16,7 +16,7 @@ export default class ProgramSerializer {
         for (let i=0; i<program.length; i++) {
             const programCommandBlock = program[i].block;
             switch(programCommandBlock) {
-                case ('forward1') :
+                case ('forward') :
                     programText += '1';
                     break;
                 case ('forward2') :
@@ -25,7 +25,7 @@ export default class ProgramSerializer {
                 case ('forward3') :
                     programText += '3';
                     break;
-                case ('backward1') :
+                case ('backward') :
                     programText += '4';
                     break;
                 case ('backward2') :

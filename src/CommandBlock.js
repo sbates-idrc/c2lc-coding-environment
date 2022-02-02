@@ -4,10 +4,10 @@ import * as React from 'react';
 import AriaDisablingButton from './AriaDisablingButton';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
-import { ReactComponent as Forward1 } from './svg/Forward1.svg';
+import { ReactComponent as Forward } from './svg/Forward1.svg';
 import { ReactComponent as Forward2 } from './svg/Forward2.svg';
 import { ReactComponent as Forward3 } from './svg/Forward3.svg';
-import { ReactComponent as Backward1 } from './svg/Backward1.svg';
+import { ReactComponent as Backward } from './svg/Backward1.svg';
 import { ReactComponent as Backward2 } from './svg/Backward2.svg';
 import { ReactComponent as Backward3 } from './svg/Backward3.svg';
 import { ReactComponent as Left45 } from './svg/Left45.svg';
@@ -30,10 +30,10 @@ type CommandBlockProps = {
 // TODO: Revise this once there is a proper strategy for typing SVG-backed
 //       components.
 export const commandBlockIconTypes = new Map<string, any>([
-    ['forward1', Forward1],
+    ['forward', Forward],
     ['forward2', Forward2],
     ['forward3', Forward3],
-    ['backward1', Backward1],
+    ['backward', Backward],
     ['backward2', Backward2],
     ['backward3', Backward3],
     ['left45', Left45],

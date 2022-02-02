@@ -17,7 +17,7 @@ test('Parse unsupported character', () => {
 
 test('Parse 1', () => {
     expect((new ProgramParser()).parse('1')).toStrictEqual({
-        program: [{block: 'forward1'}],
+        program: [{block: 'forward'}],
         highestLoopNumber: 0
     });
 });
@@ -38,7 +38,7 @@ test('Parse 3', () => {
 
 test('Parse 4', () => {
     expect((new ProgramParser()).parse('4')).toStrictEqual({
-        program: [{block: 'backward1'}],
+        program: [{block: 'backward'}],
         highestLoopNumber: 0
     });
 });
@@ -208,10 +208,10 @@ test('Parse program with nested loops', () => {
 test('Parse program with all blocks', () => {
     expect((new ProgramParser()).parse('123456ABDabdsA1sz')).toStrictEqual({
         program: [
-            {block: 'forward1'},
+            {block: 'forward'},
             {block: 'forward2'},
             {block: 'forward3'},
-            {block: 'backward1'},
+            {block: 'backward'},
             {block: 'backward2'},
             {block: 'backward3'},
             {block: 'left45'},
