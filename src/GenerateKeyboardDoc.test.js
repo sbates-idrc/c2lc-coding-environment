@@ -62,9 +62,9 @@ function processSingleLevel(singleLevel, accumulatedSequence) {
 function displayKeyBindings() {
     let markdown = "";
     for (const [schemeName, keyboardInputScheme] of Object.entries(KeyboardInputSchemes)) {
-        markdown += '## ' + schemeIntro[schemeName].title + '\n\n';
+        markdown += '\n## ' + schemeIntro[schemeName].title + '\n\n';
         markdown += schemeIntro[schemeName].intro;
-        markdown += '\n\n | Action | Keyboard Shortcut | Icon |\n'
+        markdown += '\n\n| Action | Keyboard Shortcut | Icon |\n'
         markdown += '| ---- | ------- | ----- |\n'
         for (const topLevelBinding of Object.values(keyboardInputScheme)) {
             const allSequences = processSingleLevel(topLevelBinding, []);
@@ -86,11 +86,10 @@ function displayKeyBindings() {
                     }
                     bindingText += keyDef.key || (keyDef.code && keyDef.code.replace("Key", ""));
                 }
-                bindingEntries.push('| ' + actionInfo.description + ' | ' + bindingText + ' | ' + iconLink + ' |');
+                bindingEntries.push('| ' + actionInfo.description + ' | ' + bindingText + ' | ' + iconLink + ' |\n');
             }
-            markdown += bindingEntries.sort().join('\n') + '\n';
+            markdown += bindingEntries.sort().join(' ');
         }
-        markdown += "\n";
     }
     return markdown;
 }
@@ -115,8 +114,8 @@ indicated using plus signs, and keys that need to be entered separately are
 divided using commas. For example, the shortcut \`Ctrl + Alt + x, x\` is
 activated by holding control, alt, and x at the same time, releasing all keys,
 and then hitting the x key again by itself.
-
 `;
+
     markdown += displayKeyBindings();
 
     fs.writeFileSync(filename, markdown);
