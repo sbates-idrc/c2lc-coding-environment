@@ -380,13 +380,35 @@ export class App extends React.Component<AppProps, AppState> {
             }
         );
 
+        this.interpreter.addCommandHandler(
+            'startLoop',
+            'repeatCommand',
+            (stepTimeMs) => {
+                /* eslint-disable no-console */
+                console.log('loop start');
+                /* eslint-enable no-console */
+                return Utils.makeDelayedPromise(stepTimeMs);
+            }
+        );
+
+        this.interpreter.addCommandHandler(
+            'endLoop',
+            'repeatCommand',
+            (stepTimeMs) => {
+                /* eslint-disable no-console */
+                console.log('loop end');
+                /* eslint-enable no-console */
+                return Utils.makeDelayedPromise(stepTimeMs);
+            }
+        );
+
         // We have to calculate the allowed commands and initialise the state here because this is the point at which
         // the interpreter's commands are populated.
 
         const disallowedActions = {};
 
         this.state = {
-            programSequence: new ProgramSequence([], 0),
+            programSequence: new ProgramSequence([], 0, 0),
             characterState: this.makeStartingCharacterState(this.defaultWorld),
             settings: {
                 language: 'en',
@@ -1257,7 +1279,12 @@ export class App extends React.Component<AppProps, AppState> {
                             <div className='App__command-palette-commands'>
                                 {this.renderCommandBlocks([
                                     'left45', 'left90', 'left180',
-                                    'right45', 'right90', 'right180'
+                                    'right45', 'right90', 'right180',
+                                ])}
+                            </div>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks([
+                                    'loop'
                                 ])}
                             </div>
                         </div>
@@ -1376,7 +1403,12 @@ export class App extends React.Component<AppProps, AppState> {
 
             if (programQuery != null) {
                 try {
-                    const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(programQuery), 0);
+                    const parseResult = this.programSerializer.deserialize(programQuery);
+                    const programSequence: ProgramSequence = new ProgramSequence(
+                        parseResult.program,
+                        0,
+                        parseResult.highestLoopNumber
+                    );
                     this.setState({
                         programSequence: programSequence
                     });
@@ -1427,7 +1459,12 @@ export class App extends React.Component<AppProps, AppState> {
 
             if (localProgram != null) {
                 try {
-                    const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(localProgram), 0);
+                    const parseResult = this.programSerializer.deserialize(localProgram);
+                    const programSequence: ProgramSequence = new ProgramSequence(
+                        parseResult.program,
+                        0,
+                        parseResult.highestLoopNumber
+                    );
                     this.setState({
                         programSequence: programSequence
                     });

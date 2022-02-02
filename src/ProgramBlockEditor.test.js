@@ -27,7 +27,7 @@ configure({ adapter: new Adapter()});
 const defaultProgramBlockEditorProps = {
     interpreterIsRunning: false,
     characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
-    programSequence: new ProgramSequence(['forward1', 'left45', 'forward1', 'left45'], 0),
+    programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 0, 0),
     runningState: 'stopped',
     actionPanelStepIndex: null,
     selectedAction: null,
@@ -204,7 +204,7 @@ describe("Add nodes", () => {
         expect.assertions(3);
 
         const { wrapper } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence(['forward1', 'right45'], 0),
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'right45'}], 0, 0),
             addNodeExpandedMode: true
         });
 
@@ -222,7 +222,7 @@ describe("Add nodes", () => {
         expect.assertions(3);
 
         const { wrapper } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence(['forward1', 'right45'], 0),
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'right45'}], 0, 0),
             selectedAction: 'left45',
             addNodeExpandedMode: true
         });
@@ -248,7 +248,7 @@ describe("Add nodes", () => {
         expect.assertions(1);
 
         const { wrapper } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence([], 0),
+            programSequence: new ProgramSequence([], 0, 0),
             selectedAction: 'left45'
         });
 
@@ -264,7 +264,7 @@ describe("Add nodes", () => {
         expect.assertions(1);
 
         const { wrapper } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence([], 0)
+            programSequence: new ProgramSequence([], 0, 0)
         });
 
         const soleAddButton  = getAddNodeButtonAtPosition(wrapper, 0);
@@ -300,7 +300,7 @@ describe("Add program steps", () => {
 
         // Given a program of 5 forwards and 'left45' as the selected command
         const { wrapper, mockInsertSelectedActionIntoProgramHandler } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence(['forward1', 'forward1', 'forward1', 'forward1', 'forward1'], 0),
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}], 0, 0),
             selectedAction: 'left45'
         });
 
@@ -321,7 +321,7 @@ describe("Add program steps", () => {
 
         // Given a program of 5 forwards and 'left45' as the selected command
         const { wrapper, mockInsertSelectedActionIntoProgramHandler } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence(['forward1', 'forward1', 'forward1', 'forward1', 'forward1'], 0),
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}], 0, 0),
             selectedAction: 'left45',
             addNodeExpandedMode: true
         });
@@ -342,7 +342,7 @@ describe("Add program steps", () => {
 
         // Given a program of 5 forwards and 'left45' as the selected command
         const { wrapper, mockInsertSelectedActionIntoProgramHandler } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence(['forward1', 'forward1', 'forward1', 'forward1', 'forward1'], 0),
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}], 0, 0),
             selectedAction: 'left45',
             addNodeExpandedMode: true
         });
@@ -390,8 +390,8 @@ describe('Delete program steps', () => {
 
 describe('Replace program steps', () => {
     test.each([
-        [ 0, ['right45', 'left45', 'forward1', 'left45'], 'right45'],
-        [ 0, ['forward1', 'left45', 'forward1', 'left45'], null]
+        [ 0, [{block: 'right45'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 'right45'],
+        [ 0, [{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], null]
     ]) ('Replace a program if selectedAction is not null',
         (stepNum, expectedProgram, selectedAction) => {
             expect.assertions(7);
@@ -435,8 +435,8 @@ describe('Replace program steps', () => {
 
 describe('Move to previous program step', () => {
     test.each([
-        [ 0, ['forward1', 'left45', 'forward1', 'left45']],
-        [ 2, ['forward1', 'forward1', 'left45', 'left45']]
+        [ 0, [{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}]],
+        [ 2, [{block: 'forward1'}, {block: 'forward1'}, {block: 'left45'}, {block: 'left45'}]]
     ]) ('Changes position with a step before, if there is a step',
         (stepNum, expectedProgram) => {
             const { wrapper, audioManagerMock, mockChangeProgramSequenceHandler, mockChangeActionPanelStepIndex } = createMountProgramBlockEditor();
@@ -475,8 +475,8 @@ describe('Move to previous program step', () => {
 
 describe('Move to next program step', () => {
     test.each([
-        [ 0, ['left45', 'forward1', 'forward1', 'left45']],
-        [ 3, ['forward1', 'left45', 'forward1', 'left45']]
+        [ 0, [{block: 'left45'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'left45'}]],
+        [ 3, [{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}]]
     ]) ('Changes position with a step after, if there is a step',
         (stepNum, expectedProgram) => {
             const { wrapper, audioManagerMock, mockChangeProgramSequenceHandler, mockChangeActionPanelStepIndex } = createMountProgramBlockEditor();
@@ -543,7 +543,7 @@ describe('Autoscroll to show a step after the active program step', () => {
         getProgramSequenceContainer(wrapper).ref.current.scrollTo = mockScrollTo;
 
         wrapper.setProps({
-            programSequence: new ProgramSequence(['forward1', 'left45', 'forward1', 'left45'], 0)
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 0, 0)
         });
 
         expect(mockScrollTo.mock.calls.length).toBe(1);
@@ -582,7 +582,7 @@ describe('Autoscroll to show a step after the active program step', () => {
         // Trigger a scroll
         wrapper.setProps({
             runningState: 'running',
-            programSequence: new ProgramSequence(['forward1', 'left45', 'forward1', 'left45'], 2)
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 2, 0)
         });
 
         expect(programSequenceContainer.ref.current.scrollLeft).toBe(200 + 2300 - 100 - 1000);
@@ -618,7 +618,7 @@ describe('Autoscroll to show a step after the active program step', () => {
         // Trigger a scroll
         wrapper.setProps({
             runningState: 'running',
-            programSequence: new ProgramSequence(['forward1', 'left45', 'forward1', 'left45'], 2)
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 2, 0)
         });
 
         expect(programSequenceContainer.ref.current.scrollLeft).toBe(2000 - 100 - 200);
@@ -654,7 +654,7 @@ describe('Autoscroll to show a step after the active program step', () => {
         // Trigger a scroll
         wrapper.setProps({
             runningState: 'running',
-            programSequence: new ProgramSequence(['forward1', 'left45', 'forward1', 'left45'], 3)
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 3, 0)
         });
 
         expect(programSequenceContainer.ref.current.scrollLeft).toBe(2000 - 100 - 200);
@@ -669,7 +669,7 @@ test('focusCommandBlockAfterUpdate', () => {
     window.HTMLElement.prototype.focus = mockFocus;
 
     const { wrapper, programBlockEditorRef } = createMountProgramBlockEditor({
-        programSequence: new ProgramSequence(['forward1', 'forward2'], 0)
+        programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0)
     });
 
     // When focusCommandBlockAfterUpdate is called
@@ -677,7 +677,7 @@ test('focusCommandBlockAfterUpdate', () => {
     programBlockEditorRef.current.focusCommandBlockAfterUpdate(1);
 
     // And the program is updated
-    wrapper.setProps({ programSequence: new ProgramSequence(['forward1', 'forward3', 'forward2'], 0) });
+    wrapper.setProps({ programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward3'}, {block: 'forward2'}], 0, 0) });
 
     // Then the program step is focused
     expect(mockFocus.mock.calls.length).toBe(1);
@@ -693,7 +693,7 @@ test('focusAddNodeAfterUpdate', () => {
     window.HTMLElement.prototype.focus = mockFocus;
 
     const { wrapper, programBlockEditorRef } = createMountProgramBlockEditor({
-        programSequence: new ProgramSequence(['forward1', 'forward2'], 0),
+        programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0),
         addNodeExpandedMode: true
     });
 
@@ -702,7 +702,7 @@ test('focusAddNodeAfterUpdate', () => {
     programBlockEditorRef.current.focusAddNodeAfterUpdate(1);
 
     // And the program is updated
-    wrapper.setProps({ programSequence: new ProgramSequence(['forward1'], 0) });
+    wrapper.setProps({ programSequence: new ProgramSequence([{block: 'forward1'}], 0, 0) });
 
     // Then the add-node is focused
     expect(mockFocus.mock.calls.length).toBe(1);
@@ -719,7 +719,7 @@ test('scrollToAddNodeAfterUpdate', () => {
 
     // Given a program of 5 forwards and 'left45' as the selected command
     const { wrapper, programBlockEditorRef } = createMountProgramBlockEditor({
-        programSequence: new ProgramSequence(['forward1', 'forward1', 'forward1', 'forward1', 'forward1'], 0),
+        programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}], 0, 0),
         selectedAction: 'left45'
     });
 
@@ -728,7 +728,7 @@ test('scrollToAddNodeAfterUpdate', () => {
     programBlockEditorRef.current.scrollToAddNodeAfterUpdate(6);
 
     // And the program is updated
-    wrapper.setProps({ programSequence: new ProgramSequence(['forward1', 'forward1', 'forward1', 'forward1', 'forward1', 'left45'], 0) });
+    wrapper.setProps({ programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'left45'}], 0, 0) });
 
     // Then the ProgramBlockEditor is scrolled
     expect(mockScrollIntoView.mock.calls.length).toBe(1);

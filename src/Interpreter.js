@@ -2,6 +2,7 @@
 
 import {App} from './App';
 import ProgramSequence from './ProgramSequence';
+import type { ProgramBlock } from './types';
 
 export type CommandHandler = { (stepTimeMs: number): Promise<void> };
 
@@ -98,7 +99,8 @@ export default class Interpreter {
         });
     }
 
-    doCommand(command: string): Promise<any> {
+    doCommand(programStep: ProgramBlock): Promise<any> {
+        const command = programStep.block;
         const handlers = this.lookUpCommandHandlers(command);
         if (handlers.length === 0) {
             return Promise.reject(new Error(`Unknown command: ${command}`));
