@@ -13,7 +13,7 @@ const fs = require('fs');
 // Change to true to generate the keyboard Markdown doc
 const generateDoc = false;
 
-const filename = "docs/keyboard2.md";
+const filename = "docs/keyboard.md";
 const boardImgsPath = "../src/board-imgs/";
 
 const schemeIntro = {
@@ -26,7 +26,10 @@ const schemeIntro = {
     },
     "alt": {
         title: "Alt (Apple: Option) Key Bindings",
-        intro: "VoiceOver uses ctrl+alt for many of its commands, to avoid conflicting with those, there is a keyboard input scheme whichg uses the alt key in combination with the starting key of a sequence. Those key bindings are as follows:"
+        intro: `VoiceOver uses ctrl+alt for many of its commands, to avoid
+        conflicting with those, there is a keyboard input scheme which uses the
+        alt key in combination with the starting key of a sequence.
+        Those key bindings are as follows:`
     }
 };
 
