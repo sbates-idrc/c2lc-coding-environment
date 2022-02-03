@@ -37,10 +37,8 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
             'backward',
             'left45',
             'left90',
-            'left180',
             'right45',
-            'right90',
-            'right180'
+            'right90'
         ]
     }
 

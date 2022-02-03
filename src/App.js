@@ -1266,12 +1266,12 @@ export class App extends React.Component<AppProps, AppState> {
                             </div>
                             <div className='App__command-palette-commands'>
                                 {this.renderCommandBlocks([
-                                    'left45', 'left90', 'left180'
+                                    'left45', 'left90'
                                 ])}
                             </div>
                             <div className='App__command-palette-commands'>
                                 {this.renderCommandBlocks([
-                                    'right45', 'right90', 'right180'
+                                    'right45', 'right90'
                                 ])}
                             </div>
                             <div className='App__command-palette-commands'>
