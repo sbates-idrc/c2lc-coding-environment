@@ -11,22 +11,18 @@ test("Serialize disallowed actions", () => {
     expect(serializer.serialize({ backward: true})).toStrictEqual('4');
     expect(serializer.serialize({ left45: true})).toStrictEqual('A');
     expect(serializer.serialize({ left90: true})).toStrictEqual('B');
-    expect(serializer.serialize({ left180: true})).toStrictEqual('D');
     expect(serializer.serialize({ right45: true})).toStrictEqual('a');
     expect(serializer.serialize({ right90: true})).toStrictEqual('b');
-    expect(serializer.serialize({ right180: true})).toStrictEqual('d');
     expect(serializer.serialize({ loop: true})).toStrictEqual('l');
     expect(serializer.serialize({
         forward: false,
         backward: true,
         left45: false,
         left90: true,
-        left180: false,
         right45: true,
         right90: false,
-        right180: true,
         loop: true
-    })).toStrictEqual('246Badl');
+    })).toStrictEqual('4Bal');
 });
 
 test("Deserialize disallowed actions.", () => {
@@ -36,20 +32,16 @@ test("Deserialize disallowed actions.", () => {
     expect(serializer.deserialize('4')).toStrictEqual({ backward: true });
     expect(serializer.deserialize('A')).toStrictEqual({ left45: true });
     expect(serializer.deserialize('B')).toStrictEqual({ left90: true });
-    expect(serializer.deserialize('D')).toStrictEqual({ left180: true });
     expect(serializer.deserialize('a')).toStrictEqual({ right45: true });
     expect(serializer.deserialize('b')).toStrictEqual({ right90: true });
-    expect(serializer.deserialize('d')).toStrictEqual({ right180: true });
     expect(serializer.deserialize('l')).toStrictEqual({ loop: true });
-    expect(serializer.deserialize('123456ABDabdl')).toStrictEqual({
+    expect(serializer.deserialize('14ABabl')).toStrictEqual({
         forward: true,
         backward: true,
         left45: true,
         left90: true,
-        left180: true,
         right45: true,
         right90: true,
-        right180: true,
         loop: true
     });
 });

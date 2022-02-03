@@ -25,17 +25,11 @@ export default class DisallowedActionsSerializer {
                     case ('left90') :
                         serializedAllowedActions += 'B';
                         break;
-                    case ('left180') :
-                        serializedAllowedActions += 'D';
-                        break;
                     case ('right45') :
                         serializedAllowedActions += 'a';
                         break;
                     case ('right90') :
                         serializedAllowedActions += 'b';
-                        break;
-                    case ('right180') :
-                        serializedAllowedActions += 'd';
                         break;
                     case ('loop') :
                         serializedAllowedActions += 'l';
@@ -64,17 +58,11 @@ export default class DisallowedActionsSerializer {
                 case 'B':
                     actionToggleRegister['left90'] = true;
                     break;
-                case 'D':
-                    actionToggleRegister['left180'] = true;
-                    break;
                 case 'a':
                     actionToggleRegister['right45'] = true;
                     break;
                 case 'b':
                     actionToggleRegister['right90'] = true;
-                    break;
-                case 'd':
-                    actionToggleRegister['right180'] = true;
                     break;
                 case 'l':
                     actionToggleRegister['loop'] = true;
