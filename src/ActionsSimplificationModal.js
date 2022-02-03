@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { injectIntl } from 'react-intl';
+import { injectIntl, FormattedMessage} from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import ModalHeader from './ModalHeader';
 import ModalBody from './ModalBody';
@@ -19,8 +19,8 @@ type ActionsSimplificationModalProps = {
     intl: IntlShape,
     onCancel: () => void,
     onConfirm: (disallowedActions: ActionToggleRegister) => void,
-    // TODO: Flesh this definition out.
-    menuItems: Array<DisplayedCommandName>,
+    commandMenuItems: Array<DisplayedCommandName>,
+    controlMenuItems: Array<DisplayedCommandName>,
     programSequence: ProgramSequence,
     disallowedActions: ActionToggleRegister,
     show: boolean
@@ -32,13 +32,16 @@ type ActionsSimplificationModalState = {
 
 class ActionsSimplificationModal extends React.Component<ActionsSimplificationModalProps, ActionsSimplificationModalState> {
     static defaultProps = {
-        menuItems: [
+        commandMenuItems: [
             'forward',
             'backward',
             'left45',
             'left90',
             'right45',
             'right90'
+        ],
+        controlMenuItems: [
+            'loop'
         ]
     }
 
@@ -78,7 +81,22 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
                 </ModalHeader>
 
                 <ModalBody>
-                    {this.generateMenu()}
+                    <h3 className='ActionsSimplificationModal__section-heading'>
+                        <FormattedMessage id="CommandPalette.movementsTitle"/>
+                    </h3>
+
+                    <div className='ActionsSimplificationModal__section'>
+                        {this.generateMenu(this.props.commandMenuItems)}
+                    </div>
+
+
+                    <h3 className='ActionsSimplificationModal__section-heading'>
+                        <FormattedMessage id="CommandPalette.controlsTitle"/>
+                    </h3>
+
+                    <div className='ActionsSimplificationModal__section'>
+                        {this.generateMenu(this.props.controlMenuItems)}
+                    </div>
                 </ModalBody>
             </ModalWithFooter>
 
@@ -109,10 +127,10 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
         });
     }
 
-    generateMenu = () => {
+    generateMenu = (menuItems: Array<DisplayedCommandName>) => {
         const actionsMenuItems = [];
         // TODO: Discuss how to evolve this into a deeper structure when we add groups and things other than actions.
-        for (const itemKey of this.props.menuItems) {
+        for (const itemKey of menuItems) {
             const isDisallowed: boolean = !!this.state.disallowedActions[itemKey];
             const isUsed: boolean = this.props.programSequence.usesAction(itemKey);
             const itemChangeHandler = () => {

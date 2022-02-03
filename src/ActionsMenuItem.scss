@@ -49,6 +49,18 @@
     }
 }
 
+.ActionsMenuItem__icon--loop {
+    box-shadow: 0 1px 4px 2px #1e1e1e;
+    height: 2.5rem;
+    width: 3.3rem;
+    min-width: 60px;
+    
+    svg {
+        margin: 0rem;
+        height: 2.5rem;
+        width: 3.3rem;
+    }
+}
 
 .ActionsMenuItem__icon--forward, .ActionsMenuItem__icon--forward2, .ActionsMenuItem__icon--forward3 {
     background-color: $c2lc-forward-command-color;
