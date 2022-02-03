@@ -1258,26 +1258,37 @@ export class App extends React.Component<AppProps, AppState> {
                             </div>
                         </div>
                         <div className='App__command-palette-command-container'>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks(['forward'])}
+                            <h3 className='App__command-palette-section-heading'>
+                                <FormattedMessage id='CommandPalette.movementsTitle'/>
+                            </h3>
+                            <div className='App__command-palette-section'>
+                                <div className='App__command-palette-commands'>
+                                    {this.renderCommandBlocks(['forward'])}
+                                </div>
+                                <div className='App__command-palette-commands'>
+                                    {this.renderCommandBlocks(['backward'])}
+                                </div>
+                                <div className='App__command-palette-commands'>
+                                    {this.renderCommandBlocks([
+                                        'left45', 'left90'
+                                    ])}
+                                </div>
+                                <div className='App__command-palette-commands'>
+                                    {this.renderCommandBlocks([
+                                        'right45', 'right90'
+                                    ])}
+                                </div>
                             </div>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks(['backward'])}
-                            </div>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks([
-                                    'left45', 'left90'
-                                ])}
-                            </div>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks([
-                                    'right45', 'right90'
-                                ])}
-                            </div>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks([
-                                    'loop'
-                                ])}
+                            <h3 className='App__command-palette-section-heading'>
+                                <FormattedMessage id='CommandPalette.controlsTitle'/>
+                            </h3>
+
+                            <div className='App__command-palette-section'>
+                                <div className='App__command-palette-controls'>
+                                    {this.renderCommandBlocks([
+                                        'loop'
+                                    ])}
+                                </div>
                             </div>
                         </div>
                     </div>

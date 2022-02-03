@@ -75,7 +75,7 @@
         "Command.startLoop": "start of loop {loopLabel}",
         "CommandInfo.previousStep": "before step {previousStepNumber} {command}",
         "CommandInfo.nextStep": "after step {nextStepNumber} {command}",
-        "CommandPalette.actionsTitle": "Actions",
+        "CommandPalette.controlsTitle": "Controls",
         "CommandPalette.movementsTitle": "Movements",
         "CommandPalette.shortMovementsTitle": "Move",
         "CommandPalette.soundsTitle": "Sounds",
