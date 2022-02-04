@@ -117,47 +117,71 @@ describe('When rendering audio toggles', () => {
         expect(audioToggleSwitches.get(2).props.id).toBe('sound-options-announcements');
         expect(getAudioToggleSwitchContainer(wrapper).get(2).props.className.includes('SoundOptions__option--disabled')).toBe(true);
         expect(audioToggleSwitches.get(2).props.value).toBe(false);
-    })
+    });
 });
 
-describe('When interacting with footer buttons', () => {
-    test('Pressing cancel button should close the modal without changing toggle states', () => {
-        expect.assertions(7);
-        const { wrapper, mockOnCancel } = createMountSoundOptionsModal();
-        expect(getWrapperState(wrapper).audioEnabled).toBe(true);
-        expect(getWrapperState(wrapper).announcementsEnabled).toBe(true);
-        expect(getWrapperState(wrapper).sonificationEnabled).toBe(true);
+describe('When interacting with the toggle switches', () => {
+    test('Toggling each toggle switch should update the corresponding state value ', () => {
+        expect.assertions(12);
 
-        const announcementsToggle = getAudioToggleSwitches(wrapper).at(1);
-        const sonificationToggle = getAudioToggleSwitches(wrapper).at(2);
-        announcementsToggle.simulate('click');
+        const { wrapper } = createMountSoundOptionsModal();
+        expect(getWrapperState(wrapper).audioEnabled).toBe(true);
+        expect(getWrapperState(wrapper).sonificationEnabled).toBe(true);
+        expect(getWrapperState(wrapper).announcementsEnabled).toBe(true);
+
+        const sonificationToggle = getAudioToggleSwitches(wrapper).at(1);
         sonificationToggle.simulate('click');
-        expect(getWrapperState(wrapper).announcementsEnabled).toBe(false);
+        expect(getWrapperState(wrapper).audioEnabled).toBe(true);
         expect(getWrapperState(wrapper).sonificationEnabled).toBe(false);
+        expect(getWrapperState(wrapper).announcementsEnabled).toBe(true);
+
+        const announcementsToggle = getAudioToggleSwitches(wrapper).at(2);
+        announcementsToggle.simulate('click');
+        expect(getWrapperState(wrapper).audioEnabled).toBe(true);
+        expect(getWrapperState(wrapper).sonificationEnabled).toBe(false);
+        expect(getWrapperState(wrapper).announcementsEnabled).toBe(false);
 
         const allSoundsToggle = getAudioToggleSwitches(wrapper).at(0);
         allSoundsToggle.simulate('click');
         expect(getWrapperState(wrapper).audioEnabled).toBe(false);
+        expect(getWrapperState(wrapper).sonificationEnabled).toBe(false);
+        expect(getWrapperState(wrapper).announcementsEnabled).toBe(false);
+    });
+});
 
+describe('When interacting with footer buttons', () => {
+    test('Pressing the cancel button should close the modal without calling the save callback', () => {
+        expect.assertions(2);
+        const { wrapper, mockOnCancel, mockOnSave } = createMountSoundOptionsModal();
         const cancelButton = getCancelButton(wrapper);
         cancelButton.at(0).simulate('click');
         expect(mockOnCancel.mock.calls.length).toBe(1);
+        expect(mockOnSave.mock.calls.length).toBe(0);
     });
-    test('Pressing save button should update the toggle states', () => {
-        expect.assertions(7);
-        const { wrapper, mockOnSave } = createMountSoundOptionsModal({ audioEnabled: true, announcementsEnabled: true, sonificationEnabled: false });
+    test('Pressing the save button should call the save callback', () => {
+        expect.assertions(8);
+        const { wrapper, mockOnCancel, mockOnSave } = createMountSoundOptionsModal({
+            audioEnabled: true,
+            sonificationEnabled: false,
+            announcementsEnabled: true
+        });
 
-        const announcementsToggle = getAudioToggleSwitches(wrapper).at(1);
-        const sonificationToggle = getAudioToggleSwitches(wrapper).at(2);
-        announcementsToggle.simulate('click');
+        const sonificationToggle = getAudioToggleSwitches(wrapper).at(1);
+        const announcementsToggle = getAudioToggleSwitches(wrapper).at(2);
         sonificationToggle.simulate('click');
+        announcementsToggle.simulate('click');
 
         const expectedAudioEnabled = true;
-        const expectedAnnouncementsEnabled = false;
         const expectedSonificationEnabled = true;
+        const expectedAnnouncementsEnabled = false;
+
+        expect(getWrapperState(wrapper).audioEnabled).toBe(expectedAudioEnabled);
+        expect(getWrapperState(wrapper).sonificationEnabled).toBe(expectedSonificationEnabled);
+        expect(getWrapperState(wrapper).announcementsEnabled).toBe(expectedAnnouncementsEnabled);
 
         const saveButton = getSaveButton(wrapper);
         saveButton.at(0).simulate('click');
+
         expect(mockOnSave.mock.calls.length).toBe(1);
         // audioEnabled
         expect(mockOnSave.mock.calls[0][0]).toBe(expectedAudioEnabled);
@@ -166,8 +190,6 @@ describe('When interacting with footer buttons', () => {
         // sonificationEnabled
         expect(mockOnSave.mock.calls[0][2]).toBe(expectedSonificationEnabled);
 
-        expect(getWrapperState(wrapper).audioEnabled).toBe(expectedAudioEnabled);
-        expect(getWrapperState(wrapper).announcementsEnabled).toBe(expectedAnnouncementsEnabled);
-        expect(getWrapperState(wrapper).sonificationEnabled).toBe(expectedSonificationEnabled);
+        expect(mockOnCancel.mock.calls.length).toBe(0);
     });
 });
