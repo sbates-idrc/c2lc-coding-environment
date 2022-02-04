@@ -1401,7 +1401,7 @@ export class App extends React.Component<AppProps, AppState> {
             if (programQuery != null) {
                 try {
                     const parseResult = this.programSerializer.deserialize(programQuery);
-                    const programSequence: ProgramSequence = new ProgramSequence(
+                    const programSequence: ProgramSequence = this.state.programSequence.updateProgramSequence(
                         parseResult.program,
                         0,
                         parseResult.highestLoopNumber
@@ -1457,7 +1457,7 @@ export class App extends React.Component<AppProps, AppState> {
             if (localProgram != null) {
                 try {
                     const parseResult = this.programSerializer.deserialize(localProgram);
-                    const programSequence: ProgramSequence = new ProgramSequence(
+                    const programSequence: ProgramSequence = this.state.programSequence.updateProgramSequence(
                         parseResult.program,
                         0,
                         parseResult.highestLoopNumber
@@ -1539,6 +1539,8 @@ export class App extends React.Component<AppProps, AppState> {
             || this.state.settings.theme !== prevState.settings.theme
             || this.state.allowedActions !== prevState.allowedActions
             || this.state.settings.world !== prevState.settings.world) {
+            /* eslint-disable no-console */
+            console.log(this.state.programSequence.getProgram());
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedAllowedActions = this.allowedActionsSerializer.serialize(this.state.allowedActions);
