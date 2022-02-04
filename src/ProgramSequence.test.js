@@ -32,6 +32,36 @@ test('initiateProgramRun should set iterationsLeft on startLoop blocks, as well 
     expect(updatedProgramSequence.getProgramCounter()).toBe(0);
 });
 
+test('updateProgramStructure updates program with additional properties about nested loop', () => {
+    const program = [
+        {block: 'startLoop', iterations: 3, label: 'A'},
+        {block: 'startLoop', iterations: 2, label: 'B'},
+        {block: 'forward3'},
+        {block: 'startLoop', iterations: 1, label: 'C'},
+        {block: 'forward1'},
+        {block: 'forward2'},
+        {block: 'endLoop', label: 'C'},
+        {block: 'forward3'},
+        {block: 'endLoop', label: 'B'},
+        {block: 'endLoop', label: 'A'}
+    ];
+    const expectedProgram = [
+        {block: 'startLoop', iterations: 3, label: 'A'},
+        {block: 'startLoop', iterations: 2, label: 'B', parentLoop: 'A', currentLoopPosition: 1},
+        {block: 'forward3', parentLoop: 'B', currentLoopPosition: 1},
+        {block: 'startLoop', iterations: 1, label: 'C', parentLoop: 'B', currentLoopPosition: 2},
+        {block: 'forward1', parentLoop: 'C', currentLoopPosition: 1},
+        {block: 'forward2', parentLoop: 'C', currentLoopPosition: 2},
+        {block: 'endLoop', label: 'C', parentLoop: 'B', currentLoopPosition: 5},
+        {block: 'forward3', parentLoop: 'B', currentLoopPosition: 6},
+        {block: 'endLoop', label: 'B', parentLoop: 'A', currentLoopPosition: 8},
+        {block: 'endLoop', label: 'A'}
+    ]
+    const programSequence = new ProgramSequence(program, 0, 2);
+    const updatedProgram = programSequence.updateProgramStructure(program, 2);
+    expect(updatedProgram).toStrictEqual(expectedProgram);
+})
+
 test('updateProgramCounter should only update programCounter', () => {
     expect.assertions(2);
     const program = [{block: 'forward1'}];
@@ -83,7 +113,9 @@ test.each([
     [[{block: 'forward1'}, {block: 'forward2'}], 1, 1, [{block: 'forward1'}], 1],
     [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 0, [{block: 'forward2'}, {block: 'forward3'}], 0],
     [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 1, [{block: 'forward1'}, {block: 'forward3'}], 1],
-    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 2, [{block: 'forward1'}, {block: 'forward2'}], 1]
+    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 2, [{block: 'forward1'}, {block: 'forward2'}], 1],
+    [[{block: 'forward1'}, {block: 'startLoop', label: 'A', iterations: 1}, {block: 'endLoop', label: 'A'}], 1, 1, [{block: 'forward1'}], 1],
+    [[{block: 'startLoop', label: 'A', iterations: 1}, {block: 'endLoop', label: 'A'}, {block: 'forward1'}], 1, 1, [{block: 'forward1'}], 1]
 ])('deleteStep',
     (program: Program, programCounter: number, index: number,
         expectedProgram: Program, expectedProgramCounter: number) => {
@@ -138,7 +170,31 @@ test.each([
 test.each([
     [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 0, 0, [{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1],
     [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 0, 1, [{block: 'forward2'}, {block: 'forward1'}, {block: 'forward3'}], 1],
-    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 0, 2, [{block: 'forward3'}, {block: 'forward2'}, {block: 'forward1'}], 1]
+    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 0, 2, [{block: 'forward3'}, {block: 'forward2'}, {block: 'forward1'}], 1],
+    [
+        [{block: 'forward1'}, {block: 'startLoop', label: 'A'}, {block: 'forward2'}, {block: 'endLoop', label: 'A' }], 1, 1, 0,
+        [{block: 'startLoop', label: 'A'}, {block: 'forward2'}, {block: 'endLoop', label: 'A' }, {block: 'forward1'}], 1
+    ],
+    [
+        [{block: 'forward1'}, {block: 'startLoop', label: 'A'}, {block: 'forward2'}, {block: 'endLoop', label: 'A' }], 1, 3, 0,
+        [{block: 'startLoop', label: 'A'}, {block: 'forward2'}, {block: 'endLoop', label: 'A' }, {block: 'forward1'}], 1
+    ],
+    [
+        [{block: 'forward1'}, {block: 'startLoop', label: 'A'}, {block: 'forward2'}, {block: 'endLoop', label: 'A' }], 1, 2, 1,
+        [{block: 'forward1'}, {block: 'forward2'}, {block: 'startLoop', label: 'A'}, {block: 'endLoop', label: 'A' }], 1
+    ],
+    [
+        [{block: 'startLoop', label: 'A'}, {block: 'forward2'}, {block: 'endLoop', label: 'A' }, {block: 'forward1'}], 1, 0, 3,
+        [{block: 'forward1'}, {block: 'startLoop', label: 'A'}, {block: 'forward2'}, {block: 'endLoop', label: 'A' }], 1
+    ],
+    [
+        [{block: 'startLoop', label: 'A'}, {block: 'forward2'}, {block: 'endLoop', label: 'A' }, {block: 'forward1'}], 1, 2, 3,
+        [{block: 'forward1'}, {block: 'startLoop', label: 'A'}, {block: 'forward2'}, {block: 'endLoop', label: 'A' }], 1
+    ],
+    [
+        [{block: 'forward1'}, {block: 'startLoop', label: 'A'}, {block: 'forward2'}, {block: 'endLoop', label: 'A' }], 1, 2, 3,
+        [{block: 'forward1'}, {block: 'startLoop', label: 'A'}, {block: 'endLoop', label: 'A' }, {block: 'forward2'}], 1
+    ],
 ])('swapStep',
     (program: Program, programCounter: number,
         indexFrom: number, indexTo: number,

@@ -45,7 +45,52 @@ export default class ProgramSequence {
         return this.program[index];
     }
 
+    updateProgramSequence(program: Program, programCounter: number, loopCounter: number): ProgramSequence {
+        program = this.updateProgramStructure(program, loopCounter);
+        return new ProgramSequence(program, programCounter, loopCounter);
+    }
+
+    updateProgramStructure(program: Program, loopCounter: number): Program {
+        if (loopCounter > 0) {
+            // loopStack is a stack that stores loop labels from startLoop blocks
+            // while iterating through the program to keep track of direct parent loop
+            const loopStack = [];
+            // loopPositionStack is a stack that stores position of a program step within a direct parent loop
+            const loopPositionStack = [];
+            let currentLoopPosition = 0;
+            for (let i = 0; i < program.length; i++) {
+                const currentProgramBlock = program[i];
+                if (currentProgramBlock.block === 'endLoop') {
+                    loopStack.pop();
+                    if (loopPositionStack.length > 0) {
+                        currentLoopPosition += loopPositionStack.pop();
+                    }
+                }
+                if (loopStack.length > 0) {
+                    currentLoopPosition++;
+                    program[i] = Object.assign(
+                        {},
+                        program[i],
+                        {
+                            parentLoop: loopStack[loopStack.length - 1],
+                            currentLoopPosition
+                        }
+                    );
+                }
+                if (currentProgramBlock.block === 'startLoop') {
+                    loopStack.push(currentProgramBlock.label);
+                    if (currentLoopPosition > 0) {
+                        loopPositionStack.push(currentLoopPosition);
+                    }
+                    currentLoopPosition = 0;
+                }
+            }
+        }
+        return program;
+    }
+
     updateProgram(program: Program): ProgramSequence {
+        program = this.updateProgramStructure(program, this.loopCounter);
         return new ProgramSequence(program, this.programCounter, this.loopCounter);
     }
 
@@ -54,6 +99,7 @@ export default class ProgramSequence {
     }
 
     updateProgramAndProgramCounter(program: Program, programCounter: number): ProgramSequence {
+        program = this.updateProgramStructure(program, this.loopCounter);
         return new ProgramSequence(program, programCounter, this.loopCounter);
     }
 
@@ -97,9 +143,39 @@ export default class ProgramSequence {
 
     deleteStep(index: number): ProgramSequence {
         const program = this.program.slice();
-        program.splice(index, 1);
+        const programBlock = program[index];
+        let programCounter = this.programCounter;
+        if (programBlock != null && programBlock.block === 'startLoop') {
+            const loopLabel = programBlock.label;
+            for (let i = index + 1; i < program.length; i++) {
+                // Remove corresponding endLoop block
+                if (program[i].block === 'endLoop') {
+                    if (program[i].label != null && program[i].label === loopLabel) {
+                        program.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+            program.splice(index, 1);
+        } else if (programBlock != null && programBlock.block === 'endLoop') {
+            const loopLabel = programBlock.label;
+            program.splice(index, 1);
+            for (let i = 0; i < index; i++) {
+                // Remove corresponding startLoop block
+                if (program[i].block === 'startLoop') {
+                    if (program[i].label != null && program[i].label === loopLabel) {
+                        program.splice(i, 1);
+                        programCounter = i;
+                        break;
+                    }
+                }
+            }
+        } else {
+            program.splice(index, 1);
+            programCounter--;
+        }
         if (index < this.programCounter && this.program.length > 1) {
-            return this.updateProgramAndProgramCounter(program, this.programCounter - 1);
+            return this.updateProgramAndProgramCounter(program, programCounter);
         } else {
             return this.updateProgram(program);
         }
@@ -108,9 +184,52 @@ export default class ProgramSequence {
     swapStep(indexFrom: number, indexTo: number): ProgramSequence {
         const program = this.program.slice();
         if (program[indexFrom] != null && program[indexTo] != null) {
+            const swappedStep = program[indexTo];
             const currentStep = program[indexFrom];
-            program[indexFrom] = program[indexTo];
-            program[indexTo] = currentStep;
+            if (currentStep.block === 'startLoop') {
+                const loopLabel = currentStep.label;
+                let loopContent = [];
+                for (let i = indexFrom + 1; i < program.length; i++) {
+                    if (program[i].block === 'endLoop') {
+                        if (program[i].label != null && program[i].label === loopLabel) {
+                            loopContent = program.slice(indexFrom, i + 1);
+                            break;
+                        }
+                    }
+                }
+                // Move to left
+                if (indexFrom > indexTo) {
+                    program.splice(indexTo, loopContent.length, ...loopContent);
+                    program[indexTo + loopContent.length] = swappedStep;
+                // Move to right
+                } else if (indexFrom < indexTo) {
+                    program[indexFrom] = swappedStep;
+                    program.splice(indexFrom + 1, loopContent.length, ...loopContent);
+                }
+            } else if (currentStep.block === 'endLoop') {
+                const loopLabel = currentStep.label;
+                let loopContent = [];
+                for (let i = 0; i < indexFrom; i++) {
+                    if (program[i].block === 'startLoop') {
+                        if (program[i].label != null && program[i].label === loopLabel) {
+                            loopContent = program.slice(i, indexFrom + 1);
+                            break;
+                        }
+                    }
+                }
+                // Move to left
+                if (indexFrom > indexTo) {
+                    program.splice(indexTo, loopContent.length, ...loopContent);
+                    program[indexFrom] = swappedStep;
+                // Move to right
+                } else if (indexFrom < indexTo) {
+                    program[indexFrom - loopContent.length + 1] = swappedStep;
+                    program.splice(indexFrom - loopContent.length + 2, loopContent.length, ...loopContent);
+                }
+            } else {
+                program[indexFrom] = program[indexTo];
+                program[indexTo] = currentStep;
+            }
         }
         return this.updateProgram(program);
     }
