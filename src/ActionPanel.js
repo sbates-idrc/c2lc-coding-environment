@@ -34,11 +34,21 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
     }
 
     makeStepInfoMessage() {
-        const currentStepName = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex).block;
-
+        const currentStep = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex);
+        let stepName = '';
+        if (currentStep.block === 'startLoop' || currentStep.block === 'endLoop') {
+            stepName = this.props.intl.formatMessage(
+                { id: 'Command.loop.label' },
+                { loopLabel: currentStep.label }
+            );
+        } else {
+            stepName = this.props.intl.formatMessage(
+                { id: `Command.${currentStep.block}` }
+            );
+        }
         const ariaLabelObj = {
-            'stepNumber': this.props.pressedStepIndex + 1,
-            'stepName': this.props.intl.formatMessage({id:`Command.${currentStepName}`}),
+            'stepNumber': currentStep.currentLoopPosition ? currentStep.currentLoopPosition : this.props.pressedStepIndex + 1,
+            'stepName': stepName,
             'selectedCommandName': '',
             'previousStepInfo': '',
             'nextStepInfo': ''
@@ -54,31 +64,164 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                 );
         }
 
+        // Swap with previous step
+
         if (this.props.pressedStepIndex > 0) {
-            const prevStepName = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex - 1).block;
-            ariaLabelObj['previousStepInfo'] =
-                this.props.intl.formatMessage(
-                    { id: 'CommandInfo.previousStep'},
-                    {
-                        previousStepNumber: this.props.pressedStepIndex,
-                        command: this.props.intl.formatMessage({id: `Command.${prevStepName}`})
+            const prevStep = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex - 1)
+            const prevStepName = prevStep.block;
+            // When previous step is startLoop, aria-label communicates that movePrevious will move out of the current loop
+            if (prevStepName === 'startLoop' && currentStep.block !== 'endLoop') {
+                ariaLabelObj['previousStepInfo'] =
+                    this.props.intl.formatMessage(
+                        { id: 'CommandInfo.previousStep.startLoop' },
+                        { loopLabel: prevStep.label }
+                    );
+            // When previous step is endLoop, aria-label communicates that movePrevious will move into a loop
+            } else if (prevStepName === 'endLoop') {
+                ariaLabelObj['previousStepInfo'] =
+                    this.props.intl.formatMessage(
+                        { id: 'CommandInfo.previousStep.endLoop'},
+                        { loopLabel: prevStep.label }
+                    );
+            } else {
+                // When previous step is not loops and current step is endLoop, calculate the index the loop will move by
+                // finding its pair startLoop block
+                if (currentStep.block === 'endLoop') {
+                    const program = this.props.programSequence.getProgram();
+                    let startLoopIndex = 0;
+                    for (let i = 0; i < this.props.pressedStepIndex; i++) {
+                        if (program[i].block === 'startLoop' && program[i].label === currentStep.label) {
+                            startLoopIndex = i;
+                            break;
+                        }
                     }
-                );
+                    if (program[startLoopIndex - 1] != null) {
+                        ariaLabelObj['previousStepInfo'] =
+                            this.props.intl.formatMessage(
+                                { id: 'CommandInfo.previousStep.loop' },
+                                {
+                                    previousStepNumber: startLoopIndex,
+                                    command: this.props.intl.formatMessage({id: `Command.${program[startLoopIndex - 1].block}`})
+                                }
+                            )
+                    }
+                // When previous step is wrapped in a loop, aria-label communicates position within a loop
+                } else if (prevStep.currentLoopPosition != null && prevStep.parentLoop != null) {
+                    ariaLabelObj['previousStepInfo'] =
+                        this.props.intl.formatMessage(
+                            { id: 'CommandInfo.previousStep.inLoop'},
+                            {
+                                previousStepNumber: prevStep.currentLoopPosition,
+                                command: this.props.intl.formatMessage({id: `Command.${prevStepName}`}),
+                                loopLabel: prevStep.parentLoop
+                            }
+                        )
+                // When previous step is a movements step and not in a loop, aria-label communicates position within the program
+                } else {
+                    ariaLabelObj['previousStepInfo'] =
+                        this.props.intl.formatMessage(
+                            { id: 'CommandInfo.previousStep'},
+                            {
+                                previousStepNumber: this.props.pressedStepIndex,
+                                command: this.props.intl.formatMessage({id: `Command.${prevStepName}`})
+                            }
+                        );
+                }
+            }
         }
 
+        // Swap with next step
+
         if (this.props.pressedStepIndex < (this.props.programSequence.getProgramLength() - 1)) {
-            const nextStepName = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex + 1).block;
-            ariaLabelObj['nextStepInfo'] =
-                this.props.intl.formatMessage(
-                    { id: 'CommandInfo.nextStep'},
-                    {
-                        nextStepNumber: this.props.pressedStepIndex + 2,
-                        command: this.props.intl.formatMessage({id: `Command.${nextStepName}`})
+            const nextStep = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex + 1);
+            const nextStepName = nextStep.block;
+            // When next step is startLoop, aria-label communicates that moveNext will move into a loop
+            if (nextStepName === 'startLoop') {
+                ariaLabelObj['nextStepInfo'] =
+                    this.props.intl.formatMessage(
+                        { id: 'CommandInfo.nextStep.startLoop'},
+                        { loopLabel: nextStep.label }
+                    );
+            // When next step is endLoop, aria-label communicates that moveNext will move out of the current loop
+            } else if (nextStepName === 'endLoop' && currentStep.block !== 'startLoop') {
+                ariaLabelObj['nextStepInfo'] =
+                    this.props.intl.formatMessage(
+                        { id: 'CommandInfo.nextStep.endLoop'},
+                        { loopLabel: nextStep.label }
+                    );
+            }else {
+                // When next step is not loops and current step is startLoop, calculate the index the loop will move by
+                // finding its pair endLoop block
+                if (currentStep.block === 'startLoop') {
+                    const program = this.props.programSequence.getProgram();
+                    let endLoopIndex = 0;
+                    for (let i = this.props.pressedStepIndex + 1; i < program.length; i++) {
+                        if (program[i].block === 'endLoop' && program[i].label === currentStep.label) {
+                            endLoopIndex = i;
+                            break;
+                        }
                     }
-                );
+                    if (program[endLoopIndex + 1] != null) {
+                        ariaLabelObj['nextStepInfo'] =
+                            this.props.intl.formatMessage(
+                                { id: 'CommandInfo.nextStep.loop' },
+                                {
+                                    nextStepNumber: endLoopIndex + 2,
+                                    command: this.props.intl.formatMessage({id: `Command.${program[endLoopIndex + 1].block}`})
+                                }
+                            )
+                    }
+                // When next step is wrapped in a loop, aria-label communicates position within a loop
+                } else if (nextStep.currentLoopPosition != null && nextStep.parentLoop != null) {
+                    ariaLabelObj['nextStepInfo'] =
+                        this.props.intl.formatMessage(
+                            { id: 'CommandInfo.nextStep.inLoop'},
+                            {
+                                nextStepNumber: nextStep.currentLoopPosition,
+                                command: this.props.intl.formatMessage({id: `Command.${nextStepName}`}),
+                                loopLabel: nextStep.parentLoop
+                            }
+                        );
+                // When next step is a movements step and not in a loop, aria-label communicates position within the program
+                } else {
+                    ariaLabelObj['nextStepInfo'] =
+                        this.props.intl.formatMessage(
+                            { id: 'CommandInfo.nextStep'},
+                            {
+                                nextStepNumber: this.props.pressedStepIndex + 2,
+                                command: this.props.intl.formatMessage({id: `Command.${nextStep.block}`})
+                            }
+                        );
+                }
+            }
         }
 
         return ariaLabelObj;
+    }
+
+    getMoveToNextStepDisabled(): boolean {
+        const programSequence = this.props.programSequence;
+        const programLastIndex = programSequence.getProgramLength() - 1;
+        const { block, label } = programSequence.getProgramStepAt(this.props.pressedStepIndex);
+        if (block === 'startLoop') {
+            const lastProgramStep = programSequence.getProgramStepAt(programLastIndex);
+            if (lastProgramStep.block === 'endLoop' && lastProgramStep.label === label) {
+                return true;
+            }
+        }
+        return this.props.pressedStepIndex === programLastIndex;
+    }
+
+    getMoveToPreviousStepDisabled(): boolean {
+        const programSequence = this.props.programSequence;
+        const { block, label } = programSequence.getProgramStepAt(this.props.pressedStepIndex);
+        if (block === 'endLoop') {
+            const firstProgramStep = programSequence.getProgramStepAt(0);
+            if (firstProgramStep.block === 'startLoop' && firstProgramStep.label === label) {
+                return true;
+            }
+        }
+        return this.props.pressedStepIndex === 0;
     }
 
     // handlers
@@ -101,6 +244,8 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
 
     render() {
         const stepInfoMessage = this.makeStepInfoMessage();
+        const moveToNextStepIsDisabled = this.getMoveToNextStepDisabled();
+        const moveToPreviousStepIsDisabled = this.getMoveToPreviousStepDisabled();
         return (
             <React.Fragment>
                 <div className="ActionPanel__background">
@@ -129,7 +274,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     </AriaDisablingButton>
                     <AriaDisablingButton
                         name='moveToPreviousStep'
-                        disabled={this.props.pressedStepIndex === 0}
+                        disabled={moveToPreviousStepIsDisabled}
                         disabledClassName='ActionPanel__action-buttons--disabled'
                         aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToPreviousStep'}, stepInfoMessage)}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
@@ -138,7 +283,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     </AriaDisablingButton>
                     <AriaDisablingButton
                         name='moveToNextStep'
-                        disabled={this.props.pressedStepIndex === this.props.programSequence.getProgramLength()-1}
+                        disabled={moveToNextStepIsDisabled}
                         disabledClassName='ActionPanel__action-buttons--disabled'
                         aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToNextStep'}, stepInfoMessage)}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
