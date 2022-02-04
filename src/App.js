@@ -23,8 +23,8 @@ import ProgramBlockEditor from './ProgramBlockEditor';
 import RefreshButton from './RefreshButton';
 import Scene from './Scene';
 import SceneDimensions from './SceneDimensions';
+import SoundOptionsModal from './SoundOptionsModal';
 import StopButton from './StopButton';
-import AudioFeedbackToggleSwitch from './AudioFeedbackToggleSwitch';
 import PenDownToggleSwitch from './PenDownToggleSwitch';
 import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
@@ -46,6 +46,7 @@ import { ReactComponent as ShareIcon} from './svg/Share.svg';
 
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
+import { ReactComponent as AudioIcon } from './svg/Audio.svg';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
 import { ReactComponent as ThemeIcon } from './svg/Theme.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
@@ -86,6 +87,7 @@ type AppState = {
     isDraggingCommand: boolean,
     audioEnabled: boolean,
     announcementsEnabled: boolean,
+    sonificationEnabled: boolean,
     actionPanelStepIndex: ?number,
     sceneDimensions: SceneDimensions,
     drawingEnabled: boolean,
@@ -94,6 +96,7 @@ type AppState = {
     keyBindingsEnabled: boolean,
     keyboardInputSchemeName: KeyboardInputSchemeName,
     showKeyboardModal: boolean,
+    showSoundOptionsModal: boolean,
     showThemeSelectorModal: boolean,
     showWorldSelector: boolean,
     showShareModal: boolean,
@@ -406,6 +409,7 @@ export class App extends React.Component<AppProps, AppState> {
             isDraggingCommand: false,
             audioEnabled: true,
             announcementsEnabled: true,
+            sonificationEnabled: true,
             actionPanelStepIndex: null,
             sceneDimensions: this.sceneDimensions,
             drawingEnabled: true,
@@ -413,6 +417,7 @@ export class App extends React.Component<AppProps, AppState> {
             allowedActions: allowedActions,
             keyBindingsEnabled: false,
             showKeyboardModal: false,
+            showSoundOptionsModal: false,
             showThemeSelectorModal: false,
             showWorldSelector: false,
             showShareModal: false,
@@ -428,7 +433,7 @@ export class App extends React.Component<AppProps, AppState> {
             this.audioManager = props.audioManager
         }
         else if (FeatureDetection.webAudioApiIsAvailable()) {
-            this.audioManager = new AudioManagerImpl(this.state.audioEnabled, this.state.announcementsEnabled);
+            this.audioManager = new AudioManagerImpl(this.state.audioEnabled, this.state.announcementsEnabled, this.state.sonificationEnabled);
         }
         else {
             this.audioManager = new FakeAudioManager();
@@ -899,6 +904,18 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showKeyboardModal: true});
     };
 
+    handleClickSoundIcon = () => {
+        this.setState({ showSoundOptionsModal: true });
+    }
+
+    handleSoundOptionsModalClose = () => {
+        this.setState({ showSoundOptionsModal: false });
+    }
+
+    handleChangeSoundOptions = (audioEnabled: boolean, announcementsEnabled: boolean, sonificationEnabled: boolean) => {
+        this.setState({ audioEnabled, announcementsEnabled, sonificationEnabled, showSoundOptionsModal: false });
+    }
+
     handleClickThemeSelectorIcon = () => {
         this.setState({ showThemeSelectorModal: true });
     }
@@ -906,12 +923,6 @@ export class App extends React.Component<AppProps, AppState> {
     // Focus trap escape key handling.
     handleRootKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         this.focusTrapManager.handleKeyDown(e);
-    }
-
-    handleToggleAudioFeedback = (announcementsEnabled: boolean) => {
-        this.setState({
-            announcementsEnabled: announcementsEnabled
-        });
     }
 
     handleTogglePenDown = (drawingEnabled: boolean) => {
@@ -1162,11 +1173,11 @@ export class App extends React.Component<AppProps, AppState> {
                             </h1>
                             <div className='App__header-menu'>
                                 <IconButton
-                                    className="App__header-keyboardMenuIcon"
-                                    ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
-                                    onClick={this.handleClickKeyboardIcon}
+                                    className="App__header-soundOptions"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'SoundOptionsModal.title' })}
+                                    onClick={this.handleClickSoundIcon}
                                 >
-                                    <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
+                                    <AudioIcon className='App__header-soundOptions-icon'/>
                                 </IconButton>
                                 <IconButton
                                     className="App__header-themeSelectorIcon"
@@ -1175,24 +1186,24 @@ export class App extends React.Component<AppProps, AppState> {
                                 >
                                     <ThemeIcon className='App__header-theme-icon'/>
                                 </IconButton>
+                                <IconButton
+                                    className="App__header-keyboardMenuIcon"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                                    onClick={this.handleClickKeyboardIcon}
+                                >
+                                    <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
+                                </IconButton>
                             </div>
-                            <div className='App__header-audio-toggle'>
-                                <div className='App__audio-toggle-switch'>
-                                    <AudioFeedbackToggleSwitch
-                                        value={this.state.announcementsEnabled}
-                                        onChange={this.handleToggleAudioFeedback} />
-                                </div>
-                                {/* Dash connection removed for version 0.5
-                                <DeviceConnectControl
-                                    disabled={
-                                        !this.appContext.bluetoothApiIsAvailable ||
-                                        this.state.dashConnectionStatus === 'connected' }
-                                    connectionStatus={this.state.dashConnectionStatus}
-                                    onClickConnect={this.handleClickConnectDash}>
-                                    <FormattedMessage id='App.connectToDash' />
-                                </DeviceConnectControl>
-                                */}
-                            </div>
+                            {/* Dash connection removed for version 0.5
+                            <DeviceConnectControl
+                                disabled={
+                                    !this.appContext.bluetoothApiIsAvailable ||
+                                    this.state.dashConnectionStatus === 'connected' }
+                                connectionStatus={this.state.dashConnectionStatus}
+                                onClickConnect={this.handleClickConnectDash}>
+                                <FormattedMessage id='App.connectToDash' />
+                            </DeviceConnectControl>
+                            */}
                         </div>
                     </header>
                     {/* Dash connection removed for version 0.5
@@ -1360,6 +1371,14 @@ export class App extends React.Component<AppProps, AppState> {
                     onChangeKeyboardInputScheme={this.handleChangeKeyboardInputScheme}
                     onChangeKeyBindingsEnabled={this.handleChangeKeyBindingsEnabled}
                     onHide={this.handleKeyboardModalClose}
+                />
+                <SoundOptionsModal
+                    audioEnabled={this.state.audioEnabled}
+                    announcementsEnabled={this.state.announcementsEnabled}
+                    sonificationEnabled={this.state.sonificationEnabled}
+                    show={this.state.showSoundOptionsModal}
+                    onCancel={this.handleSoundOptionsModalClose}
+                    onChangeSoundOptions={this.handleChangeSoundOptions}
                 />
                 <ThemeSelector
                     show={this.state.showThemeSelectorModal}
@@ -1576,6 +1595,9 @@ export class App extends React.Component<AppProps, AppState> {
         }
         if (this.state.audioEnabled !== prevState.audioEnabled) {
             this.audioManager.setAudioEnabled(this.state.audioEnabled);
+        }
+        if (this.state.sonificationEnabled !== prevState.sonificationEnabled) {
+            this.audioManager.setSonificationEnabled(this.state.sonificationEnabled);
         }
         if (this.state.runningState !== prevState.runningState
                 && this.state.runningState === 'running') {
