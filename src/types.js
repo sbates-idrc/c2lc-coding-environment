@@ -31,7 +31,9 @@ export type ProgramBlock = {
     block: string,
     iterations?: number,
     iterationsLeft?: number,
-    label?: string
+    label?: string,
+    parentLoop? : string,
+    currentLoopPosition? : number
 };
 
 export type Program = Array<ProgramBlock>;

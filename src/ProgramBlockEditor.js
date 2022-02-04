@@ -254,7 +254,17 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
     handleActionPanelMoveToPreviousStep = (index: number) => {
         this.props.audioManager.playAnnouncement('moveToPrevious', this.props.intl);
-        const previousStepIndex = index - 1;
+        let previousStepIndex = index - 1;
+        const program = this.props.programSequence.getProgram();
+        if (program[index].block === 'endLoop') {
+            const label = program[index].label;
+            for (let i = 0; i < index; i++) {
+                if (program[i].block === 'startLoop' && program[i].label === label) {
+                    previousStepIndex = i - 1;
+                    break;
+                }
+            }
+        }
         const previousStep = this.props.programSequence.getProgramStepAt(previousStepIndex);
         if (previousStep != null) {
             this.setState({
@@ -269,7 +279,17 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
     handleActionPanelMoveToNextStep = (index: number) => {
         this.props.audioManager.playAnnouncement('moveToNext', this.props.intl);
-        const nextStepIndex = index + 1;
+        let nextStepIndex = index + 1;
+        const program = this.props.programSequence.getProgram();
+        if (program[index].block === 'startLoop') {
+            const label = program[index].label;
+            for (let i = index; i < program.length; i++) {
+                if (program[i].block === 'endLoop' && program[i].label === label) {
+                    nextStepIndex = i + 1;
+                    break;
+                }
+            }
+        }
         const nextStep = this.props.programSequence.getProgramStepAt(nextStepIndex);
         if (nextStep != null) {
             this.setState({
@@ -412,16 +432,28 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         );
         const command = programBlock.block;
         const loopLabel = programBlock.label ? programBlock.label : null;
-        const ariaLabel = this.props.intl.formatMessage({
-            id: 'ProgramBlockEditor.command' },
-            {
-                index: programStepNumber + 1,
-                command: this.props.intl.formatMessage(
-                    {id: `Command.${command}`},
-                    {loopLabel}
-                )
-            }
-        );
+        const ariaLabel = programBlock.parentLoop ?
+            this.props.intl.formatMessage(
+                { id: 'ProgramBlockEditor.nestedCommand' },
+                {
+                    index: programBlock.currentLoopPosition,
+                    parentLoopLabel: programBlock.parentLoop,
+                    command: this.props.intl.formatMessage(
+                        {id: `Command.${command}`},
+                        {loopLabel}
+                    )
+                },
+            ) :
+            this.props.intl.formatMessage(
+                { id: 'ProgramBlockEditor.command' },
+                {
+                    index: programStepNumber + 1,
+                    command: this.props.intl.formatMessage(
+                        {id: `Command.${command}`},
+                        {loopLabel}
+                    )
+                }
+            );
 
         return (
             <CommandBlock
