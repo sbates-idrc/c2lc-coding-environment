@@ -17,13 +17,17 @@ type ToggleSwitchProps = {
 
 export default class ToggleSwitch extends React.Component<ToggleSwitchProps, {}> {
     handleClick = () => {
-        this.toggleStateChange();
+        if (!this.props.disabled) {
+            this.toggleStateChange();
+        }
     }
 
     handleKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         if (e.key === ' ' || e.key === 'Enter') {
             e.preventDefault();
-            this.toggleStateChange();
+            if (!this.props.disabled) {
+                this.toggleStateChange();
+            }
         }
     }
 
@@ -45,7 +49,7 @@ export default class ToggleSwitch extends React.Component<ToggleSwitchProps, {}>
                 role='switch'
                 aria-label={this.props.ariaLabel}
                 aria-checked={this.props.value}
-                tabIndex={this.props.disabled ? -1 : 0}
+                tabIndex='0'
                 onClick={this.handleClick}
                 onKeyDown={this.handleKeyDown}>
                 <div className='ToggleSwitch__switch-inner-circle' >
