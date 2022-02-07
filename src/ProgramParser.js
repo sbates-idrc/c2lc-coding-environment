@@ -14,7 +14,7 @@ export default class ProgramParser {
     ch: ?string;
     labelsUsed: Set<string>;
     highestLoopNumber: number;
-    loopLabels: Array<string>;
+    loopLabelStack: Array<string>;
 
     constructor() {
         this.text = '';
@@ -22,7 +22,7 @@ export default class ProgramParser {
         this.ch = null;
         this.labelsUsed = new Set();
         this.highestLoopNumber = 0;
-        this.loopLabels = [];
+        this.loopLabelStack = [];
     }
 
     parse(text: string): ProgramParserResult {
@@ -30,8 +30,8 @@ export default class ProgramParser {
         this.textIndex = 0;
         this.labelsUsed.clear();
         this.highestLoopNumber = 0;
+        this.loopLabelStack = [];
         this.nextCh();
-        this.loopLabels = [];
 
         const program  = [];
         let block = this.getNextBlock();
@@ -39,7 +39,7 @@ export default class ProgramParser {
             program.push(block);
             block = this.getNextBlock();
         }
-        if (this.loopLabels.length > 0) {
+        if (this.loopLabelStack.length > 0) {
             throw new Error('startLoop without endLoop');
         }
         return {
@@ -156,7 +156,7 @@ export default class ProgramParser {
         this.labelsUsed.add(label);
 
         // Stack the loop label for its endLoop pair
-        this.loopLabels.push(label);
+        this.loopLabelStack.push(label);
 
         // Update highestLoopNumber as needed
         const loopNumber = parseLoopLabel(label);
@@ -175,7 +175,7 @@ export default class ProgramParser {
         // Consume the z
         this.nextCh();
 
-        const loopLabel = this.loopLabels.pop();
+        const loopLabel = this.loopLabelStack.pop();
         // Program has more end loop blocks than start loop blocks
         if (loopLabel == null) {
             throw new Error("endLoop without startLoop");

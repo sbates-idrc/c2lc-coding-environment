@@ -93,15 +93,13 @@ function focusByQuerySelector(selectors: string) {
     }
 }
 
-function generateLoopLabel(loopCounter: number): string {
-    let adjustedValue = loopCounter;
-    let loopLabel = '';
-    while (adjustedValue > 0) {
-        adjustedValue--;
-        loopLabel = String.fromCharCode(65 + adjustedValue % 26) + loopLabel;
-        adjustedValue = Math.floor(adjustedValue / 26);
+function generateLoopLabel(n: number): string {
+    let label = '';
+    while (n > 0) {
+        label = String.fromCharCode('A'.charCodeAt(0) + ((n - 1) % 26)) + label;
+        n = Math.floor((n - 1) / 26);
     }
-    return loopLabel;
+    return label;
 };
 
 function parseLoopLabel(label: string): number {
