@@ -114,51 +114,65 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             appHeader: {
                 keyDef: { code: "KeyH", key: "h" },
                 actionName: "focusAppHeader",
-                description: "Move focus to the page title"
+                description: "Move focus to the page title",
+                icon: "FocusLogo.png",
+                altText: "Focus Weavly logo icon"
             },
             addNodeToggle: {
                 keyDef: { code: "KeyT", key: "t" },
                 actionName: "focusAddNodeToggle",
                 description: "Move focus to the add node toggle",
-                icon: "A23.png",
+                icon: "FocusAddNodeToggle.png",
                 altText: "Focus add node toggle icon"
             },
             characterPositionControls: {
                 keyDef: { code: "KeyC", key: "c" },
                 actionName: "focusCharacterPositionControls",
-                description: "Move focus to the character position controls"
+                description: "Move focus to the character position controls",
+                icon: "FocusCharacterPositionControls.png",
+                altText: "Focus character position controls icon"
             },
             characterPositionColumnInput: {
                 keyDef: { code: "KeyX", key: "x" },
                 actionName: "focusCharacterColumnInput",
-                description: "Move focus to the character position column input field"
+                description: "Move focus to the character position column input field",
+                icon: "FocusCharacterPositionColumn.png",
+                altText: "Focus character position column input icon"
             },
             characterPositionRowInput: {
                 keyDef: { code: "KeyX", key: "y" },
                 actionName: "focusCharacterRowInput",
-                description: "Move focus to the character position row input field"
+                description: "Move focus to the character position row input field",
+                icon: "FocusCharacterPositionRow.png",
+                altText: "Focus character position row input icon"
             },
             // TODO: rename this since we move focus to the play button, not an area
             playShare: {
                 keyDef: { code: "KeyP", key: "p" },
                 actionName: "focusPlayShare",
-                description: "Move focus to the play button"
+                description: "Move focus to the play button",
+                icon: "FocusPlay.png",
+                altText: "Focus play button icon"
             },
             programSequence: {
                 keyDef: { code: "KeyQ", key: "q" },
                 actionName: "focusProgramSequence",
-                description: "Move focus to the beginning of the program"
+                description: "Move focus to the beginning of the program",
+                icon: "FocusProgram.png",
+                altText: "Focus program icon"
             },
             scene: {
                 keyDef: { code: "KeyS", key: "s" },
                 actionName: "focusScene",   // TODO: this should be renamed because it no longer focuses the scene
-                description: "Move focus to the pen toggle"
+                description: "Move focus to the pen toggle",
+                icon: "FocusPenToggle.png",
+                altText: "Focus pen toggle icon"
             },
             worldSelector: {
                 keyDef: { code: "KeyW", key: "w" },
                 actionName: "focusWorldSelector",
                 description: "Move focus to the world selector",
-                icon: "A24.png",
+                icon: "FocusWorldSelector.png",
                 altText: "Focus world selector icon"
             }
         },
@@ -171,7 +185,7 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     keyDef: { key: "1"},
                     actionName: "selectForward1",
                     description: "Select the forward 1 square action block",
-                    icon: "A10.png",
+                    icon: "SelectForwardBlock.png",
                     altText: "Select forward 1 icon"
                 },
                 forward2: {
@@ -191,7 +205,7 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     keyDef: { key: "1"},
                     actionName: "selectBackward1",
                     description: "Select the backward 1 square action block",
-                    icon: "A11.png",
+                    icon: "SelectBackwardBlock.png",
                     altText: "Select backward 1 icon"
                 },
                 backward2: {
@@ -211,14 +225,14 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     keyDef: { key: "1"},
                     actionName: "selectLeft45",
                     description: "Select the turn left 45 degrees action block",
-                    icon: "A12.png",
+                    icon: "SelectTurnLeft45Block.png",
                     altText: "Select turn left 45 icon"
                 },
                 left90: {
                     keyDef: { key: "2"},
                     actionName: "selectLeft90",
                     description: "Select the turn left 90 degrees action block",
-                    icon: "A13.png",
+                    icon: "SelectTurnLeft90Block.png",
                     altText: "Select turn left 90 icon"
                 },
                 left180: {
@@ -233,14 +247,14 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     keyDef: { key: "1"},
                     actionName: "selectRight45",
                     description: "Select the turn right 45 degrees action block",
-                    icon: "A14.png",
+                    icon: "SelectTurnRight45Block.png",
                     altText: "Select turn right 45 icon"
                 },
                 right90: {
                     keyDef: { key: "2"},
                     actionName: "selectRight90",
                     description: "Select the turn right 90 degrees action block",
-                    icon: "A15.png",
+                    icon: "SelectTurnRight90Block.png",
                     altText: "Select turn right 90 icon"
                 },
                 right180: {
@@ -259,28 +273,28 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     keyDef: { code: "KeyL", key: "l" },
                     actionName: "moveCharacterLeft",
                     description: "Move the character left",
-                    icon: "A17.png",
+                    icon: "MoveCharacterLeft.png",
                     altText: "Move character left icon"
                 },
                 right: {
                     keyDef: { code: "KeyR", key: "r" },
                     actionName: "moveCharacterRight",
                     description: "Move the character right",
-                    icon: "A18.png",
+                    icon: "MoveCharacterRight.png",
                     altText: "Move character right icon"
                 },
                 up: {
                     keyDef: { code: "KeyU", key: "u" },
                     actionName: "moveCharacterUp",
                     description: "Move the character up",
-                    icon: "A19.png",
+                    icon: "MoveCharacterUp.png",
                     altText: "Move character up icon"
                 },
                 down: {
                     keyDef: { code: "KeyD", key: "d" },
                     actionName: "moveCharacterDown",
                     description: "Move the character down",
-                    icon: "A16.png",
+                    icon: "MoveCharacterDown.png",
                     altText: "Move character down icon"
                 }
             },
@@ -290,14 +304,14 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     keyDef: { code: "KeyL", key: "l" },
                     actionName: "turnCharacterLeft",
                     description: "Turn the character left 45 degrees",
-                    icon: "A20.png",
+                    icon: "TurnCharacterLeft.png",
                     altText: "Turn character left icon"
                 },
                 right: {
                     keyDef: { code: "KeyR", key: "r" },
                     actionName: "turnCharacterRight",
                     description: "Turn the character right 45 degrees",
-                    icon: "A21.png",
+                    icon: "TurnCharacterRight.png",
                     altText: "Turn character right icon"
                 }
             }
@@ -309,35 +323,35 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 keyDef: { key: "1"},
                 actionName: "changeToDefaultTheme",
                 description: "Change the current visual theme to the default theme",
-                icon: "A25.png",
+                icon: "ChangeToDefaultTheme.png",
                 altText: "Change to default theme icon"
             },
             light: {
                 keyDef: { key: "2"},
                 actionName: "changeToLightTheme",
                 description: "Change the current visual theme to the light theme",
-                icon: "A26.png",
+                icon: "ChangeToLightTheme.png",
                 altText: "Change to light theme icon"
             },
             dark: {
                 keyDef: { key: "3"},
                 actionName: "changeToDarkTheme",
                 description: "Change the current visual theme to the dark theme",
-                icon: "A27.png",
+                icon: "ChangeToDarkTheme.png",
                 altText: "Change to dark theme icon"
             },
             grayscale: {
                 keyDef: { key: "4"},
                 actionName: "changeToGrayscaleTheme",
                 description: "Change the current visual theme to the grayscale theme",
-                icon: "A28.png",
+                icon: "ChangeToGrayTheme.png",
                 altText: "Change to grayscale theme icon"
             },
             highContrast: {
                 keyDef: { key: "5"},
                 actionName: "changeToHighContrastTheme",
                 description: "Change the current visual theme to the high contrast theme",
-                icon: "A29.png",
+                icon: "ChangeToHighContrastTheme.png",
                 altText: "Change to high contrast theme icon"
             }
         },
@@ -346,7 +360,7 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             keyDef: { code: "KeyD", key: "d" },
             actionName: "deleteAll",
             description: "Delete all the action blocks in the program",
-            icon: "A22.png",
+            icon: "DeleteAllBlocks.png",
             altText: "Delete all icon"
         }
     }
@@ -357,27 +371,29 @@ const AltInputScheme: KeyboardInputScheme = Object.assign({
         keyDef: { code: "KeyA", key: "a", altKey: true},
         actionName: "addCommand",
         description: "Add the selected action block to the program after the focused node or the focused action block",
-        icon: "A01.png",
+        icon: "AddActionBlock.png",
         altText: "Add action icon"
     },
     addCommandToBeginning: {
         keyDef: { code: "KeyB", key: "b", altKey: true},
         actionName: "addCommandToBeginning",
         description: "Add the selected action block to the beginning of the program",
-        icon: "A02.png",
+        icon: "AddActionBlockBeginning.png",
         altText: "Add action to start icon"
     },
     addCommandToEnd: {
         keyDef: { code: "KeyE", key: "e", altKey: true},
         actionName: "addCommandToEnd",
         description: "Add the selected action block to the end of the program",
-        icon: "A03.png",
+        icon: "AddActionBlockEnd.png",
         altText: "Add action to end icon"
     },
     deleteCurrentStep: {
         keyDef: { code: "KeyD", key: "d", altKey: true},
         actionName: "deleteCurrentStep",
-        description: "Delete the focused action block from the program"
+        description: "Delete the focused action block from the program",
+        icon: "DeleteBlock.png",
+        altText: "Delete action block icon"
     },
     announceScene: {
         keyDef: { code: "KeyI", key: "i", altKey: true},
@@ -388,28 +404,28 @@ const AltInputScheme: KeyboardInputScheme = Object.assign({
         keyDef: { key: "<", hidden: true},
         actionName: "decreaseProgramSpeed",
         description: "Decrease the program speed",
-        icon: "A07.png",
+        icon: "DecreaseSpeed.png",
         altText: "Decrease speed icon"
     },
     increaseProgramSpeed: {
         keyDef: { key: ">", hidden: true},
         actionName: "increaseProgramSpeed",
         description: "Increase the program speed",
-        icon: "A08.png",
+        icon: "IncreaseSpeed.png",
         altText: "Increase speed icon"
     },
     playPauseProgram: {
         keyDef: { code: "KeyP", key: "p", altKey: true},
         actionName: "playPauseProgram",
         description: "Play or pause the program",
-        icon: "A04.png",
+        icon: "PlayPause.png",
         altText: "Play or pause program icon"
     },
     refreshScene: {
         keyDef: { code: "KeyR", key: "r", altKey: true},
         actionName: "refreshScene",
         description: "Refresh the scene",
-        icon: "A05.png",
+        icon: "RefreshScene.png",
         altText: "Refresh scene icon"
     },
     // TODO: This should be renamed because it doesn't hide the dialog -
@@ -419,14 +435,14 @@ const AltInputScheme: KeyboardInputScheme = Object.assign({
         keyDef: { key: "?"},
         actionName: "showHide",
         description: "Show the keyboard shortcuts menu",
-        icon: "A09.png",
+        icon: "ShowKeyboardShortcuts.png",
         altText: "Show keyboard shortcuts menu icon"
     },
     stopProgram: {
         keyDef: { code: "KeyS", key: "s", altKey: true},
         actionName: "stopProgram",
         description: "Stop the program from playing",
-        icon: "A06.png",
+        icon: "StopProgram.png",
         altText: "Stop program icon"
     }
 }, ExtendedKeyboardSequences);
