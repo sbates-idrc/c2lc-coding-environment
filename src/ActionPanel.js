@@ -101,6 +101,9 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
 
     render() {
         const stepInfoMessage = this.makeStepInfoMessage();
+        const currentStepName = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex).block;
+        const isLoopBlock = ["startLoop", "endLoop"].indexOf(currentStepName) !== -1;
+
         return (
             <React.Fragment>
                 <div className="ActionPanel__background">
@@ -121,7 +124,8 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     </AriaDisablingButton>
                     <AriaDisablingButton
                         name='replaceCurrentStep'
-                        disabled={false}
+                        disabled={isLoopBlock}
+                        hidden={isLoopBlock}
                         aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.replace'}, stepInfoMessage)}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button focus-trap-action-panel-replace__replace_button'
                         onClick={this.handleClickReplace}>
