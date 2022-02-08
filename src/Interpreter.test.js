@@ -13,8 +13,7 @@ function createInterpreter() {
     // $FlowFixMe: Flow doesn't know about the Jest mock API
     const appMock = App.mock.instances[0];
     appMock.incrementProgramCounter.mockImplementation((callback) => {callback()});
-    appMock.decrementLoopIterations.mockImplementation((loopLabel, callback) => {callback()});
-    appMock.updateProgramAndProgramCounter.mockImplementation((index, program, callback) => {callback()});
+    appMock.updateProgramCounterAndDynamicProgramData.mockImplementation((index, program, callback) => {callback()});
     return {
         interpreter,
         appMock
@@ -79,47 +78,43 @@ test('Step a program with 2 commands', (done) => {
 });
 
 test('Step a program with a loop and a command', (done) => {
-    expect.assertions(16);
+    expect.assertions(12);
     const { interpreter, appMock } = createInterpreter();
     const mockCommandHandler = createMockCommandHandler();
     interpreter.addCommandHandler('command', 'test', mockCommandHandler);
 
     interpreter.step(new ProgramSequence([
-        {block: 'startLoop', iterations: 1, iterationsLeft: 1, label: 'A'},
+        {block: 'startLoop', iterations: 1, label: 'A'},
         {block: 'command'},
         {block: 'endLoop', label: 'A'}
-    ], 0, 1)).then(() => {
+    ], 0, 1, { 'A': { iterationsLeft: 1 } })).then(() => {
         expect(appMock.incrementProgramCounter.mock.calls.length).toBe(0);
         expect(mockCommandHandler.mock.calls.length).toBe(0);
-        expect(appMock.decrementLoopIterations.mock.calls.length).toBe(1);
-        expect(appMock.updateProgramAndProgramCounter.mock.calls.length).toBe(0);
+        expect(appMock.updateProgramCounterAndDynamicProgramData.mock.calls.length).toBe(1);
         interpreter.step(new ProgramSequence([
-            {block: 'startLoop', iterations: 1, iterationsLeft: 0, label: 'A'},
+            {block: 'startLoop', iterations: 1, label: 'A'},
             {block: 'command'},
             {block: 'endLoop', label: 'A'}
-        ], 1, 1)).then(() => {
+        ], 1, 1, { 'A': { iterationsLeft: 0 } })).then(() => {
             expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
             expect(mockCommandHandler.mock.calls.length).toBe(1);
-            expect(appMock.decrementLoopIterations.mock.calls.length).toBe(1);
-            expect(appMock.updateProgramAndProgramCounter.mock.calls.length).toBe(0);
+            expect(appMock.updateProgramCounterAndDynamicProgramData.mock.calls.length).toBe(1);
             interpreter.step(new ProgramSequence([
-                {block: 'startLoop', iterations: 1, iterationsLeft: 0, label: 'A'},
+                {block: 'startLoop', iterations: 1, label: 'A'},
                 {block: 'command'},
                 {block: 'endLoop', label: 'A'}
-            ], 2, 1)).then(() => {
+            ], 2, 1, { 'A': { iterationsLeft: 0 } })).then(() => {
                 expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
                 expect(mockCommandHandler.mock.calls.length).toBe(1);
-                expect(appMock.decrementLoopIterations.mock.calls.length).toBe(1);
-                expect(appMock.updateProgramAndProgramCounter.mock.calls.length).toBe(1);
+                expect(appMock.updateProgramCounterAndDynamicProgramData.mock.calls.length).toBe(2);
                 interpreter.step(new ProgramSequence([
-                    {block: 'startLoop', iterations: 1, iterationsLeft: 0, label: 'A'},
+                    {block: 'startLoop', iterations: 1, label: 'A'},
                     {block: 'command'},
                     {block: 'endLoop', label: 'A'}
-                ], 3, 1)).then(() => {
+                ], 3, 1, { 'A': { iterationsLeft: 0 } })).then(() => {
                     expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
                     expect(mockCommandHandler.mock.calls.length).toBe(1);
-                    expect(appMock.decrementLoopIterations.mock.calls.length).toBe(1);
-                    expect(appMock.updateProgramAndProgramCounter.mock.calls.length).toBe(1);
+                    expect(appMock.updateProgramCounterAndDynamicProgramData.mock.calls.length).toBe(2);
                     done();
                 })
             });

@@ -31,7 +31,7 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ShareButton from './ShareButton';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, Program, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -391,7 +391,7 @@ export class App extends React.Component<AppProps, AppState> {
         allowedActions['loop'] = true;
 
         this.state = {
-            programSequence: new ProgramSequence([], 0, 0),
+            programSequence: new ProgramSequence([], 0, 0, {}),
             characterState: this.makeStartingCharacterState(this.defaultWorld),
             settings: {
                 language: 'en',
@@ -492,18 +492,18 @@ export class App extends React.Component<AppProps, AppState> {
         }, callback);
     }
 
-    updateProgramAndProgramCounter(index: number, program: Program, callback: () => void): void {
+    updateProgramCounterAndDynamicProgramData(index: number, dynamicProgramData: any, callback: () => void): void {
         this.setState((state) => {
             return {
-                programSequence: state.programSequence.updateProgramAndProgramCounter(program, index)
+                programSequence: state.programSequence.updateProgramCounterAndDynamicProgramData(index, dynamicProgramData)
             }
         }, callback);
     }
 
-    decrementLoopIterations(loopLabel: string, callback: () => void): void {
+    decrementLoopIterationsLeft(loopLabel: string, callback: () => void): void {
         this.setState((state) => {
             return {
-                programSequence: state.programSequence.decrementLoopIterations(loopLabel)
+                programSequence: state.programSequence.decrementLoopIterationsLeft(loopLabel)
             }
         }, callback);
     }
@@ -1404,7 +1404,8 @@ export class App extends React.Component<AppProps, AppState> {
                     const programSequence: ProgramSequence = new ProgramSequence(
                         parseResult.program,
                         0,
-                        parseResult.highestLoopNumber
+                        parseResult.highestLoopNumber,
+                        {}
                     );
                     this.setState({
                         programSequence: programSequence
@@ -1460,7 +1461,8 @@ export class App extends React.Component<AppProps, AppState> {
                     const programSequence: ProgramSequence = new ProgramSequence(
                         parseResult.program,
                         0,
-                        parseResult.highestLoopNumber
+                        parseResult.highestLoopNumber,
+                        {}
                     );
                     this.setState({
                         programSequence: programSequence
