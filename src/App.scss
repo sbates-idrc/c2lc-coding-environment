@@ -170,38 +170,46 @@ body {
 }
 
 .App__command-palette-command-container {
-    background-color: #30444E;
+    background-color: #19282F;
     border-radius: 3px;
     height: 100%;
     width: 100%;
     overflow-y: auto;
     grid-row-start: 3;
     grid-row-end: 4;
-    padding-top: 1rem;
-}
-
-.App__command-palette-section-heading {
-    border-bottom: 1px solid #818A98;
-    color: #F1AE5B;
-    font-size: .9rem;
-    text-align: left;
-    padding-bottom: .6rem;
-    padding-left: 1.2rem;
 }
 
 .App__command-palette-section {
+    background-color: #30444E;
+    border-radius: 3px;
+    margin-bottom: .5rem;
+    width: 100%;
+}
+
+.App__command-palette-section-heading-container {
+    border-bottom: 1px solid #818A98;
+    width: 100%;
+}
+
+.App__command-palette-section-heading {
+    color: #F1AE5B;
+    font-size: .9rem;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-left: .5rem;
+    padding-bottom: .6rem;
+    padding-top: .6rem;
+    text-align: left;
+}
+
+.App__command-palette-section-body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 0.4rem;
-
-    &:first-of-type {
-        box-shadow: 0px 3px 1px 0px #19282F;
-        margin-bottom: 0.5rem;
-    }
+    padding-top: 1rem;
 }
 
 .App__command-palette-commands {
-    width: 3rem;
     display: flex;
     height: auto;
     flex-direction: column;
