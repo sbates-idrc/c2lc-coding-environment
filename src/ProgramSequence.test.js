@@ -4,32 +4,14 @@ import ProgramSequence from './ProgramSequence';
 import type { Program } from './types';
 
 test('ProgramSequence constructor should take program and programCounter parameters', () => {
-    expect.assertions(2);
-    const program = [{block: 'forward1'}];
+    expect.assertions(3);
+    const program = [{block: 'forward1'}, {block: 'loopStart', label: 'A', iterations: 3}];
     const programCounter = 0;
-    const programSequence = new ProgramSequence(program, programCounter, 0);
+    const dynamicProgramData = [{'A' : { iterationsLeft: 3 }}];
+    const programSequence = new ProgramSequence(program, programCounter, 0, dynamicProgramData);
     expect(programSequence.getProgram()).toBe(program);
     expect(programSequence.getProgramCounter()).toBe(programCounter);
-});
-
-test('initiateProgramRun should set iterationsLeft on startLoop blocks, as well as set programCounter to 0', () => {
-    expect.assertions(2);
-    const program = [
-        {block: 'startLoop', iterations: 3, label: 'A'},
-        {block: 'startLoop', iterations: 2, label: 'B'},
-        {block: 'endLoop', label: 'B'},
-        {block: 'endLoop', label: 'A'}
-    ];
-    const expectedProgram = [
-        {block: 'startLoop', iterations: 3, iterationsLeft: 3, label: 'A'},
-        {block: 'startLoop', iterations: 2, iterationsLeft: 2, label: 'B'},
-        {block: 'endLoop', label: 'B'},
-        {block: 'endLoop', label: 'A'}
-    ];
-    const programSequence = new ProgramSequence(program, 3, 2);
-    const updatedProgramSequence = programSequence.initiateProgramRun();
-    expect(updatedProgramSequence.getProgram()).toStrictEqual(expectedProgram);
-    expect(updatedProgramSequence.getProgramCounter()).toBe(0);
+    expect(programSequence.getDynamicProgramData()).toBe(dynamicProgramData);
 });
 
 test('updateProgramCounter should only update programCounter', () => {
@@ -153,22 +135,53 @@ test.each([
     }
 );
 
-test('decrementLoopIteration should decrease iterationsLeft of specified loop and increment programCounter by 1', () => {
+test('initiateProgramRun should set iterationsLeft on startLoop blocks, as well as set programCounter to 0', () => {
     expect.assertions(2);
+    const program = [
+        {block: 'startLoop', iterations: 3, label: 'A'},
+        {block: 'startLoop', iterations: 2, label: 'B'},
+        {block: 'endLoop', label: 'B'},
+        {block: 'endLoop', label: 'A'}
+    ];
+    const expectedDynamicProgramData = {
+        'A' : { iterationsLeft: 3 },
+        'B' : { iterationsLeft: 2 }
+    };
+    const programSequence = new ProgramSequence(program, 3, 2, {});
+    const updatedProgramSequence = programSequence.initiateProgramRun();
+    expect(updatedProgramSequence.getDynamicProgramData()).toStrictEqual(expectedDynamicProgramData);
+    expect(updatedProgramSequence.getProgramCounter()).toBe(0);
+});
+
+test('resetLoopIterationsLeft should reset iterationsLeft of specified startLoop block by index', () => {
+    const program = [
+        {block: 'startLoop', iterations: 3, label: 'A'},
+        {block: 'endLoop', label: 'A'}
+    ];
+    const expectedDynamicProgramData = {
+        'A' : { iterationsLeft: 3 }
+    };
+    const programSequence = new ProgramSequence(program, 0, 1, {'A' : { iterationsLeft: 0 }});
+    const updatedProgramSequence = programSequence.resetLoopIterationsLeft(0);
+    expect(updatedProgramSequence.getDynamicProgramData()).toStrictEqual(expectedDynamicProgramData);
+})
+
+test('decrementLoopIteration should decrease iterationsLeft of specified loop', () => {
+    expect.assertions(1);
     const program = [
         {block: 'startLoop', iterations: 3, iterationsLeft: 3, label: 'A'},
         {block: 'startLoop', iterations: 2, iterationsLeft: 2, label: 'B'},
         {block: 'endLoop', label: 'B'},
         {block: 'endLoop', label: 'A'}
     ];
-    const expectedProgram = [
-        {block: 'startLoop', iterations: 3, iterationsLeft: 3, label: 'A'},
-        {block: 'startLoop', iterations: 2, iterationsLeft: 1, label: 'B'},
-        {block: 'endLoop', label: 'B'},
-        {block: 'endLoop', label: 'A'}
-    ]
-    const programSequence = new ProgramSequence(program, 1, 2);
-    const updatedProgramSequence = programSequence.decrementLoopIterations('B');
-    expect(updatedProgramSequence.getProgram()).toStrictEqual(expectedProgram);
-    expect(updatedProgramSequence.getProgramCounter()).toBe(2);
+    const expectedDynamicProgramData = {
+        'A': { iterationsLeft: 3 },
+        'B': { iterationsLeft: 1 }
+    };
+    const programSequence = new ProgramSequence(program, 1, 2, {
+        'A': { iterationsLeft: 3},
+        'B': { iterationsLeft: 2}
+    });
+    const updatedProgramSequence = programSequence.decrementLoopIterationsLeft('B');
+    expect(updatedProgramSequence.getDynamicProgramData()).toStrictEqual(expectedDynamicProgramData);
 })

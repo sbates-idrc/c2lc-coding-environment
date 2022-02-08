@@ -7,22 +7,13 @@ export default class ProgramSequence {
     program: Program;
     programCounter: number;
     loopCounter: number;
+    dynamicProgramData: any;
 
-    constructor(program: Program, programCounter: number, loopCounter: number) {
+    constructor(program: Program, programCounter: number, loopCounter: number, dynamicProgramData: any) {
         this.program = program;
         this.programCounter = programCounter;
         this.loopCounter = loopCounter;
-    }
-
-    initiateProgramRun(): ProgramSequence {
-        const program = this.program.slice();
-        for (let i = 0; i < program.length; i++) {
-            const { block } = program[i];
-            if (block === 'startLoop' && program[i].iterations != null) {
-                program[i] = Object.assign(program[i], {iterationsLeft: program[i].iterations});
-            }
-        }
-        return new ProgramSequence(program, 0, this.loopCounter);
+        this.dynamicProgramData = dynamicProgramData;
     }
 
     getProgram(): Program {
@@ -37,6 +28,10 @@ export default class ProgramSequence {
         return this.programCounter;
     }
 
+    getDynamicProgramData(): any {
+        return this.dynamicProgramData;
+    }
+
     getCurrentProgramStep(): ProgramBlock {
         return this.program[this.programCounter];
     }
@@ -46,19 +41,23 @@ export default class ProgramSequence {
     }
 
     updateProgram(program: Program): ProgramSequence {
-        return new ProgramSequence(program, this.programCounter, this.loopCounter);
+        return new ProgramSequence(program, this.programCounter, this.loopCounter, this.dynamicProgramData);
     }
 
     updateProgramCounter(programCounter: number): ProgramSequence {
-        return new ProgramSequence(this.program, programCounter, this.loopCounter);
+        return new ProgramSequence(this.program, programCounter, this.loopCounter, this.dynamicProgramData);
     }
 
     updateProgramAndProgramCounter(program: Program, programCounter: number): ProgramSequence {
-        return new ProgramSequence(program, programCounter, this.loopCounter);
+        return new ProgramSequence(program, programCounter, this.loopCounter, this.dynamicProgramData);
+    }
+
+    updateProgramCounterAndDynamicProgramData(programCounter: number, dynamicProgramData: any) {
+        return new ProgramSequence(this.program, programCounter, this.loopCounter, dynamicProgramData);
     }
 
     incrementProgramCounter(): ProgramSequence {
-        return new ProgramSequence(this.program, this.programCounter + 1, this.loopCounter);
+        return new ProgramSequence(this.program, this.programCounter + 1, this.loopCounter, this.dynamicProgramData);
     }
 
     overwriteStep(index: number, command: string): ProgramSequence {
@@ -123,21 +122,41 @@ export default class ProgramSequence {
         return false;
     }
 
-    decrementLoopIterations(loopLabel: string): ProgramSequence {
+    initiateProgramRun(): ProgramSequence {
         const program = this.program.slice();
+        const dynamicProgramData = {};
         for (let i = 0; i < program.length; i++) {
-            const { block, iterations, iterationsLeft, label } = program[i];
-            if (block === 'startLoop' && label === loopLabel) {
-                if (iterationsLeft != null && iterationsLeft > 0) {
-                    program[i] = {
-                        block,
-                        iterations: iterations,
-                        iterationsLeft: iterationsLeft - 1,
-                        label
-                    };
+            const { block, label, iterations } = program[i];
+            if (block === 'startLoop' && label != null && iterations != null) {
+                dynamicProgramData[label] = {
+                    iterationsLeft: iterations
                 }
             }
         }
-        return new ProgramSequence(program, this.programCounter + 1, this.loopCounter);
+        return new ProgramSequence(this.program, 0, this.loopCounter, dynamicProgramData);
+    }
+
+    resetLoopIterationsLeft(index: number): any {
+        const currentLoopIterations = this.program[index].iterations;
+        const loopLabel = this.program[index].label;
+        const dynamicProgramData = this.dynamicProgramData;
+        if (currentLoopIterations != null && dynamicProgramData[loopLabel]) {
+            dynamicProgramData[loopLabel].iterationsLeft = currentLoopIterations;
+        }
+        return new ProgramSequence(this.program, this.programCounter, this.loopCounter, dynamicProgramData);
+    }
+
+    decrementLoopIterationsLeft(loopLabel: string): any {
+        const program = this.program;
+        const dynamicProgramData = this.dynamicProgramData;
+        for (let i = 0; i < program.length; i++) {
+            const { block, label } = program[i];
+            if (block === 'startLoop' && label === loopLabel) {
+                if (dynamicProgramData[loopLabel] != null && dynamicProgramData[loopLabel].iterationsLeft > 0) {
+                    dynamicProgramData[loopLabel].iterationsLeft--;
+                }
+            }
+        }
+        return new ProgramSequence(this.program, this.programCounter, this.loopCounter, dynamicProgramData);
     }
 }
