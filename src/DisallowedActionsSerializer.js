@@ -1,69 +1,70 @@
 // @flow
 /*
 
-    We use the same conventions as the program to store a register of "allowed actions" in the URL, so that the choices
+    Store a register of "disallowed actions" in the URL, so that the choices
     made in the "simplification" menu are persisted.
+
 */
 import type { ActionToggleRegister } from './types';
 
 export default class DisallowedActionsSerializer {
 
     serialize(actionToggleRegister: ActionToggleRegister): string {
-        let serializedAllowedActions = '';
-        for (const [actionKey, isAllowed] of Object.entries(actionToggleRegister)) {
-            if (isAllowed) {
+        let serializeDisallowedActions = '';
+        for (const [actionKey, isDisallowed] of Object.entries(actionToggleRegister)) {
+            if (isDisallowed) {
                 switch (actionKey) {
                     case ('forward1') :
-                        serializedAllowedActions += '1';
+                        serializeDisallowedActions += '1';
                         break;
                     case ('forward2') :
-                        serializedAllowedActions += '2';
+                        serializeDisallowedActions += '2';
                         break;
                     case ('forward3') :
-                        serializedAllowedActions += '3';
+                        serializeDisallowedActions += '3';
                         break;
                     case ('backward1') :
-                        serializedAllowedActions += '4';
+                        serializeDisallowedActions += '4';
                         break;
                     case ('backward2') :
-                        serializedAllowedActions += '5';
+                        serializeDisallowedActions += '5';
                         break;
                     case ('backward3') :
-                        serializedAllowedActions += '6';
+                        serializeDisallowedActions += '6';
                         break;
                     case ('left45') :
-                        serializedAllowedActions += 'A';
+                        serializeDisallowedActions += 'A';
                         break;
                     case ('left90') :
-                        serializedAllowedActions += 'B';
+                        serializeDisallowedActions += 'B';
                         break;
                     case ('left180') :
-                        serializedAllowedActions += 'D';
+                        serializeDisallowedActions += 'D';
                         break;
                     case ('right45') :
-                        serializedAllowedActions += 'a';
+                        serializeDisallowedActions += 'a';
                         break;
                     case ('right90') :
-                        serializedAllowedActions += 'b';
+                        serializeDisallowedActions += 'b';
                         break;
                     case ('right180') :
-                        serializedAllowedActions += 'd';
+                        serializeDisallowedActions += 'd';
                         break;
                     case ('loop') :
-                        serializedAllowedActions += 'l';
+                        serializeDisallowedActions += 'l';
                         break;
                     default:
                         throw new Error(`Unrecognized actionKey when serializing actionKey: ${actionKey}`);
                 }
             }
         }
-        return serializedAllowedActions;
+        return serializeDisallowedActions;
     }
 
-    deserialize(allowedActionsText: string): ActionToggleRegister {
+    deserialize(disallowedActionsText: string): ActionToggleRegister {
         const actionToggleRegister = {};
-        for (let i=0; i<allowedActionsText.length; i++) {
-            switch(allowedActionsText.charAt(i)) {
+        for (let i=0; i<disallowedActionsText.length; i++) {
+            switch(disallowedActionsText.charAt(i)) {
                 case '1':
                     actionToggleRegister['forward1'] = true;
                     break;
@@ -104,7 +105,7 @@ export default class DisallowedActionsSerializer {
                     actionToggleRegister['loop'] = true;
                     break;
                 default:
-                    throw new Error(`Unrecognized disallowedActions text when deserialize text: ${allowedActionsText.charAt(i)}`);
+                    throw new Error(`Unrecognized disallowedActions text when deserialize text: ${disallowedActionsText.charAt(i)}`);
             }
         }
         return actionToggleRegister;

@@ -935,20 +935,6 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleToggleAllowedCommand = (event: Event, commandName: CommandName) => {
-        // TODO: Use the function form of setState() as the new state
-        //       depends on the current state
-        const currentIsDisallowed = this.state.disallowedActions[commandName];
-        if (currentIsDisallowed) {
-            const newDisallowedActions= Object.assign({}, this.state.disallowedActions);
-            delete newDisallowedActions[commandName];
-            this.setState({ disallowedActions: newDisallowedActions})
-        }
-        else if (this.state.programSequence.usesAction(commandName)) {
-            event.preventDefault();
-        }
-    }
-
     changeProgramSpeedIndex = (newSpeedIndex: number) => {
         if (newSpeedIndex >= 0 && newSpeedIndex <= (this.speedLookUp.length - 1)) {
             this.interpreter.setStepTime(this.speedLookUp[newSpeedIndex]);

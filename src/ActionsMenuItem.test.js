@@ -117,7 +117,7 @@ test.each([
     [  true , true , false  ],
     [  false, false, false  ],
     [  false, true , true   ],
-])("The menu item is disabled when 'allowed' and 'used'.",
+])("The menu item is disabled when 'disallowed' or 'used'.",
     (disallowed: boolean, used: boolean, expectedDisabled: boolean) => {
         expect.assertions(2);
         const { wrapper } = createActionsMenuItem({ isDisallowed: disallowed, isUsed: used });
