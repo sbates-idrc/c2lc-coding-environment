@@ -59,6 +59,12 @@ body.light-theme {
                 stroke: #FFFFFF;
             }
         }
+
+        &:hover {
+            path.filled-bracket {
+                fill: #4B4B4B;
+            }
+        }
     }
 
     button.btn.command-block:focus {
@@ -768,6 +774,14 @@ body.gray-theme {
             }
         }
     }
+
+    .App__command-palette-command-container .btn-command-block--loop:hover {
+        svg {
+            path.filled-bracket {
+                fill: #505862;
+            }
+        }
+    }    
 
     .IconButton {
         background-color: #818A98;
@@ -1721,6 +1735,18 @@ body.contrast-theme {
             }
             path.inner-arrow {
                 stroke: #22262A;
+            }
+        }
+    }
+
+    .App__command-palette-command-container .btn-command-block--loop:hover {
+        svg {
+            path.filled-bracket {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+            path.inner-arrow {
+                stroke: #FFFFFF;
             }
         }
     }

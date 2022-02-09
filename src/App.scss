@@ -212,6 +212,14 @@ body {
     padding-top: 1rem;
 }
 
+.App__command-palette-command-container .btn-command-block--loop:hover {
+    svg {
+        path.filled-bracket {
+            fill: #878787;
+        }
+    }
+}
+
 .App__command-palette-commands {
     display: flex;
     height: auto;
