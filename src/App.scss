@@ -139,26 +139,6 @@ body {
     margin: auto;
 }
 
-.App__ActionsMenu__toggle-button {
-    align-self: center;
-    grid-column-end: 4;
-    grid-column-start: 3;
-    justify-self: center;
-    width: 1.4em;
-    padding: 0.2rem;
-    border-radius: 5px;
-   
-    &:focus {
-        box-shadow:
-            0 0 0 0.1rem black;
-        outline: none;
-    }
-
-    svg {
-        height: 0.75rem;
-    }
-}
-
 .App__command-palette {
     background-color: #CCE6E2;
     border: 2px solid #CCE6E2;

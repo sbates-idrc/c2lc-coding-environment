@@ -501,17 +501,6 @@ body.dark-theme {
         color: white;
     }
 
-    .App__ActionsMenu__toggle-button {
-        &:focus {
-            box-shadow:
-                0 0 0 0.1rem white;
-        }
-
-        svg line {
-            stroke: white;
-        }
-    }
-
     .App__ActionsMenu__menu {
         background-color: #22343C;
         border: 2px solid #33717F;
@@ -785,6 +774,18 @@ body.gray-theme {
             }
             circle {
                 fill: white;
+            }
+        }
+
+        .App__header-theme-icon {
+            path {
+                fill: white;
+            }
+        }
+
+        .App__header-actionsMenu-icon {
+            path {
+                stroke: white;
             }
         }
     }
@@ -1558,6 +1559,13 @@ body.contrast-theme {
                 }
                 circle {
                     fill: white;
+                }
+            }
+
+            .App__header-actionsMenu-icon {
+                path {
+                    fill: white;
+                    stroke: white;
                 }
             }
         }
