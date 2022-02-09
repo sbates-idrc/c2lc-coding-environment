@@ -24,18 +24,6 @@ configure({ adapter: new Adapter()});
 
 // TODO: Mock the FocusTrapManager
 
-const mockAllowedActions = {
-    "forward1": true,
-    "forward2": true,
-    "forward3": true,
-    "left45": true,
-    "left90": true,
-    "left180": true,
-    "right45": true,
-    "right90": true,
-    "right180": true
-};
-
 const defaultProgramBlockEditorProps = {
     interpreterIsRunning: false,
     characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
@@ -49,7 +37,7 @@ const defaultProgramBlockEditorProps = {
     focusTrapManager: new FocusTrapManager(),
     addNodeExpandedMode: false,
     theme: 'default',
-    allowedActions: mockAllowedActions,
+    disallowedActions: {},
     world: 'Sketchpad'
 };
 
