@@ -45,20 +45,45 @@ test('updateProgramStructure updates program with additional properties about ne
         {block: 'endLoop', label: 'B'},
         {block: 'endLoop', label: 'A'}
     ];
+    const firstStepCacheData = new Map();
+    firstStepCacheData.set('containingLoopPosition', 1);
+    firstStepCacheData.set('containingLoopLabel', 'A');
+    const secondStepCacheData = new Map();
+    secondStepCacheData.set('containingLoopPosition', 1);
+    secondStepCacheData.set('containingLoopLabel', 'B');
+    const thirdStepCacheData = new Map();
+    thirdStepCacheData.set('containingLoopPosition', 2);
+    thirdStepCacheData.set('containingLoopLabel', 'B');
+    const fourthStepCacheData = new Map();
+    fourthStepCacheData.set('containingLoopPosition', 1);
+    fourthStepCacheData.set('containingLoopLabel', 'C');
+    const fifthStepCacheData = new Map();
+    fifthStepCacheData.set('containingLoopPosition', 2);
+    fifthStepCacheData.set('containingLoopLabel', 'C');
+    const sixthStepCacheData = new Map();
+    sixthStepCacheData.set('containingLoopPosition', 5);
+    sixthStepCacheData.set('containingLoopLabel', 'B');
+    const seventhStepCacheData = new Map();
+    seventhStepCacheData.set('containingLoopPosition', 6);
+    seventhStepCacheData.set('containingLoopLabel', 'B');
+    const eighthStepCacheData = new Map();
+    eighthStepCacheData.set('containingLoopPosition', 8);
+    eighthStepCacheData.set('containingLoopLabel', 'A');
+
     const expectedProgram = [
         {block: 'startLoop', iterations: 3, label: 'A'},
-        {block: 'startLoop', iterations: 2, label: 'B', parentLoop: 'A', currentLoopPosition: 1},
-        {block: 'forward3', parentLoop: 'B', currentLoopPosition: 1},
-        {block: 'startLoop', iterations: 1, label: 'C', parentLoop: 'B', currentLoopPosition: 2},
-        {block: 'forward1', parentLoop: 'C', currentLoopPosition: 1},
-        {block: 'forward2', parentLoop: 'C', currentLoopPosition: 2},
-        {block: 'endLoop', label: 'C', parentLoop: 'B', currentLoopPosition: 5},
-        {block: 'forward3', parentLoop: 'B', currentLoopPosition: 6},
-        {block: 'endLoop', label: 'B', parentLoop: 'A', currentLoopPosition: 8},
+        {block: 'startLoop', iterations: 2, label: 'B', cache: firstStepCacheData},
+        {block: 'forward3', cache: secondStepCacheData},
+        {block: 'startLoop', iterations: 1, label: 'C', cache: thirdStepCacheData},
+        {block: 'forward1', cache: fourthStepCacheData},
+        {block: 'forward2', cache: fifthStepCacheData},
+        {block: 'endLoop', label: 'C', cache: sixthStepCacheData},
+        {block: 'forward3', cache: seventhStepCacheData},
+        {block: 'endLoop', label: 'B', cache: eighthStepCacheData},
         {block: 'endLoop', label: 'A'}
     ]
     const programSequence = new ProgramSequence(program, 0, 2);
-    const updatedProgram = programSequence.updateProgramStructure(program, 2);
+    const updatedProgram = programSequence.updateCachedLoopData(program, 2);
     expect(updatedProgram).toStrictEqual(expectedProgram);
 })
 

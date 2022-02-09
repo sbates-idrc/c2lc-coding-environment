@@ -32,8 +32,7 @@ export type ProgramBlock = {
     iterations?: number,
     iterationsLeft?: number,
     label?: string,
-    parentLoop? : string,
-    currentLoopPosition? : number
+    cache?: Map<string, number | string>;
 };
 
 export type Program = Array<ProgramBlock>;

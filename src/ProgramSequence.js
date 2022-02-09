@@ -46,43 +46,52 @@ export default class ProgramSequence {
     }
 
     updateProgramSequence(program: Program, programCounter: number, loopCounter: number): ProgramSequence {
-        program = this.updateProgramStructure(program, loopCounter);
+        program = this.updateCachedLoopData(program, loopCounter);
         return new ProgramSequence(program, programCounter, loopCounter);
     }
 
-    updateProgramStructure(program: Program, loopCounter: number): Program {
+    updateCachedLoopData(program: Program, loopCounter: number): Program {
         if (loopCounter > 0) {
             // loopStack is a stack that stores loop labels from startLoop blocks
             // while iterating through the program to keep track of direct parent loop
             const loopStack = [];
             // loopPositionStack is a stack that stores position of a program step within a direct parent loop
             const loopPositionStack = [];
-            let currentLoopPosition = 0;
+            let containingLoopPosition = 0;
             for (let i = 0; i < program.length; i++) {
                 const currentProgramBlock = program[i];
                 if (currentProgramBlock.block === 'endLoop') {
                     loopStack.pop();
                     if (loopPositionStack.length > 0) {
-                        currentLoopPosition += loopPositionStack.pop();
+                        containingLoopPosition += loopPositionStack.pop();
                     }
                 }
                 if (loopStack.length > 0) {
-                    currentLoopPosition++;
+                    const cache = new Map();
+                    containingLoopPosition++;
+                    cache.set('containingLoopLabel', loopStack[loopStack.length - 1]);
+                    cache.set('containingLoopPosition', containingLoopPosition);
                     program[i] = Object.assign(
                         {},
                         program[i],
                         {
-                            parentLoop: loopStack[loopStack.length - 1],
-                            currentLoopPosition
+                            // $FlowFixMe: type argument 'V' of cache can be undefined
+                            cache
                         }
                     );
+                } else {
+                    const currentCache = program[i].cache;
+                    if (currentCache != null) {
+                        currentCache.delete('containingLoopLabel');
+                        currentCache.delete('containingLoopPosition');
+                    }
                 }
                 if (currentProgramBlock.block === 'startLoop') {
                     loopStack.push(currentProgramBlock.label);
-                    if (currentLoopPosition > 0) {
-                        loopPositionStack.push(currentLoopPosition);
+                    if (containingLoopPosition > 0) {
+                        loopPositionStack.push(containingLoopPosition);
                     }
-                    currentLoopPosition = 0;
+                    containingLoopPosition = 0;
                 }
             }
         }
@@ -90,7 +99,7 @@ export default class ProgramSequence {
     }
 
     updateProgram(program: Program): ProgramSequence {
-        program = this.updateProgramStructure(program, this.loopCounter);
+        program = this.updateCachedLoopData(program, this.loopCounter);
         return new ProgramSequence(program, this.programCounter, this.loopCounter);
     }
 
@@ -99,7 +108,7 @@ export default class ProgramSequence {
     }
 
     updateProgramAndProgramCounter(program: Program, programCounter: number): ProgramSequence {
-        program = this.updateProgramStructure(program, this.loopCounter);
+        program = this.updateCachedLoopData(program, this.loopCounter);
         return new ProgramSequence(program, programCounter, this.loopCounter);
     }
 
