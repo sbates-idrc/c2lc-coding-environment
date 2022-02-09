@@ -1,10 +1,9 @@
 // @flow
-// These are just a rudimentary sanity check of the AllowedActionsSerializer, the underlying serializer is tested in
-// depth elsewhere.
-import AllowedActionsSerializer from './AllowedActionsSerializer';
 
-test("Serialize allowed actions", () => {
-    const serializer = new AllowedActionsSerializer();
+import DisallowedActionsSerializer from './DisallowedActionsSerializer';
+
+test("Serialize disallowed actions", () => {
+    const serializer = new DisallowedActionsSerializer();
 
     expect(serializer.serialize({})).toStrictEqual('');
     expect(serializer.serialize({ forward1: true })).toStrictEqual('1');
@@ -37,14 +36,8 @@ test("Serialize allowed actions", () => {
     })).toStrictEqual('246Badl');
 });
 
-test('Serializing an unsupported actionKey should throw an Error', () => {
-    expect(() => {
-        (new AllowedActionsSerializer()).serialize({ unknownCommand: true });
-    }).toThrowError(/^Unrecognized actionKey when serializing actionKey: unknownCommand$/);
-});
-
-test("Deserialize allowed actions.", () => {
-    const serializer = new AllowedActionsSerializer();
+test("Deserialize disallowed actions.", () => {
+    const serializer = new DisallowedActionsSerializer();
     expect(serializer.deserialize('')).toStrictEqual({});
     expect(serializer.deserialize('1')).toStrictEqual({ forward1: true });
     expect(serializer.deserialize('2')).toStrictEqual({ forward2: true });
@@ -73,11 +66,11 @@ test("Deserialize allowed actions.", () => {
         right90: true,
         right180: true,
         loop: true
-    })
+    });
 });
 
 test('Deserializing an unsupported actionKey should throw an Error', () => {
     expect(() => {
-        (new AllowedActionsSerializer()).deserialize('9');
-    }).toThrowError(/^Unrecognized allowedActions text when deserialize text: 9$/);
+        (new DisallowedActionsSerializer()).deserialize('9');
+    }).toThrowError(/^Unrecognized disallowedActions text when deserialize text: 9$/);
 });
