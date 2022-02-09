@@ -30,7 +30,6 @@ export type ThemeName = 'default' | 'light' | 'dark' | 'gray' | 'contrast';
 export type ProgramBlock = {
     block: string,
     iterations?: number,
-    iterationsLeft?: number,
     label?: string
 };
 
