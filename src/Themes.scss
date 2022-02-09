@@ -35,11 +35,30 @@ body.light-theme {
     }
 
     .App__command-palette-command-container {
-        background-color: #EBFAF8;
+        background-color: #CCE6E2;
     }
 
     .App__command-palette-heading {
         color: #30444E;
+    }
+
+    .App__command-palette-section {
+        background-color: #EBFAF8;
+    }
+
+    .App__command-palette-section-heading {
+        color: #1E1E1E;
+    }
+
+    .App__command-palette-command-container .btn-command-block--loop {
+        svg {
+            path.filled-bracket {
+                fill: #30444E;
+            }
+            path.inner-arrow {
+                stroke: #FFFFFF;
+            }
+        }
     }
 
     button.btn.command-block:focus {
@@ -75,7 +94,7 @@ body.light-theme {
         }
     }
 
-    .ActionsMenuItem__icon:not(.ActionsMenuItem__icon--hidden)
+    .ActionsMenuItem__icon:not(.ActionsMenuItem__icon--hidden):not(.ActionsMenuItem__icon--loop)
     {
         svg {
             path, circle, rect {
@@ -730,6 +749,26 @@ body.gray-theme {
         color: #818A98;
     }
 
+    .App__command-palette-section {
+        background-color: #F1F2F4;
+    }
+
+    .App__command-palette-section-heading {
+        color: #818A98;
+    }
+
+    .App__command-palette-command-container .btn-command-block--loop, .ActionsMenuItem__icon--loop {
+        svg {
+            path.filled-bracket {
+                fill: #818A98;
+
+            }
+            path.inner-arrow {
+                stroke: #F1F2F4;
+            }
+        }
+    }
+
     .IconButton {
         background-color: #818A98;
 
@@ -861,7 +900,7 @@ body.gray-theme {
     #command-block--right90, .btn-command-block--right90,
     #command-block--right180, .btn-command-block--right180,
     // TODO: Add backward commands to the above.
-    .command-block {
+    .command-block:not(.btn-command-block--loop) {
         background-color: #818A98;
         border-color: #818A98;
 
@@ -904,7 +943,7 @@ body.gray-theme {
         }
     }
 
-    .ActionsMenuItem__icon:not(.ActionsMenuItem__icon--disabled) {
+    .ActionsMenuItem__icon:not(.ActionsMenuItem__icon--disabled):not(.ActionsMenuItem__icon--loop) {
         background-color: #818A98;
         border-color: #818A98;
 
@@ -1666,6 +1705,26 @@ body.contrast-theme {
         }
     }
 
+    .App__command-palette-section {
+        background-color: #1E1E1E;
+    }
+
+    .App__command-palette-section-heading {
+        color: #FFFFFF;
+    }
+
+    .App__command-palette-command-container .btn-command-block--loop, .ActionsMenuItem__icon--loop {
+        svg {
+            path.filled-bracket {
+                fill: #FFFFFF;
+                stroke: #1E1E1E;
+            }
+            path.inner-arrow {
+                stroke: #22262A;
+            }
+        }
+    }
+
     .App__world-container {
         background-color: black;
     }
@@ -1753,7 +1812,7 @@ body.contrast-theme {
         }
     }
 
-    .ActionsMenuItem__icon:not(.ActionsMenuItem__icon--disabled) {
+    .ActionsMenuItem__icon:not(.ActionsMenuItem__icon--disabled):not(.ActionsMenuItem__icon--loop) {
         background-color: white;
         border: 1px solid black;
 

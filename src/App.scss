@@ -184,6 +184,9 @@ body {
     border-radius: 3px;
     margin-bottom: .5rem;
     width: 100%;
+    &:last-of-type {
+        padding-bottom: 1rem;
+    }
 }
 
 .App__command-palette-section-heading-container {
