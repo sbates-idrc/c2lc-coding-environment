@@ -87,57 +87,83 @@ export default class Interpreter {
                 resolve();
             } else {
                 const currentProgramStep = programSequence.getCurrentProgramStep();
-                const dynamicProgramData = programSequence.getDynamicProgramData();
                 const command = currentProgramStep.block;
-                let programCounter = programSequence.getProgramCounter();
-                if (command === 'startLoop' || command === 'endLoop') {
-                    if (command === 'startLoop') {
-                        const { label } = currentProgramStep;
-                        if (label != null && dynamicProgramData[label] != null && dynamicProgramData[label].iterationsLeft > 0) {
-                            programSequence = programSequence.decrementLoopIterationsLeft(label);
-                        }
-                        programCounter += 1;
-                    } else if (command === 'endLoop') {
-                        const { label } = currentProgramStep;
-                        if (label != null) {
-                            const currentProgram = programSequence.getProgram();
-                            const currentProgramCounter = programSequence.getProgramCounter();
-                            for (let i = currentProgramCounter; i > -1; i--) {
-                                // Look for startLoop blocks
-                                if (currentProgram[i].block === 'startLoop') {
-                                    // Check if the startLoop has same label as the endLoop itself
-                                    if (currentProgram[i].label != null && currentProgram[i].label === label) {
-                                        // Check if there's any iterations left, if so, store return index
-                                        if (dynamicProgramData[label].iterationsLeft != null && dynamicProgramData[label].iterationsLeft > 0) {
-                                            programCounter = i;
-                                        // When there's no more iterations left, increment the programCounter
-                                        } else {
-                                            programCounter += 1;
-                                        }
-                                        break;
-                                    } else {
-                                        // When startLoop has a different label and if it is a nested loop; reset its iterationsLeft
-                                        programSequence = programSequence.resetLoopIterationsLeft(i);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    this.app.updateProgramCounterAndDynamicProgramData(programCounter, programSequence.getDynamicProgramData(), () => {
-                        resolve();
+                if (command === 'startLoop') {
+                    this.doStartLoop(programSequence, currentProgramStep, resolve);
+                } else if (command === 'endLoop') {
+                    this.doEndLoop(programSequence, currentProgramStep, resolve);
+                } else {
+                    this.doCommand(currentProgramStep).then(() => {
+                        // When the command has completed, increment
+                        // the programCounter and resolve the step Promise
+                        this.app.incrementProgramCounter(() => {
+                            resolve();
+                        });
+                    }, (error: Error) => {
+                        reject(error);
                     });
                 }
-                this.doCommand(currentProgramStep).then(() => {
-                    // When the command has completed, increment
-                    // the programCounter and resolve the step Promise
-                    this.app.incrementProgramCounter(() => {
-                        resolve();
-                    });
-                }, (error: Error) => {
-                    reject(error);
-                });
             }
         });
+    }
+
+    doStartLoop(programSequence: ProgramSequence, currentProgramStep: ProgramBlock, callback: () => void) {
+        const loopIterationsLeft = new Map(programSequence.getLoopIterationsLeft());
+        // Decrement the iterations left for the loop, if it's > 0
+        const label = currentProgramStep.label;
+        if (label != null) {
+            const currentIterationsLeft = loopIterationsLeft.get(label);
+            if (currentIterationsLeft != null && currentIterationsLeft > 0) {
+                loopIterationsLeft.set(label, currentIterationsLeft - 1);
+            }
+        }
+        // And increment the program counter
+        const newProgramCounter = programSequence.getProgramCounter() + 1;
+        this.app.updateProgramCounterAndLoopIterationsLeft(
+            newProgramCounter,
+            loopIterationsLeft,
+            callback
+        );
+    }
+
+    doEndLoop(programSequence: ProgramSequence, currentProgramStep: ProgramBlock, callback: () => void) {
+        const loopIterationsLeft = new Map(programSequence.getLoopIterationsLeft());
+        const label = currentProgramStep.label;
+        let programCounter = programSequence.getProgramCounter();
+        if (label != null) {
+            for (let i = programCounter; i > -1; i--) {
+                const block = programSequence.program[i];
+                // Look for startLoop blocks
+                if (block.block === 'startLoop') {
+                    // Check if the startLoop has same label as the endLoop itself
+                    if (block.label != null && block.label === label) {
+                        // Check if there's any iterations left, if so,
+                        // set the programCounter to the start of the loop
+                        const currentIterationsLeft = loopIterationsLeft.get(label);
+                        if (currentIterationsLeft != null && currentIterationsLeft > 0) {
+                            programCounter = i;
+                        // When there's no more iterations left, increment the programCounter
+                        } else {
+                            programCounter += 1;
+                        }
+                        break;
+                    } else {
+                        // When startLoop has a different label, we have found
+                        // a nested loop: reset its iterationsLeft
+                        const nestedLoopLabel = programSequence.program[i].label;
+                        const nestLoopIterations = programSequence.program[i].iterations;
+                        if (nestedLoopLabel != null && nestLoopIterations != null) {
+                            loopIterationsLeft.set(nestedLoopLabel, nestLoopIterations);
+                        }
+                    }
+                }
+            }
+        }
+        this.app.updateProgramCounterAndLoopIterationsLeft(
+            programCounter,
+            loopIterationsLeft,
+            callback
+        );
     }
 
     doCommand(programStep: ProgramBlock): Promise<any> {

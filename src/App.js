@@ -391,7 +391,7 @@ export class App extends React.Component<AppProps, AppState> {
         const disallowedActions = {};
 
         this.state = {
-            programSequence: new ProgramSequence([], 0, 0, {}),
+            programSequence: new ProgramSequence([], 0, 0, new Map()),
             characterState: this.makeStartingCharacterState(this.defaultWorld),
             settings: {
                 language: 'en',
@@ -495,18 +495,10 @@ export class App extends React.Component<AppProps, AppState> {
         }, callback);
     }
 
-    updateProgramCounterAndDynamicProgramData(index: number, dynamicProgramData: any, callback: () => void): void {
+    updateProgramCounterAndLoopIterationsLeft(programCounter: number, loopIterationsLeft: Map<string, number>, callback: () => void): void {
         this.setState((state) => {
             return {
-                programSequence: state.programSequence.updateProgramCounterAndDynamicProgramData(index, dynamicProgramData)
-            }
-        }, callback);
-    }
-
-    decrementLoopIterationsLeft(loopLabel: string, callback: () => void): void {
-        this.setState((state) => {
-            return {
-                programSequence: state.programSequence.decrementLoopIterationsLeft(loopLabel)
+                programSequence: state.programSequence.updateProgramCounterAndLoopIterationsLeft(programCounter, loopIterationsLeft)
             }
         }, callback);
     }
@@ -1432,7 +1424,7 @@ export class App extends React.Component<AppProps, AppState> {
                         parseResult.program,
                         0,
                         parseResult.highestLoopNumber,
-                        {}
+                        new Map()
                     );
                     this.setState({
                         programSequence: programSequence
@@ -1489,7 +1481,7 @@ export class App extends React.Component<AppProps, AppState> {
                         parseResult.program,
                         0,
                         parseResult.highestLoopNumber,
-                        {}
+                        new Map()
                     );
                     this.setState({
                         programSequence: programSequence

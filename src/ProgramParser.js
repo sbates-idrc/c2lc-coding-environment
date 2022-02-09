@@ -180,6 +180,7 @@ export default class ProgramParser {
         if (loopLabel == null) {
             throw new Error("endLoop without startLoop");
         }
+        // TODO: Put the loopLabel for the endLoop in a cache property
         return {
             block: 'endLoop',
             label: loopLabel
