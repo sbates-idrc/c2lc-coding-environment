@@ -431,29 +431,32 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             paused && 'ProgramBlockEditor__program-block--paused'
         );
         const command = programBlock.block;
-        const loopLabel = programBlock.label ? programBlock.label : null;
-        const ariaLabel = programBlock.parentLoop ?
-            this.props.intl.formatMessage(
+        const cachedLoopData = programBlock.cache;
+        let ariaLabel = this.props.intl.formatMessage(
+            { id: 'ProgramBlockEditor.command' },
+            {
+                index: programStepNumber + 1,
+                command: this.props.intl.formatMessage(
+                    {id: `Command.${command}`},
+                    {loopLabel: programBlock.label}
+                )
+            }
+        );
+        if (cachedLoopData != null &&
+            cachedLoopData.get('containingLoopPosition') != null &&
+            cachedLoopData.get('containingLoopLabel')) {
+            ariaLabel = this.props.intl.formatMessage(
                 { id: 'ProgramBlockEditor.nestedCommand' },
                 {
-                    index: programBlock.currentLoopPosition,
-                    parentLoopLabel: programBlock.parentLoop,
+                    index: cachedLoopData.get('containingLoopPosition'),
+                    parentLoopLabel: cachedLoopData.get('containingLoopLabel'),
                     command: this.props.intl.formatMessage(
                         {id: `Command.${command}`},
-                        {loopLabel}
+                        {loopLabel: programBlock.label}
                     )
                 },
-            ) :
-            this.props.intl.formatMessage(
-                { id: 'ProgramBlockEditor.command' },
-                {
-                    index: programStepNumber + 1,
-                    command: this.props.intl.formatMessage(
-                        {id: `Command.${command}`},
-                        {loopLabel}
-                    )
-                }
             );
+        }
 
         return (
             <CommandBlock

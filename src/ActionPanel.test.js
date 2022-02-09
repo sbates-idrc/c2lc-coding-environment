@@ -177,10 +177,13 @@ describe('ActionPanel options', () => {
     });
 
     test('When the moveToPreviousStep option is selected on a step next to a startLoop', () => {
+        const firstStepCacheData = new Map();
+        firstStepCacheData.set('containingLoopPosition', 1);
+        firstStepCacheData.set('containingLoopLabel', 'A');
         const { wrapper, mockMoveToPreviousStep } = createMountActionPanel({
             programSequence: new ProgramSequence([
                 {block: 'startLoop', label: 'A', iterations: 1},
-                {block: 'forward1', parentLoop: 'A', currentLoopPosition: 1},
+                {block: 'forward1', cache: firstStepCacheData},
                 {block: 'endLoop', label: 'A' }], 0, 1),
             pressedStepIndex: 1
         });
@@ -207,11 +210,17 @@ describe('ActionPanel options', () => {
     });
 
     test('When the moveToPreviousStep option is selected on second step in a loop', () => {
+        const firstStepCacheData = new Map();
+        firstStepCacheData.set('containingLoopPosition', 1);
+        firstStepCacheData.set('containingLoopLabel', 'A');
+        const secondStepCacheData = new Map();
+        secondStepCacheData.set('containingLoopPosition', 2);
+        secondStepCacheData.set('containingLoopLabel', 'A');
         const { wrapper, mockMoveToPreviousStep } = createMountActionPanel({
             programSequence: new ProgramSequence([
                 {block: 'startLoop', label: 'A', iterations: 1},
-                {block: 'forward1', parentLoop: 'A', currentLoopPosition: 1},
-                {block: 'forward2', parentLoop: 'A', currentLoopPosition: 2},
+                {block: 'forward1', cache: firstStepCacheData},
+                {block: 'forward2', cache: secondStepCacheData},
                 {block: 'endLoop', label: 'A' }], 0, 1),
             pressedStepIndex: 2
         });
@@ -312,10 +321,13 @@ describe('ActionPanel options', () => {
     });
 
     test('When the moveToNextStep option is selected on a step next to a endLoop', () => {
+        const firstStepCacheData = new Map();
+        firstStepCacheData.set('containingLoopPosition', 1);
+        firstStepCacheData.set('containingLoopLabel', 'A');
         const { wrapper, mockMoveToNextStep } = createMountActionPanel({
             programSequence: new ProgramSequence([
                 {block: 'startLoop', label: 'A', iterations: 1},
-                {block: 'forward1', parentLoop: 'A', currentLoopPosition: 1},
+                {block: 'forward1', cache: firstStepCacheData},
                 {block: 'endLoop', label: 'A' }], 0, 1),
             pressedStepIndex: 1
         });
@@ -342,11 +354,17 @@ describe('ActionPanel options', () => {
     });
 
     test('When the moveToNextStep option is selected on first step in a loop', () => {
+        const firstStepCacheData = new Map();
+        firstStepCacheData.set('containingLoopPosition', 1);
+        firstStepCacheData.set('containingLoopLabel', 'A');
+        const secondStepCacheData = new Map();
+        secondStepCacheData.set('containingLoopPosition', 2);
+        secondStepCacheData.set('containingLoopLabel', 'A');
         const { wrapper, mockMoveToNextStep } = createMountActionPanel({
             programSequence: new ProgramSequence([
                 {block: 'startLoop', label: 'A', iterations: 1},
-                {block: 'forward1', parentLoop: 'A', currentLoopPosition: 1},
-                {block: 'forward2', parentLoop: 'A', currentLoopPosition: 2},
+                {block: 'forward1', cache: firstStepCacheData},
+                {block: 'forward2', cache: secondStepCacheData},
                 {block: 'endLoop', label: 'A' }], 0, 1),
             pressedStepIndex: 1
         });

@@ -1539,8 +1539,6 @@ export class App extends React.Component<AppProps, AppState> {
             || this.state.settings.theme !== prevState.settings.theme
             || this.state.allowedActions !== prevState.allowedActions
             || this.state.settings.world !== prevState.settings.world) {
-            /* eslint-disable no-console */
-            console.log(this.state.programSequence.getProgram());
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedAllowedActions = this.allowedActionsSerializer.serialize(this.state.allowedActions);
