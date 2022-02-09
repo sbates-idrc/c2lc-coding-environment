@@ -1,6 +1,5 @@
 // @flow
-// These are just a rudimentary sanity check of the DisallowedActionsSerializer,
-// the underlying serializer is tested in depth elsewhere.
+
 import DisallowedActionsSerializer from './DisallowedActionsSerializer';
 
 test("Serialize disallowed actions", () => {
