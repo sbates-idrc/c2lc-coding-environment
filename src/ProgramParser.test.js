@@ -171,7 +171,7 @@ test('Parse startLoop', () => {
     }).toThrowError(/^Missing startLoop terminating 's'$/);
 });
 
-test('Parse invalid loop', () => {
+test('Parse unbalanced startLoop and endLoop', () => {
     expect(() => {
         (new ProgramParser()).parse('sA1szz');
     }).toThrowError(/^endLoop without startLoop$/);
@@ -205,7 +205,7 @@ test('Parse program with nested loops', () => {
     });
 });
 
-test('Parse program with multiple commands', () => {
+test('Parse program with all blocks', () => {
     expect((new ProgramParser()).parse('123456ABDabdsA1sz')).toStrictEqual({
         program: [
             {block: 'forward1'},
