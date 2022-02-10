@@ -7,11 +7,13 @@ export default class ProgramSequence {
     program: Program;
     programCounter: number;
     loopCounter: number;
+    loopIterationsLeft: Map<string, number>;
 
-    constructor(program: Program, programCounter: number, loopCounter: number) {
+    constructor(program: Program, programCounter: number, loopCounter: number, loopIterationsLeft: Map<string, number>) {
         this.program = program;
         this.programCounter = programCounter;
         this.loopCounter = loopCounter;
+        this.loopIterationsLeft = loopIterationsLeft;
     }
 
     getProgram(): Program {
@@ -26,6 +28,10 @@ export default class ProgramSequence {
         return this.programCounter;
     }
 
+    getLoopIterationsLeft(): Map<string, number> {
+        return this.loopIterationsLeft;
+    }
+
     getCurrentProgramStep(): ProgramBlock {
         return this.program[this.programCounter];
     }
@@ -35,19 +41,23 @@ export default class ProgramSequence {
     }
 
     updateProgram(program: Program): ProgramSequence {
-        return new ProgramSequence(program, this.programCounter, this.loopCounter);
+        return new ProgramSequence(program, this.programCounter, this.loopCounter, this.loopIterationsLeft);
     }
 
     updateProgramCounter(programCounter: number): ProgramSequence {
-        return new ProgramSequence(this.program, programCounter, this.loopCounter);
+        return new ProgramSequence(this.program, programCounter, this.loopCounter, this.loopIterationsLeft);
     }
 
     updateProgramAndProgramCounter(program: Program, programCounter: number): ProgramSequence {
-        return new ProgramSequence(program, programCounter, this.loopCounter);
+        return new ProgramSequence(program, programCounter, this.loopCounter, this.loopIterationsLeft);
+    }
+
+    updateProgramCounterAndLoopIterationsLeft(programCounter: number, loopIterationsLeft: Map<string, number>) {
+        return new ProgramSequence(this.program, programCounter, this.loopCounter, loopIterationsLeft);
     }
 
     incrementProgramCounter(): ProgramSequence {
-        return new ProgramSequence(this.program, this.programCounter + 1, this.loopCounter);
+        return new ProgramSequence(this.program, this.programCounter + 1, this.loopCounter, this.loopIterationsLeft);
     }
 
     overwriteStep(index: number, command: string): ProgramSequence {
@@ -110,5 +120,16 @@ export default class ProgramSequence {
         }
 
         return false;
+    }
+
+    initiateProgramRun(): ProgramSequence {
+        const loopIterationsLeft = new Map();
+        for (let i = 0; i < this.program.length; i++) {
+            const { block, label, iterations } = this.program[i];
+            if (block === 'startLoop' && label != null && iterations != null) {
+                loopIterationsLeft.set(label, iterations);
+            }
+        }
+        return new ProgramSequence(this.program, 0, this.loopCounter, loopIterationsLeft);
     }
 }

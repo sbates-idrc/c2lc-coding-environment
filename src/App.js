@@ -385,35 +385,13 @@ export class App extends React.Component<AppProps, AppState> {
             }
         );
 
-        this.interpreter.addCommandHandler(
-            'startLoop',
-            'repeatCommand',
-            (stepTimeMs) => {
-                /* eslint-disable no-console */
-                console.log('loop start');
-                /* eslint-enable no-console */
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'endLoop',
-            'repeatCommand',
-            (stepTimeMs) => {
-                /* eslint-disable no-console */
-                console.log('loop end');
-                /* eslint-enable no-console */
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
         // We have to calculate the allowed commands and initialise the state here because this is the point at which
         // the interpreter's commands are populated.
 
         const disallowedActions = {};
 
         this.state = {
-            programSequence: new ProgramSequence([], 0, 0),
+            programSequence: new ProgramSequence([], 0, 0, new Map()),
             characterState: this.makeStartingCharacterState(this.defaultWorld),
             settings: {
                 language: 'en',
@@ -517,6 +495,14 @@ export class App extends React.Component<AppProps, AppState> {
         }, callback);
     }
 
+    updateProgramCounterAndLoopIterationsLeft(programCounter: number, loopIterationsLeft: Map<string, number>, callback: () => void): void {
+        this.setState((state) => {
+            return {
+                programSequence: state.programSequence.updateProgramCounterAndLoopIterationsLeft(programCounter, loopIterationsLeft)
+            }
+        }, callback);
+    }
+
     // Handlers
 
     handleProgramSequenceChange = (programSequence: ProgramSequence) => {
@@ -560,7 +546,7 @@ export class App extends React.Component<AppProps, AppState> {
             case 'stopped':
                 this.setState((state) => {
                     return {
-                        programSequence: state.programSequence.updateProgramCounter(0),
+                        programSequence: state.programSequence.initiateProgramRun(),
                         runningState: 'running',
                         actionPanelStepIndex: null
                     };
@@ -1437,7 +1423,8 @@ export class App extends React.Component<AppProps, AppState> {
                     const programSequence: ProgramSequence = new ProgramSequence(
                         parseResult.program,
                         0,
-                        parseResult.highestLoopNumber
+                        parseResult.highestLoopNumber,
+                        new Map()
                     );
                     this.setState({
                         programSequence: programSequence
@@ -1493,7 +1480,8 @@ export class App extends React.Component<AppProps, AppState> {
                     const programSequence: ProgramSequence = new ProgramSequence(
                         parseResult.program,
                         0,
-                        parseResult.highestLoopNumber
+                        parseResult.highestLoopNumber,
+                        new Map()
                     );
                     this.setState({
                         programSequence: programSequence
