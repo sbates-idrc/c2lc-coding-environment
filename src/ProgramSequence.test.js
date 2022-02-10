@@ -218,7 +218,7 @@ test.each([
     }
 );
 
-test('initiateProgramRun should set iterationsLeft on startLoop blocks, as well as set programCounter to 0', () => {
+test('initiateProgramRun should set iterationsLeft for loops, as well as set programCounter to 0', () => {
     expect.assertions(2);
     const program = [
         {block: 'startLoop', iterations: 3, label: 'A'},
