@@ -26,52 +26,52 @@ NVDA has many commands that make use of the alt key, to avoid
 
 | Action | Keyboard Shortcut | Icon |
 | ---- | ------- | ----- |
-| Add the selected action block to the program after the focused node or the focused action block | Ctrl + Alt + a | ![Add action icon](../src/board-imgs/AddActionBlock.png) |
-| Add the selected action block to the beginning of the program | Ctrl + Alt + b | ![Add action to start icon](../src/board-imgs/AddActionBlockBeginning.png) |
-| Add the selected action block to the end of the program | Ctrl + Alt + e | ![Add action to end icon](../src/board-imgs/AddActionBlockEnd.png) |
-| Delete the focused action block from the program | Ctrl + Alt + d | ![Delete action block icon](../src/board-imgs/DeleteBlock.png) |
+| Add the selected action block to the program after the focused node or the focused action block | Ctrl + Alt + a | ![Add action icon](board-imgs/AddActionBlock.png) |
+| Add the selected action block to the beginning of the program | Ctrl + Alt + b | ![Add action to start icon](board-imgs/AddActionBlockBeginning.png) |
+| Add the selected action block to the end of the program | Ctrl + Alt + e | ![Add action to end icon](board-imgs/AddActionBlockEnd.png) |
+| Delete the focused action block from the program | Ctrl + Alt + d | ![Delete action block icon](board-imgs/DeleteBlock.png) |
 | Initiate announcement of the scene | Ctrl + Alt + i | Not available |
-| Decrease the program speed | < | ![Decrease speed icon](../src/board-imgs/DecreaseSpeed.png) |
-| Increase the program speed | > | ![Increase speed icon](../src/board-imgs/IncreaseSpeed.png) |
-| Play or pause the program | Ctrl + Alt + p | ![Play or pause program icon](../src/board-imgs/PlayPause.png) |
-| Refresh the scene | Ctrl + Alt + r | ![Refresh scene icon](../src/board-imgs/RefreshScene.png) |
-| Show the keyboard shortcuts menu | ? | ![Show keyboard shortcuts menu icon](../src/board-imgs/ShowKeyboardShortcuts.png) |
-| Stop the program from playing | Ctrl + Alt + s | ![Stop program icon](../src/board-imgs/StopProgram.png) |
-| Change the current visual theme to the dark theme | Ctrl + Alt + x, t, 3 | ![Change to dark theme icon](../src/board-imgs/ChangeToDarkTheme.png) |
- | Change the current visual theme to the default theme | Ctrl + Alt + x, t, 1 | ![Change to default theme icon](../src/board-imgs/ChangeToDefaultTheme.png) |
- | Change the current visual theme to the grayscale theme | Ctrl + Alt + x, t, 4 | ![Change to grayscale theme icon](../src/board-imgs/ChangeToGrayTheme.png) |
- | Change the current visual theme to the high contrast theme | Ctrl + Alt + x, t, 5 | ![Change to high contrast theme icon](../src/board-imgs/ChangeToHighContrastTheme.png) |
- | Change the current visual theme to the light theme | Ctrl + Alt + x, t, 2 | ![Change to light theme icon](../src/board-imgs/ChangeToLightTheme.png) |
- | Delete all the action blocks in the program | Ctrl + Alt + x, d | ![Delete all icon](../src/board-imgs/DeleteAllBlocks.png) |
+| Decrease the program speed | < | ![Decrease speed icon](board-imgs/DecreaseSpeed.png) |
+| Increase the program speed | > | ![Increase speed icon](board-imgs/IncreaseSpeed.png) |
+| Play or pause the program | Ctrl + Alt + p | ![Play or pause program icon](board-imgs/PlayPause.png) |
+| Refresh the scene | Ctrl + Alt + r | ![Refresh scene icon](board-imgs/RefreshScene.png) |
+| Show the keyboard shortcuts menu | ? | ![Show keyboard shortcuts menu icon](board-imgs/ShowKeyboardShortcuts.png) |
+| Stop the program from playing | Ctrl + Alt + s | ![Stop program icon](board-imgs/StopProgram.png) |
+| Change the current visual theme to the dark theme | Ctrl + Alt + x, t, 3 | ![Change to dark theme icon](board-imgs/ChangeToDarkTheme.png) |
+ | Change the current visual theme to the default theme | Ctrl + Alt + x, t, 1 | ![Change to default theme icon](board-imgs/ChangeToDefaultTheme.png) |
+ | Change the current visual theme to the grayscale theme | Ctrl + Alt + x, t, 4 | ![Change to grayscale theme icon](board-imgs/ChangeToGrayTheme.png) |
+ | Change the current visual theme to the high contrast theme | Ctrl + Alt + x, t, 5 | ![Change to high contrast theme icon](board-imgs/ChangeToHighContrastTheme.png) |
+ | Change the current visual theme to the light theme | Ctrl + Alt + x, t, 2 | ![Change to light theme icon](board-imgs/ChangeToLightTheme.png) |
+ | Delete all the action blocks in the program | Ctrl + Alt + x, d | ![Delete all icon](board-imgs/DeleteAllBlocks.png) |
  | Move focus to the actions panel | Ctrl + Alt + x, f, a | Not available |
- | Move focus to the add node toggle | Ctrl + Alt + x, f, t | ![Focus add node toggle icon](../src/board-imgs/FocusAddNodeToggle.png) |
- | Move focus to the beginning of the program | Ctrl + Alt + x, f, q | ![Focus program icon](../src/board-imgs/FocusProgram.png) |
- | Move focus to the character position column input field | Ctrl + Alt + x, f, x | ![Focus character position column input icon](../src/board-imgs/FocusCharacterPositionColumn.png) |
- | Move focus to the character position controls | Ctrl + Alt + x, f, c | ![Focus character position controls icon](../src/board-imgs/FocusCharacterPositionControls.png) |
- | Move focus to the character position row input field | Ctrl + Alt + x, f, y | ![Focus character position row input icon](../src/board-imgs/FocusCharacterPositionRow.png) |
- | Move focus to the page title | Ctrl + Alt + x, f, h | ![Focus Weavly logo icon](../src/board-imgs/FocusLogo.png) |
- | Move focus to the pen toggle | Ctrl + Alt + x, f, s | ![Focus pen toggle icon](../src/board-imgs/FocusPenToggle.png) |
- | Move focus to the play button | Ctrl + Alt + x, f, p | ![Focus play button icon](../src/board-imgs/FocusPlay.png) |
- | Move focus to the world selector | Ctrl + Alt + x, f, w | ![Focus world selector icon](../src/board-imgs/FocusWorldSelector.png) |
- | Move the character down | Ctrl + Alt + x, c, m, d | ![Move character down icon](../src/board-imgs/MoveCharacterDown.png) |
- | Move the character left | Ctrl + Alt + x, c, m, l | ![Move character left icon](../src/board-imgs/MoveCharacterLeft.png) |
- | Move the character right | Ctrl + Alt + x, c, m, r | ![Move character right icon](../src/board-imgs/MoveCharacterRight.png) |
- | Move the character up | Ctrl + Alt + x, c, m, u | ![Move character up icon](../src/board-imgs/MoveCharacterUp.png) |
- | Select the backward 1 square action block | Ctrl + Alt + x, a, b, 1 | ![Select backward 1 icon](../src/board-imgs/SelectBackwardBlock.png) |
+ | Move focus to the add node toggle | Ctrl + Alt + x, f, t | ![Focus add node toggle icon](board-imgs/FocusAddNodeToggle.png) |
+ | Move focus to the beginning of the program | Ctrl + Alt + x, f, q | ![Focus program icon](board-imgs/FocusProgram.png) |
+ | Move focus to the character position column input field | Ctrl + Alt + x, f, x | ![Focus character position column input icon](board-imgs/FocusCharacterPositionColumn.png) |
+ | Move focus to the character position controls | Ctrl + Alt + x, f, c | ![Focus character position controls icon](board-imgs/FocusCharacterPositionControls.png) |
+ | Move focus to the character position row input field | Ctrl + Alt + x, f, y | ![Focus character position row input icon](board-imgs/FocusCharacterPositionRow.png) |
+ | Move focus to the page title | Ctrl + Alt + x, f, h | ![Focus Weavly logo icon](board-imgs/FocusLogo.png) |
+ | Move focus to the pen toggle | Ctrl + Alt + x, f, s | ![Focus pen toggle icon](board-imgs/FocusPenToggle.png) |
+ | Move focus to the play button | Ctrl + Alt + x, f, p | ![Focus play button icon](board-imgs/FocusPlay.png) |
+ | Move focus to the world selector | Ctrl + Alt + x, f, w | ![Focus world selector icon](board-imgs/FocusWorldSelector.png) |
+ | Move the character down | Ctrl + Alt + x, c, m, d | ![Move character down icon](board-imgs/MoveCharacterDown.png) |
+ | Move the character left | Ctrl + Alt + x, c, m, l | ![Move character left icon](board-imgs/MoveCharacterLeft.png) |
+ | Move the character right | Ctrl + Alt + x, c, m, r | ![Move character right icon](board-imgs/MoveCharacterRight.png) |
+ | Move the character up | Ctrl + Alt + x, c, m, u | ![Move character up icon](board-imgs/MoveCharacterUp.png) |
+ | Select the backward 1 square action block | Ctrl + Alt + x, a, b, 1 | ![Select backward 1 icon](board-imgs/SelectBackwardBlock.png) |
  | Select the backward 2 squares action block | Ctrl + Alt + x, a, b, 2 | Not available |
  | Select the backward 3 squares action block | Ctrl + Alt + x, a, b, 3 | Not available |
- | Select the forward 1 square action block | Ctrl + Alt + x, a, f, 1 | ![Select forward 1 icon](../src/board-imgs/SelectForwardBlock.png) |
+ | Select the forward 1 square action block | Ctrl + Alt + x, a, f, 1 | ![Select forward 1 icon](board-imgs/SelectForwardBlock.png) |
  | Select the forward 2 squares action block | Ctrl + Alt + x, a, f, 2 | Not available |
  | Select the forward 3 squares action block | Ctrl + Alt + x, a, f, 3 | Not available |
  | Select the turn left 180 degrees action block | Ctrl + Alt + x, a, l, 3 | Not available |
- | Select the turn left 45 degrees action block | Ctrl + Alt + x, a, l, 1 | ![Select turn left 45 icon](../src/board-imgs/SelectTurnLeft45Block.png) |
- | Select the turn left 90 degrees action block | Ctrl + Alt + x, a, l, 2 | ![Select turn left 90 icon](../src/board-imgs/SelectTurnLeft90Block.png) |
+ | Select the turn left 45 degrees action block | Ctrl + Alt + x, a, l, 1 | ![Select turn left 45 icon](board-imgs/SelectTurnLeft45Block.png) |
+ | Select the turn left 90 degrees action block | Ctrl + Alt + x, a, l, 2 | ![Select turn left 90 icon](board-imgs/SelectTurnLeft90Block.png) |
  | Select the turn right 180 degrees action block | Ctrl + Alt + x, a, r, 3 | Not available |
- | Select the turn right 45 degrees action block | Ctrl + Alt + x, a, r, 1 | ![Select turn right 45 icon](../src/board-imgs/SelectTurnRight45Block.png) |
- | Select the turn right 90 degrees action block | Ctrl + Alt + x, a, r, 2 | ![Select turn right 90 icon](../src/board-imgs/SelectTurnRight90Block.png) |
+ | Select the turn right 45 degrees action block | Ctrl + Alt + x, a, r, 1 | ![Select turn right 45 icon](board-imgs/SelectTurnRight45Block.png) |
+ | Select the turn right 90 degrees action block | Ctrl + Alt + x, a, r, 2 | ![Select turn right 90 icon](board-imgs/SelectTurnRight90Block.png) |
  | Turn the audio feedback announcements on or off | Ctrl + Alt + x, x | Not available |
- | Turn the character left 45 degrees | Ctrl + Alt + x, c, t, l | ![Turn character left icon](../src/board-imgs/TurnCharacterLeft.png) |
- | Turn the character right 45 degrees | Ctrl + Alt + x, c, t, r | ![Turn character right icon](../src/board-imgs/TurnCharacterRight.png) |
+ | Turn the character left 45 degrees | Ctrl + Alt + x, c, t, l | ![Turn character left icon](board-imgs/TurnCharacterLeft.png) |
+ | Turn the character right 45 degrees | Ctrl + Alt + x, c, t, r | ![Turn character right icon](board-imgs/TurnCharacterRight.png) |
 
 ## Alt (Apple: Option) Key Bindings
 
@@ -82,49 +82,49 @@ VoiceOver uses ctrl+alt for many of its commands, to avoid
 
 | Action | Keyboard Shortcut | Icon |
 | ---- | ------- | ----- |
-| Add the selected action block to the program after the focused node or the focused action block | Alt + a | ![Add action icon](../src/board-imgs/AddActionBlock.png) |
-| Add the selected action block to the beginning of the program | Alt + b | ![Add action to start icon](../src/board-imgs/AddActionBlockBeginning.png) |
-| Add the selected action block to the end of the program | Alt + e | ![Add action to end icon](../src/board-imgs/AddActionBlockEnd.png) |
-| Delete the focused action block from the program | Alt + d | ![Delete action block icon](../src/board-imgs/DeleteBlock.png) |
+| Add the selected action block to the program after the focused node or the focused action block | Alt + a | ![Add action icon](board-imgs/AddActionBlock.png) |
+| Add the selected action block to the beginning of the program | Alt + b | ![Add action to start icon](board-imgs/AddActionBlockBeginning.png) |
+| Add the selected action block to the end of the program | Alt + e | ![Add action to end icon](board-imgs/AddActionBlockEnd.png) |
+| Delete the focused action block from the program | Alt + d | ![Delete action block icon](board-imgs/DeleteBlock.png) |
 | Initiate announcement of the scene | Alt + i | Not available |
-| Decrease the program speed | < | ![Decrease speed icon](../src/board-imgs/DecreaseSpeed.png) |
-| Increase the program speed | > | ![Increase speed icon](../src/board-imgs/IncreaseSpeed.png) |
-| Play or pause the program | Alt + p | ![Play or pause program icon](../src/board-imgs/PlayPause.png) |
-| Refresh the scene | Alt + r | ![Refresh scene icon](../src/board-imgs/RefreshScene.png) |
-| Show the keyboard shortcuts menu | ? | ![Show keyboard shortcuts menu icon](../src/board-imgs/ShowKeyboardShortcuts.png) |
-| Stop the program from playing | Alt + s | ![Stop program icon](../src/board-imgs/StopProgram.png) |
-| Change the current visual theme to the dark theme | Alt + x, t, 3 | ![Change to dark theme icon](../src/board-imgs/ChangeToDarkTheme.png) |
- | Change the current visual theme to the default theme | Alt + x, t, 1 | ![Change to default theme icon](../src/board-imgs/ChangeToDefaultTheme.png) |
- | Change the current visual theme to the grayscale theme | Alt + x, t, 4 | ![Change to grayscale theme icon](../src/board-imgs/ChangeToGrayTheme.png) |
- | Change the current visual theme to the high contrast theme | Alt + x, t, 5 | ![Change to high contrast theme icon](../src/board-imgs/ChangeToHighContrastTheme.png) |
- | Change the current visual theme to the light theme | Alt + x, t, 2 | ![Change to light theme icon](../src/board-imgs/ChangeToLightTheme.png) |
- | Delete all the action blocks in the program | Alt + x, d | ![Delete all icon](../src/board-imgs/DeleteAllBlocks.png) |
+| Decrease the program speed | < | ![Decrease speed icon](board-imgs/DecreaseSpeed.png) |
+| Increase the program speed | > | ![Increase speed icon](board-imgs/IncreaseSpeed.png) |
+| Play or pause the program | Alt + p | ![Play or pause program icon](board-imgs/PlayPause.png) |
+| Refresh the scene | Alt + r | ![Refresh scene icon](board-imgs/RefreshScene.png) |
+| Show the keyboard shortcuts menu | ? | ![Show keyboard shortcuts menu icon](board-imgs/ShowKeyboardShortcuts.png) |
+| Stop the program from playing | Alt + s | ![Stop program icon](board-imgs/StopProgram.png) |
+| Change the current visual theme to the dark theme | Alt + x, t, 3 | ![Change to dark theme icon](board-imgs/ChangeToDarkTheme.png) |
+ | Change the current visual theme to the default theme | Alt + x, t, 1 | ![Change to default theme icon](board-imgs/ChangeToDefaultTheme.png) |
+ | Change the current visual theme to the grayscale theme | Alt + x, t, 4 | ![Change to grayscale theme icon](board-imgs/ChangeToGrayTheme.png) |
+ | Change the current visual theme to the high contrast theme | Alt + x, t, 5 | ![Change to high contrast theme icon](board-imgs/ChangeToHighContrastTheme.png) |
+ | Change the current visual theme to the light theme | Alt + x, t, 2 | ![Change to light theme icon](board-imgs/ChangeToLightTheme.png) |
+ | Delete all the action blocks in the program | Alt + x, d | ![Delete all icon](board-imgs/DeleteAllBlocks.png) |
  | Move focus to the actions panel | Alt + x, f, a | Not available |
- | Move focus to the add node toggle | Alt + x, f, t | ![Focus add node toggle icon](../src/board-imgs/FocusAddNodeToggle.png) |
- | Move focus to the beginning of the program | Alt + x, f, q | ![Focus program icon](../src/board-imgs/FocusProgram.png) |
- | Move focus to the character position column input field | Alt + x, f, x | ![Focus character position column input icon](../src/board-imgs/FocusCharacterPositionColumn.png) |
- | Move focus to the character position controls | Alt + x, f, c | ![Focus character position controls icon](../src/board-imgs/FocusCharacterPositionControls.png) |
- | Move focus to the character position row input field | Alt + x, f, y | ![Focus character position row input icon](../src/board-imgs/FocusCharacterPositionRow.png) |
- | Move focus to the page title | Alt + x, f, h | ![Focus Weavly logo icon](../src/board-imgs/FocusLogo.png) |
- | Move focus to the pen toggle | Alt + x, f, s | ![Focus pen toggle icon](../src/board-imgs/FocusPenToggle.png) |
- | Move focus to the play button | Alt + x, f, p | ![Focus play button icon](../src/board-imgs/FocusPlay.png) |
- | Move focus to the world selector | Alt + x, f, w | ![Focus world selector icon](../src/board-imgs/FocusWorldSelector.png) |
- | Move the character down | Alt + x, c, m, d | ![Move character down icon](../src/board-imgs/MoveCharacterDown.png) |
- | Move the character left | Alt + x, c, m, l | ![Move character left icon](../src/board-imgs/MoveCharacterLeft.png) |
- | Move the character right | Alt + x, c, m, r | ![Move character right icon](../src/board-imgs/MoveCharacterRight.png) |
- | Move the character up | Alt + x, c, m, u | ![Move character up icon](../src/board-imgs/MoveCharacterUp.png) |
- | Select the backward 1 square action block | Alt + x, a, b, 1 | ![Select backward 1 icon](../src/board-imgs/SelectBackwardBlock.png) |
+ | Move focus to the add node toggle | Alt + x, f, t | ![Focus add node toggle icon](board-imgs/FocusAddNodeToggle.png) |
+ | Move focus to the beginning of the program | Alt + x, f, q | ![Focus program icon](board-imgs/FocusProgram.png) |
+ | Move focus to the character position column input field | Alt + x, f, x | ![Focus character position column input icon](board-imgs/FocusCharacterPositionColumn.png) |
+ | Move focus to the character position controls | Alt + x, f, c | ![Focus character position controls icon](board-imgs/FocusCharacterPositionControls.png) |
+ | Move focus to the character position row input field | Alt + x, f, y | ![Focus character position row input icon](board-imgs/FocusCharacterPositionRow.png) |
+ | Move focus to the page title | Alt + x, f, h | ![Focus Weavly logo icon](board-imgs/FocusLogo.png) |
+ | Move focus to the pen toggle | Alt + x, f, s | ![Focus pen toggle icon](board-imgs/FocusPenToggle.png) |
+ | Move focus to the play button | Alt + x, f, p | ![Focus play button icon](board-imgs/FocusPlay.png) |
+ | Move focus to the world selector | Alt + x, f, w | ![Focus world selector icon](board-imgs/FocusWorldSelector.png) |
+ | Move the character down | Alt + x, c, m, d | ![Move character down icon](board-imgs/MoveCharacterDown.png) |
+ | Move the character left | Alt + x, c, m, l | ![Move character left icon](board-imgs/MoveCharacterLeft.png) |
+ | Move the character right | Alt + x, c, m, r | ![Move character right icon](board-imgs/MoveCharacterRight.png) |
+ | Move the character up | Alt + x, c, m, u | ![Move character up icon](board-imgs/MoveCharacterUp.png) |
+ | Select the backward 1 square action block | Alt + x, a, b, 1 | ![Select backward 1 icon](board-imgs/SelectBackwardBlock.png) |
  | Select the backward 2 squares action block | Alt + x, a, b, 2 | Not available |
  | Select the backward 3 squares action block | Alt + x, a, b, 3 | Not available |
- | Select the forward 1 square action block | Alt + x, a, f, 1 | ![Select forward 1 icon](../src/board-imgs/SelectForwardBlock.png) |
+ | Select the forward 1 square action block | Alt + x, a, f, 1 | ![Select forward 1 icon](board-imgs/SelectForwardBlock.png) |
  | Select the forward 2 squares action block | Alt + x, a, f, 2 | Not available |
  | Select the forward 3 squares action block | Alt + x, a, f, 3 | Not available |
  | Select the turn left 180 degrees action block | Alt + x, a, l, 3 | Not available |
- | Select the turn left 45 degrees action block | Alt + x, a, l, 1 | ![Select turn left 45 icon](../src/board-imgs/SelectTurnLeft45Block.png) |
- | Select the turn left 90 degrees action block | Alt + x, a, l, 2 | ![Select turn left 90 icon](../src/board-imgs/SelectTurnLeft90Block.png) |
+ | Select the turn left 45 degrees action block | Alt + x, a, l, 1 | ![Select turn left 45 icon](board-imgs/SelectTurnLeft45Block.png) |
+ | Select the turn left 90 degrees action block | Alt + x, a, l, 2 | ![Select turn left 90 icon](board-imgs/SelectTurnLeft90Block.png) |
  | Select the turn right 180 degrees action block | Alt + x, a, r, 3 | Not available |
- | Select the turn right 45 degrees action block | Alt + x, a, r, 1 | ![Select turn right 45 icon](../src/board-imgs/SelectTurnRight45Block.png) |
- | Select the turn right 90 degrees action block | Alt + x, a, r, 2 | ![Select turn right 90 icon](../src/board-imgs/SelectTurnRight90Block.png) |
+ | Select the turn right 45 degrees action block | Alt + x, a, r, 1 | ![Select turn right 45 icon](board-imgs/SelectTurnRight45Block.png) |
+ | Select the turn right 90 degrees action block | Alt + x, a, r, 2 | ![Select turn right 90 icon](board-imgs/SelectTurnRight90Block.png) |
  | Turn the audio feedback announcements on or off | Alt + x, x | Not available |
- | Turn the character left 45 degrees | Alt + x, c, t, l | ![Turn character left icon](../src/board-imgs/TurnCharacterLeft.png) |
- | Turn the character right 45 degrees | Alt + x, c, t, r | ![Turn character right icon](../src/board-imgs/TurnCharacterRight.png) |
+ | Turn the character left 45 degrees | Alt + x, c, t, l | ![Turn character left icon](board-imgs/TurnCharacterLeft.png) |
+ | Turn the character right 45 degrees | Alt + x, c, t, r | ![Turn character right icon](board-imgs/TurnCharacterRight.png) |

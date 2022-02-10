@@ -14,7 +14,7 @@ const fs = require('fs');
 const generateDoc = false;
 
 const filename = "docs/keyboard.md";
-const boardImgsPath = "../src/board-imgs/";
+const boardImgsPath = "board-imgs/";
 
 const schemeIntro = {
     "controlalt": {
