@@ -3,7 +3,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
-import AllowedActionsSerializer from './AllowedActionsSerializer';
+import DisallowedActionsSerializer from './DisallowedActionsSerializer';
 import AudioManagerImpl from './AudioManagerImpl';
 import CharacterAriaLive from './CharacterAriaLive';
 import CharacterState from './CharacterState';
@@ -23,8 +23,8 @@ import ProgramBlockEditor from './ProgramBlockEditor';
 import RefreshButton from './RefreshButton';
 import Scene from './Scene';
 import SceneDimensions from './SceneDimensions';
+import SoundOptionsModal from './SoundOptionsModal';
 import StopButton from './StopButton';
-import AudioFeedbackToggleSwitch from './AudioFeedbackToggleSwitch';
 import PenDownToggleSwitch from './PenDownToggleSwitch';
 import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
@@ -46,6 +46,7 @@ import { ReactComponent as ShareIcon} from './svg/Share.svg';
 
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
+import { ReactComponent as AudioIcon } from './svg/Audio.svg';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
 import { ReactComponent as ThemeIcon } from './svg/Theme.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
@@ -86,14 +87,16 @@ type AppState = {
     isDraggingCommand: boolean,
     audioEnabled: boolean,
     announcementsEnabled: boolean,
+    sonificationEnabled: boolean,
     actionPanelStepIndex: ?number,
     sceneDimensions: SceneDimensions,
     drawingEnabled: boolean,
     runningState: RunningState,
-    allowedActions: ActionToggleRegister,
+    disallowedActions: ActionToggleRegister,
     keyBindingsEnabled: boolean,
     keyboardInputSchemeName: KeyboardInputSchemeName,
     showKeyboardModal: boolean,
+    showSoundOptionsModal: boolean,
     showThemeSelectorModal: boolean,
     showWorldSelector: boolean,
     showShareModal: boolean,
@@ -110,7 +113,7 @@ export class App extends React.Component<AppProps, AppState> {
     focusTrapManager: FocusTrapManager;
     programSerializer: ProgramSerializer;
     characterStateSerializer: CharacterStateSerializer;
-    allowedActionsSerializer: AllowedActionsSerializer;
+    disallowedActionsSerializer: DisallowedActionsSerializer;
     speedLookUp: Array<number>;
     pushStateTimeoutID: ?TimeoutID;
     speedControlRef: { current: null | HTMLElement };
@@ -138,7 +141,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.characterStateSerializer = new CharacterStateSerializer(this.sceneDimensions);
 
-        this.allowedActionsSerializer = new AllowedActionsSerializer();
+        this.disallowedActionsSerializer = new DisallowedActionsSerializer();
 
         this.pushStateTimeoutID = null;
 
@@ -385,14 +388,10 @@ export class App extends React.Component<AppProps, AppState> {
         // We have to calculate the allowed commands and initialise the state here because this is the point at which
         // the interpreter's commands are populated.
 
-        // TODO: Make this persist in the URL.
-        const allowedActions = {};
-        Object.keys(this.interpreter.commands).forEach((commandName) => {
-            allowedActions[commandName] = true;
-        });
+        const disallowedActions = {};
 
         this.state = {
-            programSequence: new ProgramSequence([], 0),
+            programSequence: new ProgramSequence([], 0, 0, new Map()),
             characterState: this.makeStartingCharacterState(this.defaultWorld),
             settings: {
                 language: 'en',
@@ -406,13 +405,15 @@ export class App extends React.Component<AppProps, AppState> {
             isDraggingCommand: false,
             audioEnabled: true,
             announcementsEnabled: true,
+            sonificationEnabled: true,
             actionPanelStepIndex: null,
             sceneDimensions: this.sceneDimensions,
             drawingEnabled: true,
             runningState: 'stopped',
-            allowedActions: allowedActions,
+            disallowedActions: disallowedActions,
             keyBindingsEnabled: false,
             showKeyboardModal: false,
+            showSoundOptionsModal: false,
             showThemeSelectorModal: false,
             showWorldSelector: false,
             showShareModal: false,
@@ -428,7 +429,7 @@ export class App extends React.Component<AppProps, AppState> {
             this.audioManager = props.audioManager
         }
         else if (FeatureDetection.webAudioApiIsAvailable()) {
-            this.audioManager = new AudioManagerImpl(this.state.audioEnabled, this.state.announcementsEnabled);
+            this.audioManager = new AudioManagerImpl(this.state.audioEnabled, this.state.announcementsEnabled, this.state.sonificationEnabled);
         }
         else {
             this.audioManager = new FakeAudioManager();
@@ -494,6 +495,14 @@ export class App extends React.Component<AppProps, AppState> {
         }, callback);
     }
 
+    updateProgramCounterAndLoopIterationsLeft(programCounter: number, loopIterationsLeft: Map<string, number>, callback: () => void): void {
+        this.setState((state) => {
+            return {
+                programSequence: state.programSequence.updateProgramCounterAndLoopIterationsLeft(programCounter, loopIterationsLeft)
+            }
+        }, callback);
+    }
+
     // Handlers
 
     handleProgramSequenceChange = (programSequence: ProgramSequence) => {
@@ -537,7 +546,7 @@ export class App extends React.Component<AppProps, AppState> {
             case 'stopped':
                 this.setState((state) => {
                     return {
-                        programSequence: state.programSequence.updateProgramCounter(0),
+                        programSequence: state.programSequence.initiateProgramRun(),
                         runningState: 'running',
                         actionPanelStepIndex: null
                     };
@@ -899,6 +908,18 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showKeyboardModal: true});
     };
 
+    handleClickSoundIcon = () => {
+        this.setState({ showSoundOptionsModal: true });
+    }
+
+    handleSoundOptionsModalClose = () => {
+        this.setState({ showSoundOptionsModal: false });
+    }
+
+    handleChangeSoundOptions = (audioEnabled: boolean, announcementsEnabled: boolean, sonificationEnabled: boolean) => {
+        this.setState({ audioEnabled, announcementsEnabled, sonificationEnabled, showSoundOptionsModal: false });
+    }
+
     handleClickThemeSelectorIcon = () => {
         this.setState({ showThemeSelectorModal: true });
     }
@@ -908,30 +929,10 @@ export class App extends React.Component<AppProps, AppState> {
         this.focusTrapManager.handleKeyDown(e);
     }
 
-    handleToggleAudioFeedback = (announcementsEnabled: boolean) => {
-        this.setState({
-            announcementsEnabled: announcementsEnabled
-        });
-    }
-
     handleTogglePenDown = (drawingEnabled: boolean) => {
         this.setState({
             drawingEnabled: drawingEnabled
         });
-    }
-
-    handleToggleAllowedCommand = (event: Event, commandName: CommandName) => {
-        // TODO: Use the function form of setState() as the new state
-        //       depends on the current state
-        const currentIsAllowed = this.state.allowedActions[commandName];
-        if (this.state.programSequence.usesAction(commandName) && currentIsAllowed) {
-            event.preventDefault();
-        }
-        else {
-            const newAllowedActions= Object.assign({}, this.state.allowedActions);
-            newAllowedActions[commandName] = !currentIsAllowed;
-            this.setState({ allowedActions: newAllowedActions})
-        }
     }
 
     changeProgramSpeedIndex = (newSpeedIndex: number) => {
@@ -952,8 +953,18 @@ export class App extends React.Component<AppProps, AppState> {
         const commandBlocks = [];
 
         for (const [index, value] of commands.entries()) {
-            const isAllowed = this.state.allowedActions[value];
-            if (isAllowed) {
+            const isDisallowed = this.state.disallowedActions[value];
+            if (isDisallowed) {
+                commandBlocks.push(
+                    <div
+                        className='command-block--hidden'
+                        key={`CommandBlock-${index}`}
+                        aria-hidden='true'>
+                        <HiddenBlock />
+                    </div>
+                );
+            }
+            else {
                 commandBlocks.push(
                     <CommandPaletteCommand
                         key={`CommandBlock-${index}`}
@@ -965,16 +976,8 @@ export class App extends React.Component<AppProps, AppState> {
                         onDragStart={this.handleDragStartCommand}
                         onDragEnd={this.handleDragEndCommand}/>
                 );
-            } else {
-                commandBlocks.push(
-                    <div
-                        className='command-block--hidden'
-                        key={`CommandBlock-${index}`}
-                        aria-hidden='true'>
-                        <HiddenBlock />
-                    </div>
-                );
             }
+
         }
 
         return commandBlocks;
@@ -1098,10 +1101,10 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    handleChangeAllowedActions = (allowedActions: ActionToggleRegister) => {
+    handleChangeDisallowedActions = (disallowedActions: ActionToggleRegister) => {
         this.setState({
             showActionsSimplificationMenu: false,
-            allowedActions: allowedActions
+            disallowedActions: disallowedActions
         });
     }
 
@@ -1162,11 +1165,11 @@ export class App extends React.Component<AppProps, AppState> {
                             </h1>
                             <div className='App__header-menu'>
                                 <IconButton
-                                    className="App__header-keyboardMenuIcon"
-                                    ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
-                                    onClick={this.handleClickKeyboardIcon}
+                                    className="App__header-soundOptions"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'SoundOptionsModal.title' })}
+                                    onClick={this.handleClickSoundIcon}
                                 >
-                                    <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
+                                    <AudioIcon className='App__header-soundOptions-icon'/>
                                 </IconButton>
                                 <IconButton
                                     className="App__header-themeSelectorIcon"
@@ -1175,24 +1178,24 @@ export class App extends React.Component<AppProps, AppState> {
                                 >
                                     <ThemeIcon className='App__header-theme-icon'/>
                                 </IconButton>
+                                <IconButton
+                                    className="App__header-keyboardMenuIcon"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                                    onClick={this.handleClickKeyboardIcon}
+                                >
+                                    <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
+                                </IconButton>
                             </div>
-                            <div className='App__header-audio-toggle'>
-                                <div className='App__audio-toggle-switch'>
-                                    <AudioFeedbackToggleSwitch
-                                        value={this.state.announcementsEnabled}
-                                        onChange={this.handleToggleAudioFeedback} />
-                                </div>
-                                {/* Dash connection removed for version 0.5
-                                <DeviceConnectControl
-                                    disabled={
-                                        !this.appContext.bluetoothApiIsAvailable ||
-                                        this.state.dashConnectionStatus === 'connected' }
-                                    connectionStatus={this.state.dashConnectionStatus}
-                                    onClickConnect={this.handleClickConnectDash}>
-                                    <FormattedMessage id='App.connectToDash' />
-                                </DeviceConnectControl>
-                                */}
-                            </div>
+                            {/* Dash connection removed for version 0.5
+                            <DeviceConnectControl
+                                disabled={
+                                    !this.appContext.bluetoothApiIsAvailable ||
+                                    this.state.dashConnectionStatus === 'connected' }
+                                connectionStatus={this.state.dashConnectionStatus}
+                                onClickConnect={this.handleClickConnectDash}>
+                                <FormattedMessage id='App.connectToDash' />
+                            </DeviceConnectControl>
+                            */}
                         </div>
                     </header>
                     {/* Dash connection removed for version 0.5
@@ -1272,7 +1275,12 @@ export class App extends React.Component<AppProps, AppState> {
                             <div className='App__command-palette-commands'>
                                 {this.renderCommandBlocks([
                                     'left45', 'left90', 'left180',
-                                    'right45', 'right90', 'right180'
+                                    'right45', 'right90', 'right180',
+                                ])}
+                            </div>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks([
+                                    'loop'
                                 ])}
                             </div>
                         </div>
@@ -1361,6 +1369,14 @@ export class App extends React.Component<AppProps, AppState> {
                     onChangeKeyBindingsEnabled={this.handleChangeKeyBindingsEnabled}
                     onHide={this.handleKeyboardModalClose}
                 />
+                <SoundOptionsModal
+                    audioEnabled={this.state.audioEnabled}
+                    announcementsEnabled={this.state.announcementsEnabled}
+                    sonificationEnabled={this.state.sonificationEnabled}
+                    show={this.state.showSoundOptionsModal}
+                    onCancel={this.handleSoundOptionsModalClose}
+                    onChangeSoundOptions={this.handleChangeSoundOptions}
+                />
                 <ThemeSelector
                     show={this.state.showThemeSelectorModal}
                     currentTheme={this.state.settings.theme}
@@ -1379,8 +1395,8 @@ export class App extends React.Component<AppProps, AppState> {
                 <ActionsSimplificationModal
                     show={this.state.showActionsSimplificationMenu}
                     onCancel={this.handleCancelActionsSimplificationMenu}
-                    onConfirm={this.handleChangeAllowedActions}
-                    allowedActions={this.state.allowedActions}
+                    onConfirm={this.handleChangeDisallowedActions}
+                    disallowedActions={this.state.disallowedActions}
                     programSequence={this.state.programSequence}
                 />
             </React.Fragment>
@@ -1398,12 +1414,18 @@ export class App extends React.Component<AppProps, AppState> {
             const programQuery = params.getProgram();
             const characterStateQuery = params.getCharacterState();
             const themeQuery = params.getTheme();
-            const allowedActionsQuery = params.getAllowedActions();
+            const disallowedActionsQuery = params.getDisallowedActions();
             const worldQuery = params.getWorld();
 
             if (programQuery != null) {
                 try {
-                    const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(programQuery), 0);
+                    const parseResult = this.programSerializer.deserialize(programQuery);
+                    const programSequence: ProgramSequence = new ProgramSequence(
+                        parseResult.program,
+                        0,
+                        parseResult.highestLoopNumber,
+                        new Map()
+                    );
                     this.setState({
                         programSequence: programSequence
                     });
@@ -1428,14 +1450,14 @@ export class App extends React.Component<AppProps, AppState> {
                 }
             }
 
-            if (allowedActionsQuery != null) {
+            if (disallowedActionsQuery != null) {
                 try {
                     this.setState({
-                        allowedActions: this.allowedActionsSerializer.deserialize(allowedActionsQuery)
+                        disallowedActions: this.disallowedActionsSerializer.deserialize(disallowedActionsQuery)
                     });
                 } catch(err) {
                     /* eslint-disable no-console */
-                    console.log(`Error parsing allowed actions: ${allowedActionsQuery}`);
+                    console.log(`Error parsing disallowed actions: ${disallowedActionsQuery}`);
                     console.log(err.toString());
                     /* eslint-enable no-console */
                 }
@@ -1449,12 +1471,18 @@ export class App extends React.Component<AppProps, AppState> {
             const localProgram = window.localStorage.getItem('c2lc-program');
             const localCharacterState = window.localStorage.getItem('c2lc-characterState');
             const localTheme = window.localStorage.getItem('c2lc-theme');
-            const localAllowedActions = window.localStorage.getItem('c2lc-allowedActions');
+            const localDisallowedActions = window.localStorage.getItem('c2lc-disallowedActions');
             const localWorld = window.localStorage.getItem('c2lc-world');
 
             if (localProgram != null) {
                 try {
-                    const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(localProgram), 0);
+                    const parseResult = this.programSerializer.deserialize(localProgram);
+                    const programSequence: ProgramSequence = new ProgramSequence(
+                        parseResult.program,
+                        0,
+                        parseResult.highestLoopNumber,
+                        new Map()
+                    );
                     this.setState({
                         programSequence: programSequence
                     });
@@ -1480,14 +1508,14 @@ export class App extends React.Component<AppProps, AppState> {
             }
 
 
-            if (localAllowedActions != null) {
+            if (localDisallowedActions != null) {
                 try {
                     this.setState({
-                        allowedActions: this.allowedActionsSerializer.deserialize(localAllowedActions)
+                        disallowedActions: this.disallowedActionsSerializer.deserialize(localDisallowedActions)
                     });
                 } catch(err) {
                     /* eslint-disable no-console */
-                    console.log(`Error parsing allowed actions: ${localAllowedActions}`);
+                    console.log(`Error parsing disallowed actions: ${localDisallowedActions}`);
                     console.log(err.toString());
                     /* eslint-enable no-console */
                 }
@@ -1530,11 +1558,11 @@ export class App extends React.Component<AppProps, AppState> {
         if (this.state.programSequence !== prevState.programSequence
             || this.state.characterState !== prevState.characterState
             || this.state.settings.theme !== prevState.settings.theme
-            || this.state.allowedActions !== prevState.allowedActions
+            || this.state.disallowedActions !== prevState.disallowedActions
             || this.state.settings.world !== prevState.settings.world) {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
-            const serializedAllowedActions = this.allowedActionsSerializer.serialize(this.state.allowedActions);
+            const serializedDisallowedActions = this.disallowedActionsSerializer.serialize(this.state.disallowedActions);
 
             // Use setTimeout() to limit how often we call history.pushState().
             // Safari will throw an error if calls to history.pushState() are
@@ -1548,11 +1576,11 @@ export class App extends React.Component<AppProps, AppState> {
                         p: serializedProgram,
                         c: serializedCharacterState,
                         t: this.state.settings.theme,
-                        a: serializedAllowedActions,
+                        d: serializedDisallowedActions,
                         w: this.state.settings.world
                     },
                     '',
-                    Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedAllowedActions),
+                    Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedDisallowedActions),
                     '',
                 );
             }, pushStateDelayMs);
@@ -1561,7 +1589,7 @@ export class App extends React.Component<AppProps, AppState> {
             window.localStorage.setItem('c2lc-program', serializedProgram);
             window.localStorage.setItem('c2lc-characterState', serializedCharacterState);
             window.localStorage.setItem('c2lc-theme', this.state.settings.theme);
-            window.localStorage.setItem('c2lc-allowedActions', serializedAllowedActions);
+            window.localStorage.setItem('c2lc-disallowedActions', serializedDisallowedActions);
             window.localStorage.setItem('c2lc-world', this.state.settings.world)
         }
 
@@ -1576,6 +1604,9 @@ export class App extends React.Component<AppProps, AppState> {
         }
         if (this.state.audioEnabled !== prevState.audioEnabled) {
             this.audioManager.setAudioEnabled(this.state.audioEnabled);
+        }
+        if (this.state.sonificationEnabled !== prevState.sonificationEnabled) {
+            this.audioManager.setSonificationEnabled(this.state.sonificationEnabled);
         }
         if (this.state.runningState !== prevState.runningState
                 && this.state.runningState === 'running') {
