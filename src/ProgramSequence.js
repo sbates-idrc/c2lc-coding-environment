@@ -1,7 +1,8 @@
 // @flow
 
 import { generateLoopLabel } from './Utils';
-import type { CommandName, Program, ProgramBlock } from './types';
+import type { ProgramParserResult } from './ProgramParser';
+import type { CommandName, Program, ProgramBlock, ProgramBlockCache } from './types';
 
 export default class ProgramSequence {
     program: Program;
@@ -40,62 +41,67 @@ export default class ProgramSequence {
         return this.program[index];
     }
 
-    updateProgramSequence(program: Program, programCounter: number, loopCounter: number, loopIterationsLeft: Map<string, number>): ProgramSequence {
-        program = this.updateCachedLoopData(program, loopCounter);
-        return new ProgramSequence(program, programCounter, loopCounter, loopIterationsLeft);
+    static makeProgramSequenceFromParserResult(parserResult: ProgramParserResult) {
+        return new ProgramSequence(
+            ProgramSequence.calculateCachedLoopData(parserResult.program),
+            0,
+            parserResult.highestLoopNumber,
+            new Map()
+        );
     }
 
-    updateCachedLoopData(program: Program, loopCounter: number): Program {
-        if (loopCounter > 0) {
-            // loopStack is a stack that stores loop labels from startLoop blocks
-            // while iterating through the program to keep track of direct parent loop
-            const loopStack = [];
-            // loopPositionStack is a stack that stores position of a program step within a direct parent loop
-            const loopPositionStack = [];
-            let containingLoopPosition = 0;
-            for (let i = 0; i < program.length; i++) {
-                const currentProgramBlock = program[i];
-                if (currentProgramBlock.block === 'endLoop') {
-                    loopStack.pop();
-                    if (loopPositionStack.length > 0) {
-                        containingLoopPosition += loopPositionStack.pop();
-                    }
-                }
-                if (loopStack.length > 0) {
-                    const cache = new Map();
-                    containingLoopPosition++;
-                    cache.set('containingLoopLabel', loopStack[loopStack.length - 1]);
-                    cache.set('containingLoopPosition', containingLoopPosition);
-                    program[i] = Object.assign(
-                        {},
-                        program[i],
-                        {
-                            // $FlowFixMe: type argument 'V' of cache can be undefined
-                            cache
-                        }
-                    );
-                } else {
-                    const currentCache = program[i].cache;
-                    if (currentCache != null) {
-                        currentCache.delete('containingLoopLabel');
-                        currentCache.delete('containingLoopPosition');
-                    }
-                }
-                if (currentProgramBlock.block === 'startLoop') {
-                    loopStack.push(currentProgramBlock.label);
-                    if (containingLoopPosition > 0) {
-                        loopPositionStack.push(containingLoopPosition);
-                    }
-                    containingLoopPosition = 0;
+    static calculateCachedLoopData(program: Program): Program {
+        const resultProgram: Program = [];
+
+        // loopStack is a stack that stores loop labels from startLoop blocks
+        // while iterating through the program to keep track of direct parent loop
+        const loopStack = [];
+        // loopPositionStack is a stack that stores position of a program step within a direct parent loop
+        const loopPositionStack = [];
+        let containingLoopPosition = 0;
+
+        for (const block of program) {
+            if (block.block === 'endLoop') {
+                loopStack.pop();
+                if (loopPositionStack.length > 0) {
+                    containingLoopPosition += loopPositionStack.pop();
                 }
             }
+            if (loopStack.length > 0) {
+                containingLoopPosition++;
+                const cache: ProgramBlockCache = new Map();
+                cache.set('containingLoopLabel', ((loopStack[loopStack.length - 1]: any): string));
+                cache.set('containingLoopPosition', containingLoopPosition);
+                resultProgram.push(Object.assign(
+                    {},
+                    block,
+                    {
+                        cache
+                    }
+                ));
+            } else {
+                resultProgram.push(Object.assign({}, block));
+                delete resultProgram[resultProgram.length - 1]['cache'];
+            }
+            if (block.block === 'startLoop') {
+                loopStack.push(block.label);
+                if (containingLoopPosition > 0) {
+                    loopPositionStack.push(containingLoopPosition);
+                }
+                containingLoopPosition = 0;
+            }
         }
-        return program;
+
+        return resultProgram;
     }
 
     updateProgram(program: Program): ProgramSequence {
-        program = this.updateCachedLoopData(program, this.loopCounter);
-        return new ProgramSequence(program, this.programCounter, this.loopCounter, this.loopIterationsLeft);
+        return new ProgramSequence(
+            ProgramSequence.calculateCachedLoopData(program),
+            this.programCounter,
+            this.loopCounter,
+            this.loopIterationsLeft
+        );
     }
 
     updateProgramCounter(programCounter: number): ProgramSequence {
@@ -103,8 +109,12 @@ export default class ProgramSequence {
     }
 
     updateProgramAndProgramCounter(program: Program, programCounter: number): ProgramSequence {
-        program = this.updateCachedLoopData(program, this.loopCounter);
-        return new ProgramSequence(program, programCounter, this.loopCounter, this.loopIterationsLeft);
+        return new ProgramSequence(
+            ProgramSequence.calculateCachedLoopData(program),
+            programCounter,
+            this.loopCounter,
+            this.loopIterationsLeft
+        );
     }
 
     updateProgramCounterAndLoopIterationsLeft(programCounter: number, loopIterationsLeft: Map<string, number>) {
