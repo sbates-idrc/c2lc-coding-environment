@@ -422,6 +422,10 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 )
             }
         );
+        let loopIterationsLeft = programBlock.iterations;
+        if (loopLabel != null && this.props.programSequence.getLoopIterationsLeft().get(loopLabel) != null) {
+            loopIterationsLeft = this.props.programSequence.getLoopIterationsLeft().get(loopLabel);
+        }
 
         return (
             <CommandBlock
@@ -434,6 +438,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 data-command={command}
                 data-actionpanelgroup={true}
                 className={classes}
+                looplabel={programBlock.label}
+                loopiterationsleft={loopIterationsLeft}
                 aria-label={ariaLabel}
                 aria-controls={hasActionPanelControl ? 'ActionPanel' : undefined}
                 aria-expanded={hasActionPanelControl}

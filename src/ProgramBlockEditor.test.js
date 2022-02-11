@@ -149,6 +149,18 @@ describe('Program rendering', () => {
         expect(getProgramBlocks(wrapper).at(2).prop('data-command')).toBe('forward1');
         expect(getProgramBlocks(wrapper).at(3).prop('data-command')).toBe('left45');
     });
+    test('Loop blocks should render with additional properties about specific loops', () => {
+        expect.assertions(6);
+        const { wrapper } = createMountProgramBlockEditor({
+            programSequence: new ProgramSequence([{block: 'startLoop', label: 'A', iterations: 1}, {block: 'endLoop', label: 'A'}], 0, 0, new Map())
+        });
+        expect(getProgramBlocks(wrapper).length).toBe(2);
+        expect(getProgramBlocks(wrapper).at(0).prop('data-command')).toBe('startLoop');
+        expect(getProgramBlockAtPosition(wrapper, 0).prop('looplabel')).toBe('A');
+        expect(getProgramBlockAtPosition(wrapper, 0).prop('loopiterationsleft')).toBe(1);
+        expect(getProgramBlocks(wrapper).at(1).prop('data-command')).toBe('endLoop');
+        expect(getProgramBlockAtPosition(wrapper, 1).prop('looplabel')).toBe('A');
+    })
 });
 
 test('When a step is clicked, action panel should render next to the step', () => {
