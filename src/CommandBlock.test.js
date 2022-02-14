@@ -14,7 +14,6 @@ const defaultCommandBlockProps = {
 };
 
 function createMountCommandBlock(props) {
-    const mockOnClick = jest.fn();
     const wrapper = mount(
         React.createElement(
             CommandBlock,
