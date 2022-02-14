@@ -20,11 +20,11 @@ import { ReactComponent as Loop } from './svg/Loop.svg';
 
 type CommandBlockProps = {
     commandName: string,
-    onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
     disabled: boolean,
     looplabel?: string,
     loopiterationsleft?: ?number,
-    className?: string
+    className?: string,
+    onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
 };
 
 // TODO: Revise this once there is a proper strategy for typing SVG-backed
