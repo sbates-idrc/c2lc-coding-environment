@@ -6,6 +6,7 @@ import AudioManagerImpl from './AudioManagerImpl';
 import {ProgramBlockEditor} from './ProgramBlockEditor';
 import ProgramChangeController from './ProgramChangeController';
 import ProgramSequence from './ProgramSequence';
+import type { Program } from './types';
 import messages from './messages.json';
 
 const intl = createIntl({
@@ -188,46 +189,53 @@ describe('Test addSelectedActionToProgramEnd()', () => {
     });
 });
 
+type DeleteStepTestCase = {
+    program: Program,
+    deleteStepIndex: number,
+    deleteStepName: string,
+    expectedAnnouncementCommand: string
+};
+
 describe('Test deleteProgramStep()', () => {
-    test.each([
-        [
-            [
+    test.each(([
+        {
+            program: [
                 {block: 'forward1'},
                 {block: 'forward2'}
             ],
-            0,
-            'forward 1 square',
-            'forward1'
-        ],
-        [
-            [
+            deleteStepIndex: 0,
+            deleteStepName: 'forward1',
+            expectedAnnouncementCommand: 'forward 1 square'
+        },
+        {
+            program: [
                 {block: 'startLoop', label: 'A', iterations: 1},
                 {block: 'forward2'},
                 {block: 'endLoop', label: 'A'}
             ],
-            0,
-            'loop A',
-            'startLoop'
-        ],
-        [
-            [
+            deleteStepIndex: 0,
+            deleteStepName: 'startLoop',
+            expectedAnnouncementCommand: 'loop A'
+        },
+        {
+            program: [
                 {block: 'startLoop', label: 'A', iterations: 1},
                 {block: 'endLoop', label: 'A'},
                 {block: 'forward2'}
             ],
-            1,
-            'loop A',
-            'endLoop'
-        ]
-    ])('When deleting a step not at the end, then focus is set to the step now at the deleted index',
-        (program, deleteStepIndex, expectedCommand, deleteStepName, done) => {
+            deleteStepIndex: 1,
+            deleteStepName: 'endLoop',
+            expectedAnnouncementCommand: 'loop A'
+        }
+    ]: Array<DeleteStepTestCase>))('When deleting a step not at the end, then focus is set to the step now at the deleted index',
+        (testData: DeleteStepTestCase, done) => {
             expect.assertions(7);
 
             const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
             appMock.setState.mockImplementation((callback) => {
                 const newState = callback({
-                    programSequence: new ProgramSequence(program, 0, 0, new Map())
+                    programSequence: new ProgramSequence(testData.program, 0, 0, new Map())
                 });
 
                 // The program should be updated
@@ -238,7 +246,7 @@ describe('Test deleteProgramStep()', () => {
                 expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
                 expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('delete');
                 expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
-                    command: expectedCommand
+                    command: testData.expectedAnnouncementCommand
                 });
 
                 // The add-node after the program should be focused
@@ -254,48 +262,48 @@ describe('Test deleteProgramStep()', () => {
             // $FlowFixMe: Jest mock API
             ProgramBlockEditor.mockClear();
             // $FlowFixMe: Jest mock API
-            controller.deleteProgramStep(new ProgramBlockEditor(), deleteStepIndex, deleteStepName);
+            controller.deleteProgramStep(new ProgramBlockEditor(), testData.deleteStepIndex, testData.deleteStepName);
         });
 
-    test.each([
-        [
-            [
+    test.each(([
+        {
+            program: [
                 {block: 'forward1'},
                 {block: 'forward2'}
             ],
-            1,
-            'forward 2 squares',
-            'forward2'
-        ],
-        [
-            [
+            deleteStepIndex: 1,
+            deleteStepName: 'forward2',
+            expectedAnnouncementCommand: 'forward 2 squares'
+        },
+        {
+            program: [
                 {block: 'forward1'},
                 {block: 'startLoop', label: 'A', iterations: 1},
                 {block: 'endLoop', label: 'A'}
             ],
-            1,
-            'loop A',
-            'startLoop'
-        ],
-        [
-            [
+            deleteStepIndex: 1,
+            deleteStepName: 'startLoop',
+            expectedAnnouncementCommand: 'loop A'
+        },
+        {
+            program: [
                 {block: 'forward1'},
                 {block: 'startLoop', label: 'A', iterations: 1},
                 {block: 'endLoop', label: 'A'}
             ],
-            2,
-            'loop A',
-            'endLoop'
-        ]
-    ])('When deleting the step at the end, then focus is set to the add-node after the program',
-        (program, deleteStepIndex, expectedCommand, deleteStepName, done) => {
+            deleteStepIndex: 2,
+            deleteStepName: 'endLoop',
+            expectedAnnouncementCommand: 'loop A'
+        }
+    ]: Array<DeleteStepTestCase>))('When deleting the step at the end, then focus is set to the add-node after the program',
+        (testData: DeleteStepTestCase, done) => {
             expect.assertions(7);
 
             const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
             appMock.setState.mockImplementation((callback) => {
                 const newState = callback({
-                    programSequence: new ProgramSequence(program, 0, 0, new Map())
+                    programSequence: new ProgramSequence(testData.program, 0, 0, new Map())
                 });
 
                 // The program should be updated
@@ -306,7 +314,7 @@ describe('Test deleteProgramStep()', () => {
                 expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
                 expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('delete');
                 expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
-                    command: expectedCommand
+                    command: testData.expectedAnnouncementCommand
                 });
 
                 // The add-node after the program should be focused
@@ -322,7 +330,7 @@ describe('Test deleteProgramStep()', () => {
             // $FlowFixMe: Jest mock API
             ProgramBlockEditor.mockClear();
             // $FlowFixMe: Jest mock API
-            controller.deleteProgramStep(new ProgramBlockEditor(), deleteStepIndex, deleteStepName);
+            controller.deleteProgramStep(new ProgramBlockEditor(), testData.deleteStepIndex, testData.deleteStepName);
         });
 
     test('When the step to delete has changed, then no changes to the program should be made', (done) => {
