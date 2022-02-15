@@ -41,6 +41,31 @@ export default class ProgramSequence {
         return this.program[index];
     }
 
+    getMatchingLoopBlockIndex(index: number): ?number {
+        const block = this.program[index];
+        let matchingBlockIndex = undefined;
+        if (block) {
+            if (block.block === 'startLoop') {
+                for (let i = index + 1; i < this.program.length; i++) {
+                    if (this.program[i].block === 'endLoop'
+                            && this.program[i].label === block.label) {
+                        matchingBlockIndex = i;
+                        break;
+                    }
+                }
+            } else if (block.block === 'endLoop') {
+                for (let i = index - 1; i > -1; i--) {
+                    if (this.program[i].block === 'startLoop'
+                            && this.program[i].label === block.label) {
+                        matchingBlockIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+        return matchingBlockIndex;
+    }
+
     static makeProgramSequenceFromParserResult(parserResult: ProgramParserResult) {
         return new ProgramSequence(
             ProgramSequence.calculateCachedLoopData(parserResult.program),

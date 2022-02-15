@@ -33,7 +33,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
         this.actionPanelRef = React.createRef();
     }
 
-    makeStepInfoMessage() {
+    makeStepMessageData() {
         const currentStep = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex);
         let stepName = '';
         if (currentStep.block === 'startLoop' || currentStep.block === 'endLoop') {
@@ -94,14 +94,8 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                 // finding its pair startLoop block
                 if (currentStep.block === 'endLoop') {
                     const program = this.props.programSequence.getProgram();
-                    let startLoopIndex = 0;
-                    for (let i = 0; i < this.props.pressedStepIndex; i++) {
-                        if (program[i].block === 'startLoop' && program[i].label === currentStep.label) {
-                            startLoopIndex = i;
-                            break;
-                        }
-                    }
-                    if (program[startLoopIndex - 1] != null) {
+                    const startLoopIndex = this.props.programSequence.getMatchingLoopBlockIndex(this.props.pressedStepIndex);
+                    if (startLoopIndex != null && program[startLoopIndex - 1] != null) {
                         ariaLabelObj['previousStepInfo'] =
                             this.props.intl.formatMessage(
                                 { id: 'CommandInfo.previousStep.loop' },
@@ -158,19 +152,13 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                         { id: 'CommandInfo.nextStep.endLoop'},
                         { loopLabel: nextStep.label }
                     );
-            }else {
+            } else {
                 // When next step is not loops and current step is startLoop, calculate the index the loop will move by
                 // finding its pair endLoop block
                 if (currentStep.block === 'startLoop') {
                     const program = this.props.programSequence.getProgram();
-                    let endLoopIndex = 0;
-                    for (let i = this.props.pressedStepIndex + 1; i < program.length; i++) {
-                        if (program[i].block === 'endLoop' && program[i].label === currentStep.label) {
-                            endLoopIndex = i;
-                            break;
-                        }
-                    }
-                    if (program[endLoopIndex + 1] != null) {
+                    const endLoopIndex = this.props.programSequence.getMatchingLoopBlockIndex(this.props.pressedStepIndex);
+                    if (endLoopIndex != null && program[endLoopIndex + 1] != null) {
                         ariaLabelObj['nextStepInfo'] =
                             this.props.intl.formatMessage(
                                 { id: 'CommandInfo.nextStep.loop' },
@@ -254,7 +242,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
     };
 
     render() {
-        const stepInfoMessage = this.makeStepInfoMessage();
+        const stepMessageData = this.makeStepMessageData();
         const moveToNextStepIsDisabled = this.getMoveToNextStepDisabled();
         const moveToPreviousStepIsDisabled = this.getMoveToPreviousStepDisabled();
         return (
@@ -270,7 +258,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     <AriaDisablingButton
                         name='deleteCurrentStep'
                         disabled={false}
-                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.delete'}, stepInfoMessage)}
+                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.delete'}, stepMessageData)}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                         onClick={this.handleClickDelete}>
                         <DeleteIcon className='ActionPanel__action-button-svg' />
@@ -278,7 +266,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     <AriaDisablingButton
                         name='replaceCurrentStep'
                         disabled={false}
-                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.replace'}, stepInfoMessage)}
+                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.replace'}, stepMessageData)}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button focus-trap-action-panel-replace__replace_button'
                         onClick={this.handleClickReplace}>
                         <ReplaceIcon className='ActionPanel__action-button-svg' />
@@ -287,7 +275,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                         name='moveToPreviousStep'
                         disabled={moveToPreviousStepIsDisabled}
                         disabledClassName='ActionPanel__action-buttons--disabled'
-                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToPreviousStep'}, stepInfoMessage)}
+                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToPreviousStep'}, stepMessageData)}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                         onClick={this.handleClickMoveToPreviousStep}>
                         <MovePreviousIcon className='ActionPanel__action-button-svg' />
@@ -296,7 +284,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                         name='moveToNextStep'
                         disabled={moveToNextStepIsDisabled}
                         disabledClassName='ActionPanel__action-buttons--disabled'
-                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToNextStep'}, stepInfoMessage)}
+                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToNextStep'}, stepMessageData)}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                         onClick={this.handleClickMoveToNextStep}>
                         <MoveNextIcon className='ActionPanel__action-button-svg' />
