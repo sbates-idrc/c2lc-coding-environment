@@ -106,6 +106,59 @@ test('calculateCachedLoopData returns a program with additional loop data', () =
         .toStrictEqual(expectedProgram);
 });
 
+test('calculateCachedLoopData replaces existing cached loop data and removes cached loop data when a block is no longer in a loop', () => {
+    const program = [
+        {
+            block: 'startLoop',
+            iterations: 3,
+            label: 'A'
+        },
+        {
+            block: 'forward1',
+            cache: new Map([
+                ['containingLoopPosition', 2],
+                ['containingLoopLabel', 'B']
+            ])
+        },
+        {
+            block: 'endLoop',
+            label: 'A'
+        },
+        {
+            block: 'forward2',
+            cache: new Map([
+                ['containingLoopPosition', 2],
+                ['containingLoopLabel', 'B']
+            ])
+        }
+    ];
+
+    const expectedProgram = [
+        {
+            block: 'startLoop',
+            iterations: 3,
+            label: 'A'
+        },
+        {
+            block: 'forward1',
+            cache: new Map([
+                ['containingLoopPosition', 1],
+                ['containingLoopLabel', 'A']
+            ])
+        },
+        {
+            block: 'endLoop',
+            label: 'A'
+        },
+        {
+            block: 'forward2'
+        }
+    ];
+
+    expect(ProgramSequence.calculateCachedLoopData(program))
+        .toStrictEqual(expectedProgram);
+});
+
 test('updateProgramCounter should only update programCounter', () => {
     expect.assertions(3);
     const program = [{block: 'forward1'}];
