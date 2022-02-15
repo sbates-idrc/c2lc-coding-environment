@@ -150,30 +150,174 @@ test('usesAction should return false when an action is not part of the sequence.
     expect(programSequence.usesAction('forward1')).toBe(false);
 });
 
-test.each([
-    [[], 0, 0, [], 0],
-    [[{block: 'forward1'}], 0, 0, [], 0],
-    [[{block: 'forward1'}, {block: 'forward2'}], 0, 0, [{block: 'forward2'}], 0],
-    [[{block: 'forward1'}, {block: 'forward2'}], 0, 1, [{block: 'forward1'}], 0],
-    [[{block: 'forward1'}, {block: 'forward2'}], 1, 0, [{block: 'forward2'}], 0],
-    [[{block: 'forward1'}, {block: 'forward2'}], 1, 1, [{block: 'forward1'}], 1],
-    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 0, [{block: 'forward2'}, {block: 'forward3'}], 0],
-    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 1, [{block: 'forward1'}, {block: 'forward3'}], 1],
-    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 2, [{block: 'forward1'}, {block: 'forward2'}], 1],
-    [[{block: 'forward1'}, {block: 'startLoop', label: 'A', iterations: 1}, {block: 'endLoop', label: 'A'}], 1, 1, [{block: 'forward1'}], 1],
-    [[{block: 'startLoop', label: 'A', iterations: 1}, {block: 'endLoop', label: 'A'}, {block: 'forward1'}], 1, 1, [{block: 'forward1'}], 1]
-])('deleteStep',
-    (program: Program, programCounter: number, index: number,
-        expectedProgram: Program, expectedProgramCounter: number) => {
-        expect.assertions(3);
-        const programBefore = program.slice();
-        const programSequence = new ProgramSequence(program, programCounter, 0, new Map());
-        const result = programSequence.deleteStep(index);
-        expect(result.getProgram()).toStrictEqual(expectedProgram);
-        expect(result.getProgramCounter()).toBe(expectedProgramCounter);
-        expect(programSequence.getProgram()).toStrictEqual(programBefore);
+type DeleteStepTestCase = {
+    program: Program,
+    programCounter: number,
+    index: number,
+    expectedProgram: Program,
+    expectedProgramCounter: number
+};
+
+test.each(([
+    {
+        program: [],
+        programCounter: 0,
+        index: 0,
+        expectedProgram: [],
+        expectedProgramCounter: 0
+    },
+    {
+        program: [
+            { block: 'forward1' }
+        ],
+        programCounter: 0,
+        index: 0,
+        expectedProgram: [],
+        expectedProgramCounter: 0
+    },
+    {
+        program: [
+            { block: 'forward1' },
+            { block: 'forward2' }
+        ],
+        programCounter: 0,
+        index: 0,
+        expectedProgram: [
+            { block: 'forward2' }
+        ],
+        expectedProgramCounter: 0
+    },
+    {
+        program: [
+            { block: 'forward1' },
+            { block: 'forward2' }
+        ],
+        programCounter: 0,
+        index: 1,
+        expectedProgram: [
+            { block: 'forward1' }
+        ],
+        expectedProgramCounter: 0
+    },
+    {
+        program: [
+            { block: 'forward1' },
+            { block: 'forward2' }
+        ],
+        programCounter: 1,
+        index: 0,
+        expectedProgram: [
+            { block: 'forward2' }
+        ],
+        expectedProgramCounter: 0
+    },
+    {
+        program: [
+            { block: 'forward1' },
+            { block: 'forward2' }
+        ],
+        programCounter: 1,
+        index: 1,
+        expectedProgram: [
+            { block: 'forward1' }
+        ],
+        expectedProgramCounter: 1
+    },
+    {
+        program: [
+            { block: 'forward1' },
+            { block: 'forward2' },
+            { block: 'forward3' }
+        ],
+        programCounter: 1,
+        index: 0,
+        expectedProgram: [
+            { block: 'forward2' },
+            { block: 'forward3' }
+        ],
+        expectedProgramCounter: 0
+    },
+    {
+        program: [
+            { block: 'forward1' },
+            { block: 'forward2' },
+            { block: 'forward3' }
+        ],
+        programCounter: 1,
+        index: 1,
+        expectedProgram: [
+            { block: 'forward1' },
+            { block: 'forward3' }
+        ],
+        expectedProgramCounter: 1
+    },
+    {
+        program: [
+            { block: 'forward1' },
+            { block: 'forward2' },
+            { block: 'forward3' }
+        ],
+        programCounter: 1,
+        index: 2,
+        expectedProgram: [
+            { block: 'forward1' },
+            { block: 'forward2' }
+        ],
+        expectedProgramCounter: 1
+    },
+    {
+        program: [
+            {
+                block: 'forward1'
+            },
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 1
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        programCounter: 1,
+        index: 1,
+        expectedProgram: [
+            { block: 'forward1' }
+        ],
+        expectedProgramCounter: 1
+    },
+    {
+        program: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 1
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            },
+            {
+                block: 'forward1'
+            }
+        ],
+        programCounter: 1,
+        index: 1,
+        expectedProgram: [
+            { block: 'forward1' }
+        ],
+        expectedProgramCounter: 1
     }
-);
+]: Array<DeleteStepTestCase>))('deleteStep', (testData: DeleteStepTestCase) => {
+    expect.assertions(3);
+    const programBefore = testData.program.slice();
+    const programSequence = new ProgramSequence(testData.program, testData.programCounter, 0, new Map());
+    const result = programSequence.deleteStep(testData.index);
+    expect(result.getProgram()).toStrictEqual(testData.expectedProgram);
+    expect(result.getProgramCounter()).toBe(testData.expectedProgramCounter);
+    expect(programSequence.getProgram()).toStrictEqual(programBefore);
+});
 
 test.each([
     [[], 0, 0, [{block: 'left45'}], 1, 'left45'],
@@ -213,7 +357,16 @@ test.each([
     }
 );
 
-test.each([
+type SwapStepTestCase = {
+    program: Program,
+    programCounter: number,
+    indexFrom: number,
+    indexTo: number,
+    expectedProgram: Program,
+    expectedProgramCounter: number
+};
+
+test.each(([
     {
         program: [
             { block: 'forward1' },
@@ -393,7 +546,7 @@ test.each([
         ],
         expectedProgramCounter: 1
     }
-])('swapStep', (testData: any) => {
+]: Array<SwapStepTestCase>))('swapStep', (testData: SwapStepTestCase) => {
     expect.assertions(3);
     const programBefore = testData.program.slice();
     const programSequence = new ProgramSequence(testData.program, testData.programCounter, 0, new Map());
