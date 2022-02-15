@@ -276,7 +276,7 @@ test('Run a program with a nested loop', (done) => {
         [ 3, [[ 'A', 0 ], [ 'B', 0 ]], 'after-startLoop' ], // B
         [ 4, [[ 'A', 0 ], [ 'B', 0 ]], 'after-command' ],   // command2
         [ 5, [[ 'A', 0 ], [ 'B', 0 ]], 'after-endLoop' ],   // B
-        [ 6, [[ 'A', 0 ], [ 'B', 2 ]], 'after-endLoop' ]    // A
+        [ 6, [[ 'A', 0 ], [ 'B', 0 ]], 'after-endLoop' ]    // A
     ];
 
     // Set up mock getProgramSequence() results

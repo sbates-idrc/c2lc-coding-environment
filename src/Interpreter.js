@@ -131,32 +131,31 @@ export default class Interpreter {
         const label = currentProgramStep.label;
         let programCounter = programSequence.getProgramCounter();
         if (label != null) {
-            for (let i = programCounter; i > -1; i--) {
-                const block = programSequence.program[i];
-                // Look for startLoop blocks
-                if (block.block === 'startLoop') {
-                    // Check if the startLoop has same label as the endLoop itself
-                    if (block.label != null && block.label === label) {
-                        // Check if there's any iterations left, if so,
-                        // set the programCounter to the start of the loop
-                        const currentIterationsLeft = loopIterationsLeft.get(label);
-                        if (currentIterationsLeft != null && currentIterationsLeft > 0) {
+            const currentIterationsLeft = loopIterationsLeft.get(label);
+            if (currentIterationsLeft != null && currentIterationsLeft > 0) {
+                for (let i = programCounter; i > -1; i--) {
+                    const block = programSequence.program[i];
+                    // Look for startLoop blocks
+                    if (block.block === 'startLoop') {
+                        // Check if the startLoop has same label as the endLoop itself
+                        if (block.label != null && block.label === label) {
+                            // Set the programCounter to the start of the loop
                             programCounter = i;
-                        // When there's no more iterations left, increment the programCounter
+                            break;
                         } else {
-                            programCounter += 1;
-                        }
-                        break;
-                    } else {
-                        // When startLoop has a different label, we have found
-                        // a nested loop: reset its iterationsLeft
-                        const nestedLoopLabel = programSequence.program[i].label;
-                        const nestLoopIterations = programSequence.program[i].iterations;
-                        if (nestedLoopLabel != null && nestLoopIterations != null) {
-                            loopIterationsLeft.set(nestedLoopLabel, nestLoopIterations);
+                            // When startLoop has a different label, we have found
+                            // a nested loop: reset its iterationsLeft
+                            const nestedLoopLabel = programSequence.program[i].label;
+                            const nestLoopIterations = programSequence.program[i].iterations;
+                            if (nestedLoopLabel != null && nestLoopIterations != null) {
+                                loopIterationsLeft.set(nestedLoopLabel, nestLoopIterations);
+                            }
                         }
                     }
                 }
+            } else {
+                // When there's no more iterations left, increment the programCounter
+                programCounter += 1;
             }
         }
         this.app.updateProgramCounterAndLoopIterationsLeft(
