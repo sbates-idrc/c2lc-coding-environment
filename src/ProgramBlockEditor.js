@@ -411,7 +411,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             paused && 'ProgramBlockEditor__program-block--paused'
         );
         const command = programBlock.block;
-        const loopLabel = programBlock.label ? programBlock.label : null;
+        const loopLabel = programBlock.label;
         const ariaLabel = this.props.intl.formatMessage({
             id: 'ProgramBlockEditor.command' },
             {
@@ -423,8 +423,12 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             }
         );
         let loopIterationsLeft = programBlock.iterations;
-        if (loopLabel != null && this.props.programSequence.getLoopIterationsLeft().get(loopLabel) != null) {
-            loopIterationsLeft = this.props.programSequence.getLoopIterationsLeft().get(loopLabel);
+
+        // Show loopItertionsLeft when program is not stopped, or else, show iterations
+        if (this.props.runningState !== 'stopped') {
+            if (loopLabel != null && this.props.programSequence.getLoopIterationsLeft().get(loopLabel) != null) {
+                loopIterationsLeft = this.props.programSequence.getLoopIterationsLeft().get(loopLabel);
+            }
         }
 
         return (
