@@ -46,8 +46,8 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                 { id: `Command.${currentStep.block}` }
             );
         }
-        
-        const cachedCurrentStepLoopData = currentStep.cache; 
+
+        const cachedCurrentStepLoopData = currentStep.cache;
         let stepNumber = this.props.pressedStepIndex + 1;
         if (cachedCurrentStepLoopData != null && cachedCurrentStepLoopData.get('containingLoopPosition') != null) {
             stepNumber = cachedCurrentStepLoopData.get('containingLoopPosition');
