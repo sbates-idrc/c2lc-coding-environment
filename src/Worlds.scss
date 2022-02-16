@@ -1,3 +1,60 @@
+/* Camping */
+
+.Character-background--Camping {
+    fill: #8E9F47;
+}
+
+.CharacterPositionController__character-column-character-container--Camping,
+.ProgramBlockEditor__character-column-character-container--Camping {
+    background-color: #8E9F47;
+}
+
+.Scene__grid-line--Camping {
+    stroke: #8F8F8F;
+}
+
+.Scene__path-line--Camping {
+    stroke: #FFC700;
+}
+
+body.gray-theme {
+    .Character-background--Camping {
+        fill: #D3D3D3;
+    }
+
+    .CharacterPositionController__character-column-character-container--Camping,
+    .ProgramBlockEditor__character-column-character-container--Camping {
+        background-color: #D3D3D3;
+    }
+
+    .Scene__grid-line--Camping {
+        stroke: #8F8F8F;
+    }
+
+    .Scene__path-line--Camping {
+        stroke: #FFFFFF;
+    }
+}
+
+body.contrast-theme {
+    .Character-background--Camping {
+        fill: #FFFFFF;
+    }
+
+    .CharacterPositionController__character-column-character-container--Camping,
+    .ProgramBlockEditor__character-column-character-container--Camping {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Camping {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Camping {
+        stroke: #FF0000;
+    }
+}
+
 /* Landmarks */
 
 .Character-background--Landmarks {
@@ -37,20 +94,20 @@ body.gray-theme {
         fill: #505862;
         stroke: none;
     }
-    
+
     .CharacterPositionController__character-column-character-container--Landmarks,
     .ProgramBlockEditor__character-column-character-container--Landmarks {
         background-color: #505862;
     }
-    
+
     .Scene__grid-line--Landmarks {
         stroke: #FFFFFF;
     }
-    
+
     .Scene__path-line--Landmarks {
         stroke: #505862;
     }
-    
+
     .WorldSelector__option-image--Landmarks:hover {
         svg {
             .thumbnail-background {
