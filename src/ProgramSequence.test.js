@@ -14,6 +14,31 @@ test('ProgramSequence constructor', () => {
     expect(programSequence.getLoopIterationsLeft()).toBe(loopIterationsLeft);
 });
 
+test('getMatchingLoopBlockIndex retuns index of corresponding endLoop or startLoop pair', () => {
+    const program = [
+        {block: 'startLoop', iterations: 3, label: 'A'},
+        {block: 'startLoop', iterations: 2, label: 'B'},
+        {block: 'forward3'},
+        {block: 'startLoop', iterations: 1, label: 'C'},
+        {block: 'forward1'},
+        {block: 'forward2'},
+        {block: 'endLoop', label: 'C'},
+        {block: 'forward3'},
+        {block: 'endLoop', label: 'B'},
+        {block: 'endLoop', label: 'A'}
+    ];
+    const programSequence = new ProgramSequence(program, 0, 0, new Map());
+    // Finding endLoop pair
+    expect(programSequence.getMatchingLoopBlockIndex(0)).toBe(9);
+    expect(programSequence.getMatchingLoopBlockIndex(1)).toBe(8);
+    expect(programSequence.getMatchingLoopBlockIndex(3)).toBe(6);
+
+    // Finding startLoop pair
+    expect(programSequence.getMatchingLoopBlockIndex(6)).toBe(3);
+    expect(programSequence.getMatchingLoopBlockIndex(8)).toBe(1);
+    expect(programSequence.getMatchingLoopBlockIndex(9)).toBe(0);
+});
+
 test('calculateCachedLoopData returns a program with additional loop data', () => {
     const program = [
         {block: 'startLoop', iterations: 3, label: 'A'},
