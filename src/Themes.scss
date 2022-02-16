@@ -744,7 +744,15 @@ body.gray-theme {
     }
 
     .IconButton {
-        background-color: #818A98;
+        &:not(.IconButton--disabled) {
+            background-color: #818A98;
+
+            .App__header-actionsMenu-icon {
+                path {
+                    stroke: white;
+                }
+            }    
+        }
 
         &:hover:not(.IconButton--disabled) {
             background-color: #505862;
@@ -782,19 +790,15 @@ body.gray-theme {
                 fill: white;
             }
         }
+    }
 
-        .App__header-actionsMenu-icon {
-            path {
-                stroke: white;
-            }
+    .IconButton--disabled {
+        svg path {
+
+            stroke: #D5D8DD;
         }
     }
 
-    // TODO: Need design input for these.
-    /*
-    .IconButton--disabled {
-    }
-    */
 
     .KeyboardInputModal__content__toggle {
         background-color: #B9BEC6;
