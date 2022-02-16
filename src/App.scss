@@ -47,7 +47,7 @@ body {
     padding: 1rem 0;
 }
 
-.App__header-menu > .IconButton {
+.App__header-menu > .IconButton:not(.App__ActionsMenu__toggle-button) {
     svg path {
         fill: #1E1E1E;
     }

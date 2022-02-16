@@ -737,7 +737,7 @@ body.gray-theme {
         background-color: #D5D8DD;
     }
 
-    .App__header-menu > .IconButton {
+    .App__header-menu > .IconButton:not(.App__ActionsMenu__toggle-button) {
         svg path {
             fill: #FFFFFF;
         }
@@ -789,6 +789,12 @@ body.gray-theme {
             }
         }
     }
+
+    // TODO: Need design input for these.
+    /*
+    .IconButton--disabled {
+    }
+    */
 
     .KeyboardInputModal__content__toggle {
         background-color: #B9BEC6;
@@ -1529,12 +1535,14 @@ body.contrast-theme {
         }
     }
 
-    .IconButton {
-        background-color: white;
-
+    .IconButton:not(.App__ActionsMenu__toggle-button) {
         svg path {
             fill: black;
         }
+    }
+
+    .IconButton {
+        background-color: white;
 
         &:hover:not(.IconButton--disabled) {
             background-color: black;
@@ -1591,6 +1599,14 @@ body.contrast-theme {
             circle {
                 fill: black;
             }
+        }
+    }
+
+    .IconButton--disabled {
+        background-color: #1E1E1E;
+
+        svg path {
+            stroke: #818A98;
         }
     }
 
