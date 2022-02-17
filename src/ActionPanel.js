@@ -35,6 +35,13 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
 
     makeStepMessageData() {
         const currentStep = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex);
+
+        let stepNumber = this.props.pressedStepIndex + 1;
+        const cachedCurrentStepLoopData = currentStep.cache;
+        if (cachedCurrentStepLoopData != null && cachedCurrentStepLoopData.get('containingLoopPosition') != null) {
+            stepNumber = cachedCurrentStepLoopData.get('containingLoopPosition');
+        }
+
         let stepName = '';
         if (currentStep.block === 'startLoop' || currentStep.block === 'endLoop') {
             stepName = this.props.intl.formatMessage(
@@ -47,12 +54,6 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
             );
         }
 
-        const cachedCurrentStepLoopData = currentStep.cache;
-        let stepNumber = this.props.pressedStepIndex + 1;
-        if (cachedCurrentStepLoopData != null && cachedCurrentStepLoopData.get('containingLoopPosition') != null) {
-            stepNumber = cachedCurrentStepLoopData.get('containingLoopPosition');
-        }
-
         let selectedCommandName = '';
         if (this.props.selectedCommandName != null) {
             selectedCommandName = this.props.intl.formatMessage(
@@ -62,15 +63,14 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                 }
             );
         }
-        const ariaLabelObj = {
+
+        return {
             'stepNumber': stepNumber,
             'stepName': stepName,
             'selectedCommandName': selectedCommandName,
             'previousStepInfo': this.makePreviousStepInfo(),
             'nextStepInfo': this.makeNextStepInfo()
         };
-
-        return ariaLabelObj;
     }
 
     makePreviousStepInfo(): ?string {
@@ -95,8 +95,8 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                 // When previous step is not loops and current step is endLoop, calculate the index the loop will move by
                 // finding its pair startLoop block
                 if (currentStep.block === 'endLoop') {
-                    const program = this.props.programSequence.getProgram();
                     const startLoopIndex = this.props.programSequence.getMatchingLoopBlockIndex(this.props.pressedStepIndex);
+                    const program = this.props.programSequence.getProgram();
                     if (startLoopIndex != null && program[startLoopIndex - 1] != null) {
                         return this.props.intl.formatMessage(
                             { id: 'CommandInfo.previousStep.loop' },
@@ -150,12 +150,12 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     { id: 'CommandInfo.nextStep.endLoop'},
                     { loopLabel: nextStep.label }
                 );
-            }else {
+            } else {
                 // When next step is not loops and current step is startLoop, calculate the index the loop will move by
                 // finding its pair endLoop block
                 if (currentStep.block === 'startLoop') {
-                    const program = this.props.programSequence.getProgram();
                     const endLoopIndex = this.props.programSequence.getMatchingLoopBlockIndex(this.props.pressedStepIndex);
+                    const program = this.props.programSequence.getProgram();
                     if (endLoopIndex != null && program[endLoopIndex + 1] != null) {
                         return this.props.intl.formatMessage(
                             { id: 'CommandInfo.nextStep.loop' },
