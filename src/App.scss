@@ -181,7 +181,8 @@ body {
 
 .App__command-palette-section {
     background-color: #30444E;
-    border-radius: 3px;
+    border-radius: 5px;
+    box-shadow: 0px 3px 1px #19282F;
     margin-bottom: .5rem;
     width: 100%;
     &:last-of-type {
@@ -190,7 +191,7 @@ body {
 }
 
 .App__command-palette-section-heading-container {
-    border-bottom: 1px solid #818A98;
+    border-bottom: 2px solid #818A98;
     width: 100%;
 }
 
