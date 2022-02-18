@@ -479,8 +479,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 data-command={command}
                 data-actionpanelgroup={true}
                 className={classes}
-                looplabel={programBlock.label}
-                loopiterationsleft={loopIterationsLeft}
+                loopLabel={programBlock.label}
+                loopIterationsLeft={loopIterationsLeft}
                 aria-label={ariaLabel}
                 aria-controls={hasActionPanelControl ? 'ActionPanel' : undefined}
                 aria-expanded={hasActionPanelControl}

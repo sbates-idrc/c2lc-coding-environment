@@ -125,6 +125,17 @@ function getProgramBlockAtPosition(programBlockEditorWrapper, index: number) {
     return getProgramBlocks(programBlockEditorWrapper).at(index);
 }
 
+function getProgramBlockLoopLabel(programBlockEditorWrapper, index: number) {
+    return getProgramBlocks(programBlockEditorWrapper).at(index)
+        .find('.command-block-loop-label-container').getDOMNode().textContent;
+}
+
+function getProgramBlockLoopCounter(programBlockEditorWrapper, index: number) {
+    return ((getProgramBlocks(programBlockEditorWrapper).at(index)
+        .find('.command-block-loop-counter')
+        .getDOMNode(): any): HTMLInputElement).value;
+}
+
 function getAddNodeButtonAtPosition(programBlockEditorWrapper, index: number) {
     const addNodeButton = programBlockEditorWrapper.find(AriaDisablingButton).filter('.AddNode__expanded-button');
     return addNodeButton.at(index);
@@ -156,12 +167,12 @@ describe('Program rendering', () => {
         });
         expect(getProgramBlocks(wrapper).length).toBe(2);
         expect(getProgramBlocks(wrapper).at(0).prop('data-command')).toBe('startLoop');
-        expect(getProgramBlockAtPosition(wrapper, 0).prop('looplabel')).toBe('A');
-        expect(getProgramBlockAtPosition(wrapper, 0).prop('loopiterationsleft')).toBe(2);
+        expect(getProgramBlockLoopLabel(wrapper, 0)).toBe('A');
+        expect(getProgramBlockLoopCounter(wrapper, 0)).toBe('2');
         expect(getProgramBlocks(wrapper).at(1).prop('data-command')).toBe('endLoop');
-        expect(getProgramBlockAtPosition(wrapper, 1).prop('looplabel')).toBe('A');
+        expect(getProgramBlockLoopLabel(wrapper, 1)).toBe('A');
         wrapper.setProps({ runningState: 'paused' });
-        expect(getProgramBlockAtPosition(wrapper, 0).prop('loopiterationsleft')).toBe(1);
+        expect(getProgramBlockLoopCounter(wrapper, 0)).toBe('1');
     })
 });
 

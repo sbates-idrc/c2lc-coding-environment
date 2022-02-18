@@ -21,8 +21,8 @@ import { ReactComponent as Loop } from './svg/Loop.svg';
 type CommandBlockProps = {
     commandName: string,
     disabled: boolean,
-    looplabel?: string,
-    loopiterationsleft?: ?number,
+    loopLabel?: string,
+    loopIterationsLeft?: ?number,
     className?: string,
     onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
 };
@@ -49,9 +49,11 @@ export default React.forwardRef<CommandBlockProps, Button>(
     (props, ref) => {
         const {
             commandName,
-            onClick,
             disabled,
+            loopLabel,
+            loopIterationsLeft,
             className,
+            onClick,
             ...otherProps
         } = props;
 
@@ -68,7 +70,7 @@ export default React.forwardRef<CommandBlockProps, Button>(
             children =
                 <div className='command-block-loop-block-container'>
                     <div className='command-block-loop-label-container'>
-                        {props.looplabel}
+                        {loopLabel}
                     </div>
                     {commandName === 'startLoop' ?
                         <input
@@ -76,7 +78,7 @@ export default React.forwardRef<CommandBlockProps, Button>(
                             maxLength='2'
                             size='2'
                             type='text'
-                            value={props.loopiterationsleft}
+                            value={loopIterationsLeft}
                             readOnly={true} />:
                         <></>
                     }
