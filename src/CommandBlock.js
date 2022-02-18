@@ -58,15 +58,7 @@ export default React.forwardRef<CommandBlockProps, Button>(
         } = props;
 
         let children = null;
-        const iconType = commandBlockIconTypes.get(commandName);
-        if (iconType) {
-            children = React.createElement(
-                iconType,
-                {
-                    className: 'command-block-svg'
-                }
-            );
-        } else {
+        if (commandName === 'startLoop' || commandName === 'endLoop') {
             children =
                 <div className='command-block-loop-block-container'>
                     <div className='command-block-loop-label-container'>
@@ -83,6 +75,16 @@ export default React.forwardRef<CommandBlockProps, Button>(
                         <></>
                     }
                 </div>
+        } else {
+            const iconType = commandBlockIconTypes.get(commandName);
+            if (iconType) {
+                children = React.createElement(
+                    iconType,
+                    {
+                        className: 'command-block-svg'
+                    }
+                );
+            }
         }
 
         const classes = classNames(
