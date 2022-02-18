@@ -163,7 +163,15 @@ describe('Program rendering', () => {
     test('Loop blocks should render with additional properties about specific loops', () => {
         expect.assertions(7);
         const { wrapper } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence([{block: 'startLoop', label: 'A', iterations: 2}, {block: 'endLoop', label: 'A'}], 0, 0, new Map([['A', 1]]))
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'endLoop', label: 'A'}
+                ],
+                0,
+                0,
+                new Map([['A', 1]])
+            )
         });
         expect(getProgramBlocks(wrapper).length).toBe(2);
         expect(getProgramBlocks(wrapper).at(0).prop('data-command')).toBe('startLoop');
