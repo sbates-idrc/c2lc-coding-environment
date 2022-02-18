@@ -56,6 +56,10 @@ export default class ProgramSequence {
         return new ProgramSequence(this.program, programCounter, this.loopCounter, loopIterationsLeft);
     }
 
+    updateProgramAndLoopIterationsLeft(program: Program, loopIterationsLeft: Map<string, number>) {
+        return new ProgramSequence(program, this.programCounter, this.loopCounter, loopIterationsLeft);
+    }
+
     incrementProgramCounter(): ProgramSequence {
         return new ProgramSequence(this.program, this.programCounter + 1, this.loopCounter, this.loopIterationsLeft);
     }

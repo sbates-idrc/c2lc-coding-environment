@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import AriaDisablingButton from './AriaDisablingButton';
+import LoopBlockContent from './LoopBlockContent';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 import { ReactComponent as Forward1 } from './svg/Forward1.svg';
@@ -22,9 +23,10 @@ type CommandBlockProps = {
     commandName: string,
     disabled: boolean,
     looplabel?: string,
-    loopiterationsleft?: ?number,
+    loopIterationsLeft?: ?number,
     className?: string,
     onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
+    onChange?: any
 };
 
 // TODO: Revise this once there is a proper strategy for typing SVG-backed
@@ -65,22 +67,18 @@ export default React.forwardRef<CommandBlockProps, Button>(
                 }
             );
         } else {
+            const loopIterationsLeft = props.loopIterationsLeft != null ?
+                props.loopIterationsLeft.toString() :
+                '0'
             children =
-                <div className='command-block-loop-block-container'>
-                    <div className='command-block-loop-label-container'>
-                        {props.looplabel}
-                    </div>
-                    {commandName === 'startLoop' ?
-                        <input
-                            className='command-block-loop-counter'
-                            maxLength='2'
-                            size='2'
-                            type='text'
-                            value={props.loopiterationsleft}
-                            readOnly={true} />:
-                        <></>
-                    }
-                </div>
+                <LoopBlockContent
+                    commandName={commandName}
+                    disabled={disabled}
+                    loopIterationsLeft={loopIterationsLeft}
+                    loopLabel={props.looplabel}
+                    stepNumber={props['data-stepnumber']}
+                    onChangeLoopIterations={props.onChange}
+                />
         }
 
         const classes = classNames(

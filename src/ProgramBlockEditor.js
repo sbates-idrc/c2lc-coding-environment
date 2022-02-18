@@ -294,6 +294,23 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         }
     };
 
+    handleChangeLoopCounter = (loopIterations: string, dataStepNumber: string, loopLabel: string) => {
+        const programSequence = this.props.programSequence;
+        const stepNumber = parseInt(dataStepNumber, 10);
+        const program = programSequence.getProgram().slice();
+        const loopIterationsLeft = programSequence.getLoopIterationsLeft();
+        const updatedIterations = parseInt(loopIterations, 10);
+        program[stepNumber] = Object.assign(
+            {},
+            program[stepNumber],
+            { iterations: updatedIterations }
+        );
+        if (this.props.runningState !== 'stopped') {
+            loopIterationsLeft.set(loopLabel, updatedIterations);
+        }
+        this.props.onChangeProgramSequence(programSequence.updateProgramAndLoopIterationsLeft(program, loopIterationsLeft));
+    }
+
     handleProgramCommandBlockAnimationEnd = (e: SyntheticEvent<HTMLButtonElement>) => {
         e.currentTarget.classList.remove('ProgramBlockEditor__program-block--updated');
     };
@@ -439,12 +456,13 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 data-actionpanelgroup={true}
                 className={classes}
                 looplabel={programBlock.label}
-                loopiterationsleft={loopIterationsLeft}
+                loopIterationsLeft={loopIterationsLeft}
                 aria-label={ariaLabel}
                 aria-controls={hasActionPanelControl ? 'ActionPanel' : undefined}
                 aria-expanded={hasActionPanelControl}
                 disabled={this.props.editingDisabled}
                 onClick={this.handleClickStep}
+                onChange={this.handleChangeLoopCounter}
                 onAnimationEnd={this.handleProgramCommandBlockAnimationEnd}
             />
         );
