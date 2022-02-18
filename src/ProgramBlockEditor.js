@@ -431,6 +431,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             paused && 'ProgramBlockEditor__program-block--paused'
         );
         const command = programBlock.block;
+        const loopLabel = programBlock.label;
         const cachedLoopData = programBlock.cache;
         let ariaLabel = this.props.intl.formatMessage(
             { id: 'ProgramBlockEditor.command' },
@@ -438,7 +439,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 index: programStepNumber + 1,
                 command: this.props.intl.formatMessage(
                     {id: `Command.${command}`},
-                    {loopLabel: programBlock.label}
+                    {loopLabel}
                 )
             }
         );
@@ -452,10 +453,19 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                     parentLoopLabel: cachedLoopData.get('containingLoopLabel'),
                     command: this.props.intl.formatMessage(
                         {id: `Command.${command}`},
-                        {loopLabel: programBlock.label}
+                        {loopLabel}
                     )
                 },
             );
+        }
+
+        let loopIterationsLeft = programBlock.iterations;
+
+        // Show loopItertionsLeft when program is not stopped, or else, show iterations
+        if (this.props.runningState !== 'stopped') {
+            if (loopLabel != null && this.props.programSequence.getLoopIterationsLeft().get(loopLabel) != null) {
+                loopIterationsLeft = this.props.programSequence.getLoopIterationsLeft().get(loopLabel);
+            }
         }
 
         return (
@@ -469,6 +479,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 data-command={command}
                 data-actionpanelgroup={true}
                 className={classes}
+                loopLabel={programBlock.label}
+                loopIterationsLeft={loopIterationsLeft}
                 aria-label={ariaLabel}
                 aria-controls={hasActionPanelControl ? 'ActionPanel' : undefined}
                 aria-expanded={hasActionPanelControl}

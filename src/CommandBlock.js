@@ -17,14 +17,14 @@ import { ReactComponent as Right45 } from './svg/Right45.svg';
 import { ReactComponent as Right90 } from './svg/Right90.svg';
 import { ReactComponent as Right180 } from './svg/Right180.svg';
 import { ReactComponent as Loop } from './svg/Loop.svg';
-import { ReactComponent as LoopStart } from './svg/LoopStart.svg';
-import { ReactComponent as LoopEnd } from './svg/LoopEnd.svg';
 
 type CommandBlockProps = {
     commandName: string,
-    onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
     disabled: boolean,
-    className?: string
+    loopLabel?: string,
+    loopIterationsLeft?: ?number,
+    className?: string,
+    onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
 };
 
 // TODO: Revise this once there is a proper strategy for typing SVG-backed
@@ -42,30 +42,49 @@ export const commandBlockIconTypes = new Map<string, any>([
     ['right45', Right45],
     ['right90', Right90],
     ['right180', Right180],
-    ['loop', Loop],
-    ['startLoop', LoopStart],
-    ['endLoop', LoopEnd]
+    ['loop', Loop]
 ]);
 
 export default React.forwardRef<CommandBlockProps, Button>(
     (props, ref) => {
         const {
             commandName,
-            onClick,
             disabled,
+            loopLabel,
+            loopIterationsLeft,
             className,
+            onClick,
             ...otherProps
         } = props;
 
-        let icon = null;
-        const iconType = commandBlockIconTypes.get(commandName);
-        if (iconType) {
-            icon = React.createElement(
-                iconType,
-                {
-                    className: 'command-block-svg'
-                }
-            );
+        let children = null;
+        if (commandName === 'startLoop' || commandName === 'endLoop') {
+            children =
+                <div className='command-block-loop-block-container'>
+                    <div className='command-block-loop-label-container'>
+                        {loopLabel}
+                    </div>
+                    {commandName === 'startLoop' ?
+                        <input
+                            className='command-block-loop-counter'
+                            maxLength='2'
+                            size='2'
+                            type='text'
+                            value={loopIterationsLeft}
+                            readOnly={true} />:
+                        <></>
+                    }
+                </div>
+        } else {
+            const iconType = commandBlockIconTypes.get(commandName);
+            if (iconType) {
+                children = React.createElement(
+                    iconType,
+                    {
+                        className: 'command-block-svg'
+                    }
+                );
+            }
         }
 
         const classes = classNames(
@@ -82,7 +101,7 @@ export default React.forwardRef<CommandBlockProps, Button>(
                 'disabled': disabled,
                 'ref': ref
             }, otherProps),
-            icon
+            children
         );
     }
 );
