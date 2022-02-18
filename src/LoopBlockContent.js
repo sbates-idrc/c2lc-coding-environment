@@ -7,7 +7,7 @@ type LoopBlockContentProps = {
     disabled: boolean,
     loopIterationsLeft: string,
     loopLabel: ?string,
-    stepNumber: string,
+    stepNumber: number,
     onChangeLoopIterations: any
 };
 

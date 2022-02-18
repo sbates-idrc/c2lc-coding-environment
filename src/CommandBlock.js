@@ -22,11 +22,12 @@ import { ReactComponent as Loop } from './svg/Loop.svg';
 type CommandBlockProps = {
     commandName: string,
     disabled: boolean,
-    looplabel?: string,
+    loopLabel?: string,
     loopIterationsLeft?: ?number,
+    stepNumber?: number,
     className?: string,
     onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
-    onChange?: any
+    onChangeLoopIterations?: (loopIterations: string, stepNumber: number, loopLabel: string) => void
 };
 
 // TODO: Revise this once there is a proper strategy for typing SVG-backed
@@ -51,34 +52,37 @@ export default React.forwardRef<CommandBlockProps, Button>(
     (props, ref) => {
         const {
             commandName,
-            onClick,
             disabled,
+            loopLabel,
+            loopIterationsLeft,
+            stepNumber,
             className,
+            onClick,
+            onChangeLoopIterations,
             ...otherProps
         } = props;
 
         let children = null;
-        const iconType = commandBlockIconTypes.get(commandName);
-        if (iconType) {
-            children = React.createElement(
-                iconType,
-                {
-                    className: 'command-block-svg'
-                }
-            );
-        } else {
-            const loopIterationsLeft = props.loopIterationsLeft != null ?
-                props.loopIterationsLeft.toString() :
-                '0'
+        if (commandName === 'startLoop' || commandName === 'endLoop') {
             children =
                 <LoopBlockContent
                     commandName={commandName}
                     disabled={disabled}
-                    loopIterationsLeft={loopIterationsLeft}
-                    loopLabel={props.looplabel}
-                    stepNumber={props['data-stepnumber']}
-                    onChangeLoopIterations={props.onChange}
+                    loopIterationsLeft={loopIterationsLeft != null ? loopIterationsLeft.toString() : ''}
+                    loopLabel={loopLabel}
+                    stepNumber={stepNumber != null ? stepNumber : 0}
+                    onChangeLoopIterations={onChangeLoopIterations}
                 />
+        } else {
+            const iconType = commandBlockIconTypes.get(commandName);
+            if (iconType) {
+                children = React.createElement(
+                    iconType,
+                    {
+                        className: 'command-block-svg'
+                    }
+                );
+            }
         }
 
         const classes = classNames(
@@ -88,8 +92,7 @@ export default React.forwardRef<CommandBlockProps, Button>(
 
         return React.createElement(
             AriaDisablingButton,
-            Object.assign({},
-            {
+            Object.assign({
                 'variant': `command-block--${commandName}`,
                 'className': classes,
                 'onClick': onClick,

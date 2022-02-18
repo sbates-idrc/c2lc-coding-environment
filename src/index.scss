@@ -81,6 +81,7 @@ button.command-block.btn-command-block--startLoop {
     height: 5rem;
     border-radius: 35px 10px 10px 35px;
     background-color: #DDDDDD;
+    transition: unset;
     .command-block-loop-counter {
         width: 2rem;
         text-align: center;
@@ -102,6 +103,7 @@ button.command-block.btn-command-block--endLoop {
     border-radius: 10px 35px 35px 10px;
     background-color: #DDDDDD;
     border: 2px solid transparent;
+    transition: unset;
     .command-block-loop-block-container {
         margin-right: 1.5rem;
     }

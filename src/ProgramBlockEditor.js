@@ -254,13 +254,23 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
     handleActionPanelMoveToPreviousStep = (index: number) => {
         this.props.audioManager.playAnnouncement('moveToPrevious', this.props.intl);
-        const previousStepIndex = index - 1;
+        let previousStepIndex = index - 1;
+        const program = this.props.programSequence.getProgram();
+        if (program[index].block === 'endLoop') {
+            const label = program[index].label;
+            for (let i = 0; i < index; i++) {
+                if (program[i].block === 'startLoop' && program[i].label === label) {
+                    previousStepIndex = i - 1;
+                    break;
+                }
+            }
+        }
         const previousStep = this.props.programSequence.getProgramStepAt(previousStepIndex);
         if (previousStep != null) {
             this.setState({
                 focusedActionPanelOptionName: 'moveToPreviousStep'
             });
-            this.props.onChangeActionPanelStepIndex(previousStepIndex);
+            this.props.onChangeActionPanelStepIndex(index - 1);
             this.props.onChangeProgramSequence(
                 this.props.programSequence.swapStep(index, previousStepIndex)
             );
@@ -269,13 +279,23 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
     handleActionPanelMoveToNextStep = (index: number) => {
         this.props.audioManager.playAnnouncement('moveToNext', this.props.intl);
-        const nextStepIndex = index + 1;
+        let nextStepIndex = index + 1;
+        const program = this.props.programSequence.getProgram();
+        if (program[index].block === 'startLoop') {
+            const label = program[index].label;
+            for (let i = index; i < program.length; i++) {
+                if (program[i].block === 'endLoop' && program[i].label === label) {
+                    nextStepIndex = i + 1;
+                    break;
+                }
+            }
+        }
         const nextStep = this.props.programSequence.getProgramStepAt(nextStepIndex);
         if (nextStep != null) {
             this.setState({
                 focusedActionPanelOptionName: 'moveToNextStep'
             });
-            this.props.onChangeActionPanelStepIndex(nextStepIndex);
+            this.props.onChangeActionPanelStepIndex(index + 1);
             this.props.onChangeProgramSequence(
                 this.props.programSequence.swapStep(index, nextStepIndex)
             );
@@ -294,9 +314,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         }
     };
 
-    handleChangeLoopCounter = (loopIterations: string, dataStepNumber: string, loopLabel: string) => {
+    handleChangeLoopIterations = (loopIterations: string, stepNumber: number, loopLabel: string) => {
         const programSequence = this.props.programSequence;
-        const stepNumber = parseInt(dataStepNumber, 10);
         const program = programSequence.getProgram().slice();
         const loopIterationsLeft = programSequence.getLoopIterationsLeft();
         const updatedIterations = parseInt(loopIterations, 10);
@@ -428,9 +447,10 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             paused && 'ProgramBlockEditor__program-block--paused'
         );
         const command = programBlock.block;
-        const loopLabel = programBlock.label ? programBlock.label : null;
-        const ariaLabel = this.props.intl.formatMessage({
-            id: 'ProgramBlockEditor.command' },
+        const loopLabel = programBlock.label;
+        const cachedLoopData = programBlock.cache;
+        let ariaLabel = this.props.intl.formatMessage(
+            { id: 'ProgramBlockEditor.command' },
             {
                 index: programStepNumber + 1,
                 command: this.props.intl.formatMessage(
@@ -439,9 +459,29 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 )
             }
         );
+        if (cachedLoopData != null &&
+            cachedLoopData.get('containingLoopPosition') != null &&
+            cachedLoopData.get('containingLoopLabel')) {
+            ariaLabel = this.props.intl.formatMessage(
+                { id: 'ProgramBlockEditor.nestedCommand' },
+                {
+                    index: cachedLoopData.get('containingLoopPosition'),
+                    parentLoopLabel: cachedLoopData.get('containingLoopLabel'),
+                    command: this.props.intl.formatMessage(
+                        {id: `Command.${command}`},
+                        {loopLabel}
+                    )
+                },
+            );
+        }
+
         let loopIterationsLeft = programBlock.iterations;
-        if (loopLabel != null && this.props.programSequence.getLoopIterationsLeft().get(loopLabel) != null) {
-            loopIterationsLeft = this.props.programSequence.getLoopIterationsLeft().get(loopLabel);
+
+        // Show loopItertionsLeft when program is not stopped, or else, show iterations
+        if (this.props.runningState !== 'stopped') {
+            if (loopLabel != null && this.props.programSequence.getLoopIterationsLeft().get(loopLabel) != null) {
+                loopIterationsLeft = this.props.programSequence.getLoopIterationsLeft().get(loopLabel);
+            }
         }
 
         return (
@@ -455,14 +495,15 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 data-command={command}
                 data-actionpanelgroup={true}
                 className={classes}
-                looplabel={programBlock.label}
+                loopLabel={programBlock.label}
                 loopIterationsLeft={loopIterationsLeft}
+                stepNumber={programStepNumber}
                 aria-label={ariaLabel}
                 aria-controls={hasActionPanelControl ? 'ActionPanel' : undefined}
                 aria-expanded={hasActionPanelControl}
                 disabled={this.props.editingDisabled}
                 onClick={this.handleClickStep}
-                onChange={this.handleChangeLoopCounter}
+                onChangeLoopIterations={this.handleChangeLoopIterations}
                 onAnimationEnd={this.handleProgramCommandBlockAnimationEnd}
             />
         );
