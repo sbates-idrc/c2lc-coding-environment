@@ -21,8 +21,8 @@ import { ReactComponent as Loop } from './svg/Loop.svg';
 type CommandBlockProps = {
     commandName: string,
     disabled: boolean,
-    looplabel?: string,
-    loopiterationsleft?: ?number,
+    loopLabel?: string,
+    loopIterationsLeft?: ?number,
     className?: string,
     onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
 };
@@ -49,26 +49,20 @@ export default React.forwardRef<CommandBlockProps, Button>(
     (props, ref) => {
         const {
             commandName,
-            onClick,
             disabled,
+            loopLabel,
+            loopIterationsLeft,
             className,
+            onClick,
             ...otherProps
         } = props;
 
         let children = null;
-        const iconType = commandBlockIconTypes.get(commandName);
-        if (iconType) {
-            children = React.createElement(
-                iconType,
-                {
-                    className: 'command-block-svg'
-                }
-            );
-        } else {
+        if (commandName === 'startLoop' || commandName === 'endLoop') {
             children =
                 <div className='command-block-loop-block-container'>
                     <div className='command-block-loop-label-container'>
-                        {props.looplabel}
+                        {loopLabel}
                     </div>
                     {commandName === 'startLoop' ?
                         <input
@@ -76,11 +70,21 @@ export default React.forwardRef<CommandBlockProps, Button>(
                             maxLength='2'
                             size='2'
                             type='text'
-                            value={props.loopiterationsleft}
+                            value={loopIterationsLeft}
                             readOnly={true} />:
                         <></>
                     }
                 </div>
+        } else {
+            const iconType = commandBlockIconTypes.get(commandName);
+            if (iconType) {
+                children = React.createElement(
+                    iconType,
+                    {
+                        className: 'command-block-svg'
+                    }
+                );
+            }
         }
 
         const classes = classNames(
@@ -90,8 +94,7 @@ export default React.forwardRef<CommandBlockProps, Button>(
 
         return React.createElement(
             AriaDisablingButton,
-            Object.assign({},
-            {
+            Object.assign({
                 'variant': `command-block--${commandName}`,
                 'className': classes,
                 'onClick': onClick,

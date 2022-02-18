@@ -1419,15 +1419,9 @@ export class App extends React.Component<AppProps, AppState> {
 
             if (programQuery != null) {
                 try {
-                    const parseResult = this.programSerializer.deserialize(programQuery);
-                    const programSequence: ProgramSequence = new ProgramSequence(
-                        parseResult.program,
-                        0,
-                        parseResult.highestLoopNumber,
-                        new Map()
-                    );
+                    const parserResult = this.programSerializer.deserialize(programQuery);
                     this.setState({
-                        programSequence: programSequence
+                        programSequence: ProgramSequence.makeProgramSequenceFromParserResult(parserResult)
                     });
                 } catch(err) {
                     /* eslint-disable no-console */
@@ -1476,15 +1470,9 @@ export class App extends React.Component<AppProps, AppState> {
 
             if (localProgram != null) {
                 try {
-                    const parseResult = this.programSerializer.deserialize(localProgram);
-                    const programSequence: ProgramSequence = new ProgramSequence(
-                        parseResult.program,
-                        0,
-                        parseResult.highestLoopNumber,
-                        new Map()
-                    );
+                    const parserResult = this.programSerializer.deserialize(localProgram);
                     this.setState({
-                        programSequence: programSequence
+                        programSequence: ProgramSequence.makeProgramSequenceFromParserResult(parserResult)
                     });
                 } catch(err) {
                     /* eslint-disable no-console */
