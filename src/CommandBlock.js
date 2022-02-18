@@ -94,8 +94,7 @@ export default React.forwardRef<CommandBlockProps, Button>(
 
         return React.createElement(
             AriaDisablingButton,
-            Object.assign({},
-            {
+            Object.assign({
                 'variant': `command-block--${commandName}`,
                 'className': classes,
                 'onClick': onClick,
