@@ -27,7 +27,7 @@ configure({ adapter: new Adapter()});
 const defaultProgramBlockEditorProps = {
     interpreterIsRunning: false,
     characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
-    programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 0, 0),
+    programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 0, 0, new Map()),
     runningState: 'stopped',
     actionPanelStepIndex: null,
     selectedAction: null,
@@ -44,7 +44,7 @@ const defaultProgramBlockEditorProps = {
 function createMountProgramBlockEditor(props) {
     // $FlowFixMe: Flow doesn't know about the Jest mock API
     AudioManagerImpl.mockClear();
-    const audioManagerInstance = new AudioManagerImpl(true, true);
+    const audioManagerInstance = new AudioManagerImpl(true, true, true);
     // $FlowFixMe: Flow doesn't know about the Jest mock API
     const audioManagerMock = AudioManagerImpl.mock.instances[0];
 
@@ -125,6 +125,17 @@ function getProgramBlockAtPosition(programBlockEditorWrapper, index: number) {
     return getProgramBlocks(programBlockEditorWrapper).at(index);
 }
 
+function getProgramBlockLoopLabel(programBlockEditorWrapper, index: number) {
+    return getProgramBlocks(programBlockEditorWrapper).at(index)
+        .find('.command-block-loop-label-container').getDOMNode().textContent;
+}
+
+function getProgramBlockLoopCounter(programBlockEditorWrapper, index: number) {
+    return ((getProgramBlocks(programBlockEditorWrapper).at(index)
+        .find('.command-block-loop-counter')
+        .getDOMNode(): any): HTMLInputElement).value;
+}
+
 function getAddNodeButtonAtPosition(programBlockEditorWrapper, index: number) {
     const addNodeButton = programBlockEditorWrapper.find(AriaDisablingButton).filter('.AddNode__expanded-button');
     return addNodeButton.at(index);
@@ -149,6 +160,28 @@ describe('Program rendering', () => {
         expect(getProgramBlocks(wrapper).at(2).prop('data-command')).toBe('forward1');
         expect(getProgramBlocks(wrapper).at(3).prop('data-command')).toBe('left45');
     });
+    test('Loop blocks should render with additional properties about specific loops', () => {
+        expect.assertions(7);
+        const { wrapper } = createMountProgramBlockEditor({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'endLoop', label: 'A'}
+                ],
+                0,
+                0,
+                new Map([['A', 1]])
+            )
+        });
+        expect(getProgramBlocks(wrapper).length).toBe(2);
+        expect(getProgramBlocks(wrapper).at(0).prop('data-command')).toBe('startLoop');
+        expect(getProgramBlockLoopLabel(wrapper, 0)).toBe('A');
+        expect(getProgramBlockLoopCounter(wrapper, 0)).toBe('2');
+        expect(getProgramBlocks(wrapper).at(1).prop('data-command')).toBe('endLoop');
+        expect(getProgramBlockLoopLabel(wrapper, 1)).toBe('A');
+        wrapper.setProps({ runningState: 'paused' });
+        expect(getProgramBlockLoopCounter(wrapper, 0)).toBe('1');
+    })
 });
 
 test('When a step is clicked, action panel should render next to the step', () => {
@@ -204,7 +237,7 @@ describe("Add nodes", () => {
         expect.assertions(3);
 
         const { wrapper } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'right45'}], 0, 0),
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'right45'}], 0, 0, new Map()),
             addNodeExpandedMode: true
         });
 
@@ -222,7 +255,7 @@ describe("Add nodes", () => {
         expect.assertions(3);
 
         const { wrapper } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'right45'}], 0, 0),
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'right45'}], 0, 0, new Map()),
             selectedAction: 'left45',
             addNodeExpandedMode: true
         });
@@ -248,7 +281,7 @@ describe("Add nodes", () => {
         expect.assertions(1);
 
         const { wrapper } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence([], 0, 0),
+            programSequence: new ProgramSequence([], 0, 0, new Map()),
             selectedAction: 'left45'
         });
 
@@ -264,7 +297,7 @@ describe("Add nodes", () => {
         expect.assertions(1);
 
         const { wrapper } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence([], 0, 0)
+            programSequence: new ProgramSequence([], 0, 0, new Map())
         });
 
         const soleAddButton  = getAddNodeButtonAtPosition(wrapper, 0);
@@ -300,7 +333,7 @@ describe("Add program steps", () => {
 
         // Given a program of 5 forwards and 'left45' as the selected command
         const { wrapper, mockInsertSelectedActionIntoProgramHandler } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}], 0, 0),
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}], 0, 0, new Map()),
             selectedAction: 'left45'
         });
 
@@ -321,7 +354,7 @@ describe("Add program steps", () => {
 
         // Given a program of 5 forwards and 'left45' as the selected command
         const { wrapper, mockInsertSelectedActionIntoProgramHandler } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}], 0, 0),
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}], 0, 0, new Map()),
             selectedAction: 'left45',
             addNodeExpandedMode: true
         });
@@ -342,7 +375,7 @@ describe("Add program steps", () => {
 
         // Given a program of 5 forwards and 'left45' as the selected command
         const { wrapper, mockInsertSelectedActionIntoProgramHandler } = createMountProgramBlockEditor({
-            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}], 0, 0),
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}], 0, 0, new Map()),
             selectedAction: 'left45',
             addNodeExpandedMode: true
         });
@@ -543,7 +576,7 @@ describe('Autoscroll to show a step after the active program step', () => {
         getProgramSequenceContainer(wrapper).ref.current.scrollTo = mockScrollTo;
 
         wrapper.setProps({
-            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 0, 0)
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 0, 0, new Map())
         });
 
         expect(mockScrollTo.mock.calls.length).toBe(1);
@@ -582,7 +615,7 @@ describe('Autoscroll to show a step after the active program step', () => {
         // Trigger a scroll
         wrapper.setProps({
             runningState: 'running',
-            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 2, 0)
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 2, 0, new Map())
         });
 
         expect(programSequenceContainer.ref.current.scrollLeft).toBe(200 + 2300 - 100 - 1000);
@@ -618,7 +651,7 @@ describe('Autoscroll to show a step after the active program step', () => {
         // Trigger a scroll
         wrapper.setProps({
             runningState: 'running',
-            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 2, 0)
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 2, 0, new Map())
         });
 
         expect(programSequenceContainer.ref.current.scrollLeft).toBe(2000 - 100 - 200);
@@ -654,7 +687,7 @@ describe('Autoscroll to show a step after the active program step', () => {
         // Trigger a scroll
         wrapper.setProps({
             runningState: 'running',
-            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 3, 0)
+            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 3, 0, new Map())
         });
 
         expect(programSequenceContainer.ref.current.scrollLeft).toBe(2000 - 100 - 200);
@@ -669,7 +702,7 @@ test('focusCommandBlockAfterUpdate', () => {
     window.HTMLElement.prototype.focus = mockFocus;
 
     const { wrapper, programBlockEditorRef } = createMountProgramBlockEditor({
-        programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0)
+        programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0, new Map())
     });
 
     // When focusCommandBlockAfterUpdate is called
@@ -677,7 +710,7 @@ test('focusCommandBlockAfterUpdate', () => {
     programBlockEditorRef.current.focusCommandBlockAfterUpdate(1);
 
     // And the program is updated
-    wrapper.setProps({ programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward3'}, {block: 'forward2'}], 0, 0) });
+    wrapper.setProps({ programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward3'}, {block: 'forward2'}], 0, 0, new Map()) });
 
     // Then the program step is focused
     expect(mockFocus.mock.calls.length).toBe(1);
@@ -693,7 +726,7 @@ test('focusAddNodeAfterUpdate', () => {
     window.HTMLElement.prototype.focus = mockFocus;
 
     const { wrapper, programBlockEditorRef } = createMountProgramBlockEditor({
-        programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0),
+        programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0, new Map()),
         addNodeExpandedMode: true
     });
 
@@ -702,7 +735,7 @@ test('focusAddNodeAfterUpdate', () => {
     programBlockEditorRef.current.focusAddNodeAfterUpdate(1);
 
     // And the program is updated
-    wrapper.setProps({ programSequence: new ProgramSequence([{block: 'forward1'}], 0, 0) });
+    wrapper.setProps({ programSequence: new ProgramSequence([{block: 'forward1'}], 0, 0, new Map()) });
 
     // Then the add-node is focused
     expect(mockFocus.mock.calls.length).toBe(1);
@@ -719,7 +752,7 @@ test('scrollToAddNodeAfterUpdate', () => {
 
     // Given a program of 5 forwards and 'left45' as the selected command
     const { wrapper, programBlockEditorRef } = createMountProgramBlockEditor({
-        programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}], 0, 0),
+        programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}], 0, 0, new Map()),
         selectedAction: 'left45'
     });
 
@@ -728,7 +761,7 @@ test('scrollToAddNodeAfterUpdate', () => {
     programBlockEditorRef.current.scrollToAddNodeAfterUpdate(6);
 
     // And the program is updated
-    wrapper.setProps({ programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'left45'}], 0, 0) });
+    wrapper.setProps({ programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'forward1'}, {block: 'left45'}], 0, 0, new Map()) });
 
     // Then the ProgramBlockEditor is scrolled
     expect(mockScrollIntoView.mock.calls.length).toBe(1);

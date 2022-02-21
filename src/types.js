@@ -27,10 +27,13 @@ export type EditorMode = 'text' | 'block';
 */
 export type ThemeName = 'default' | 'light' | 'dark' | 'gray' | 'contrast';
 
+export type ProgramBlockCache = Map<string, number | string>;
+
 export type ProgramBlock = {
     block: string,
     iterations?: number,
-    label?: string
+    label?: string,
+    cache?: ProgramBlockCache;
 };
 
 export type Program = Array<ProgramBlock>;
@@ -61,6 +64,7 @@ export interface AudioManager {
     playSoundForCharacterState(samplerKey: string, releaseTimeInMs: number, characterState: CharacterState, sceneDimension: SceneDimensions) : void;
     setAnnouncementsEnabled(value: boolean) : void;
     setAudioEnabled(value: boolean) : void;
+    setSonificationEnabled(value: boolean) : void;
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/API/SpeechGrammar
