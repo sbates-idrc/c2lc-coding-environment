@@ -1796,13 +1796,13 @@ body.contrast-theme {
         background-color: #FFFFFF;
         .LoopBlockContent-loopLabelContainer {
             background-color: #FFFFFF;
-            color: #1E1E1E;
+            color: black;
         }
         &:hover {
             border: 2px solid #FFFFFF;
-            background-color: #1E1E1E;
+            background-color: black;
             .LoopBlockContent-loopLabelContainer {
-                background-color: #1E1E1E;
+                background-color: black;
                 color: #FFFFFF;
             }
         }
