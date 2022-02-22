@@ -23,7 +23,7 @@ type CommandBlockProps = {
     commandName: string,
     disabled: boolean,
     loopLabel?: string,
-    loopIterationsLeft?: ?number,
+    loopIterations?: ?number,
     stepNumber?: number,
     className?: string,
     onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
@@ -54,7 +54,7 @@ export default React.forwardRef<CommandBlockProps, Button>(
             commandName,
             disabled,
             loopLabel,
-            loopIterationsLeft,
+            loopIterations,
             stepNumber,
             className,
             onClick,
@@ -68,7 +68,7 @@ export default React.forwardRef<CommandBlockProps, Button>(
                 <LoopBlockContent
                     commandName={commandName}
                     disabled={disabled}
-                    loopIterationsLeft={loopIterationsLeft != null ? loopIterationsLeft.toString() : ''}
+                    loopIterations={loopIterations != null ? loopIterations.toString() : ''}
                     loopLabel={loopLabel}
                     stepNumber={stepNumber != null ? stepNumber : 0}
                     onChangeLoopIterations={onChangeLoopIterations}
