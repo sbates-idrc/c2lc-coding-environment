@@ -127,12 +127,12 @@ function getProgramBlockAtPosition(programBlockEditorWrapper, index: number) {
 
 function getProgramBlockLoopLabel(programBlockEditorWrapper, index: number) {
     return getProgramBlocks(programBlockEditorWrapper).at(index)
-        .find('.command-block-loop-label-container').getDOMNode().textContent;
+        .find('.LoopBlockContent-loopLabelContainer').getDOMNode().textContent;
 }
 
-function getProgramBlockLoopCounter(programBlockEditorWrapper, index: number) {
+function getProgramBlockLoopIterations(programBlockEditorWrapper, index: number) {
     return ((getProgramBlocks(programBlockEditorWrapper).at(index)
-        .find('.command-block-loop-counter')
+        .find('.LoopBlockContent__loopIterations')
         .getDOMNode(): any): HTMLInputElement).value;
 }
 
@@ -176,11 +176,11 @@ describe('Program rendering', () => {
         expect(getProgramBlocks(wrapper).length).toBe(2);
         expect(getProgramBlocks(wrapper).at(0).prop('data-command')).toBe('startLoop');
         expect(getProgramBlockLoopLabel(wrapper, 0)).toBe('A');
-        expect(getProgramBlockLoopCounter(wrapper, 0)).toBe('2');
+        expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('2');
         expect(getProgramBlocks(wrapper).at(1).prop('data-command')).toBe('endLoop');
         expect(getProgramBlockLoopLabel(wrapper, 1)).toBe('A');
         wrapper.setProps({ runningState: 'paused' });
-        expect(getProgramBlockLoopCounter(wrapper, 0)).toBe('1');
+        expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('1');
     })
 });
 
