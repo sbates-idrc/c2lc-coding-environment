@@ -5,13 +5,14 @@ import React from 'react';
 type LoopBlockContentProps = {
     commandName: string,
     disabled: boolean,
-    loopIterationsLeft: string,
+    loopIterations: string,
     loopLabel: ?string,
     stepNumber: number,
     onChangeLoopIterations: any
 };
 
 type LoopBlockContentState = {
+    prevPropsLoopIterations: string,
     loopIterations: string
 };
 
@@ -19,11 +20,24 @@ export default class LoopBlockContent extends React.Component<LoopBlockContentPr
     constructor(props: LoopBlockContentProps) {
         super(props);
         this.state = {
-            loopIterations: this.props.loopIterationsLeft
+            prevPropsLoopIterations: this.props.loopIterations,
+            loopIterations: this.props.loopIterations
         }
     }
 
-    handleChangeLoopCounter = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+    static getDerivedStateFromProps(props: LoopBlockContentProps, state: LoopBlockContentState) {
+        if (props.loopIterations !== state.prevPropsLoopIterations) {
+            const currentLoopIterations = props.loopIterations;
+            return {
+                prevPropsLoopIterationsLeft: currentLoopIterations,
+                loopIterations: currentLoopIterations
+            };
+        } else {
+            return null;
+        }
+    }
+
+    handleChangeLoopIterations = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         this.setState({loopIterations: e.currentTarget.value});
     }
 
@@ -31,51 +45,43 @@ export default class LoopBlockContent extends React.Component<LoopBlockContentPr
         const enterKey = 'Enter';
         if (e.key === enterKey) {
             e.preventDefault();
-            const loopIterationsValue = e.currentTarget.value;
-            if (loopIterationsValue >= '0' && loopIterationsValue <= '99') {
+            const loopIterationsValue = parseInt(e.currentTarget.value, 10);
+            if (loopIterationsValue >= 0 && loopIterationsValue <= 99) {
                 this.props.onChangeLoopIterations(this.state.loopIterations, this.props.stepNumber, this.props.loopLabel);
             } else {
-                this.setState({loopIterations: this.props.loopIterationsLeft});
+                this.setState({loopIterations: this.props.loopIterations});
             }
         }
     }
 
     handleBlurLoopIterations = (e: SyntheticEvent<HTMLInputElement>) => {
-        const loopIterationsValue = e.currentTarget.value;
-        if (loopIterationsValue >= '0' && loopIterationsValue <= '99') {
+        const loopIterationsValue = parseInt(e.currentTarget.value, 10);
+        if (loopIterationsValue >= 0 && loopIterationsValue <= 99) {
             this.props.onChangeLoopIterations(this.state.loopIterations, this.props.stepNumber, this.props.loopLabel);
         } else {
-            this.setState({loopIterations: this.props.loopIterationsLeft});
+            this.setState({loopIterations: this.state.prevPropsLoopIterations});
         }
     }
 
     render() {
         return (
-            <div className='command-block-loop-block-container'>
-                <div className='command-block-loop-label-container'>
+            <div className='LoopBlockContent-container'>
+                <div className='LoopBlockContent-loopLabelContainer'>
                     {this.props.loopLabel}
                 </div>
                 {this.props.commandName === 'startLoop' ?
                     <input
-                        className='command-block-loop-counter'
+                        className='LoopBlockContent__loopIterations'
                         maxLength='2'
                         size='2'
                         type='text'
                         value={this.state.loopIterations}
-                        onChange={!this.props.disabled ? this.handleChangeLoopCounter : () => {}}
+                        onChange={!this.props.disabled ? this.handleChangeLoopIterations : () => {}}
                         onKeyDown={this.handleKeyDownLoopIterations}
                         onBlur={this.handleBlurLoopIterations} />:
                     <></>
                 }
             </div>
         );
-    }
-
-    componentDidUpdate(prevProps: LoopBlockContentProps) {
-        if (prevProps.loopIterationsLeft !== this.props.loopIterationsLeft) {
-            this.setState({
-                loopIterations: this.props.loopIterationsLeft
-            });
-        }
     }
 }
