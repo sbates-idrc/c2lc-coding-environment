@@ -191,6 +191,11 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
         }
     }
 
+    getReplaceIsVisible(): boolean {
+        const currentStepName = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex).block;
+        return currentStepName !== 'startLoop' && currentStepName !== 'endLoop';
+    }
+
     getMoveToNextStepDisabled(): boolean {
         const programSequence = this.props.programSequence;
         const programLastIndex = programSequence.getProgramLength() - 1;
@@ -238,6 +243,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
         const stepMessageData = this.makeStepMessageData();
         const moveToNextStepIsDisabled = this.getMoveToNextStepDisabled();
         const moveToPreviousStepIsDisabled = this.getMoveToPreviousStepDisabled();
+        const replaceIsVisible = this.getReplaceIsVisible();
         return (
             <React.Fragment>
                 <div className="ActionPanel__background">
@@ -256,14 +262,16 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                         onClick={this.handleClickDelete}>
                         <DeleteIcon className='ActionPanel__action-button-svg' />
                     </AriaDisablingButton>
-                    <AriaDisablingButton
-                        name='replaceCurrentStep'
-                        disabled={false}
-                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.replace'}, stepMessageData)}
-                        className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button focus-trap-action-panel-replace__replace_button'
-                        onClick={this.handleClickReplace}>
-                        <ReplaceIcon className='ActionPanel__action-button-svg' />
-                    </AriaDisablingButton>
+                    {replaceIsVisible &&
+                        <AriaDisablingButton
+                            name='replaceCurrentStep'
+                            disabled={false}
+                            aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.replace'}, stepMessageData)}
+                            className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button focus-trap-action-panel-replace__replace_button'
+                            onClick={this.handleClickReplace}>
+                            <ReplaceIcon className='ActionPanel__action-button-svg' />
+                        </AriaDisablingButton>
+                    }
                     <AriaDisablingButton
                         name='moveToPreviousStep'
                         disabled={moveToPreviousStepIsDisabled}
