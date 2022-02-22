@@ -1539,7 +1539,7 @@ body.contrast-theme {
         }
     }
 
-    .IconButton:not(.App__ActionsMenu__toggle-button) {
+    .App__ActionsMenu.IconButton:not(.App__ActionsMenu__toggle-button) {
         svg path {
             fill: black;
         }
@@ -1576,7 +1576,6 @@ body.contrast-theme {
 
             .App__header-actionsMenu-icon {
                 path {
-                    fill: white;
                     stroke: white;
                 }
             }
