@@ -113,10 +113,10 @@ it("Allows reenabling 'used' items that are hidden.", () => {
 
 test.each([
     // disallowed, used , expectedDisabled
-    [  true , false, false  ],
-    [  true , true , false  ],
     [  false, false, false  ],
     [  false, true , true   ],
+    [  true , false, false  ],
+    [  true , true , false  ],
 ])("The menu item is disabled when 'allowed' and 'used'.",
     (disallowed: boolean, used: boolean, expectedDisabled: boolean) => {
         expect.assertions(2);

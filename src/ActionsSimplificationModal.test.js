@@ -22,7 +22,7 @@ function createActionsMenu(props) {
                 {
                     show: true,
                     disallowedActions: {},
-                    programSequence: new ProgramSequence([], 0, 0),
+                    programSequence: new ProgramSequence([], 0, 0, new Map()),
                     onCancel: mockOnCancel,
                     onConfirm: mockOnConfirm
                 },
@@ -82,7 +82,7 @@ describe("When the cancel button is clicked.", ()=> {
 
         expect(modal.state.disallowedActions.left90).toBe(true);
 
-        const cancelButton = wrapper.find("Button.ModalWithFooter__secondaryButton");
+        const cancelButton = wrapper.find(".TextButton--secondaryButton");
         cancelButton.simulate('click');
         expect(modal.state.disallowedActions.left90).toBe(undefined);
 
@@ -93,7 +93,7 @@ describe("When the cancel button is clicked.", ()=> {
 
         const {wrapper, mockOnCancel} = createActionsMenu();
 
-        const cancelButton = wrapper.find("Button.ModalWithFooter__secondaryButton");
+        const cancelButton = wrapper.find(".TextButton--secondaryButton");
         cancelButton.simulate('click');
 
         expect(mockOnCancel.mock.calls.length).toBe(1);
@@ -111,7 +111,7 @@ describe("When the done button is clicked.", ()=> {
         const left90Checkbox = wrapper.find('#actions-menu-item-left90');
         left90Checkbox.simulate('click');
 
-        const saveButton = wrapper.find("Button#ActionSimplificationModal-done");
+        const saveButton = wrapper.find(".TextButton--primaryButton");
         saveButton.simulate('click');
 
         expect(mockOnConfirm.mock.calls.length).toBe(1);

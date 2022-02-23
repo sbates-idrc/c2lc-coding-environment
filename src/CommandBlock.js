@@ -23,9 +23,11 @@ import { ReactComponent as LoopEnd } from './svg/LoopEnd.svg';
 
 type CommandBlockProps = {
     commandName: string,
-    onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
     disabled: boolean,
-    className?: string
+    loopLabel?: string,
+    loopIterationsLeft?: ?number,
+    className?: string,
+    onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
 };
 
 // TODO: Revise this once there is a proper strategy for typing SVG-backed
@@ -53,21 +55,42 @@ export default React.forwardRef<CommandBlockProps, Button>(
     (props, ref) => {
         const {
             commandName,
-            onClick,
             disabled,
+            loopLabel,
+            loopIterationsLeft,
             className,
+            onClick,
             ...otherProps
         } = props;
 
-        let icon = null;
-        const iconType = commandBlockIconTypes.get(commandName);
-        if (iconType) {
-            icon = React.createElement(
-                iconType,
-                {
-                    className: 'command-block-svg'
-                }
-            );
+        let children = null;
+        if (commandName === 'startLoop' || commandName === 'endLoop') {
+            children =
+                <div className='command-block-loop-block-container'>
+                    <div className='command-block-loop-label-container'>
+                        {loopLabel}
+                    </div>
+                    {commandName === 'startLoop' ?
+                        <input
+                            className='command-block-loop-counter'
+                            maxLength='2'
+                            size='2'
+                            type='text'
+                            value={loopIterationsLeft}
+                            readOnly={true} />:
+                        <></>
+                    }
+                </div>
+        } else {
+            const iconType = commandBlockIconTypes.get(commandName);
+            if (iconType) {
+                children = React.createElement(
+                    iconType,
+                    {
+                        className: 'command-block-svg'
+                    }
+                );
+            }
         }
 
         const classes = classNames(
@@ -84,7 +107,7 @@ export default React.forwardRef<CommandBlockProps, Button>(
                 'disabled': disabled,
                 'ref': ref
             }, otherProps),
-            icon
+            children
         );
     }
 );
