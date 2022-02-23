@@ -2,8 +2,10 @@
 
 import * as React from 'react';
 import AriaDisablingButton from './AriaDisablingButton';
+import LoopIterationsInput from './LoopIterationsInput';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
+import type { RunningState } from './types';
 import { ReactComponent as Forward1 } from './svg/Forward1.svg';
 import { ReactComponent as Forward2 } from './svg/Forward2.svg';
 import { ReactComponent as Forward3 } from './svg/Forward3.svg';
@@ -22,9 +24,12 @@ type CommandBlockProps = {
     commandName: string,
     disabled: boolean,
     loopLabel?: string,
-    loopIterationsLeft?: ?number,
+    loopIterations?: ?number,
+    stepNumber?: number,
     className?: string,
+    runningState?: RunningState,
     onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
+    onChangeLoopIterations?: (stepNumber: number, loopLabel: string, loopIterations: number) => void
 };
 
 // TODO: Revise this once there is a proper strategy for typing SVG-backed
@@ -51,9 +56,12 @@ export default React.forwardRef<CommandBlockProps, Button>(
             commandName,
             disabled,
             loopLabel,
-            loopIterationsLeft,
+            loopIterations,
+            stepNumber,
             className,
+            runningState,
             onClick,
+            onChangeLoopIterations,
             ...otherProps
         } = props;
 
@@ -64,15 +72,31 @@ export default React.forwardRef<CommandBlockProps, Button>(
                     <div className='command-block-loop-label-container'>
                         {loopLabel}
                     </div>
-                    {commandName === 'startLoop' ?
+                    {commandName === 'startLoop' && disabled &&
                         <input
-                            className='command-block-loop-counter'
+                            // TODO: ARIA label
+                            className='command-block-loop-iterations'
                             maxLength='2'
                             size='2'
                             type='text'
-                            value={loopIterationsLeft}
-                            readOnly={true} />:
-                        <></>
+                            value={loopIterations}
+                            readOnly={true}
+                        />
+                    }
+                    {commandName === 'startLoop'
+                            && !disabled
+                            && loopLabel != null
+                            && stepNumber != null
+                            && runningState != null
+                            && onChangeLoopIterations != null
+                            &&
+                        <LoopIterationsInput
+                            loopIterationsStr={loopIterations != null ? loopIterations.toString() : ''}
+                            loopLabel={loopLabel}
+                            stepNumber={stepNumber}
+                            runningState={runningState}
+                            onChangeLoopIterations={onChangeLoopIterations}
+                        />
                     }
                 </div>
         } else {
