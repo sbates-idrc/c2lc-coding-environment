@@ -99,7 +99,8 @@ body.light-theme {
     #command-block--left180, .btn-command-block--left180,
     #command-block--right45, .btn-command-block--right45,
     #command-block--right90, .btn-command-block--right90,
-    #command-block--right180, .btn-command-block--right180
+    #command-block--right180, .btn-command-block--right180,
+    #command-block-loop, .btn-command-block--loop
     {
         svg {
             path, circle, rect {
@@ -987,6 +988,12 @@ body.gray-theme {
         &.command-block--pressed {
             border: 3px solid #505862;
         }
+    }
+
+    #command-block--loop, .btn-command-block--loop {
+        &.command-block--pressed {
+            border: 3px solid #505862;
+        }    
     }
 
     button.command-block.btn-command-block--startLoop,
