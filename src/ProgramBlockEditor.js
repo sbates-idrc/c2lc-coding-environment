@@ -317,7 +317,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     handleChangeLoopIterations = (stepNumber: number, loopLabel: string, loopIterations: number) => {
         const programSequence = this.props.programSequence;
         const program = programSequence.getProgram().slice();
-        const loopIterationsLeft = programSequence.getLoopIterationsLeft();
+        const loopIterationsLeft = new Map(programSequence.getLoopIterationsLeft());
         program[stepNumber] = Object.assign(
             {},
             program[stepNumber],
