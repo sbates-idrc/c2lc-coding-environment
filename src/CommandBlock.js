@@ -2,9 +2,10 @@
 
 import * as React from 'react';
 import AriaDisablingButton from './AriaDisablingButton';
-import LoopBlockContent from './LoopBlockContent';
+import LoopIterationsInput from './LoopIterationsInput';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
+import type { RunningState } from './types';
 import { ReactComponent as Forward1 } from './svg/Forward1.svg';
 import { ReactComponent as Forward2 } from './svg/Forward2.svg';
 import { ReactComponent as Forward3 } from './svg/Forward3.svg';
@@ -26,8 +27,9 @@ type CommandBlockProps = {
     loopIterations?: ?number,
     stepNumber?: number,
     className?: string,
+    runningState?: RunningState,
     onClick: (evt: SyntheticEvent<HTMLButtonElement>) => void,
-    onChangeLoopIterations?: (loopIterations: string, stepNumber: number, loopLabel: string) => void
+    onChangeLoopIterations?: (stepNumber: number, loopLabel: string, loopIterations: number) => void
 };
 
 // TODO: Revise this once there is a proper strategy for typing SVG-backed
@@ -57,6 +59,7 @@ export default React.forwardRef<CommandBlockProps, Button>(
             loopIterations,
             stepNumber,
             className,
+            runningState,
             onClick,
             onChangeLoopIterations,
             ...otherProps
@@ -65,14 +68,37 @@ export default React.forwardRef<CommandBlockProps, Button>(
         let children = null;
         if (commandName === 'startLoop' || commandName === 'endLoop') {
             children =
-                <LoopBlockContent
-                    commandName={commandName}
-                    disabled={disabled}
-                    loopIterations={loopIterations != null ? loopIterations.toString() : ''}
-                    loopLabel={loopLabel}
-                    stepNumber={stepNumber != null ? stepNumber : 0}
-                    onChangeLoopIterations={onChangeLoopIterations}
-                />
+                <div className='command-block-loop-block-container'>
+                    <div className='command-block-loop-label-container'>
+                        {loopLabel}
+                    </div>
+                    {commandName === 'startLoop' && disabled &&
+                        <input
+                            // TODO: ARIA label
+                            className='command-block-loop-iterations'
+                            maxLength='2'
+                            size='2'
+                            type='text'
+                            value={loopIterations}
+                            readOnly={true}
+                        />
+                    }
+                    {commandName === 'startLoop'
+                            && !disabled
+                            && loopLabel != null
+                            && stepNumber != null
+                            && runningState != null
+                            && onChangeLoopIterations != null
+                            &&
+                        <LoopIterationsInput
+                            loopIterationsStr={loopIterations != null ? loopIterations.toString() : ''}
+                            loopLabel={loopLabel}
+                            stepNumber={stepNumber}
+                            runningState={runningState}
+                            onChangeLoopIterations={onChangeLoopIterations}
+                        />
+                    }
+                </div>
         } else {
             const iconType = commandBlockIconTypes.get(commandName);
             if (iconType) {

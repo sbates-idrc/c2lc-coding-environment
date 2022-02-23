@@ -82,7 +82,7 @@ button.command-block.btn-command-block--startLoop {
     border-radius: 35px 10px 10px 35px;
     background-color: #DDDDDD;
     transition: unset;
-    .LoopBlockContent__loopIterations {
+    .command-block-loop-iterations {
         width: 2rem;
         text-align: center;
         pointer-events: all;
@@ -91,7 +91,7 @@ button.command-block.btn-command-block--startLoop {
     }
     &:hover {
         background-color: #B8B6B6;
-        .LoopBlockContent-loopLabelContainer {
+        .command-block-loop-label-container {
             background-color: #9D9C9C;
         }
     }
@@ -104,25 +104,25 @@ button.command-block.btn-command-block--endLoop {
     background-color: #DDDDDD;
     border: 2px solid transparent;
     transition: unset;
-    .LoopBlockContent-container {
+    .command-block-loop-block-container {
         margin-right: 1.5rem;
     }
     &:hover {
         background-color: #B8B6B6;
-        .LoopBlockContent-loopLabelContainer {
+        .command-block-loop-label-container {
             background-color: #9D9C9C;
         }
     }
 }
 
-.LoopBlockContent-container {
+.command-block-loop-block-container {
     display: grid;
     justify-items: center;
     grid-template-rows: min-content 2rem;
     row-gap: 0.2rem;
 }
 
-.LoopBlockContent-loopLabelContainer {
+.command-block-loop-label-container {
     text-align: center;
     width: 1.5rem;
     height: 1.5rem;

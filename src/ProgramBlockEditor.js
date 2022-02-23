@@ -314,18 +314,17 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         }
     };
 
-    handleChangeLoopIterations = (loopIterations: string, stepNumber: number, loopLabel: string) => {
+    handleChangeLoopIterations = (stepNumber: number, loopLabel: string, loopIterations: number) => {
         const programSequence = this.props.programSequence;
         const program = programSequence.getProgram().slice();
         const loopIterationsLeft = programSequence.getLoopIterationsLeft();
-        const updatedIterations = parseInt(loopIterations, 10);
         program[stepNumber] = Object.assign(
             {},
             program[stepNumber],
-            { iterations: updatedIterations }
+            { iterations: loopIterations }
         );
         if (this.props.runningState !== 'stopped') {
-            loopIterationsLeft.set(loopLabel, updatedIterations);
+            loopIterationsLeft.set(loopLabel, loopIterations);
         }
         this.props.onChangeProgramSequence(programSequence.updateProgramAndLoopIterationsLeft(program, loopIterationsLeft));
     }
@@ -502,6 +501,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 aria-controls={hasActionPanelControl ? 'ActionPanel' : undefined}
                 aria-expanded={hasActionPanelControl}
                 disabled={this.props.editingDisabled}
+                runningState={this.props.runningState}
                 onClick={this.handleClickStep}
                 onChangeLoopIterations={this.handleChangeLoopIterations}
                 onAnimationEnd={this.handleProgramCommandBlockAnimationEnd}

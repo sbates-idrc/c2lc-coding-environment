@@ -127,12 +127,12 @@ function getProgramBlockAtPosition(programBlockEditorWrapper, index: number) {
 
 function getProgramBlockLoopLabel(programBlockEditorWrapper, index: number) {
     return getProgramBlocks(programBlockEditorWrapper).at(index)
-        .find('.LoopBlockContent-loopLabelContainer').getDOMNode().textContent;
+        .find('.command-block-loop-label-container').getDOMNode().textContent;
 }
 
 function getProgramBlockLoopIterations(programBlockEditorWrapper, index: number) {
     return ((getProgramBlocks(programBlockEditorWrapper).at(index)
-        .find('.LoopBlockContent__loopIterations')
+        .find('.command-block-loop-iterations')
         .getDOMNode(): any): HTMLInputElement).value;
 }
 
@@ -171,17 +171,18 @@ describe('Program rendering', () => {
                 0,
                 0,
                 new Map([['A', 1]])
-            )
+            ),
+            runningState: 'paused'
         });
         expect(getProgramBlocks(wrapper).length).toBe(2);
         expect(getProgramBlocks(wrapper).at(0).prop('data-command')).toBe('startLoop');
         expect(getProgramBlockLoopLabel(wrapper, 0)).toBe('A');
-        expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('2');
+        expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('1');
         expect(getProgramBlocks(wrapper).at(1).prop('data-command')).toBe('endLoop');
         expect(getProgramBlockLoopLabel(wrapper, 1)).toBe('A');
-        wrapper.setProps({ runningState: 'paused' });
-        expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('1');
-    })
+        wrapper.setProps({ runningState: 'stopped' });
+        expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('2');
+    });
 });
 
 test('When a step is clicked, action panel should render next to the step', () => {
