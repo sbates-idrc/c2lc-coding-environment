@@ -218,6 +218,11 @@ body {
     padding-top: 1rem;
 }
 
+.App__command-palette-command-container .btn-command-block--loop svg {
+    width: 2.9rem;
+    height: 2.3rem;
+}
+
 .App__command-palette-command-container .btn-command-block--loop:hover {
     svg {
         path.filled-bracket {
