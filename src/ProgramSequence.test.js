@@ -418,17 +418,18 @@ test.each([
 );
 
 test.each([
-    [[{block: 'forward1'}, {block: 'forward2'}], 0, 0, [{block: 'left45'}, {block: 'forward2'}], 0],
-    [[{block: 'forward1'}, {block: 'forward2'}], 0, 1, [{block: 'forward1'}, {block: 'left45'}], 0],
-    [[{block: 'forward1'}, {block: 'forward2'}], 1, 0, [{block: 'left45'}, {block: 'forward2'}], 1],
-    [[{block: 'forward1'}, {block: 'forward2'}], 1, 1, [{block: 'forward1'}, {block: 'left45'}], 1]
+    [[{block: 'forward1'}, {block: 'forward2'}], 0, 0, [{block: 'left45'}, {block: 'forward2'}], 0, 'left45'],
+    [[{block: 'forward1'}, {block: 'forward2'}], 0, 1, [{block: 'forward1'}, {block: 'left45'}], 0, 'left45'],
+    [[{block: 'forward1'}, {block: 'forward2'}], 1, 0, [{block: 'left45'}, {block: 'forward2'}], 1, 'left45'],
+    [[{block: 'forward1'}, {block: 'forward2'}], 1, 1, [{block: 'forward1'}, {block: 'left45'}], 1, 'left45'],
+    [[{block: 'forward1'}], 0, 0, [{block: 'startLoop', iterations: 1, label: 'A'}, {block: 'endLoop', label: 'A'}], 0, 'loop']
 ])('overwriteStep',
     (program: Program, programCounter: number, index: number,
-        expectedProgram: Program, expectedProgramCounter: number) => {
+        expectedProgram: Program, expectedProgramCounter: number, overwriteStepName: string) => {
         expect.assertions(3);
         const programBefore = program.slice();
         const programSequence = new ProgramSequence(program, programCounter, 0, new Map());
-        const result = programSequence.overwriteStep(index, 'left45');
+        const result = programSequence.overwriteStep(index, overwriteStepName);
         expect(result.getProgram()).toStrictEqual(expectedProgram);
         expect(result.getProgramCounter()).toBe(expectedProgramCounter);
         expect(programSequence.getProgram()).toStrictEqual(programBefore);

@@ -156,7 +156,25 @@ export default class ProgramSequence {
 
     overwriteStep(index: number, command: string): ProgramSequence {
         const program = this.program.slice();
-        program[index] = {block: command};
+        if (command === 'loop') {
+            this.loopCounter++;
+            const loopLabel = generateLoopLabel(this.loopCounter);
+            const startLoopObject = {
+                block: 'startLoop',
+                iterations: 1,
+                label: loopLabel
+            };
+            const endLoopObject = {
+                block: 'endLoop',
+                label: loopLabel
+            };
+            program.splice(index, 1, startLoopObject, endLoopObject);
+        } else {
+            const commandObject = {
+                block: command
+            };
+            program.splice(index, 1, commandObject);
+        }
         return this.updateProgram(program);
     }
 
