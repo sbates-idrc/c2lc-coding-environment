@@ -4,6 +4,10 @@ import { generateLoopLabel } from './Utils';
 import type { ProgramParserResult } from './ProgramParser';
 import type { CommandName, Program, ProgramBlock, ProgramBlockCache } from './types';
 
+// When a new loop is added to the program, initialize the number of
+// iterations to this value:
+const newLoopNumberOfIterations = 1;
+
 export default class ProgramSequence {
     program: Program;
     programCounter: number;
@@ -147,7 +151,24 @@ export default class ProgramSequence {
     }
 
     updateProgramAndLoopIterationsLeft(program: Program, loopIterationsLeft: Map<string, number>) {
-        return new ProgramSequence(program, this.programCounter, this.loopCounter, loopIterationsLeft);
+        return new ProgramSequence(
+            ProgramSequence.calculateCachedLoopData(program),
+            this.programCounter,
+            this.loopCounter,
+            loopIterationsLeft
+        );
+    }
+
+    updateProgramSequence(program: Program,
+        programCounter: number,
+        loopCounter: number,
+        loopIterationsLeft: Map<string, number>): ProgramSequence {
+        return new ProgramSequence(
+            ProgramSequence.calculateCachedLoopData(program),
+            programCounter,
+            loopCounter,
+            loopIterationsLeft
+        );
     }
 
     incrementProgramCounter(): ProgramSequence {
@@ -156,8 +177,38 @@ export default class ProgramSequence {
 
     overwriteStep(index: number, command: string): ProgramSequence {
         const program = this.program.slice();
-        program[index] = {block: command};
-        return this.updateProgram(program);
+        let programCounter = this.programCounter;
+        let loopCounter = this.loopCounter;
+        const loopIterationsLeft = new Map(this.loopIterationsLeft);
+        if (command === 'loop') {
+            loopCounter++;
+            const loopLabel = generateLoopLabel(loopCounter);
+            const startLoopObject = {
+                block: 'startLoop',
+                iterations: newLoopNumberOfIterations,
+                label: loopLabel
+            };
+            const endLoopObject = {
+                block: 'endLoop',
+                label: loopLabel
+            };
+            program.splice(index, 1, startLoopObject, endLoopObject);
+            loopIterationsLeft.set(loopLabel, newLoopNumberOfIterations);
+            if (index < programCounter) {
+                programCounter++;
+            }
+        } else {
+            const commandObject = {
+                block: command
+            };
+            program.splice(index, 1, commandObject);
+        }
+        return this.updateProgramSequence(
+            program,
+            programCounter,
+            loopCounter,
+            loopIterationsLeft
+        );
     }
 
     insertStep(index: number, command: string): ProgramSequence {
@@ -167,7 +218,7 @@ export default class ProgramSequence {
             const loopLabel = generateLoopLabel(this.loopCounter);
             const startLoopObject = {
                 block: 'startLoop',
-                iterations: 1,
+                iterations: newLoopNumberOfIterations,
                 label: loopLabel
             };
             const endLoopObject = {
