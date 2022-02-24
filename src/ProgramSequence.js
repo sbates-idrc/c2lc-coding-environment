@@ -213,9 +213,12 @@ export default class ProgramSequence {
 
     insertStep(index: number, command: string): ProgramSequence {
         const program = this.program.slice();
+        let programCounter = this.programCounter;
+        let loopCounter = this.loopCounter;
+        const loopIterationsLeft = new Map(this.loopIterationsLeft);
         if (command === 'loop') {
-            this.loopCounter++;
-            const loopLabel = generateLoopLabel(this.loopCounter);
+            loopCounter++;
+            const loopLabel = generateLoopLabel(loopCounter);
             const startLoopObject = {
                 block: 'startLoop',
                 iterations: newLoopNumberOfIterations,
@@ -226,17 +229,25 @@ export default class ProgramSequence {
                 label: loopLabel
             };
             program.splice(index, 0, startLoopObject, endLoopObject);
+            loopIterationsLeft.set(loopLabel, newLoopNumberOfIterations);
+            if (index <= programCounter) {
+                programCounter += 2;
+            }
         } else {
             const commandObject = {
                 block: command
             };
             program.splice(index, 0, commandObject);
+            if (index <= programCounter) {
+                programCounter++;
+            }
         }
-        if (index <= this.programCounter) {
-            return this.updateProgramAndProgramCounter(program, this.programCounter + 1);
-        } else {
-            return this.updateProgram(program);
-        }
+        return this.updateProgramSequence(
+            program,
+            programCounter,
+            loopCounter,
+            loopIterationsLeft
+        );
     }
 
     deleteStep(index: number): ProgramSequence {
