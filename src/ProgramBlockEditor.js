@@ -316,17 +316,19 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
     handleChangeLoopIterations = (stepNumber: number, loopLabel: string, loopIterations: number) => {
         const programSequence = this.props.programSequence;
-        const program = programSequence.getProgram().slice();
-        const loopIterationsLeft = new Map(programSequence.getLoopIterationsLeft());
-        program[stepNumber] = Object.assign(
-            {},
-            program[stepNumber],
-            { iterations: loopIterations }
-        );
-        if (this.props.runningState !== 'stopped') {
-            loopIterationsLeft.set(loopLabel, loopIterations);
+        if (programSequence.getProgram()[stepNumber].label === loopLabel) {
+            const program = programSequence.getProgram().slice();
+            const loopIterationsLeft = new Map(programSequence.getLoopIterationsLeft());
+            program[stepNumber] = Object.assign(
+                {},
+                program[stepNumber],
+                { iterations: loopIterations }
+            );
+            if (this.props.runningState !== 'stopped') {
+                loopIterationsLeft.set(loopLabel, loopIterations);
+            }
+            this.props.onChangeProgramSequence(programSequence.updateProgramAndLoopIterationsLeft(program, loopIterationsLeft));
         }
-        this.props.onChangeProgramSequence(programSequence.updateProgramAndLoopIterationsLeft(program, loopIterationsLeft));
     }
 
     handleProgramCommandBlockAnimationEnd = (e: SyntheticEvent<HTMLButtonElement>) => {
