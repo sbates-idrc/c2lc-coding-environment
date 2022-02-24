@@ -4,6 +4,10 @@ import { generateLoopLabel } from './Utils';
 import type { ProgramParserResult } from './ProgramParser';
 import type { CommandName, Program, ProgramBlock, ProgramBlockCache } from './types';
 
+// When a new loop is added to the program, initialize the number of
+// iterations to this value:
+const newLoopNumberOfIterations = 1;
+
 export default class ProgramSequence {
     program: Program;
     programCounter: number;
@@ -161,7 +165,7 @@ export default class ProgramSequence {
             const loopLabel = generateLoopLabel(this.loopCounter);
             const startLoopObject = {
                 block: 'startLoop',
-                iterations: 1,
+                iterations: newLoopNumberOfIterations,
                 label: loopLabel
             };
             const endLoopObject = {
@@ -185,7 +189,7 @@ export default class ProgramSequence {
             const loopLabel = generateLoopLabel(this.loopCounter);
             const startLoopObject = {
                 block: 'startLoop',
-                iterations: 1,
+                iterations: newLoopNumberOfIterations,
                 label: loopLabel
             };
             const endLoopObject = {
