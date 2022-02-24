@@ -1910,13 +1910,13 @@ body.contrast-theme {
         background-color: #FFFFFF;
         .command-block-loop-label-container {
             background-color: #FFFFFF;
-            color: #1E1E1E;
+            color: black;
         }
         &:hover {
             border: 2px solid #FFFFFF;
-            background-color: #1E1E1E;
+            background-color: black;
             .command-block-loop-label-container {
-                background-color: #1E1E1E;
+                background-color: black;
                 color: #FFFFFF;
             }
         }

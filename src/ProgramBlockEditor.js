@@ -314,6 +314,23 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         }
     };
 
+    handleChangeLoopIterations = (stepNumber: number, loopLabel: string, loopIterations: number) => {
+        const programSequence = this.props.programSequence;
+        if (programSequence.getProgram()[stepNumber].label === loopLabel) {
+            const program = programSequence.getProgram().slice();
+            const loopIterationsLeft = new Map(programSequence.getLoopIterationsLeft());
+            program[stepNumber] = Object.assign(
+                {},
+                program[stepNumber],
+                { iterations: loopIterations }
+            );
+            if (this.props.runningState !== 'stopped') {
+                loopIterationsLeft.set(loopLabel, loopIterations);
+            }
+            this.props.onChangeProgramSequence(programSequence.updateProgramAndLoopIterationsLeft(program, loopIterationsLeft));
+        }
+    }
+
     handleProgramCommandBlockAnimationEnd = (e: SyntheticEvent<HTMLButtonElement>) => {
         e.currentTarget.classList.remove('ProgramBlockEditor__program-block--updated');
     };
@@ -459,12 +476,12 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             );
         }
 
-        let loopIterationsLeft = programBlock.iterations;
+        let loopIterations = programBlock.iterations;
 
         // Show loopItertionsLeft when program is not stopped, or else, show iterations
         if (this.props.runningState !== 'stopped') {
             if (loopLabel != null && this.props.programSequence.getLoopIterationsLeft().get(loopLabel) != null) {
-                loopIterationsLeft = this.props.programSequence.getLoopIterationsLeft().get(loopLabel);
+                loopIterations = this.props.programSequence.getLoopIterationsLeft().get(loopLabel);
             }
         }
 
@@ -480,12 +497,15 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 data-actionpanelgroup={true}
                 className={classes}
                 loopLabel={programBlock.label}
-                loopIterationsLeft={loopIterationsLeft}
+                loopIterations={loopIterations}
+                stepNumber={programStepNumber}
                 aria-label={ariaLabel}
                 aria-controls={hasActionPanelControl ? 'ActionPanel' : undefined}
                 aria-expanded={hasActionPanelControl}
                 disabled={this.props.editingDisabled}
+                runningState={this.props.runningState}
                 onClick={this.handleClickStep}
+                onChangeLoopIterations={this.handleChangeLoopIterations}
                 onAnimationEnd={this.handleProgramCommandBlockAnimationEnd}
             />
         );
