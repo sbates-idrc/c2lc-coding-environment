@@ -151,7 +151,24 @@ export default class ProgramSequence {
     }
 
     updateProgramAndLoopIterationsLeft(program: Program, loopIterationsLeft: Map<string, number>) {
-        return new ProgramSequence(program, this.programCounter, this.loopCounter, loopIterationsLeft);
+        return new ProgramSequence(
+            ProgramSequence.calculateCachedLoopData(program),
+            this.programCounter,
+            this.loopCounter,
+            loopIterationsLeft
+        );
+    }
+
+    updateProgramSequence(program: Program,
+        programCounter: number,
+        loopCounter: number,
+        loopIterationsLeft: Map<string, number>): ProgramSequence {
+        return new ProgramSequence(
+            ProgramSequence.calculateCachedLoopData(program),
+            programCounter,
+            loopCounter,
+            loopIterationsLeft
+        );
     }
 
     incrementProgramCounter(): ProgramSequence {
@@ -160,9 +177,12 @@ export default class ProgramSequence {
 
     overwriteStep(index: number, command: string): ProgramSequence {
         const program = this.program.slice();
+        let programCounter = this.programCounter;
+        let loopCounter = this.loopCounter;
+        const loopIterationsLeft = new Map(this.loopIterationsLeft);
         if (command === 'loop') {
-            this.loopCounter++;
-            const loopLabel = generateLoopLabel(this.loopCounter);
+            loopCounter++;
+            const loopLabel = generateLoopLabel(loopCounter);
             const startLoopObject = {
                 block: 'startLoop',
                 iterations: newLoopNumberOfIterations,
@@ -173,13 +193,22 @@ export default class ProgramSequence {
                 label: loopLabel
             };
             program.splice(index, 1, startLoopObject, endLoopObject);
+            loopIterationsLeft.set(loopLabel, newLoopNumberOfIterations);
+            if (index < programCounter) {
+                programCounter++;
+            }
         } else {
             const commandObject = {
                 block: command
             };
             program.splice(index, 1, commandObject);
         }
-        return this.updateProgram(program);
+        return this.updateProgramSequence(
+            program,
+            programCounter,
+            loopCounter,
+            loopIterationsLeft
+        );
     }
 
     insertStep(index: number, command: string): ProgramSequence {
