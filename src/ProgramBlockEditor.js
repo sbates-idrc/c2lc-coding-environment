@@ -485,12 +485,17 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             }
         }
 
+        let key = `${programStepNumber}-${command}`;
+        if ((command === 'startLoop' || command === 'endLoop') && loopLabel != null) {
+            key=`${programStepNumber}-${command}-${loopLabel}`;
+        }
+
         return (
             <CommandBlock
                 commandName={command}
                 // $FlowFixMe: Limit to specific types of ref.
                 ref={ (element) => { this.setCommandBlockRef(programStepNumber, element) } }
-                key={`${programStepNumber}-${command}`}
+                key={key}
                 data-stepnumber={programStepNumber}
                 data-controltype='programStep'
                 data-command={command}
