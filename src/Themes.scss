@@ -47,7 +47,7 @@ body.light-theme {
     }
 
     .App__command-palette-section-heading {
-        color: #1E1E1E;
+        color: #000000;
     }
 
     .App__command-palette-command-container .btn-command-block--loop {
@@ -1801,7 +1801,7 @@ body.contrast-theme {
     }
 
     .App__command-palette-section {
-        background-color: #1E1E1E;
+        background-color: #000000;
 
         box-shadow: 0px 3px 1px #9DA4AF;
     }
@@ -1815,7 +1815,7 @@ body.contrast-theme {
         svg {
             path.filled-bracket {
                 fill: #FFFFFF;
-                stroke: #1E1E1E;
+                stroke: #000000;
             }
             path.inner-arrow {
                 stroke: #22262A;
@@ -1826,7 +1826,7 @@ body.contrast-theme {
     .App__command-palette-command-container .btn-command-block--loop:hover {
         svg {
             path.filled-bracket {
-                fill: #1E1E1E;
+                fill: #000000;
                 stroke: #FFFFFF;
             }
             path.inner-arrow {
