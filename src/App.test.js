@@ -55,7 +55,7 @@ it('Should play a sound when selectedCommandName changes', () => {
     const { app, audioManagerMock} = mountApp({});
 
     // Update the selectedAction
-    app.setState({ selectedAction: "forward"}, function () {
+    app.setState({ selectedAction: "forward1"}, function () {
         expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
         expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('movementSelected');
         expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({

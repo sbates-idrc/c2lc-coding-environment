@@ -10,7 +10,7 @@ import CommandBlock from './CommandBlock';
 configure({ adapter: new Adapter() });
 
 const defaultCommandBlockProps = {
-    commandName: 'forward',
+    commandName: 'forward1',
     disabled: false,
     onClick: () => {}
 };
@@ -43,15 +43,15 @@ function getLoopIterationsInput(wrapper) {
 }
 
 describe('Rendering commands', () => {
-    test('forward', () => {
+    test('forward1', () => {
         const wrapper = createMountCommandBlock();
-        expect(getCommandBlock(wrapper).get(0).props.variant).toBe('command-block--forward');
+        expect(getCommandBlock(wrapper).get(0).props.variant).toBe('command-block--forward1');
         expect(getAriaDiabledButton(wrapper).length).toBe(1);
         expect(getLoopIterationsInput(wrapper).length).toBe(0);
     });
-    test('backward', () => {
-        const wrapper = createMountCommandBlock({commandName: 'backward'});
-        expect(getCommandBlock(wrapper).get(0).props.variant).toBe('command-block--backward');
+    test('backward1', () => {
+        const wrapper = createMountCommandBlock({commandName: 'backward1'});
+        expect(getCommandBlock(wrapper).get(0).props.variant).toBe('command-block--backward1');
         expect(getAriaDiabledButton(wrapper).length).toBe(1);
         expect(getLoopIterationsInput(wrapper).length).toBe(0);
     });

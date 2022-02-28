@@ -33,8 +33,8 @@ type ActionsSimplificationModalState = {
 class ActionsSimplificationModal extends React.Component<ActionsSimplificationModalProps, ActionsSimplificationModalState> {
     static defaultProps = {
         commandMenuItems: [
-            'forward',
-            'backward',
+            'forward1',
+            'backward1',
             'left45',
             'left90',
             'right45',

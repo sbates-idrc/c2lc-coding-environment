@@ -56,7 +56,7 @@ export default class ProgramParser {
         switch(this.ch) {
             case '1':
                 this.nextCh();
-                return { block: 'forward' };
+                return { block: 'forward1' };
             case '2':
                 this.nextCh();
                 return { block: 'forward2' };
@@ -65,7 +65,7 @@ export default class ProgramParser {
                 return { block: 'forward3' };
             case '4':
                 this.nextCh();
-                return { block: 'backward' };
+                return { block: 'backward1' };
             case '5':
                 this.nextCh();
                 return { block: 'backward2' };

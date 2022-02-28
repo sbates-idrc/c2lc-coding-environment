@@ -19,7 +19,7 @@ function createActionsMenuItem(props) {
             Object.assign(
                 {
                     isUsed: false,
-                    itemKey: 'forward',
+                    itemKey: 'forward1',
                     onChange: mockChangeHandler
                 },
                 props

@@ -48,12 +48,12 @@ describe('Test insertSelectedActionIntoProgram()', () => {
 
         appMock.setState.mockImplementation((callback) => {
             const newState = callback({
-                programSequence: new ProgramSequence([{block: 'forward'}, {block: 'forward2'}], 0, 0, new Map())
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0, new Map())
             });
 
             // The program should be updated
             expect(newState.programSequence.getProgram()).toStrictEqual(
-                [{block: 'forward'}, {block: 'forward3'}, {block: 'forward2'}]);
+                [{block: 'forward1'}, {block: 'forward3'}, {block: 'forward2'}]);
 
             // The announcement should be made
             expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
@@ -123,12 +123,12 @@ describe('Test addSelectedActionToProgramEnd()', () => {
 
         appMock.setState.mockImplementation((callback) => {
             const newState = callback({
-                programSequence: new ProgramSequence([{block: 'forward'}, {block: 'forward2'}], 0, 0, new Map())
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0, new Map())
             });
 
             // The program should be updated
             expect(newState.programSequence.getProgram()).toStrictEqual(
-                [{block: 'forward'}, {block: 'forward2'}, {block: 'forward3'}]);
+                [{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}]);
 
             // The announcement should be made
             expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
@@ -163,7 +163,7 @@ describe('Test addSelectedActionToProgramEnd()', () => {
 
         appMock.setState.mockImplementation((callback) => {
             const newState = callback({
-                programSequence: new ProgramSequence([{block: 'forward'}, {block: 'forward2'}], 0, 0, new Map())
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0, new Map())
             });
 
             // The program should not be updated
@@ -200,11 +200,11 @@ describe('Test deleteProgramStep()', () => {
     test.each(([
         {
             program: [
-                {block: 'forward'},
+                {block: 'forward1'},
                 {block: 'forward2'}
             ],
             deleteStepIndex: 0,
-            deleteStepName: 'forward',
+            deleteStepName: 'forward1',
             expectedAnnouncementCommand: 'forward 1 square'
         },
         {
@@ -268,7 +268,7 @@ describe('Test deleteProgramStep()', () => {
     test.each(([
         {
             program: [
-                {block: 'forward'},
+                {block: 'forward1'},
                 {block: 'forward2'}
             ],
             deleteStepIndex: 1,
@@ -277,7 +277,7 @@ describe('Test deleteProgramStep()', () => {
         },
         {
             program: [
-                {block: 'forward'},
+                {block: 'forward1'},
                 {block: 'startLoop', label: 'A', iterations: 1},
                 {block: 'endLoop', label: 'A'}
             ],
@@ -287,7 +287,7 @@ describe('Test deleteProgramStep()', () => {
         },
         {
             program: [
-                {block: 'forward'},
+                {block: 'forward1'},
                 {block: 'startLoop', label: 'A', iterations: 1},
                 {block: 'endLoop', label: 'A'}
             ],
@@ -308,7 +308,7 @@ describe('Test deleteProgramStep()', () => {
 
                 // The program should be updated
                 expect(newState.programSequence.getProgram()).toStrictEqual(
-                    [{block: 'forward'}]);
+                    [{block: 'forward1'}]);
 
                 // The announcement should be made
                 expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
@@ -340,7 +340,7 @@ describe('Test deleteProgramStep()', () => {
 
         appMock.setState.mockImplementation((callback) => {
             const newState = callback({
-                programSequence: new ProgramSequence([{block: 'forward'}, {block: 'forward2'}], 0, 0, new Map())
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0, new Map())
             });
 
             // The program should not be updated

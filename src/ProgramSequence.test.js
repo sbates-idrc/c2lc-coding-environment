@@ -5,7 +5,7 @@ import type { Program } from './types';
 
 test('ProgramSequence constructor', () => {
     expect.assertions(3);
-    const program = [{block: 'forward'}, {block: 'loopStart', label: 'A', iterations: 3}];
+    const program = [{block: 'forward1'}, {block: 'loopStart', label: 'A', iterations: 3}];
     const programCounter = 0;
     const loopIterationsLeft = new Map([[ 'A', 3 ]]);
     const programSequence = new ProgramSequence(program, programCounter, 0, loopIterationsLeft);
@@ -20,7 +20,7 @@ test('getMatchingLoopBlockIndex retuns index of corresponding endLoop or startLo
         {block: 'startLoop', iterations: 2, label: 'B'},
         {block: 'forward3'},
         {block: 'startLoop', iterations: 1, label: 'C'},
-        {block: 'forward'},
+        {block: 'forward1'},
         {block: 'forward2'},
         {block: 'endLoop', label: 'C'},
         {block: 'forward3'},
@@ -45,7 +45,7 @@ test('calculateCachedLoopData returns a program with additional loop data', () =
         {block: 'startLoop', iterations: 2, label: 'B'},
         {block: 'forward3'},
         {block: 'startLoop', iterations: 1, label: 'C'},
-        {block: 'forward'},
+        {block: 'forward1'},
         {block: 'forward2'},
         {block: 'endLoop', label: 'C'},
         {block: 'forward3'},
@@ -85,7 +85,7 @@ test('calculateCachedLoopData returns a program with additional loop data', () =
             ])
         },
         {
-            block: 'forward',
+            block: 'forward1',
             cache: new Map([
                 ['containingLoopPosition', 1],
                 ['containingLoopLabel', 'C']
@@ -139,7 +139,7 @@ test('calculateCachedLoopData replaces existing cached loop data and removes cac
             label: 'A'
         },
         {
-            block: 'forward',
+            block: 'forward1',
             cache: new Map([
                 ['containingLoopPosition', 2],
                 ['containingLoopLabel', 'B']
@@ -165,7 +165,7 @@ test('calculateCachedLoopData replaces existing cached loop data and removes cac
             label: 'A'
         },
         {
-            block: 'forward',
+            block: 'forward1',
             cache: new Map([
                 ['containingLoopPosition', 1],
                 ['containingLoopLabel', 'A']
@@ -186,7 +186,7 @@ test('calculateCachedLoopData replaces existing cached loop data and removes cac
 
 test('updateProgramCounter should only update programCounter', () => {
     expect.assertions(3);
-    const program = [{block: 'forward'}];
+    const program = [{block: 'forward1'}];
     const loopIterationsLeft = new Map();
     let programSequence = new ProgramSequence(program, 0, 0, loopIterationsLeft);
     const newProgramCounter = 1;
@@ -207,7 +207,7 @@ test('usesAction should return false for any action when the sequence is empty.'
     expect.assertions(4);
     const program = [];
     const programSequence = new ProgramSequence(program, 0, 0, new Map());
-    expect(programSequence.usesAction('forward')).toBe(false);
+    expect(programSequence.usesAction('forward1')).toBe(false);
     expect(programSequence.usesAction('backward3')).toBe(false);
     expect(programSequence.usesAction('left90')).toBe(false);
     expect(programSequence.usesAction('loop')).toBe(false);
@@ -215,9 +215,9 @@ test('usesAction should return false for any action when the sequence is empty.'
 
 test('usesAction should return true when an action is part of the sequence.', () => {
     expect.assertions(3);
-    const program = [{block: 'forward'}, {block: 'backward3'}, {block: 'left90'}];
+    const program = [{block: 'forward1'}, {block: 'backward3'}, {block: 'left90'}];
     const programSequence = new ProgramSequence(program, 0, 0, new Map());
-    expect(programSequence.usesAction('forward')).toBe(true);
+    expect(programSequence.usesAction('forward1')).toBe(true);
     expect(programSequence.usesAction('backward3')).toBe(true);
     expect(programSequence.usesAction('left90')).toBe(true);
 });
@@ -237,7 +237,7 @@ test('usesAction should return false when an action is not part of the sequence.
     expect.assertions(2);
     const program = [{block: 'backward3'}];
     const programSequence = new ProgramSequence(program, 0, 0, new Map());
-    expect(programSequence.usesAction('forward')).toBe(false);
+    expect(programSequence.usesAction('forward1')).toBe(false);
     expect(programSequence.usesAction('loop')).toBe(false);
 });
 
@@ -259,7 +259,7 @@ test.each(([
     },
     {
         program: [
-            { block: 'forward' }
+            { block: 'forward1' }
         ],
         programCounter: 0,
         index: 0,
@@ -268,7 +268,7 @@ test.each(([
     },
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward2' }
         ],
         programCounter: 0,
@@ -280,19 +280,19 @@ test.each(([
     },
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward2' }
         ],
         programCounter: 0,
         index: 1,
         expectedProgram: [
-            { block: 'forward' }
+            { block: 'forward1' }
         ],
         expectedProgramCounter: 0
     },
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward2' }
         ],
         programCounter: 1,
@@ -304,19 +304,19 @@ test.each(([
     },
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward2' }
         ],
         programCounter: 1,
         index: 1,
         expectedProgram: [
-            { block: 'forward' }
+            { block: 'forward1' }
         ],
         expectedProgramCounter: 1
     },
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward2' },
             { block: 'forward3' }
         ],
@@ -330,28 +330,28 @@ test.each(([
     },
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward2' },
             { block: 'forward3' }
         ],
         programCounter: 1,
         index: 1,
         expectedProgram: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward3' }
         ],
         expectedProgramCounter: 1
     },
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward2' },
             { block: 'forward3' }
         ],
         programCounter: 1,
         index: 2,
         expectedProgram: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward2' }
         ],
         expectedProgramCounter: 1
@@ -359,7 +359,7 @@ test.each(([
     {
         program: [
             {
-                block: 'forward'
+                block: 'forward1'
             },
             {
                 block: 'startLoop',
@@ -374,7 +374,7 @@ test.each(([
         programCounter: 1,
         index: 1,
         expectedProgram: [
-            { block: 'forward' }
+            { block: 'forward1' }
         ],
         expectedProgramCounter: 1
     },
@@ -390,13 +390,13 @@ test.each(([
                 label: 'A'
             },
             {
-                block: 'forward'
+                block: 'forward1'
             }
         ],
         programCounter: 1,
         index: 1,
         expectedProgram: [
-            { block: 'forward' }
+            { block: 'forward1' }
         ],
         expectedProgramCounter: 1
     }
@@ -412,10 +412,10 @@ test.each(([
 
 test.each([
     [[], 0, 0, [{block: 'left45'}], 1, 'left45'],
-    [[{block: 'forward'}], 0, 0, [{block: 'left45'}, {block: 'forward'}], 1, 'left45'],
-    [[{block: 'forward'}, {block: 'forward2'}, {block: 'forward3'}], 1, 0, [{block: 'left45'}, {block: 'forward'}, {block: 'forward2'}, {block: 'forward3'}], 2, 'left45'],
-    [[{block: 'forward'}, {block: 'forward2'}, {block: 'forward3'}], 1, 1, [{block: 'forward'}, {block: 'left45'}, {block: 'forward2'}, {block: 'forward3'}], 2, 'left45'],
-    [[{block: 'forward'}, {block: 'forward2'}, {block: 'forward3'}], 1, 2, [{block: 'forward'}, {block: 'forward2'}, {block: 'left45'}, {block: 'forward3'}], 1, 'left45'],
+    [[{block: 'forward1'}], 0, 0, [{block: 'left45'}, {block: 'forward1'}], 1, 'left45'],
+    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 0, [{block: 'left45'}, {block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 2, 'left45'],
+    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 1, [{block: 'forward1'}, {block: 'left45'}, {block: 'forward2'}, {block: 'forward3'}], 2, 'left45'],
+    [[{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}], 1, 2, [{block: 'forward1'}, {block: 'forward2'}, {block: 'left45'}, {block: 'forward3'}], 1, 'left45'],
     [[], 0, 0, [{block: 'startLoop', iterations: 1, label: 'A'}, {block: 'endLoop', label: 'A'}], 1, 'loop']
 ])('insertStep',
     (program: Program, programCounter: number, index: number,
@@ -431,10 +431,10 @@ test.each([
 );
 
 test.each([
-    [[{block: 'forward'}, {block: 'forward2'}], 0, 0, [{block: 'left45'}, {block: 'forward2'}], 0],
-    [[{block: 'forward'}, {block: 'forward2'}], 0, 1, [{block: 'forward'}, {block: 'left45'}], 0],
-    [[{block: 'forward'}, {block: 'forward2'}], 1, 0, [{block: 'left45'}, {block: 'forward2'}], 1],
-    [[{block: 'forward'}, {block: 'forward2'}], 1, 1, [{block: 'forward'}, {block: 'left45'}], 1]
+    [[{block: 'forward1'}, {block: 'forward2'}], 0, 0, [{block: 'left45'}, {block: 'forward2'}], 0],
+    [[{block: 'forward1'}, {block: 'forward2'}], 0, 1, [{block: 'forward1'}, {block: 'left45'}], 0],
+    [[{block: 'forward1'}, {block: 'forward2'}], 1, 0, [{block: 'left45'}, {block: 'forward2'}], 1],
+    [[{block: 'forward1'}, {block: 'forward2'}], 1, 1, [{block: 'forward1'}, {block: 'left45'}], 1]
 ])('overwriteStep',
     (program: Program, programCounter: number, index: number,
         expectedProgram: Program, expectedProgramCounter: number) => {
@@ -460,7 +460,7 @@ type SwapStepTestCase = {
 test.each(([
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward2' },
             { block: 'forward3' }
         ],
@@ -468,7 +468,7 @@ test.each(([
         indexFrom: 0,
         indexTo: 0,
         expectedProgram: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward2' },
             { block: 'forward3' }
         ],
@@ -476,7 +476,7 @@ test.each(([
     },
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward2' },
             { block: 'forward3' }
         ],
@@ -485,14 +485,14 @@ test.each(([
         indexTo: 1,
         expectedProgram: [
             { block: 'forward2' },
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward3' }
         ],
         expectedProgramCounter: 1
     },
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward2' },
             { block: 'forward3' }
         ],
@@ -502,13 +502,13 @@ test.each(([
         expectedProgram: [
             { block: 'forward3' },
             { block: 'forward2' },
-            { block: 'forward' }
+            { block: 'forward1' }
         ],
         expectedProgramCounter: 1
     },
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'startLoop', label: 'A' },
             { block: 'forward2' },
             { block: 'endLoop', label: 'A' }
@@ -526,13 +526,13 @@ test.each(([
                 ])
             },
             { block: 'endLoop', label: 'A' },
-            { block: 'forward' }
+            { block: 'forward1' }
         ],
         expectedProgramCounter: 1
     },
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'startLoop', label: 'A' },
             { block: 'forward2' },
             { block: 'endLoop', label: 'A' }
@@ -549,13 +549,13 @@ test.each(([
                 ])
             },
             { block: 'endLoop', label: 'A' },
-            { block: 'forward' }
+            { block: 'forward1' }
         ],
         expectedProgramCounter: 1
     },
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'startLoop', label: 'A' },
             { block: 'forward2' },
             { block: 'endLoop', label: 'A' }
@@ -564,7 +564,7 @@ test.each(([
         indexFrom: 2,
         indexTo: 1,
         expectedProgram: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'forward2' },
             { block: 'startLoop', label: 'A' },
             { block: 'endLoop', label: 'A' }
@@ -576,13 +576,13 @@ test.each(([
             { block: 'startLoop', label: 'A'},
             { block: 'forward2' },
             { block: 'endLoop', label: 'A' },
-            { block: 'forward' }
+            { block: 'forward1' }
         ],
         programCounter: 1,
         indexFrom: 0,
         indexTo: 3,
         expectedProgram: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'startLoop', label: 'A'},
             {
                 block: 'forward2',
@@ -600,13 +600,13 @@ test.each(([
             { block: 'startLoop', label: 'A' },
             { block: 'forward2' },
             { block: 'endLoop', label: 'A' },
-            { block: 'forward' }
+            { block: 'forward1' }
         ],
         programCounter: 1,
         indexFrom: 2,
         indexTo: 3,
         expectedProgram: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'startLoop', label: 'A' },
             {
                 block: 'forward2',
@@ -621,7 +621,7 @@ test.each(([
     },
     {
         program: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'startLoop', label: 'A' },
             { block: 'forward2' },
             { block: 'endLoop', label: 'A' }
@@ -630,7 +630,7 @@ test.each(([
         indexFrom: 2,
         indexTo: 3,
         expectedProgram: [
-            { block: 'forward' },
+            { block: 'forward1' },
             { block: 'startLoop', label: 'A' },
             { block: 'endLoop', label: 'A' },
             { block: 'forward2' }

@@ -23,7 +23,7 @@ function createMountActionPanel(props) {
                 {
                     focusedOptionName: null,
                     selectedCommandName: 'right45',
-                    programSequence: new ProgramSequence([{block: 'forward'}, {block: 'left45'}, {block: 'right45'}], 0, 0, new Map()),
+                    programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'right45'}], 0, 0, new Map()),
                     pressedStepIndex: 1,
                     position: {
                         top: 0,
@@ -118,7 +118,7 @@ describe('ActionPanel options', () => {
             programSequence: new ProgramSequence(
                 [
                     {block: 'startLoop', label: 'A', iterations: 1},
-                    {block: 'forward'},
+                    {block: 'forward1'},
                     {block: 'endLoop', label: 'A' }
                 ],
                 0,
@@ -141,7 +141,7 @@ describe('ActionPanel options', () => {
             programSequence: new ProgramSequence(
                 [
                     {block: 'startLoop', label: 'A', iterations: 1},
-                    {block: 'forward'},
+                    {block: 'forward1'},
                     {block: 'endLoop', label: 'A' }
                 ],
                 0,
@@ -163,7 +163,7 @@ describe('ActionPanel options', () => {
         const { wrapper, mockMoveToPreviousStep } = createMountActionPanel({
             programSequence: new ProgramSequence(
                 [
-                    {block: 'forward'},
+                    {block: 'forward1'},
                     {block: 'startLoop', label: 'A', iterations: 1},
                     {block: 'endLoop', label: 'A' }
                 ],
@@ -184,7 +184,7 @@ describe('ActionPanel options', () => {
         const { wrapper, mockMoveToPreviousStep } = createMountActionPanel({
             programSequence: new ProgramSequence(
                 [
-                    {block: 'forward'},
+                    {block: 'forward1'},
                     {block: 'startLoop', label: 'A', iterations: 1},
                     {block: 'endLoop', label: 'A' }
                 ],
@@ -211,7 +211,7 @@ describe('ActionPanel options', () => {
                         iterations: 1
                     },
                     {
-                        block: 'forward',
+                        block: 'forward1',
                         cache: new Map([
                             ['containingLoopPosition', 1],
                             ['containingLoopLabel', 'A']
@@ -241,7 +241,7 @@ describe('ActionPanel options', () => {
                 [
                     {block: 'startLoop', label: 'A', iterations: 1},
                     {block: 'endLoop', label: 'A' },
-                    {block: 'forward'}
+                    {block: 'forward1'}
                 ],
                 0,
                 1,
@@ -266,7 +266,7 @@ describe('ActionPanel options', () => {
                         iterations: 1
                     },
                     {
-                        block: 'forward',
+                        block: 'forward1',
                         cache: new Map([
                             ['containingLoopPosition', 1],
                             ['containingLoopLabel', 'A']
@@ -328,7 +328,7 @@ describe('ActionPanel options', () => {
             programSequence: new ProgramSequence(
                 [
                     {block: 'startLoop', label: 'A', iterations: 1},
-                    {block: 'forward'},
+                    {block: 'forward1'},
                     {block: 'endLoop', label: 'A' }
                 ],
                 0,
@@ -351,7 +351,7 @@ describe('ActionPanel options', () => {
             programSequence: new ProgramSequence(
                 [
                     {block: 'startLoop', label: 'A', iterations: 1},
-                    {block: 'forward'},
+                    {block: 'forward1'},
                     {block: 'endLoop', label: 'A' }
                 ],
                 0,
@@ -375,7 +375,7 @@ describe('ActionPanel options', () => {
                 [
                     {block: 'startLoop', label: 'A', iterations: 1},
                     {block: 'endLoop', label: 'A' },
-                    {block: 'forward'}
+                    {block: 'forward1'}
                 ],
                 0,
                 1,
@@ -396,7 +396,7 @@ describe('ActionPanel options', () => {
                 [
                     {block: 'startLoop', label: 'A', iterations: 1},
                     {block: 'endLoop', label: 'A' },
-                    {block: 'forward'}
+                    {block: 'forward1'}
                 ],
                 0,
                 1,
@@ -421,7 +421,7 @@ describe('ActionPanel options', () => {
                         iterations: 1
                     },
                     {
-                        block: 'forward',
+                        block: 'forward1',
                         cache: new Map([
                             ['containingLoopPosition', 1],
                             ['containingLoopLabel', 'A']
@@ -449,7 +449,7 @@ describe('ActionPanel options', () => {
         const { wrapper, mockMoveToNextStep } = createMountActionPanel({
             programSequence: new ProgramSequence(
                 [
-                    {block: 'forward'},
+                    {block: 'forward1'},
                     {block: 'startLoop', label: 'A', iterations: 1},
                     {block: 'endLoop', label: 'A' }
                 ],
@@ -476,7 +476,7 @@ describe('ActionPanel options', () => {
                         iterations: 1
                     },
                     {
-                        block: 'forward',
+                        block: 'forward1',
                         cache: new Map([
                             ['containingLoopPosition', 1],
                             ['containingLoopLabel', 'A']

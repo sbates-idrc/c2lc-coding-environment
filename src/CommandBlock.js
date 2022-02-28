@@ -38,10 +38,10 @@ type CommandBlockProps = {
 // TODO: Revise this once there is a proper strategy for typing SVG-backed
 //       components.
 export const commandBlockIconTypes = new Map<string, any>([
-    ['forward', Forward],
+    ['forward1', Forward],
     ['forward2', Forward2],
     ['forward3', Forward3],
-    ['backward', Backward],
+    ['backward1', Backward],
     ['backward2', Backward2],
     ['backward3', Backward3],
     ['left45', Left45],

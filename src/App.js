@@ -150,7 +150,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.defaultWorld = 'Sketchpad';
 
         this.interpreter.addCommandHandler(
-            'forward',
+            'forward1',
             'moveCharacter',
             (stepTimeMs) => {
                 // TODO: Enable announcements again.
@@ -209,7 +209,7 @@ export class App extends React.Component<AppProps, AppState> {
         );
 
         this.interpreter.addCommandHandler(
-            'backward',
+            'backward1',
             'moveCharacter',
             (stepTimeMs) => {
                 // TODO: Enable announcements again.
@@ -779,10 +779,10 @@ export class App extends React.Component<AppProps, AppState> {
                             this.changeProgramSpeedIndex(this.speedLookUp.indexOf(this.interpreter.stepTimeMs) + 1);
                             break;
                         case("selectForward"):
-                            this.setState({ "selectedAction": "forward" });
+                            this.setState({ "selectedAction": "forward1" });
                             break;
                         case("selectBackward"):
-                            this.setState({ "selectedAction": "backward" });
+                            this.setState({ "selectedAction": "backward1" });
                             break;
                         case("selectLeft45"):
                             this.setState({ "selectedAction": "left45" });
@@ -1276,10 +1276,10 @@ export class App extends React.Component<AppProps, AppState> {
                                 </div>
                                 <div className='App__command-palette-section-body'>
                                     <div className='App__command-palette-commands'>
-                                        {this.renderCommandBlocks(['forward'])}
+                                        {this.renderCommandBlocks(['forward1'])}
                                     </div>
                                     <div className='App__command-palette-commands'>
-                                        {this.renderCommandBlocks(['backward'])}
+                                        {this.renderCommandBlocks(['backward1'])}
                                     </div>
                                     <div className='App__command-palette-commands'>
                                         {this.renderCommandBlocks([
@@ -1661,7 +1661,7 @@ export class App extends React.Component<AppProps, AppState> {
             console.log(this.state.dashConnectionStatus);
 
             if (this.state.dashConnectionStatus === 'connected') {
-                this.interpreter.addCommandHandler('forward', 'dash',
+                this.interpreter.addCommandHandler('forward1', 'dash',
                     this.dashDriver.forward.bind(this.dashDriver));
                 this.interpreter.addCommandHandler('left', 'dash',
                     this.dashDriver.left.bind(this.dashDriver));

@@ -4,14 +4,14 @@ import type {IntlShape} from 'react-intl';
 import SceneDimensions from './SceneDimensions';
 
 export type DisplayedCommandName =
-    'forward' | 'backward' |
+    'forward1' | 'backward1' |
     'left45' | 'left90' | 'left180' |
     'right45' | 'right90' | 'right180' |
     'loop';
 
 export type CommandName =
-    'forward' | 'forward2' | 'forward3' |
-    'backward' | 'backward2' | 'backward3' |
+    'forward1' | 'forward2' | 'forward3' |
+    'backward1' | 'backward2' | 'backward3' |
     'left45' | 'left90' | 'left180' |
     'right45' | 'right90' | 'right180' |
     'loop';
@@ -130,8 +130,8 @@ export type SpeechRecognition = {
 };
 
 export type ActionToggleRegister = {
-    backward?: boolean,
-    forward?: boolean,
+    backward1?: boolean,
+    forward1?: boolean,
     left45?: boolean,
     left90?: boolean,
     left180?: boolean,

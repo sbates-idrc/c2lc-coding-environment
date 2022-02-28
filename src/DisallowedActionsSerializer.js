@@ -14,10 +14,10 @@ export default class DisallowedActionsSerializer {
         for (const [actionKey, isDisallowed] of Object.entries(actionToggleRegister)) {
             if (isDisallowed) {
                 switch (actionKey) {
-                    case ('forward') :
+                    case ('forward1') :
                         serializedDisallowedActions += '1';
                         break;
-                    case ('backward') :
+                    case ('backward1') :
                         serializedDisallowedActions += '4';
                         break;
                     case ('left45') :
@@ -48,10 +48,10 @@ export default class DisallowedActionsSerializer {
         for (let i=0; i<disallowedActionsText.length; i++) {
             switch(disallowedActionsText.charAt(i)) {
                 case '1':
-                    actionToggleRegister['forward'] = true;
+                    actionToggleRegister['forward1'] = true;
                     break;
                 case '4':
-                    actionToggleRegister['backward'] = true;
+                    actionToggleRegister['backward1'] = true;
                     break;
                 case 'A':
                     actionToggleRegister['left45'] = true;
