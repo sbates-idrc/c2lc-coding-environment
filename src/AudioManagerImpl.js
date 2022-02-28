@@ -81,7 +81,7 @@ const SamplerDefs = {
         },
         baseUrl: "/audio/right/180/"
     },
-    backward: {
+    backward1: {
         urls: {
             "C0": "C0.mp3",
             "C1": "C1.mp3",
@@ -117,7 +117,7 @@ const SamplerDefs = {
         },
         baseUrl: "/audio/backward/3/"
     },
-    forward: {
+    forward1: {
         urls: {
             "C0": "C0.mp3",
             "C1": "C1.mp3",
@@ -191,10 +191,10 @@ export default class AudioManagerImpl implements AudioManager {
     sonificationEnabled: boolean;
     panner: Panner;
     samplers: {
-        backward: Sampler,
+        backward1: Sampler,
         backward2: Sampler,
         backward3: Sampler,
-        forward: Sampler,
+        forward1: Sampler,
         forward2: Sampler,
         forward3: Sampler,
         left45: Sampler,

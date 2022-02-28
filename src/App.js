@@ -154,12 +154,12 @@ export class App extends React.Component<AppProps, AppState> {
             'moveCharacter',
             (stepTimeMs) => {
                 // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('forward', this.props.intl);
+                // this.audioManager.playAnnouncement('forward1', this.props.intl);
                 this.setState((state) => {
                     const newCharacterState = state.characterState.forward(1, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward", stepTimeMs, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("forward1", stepTimeMs, newCharacterState, this.sceneDimensions);
 
                     return {
                         characterState: newCharacterState
@@ -213,12 +213,12 @@ export class App extends React.Component<AppProps, AppState> {
             'moveCharacter',
             (stepTimeMs) => {
                 // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('backward');
+                // this.audioManager.playAnnouncement('backward1');
                 this.setState((state) => {
                     const newCharacterState = state.characterState.backward(1, state.drawingEnabled);
 
                     // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward", stepTimeMs, newCharacterState, this.sceneDimensions);
+                    this.audioManager.playSoundForCharacterState("backward1", stepTimeMs, newCharacterState, this.sceneDimensions);
                     return {
                         characterState: newCharacterState
                     };
@@ -778,10 +778,10 @@ export class App extends React.Component<AppProps, AppState> {
                         case("increaseProgramSpeed"):
                             this.changeProgramSpeedIndex(this.speedLookUp.indexOf(this.interpreter.stepTimeMs) + 1);
                             break;
-                        case("selectForward"):
+                        case("selectForward1"):
                             this.setState({ "selectedAction": "forward1" });
                             break;
-                        case("selectBackward"):
+                        case("selectBackward1"):
                             this.setState({ "selectedAction": "backward1" });
                             break;
                         case("selectLeft45"):
@@ -1661,7 +1661,7 @@ export class App extends React.Component<AppProps, AppState> {
             console.log(this.state.dashConnectionStatus);
 
             if (this.state.dashConnectionStatus === 'connected') {
-                this.interpreter.addCommandHandler('forward1', 'dash',
+                this.interpreter.addCommandHandler('forward', 'dash',
                     this.dashDriver.forward.bind(this.dashDriver));
                 this.interpreter.addCommandHandler('left', 'dash',
                     this.dashDriver.left.bind(this.dashDriver));
