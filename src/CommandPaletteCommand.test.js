@@ -22,7 +22,7 @@ const intl = createIntl({
     locale: 'en',
     defaultLocale: 'en',
     messages: {
-        'Command.forward' : 'forward'
+        'Command.forward1' : 'forward1'
     }
 });
 
