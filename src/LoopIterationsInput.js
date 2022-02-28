@@ -31,6 +31,10 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
         this.setState({loopIterationsStr: e.currentTarget.value});
     }
 
+    handleClick = (e: Event) => {
+        e.stopPropagation();
+    }
+
     handleKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         const enterKey = 'Enter';
         if (e.key === enterKey) {
@@ -67,8 +71,10 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
                 maxLength='2'
                 size='2'
                 type='text'
+                inputmode='decimal'
                 value={this.state.loopIterationsStr}
                 onChange={this.handleChange}
+                onClick={this.handleClick}
                 onKeyDown={this.handleKeyDown}
                 onBlur={this.handleBlur}
             />
