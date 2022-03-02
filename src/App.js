@@ -53,6 +53,8 @@ import { ReactComponent as WorldIcon } from './svg/World.svg';
 import { ReactComponent as ActionsMenuToggleIcon } from './svg/ActionsMenuToggle.svg'
 import ProgramChangeController from './ProgramChangeController';
 
+import PrivacyModal from './PrivacyModal';
+
 /* Dash connection removed for version 0.5
 import BluetoothApiWarning from './BluetoothApiWarning';
 import DeviceConnectControl from './DeviceConnectControl';
@@ -100,7 +102,8 @@ type AppState = {
     showThemeSelectorModal: boolean,
     showWorldSelector: boolean,
     showShareModal: boolean,
-    showActionsSimplificationMenu: boolean
+    showActionsSimplificationMenu: boolean,
+    showPrivacyModal: boolean
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -418,6 +421,7 @@ export class App extends React.Component<AppProps, AppState> {
             showWorldSelector: false,
             showShareModal: false,
             showActionsSimplificationMenu: false,
+            showPrivacyModal: false,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -1143,6 +1147,14 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showShareModal: false });
     }
 
+    handleTogglePrivacyModal = () => {
+        this.setState((prevState) => {
+            return {
+                showPrivacyModal: !prevState.showPrivacyModal
+            }
+        });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -1163,6 +1175,11 @@ export class App extends React.Component<AppProps, AppState> {
                                     <FormattedMessage id='App.appHeading'/>
                                 </a>
                             </h1>
+                            <div className='App__PrivacyModal__container'>
+                                <button className="App__PrivacyModal__toggle-button" onClick={this.handleTogglePrivacyModal}>
+                                    <FormattedMessage id='App.privacyModalToggle'/>
+                                </button>
+                            </div>
                             <div className='App__header-menu'>
                                 <IconButton
                                     className="App__header-soundOptions"
@@ -1398,6 +1415,10 @@ export class App extends React.Component<AppProps, AppState> {
                     onConfirm={this.handleChangeDisallowedActions}
                     disallowedActions={this.state.disallowedActions}
                     programSequence={this.state.programSequence}
+                />
+                <PrivacyModal
+                    show={this.state.showPrivacyModal}
+                    onClose={this.handleTogglePrivacyModal}
                 />
             </React.Fragment>
         );

@@ -75,6 +75,18 @@ body {
     }
 }
 
+.App__PrivacyModal__container {
+    margin-left: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.App__PrivacyModal__toggle-button {
+    border: none;
+    background-color: inherit;
+    text-decoration: underline;
+}
+
+
 /* Dash connection removed for version 0.5
 .App__audio-toggle-switch {
     margin-right: 1.5rem;
