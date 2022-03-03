@@ -1176,7 +1176,11 @@ export class App extends React.Component<AppProps, AppState> {
                                 </a>
                             </h1>
                             <div className='App__PrivacyModal__container'>
-                                <button className="App__PrivacyModal__toggle-button" onClick={this.handleTogglePrivacyModal}>
+                                <button
+                                    aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
+                                    className="App__PrivacyModal__toggle-button"
+                                    onClick={this.handleTogglePrivacyModal}
+                                >
                                     <FormattedMessage id='App.privacyModalToggle'/>
                                 </button>
                             </div>
