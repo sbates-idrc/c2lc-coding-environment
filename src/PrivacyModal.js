@@ -128,22 +128,6 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
                             information from our servers. Please <a href="https://weavly.org/about/" target='_blank' rel='noopener noreferrer'>contact us</a>.
                         </p>
 
-                        <h5>Location Data</h5>
-
-                        <p>
-                            We do not knowingly collect or store information about your location (“Location Data”); however,
-                            you do have the option of disabling location services when you use our service at any time by
-                            way of your device settings.
-                        </p>
-
-                        <h5>Cookies Data</h5>
-
-                        <p>
-                            We do not knowingly collect or store cookies or similar tracking technologies to track the
-                            activity on our Service (“Cookies Data”). If you would like to delete cookies or instruct your
-                            web browser to delete or refuse cookies, please check your browser documentation for details.
-                        </p>
-
                         <h5>Changes to This Privacy Policy</h5>
 
                         <p>
