@@ -42,7 +42,7 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
 
                 <ModalBody>
                     <div className='PrivacyModal__content'>
-                        <h5>Updated February 16th, 2022</h5>
+                        <h5>Updated March 3rd, 2022</h5>
 
                         <p>
                             At Weavly, we believe that privacy is a fundamental human right, and acknowledge how important
