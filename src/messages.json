@@ -53,7 +53,7 @@
         "App.changeMode": "Change Mode",
         "App.connectToDash": "Connect to Dash",
         "App.privacyModalToggle": "Privacy",
-        "App.privacyModalToggle.ariaLabel": "Privacy policy",
+        "App.privacyModalToggle.ariaLabel": "Weavly privacy policy",
         "App.run": "Run",
         "App.speechRecognition": "Speech Recognition",
         "App.textMode": "Text",
