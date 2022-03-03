@@ -28,7 +28,7 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
         return (
             <ModalWithFooter
                 show={this.props.show}
-                focusOnOpenSelector={'.ActionsMenuItem:first-of-type'}
+                focusOnOpenSelector={'.TextButton--primaryButton'}
                 focusOnCloseSelector={'.App__PrivacyModal__toggle-button'}
                 onClose={this.props.onClose}
                 buttonProperties={[closeButtonProperties]}
