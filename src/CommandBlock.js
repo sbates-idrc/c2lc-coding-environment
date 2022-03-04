@@ -19,7 +19,7 @@ import { ReactComponent as Right45 } from './svg/Right45.svg';
 import { ReactComponent as Right90 } from './svg/Right90.svg';
 import { ReactComponent as Right180 } from './svg/Right180.svg';
 import { ReactComponent as Loop } from './svg/Loop.svg';
-import { ReactComponent as LoopNoShadow } from './svg/LoopNoShadow.svg'
+import { ReactComponent as LoopWithShadow } from './svg/LoopWithShadow.svg'
 import { ReactComponent as LoopStart } from './svg/LoopStart.svg';
 import { ReactComponent as LoopEnd } from './svg/LoopEnd.svg';
 
@@ -51,7 +51,7 @@ export const commandBlockIconTypes = new Map<string, any>([
     ['right90', Right90],
     ['right180', Right180],
     ['loop', Loop],
-    ['loopNoShadow', LoopNoShadow],
+    ['loopWithShadow', LoopWithShadow],
     ['startLoop', LoopStart],
     ['endLoop', LoopEnd]
 ]);
