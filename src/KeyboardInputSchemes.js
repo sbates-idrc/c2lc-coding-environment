@@ -249,7 +249,7 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
         },
 
         swapProgramStep: {
-            keyDef: { code: "KeyS", key: 's' },
+            keyDef: { code: "KeyM", key: 'm' },
             left: {
                 keyDef: { code: "KeyL", key: 'l' },
                 actionName: "swapCurrentStepWithPreviousStep"
