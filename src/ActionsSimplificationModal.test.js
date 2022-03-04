@@ -22,7 +22,7 @@ function createActionsMenu(props) {
                 {
                     show: true,
                     disallowedActions: {},
-                    programSequence: new ProgramSequence([], 0, 0),
+                    programSequence: new ProgramSequence([], 0, 0, new Map()),
                     onCancel: mockOnCancel,
                     onConfirm: mockOnConfirm
                 },

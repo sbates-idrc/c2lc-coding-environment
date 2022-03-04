@@ -125,7 +125,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '1.2';
+        this.version = '1.3';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -385,35 +385,13 @@ export class App extends React.Component<AppProps, AppState> {
             }
         );
 
-        this.interpreter.addCommandHandler(
-            'startLoop',
-            'repeatCommand',
-            (stepTimeMs) => {
-                /* eslint-disable no-console */
-                console.log('loop start');
-                /* eslint-enable no-console */
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'endLoop',
-            'repeatCommand',
-            (stepTimeMs) => {
-                /* eslint-disable no-console */
-                console.log('loop end');
-                /* eslint-enable no-console */
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
         // We have to calculate the allowed commands and initialise the state here because this is the point at which
         // the interpreter's commands are populated.
 
         const disallowedActions = {};
 
         this.state = {
-            programSequence: new ProgramSequence([], 0, 0),
+            programSequence: new ProgramSequence([], 0, 0, new Map()),
             characterState: this.makeStartingCharacterState(this.defaultWorld),
             settings: {
                 language: 'en',
@@ -517,6 +495,14 @@ export class App extends React.Component<AppProps, AppState> {
         }, callback);
     }
 
+    updateProgramCounterAndLoopIterationsLeft(programCounter: number, loopIterationsLeft: Map<string, number>, callback: () => void): void {
+        this.setState((state) => {
+            return {
+                programSequence: state.programSequence.updateProgramCounterAndLoopIterationsLeft(programCounter, loopIterationsLeft)
+            }
+        }, callback);
+    }
+
     // Handlers
 
     handleProgramSequenceChange = (programSequence: ProgramSequence) => {
@@ -560,7 +546,7 @@ export class App extends React.Component<AppProps, AppState> {
             case 'stopped':
                 this.setState((state) => {
                     return {
-                        programSequence: state.programSequence.updateProgramCounter(0),
+                        programSequence: state.programSequence.initiateProgramRun(),
                         runningState: 'running',
                         actionPanelStepIndex: null
                     };
@@ -1420,14 +1406,9 @@ export class App extends React.Component<AppProps, AppState> {
 
             if (programQuery != null) {
                 try {
-                    const parseResult = this.programSerializer.deserialize(programQuery);
-                    const programSequence: ProgramSequence = new ProgramSequence(
-                        parseResult.program,
-                        0,
-                        parseResult.highestLoopNumber
-                    );
+                    const parserResult = this.programSerializer.deserialize(programQuery);
                     this.setState({
-                        programSequence: programSequence
+                        programSequence: ProgramSequence.makeProgramSequenceFromParserResult(parserResult)
                     });
                 } catch(err) {
                     /* eslint-disable no-console */
@@ -1476,14 +1457,9 @@ export class App extends React.Component<AppProps, AppState> {
 
             if (localProgram != null) {
                 try {
-                    const parseResult = this.programSerializer.deserialize(localProgram);
-                    const programSequence: ProgramSequence = new ProgramSequence(
-                        parseResult.program,
-                        0,
-                        parseResult.highestLoopNumber
-                    );
+                    const parserResult = this.programSerializer.deserialize(localProgram);
                     this.setState({
-                        programSequence: programSequence
+                        programSequence: ProgramSequence.makeProgramSequenceFromParserResult(parserResult)
                     });
                 } catch(err) {
                     /* eslint-disable no-console */
