@@ -146,16 +146,16 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
 
         selectedActionChange: {
             keyDef: { code: "KeyA", key: "a" },
-            forward1: {
+            forward: {
                 keyDef: { code: "KeyF", key: "f" },
-                forward: {
+                forward1: {
                     keyDef: { key: "1"},
                     actionName: "selectForward1"
                 }
             },
-            backward1: {
+            backward: {
                 keyDef: { code: "KeyB", key: "b" },
-                backward: {
+                backward1: {
                     keyDef: { key: "1"},
                     actionName: "selectBackward1"
                 }
