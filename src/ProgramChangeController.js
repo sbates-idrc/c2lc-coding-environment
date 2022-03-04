@@ -112,6 +112,69 @@ export default class ProgramChangeController {
         });
     }
 
+    swapProgramStep(programBlockEditor: ?ProgramBlockEditor,
+        indexFrom: number, indexTo: number, commandAtIndexFrom: string) {
+
+        this.app.setState((state) => {
+            // Check that the steps at indexFrom has changed
+            const stepAtIndexFrom = state.programSequence.getProgramStepAt(indexFrom);
+            if (commandAtIndexFrom === stepAtIndexFrom.block) {
+                let announcementName = '';
+                if (indexFrom < indexTo) {
+                    announcementName = 'moveToNext';
+                } else if (indexFrom > indexTo) {
+                    announcementName = 'moveToPrevious';
+                }
+                // Play the announcement
+                this.audioManager.playAnnouncement(
+                    announcementName,
+                    this.intl
+                );
+
+                const program = state.programSequence.getProgram();
+                let focusedActionPanelOptionName = null;
+
+                if (programBlockEditor) {
+                    // Move to Next
+                    if (indexFrom < indexTo) {
+                        if (program[indexFrom].block === 'startLoop') {
+                            const label = program[indexFrom].label;
+                            for (let i = indexFrom; i < program.length; i++) {
+                                if (program[i].block === 'endLoop' && program[i].label === label) {
+                                    indexTo = i + 1;
+                                    break;
+                                }
+                            }
+                        }
+                        focusedActionPanelOptionName = 'moveToNextStep';
+                    // Move to Previous
+                    } else if (indexFrom > indexTo) {
+                        if (program[indexFrom].block === 'endLoop') {
+                            const label = program[indexFrom].label;
+                            for (let i = 0; i < indexFrom; i++) {
+                                if (program[i].block === 'startLoop' && program[i].label === label) {
+                                    indexTo = i - 1;
+                                    break;
+                                }
+                            }
+                        }
+                        focusedActionPanelOptionName = 'moveToPreviousStep';
+                    }
+                    if (state.programSequence.getProgramStepAt(indexTo) != null) {
+                        programBlockEditor.updateActionPanelPosition(indexTo, focusedActionPanelOptionName);
+                    }
+                }
+
+                return {
+                    programSequence: state.programSequence.swapStep(indexFrom, indexTo)
+                };
+            } else {
+                // If the steps to swap have changed, make no changes to the program
+                return {};
+            }
+        });
+    }
+
     // Internal methods
 
     playAnnouncementForAdd(command: string) {

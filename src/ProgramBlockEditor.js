@@ -42,6 +42,7 @@ type ProgramBlockEditorProps = {
     onChangeProgramSequence: (programSequence: ProgramSequence) => void,
     onInsertSelectedActionIntoProgram: (index: number, selectedAction: ?string) => void,
     onDeleteProgramStep: (index: number, command: string) => void,
+    onSwapProgramStep: (indexFrom: number, indexTo: number, commandAtIndexFrom: string) => void,
     onChangeActionPanelStepIndex: (index: ?number) => void,
     onChangeAddNodeExpandedMode: (boolean) => void
 };
@@ -164,6 +165,13 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         }
     }
 
+    updateActionPanelPosition(newActionPanelIndex: number, optionName: string) {
+        this.setState({
+            focusedActionPanelOptionName: optionName
+        });
+        this.props.onChangeActionPanelStepIndex(newActionPanelIndex);
+    }
+
     // TODO: Discuss removing this once we have a good way to test drag and drop.
     /* istanbul ignore next */
     findAddNodeClosestToEvent = (event: DragEvent): number => {
@@ -253,53 +261,19 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     };
 
     handleActionPanelMoveToPreviousStep = (index: number) => {
-        this.props.audioManager.playAnnouncement('moveToPrevious', this.props.intl);
-        let previousStepIndex = index - 1;
-        const program = this.props.programSequence.getProgram();
-        if (program[index].block === 'endLoop') {
-            const label = program[index].label;
-            for (let i = 0; i < index; i++) {
-                if (program[i].block === 'startLoop' && program[i].label === label) {
-                    previousStepIndex = i - 1;
-                    break;
-                }
-            }
-        }
-        const previousStep = this.props.programSequence.getProgramStepAt(previousStepIndex);
-        if (previousStep != null) {
-            this.setState({
-                focusedActionPanelOptionName: 'moveToPreviousStep'
-            });
-            this.props.onChangeActionPanelStepIndex(index - 1);
-            this.props.onChangeProgramSequence(
-                this.props.programSequence.swapStep(index, previousStepIndex)
-            );
-        }
+        this.props.onSwapProgramStep(
+            index,
+            index - 1,
+            this.props.programSequence.getProgramStepAt(index).block
+        );
     };
 
     handleActionPanelMoveToNextStep = (index: number) => {
-        this.props.audioManager.playAnnouncement('moveToNext', this.props.intl);
-        let nextStepIndex = index + 1;
-        const program = this.props.programSequence.getProgram();
-        if (program[index].block === 'startLoop') {
-            const label = program[index].label;
-            for (let i = index; i < program.length; i++) {
-                if (program[i].block === 'endLoop' && program[i].label === label) {
-                    nextStepIndex = i + 1;
-                    break;
-                }
-            }
-        }
-        const nextStep = this.props.programSequence.getProgramStepAt(nextStepIndex);
-        if (nextStep != null) {
-            this.setState({
-                focusedActionPanelOptionName: 'moveToNextStep'
-            });
-            this.props.onChangeActionPanelStepIndex(index + 1);
-            this.props.onChangeProgramSequence(
-                this.props.programSequence.swapStep(index, nextStepIndex)
-            );
-        }
+        this.props.onSwapProgramStep(
+            index,
+            index + 1,
+            this.props.programSequence.getProgramStepAt(index).block
+        );
     };
 
     handleClickStep = (e: SyntheticEvent<HTMLButtonElement>) => {

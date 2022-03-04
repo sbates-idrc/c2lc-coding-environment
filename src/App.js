@@ -527,6 +527,15 @@ export class App extends React.Component<AppProps, AppState> {
         );
     }
 
+    handleProgramBlockEditorSwapStep = (indexFrom: number, indexTo: number, commandAtIndexFrom: string) => {
+        this.programChangeController.swapProgramStep(
+            this.programBlockEditorRef.current,
+            indexFrom,
+            indexTo,
+            commandAtIndexFrom
+        )
+    }
+
     handlePlay = () => {
         switch (this.state.runningState) {
             case 'running':
@@ -853,9 +862,12 @@ export class App extends React.Component<AppProps, AppState> {
                                     index = parseInt(currentElement.dataset.stepnumber, 10);
                                 }
                                 if (index != null && index > 0) {
-                                    if (this.programBlockEditorRef.current) {
-                                        this.programBlockEditorRef.current.handleActionPanelMoveToPreviousStep(index);
-                                    }
+                                    this.programChangeController.swapProgramStep(
+                                        this.programBlockEditorRef.current,
+                                        index,
+                                        index - 1,
+                                        currentElement.dataset.command
+                                    )
                                 }
                             }
                             break;
@@ -868,9 +880,12 @@ export class App extends React.Component<AppProps, AppState> {
                                     index = parseInt(currentElement.dataset.stepnumber, 10);
                                 }
                                 if (index != null && index < this.state.programSequence.getProgramLength() - 1) {
-                                    if (this.programBlockEditorRef.current) {
-                                        this.programBlockEditorRef.current.handleActionPanelMoveToNextStep(index);
-                                    }
+                                    this.programChangeController.swapProgramStep(
+                                        this.programBlockEditorRef.current,
+                                        index,
+                                        index + 1,
+                                        currentElement.dataset.command
+                                    )
                                 }
                             }
                             break;
@@ -1333,6 +1348,7 @@ export class App extends React.Component<AppProps, AppState> {
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
                             onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
+                            onSwapProgramStep={this.handleProgramBlockEditorSwapStep}
                             onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
                         />
