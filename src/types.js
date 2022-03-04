@@ -5,8 +5,8 @@ import SceneDimensions from './SceneDimensions';
 
 export type DisplayedCommandName =
     'forward1' | 'backward1' |
-    'left45' | 'left90' | 'left180' |
-    'right45' | 'right90' | 'right180' |
+    'left45' | 'left90' |
+    'right45' | 'right90' |
     'loop';
 
 export type CommandName =
