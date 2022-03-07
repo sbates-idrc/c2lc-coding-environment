@@ -90,6 +90,7 @@ test('CharacterState.pathEquals', () => {
 });
 
 test('CharacterState.mergePathSegments should merge paths travling in the same direction', () => {
+    expect.assertions(2);
     const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
     const characterState = new CharacterState(0, 0, 0, [{x1: 1, y1: 0, x2: 3, y2: 0}], sceneDimensions);
     expect(characterState.mergePathSegments(characterState.path, [{x1: 3, y1: 0, x2: 10, y2: 0}])).toStrictEqual([{
@@ -102,6 +103,7 @@ test('CharacterState.mergePathSegments should merge paths travling in the same d
 });
 
 test('CahracterState.isTravelingInSameDirection should return true if two pathSegments are travling in the same direction', () => {
+    expect.assertions(11);
     const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
     const characterState = new CharacterState(0, 0, 0, [{x1: 1, y1: 0, x2: 3, y2: 0}], sceneDimensions);
     // Connected path
@@ -110,6 +112,23 @@ test('CahracterState.isTravelingInSameDirection should return true if two pathSe
     expect(characterState.isTravelingInSameDirection(characterState.path, {x1: 3, y1: 1, x2: 6, y2: 1})).toBe(false);
     // Discrete path
     expect(characterState.isTravelingInSameDirection(characterState.path, {x1: 4, y1: 0, x2: 5, y2: 0})).toBe(false);
+    // Testing all directions
+    // North
+    expect(characterState.isTravelingInSameDirection([{x1: 0, y1: 3, x2: 0, y2: 2}], {x1: 0, y1: 2, x2: 0, y2: 1})).toBe(true);
+    // North East
+    expect(characterState.isTravelingInSameDirection([{x1: 0, y1: 3, x2: 1, y2: 2}], {x1: 1, y1: 2, x2: 2, y2: 1})).toBe(true);
+    // East
+    expect(characterState.isTravelingInSameDirection([{x1: 0, y1: 3, x2: 1, y2: 3}], {x1: 1, y1: 3, x2: 2, y2: 3})).toBe(true);
+    // South East
+    expect(characterState.isTravelingInSameDirection([{x1: 0, y1: 3, x2: 1, y2: 4}], {x1: 1, y1: 4, x2: 2, y2: 5})).toBe(true);
+    // South
+    expect(characterState.isTravelingInSameDirection([{x1: 0, y1: 3, x2: 0, y2: 4}], {x1: 0, y1: 4, x2: 0, y2: 5})).toBe(true);
+    // South West
+    expect(characterState.isTravelingInSameDirection([{x1: 2, y1: 3, x2: 1, y2: 4}], {x1: 1, y1: 4, x2: 0, y2: 5})).toBe(true);
+    // West 
+    expect(characterState.isTravelingInSameDirection([{x1: 2, y1: 3, x2: 1, y2: 3}], {x1: 1, y1: 3, x2: 0, y2: 3})).toBe(true);
+    // North West
+    expect(characterState.isTravelingInSameDirection([{x1: 2, y1: 3, x2: 1, y2: 2}], {x1: 1, y1: 2, x2: 0, y2: 1})).toBe(true);
 });
 
 test('CharacterState.getDirectionDegrees() should return the direction in degrees', () => {
