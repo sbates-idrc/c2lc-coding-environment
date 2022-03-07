@@ -125,7 +125,7 @@ test('CahracterState.isTravelingInSameDirection should return true if two pathSe
     expect(characterState.isTravelingInSameDirection([{x1: 0, y1: 3, x2: 0, y2: 4}], {x1: 0, y1: 4, x2: 0, y2: 5})).toBe(true);
     // South West
     expect(characterState.isTravelingInSameDirection([{x1: 2, y1: 3, x2: 1, y2: 4}], {x1: 1, y1: 4, x2: 0, y2: 5})).toBe(true);
-    // West 
+    // West
     expect(characterState.isTravelingInSameDirection([{x1: 2, y1: 3, x2: 1, y2: 3}], {x1: 1, y1: 3, x2: 0, y2: 3})).toBe(true);
     // North West
     expect(characterState.isTravelingInSameDirection([{x1: 2, y1: 3, x2: 1, y2: 2}], {x1: 1, y1: 2, x2: 0, y2: 1})).toBe(true);
