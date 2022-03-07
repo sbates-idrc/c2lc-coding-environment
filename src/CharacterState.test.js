@@ -89,6 +89,29 @@ test('CharacterState.pathEquals', () => {
     ], 1)).toBeFalsy();
 });
 
+test('CharacterState.mergePathSegments should merge paths travling in the same direction', () => {
+    const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
+    const characterState = new CharacterState(0, 0, 0, [{x1: 1, y1: 0, x2: 3, y2: 0}], sceneDimensions);
+    expect(characterState.mergePathSegments(characterState.path, [{x1: 3, y1: 0, x2: 10, y2: 0}])).toStrictEqual([{
+        x1: 1, y1: 0, x2: 10, y2: 0
+    }]);
+    expect(characterState.mergePathSegments(characterState.path, [{x1: 13, y1: 2, x2: 15, y2: 2}])).toStrictEqual([
+        {x1: 1, y1: 0, x2: 10, y2: 0},
+        {x1: 13, y1: 2, x2: 15, y2: 2}
+    ]);
+});
+
+test('CahracterState.isTravelingInSameDirection should return true if two pathSegments are travling in the same direction', () => {
+    const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
+    const characterState = new CharacterState(0, 0, 0, [{x1: 1, y1: 0, x2: 3, y2: 0}], sceneDimensions);
+    // Connected path
+    expect(characterState.isTravelingInSameDirection(characterState.path, {x1: 3, y1: 0, x2: 6, y2: 0})).toBe(true);
+    // Parallel path
+    expect(characterState.isTravelingInSameDirection(characterState.path, {x1: 3, y1: 1, x2: 6, y2: 1})).toBe(false);
+    // Discrete path
+    expect(characterState.isTravelingInSameDirection(characterState.path, {x1: 4, y1: 0, x2: 5, y2: 0})).toBe(false);
+});
+
 test('CharacterState.getDirectionDegrees() should return the direction in degrees', () => {
     const sceneDimensions = new SceneDimensions(1, 10, 1, 10);
     expect(new CharacterState(1, 1, 0, [], sceneDimensions).getDirectionDegrees()).toBe(0);
@@ -169,8 +192,7 @@ test('Each Forward move should create a path segment', () => {
     const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
     (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true).forward(1, true)): any)
         .toHaveCharacterState(3, 1, 2, [
-            {x1: 1, y1: 1, x2: 2, y2: 1},
-            {x1: 2, y1: 1, x2: 3, y2: 1}
+            {x1: 1, y1: 1, x2: 3, y2: 1}
         ]);
     (expect(new CharacterState(1, 2, 2, [], sceneDimensions).forward(1, true).turnLeft(2).forward(1, true)): any)
         .toHaveCharacterState(2, 1, 0, [
@@ -188,8 +210,7 @@ test('Each Backward move should create a path segment', () => {
     const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
     (expect(new CharacterState(1, 1, 6, [], sceneDimensions).backward(1, true).backward(1, true)): any)
         .toHaveCharacterState(3, 1, 6, [
-            {x1: 1, y1: 1, x2: 2, y2: 1},
-            {x1: 2, y1: 1, x2: 3, y2: 1}
+            {x1: 1, y1: 1, x2: 3, y2: 1}
         ]);
     (expect(new CharacterState(1, 2, 6, [], sceneDimensions).backward(1, true).turnLeft(2).backward(1, true)): any)
         .toHaveCharacterState(2, 1, 4, [
@@ -210,8 +231,7 @@ test('Forward move should not create a path segment, when drawingEnabled is fals
         .toHaveCharacterState(2, 1, 2, []);
     (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, false).forward(2, true)): any)
         .toHaveCharacterState(4, 1, 2, [
-            {x1: 2, y1: 1, x2: 3, y2: 1},
-            {x1: 3, y1: 1, x2: 4, y2: 1}
+            {x1: 2, y1: 1, x2: 4, y2: 1}
         ]);
     (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true).forward(2, false)): any)
         .toHaveCharacterState(4, 1, 2, [
@@ -227,8 +247,7 @@ test('Backward move should not create a path segment, when drawingEnabled is fal
         .toHaveCharacterState(1, 1, 2, []);
     (expect(new CharacterState(4, 1, 2, [], sceneDimensions).backward(1, false).backward(2, true)): any)
         .toHaveCharacterState(1, 1, 2, [
-            {x1: 3, y1: 1, x2: 2, y2: 1},
-            {x1: 2, y1: 1, x2: 1, y2: 1}
+            {x1: 3, y1: 1, x2: 1, y2: 1}
         ]);
     (expect(new CharacterState(4, 1, 2, [], sceneDimensions).backward(1, true).backward(2, false)): any)
         .toHaveCharacterState(1, 1, 2, [
