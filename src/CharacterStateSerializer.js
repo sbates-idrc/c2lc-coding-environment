@@ -14,7 +14,11 @@ export default class CharacterStateSerializer {
             this.encodePosition(characterState.xPos) +
             this.encodePosition(characterState.yPos) +
             this.encodeDirection(characterState.direction);
-        for ( const pathSegment of characterState.path ) {
+        const characterStatePath = characterState.path;
+        if (characterStatePath.length > 100) {
+            characterStatePath.splice(0, 1);
+        }
+        for ( const pathSegment of characterStatePath ) {
             const { x1, x2, y1, y2 } = pathSegment;
             pathParam +=
                 this.encodePosition(x1) +

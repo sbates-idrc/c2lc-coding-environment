@@ -25,6 +25,16 @@ test('Serialize character state', () => {
     )).toBe('zzc');
 });
 
+test('Serialize character state with path length greater than 100', () => {
+    const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
+    const serializer = new CharacterStateSerializer(sceneDimensions);
+    const characterPath = new Array(101).fill({x1: 0, y1: 1, x2: 2, y2: 3});
+    characterPath[1] = {x1: 2, y1: 3, x2: 4, y2: 3};
+    expect(serializer.serialize(
+        new CharacterState(1, 0, 4, characterPath, sceneDimensions)
+    ).substring(0, 7)).toBe('a0dbcdc');
+})
+
 test('Deserialize character state', () => {
     expect.assertions(5);
     const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
