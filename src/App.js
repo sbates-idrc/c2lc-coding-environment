@@ -814,6 +814,9 @@ export class App extends React.Component<AppProps, AppState> {
                         case("selectRight180"):
                             this.setState({ "selectedAction": "right180" });
                             break;
+                        case("selectLoop"):
+                            this.setState({ "selectedAction": "loop" });
+                            break;
                         case("focusActions"):
                             Utils.focusByQuerySelector(".command-block");
                             break;

@@ -43,6 +43,7 @@ export type ActionName =
     | "selectRight45"
     | "selectRight90"
     | "selectRight180"
+    | "selectLoop"
 
     // Focus Sequences
     | "focusActions"
@@ -209,6 +210,10 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     keyDef: { key: "3"},
                     actionName: "selectRight180"
                 }
+            },
+            loop: {
+                keyDef: { code: "KeyS", key: "s" },
+                actionName: "selectLoop"
             }
         },
 
