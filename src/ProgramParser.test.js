@@ -155,6 +155,10 @@ test('Parse startLoop', () => {
     }).toThrowError(/^Missing loop number of iterations$/);
 
     expect(() => {
+        (new ProgramParser()).parse('sA0');
+    }).toThrowError(/^Loop number of iterations should be greater than 0$/);
+
+    expect(() => {
         (new ProgramParser()).parse('sAs');
     }).toThrowError(/^Missing loop number of iterations$/);
 

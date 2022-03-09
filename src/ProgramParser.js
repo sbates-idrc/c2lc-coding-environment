@@ -136,6 +136,9 @@ export default class ProgramParser {
         if (iterationsStr === '') {
             throw new Error('Missing loop number of iterations');
         }
+        if (iterationsStr === '0') {
+            throw new Error('Loop number of iterations should be greater than 0');
+        }
 
         const iterations = parseInt(iterationsStr, 10);
 
