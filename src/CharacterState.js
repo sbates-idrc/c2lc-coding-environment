@@ -60,99 +60,6 @@ export default class CharacterState {
         return true;
     }
 
-    mergePathSegments(pathSegments: Array<PathSegment>, movementResultPathSegments: Array<PathSegment>): Array<PathSegment> {
-        for (let i=0; i<movementResultPathSegments.length; i++) {
-            if (pathSegments.length > 0 && this.isTravelingInSameDirection(pathSegments, movementResultPathSegments[i])) {
-                const lastPathSegmentIndex = pathSegments.length - 1;
-                pathSegments.splice(lastPathSegmentIndex, 1, {
-                    x1: pathSegments[lastPathSegmentIndex].x1,
-                    x2: movementResultPathSegments[i].x2,
-                    y1: pathSegments[lastPathSegmentIndex].y1,
-                    y2: movementResultPathSegments[i].y2});
-            } else {
-                Array.prototype.push.apply(pathSegments, movementResultPathSegments.splice(i));
-            }
-        }
-        return pathSegments;
-    }
-
-    isTravelingInSameDirection(pathSegments: Array<PathSegment>, movementResultPathSegment: PathSegment): boolean {
-        if (pathSegments.length === 0 || movementResultPathSegment == null) {
-            return false;
-        }
-        const { x1, x2, y1, y2 } = pathSegments[pathSegments.length - 1];
-        const movementResultInitialX = movementResultPathSegment.x1;
-        const movementResultInitialY = movementResultPathSegment.y1;
-        const movementResultFinalX = movementResultPathSegment.x2;
-        const movementResultFinalY = movementResultPathSegment.y2;
-        // Moving North
-        if (x2 - x1 === 0 && y2 - y1 < 0) {
-            if (movementResultFinalX - x2 === 0 &&
-                movementResultFinalY - y2 < 0 &&
-                movementResultInitialX === x2 &&
-                movementResultInitialY === y2) {
-                return true;
-            }
-        // Moving North East
-        } else if (x2 - x1 > 0 && y2 - y1 < 0) {
-            if (movementResultFinalX - x2 > 0 &&
-                movementResultFinalY - y2 < 0 &&
-                movementResultInitialX === x2 &&
-                movementResultInitialY === y2) {
-                return true;
-            }
-        // Moving East
-        } else if (x2 - x1 > 0 && y2 - y1 === 0) {
-            if (movementResultFinalX - x2 > 0 &&
-                movementResultFinalY - y2 === 0 &&
-                movementResultInitialX === x2 &&
-                movementResultInitialY === y2) {
-                return true;
-            }
-        // Moving South East
-        } else if (x2 - x1 > 0 && y2 - y1 > 0) {
-            if (movementResultFinalX - x2 > 0 &&
-                movementResultFinalY - y2 > 0 &&
-                movementResultInitialX === x2 &&
-                movementResultInitialY === y2) {
-                return true;
-            }
-        // Moving South
-        } else if (x2 - x1 === 0 && y2 - y1 > 0) {
-            if (movementResultFinalX - x2 === 0 &&
-                movementResultFinalY - y2 > 0 &&
-                movementResultInitialX === x2 &&
-                movementResultInitialY === y2) {
-                return true;
-            }
-        // Moving South West
-        } else if (x2 - x1 < 0 && y2 - y1 > 0) {
-            if (movementResultFinalX - x2 < 0 &&
-                movementResultFinalY - y2 > 0 &&
-                movementResultInitialX === x2 &&
-                movementResultInitialY === y2) {
-                return true;
-            }
-        // Moving West
-        } else if (x2 - x1 < 0 && y2 - y1 === 0) {
-            if (movementResultFinalX - x2 < 0 &&
-                movementResultFinalY - y2 === 0 &&
-                movementResultInitialX === x2 &&
-                movementResultInitialY === y2) {
-                return true;
-            }
-        // Moving North West
-        } else if (x2 - x1 < 0 && y2 - y1 < 0) {
-            if (movementResultFinalX - x2 < 0 &&
-                movementResultFinalY - y2 < 0 &&
-                movementResultInitialX === x2 &&
-                movementResultInitialY === y2) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     forward(distance: number, drawingEnabled: boolean): CharacterState {
         const movementResult = this.calculateMove(distance, this.direction, drawingEnabled);
         const updatedPath = this.mergePathSegments(this.path, movementResult.pathSegments);
@@ -303,11 +210,12 @@ export default class CharacterState {
         return String.fromCharCode(64 + this.xPos);
     }
 
-    // Internal implementation method.
+    // Internal implementation methods
+
     // Calculates the movement for the specified distance in the specified direction.
     // Returns the final position and any generated path segments.
     calculateMove(distance: number, direction: number, drawingEnabled: boolean): MovementResult {
-        let pathSegments = [];
+        const pathSegments = [];
         let x = this.xPos;
         let y = this.yPos;
 
@@ -316,11 +224,7 @@ export default class CharacterState {
             x = movementResult.x;
             y = movementResult.y;
             if (drawingEnabled) {
-                if (movementResult.pathSegments[0] != null && this.isTravelingInSameDirection(pathSegments, movementResult.pathSegments[0])) {
-                    pathSegments = this.mergePathSegments(pathSegments, movementResult.pathSegments);
-                } else {
-                    Array.prototype.push.apply(pathSegments, movementResult.pathSegments);
-                }
+                Array.prototype.push.apply(pathSegments, movementResult.pathSegments);
             }
         }
 
@@ -331,7 +235,6 @@ export default class CharacterState {
         };
     }
 
-    // Internal implementation method.
     // Calculates the movement for one grid unit in the specified direction.
     // Returns the new position and, if movement was possible, a path segment.
     calculateMoveOneGridUnit(x: number, y: number, direction: number): MovementResult {
@@ -399,5 +302,37 @@ export default class CharacterState {
                 pathSegments: [pathSegment]
             };
         }
+    }
+
+    mergePathSegments(dest: Array<PathSegment>, src: Array<PathSegment>): Array<PathSegment> {
+        const pathSegments = dest.slice();
+        for (let i = 0; i < src.length; i++) {
+            if (pathSegments.length > 0
+                    && this.isConnected(pathSegments[pathSegments.length - 1], src[i])
+                    && this.isSameDirection(pathSegments[pathSegments.length - 1], src[i])) {
+                pathSegments[pathSegments.length - 1] = {
+                    x1: pathSegments[pathSegments.length - 1].x1,
+                    x2: src[i].x2,
+                    y1: pathSegments[pathSegments.length - 1].y1,
+                    y2: src[i].y2
+                };
+            } else {
+                pathSegments.push(src[i]);
+            }
+        }
+        return pathSegments;
+    }
+
+    isConnected(a: PathSegment, b: PathSegment): boolean {
+        return a.x2 === b.x1 && a.y2 === b.y1;
+    }
+
+    isSameDirection(a: PathSegment, b: PathSegment): boolean {
+        return this.getPathSegmentDirection(a) === this.getPathSegmentDirection(b);
+    }
+
+    getPathSegmentDirection(pathSegment: PathSegment): number {
+        return Math.atan2(pathSegment.y2 - pathSegment.y1,
+            pathSegment.x2 - pathSegment.x1);
     }
 }
