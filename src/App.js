@@ -30,7 +30,7 @@ import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -781,20 +781,8 @@ export class App extends React.Component<AppProps, AppState> {
                         case("selectForward1"):
                             this.setState({ "selectedAction": "forward1" });
                             break;
-                        case("selectForward2"):
-                            this.setState({ "selectedAction": "forward2" });
-                            break;
-                        case("selectForward3"):
-                            this.setState({ "selectedAction": "forward3" });
-                            break;
                         case("selectBackward1"):
                             this.setState({ "selectedAction": "backward1" });
-                            break;
-                        case("selectBackward2"):
-                            this.setState({ "selectedAction": "backward2" });
-                            break;
-                        case("selectBackward3"):
-                            this.setState({ "selectedAction": "backward3" });
                             break;
                         case("selectLeft45"):
                             this.setState({ "selectedAction": "left45" });
@@ -949,7 +937,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.setStepTime(stepTimeMs);
     }
 
-    renderCommandBlocks = (commands: Array<CommandName>) => {
+    renderCommandBlocks = (commands: Array<DisplayedCommandName>) => {
         const commandBlocks = [];
 
         for (const [index, value] of commands.entries()) {
@@ -1253,22 +1241,46 @@ export class App extends React.Component<AppProps, AppState> {
                             </h2>
                         </div>
                         <div className='App__command-palette-command-container'>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks([
-                                    'forward1', 'forward2', 'forward3',
-                                    'backward1', 'backward2', 'backward3'
-                                ])}
+                            <div className='App__command-palette-section'>
+                                <div className='App__command-palette-section-heading-container'>
+                                    <h3 className='App__command-palette-section-heading'>
+                                        <FormattedMessage id='CommandPalette.movementsTitle'/>
+                                    </h3>
+                                </div>
+                                <div className='App__command-palette-section-body'>
+                                    <div className='App__command-palette-commands'>
+                                        {this.renderCommandBlocks(['forward1'])}
+                                    </div>
+                                    <div className='App__command-palette-commands'>
+                                        {this.renderCommandBlocks(['backward1'])}
+                                    </div>
+                                    <div className='App__command-palette-commands'>
+                                        {this.renderCommandBlocks([
+                                            'left45', 'left90'
+                                        ])}
+                                    </div>
+                                    <div className='App__command-palette-commands'>
+                                        {this.renderCommandBlocks([
+                                            'right45', 'right90'
+                                        ])}
+                                    </div>
+                                </div>
                             </div>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks([
-                                    'left45', 'left90', 'left180',
-                                    'right45', 'right90', 'right180',
-                                ])}
-                            </div>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks([
-                                    'loop'
-                                ])}
+
+                            <div className='App__command-palette-section'>
+                                <div className='App__command-palette-section-heading-container'>
+                                    <h3 className='App__command-palette-section-heading'>
+                                        <FormattedMessage id='CommandPalette.controlsTitle'/>
+                                    </h3>
+                                </div>
+
+                                <div className='App__command-palette-section-body'>
+                                    <div className='App__command-palette-controls'>
+                                        {this.renderCommandBlocks([
+                                            'loop'
+                                        ])}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
