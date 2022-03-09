@@ -561,17 +561,6 @@ body.dark-theme {
         color: white;
     }
 
-    .App__ActionsMenu__toggle-button {
-        &:focus {
-            box-shadow:
-                0 0 0 0.1rem white;
-        }
-
-        svg line {
-            stroke: white;
-        }
-    }
-
     .App__ActionsMenu__menu {
         background-color: #22343C;
         border: 2px solid #33717F;
@@ -838,14 +827,22 @@ body.gray-theme {
         background-color: #D5D8DD;
     }
 
-    .App__header-menu > .IconButton {
+    .App__header-menu > .IconButton:not(.App__ActionsMenu__toggle-button) {
         svg path {
             fill: #FFFFFF;
         }
     }
 
     .IconButton {
-        background-color: #818A98;
+        &:not(.IconButton--disabled) {
+            background-color: #818A98;
+
+            .App__header-actionsMenu-icon {
+                path {
+                    stroke: white;
+                }
+            }    
+        }
 
         &:hover:not(.IconButton--disabled) {
             background-color: #505862;
@@ -877,7 +874,21 @@ body.gray-theme {
                 fill: white;
             }
         }
+
+        .App__header-theme-icon {
+            path {
+                fill: white;
+            }
+        }
     }
+
+    .IconButton--disabled {
+        background-color: #818A98;
+        svg path {
+            stroke: #D5D8DD;
+        }
+    }
+
 
     .KeyboardInputModal__content__toggle {
         background-color: #B9BEC6;
@@ -1642,10 +1653,6 @@ body.contrast-theme {
     .IconButton {
         background-color: white;
 
-        svg path {
-            fill: black;
-        }
-
         &:hover:not(.IconButton--disabled) {
             background-color: black;
 
@@ -1671,6 +1678,12 @@ body.contrast-theme {
                     fill: white;
                 }
             }
+
+            .App__header-actionsMenu-icon {
+                path {
+                    stroke: white;
+                }
+            }
         }
 
         &:focus {
@@ -1694,6 +1707,14 @@ body.contrast-theme {
             circle {
                 fill: black;
             }
+        }
+    }
+
+    .IconButton--disabled {
+        background-color: #1E1E1E;
+
+        svg path {
+            stroke: #818A98;
         }
     }
 
