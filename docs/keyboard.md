@@ -49,6 +49,7 @@ follows.
 | Ctrl + Alt + x, a, r, 1 | selectRight45 |
 | Ctrl + Alt + x, a, r, 2 | selectRight90 |
 | Ctrl + Alt + x, a, r, 3 | selectRight180 |
+| Ctrl + Alt + x, a, s | selectLoop |
 | Ctrl + Alt + x, c, m, d | moveCharacterDown |
 | Ctrl + Alt + x, c, m, l | moveCharacterLeft |
 | Ctrl + Alt + x, c, m, r | moveCharacterRight |
@@ -104,6 +105,7 @@ with the starting key of a sequence.  Those key bindings are as follows:
 | Alt + x, a, r, 1 | selectRight45 |
 | Alt + x, a, r, 2 | selectRight90 |
 | Alt + x, a, r, 3 | selectRight180 |
+| Alt + x, a, s | selectLoop |
 | Alt + x, c, m, d | moveCharacterDown |
 | Alt + x, c, m, l | moveCharacterLeft |
 | Alt + x, c, m, r | moveCharacterRight |
