@@ -50,7 +50,7 @@ import { ReactComponent as AudioIcon } from './svg/Audio.svg';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
 import { ReactComponent as ThemeIcon } from './svg/Theme.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
-import { ReactComponent as ActionsMenuToggleIcon } from './svg/ActionsMenuToggle.svg'
+import { ReactComponent as ActionsMenuToggleIcon } from './svg/Simplification.svg'
 import ProgramChangeController from './ProgramChangeController';
 
 /* Dash connection removed for version 0.5
@@ -1091,16 +1091,6 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    handleKeyDownActionsSimplificationIcon = (event: KeyboardEvent) => {
-        if (!this.editingIsDisabled()) {
-            if (event.key === "Enter" || event.key === " ") {
-                this.setState({
-                    showActionsSimplificationMenu: true
-                });
-            }
-        }
-    }
-
     handleChangeDisallowedActions = (disallowedActions: ActionToggleRegister) => {
         this.setState({
             showActionsSimplificationMenu: false,
@@ -1185,6 +1175,14 @@ export class App extends React.Component<AppProps, AppState> {
                                 >
                                     <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
                                 </IconButton>
+
+                                <IconButton className="App__ActionsMenu__toggle-button"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
+                                    disabled={this.editingIsDisabled()}
+                                    onClick={this.handleClickActionsSimplificationIcon}
+                                >
+                                    <ActionsMenuToggleIcon className='App__header-actionsMenu-icon'/>
+                                </IconButton>
                             </div>
                             {/* Dash connection removed for version 0.5
                             <DeviceConnectControl
@@ -1253,17 +1251,6 @@ export class App extends React.Component<AppProps, AppState> {
                             <h2 className='App__ActionsMenu__header-heading'>
                                 <FormattedMessage id='ActionsMenu.title' />
                             </h2>
-
-                            <div className="App__ActionsMenu__toggle-button"
-                                aria-label={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
-                                aria-disabled={this.editingIsDisabled()}
-                                role="button"
-                                onClick={this.handleClickActionsSimplificationIcon}
-                                onKeyDown={this.handleKeyDownActionsSimplificationIcon}
-                                tabIndex={0}
-                            >
-                                <ActionsMenuToggleIcon/>
-                            </div>
                         </div>
                         <div className='App__command-palette-command-container'>
                             <div className='App__command-palette-commands'>
