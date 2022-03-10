@@ -59,6 +59,7 @@ it('Should play a sound when selectedCommandName changes', () => {
         expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
         expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('movementSelected');
         expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
+            "commandType": "movement",
             "command": "forward 1 square"
         });
     });

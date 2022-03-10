@@ -1608,6 +1608,15 @@ export class App extends React.Component<AppProps, AppState> {
                 const commandString = this.props.intl.formatMessage({
                     id: "Announcement." + this.state.selectedAction
                 });
+                if (this.state.selectedAction === "loop") {
+                    messagePayload.commandType = this.props.intl.formatMessage({
+                        id: "Announcement.control"
+                    });
+                } else {
+                    messagePayload.commandType = this.props.intl.formatMessage({
+                        id: "Announcement.movement"
+                    });
+                }
                 messagePayload.command = commandString;
             }
             this.audioManager.playAnnouncement(announcementKey,

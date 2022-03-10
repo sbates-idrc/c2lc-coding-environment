@@ -69,10 +69,23 @@ export default class ProgramChangeController {
                     { id: "Announcement." + command },
                     { loopLabel: currentStep.label }
                 );
+                let commandType = '';
+                if (command === 'startLoop' || command === 'endLoop') {
+                    commandType = this.intl.formatMessage(
+                        { id: "Announcement.control" }
+                    );
+                } else {
+                    commandType = this.intl.formatMessage(
+                        { id: "Announcement.movement" }
+                    );
+                }
                 this.audioManager.playAnnouncement(
                     'delete',
                     this.intl,
-                    { command: commandString }
+                    {
+                        commandType,
+                        command: commandString
+                    }
                 );
 
                 if (programBlockEditor) {
@@ -118,10 +131,14 @@ export default class ProgramChangeController {
         const commandString = this.intl.formatMessage({
             id: "Announcement." + (command || "")
         });
+        const commandType = command === 'loop' ? 'control' : 'movement';
         this.audioManager.playAnnouncement(
             'add',
             this.intl,
-            { command: commandString }
+            {
+                commandType,
+                command: commandString
+            }
         );
     }
 
