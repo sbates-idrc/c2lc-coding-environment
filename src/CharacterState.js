@@ -14,6 +14,8 @@ import type { PathSegment } from './types';
 // W:  6
 // NW: 7
 
+const characterStateMaxPathLength = 200;
+
 type MovementResult = {
     x: number,
     y: number,
@@ -34,7 +36,7 @@ export default class CharacterState {
         this.direction = direction;
         this.path = path;
         this.sceneDimensions = sceneDimensions;
-        this.maxPathLength = 100;
+        this.maxPathLength = characterStateMaxPathLength;
     }
 
     getDirectionDegrees() {
