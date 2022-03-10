@@ -1,5 +1,9 @@
 /* Landmarks */
 
+.ProgramBlockEditor__character-column-character-container--Landmarks {
+    background-color: #FFE5B4;
+}
+
 .Scene__grid-line--Landmarks {
     stroke: #F9F2EC;
 }
@@ -23,6 +27,10 @@
 }
 
 body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Landmarks {
+        background-color: #FFFFFF;
+    }
+
     .Scene__grid-line--Landmarks {
         stroke: #FFFFFF;
     }
@@ -47,6 +55,10 @@ body.gray-theme {
 }
 
 body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Landmarks {
+        background-color: #FFFFFF;
+    }
+
     .Scene__grid-line--Landmarks {
         stroke: #0078FF;
     }
@@ -88,6 +100,10 @@ body.contrast-theme {
 
 /* DeepOcean */
 
+.ProgramBlockEditor__character-column-character-container--DeepOcean {
+    background-color: #1B2432;
+}
+
 .Scene__grid-line--DeepOcean {
     stroke: #8BA2C0;
 }
@@ -105,6 +121,10 @@ body.contrast-theme {
 }
 
 body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--DeepOcean {
+        background-color: #67717E;
+    }
+
     .Scene__grid-line--DeepOcean {
         stroke: #FFFFFF;
     }
@@ -123,6 +143,10 @@ body.gray-theme {
 }
 
 body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--DeepOcean {
+        background-color: #FFFFFF;
+    }
+    
     .Scene__grid-line--DeepOcean {
         stroke: #0078FF;
     }
@@ -155,6 +179,10 @@ body.contrast-theme {
 
 /* Jungle */
 
+.ProgramBlockEditor__character-column-character-container--Jungle {
+    background-color: #FFE5B4;
+}
+
 .Scene__grid-line--Jungle {
     stroke: #F9F2EC;
 }
@@ -172,6 +200,10 @@ body.contrast-theme {
 }
 
 body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Jungle {
+        background-color: #505862;
+    }
+
     .Scene__grid-line--Jungle {
         stroke: #FFFFFF;
     }
@@ -190,6 +222,10 @@ body.gray-theme {
 }
 
 body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Jungle {
+        background-color: #FFFFFF;
+    }
+
     .Scene__grid-line--Jungle {
         stroke: #0078FF;
     }
@@ -232,6 +268,10 @@ body.contrast-theme {
 
 /* Sketchpad */
 
+.ProgramBlockEditor__character-column-character-container--Sketchpad {
+    background-color: #4C9990;
+}
+
 .Scene__grid-line--Sketchpad {
     stroke: #F1F2F4;
 }
@@ -259,6 +299,10 @@ body.dark-theme {
 }
 
 body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Sketchpad {
+        background-color: #9DA4AF;
+    }
+
     .Scene__grid-line--Sketchpad {
         stroke: #D5D8DD;
     }
@@ -277,6 +321,10 @@ body.gray-theme {
 }
 
 body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Sketchpad {
+        background-color: #FFFFFF;
+    }
+
     .Scene__grid-line--Sketchpad {
         stroke: #0078FF;
     }
@@ -310,6 +358,10 @@ body.contrast-theme {
 
 /* Space */
 
+.ProgramBlockEditor__character-column-character-container--Space {
+    background-color: #1B2432;
+}
+
 .Scene__grid-line--Space {
     stroke: #8BA2C0;
 }
@@ -327,6 +379,10 @@ body.contrast-theme {
 }
 
 body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Space {
+        background-color: #505862;
+    }
+
     .Scene__grid-line--Space {
         stroke: #FFFFFF;
     }
@@ -345,6 +401,10 @@ body.gray-theme {
 }
 
 body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Space {
+        background-color: #FFFFFF;
+    }
+
     .Scene__grid-line--Space {
         stroke: #0078FF;
     }
