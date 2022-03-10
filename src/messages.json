@@ -22,7 +22,7 @@
         "Announcement.add": "added {commandType} {command}",
         "Announcement.control": "control",
         "Announcement.delete": "deleted {commandType} {command}",
-        "Announcement.deleteAll": "delete all movements?",
+        "Announcement.deleteAll": "delete program?",
         "Announcement.endLoop": "loop {loopLabel}",
         "Announcement.forward1": "forward 1 square",
         "Announcement.forward2": "forward 2 squares",
