@@ -2,6 +2,7 @@
 
 import * as C2lcMath from './C2lcMath';
 import SceneDimensions from './SceneDimensions';
+import type { PathSegment } from './types';
 
 // Character direction is stored as eighths of a turn, as follows:
 // N:  0
@@ -12,13 +13,6 @@ import SceneDimensions from './SceneDimensions';
 // SW: 5
 // W:  6
 // NW: 7
-
-type PathSegment = {
-    x1: number,
-    y1: number,
-    x2: number,
-    y2: number
-};
 
 type MovementResult = {
     x: number,
@@ -32,6 +26,7 @@ export default class CharacterState {
     direction: number; // Eighths of a turn, see note above
     path: Array<PathSegment>;
     sceneDimensions: SceneDimensions;
+    maxPathLength: number;
 
     constructor(xPos: number, yPos: number, direction: number, path: Array<PathSegment>, sceneDimensions: SceneDimensions) {
         this.xPos = xPos;
@@ -39,6 +34,7 @@ export default class CharacterState {
         this.direction = direction;
         this.path = path;
         this.sceneDimensions = sceneDimensions;
+        this.maxPathLength = 100;
     }
 
     getDirectionDegrees() {
@@ -306,33 +302,68 @@ export default class CharacterState {
 
     mergePathSegments(dest: Array<PathSegment>, src: Array<PathSegment>): Array<PathSegment> {
         const pathSegments = dest.slice();
-        for (let i = 0; i < src.length; i++) {
-            if (pathSegments.length > 0
-                    && this.isConnected(pathSegments[pathSegments.length - 1], src[i])
-                    && this.isSameDirection(pathSegments[pathSegments.length - 1], src[i])) {
-                pathSegments[pathSegments.length - 1] = {
-                    x1: pathSegments[pathSegments.length - 1].x1,
-                    x2: src[i].x2,
-                    y1: pathSegments[pathSegments.length - 1].y1,
-                    y2: src[i].y2
-                };
-            } else {
-                pathSegments.push(src[i]);
+
+        for (const newPathSegment of src) {
+            let addNewPathSegment = true;
+            if (pathSegments.length > 0) {
+                const lastPathSegment = pathSegments[pathSegments.length - 1];
+                const lastPathSegmentDirection = C2lcMath.pathSegmentDirection(lastPathSegment);
+                const newPathSegmentDirection = C2lcMath.pathSegmentDirection(newPathSegment);
+                if (this.isConnected(lastPathSegment, newPathSegment)
+                        && newPathSegmentDirection === lastPathSegmentDirection) {
+                    // The new path segment is connected to the last one and is
+                    // in the same direction: extend the last path segment
+                    pathSegments[pathSegments.length - 1] = {
+                        x1: lastPathSegment.x1,
+                        y1: lastPathSegment.y1,
+                        x2: newPathSegment.x2,
+                        y2: newPathSegment.y2
+                    };
+                    addNewPathSegment = false;
+                } else if (((newPathSegmentDirection === lastPathSegmentDirection) || C2lcMath.isOppositeDirection(newPathSegmentDirection, lastPathSegmentDirection))
+                        && this.pathSegmentLiesWithin(newPathSegment, lastPathSegment)) {
+                    // The new path segment is in the same direction, or the
+                    // opposite direction, as the last path segment and lies
+                    // within it: we can ignore the new path segment as it
+                    // is retracing over the last path segment
+                    addNewPathSegment = false;
+                }
+            }
+            if (addNewPathSegment) {
+                pathSegments.push(newPathSegment);
             }
         }
-        return pathSegments;
+
+        if (pathSegments.length > this.maxPathLength) {
+            return pathSegments.slice(this.maxPathLength * -1);
+        } else {
+            return pathSegments;
+        }
     }
 
     isConnected(a: PathSegment, b: PathSegment): boolean {
         return a.x2 === b.x1 && a.y2 === b.y1;
     }
 
-    isSameDirection(a: PathSegment, b: PathSegment): boolean {
-        return this.getPathSegmentDirection(a) === this.getPathSegmentDirection(b);
+    pathSegmentLiesWithin(pathSegment: PathSegment, target: PathSegment): boolean {
+        const epsilon = 0.1;
+        const targetLength = this.getDistance(target.x1, target.y1, target.x2, target.y2);
+        // Is pathSegment point 1 on the target?
+        const distPathSegment1ToTarget1 = this.getDistance(pathSegment.x1, pathSegment.y1, target.x1, target.y1);
+        const distPathSegment1ToTarget2 = this.getDistance(pathSegment.x1, pathSegment.y1, target.x2, target.y2);
+        if (Math.abs(targetLength - distPathSegment1ToTarget1 - distPathSegment1ToTarget2) > epsilon) {
+            return false;
+        }
+        // Is pathSegment point 2 on the target?
+        const distPathSegment2ToTarget1 = this.getDistance(pathSegment.x2, pathSegment.y2, target.x1, target.y1);
+        const distPathSegment2ToTarget2 = this.getDistance(pathSegment.x2, pathSegment.y2, target.x2, target.y2);
+        if (Math.abs(targetLength - distPathSegment2ToTarget1 - distPathSegment2ToTarget2) > epsilon) {
+            return false;
+        }
+        return true;
     }
 
-    getPathSegmentDirection(pathSegment: PathSegment): number {
-        return Math.atan2(pathSegment.y2 - pathSegment.y1,
-            pathSegment.x2 - pathSegment.x1);
+    getDistance(x1: number, y1: number, x2: number, y2: number) {
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
 }
