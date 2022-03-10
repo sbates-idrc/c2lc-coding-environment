@@ -42,6 +42,8 @@ import { ReactComponent as SketchpadThumbnailDark } from './svg/SketchpadThumbna
 import { ReactComponent as SketchpadThumbnailGray } from './svg/SketchpadThumbnail-gray.svg';
 import { ReactComponent as SketchpadThumbnailContrast } from './svg/SketchpadThumbnail-contrast.svg';
 import { ReactComponent as Robot } from './svg/Robot.svg';
+import { ReactComponent as RobotGray } from './svg/RobotGray.svg';
+import { ReactComponent as RobotContrast } from './svg/RobotContrast.svg';
 
 // Space
 import { ReactComponent as Space } from './svg/Space.svg';
@@ -234,8 +236,8 @@ const worlds: {|
         thumbnailGray: SketchpadThumbnailGray,
         thumbnailContrast: SketchpadThumbnailContrast,
         character: Robot,
-        characterGray: Robot,
-        characterContrast: Robot,
+        characterGray: RobotGray,
+        characterContrast: RobotContrast,
         startingX: 1,
         startingY: 1,
         startingDirection: 2, // East
