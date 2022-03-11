@@ -35,10 +35,8 @@ export type ActionName =
     | "selectBackward1"
     | "selectLeft45"
     | "selectLeft90"
-    | "selectLeft180"
     | "selectRight45"
     | "selectRight90"
-    | "selectRight180"
 
     // Focus Sequences
     | "focusActions"
@@ -169,10 +167,6 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 left90: {
                     keyDef: { key: "2"},
                     actionName: "selectLeft90"
-                },
-                left180: {
-                    keyDef: { key: "3"},
-                    actionName: "selectLeft180"
                 }
             },
             right: {
@@ -184,10 +178,6 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 right90: {
                     keyDef: { key: "2"},
                     actionName: "selectRight90"
-                },
-                right180: {
-                    keyDef: { key: "3"},
-                    actionName: "selectRight180"
                 }
             }
         },
