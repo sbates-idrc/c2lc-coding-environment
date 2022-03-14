@@ -763,7 +763,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("refreshScene"):
-                            if (!this.editingIsDisabled()) {
+                            if (this.state.runningState === 'stopped') {
                                 this.handleRefresh();
                             }
                             break;
@@ -1309,7 +1309,7 @@ export class App extends React.Component<AppProps, AppState> {
                             <div className='App__playButton-container'>
                                 <RefreshButton
                                     className='App__playControlButton'
-                                    disabled={this.editingIsDisabled()}
+                                    disabled={!(this.state.runningState === 'stopped')}
                                     onClick={this.handleRefresh}
                                 />
                                 <PlayButton
