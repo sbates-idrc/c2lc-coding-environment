@@ -237,7 +237,7 @@ const worlds: {|
         characterGray: Robot,
         characterContrast: Robot,
         startingX: 1,
-        startingY: 1,
+        startingY: 2,
         startingDirection: 2, // East
         enableFlipCharacter: true
     },
