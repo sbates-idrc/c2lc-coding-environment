@@ -156,7 +156,7 @@
         "KeyboardInputModal.Description.increaseProgramSpeed": "Press {key} to make the program play faster.",
         "KeyboardInputModal.Description.playPauseProgram": "Press {key} to play or pause the program.",
         "KeyboardInputModal.Description.refreshScene": "Press {key} to refresh the scene.",
-        "KeyboardInputModal.Description.showHide": "Press {key} to show / hide the keyboard shortcuts menu.",
+        "KeyboardInputModal.Description.showHide": "Press {key} to show the keyboard shortcuts menu.",
         "KeyboardInputModal.Description.stopProgram": "Press {key} to stop the program.",
         "KeyboardInputModal.Description.toggleAnnouncements": "Press {key} to toggle announcements.",
         "KeyboardInputModal.KeyLabels.Alt": "Alt",
