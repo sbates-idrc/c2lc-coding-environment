@@ -1,3 +1,88 @@
+/* Camping */
+
+.ProgramBlockEditor__character-column-character-container--Camping {
+    background-color: #A3BA8B;
+}
+
+.Scene__grid-line--Camping {
+    stroke: #8F8F8F;
+}
+
+.Scene__path-line--Camping {
+    stroke: #FFC700;
+}
+
+.WorldSelector__option-image--Camping:hover {
+    svg {
+        .thumbnail-background {
+            fill: #67804C;
+        }
+        .thumbnail-fur-light {
+            fill: #714503;
+        }
+        .thumbnail-fur-dark {
+            fill: #3A2402;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Camping {
+        background-color: #D3D3D3;
+    }
+
+    .Scene__grid-line--Camping {
+        stroke: #8F8F8F;
+    }
+
+    .Scene__path-line--Camping {
+        stroke: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--Camping:hover {
+        svg {
+            .thumbnail-background {
+                fill: #8F8F8F;
+            }
+            .thumbnail-fur-light {
+                fill: #605F5F;
+            }
+            .thumbnail-fur-dark {
+                fill: #0F0F0F;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Camping {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Camping {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Camping {
+        stroke: #FF0000;
+    }
+
+    .WorldSelector__option-image--Camping:hover {
+        svg {
+            .thumbnail-background {
+                fill: #000000;
+            }
+            .thumbnail-fur-light {
+                fill: #000000;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-fur-dark {
+                fill: #FFFFFF;
+            }
+        }
+    }
+}
+
 /* Landmarks */
 
 .ProgramBlockEditor__character-column-character-container--Landmarks {
@@ -34,11 +119,11 @@ body.gray-theme {
     .Scene__grid-line--Landmarks {
         stroke: #FFFFFF;
     }
-    
+
     .Scene__path-line--Landmarks {
         stroke: #505862;
     }
-    
+
     .WorldSelector__option-image--Landmarks:hover {
         svg {
             .thumbnail-background {
