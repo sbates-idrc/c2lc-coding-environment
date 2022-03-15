@@ -3,6 +3,12 @@ import CharacterState from './CharacterState';
 import type {IntlShape} from 'react-intl';
 import SceneDimensions from './SceneDimensions';
 
+export type DisplayedCommandName =
+    'forward1' | 'backward1' |
+    'left45' | 'left90' |
+    'right45' | 'right90' |
+    'loop';
+
 export type CommandName =
     'forward1' | 'forward2' | 'forward3' |
     'backward1' | 'backward2' | 'backward3' |
@@ -27,13 +33,23 @@ export type EditorMode = 'text' | 'block';
 */
 export type ThemeName = 'default' | 'light' | 'dark' | 'gray' | 'contrast';
 
+export type ProgramBlockCache = Map<string, number | string>;
+
 export type ProgramBlock = {
     block: string,
     iterations?: number,
-    label?: string
+    label?: string,
+    cache?: ProgramBlockCache;
 };
 
 export type Program = Array<ProgramBlock>;
+
+export type PathSegment = {
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number
+};
 
 // use running, paused, stopped
 export type RunningState = 'running' | 'stopRequested' | 'stopped' | 'pauseRequested' | 'paused';
@@ -122,11 +138,7 @@ export type SpeechRecognition = {
 
 export type ActionToggleRegister = {
     backward1?: boolean,
-    backward2?: boolean,
-    backward3?: boolean,
     forward1?: boolean,
-    forward2?: boolean,
-    forward3?: boolean,
     left45?: boolean,
     left90?: boolean,
     left180?: boolean,

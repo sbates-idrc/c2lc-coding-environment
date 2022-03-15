@@ -100,12 +100,6 @@ body.contrast-theme {
 
 /* Landmarks */
 
-.Character-background--Landmarks {
-    fill: #FFE5B4;
-    stroke: none;
-}
-
-.CharacterPositionController__character-column-character-container--Landmarks,
 .ProgramBlockEditor__character-column-character-container--Landmarks {
     background-color: #FFE5B4;
 }
@@ -133,14 +127,8 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .Character-background--Landmarks {
-        fill: #505862;
-        stroke: none;
-    }
-
-    .CharacterPositionController__character-column-character-container--Landmarks,
     .ProgramBlockEditor__character-column-character-container--Landmarks {
-        background-color: #505862;
+        background-color: #FFFFFF;
     }
 
     .Scene__grid-line--Landmarks {
@@ -167,12 +155,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .Character-background--Landmarks {
-        fill: #FFFFFF;
-        stroke: none;
-    }
-
-    .CharacterPositionController__character-column-character-container--Landmarks,
     .ProgramBlockEditor__character-column-character-container--Landmarks {
         background-color: #FFFFFF;
     }
@@ -218,14 +200,8 @@ body.contrast-theme {
 
 /* DeepOcean */
 
-.Character-background--DeepOcean {
-    fill: #003C50;
-    stroke: none;
-}
-
-.CharacterPositionController__character-column-character-container--DeepOcean,
 .ProgramBlockEditor__character-column-character-container--DeepOcean {
-    background-color: #003C50;
+    background-color: #1B2432;
 }
 
 .Scene__grid-line--DeepOcean {
@@ -245,11 +221,6 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .Character-background--DeepOcean {
-        fill: #67717E;
-    }
-
-    .CharacterPositionController__character-column-character-container--DeepOcean,
     .ProgramBlockEditor__character-column-character-container--DeepOcean {
         background-color: #67717E;
     }
@@ -272,15 +243,10 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .Character-background--DeepOcean {
-        fill: #FFFFFF;
-    }
-
-    .CharacterPositionController__character-column-character-container--DeepOcean,
     .ProgramBlockEditor__character-column-character-container--DeepOcean {
         background-color: #FFFFFF;
     }
-
+    
     .Scene__grid-line--DeepOcean {
         stroke: #0078FF;
     }
@@ -313,12 +279,6 @@ body.contrast-theme {
 
 /* Jungle */
 
-.Character-background--Jungle {
-    fill: #FFE5B4;
-    stroke: none;
-}
-
-.CharacterPositionController__character-column-character-container--Jungle,
 .ProgramBlockEditor__character-column-character-container--Jungle {
     background-color: #FFE5B4;
 }
@@ -340,11 +300,6 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .Character-background--Jungle {
-        fill: #505862;
-    }
-
-    .CharacterPositionController__character-column-character-container--Jungle,
     .ProgramBlockEditor__character-column-character-container--Jungle {
         background-color: #505862;
     }
@@ -367,11 +322,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .Character-background--Jungle {
-        fill: #FFFFFF;
-    }
-
-    .CharacterPositionController__character-column-character-container--Jungle,
     .ProgramBlockEditor__character-column-character-container--Jungle {
         background-color: #FFFFFF;
     }
@@ -418,12 +368,6 @@ body.contrast-theme {
 
 /* Sketchpad */
 
-.Character-background--Sketchpad {
-    fill: #4C9990;
-    stroke: none;
-}
-
-.CharacterPositionController__character-column-character-container--Sketchpad,
 .ProgramBlockEditor__character-column-character-container--Sketchpad {
     background-color: #4C9990;
 }
@@ -455,13 +399,8 @@ body.dark-theme {
 }
 
 body.gray-theme {
-    .Character-background--Sketchpad {
-        fill: #818A98;
-    }
-
-    .CharacterPositionController__character-column-character-container--Sketchpad,
     .ProgramBlockEditor__character-column-character-container--Sketchpad {
-        background-color: #818A98;
+        background-color: #9DA4AF;
     }
 
     .Scene__grid-line--Sketchpad {
@@ -482,11 +421,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .Character-background--Sketchpad {
-        fill: #FFFFFF;
-    }
-
-    .CharacterPositionController__character-column-character-container--Sketchpad,
     .ProgramBlockEditor__character-column-character-container--Sketchpad {
         background-color: #FFFFFF;
     }
@@ -524,12 +458,6 @@ body.contrast-theme {
 
 /* Space */
 
-.Character-background--Space {
-    fill: #1B2432;
-    stroke: none;
-}
-
-.CharacterPositionController__character-column-character-container--Space,
 .ProgramBlockEditor__character-column-character-container--Space {
     background-color: #1B2432;
 }
@@ -551,11 +479,6 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .Character-background--Space {
-        fill: #505862;
-    }
-
-    .CharacterPositionController__character-column-character-container--Space,
     .ProgramBlockEditor__character-column-character-container--Space {
         background-color: #505862;
     }
@@ -578,11 +501,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .Character-background--Space {
-        fill: #FFFFFF;
-    }
-
-    .CharacterPositionController__character-column-character-container--Space,
     .ProgramBlockEditor__character-column-character-container--Space {
         background-color: #FFFFFF;
     }
