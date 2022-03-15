@@ -37,25 +37,21 @@ follows.
 | < | decreaseProgramSpeed |
 | > | increaseProgramSpeed |
 | ? | showHide |
-| Ctrl + Alt + x, a, b, 1 | selectBackward1 |
-| Ctrl + Alt + x, a, b, 2 | selectBackward2 |
-| Ctrl + Alt + x, a, b, 3 | selectBackward3 |
-| Ctrl + Alt + x, a, f, 1 | selectForward1 |
-| Ctrl + Alt + x, a, f, 2 | selectForward2 |
-| Ctrl + Alt + x, a, f, 3 | selectForward3 |
-| Ctrl + Alt + x, a, l, 1 | selectLeft45 |
-| Ctrl + Alt + x, a, l, 2 | selectLeft90 |
-| Ctrl + Alt + x, a, l, 3 | selectLeft180 |
-| Ctrl + Alt + x, a, r, 1 | selectRight45 |
-| Ctrl + Alt + x, a, r, 2 | selectRight90 |
-| Ctrl + Alt + x, a, r, 3 | selectRight180 |
-| Ctrl + Alt + x, a, s | selectLoop |
-| Ctrl + Alt + x, c, m, d | moveCharacterDown |
-| Ctrl + Alt + x, c, m, l | moveCharacterLeft |
-| Ctrl + Alt + x, c, m, r | moveCharacterRight |
-| Ctrl + Alt + x, c, m, u | moveCharacterUp |
-| Ctrl + Alt + x, c, t, l | turnCharacterLeft |
-| Ctrl + Alt + x, c, t, r | turnCharacterRight |
+| Ctrl + Alt + x, m, b | selectBackward1 |
+| Ctrl + Alt + x, m, f | selectForward1 |
+| Ctrl + Alt + x, m, l, 1 | selectLeft45 |
+| Ctrl + Alt + x, m, l, 2 | selectLeft90 |
+| Ctrl + Alt + x, m, l, 3 | selectLeft180 |
+| Ctrl + Alt + x, m, r, 1 | selectRight45 |
+| Ctrl + Alt + x, m, r, 2 | selectRight90 |
+| Ctrl + Alt + x, m, r, 3 | selectRight180 |
+| Ctrl + Alt + x, c, l | selectLoop |
+| Ctrl + Alt + x, p, m, d | moveCharacterDown |
+| Ctrl + Alt + x, p, m, l | moveCharacterLeft |
+| Ctrl + Alt + x, p, m, r | moveCharacterRight |
+| Ctrl + Alt + x, p, m, u | moveCharacterUp |
+| Ctrl + Alt + x, p, t, l | turnCharacterLeft |
+| Ctrl + Alt + x, p, t, r | turnCharacterRight |
 | Ctrl + Alt + x, d | deleteAll |
 | Ctrl + Alt + x, f, a | focusActions |
 | Ctrl + Alt + x, f, c | focusCharacterPositionControls |
@@ -93,25 +89,21 @@ with the starting key of a sequence.  Those key bindings are as follows:
 | < | decreaseProgramSpeed |
 | > | increaseProgramSpeed |
 | ? | showHide |
-| Alt + x, a, b, 1 | selectBackward1 |
-| Alt + x, a, b, 2 | selectBackward2 |
-| Alt + x, a, b, 3 | selectBackward3 |
-| Alt + x, a, f, 1 | selectForward1 |
-| Alt + x, a, f, 2 | selectForward2 |
-| Alt + x, a, f, 3 | selectForward3 |
-| Alt + x, a, l, 1 | selectLeft45 |
-| Alt + x, a, l, 2 | selectLeft90 |
-| Alt + x, a, l, 3 | selectLeft180 |
-| Alt + x, a, r, 1 | selectRight45 |
-| Alt + x, a, r, 2 | selectRight90 |
-| Alt + x, a, r, 3 | selectRight180 |
-| Alt + x, a, s | selectLoop |
-| Alt + x, c, m, d | moveCharacterDown |
-| Alt + x, c, m, l | moveCharacterLeft |
-| Alt + x, c, m, r | moveCharacterRight |
-| Alt + x, c, m, u | moveCharacterUp |
-| Alt + x, c, t, l | turnCharacterLeft |
-| Alt + x, c, t, r | turnCharacterRight |
+| Alt + x, m, b | selectBackward1 |
+| Alt + x, m, f | selectForward1 |
+| Alt + x, m, l, 1 | selectLeft45 |
+| Alt + x, m, l, 2 | selectLeft90 |
+| Alt + x, m, l, 3 | selectLeft180 |
+| Alt + x, m, r, 1 | selectRight45 |
+| Alt + x, m, r, 2 | selectRight90 |
+| Alt + x, m, r, 3 | selectRight180 |
+| Alt + x, c, l | selectLoop |
+| Alt + x, p, m, d | moveCharacterDown |
+| Alt + x, p, m, l | moveCharacterLeft |
+| Alt + x, p, m, r | moveCharacterRight |
+| Alt + x, p, m, u | moveCharacterUp |
+| Alt + x, p, t, l | turnCharacterLeft |
+| Alt + x, p, t, r | turnCharacterRight |
 | Alt + x, d | deleteAll |
 | Alt + x, f, a | focusActions |
 | Alt + x, f, c | focusCharacterPositionControls |

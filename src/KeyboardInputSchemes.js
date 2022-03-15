@@ -144,21 +144,15 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             }
         },
 
-        selectedActionChange: {
-            keyDef: { code: "KeyA", key: "a" },
+        selectedMovementChange: {
+            keyDef: { code: "KeyM", key: "m" },
             forward: {
                 keyDef: { code: "KeyF", key: "f" },
-                forward1: {
-                    keyDef: { key: "1"},
-                    actionName: "selectForward1"
-                }
+                actionName: "selectForward1"
             },
             backward: {
                 keyDef: { code: "KeyB", key: "b" },
-                backward1: {
-                    keyDef: { key: "1"},
-                    actionName: "selectBackward1"
-                }
+                actionName: "selectBackward1"
             },
             left: {
                 keyDef: { code: "KeyL", key: "l" },
@@ -181,15 +175,19 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     keyDef: { key: "2"},
                     actionName: "selectRight90"
                 }
-            },
+            }
+        },
+
+        selectedControlChange: {
+            keyDef: { code: "KeyC", key: "c" },
             loop: {
-                keyDef: { code: "KeyS", key: "s" },
+                keyDef: { code: "KeyL", key: "l" },
                 actionName: "selectLoop"
             }
         },
 
         characterPosition: {
-            keyDef: { code: "KeyC", key: "c" },
+            keyDef: { code: "KeyP", key: "p" },
             move: {
                 keyDef: { code: "KeyM", key: "m" },
                 left: {
@@ -306,10 +304,14 @@ const ControlAltExtendedKeyboardSequences = extend(ExtendedKeyboardSequences, {
     },
 
     focusChange: {
-        keyDef: {ctrlKey: true }
+        keyDef: { ctrlKey: true }
     },
 
-    selectedActionChange: {
+    selectedMovementChange: {
+        keyDef: { ctrlKey: true }
+    },
+
+    selectedControlChange: {
         keyDef: { ctrlKey: true }
     },
 
