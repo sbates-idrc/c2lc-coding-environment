@@ -321,9 +321,6 @@ class Scene extends React.Component<SceneProps, {}> {
             characterTransform += ` scale(1 -1)`
         }
 
-        // For the background, use the same translation, but skip the rotation and mirroring.
-        const characterBackgroundTransform = `translate(${this.props.characterState.xPos} ${this.props.characterState.yPos})`;
-
         return (
             <React.Fragment>
                 <div className='Scene__container'>
@@ -368,15 +365,6 @@ class Scene extends React.Component<SceneProps, {}> {
                             {grid}
                             <g clipPath='url(#Scene-clippath)'>
                                 {this.drawCharacterPath()}
-                                <rect
-                                    className={`Character-background--${this.props.world}`}
-                                    x={-0.5}
-                                    y={-0.5}
-                                    height={1}
-                                    width={1}
-                                    ref={this.characterBackgroundRef}
-                                    transform={characterBackgroundTransform}
-                                />
                                 <Character
                                     world={this.props.world}
                                     theme={this.props.theme}

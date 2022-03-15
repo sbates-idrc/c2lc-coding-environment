@@ -31,17 +31,11 @@ export type ActionName =
 
     // Select Command Sequences
     | "selectForward1"
-    | "selectForward2"
-    | "selectForward3"
     | "selectBackward1"
-    | "selectBackward2"
-    | "selectBackward3"
     | "selectLeft45"
     | "selectLeft90"
-    | "selectLeft180"
     | "selectRight45"
     | "selectRight90"
-    | "selectRight180"
 
     // Focus Sequences
     | "focusActions"
@@ -187,16 +181,6 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     description: "Select the forward 1 square action block",
                     icon: "SelectForwardBlock.png",
                     altText: "Select forward 1 icon"
-                },
-                forward2: {
-                    keyDef: { key: "2"},
-                    actionName: "selectForward2",
-                    description: "Select the forward 2 squares action block"
-                },
-                forward3: {
-                    keyDef: { key: "3"},
-                    actionName: "selectForward3",
-                    description: "Select the forward 3 squares action block"
                 }
             },
             backward: {
@@ -207,16 +191,6 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     description: "Select the backward 1 square action block",
                     icon: "SelectBackwardBlock.png",
                     altText: "Select backward 1 icon"
-                },
-                backward2: {
-                    keyDef: { key: "2"},
-                    actionName: "selectBackward2",
-                    description: "Select the backward 2 squares action block"
-                },
-                backward3: {
-                    keyDef: { key: "3"},
-                    actionName: "selectBackward3",
-                    description: "Select the backward 3 squares action block"
                 }
             },
             left: {
@@ -234,11 +208,6 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     description: "Select the turn left 90 degrees action block",
                     icon: "SelectTurnLeft90Block.png",
                     altText: "Select turn left 90 icon"
-                },
-                left180: {
-                    keyDef: { key: "3"},
-                    actionName: "selectLeft180",
-                    description: "Select the turn left 180 degrees action block"
                 }
             },
             right: {
@@ -256,11 +225,6 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     description: "Select the turn right 90 degrees action block",
                     icon: "SelectTurnRight90Block.png",
                     altText: "Select turn right 90 icon"
-                },
-                right180: {
-                    keyDef: { key: "3"},
-                    actionName: "selectRight180",
-                    description: "Select the turn right 180 degrees action block"
                 }
             }
         },
