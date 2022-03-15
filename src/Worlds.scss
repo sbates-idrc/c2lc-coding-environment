@@ -1,12 +1,7 @@
 /* Camping */
 
-.Character-background--Camping {
-    fill: #8E9F47;
-}
-
-.CharacterPositionController__character-column-character-container--Camping,
 .ProgramBlockEditor__character-column-character-container--Camping {
-    background-color: #8E9F47;
+    background-color: #A3BA8B;
 }
 
 .Scene__grid-line--Camping {
@@ -32,11 +27,6 @@
 }
 
 body.gray-theme {
-    .Character-background--Camping {
-        fill: #D3D3D3;
-    }
-
-    .CharacterPositionController__character-column-character-container--Camping,
     .ProgramBlockEditor__character-column-character-container--Camping {
         background-color: #D3D3D3;
     }
@@ -65,11 +55,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .Character-background--Camping {
-        fill: #FFFFFF;
-    }
-
-    .CharacterPositionController__character-column-character-container--Camping,
     .ProgramBlockEditor__character-column-character-container--Camping {
         background-color: #FFFFFF;
     }
