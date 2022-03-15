@@ -19,17 +19,19 @@ const boardImgsPath = "board-imgs/";
 const schemeIntro = {
     "controlalt": {
         title: "Control+Alt (Apple: Control+Option) Key Bindings",
-        intro: `NVDA has many commands that make use of the alt key, to avoid
-        conflicting with these, the default keyboard input scheme uses the control
-        and alt keys in combination with the starting key of a sequence.
-        Those key bindings are as follows.`
+        intro:
+`NVDA has many commands that make use of the alt key, to avoid
+conflicting with these, the default keyboard input scheme uses the control
+and alt keys in combination with the starting key of a sequence.
+Those key bindings are as follows.`
     },
     "alt": {
         title: "Alt (Apple: Option) Key Bindings",
-        intro: `VoiceOver uses ctrl+alt for many of its commands, to avoid
-        conflicting with those, there is a keyboard input scheme which uses the
-        alt key in combination with the starting key of a sequence.
-        Those key bindings are as follows:`
+        intro:
+`VoiceOver uses ctrl+alt for many of its commands, to avoid
+conflicting with those, there is a keyboard input scheme which uses the
+alt key in combination with the starting key of a sequence.
+Those key bindings are as follows:`
     }
 };
 

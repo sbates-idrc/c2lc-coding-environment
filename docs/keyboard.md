@@ -20,9 +20,9 @@ and then hitting the x key again by itself.
 ## Control+Alt (Apple: Control+Option) Key Bindings
 
 NVDA has many commands that make use of the alt key, to avoid
-        conflicting with these, the default keyboard input scheme uses the control
-        and alt keys in combination with the starting key of a sequence.
-        Those key bindings are as follows.
+conflicting with these, the default keyboard input scheme uses the control
+and alt keys in combination with the starting key of a sequence.
+Those key bindings are as follows.
 
 | Action | Keyboard Shortcut | Icon |
 | ---- | ------- | ----- |
@@ -58,15 +58,9 @@ NVDA has many commands that make use of the alt key, to avoid
  | Move the character right | Ctrl + Alt + x, c, m, r | ![Move character right icon](board-imgs/MoveCharacterRight.png) |
  | Move the character up | Ctrl + Alt + x, c, m, u | ![Move character up icon](board-imgs/MoveCharacterUp.png) |
  | Select the backward 1 square action block | Ctrl + Alt + x, a, b, 1 | ![Select backward 1 icon](board-imgs/SelectBackwardBlock.png) |
- | Select the backward 2 squares action block | Ctrl + Alt + x, a, b, 2 | Not available |
- | Select the backward 3 squares action block | Ctrl + Alt + x, a, b, 3 | Not available |
  | Select the forward 1 square action block | Ctrl + Alt + x, a, f, 1 | ![Select forward 1 icon](board-imgs/SelectForwardBlock.png) |
- | Select the forward 2 squares action block | Ctrl + Alt + x, a, f, 2 | Not available |
- | Select the forward 3 squares action block | Ctrl + Alt + x, a, f, 3 | Not available |
- | Select the turn left 180 degrees action block | Ctrl + Alt + x, a, l, 3 | Not available |
  | Select the turn left 45 degrees action block | Ctrl + Alt + x, a, l, 1 | ![Select turn left 45 icon](board-imgs/SelectTurnLeft45Block.png) |
  | Select the turn left 90 degrees action block | Ctrl + Alt + x, a, l, 2 | ![Select turn left 90 icon](board-imgs/SelectTurnLeft90Block.png) |
- | Select the turn right 180 degrees action block | Ctrl + Alt + x, a, r, 3 | Not available |
  | Select the turn right 45 degrees action block | Ctrl + Alt + x, a, r, 1 | ![Select turn right 45 icon](board-imgs/SelectTurnRight45Block.png) |
  | Select the turn right 90 degrees action block | Ctrl + Alt + x, a, r, 2 | ![Select turn right 90 icon](board-imgs/SelectTurnRight90Block.png) |
  | Turn the audio feedback announcements on or off | Ctrl + Alt + x, x | Not available |
@@ -76,9 +70,9 @@ NVDA has many commands that make use of the alt key, to avoid
 ## Alt (Apple: Option) Key Bindings
 
 VoiceOver uses ctrl+alt for many of its commands, to avoid
-        conflicting with those, there is a keyboard input scheme which uses the
-        alt key in combination with the starting key of a sequence.
-        Those key bindings are as follows:
+conflicting with those, there is a keyboard input scheme which uses the
+alt key in combination with the starting key of a sequence.
+Those key bindings are as follows:
 
 | Action | Keyboard Shortcut | Icon |
 | ---- | ------- | ----- |
@@ -114,15 +108,9 @@ VoiceOver uses ctrl+alt for many of its commands, to avoid
  | Move the character right | Alt + x, c, m, r | ![Move character right icon](board-imgs/MoveCharacterRight.png) |
  | Move the character up | Alt + x, c, m, u | ![Move character up icon](board-imgs/MoveCharacterUp.png) |
  | Select the backward 1 square action block | Alt + x, a, b, 1 | ![Select backward 1 icon](board-imgs/SelectBackwardBlock.png) |
- | Select the backward 2 squares action block | Alt + x, a, b, 2 | Not available |
- | Select the backward 3 squares action block | Alt + x, a, b, 3 | Not available |
  | Select the forward 1 square action block | Alt + x, a, f, 1 | ![Select forward 1 icon](board-imgs/SelectForwardBlock.png) |
- | Select the forward 2 squares action block | Alt + x, a, f, 2 | Not available |
- | Select the forward 3 squares action block | Alt + x, a, f, 3 | Not available |
- | Select the turn left 180 degrees action block | Alt + x, a, l, 3 | Not available |
  | Select the turn left 45 degrees action block | Alt + x, a, l, 1 | ![Select turn left 45 icon](board-imgs/SelectTurnLeft45Block.png) |
  | Select the turn left 90 degrees action block | Alt + x, a, l, 2 | ![Select turn left 90 icon](board-imgs/SelectTurnLeft90Block.png) |
- | Select the turn right 180 degrees action block | Alt + x, a, r, 3 | Not available |
  | Select the turn right 45 degrees action block | Alt + x, a, r, 1 | ![Select turn right 45 icon](board-imgs/SelectTurnRight45Block.png) |
  | Select the turn right 90 degrees action block | Alt + x, a, r, 2 | ![Select turn right 90 icon](board-imgs/SelectTurnRight90Block.png) |
  | Turn the audio feedback announcements on or off | Alt + x, x | Not available |
