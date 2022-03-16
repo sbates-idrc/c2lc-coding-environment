@@ -74,7 +74,7 @@ it('Should be able to handle a complete invalid sequence', () => {
 it('Should be able to handle a partial sequence', () => {
     const partialSequence = [
         new KeyboardEvent('keydown', { code: "KeyX", altKey: true}),
-        new KeyboardEvent('keydown', { code: "KeyA"})
+        new KeyboardEvent('keydown', { code: "KeyM"})
     ];
 
     const result = findKeyboardEventSequenceMatches(partialSequence, "alt");

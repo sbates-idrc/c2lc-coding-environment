@@ -53,19 +53,20 @@ Those key bindings are as follows.
  | Move focus to the pen toggle | Ctrl + Alt + x, f, s | ![Focus pen toggle icon](board-imgs/FocusPenToggle.png) |
  | Move focus to the play button | Ctrl + Alt + x, f, p | ![Focus play button icon](board-imgs/FocusPlay.png) |
  | Move focus to the world selector | Ctrl + Alt + x, f, w | ![Focus world selector icon](board-imgs/FocusWorldSelector.png) |
- | Move the character down | Ctrl + Alt + x, c, m, d | ![Move character down icon](board-imgs/MoveCharacterDown.png) |
- | Move the character left | Ctrl + Alt + x, c, m, l | ![Move character left icon](board-imgs/MoveCharacterLeft.png) |
- | Move the character right | Ctrl + Alt + x, c, m, r | ![Move character right icon](board-imgs/MoveCharacterRight.png) |
- | Move the character up | Ctrl + Alt + x, c, m, u | ![Move character up icon](board-imgs/MoveCharacterUp.png) |
- | Select the backward 1 square action block | Ctrl + Alt + x, a, b, 1 | ![Select backward 1 icon](board-imgs/SelectBackwardBlock.png) |
- | Select the forward 1 square action block | Ctrl + Alt + x, a, f, 1 | ![Select forward 1 icon](board-imgs/SelectForwardBlock.png) |
- | Select the turn left 45 degrees action block | Ctrl + Alt + x, a, l, 1 | ![Select turn left 45 icon](board-imgs/SelectTurnLeft45Block.png) |
- | Select the turn left 90 degrees action block | Ctrl + Alt + x, a, l, 2 | ![Select turn left 90 icon](board-imgs/SelectTurnLeft90Block.png) |
- | Select the turn right 45 degrees action block | Ctrl + Alt + x, a, r, 1 | ![Select turn right 45 icon](board-imgs/SelectTurnRight45Block.png) |
- | Select the turn right 90 degrees action block | Ctrl + Alt + x, a, r, 2 | ![Select turn right 90 icon](board-imgs/SelectTurnRight90Block.png) |
+ | Move the character down | Ctrl + Alt + x, p, m, d | ![Move character down icon](board-imgs/MoveCharacterDown.png) |
+ | Move the character left | Ctrl + Alt + x, p, m, l | ![Move character left icon](board-imgs/MoveCharacterLeft.png) |
+ | Move the character right | Ctrl + Alt + x, p, m, r | ![Move character right icon](board-imgs/MoveCharacterRight.png) |
+ | Move the character up | Ctrl + Alt + x, p, m, u | ![Move character up icon](board-imgs/MoveCharacterUp.png) |
+ | Select the backward 1 square action block | Ctrl + Alt + x, m, b | ![Select backward 1 icon](board-imgs/SelectBackwardBlock.png) |
+ | Select the forward 1 square action block | Ctrl + Alt + x, m, f | ![Select forward 1 icon](board-imgs/SelectForwardBlock.png) |
+ | Select the loop action block | Ctrl + Alt + x, c, l | ![Select loop icon](board-imgs/SelectLoopBlock.png) |
+ | Select the turn left 45 degrees action block | Ctrl + Alt + x, m, l, 1 | ![Select turn left 45 icon](board-imgs/SelectTurnLeft45Block.png) |
+ | Select the turn left 90 degrees action block | Ctrl + Alt + x, m, l, 2 | ![Select turn left 90 icon](board-imgs/SelectTurnLeft90Block.png) |
+ | Select the turn right 45 degrees action block | Ctrl + Alt + x, m, r, 1 | ![Select turn right 45 icon](board-imgs/SelectTurnRight45Block.png) |
+ | Select the turn right 90 degrees action block | Ctrl + Alt + x, m, r, 2 | ![Select turn right 90 icon](board-imgs/SelectTurnRight90Block.png) |
  | Turn the audio feedback announcements on or off | Ctrl + Alt + x, x | Not available |
- | Turn the character left 45 degrees | Ctrl + Alt + x, c, t, l | ![Turn character left icon](board-imgs/TurnCharacterLeft.png) |
- | Turn the character right 45 degrees | Ctrl + Alt + x, c, t, r | ![Turn character right icon](board-imgs/TurnCharacterRight.png) |
+ | Turn the character left 45 degrees | Ctrl + Alt + x, p, t, l | ![Turn character left icon](board-imgs/TurnCharacterLeft.png) |
+ | Turn the character right 45 degrees | Ctrl + Alt + x, p, t, r | ![Turn character right icon](board-imgs/TurnCharacterRight.png) |
 
 ## Alt (Apple: Option) Key Bindings
 
@@ -103,16 +104,17 @@ Those key bindings are as follows:
  | Move focus to the pen toggle | Alt + x, f, s | ![Focus pen toggle icon](board-imgs/FocusPenToggle.png) |
  | Move focus to the play button | Alt + x, f, p | ![Focus play button icon](board-imgs/FocusPlay.png) |
  | Move focus to the world selector | Alt + x, f, w | ![Focus world selector icon](board-imgs/FocusWorldSelector.png) |
- | Move the character down | Alt + x, c, m, d | ![Move character down icon](board-imgs/MoveCharacterDown.png) |
- | Move the character left | Alt + x, c, m, l | ![Move character left icon](board-imgs/MoveCharacterLeft.png) |
- | Move the character right | Alt + x, c, m, r | ![Move character right icon](board-imgs/MoveCharacterRight.png) |
- | Move the character up | Alt + x, c, m, u | ![Move character up icon](board-imgs/MoveCharacterUp.png) |
- | Select the backward 1 square action block | Alt + x, a, b, 1 | ![Select backward 1 icon](board-imgs/SelectBackwardBlock.png) |
- | Select the forward 1 square action block | Alt + x, a, f, 1 | ![Select forward 1 icon](board-imgs/SelectForwardBlock.png) |
- | Select the turn left 45 degrees action block | Alt + x, a, l, 1 | ![Select turn left 45 icon](board-imgs/SelectTurnLeft45Block.png) |
- | Select the turn left 90 degrees action block | Alt + x, a, l, 2 | ![Select turn left 90 icon](board-imgs/SelectTurnLeft90Block.png) |
- | Select the turn right 45 degrees action block | Alt + x, a, r, 1 | ![Select turn right 45 icon](board-imgs/SelectTurnRight45Block.png) |
- | Select the turn right 90 degrees action block | Alt + x, a, r, 2 | ![Select turn right 90 icon](board-imgs/SelectTurnRight90Block.png) |
+ | Move the character down | Alt + x, p, m, d | ![Move character down icon](board-imgs/MoveCharacterDown.png) |
+ | Move the character left | Alt + x, p, m, l | ![Move character left icon](board-imgs/MoveCharacterLeft.png) |
+ | Move the character right | Alt + x, p, m, r | ![Move character right icon](board-imgs/MoveCharacterRight.png) |
+ | Move the character up | Alt + x, p, m, u | ![Move character up icon](board-imgs/MoveCharacterUp.png) |
+ | Select the backward 1 square action block | Alt + x, m, b | ![Select backward 1 icon](board-imgs/SelectBackwardBlock.png) |
+ | Select the forward 1 square action block | Alt + x, m, f | ![Select forward 1 icon](board-imgs/SelectForwardBlock.png) |
+ | Select the loop action block | Alt + x, c, l | ![Select loop icon](board-imgs/SelectLoopBlock.png) |
+ | Select the turn left 45 degrees action block | Alt + x, m, l, 1 | ![Select turn left 45 icon](board-imgs/SelectTurnLeft45Block.png) |
+ | Select the turn left 90 degrees action block | Alt + x, m, l, 2 | ![Select turn left 90 icon](board-imgs/SelectTurnLeft90Block.png) |
+ | Select the turn right 45 degrees action block | Alt + x, m, r, 1 | ![Select turn right 45 icon](board-imgs/SelectTurnRight45Block.png) |
+ | Select the turn right 90 degrees action block | Alt + x, m, r, 2 | ![Select turn right 90 icon](board-imgs/SelectTurnRight90Block.png) |
  | Turn the audio feedback announcements on or off | Alt + x, x | Not available |
- | Turn the character left 45 degrees | Alt + x, c, t, l | ![Turn character left icon](board-imgs/TurnCharacterLeft.png) |
- | Turn the character right 45 degrees | Alt + x, c, t, r | ![Turn character right icon](board-imgs/TurnCharacterRight.png) |
+ | Turn the character left 45 degrees | Alt + x, p, t, l | ![Turn character left icon](board-imgs/TurnCharacterLeft.png) |
+ | Turn the character right 45 degrees | Alt + x, p, t, r | ![Turn character right icon](board-imgs/TurnCharacterRight.png) |

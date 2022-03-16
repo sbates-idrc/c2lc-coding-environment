@@ -36,6 +36,7 @@ export type ActionName =
     | "selectLeft90"
     | "selectRight45"
     | "selectRight90"
+    | "selectLoop"
 
     // Focus Sequences
     | "focusActions"
@@ -171,27 +172,21 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             }
         },
 
-        selectedActionChange: {
-            keyDef: { code: "KeyA", key: "a" },
+        selectedMovementChange: {
+            keyDef: { code: "KeyM", key: "m" },
             forward: {
                 keyDef: { code: "KeyF", key: "f" },
-                forward1: {
-                    keyDef: { key: "1"},
-                    actionName: "selectForward1",
-                    description: "Select the forward 1 square action block",
-                    icon: "SelectForwardBlock.png",
-                    altText: "Select forward 1 icon"
-                }
+                actionName: "selectForward1",
+                description: "Select the forward 1 square action block",
+                icon: "SelectForwardBlock.png",
+                altText: "Select forward 1 icon"
             },
             backward: {
                 keyDef: { code: "KeyB", key: "b" },
-                backward1: {
-                    keyDef: { key: "1"},
-                    actionName: "selectBackward1",
-                    description: "Select the backward 1 square action block",
-                    icon: "SelectBackwardBlock.png",
-                    altText: "Select backward 1 icon"
-                }
+                actionName: "selectBackward1",
+                description: "Select the backward 1 square action block",
+                icon: "SelectBackwardBlock.png",
+                altText: "Select backward 1 icon"
             },
             left: {
                 keyDef: { code: "KeyL", key: "l" },
@@ -229,8 +224,19 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             }
         },
 
-        characterPosition: {
+        selectedControlChange: {
             keyDef: { code: "KeyC", key: "c" },
+            loop: {
+                keyDef: { code: "KeyL", key: "l" },
+                actionName: "selectLoop",
+                description: "Select the loop action block",
+                icon: "SelectLoopBlock.png",
+                altText: "Select loop icon"
+            }
+        },
+
+        characterPosition: {
+            keyDef: { code: "KeyP", key: "p" },
             move: {
                 keyDef: { code: "KeyM", key: "m" },
                 left: {
@@ -417,10 +423,14 @@ const ControlAltExtendedKeyboardSequences = extend(ExtendedKeyboardSequences, {
     },
 
     focusChange: {
-        keyDef: {ctrlKey: true }
+        keyDef: { ctrlKey: true }
     },
 
-    selectedActionChange: {
+    selectedMovementChange: {
+        keyDef: { ctrlKey: true }
+    },
+
+    selectedControlChange: {
         keyDef: { ctrlKey: true }
     },
 
