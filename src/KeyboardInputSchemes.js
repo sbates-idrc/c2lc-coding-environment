@@ -229,7 +229,10 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             keyDef: { code: "KeyC", key: "c" },
             loop: {
                 keyDef: { code: "KeyL", key: "l" },
-                actionName: "selectLoop"
+                actionName: "selectLoop",
+                description: "Select the loop action block",
+                icon: "SelectLoopBlock.png",
+                altText: "Select loop icon"
             }
         },
 
