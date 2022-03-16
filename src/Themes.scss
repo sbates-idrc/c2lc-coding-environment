@@ -533,6 +533,21 @@ body.dark-theme {
         color: white;
     }
 
+    .App__logo-container {
+        a {
+            outline-color: #FFFFFF;
+        }
+    
+        svg {
+            &:hover {
+                path.logo-title-letter {
+                    stroke: black;
+                    fill: black;
+                }    
+            }
+        }
+    }
+
     .App__command-palette {
         background-color: #33717F;
         border: 2px solid #33717F;
@@ -760,6 +775,24 @@ body.gray-theme {
 
     .App__container {
         background-color: #FFF;
+    }
+
+    .App__logo-container {
+        a {
+            outline-color: #000000;
+        }
+    
+        svg {
+            &:hover {
+                path.logo-tile {
+                    fill: #505862;
+                }
+                path.logo-title-letter {
+                    stroke: #FFFFFF;
+                    fill: #FFFFFF;
+                }    
+            }
+        }
     }
 
     .App__world-container {
@@ -1638,6 +1671,25 @@ body.contrast-theme {
     .App__app-heading > a {
         color: white;
     }
+
+    .App__logo-container {
+        a {
+            outline-color: #FFFFFF;
+        }
+    
+        svg {
+            &:hover {
+                path.logo-tile {
+                    fill: #FFFFFF;
+                }
+                path.logo-title-letter {
+                    stroke: #000000;
+                    fill: #000000;
+                }    
+            }
+        }
+    }    
+
 
     .IconButton.App__header-soundOptions {
         svg path {

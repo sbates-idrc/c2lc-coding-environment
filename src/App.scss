@@ -75,6 +75,26 @@ body {
     }
 }
 
+.App__logo-container {
+    width: 7.2rem;
+    margin-bottom: 0.25rem;
+    padding-right: 0;
+
+    a {
+        outline-color: #000000;
+    }
+
+    svg {
+        padding: 0.25rem;
+
+        &:hover {
+            path.logo-tile {
+                fill: #F1AE5B;
+            }
+        }
+    }
+}
+
 /* Dash connection removed for version 0.5
 .App__audio-toggle-switch {
     margin-right: 1.5rem;
