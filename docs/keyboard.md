@@ -59,11 +59,11 @@ Those key bindings are as follows.
  | Move the character up | Ctrl + Alt + x, p, m, u | ![Move character up icon](board-imgs/MoveCharacterUp.png) |
  | Select the backward 1 square action block | Ctrl + Alt + x, m, b | ![Select backward 1 icon](board-imgs/SelectBackwardBlock.png) |
  | Select the forward 1 square action block | Ctrl + Alt + x, m, f | ![Select forward 1 icon](board-imgs/SelectForwardBlock.png) |
+ | Select the loop action block | Ctrl + Alt + x, c, l | ![Select loop icon](board-imgs/SelectLoopBlock.png) |
  | Select the turn left 45 degrees action block | Ctrl + Alt + x, m, l, 1 | ![Select turn left 45 icon](board-imgs/SelectTurnLeft45Block.png) |
  | Select the turn left 90 degrees action block | Ctrl + Alt + x, m, l, 2 | ![Select turn left 90 icon](board-imgs/SelectTurnLeft90Block.png) |
  | Select the turn right 45 degrees action block | Ctrl + Alt + x, m, r, 1 | ![Select turn right 45 icon](board-imgs/SelectTurnRight45Block.png) |
  | Select the turn right 90 degrees action block | Ctrl + Alt + x, m, r, 2 | ![Select turn right 90 icon](board-imgs/SelectTurnRight90Block.png) |
- | Select the loop action block | Ctrl + Alt + x, c, l | ![Select loop icon](board-imgs/SelectLoopBlock.png) |
  | Turn the audio feedback announcements on or off | Ctrl + Alt + x, x | Not available |
  | Turn the character left 45 degrees | Ctrl + Alt + x, p, t, l | ![Turn character left icon](board-imgs/TurnCharacterLeft.png) |
  | Turn the character right 45 degrees | Ctrl + Alt + x, p, t, r | ![Turn character right icon](board-imgs/TurnCharacterRight.png) |
@@ -110,11 +110,11 @@ Those key bindings are as follows:
  | Move the character up | Alt + x, p, m, u | ![Move character up icon](board-imgs/MoveCharacterUp.png) |
  | Select the backward 1 square action block | Alt + x, m, b | ![Select backward 1 icon](board-imgs/SelectBackwardBlock.png) |
  | Select the forward 1 square action block | Alt + x, m, f | ![Select forward 1 icon](board-imgs/SelectForwardBlock.png) |
+ | Select the loop action block | Alt + x, c, l | ![Select loop icon](board-imgs/SelectLoopBlock.png) |
  | Select the turn left 45 degrees action block | Alt + x, m, l, 1 | ![Select turn left 45 icon](board-imgs/SelectTurnLeft45Block.png) |
  | Select the turn left 90 degrees action block | Alt + x, m, l, 2 | ![Select turn left 90 icon](board-imgs/SelectTurnLeft90Block.png) |
  | Select the turn right 45 degrees action block | Alt + x, m, r, 1 | ![Select turn right 45 icon](board-imgs/SelectTurnRight45Block.png) |
  | Select the turn right 90 degrees action block | Alt + x, m, r, 2 | ![Select turn right 90 icon](board-imgs/SelectTurnRight90Block.png) |
- | Select the loop action block | Alt + x, c, l | ![Select loop icon](board-imgs/SelectLoopBlock.png) |
  | Turn the audio feedback announcements on or off | Alt + x, x | Not available |
  | Turn the character left 45 degrees | Alt + x, p, t, l | ![Turn character left icon](board-imgs/TurnCharacterLeft.png) |
  | Turn the character right 45 degrees | Alt + x, p, t, r | ![Turn character right icon](board-imgs/TurnCharacterRight.png) |
