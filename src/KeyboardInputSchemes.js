@@ -36,7 +36,6 @@ export type ActionName =
     | "selectLeft90"
     | "selectRight45"
     | "selectRight90"
-    | "selectRight180"
     | "selectLoop"
 
     // Focus Sequences

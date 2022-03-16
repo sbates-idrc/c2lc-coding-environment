@@ -796,9 +796,6 @@ export class App extends React.Component<AppProps, AppState> {
                         case("selectRight90"):
                             this.setState({ "selectedAction": "right90" });
                             break;
-                        case("selectRight180"):
-                            this.setState({ "selectedAction": "right180" });
-                            break;
                         case("selectLoop"):
                             this.setState({ "selectedAction": "loop" });
                             break;
