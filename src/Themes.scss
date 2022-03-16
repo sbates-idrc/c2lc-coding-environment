@@ -533,6 +533,10 @@ body.dark-theme {
         color: white;
     }
 
+    .App__PrivacyModal__toggle-button {
+        border-color: #ffffff;
+    }
+
     .App__command-palette {
         background-color: #33717F;
         border: 2px solid #33717F;
@@ -1637,6 +1641,10 @@ body.contrast-theme {
 
     .App__app-heading > a, .App__PrivacyModal__toggle-button {
         color: white;
+    }
+
+    .App__PrivacyModal__toggle-button {
+        border-color: #ffffff;
     }
 
     .IconButton.App__header-soundOptions {

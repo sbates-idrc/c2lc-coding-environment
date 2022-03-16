@@ -1119,12 +1119,12 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showShareModal: false });
     }
 
-    handleTogglePrivacyModal = () => {
-        this.setState((prevState) => {
-            return {
-                showPrivacyModal: !prevState.showPrivacyModal
-            }
-        });
+    handleClickPrivacyButton = () => {
+        this.setState({ showPrivacyModal: true });
+    }
+
+    handleClosePrivacyModal = () => {
+        this.setState({ showPrivacyModal: false });
     }
 
     render() {
@@ -1147,11 +1147,11 @@ export class App extends React.Component<AppProps, AppState> {
                                     <FormattedMessage id='App.appHeading'/>
                                 </a>
                             </h1>
-                            <div className='App__PrivacyModal__container'>
+                            <div className='App__PrivacyButtonContainer'>
                                 <button
                                     aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
                                     className="App__PrivacyModal__toggle-button"
-                                    onClick={this.handleTogglePrivacyModal}
+                                    onClick={this.handleClickPrivacyButton}
                                 >
                                     <FormattedMessage id='App.privacyModalToggle'/>
                                 </button>
@@ -1415,7 +1415,7 @@ export class App extends React.Component<AppProps, AppState> {
                 />
                 <PrivacyModal
                     show={this.state.showPrivacyModal}
-                    onClose={this.handleTogglePrivacyModal}
+                    onClose={this.handleClosePrivacyModal}
                 />
             </React.Fragment>
         );

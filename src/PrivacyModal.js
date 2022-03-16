@@ -23,8 +23,7 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
             isPrimary: true,
             onClick: this.props.onClose
         };
-        // TODO: Fix focus on open / close.
-        // TODO: Add scroll container for content.
+
         return (
             <ModalWithFooter
                 show={this.props.show}

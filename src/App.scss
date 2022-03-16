@@ -75,16 +75,23 @@ body {
     }
 }
 
-.App__PrivacyModal__container {
+.App__PrivacyButtonContainer {
     margin-left: 0.5rem;
     margin-bottom: 0.25rem;
 }
 
 .App__PrivacyModal__toggle-button {
-    border: none;
     background-color: inherit;
+    border: none;
+    border-radius: 2px;
     font-size: 14.14px;
+    outline: none;
+    margin-left: 0;
     text-decoration: underline;
+
+    &:focus-visible {
+        border: 1px solid #000000;
+    }
 }
 
 
