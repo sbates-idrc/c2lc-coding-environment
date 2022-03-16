@@ -82,14 +82,13 @@ body {
 
 .App__PrivacyModal__toggle-button {
     background-color: inherit;
-    border: none;
+    border: 1px solid transparent;
     border-radius: 2px;
     font-size: 14.14px;
     outline: none;
-    margin-left: 0;
     text-decoration: underline;
 
-    &:focus-visible {
+    &:focus {
         border: 1px solid #000000;
     }
 }
