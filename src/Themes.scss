@@ -533,7 +533,7 @@ body.dark-theme {
         color: white;
     }
 
-    .App__PrivacyModal__toggle-button {
+    .App__PrivacyModal__toggle-button:focus {
         border-color: #ffffff;
     }
 
@@ -1643,7 +1643,7 @@ body.contrast-theme {
         color: white;
     }
 
-    .App__PrivacyModal__toggle-button {
+    .App__PrivacyModal__toggle-button:focus {
         border-color: #ffffff;
     }
 
