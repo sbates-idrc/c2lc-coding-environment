@@ -509,6 +509,10 @@ export class App extends React.Component<AppProps, AppState> {
         }, callback);
     }
 
+    refreshIsDisabled(): boolean {
+        return this.state.runningState !== 'stopped';
+    }
+
     updateProgramCounterAndLoopIterationsLeft(programCounter: number, loopIterationsLeft: Map<string, number>, callback: () => void): void {
         this.setState((state) => {
             return {
@@ -777,7 +781,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("refreshScene"):
-                            if (!this.editingIsDisabled()) {
+                            if (!this.refreshIsDisabled()) {
                                 this.handleRefresh();
                             }
                             break;
@@ -809,6 +813,9 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("selectRight90"):
                             this.setState({ "selectedAction": "right90" });
+                            break;
+                        case("selectLoop"):
+                            this.setState({ "selectedAction": "loop" });
                             break;
                         case("focusActions"):
                             Utils.focusByQuerySelector(".command-block");
@@ -1326,7 +1333,7 @@ export class App extends React.Component<AppProps, AppState> {
                             <div className='App__playButton-container'>
                                 <RefreshButton
                                     className='App__playControlButton'
-                                    disabled={this.editingIsDisabled()}
+                                    disabled={this.refreshIsDisabled()}
                                     onClick={this.handleRefresh}
                                 />
                                 <PlayButton
