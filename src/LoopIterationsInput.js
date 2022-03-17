@@ -24,7 +24,7 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
     }
 
     isValidLoopIterations(value: number) {
-        return value >= 0 && value <= 99;
+        return value >= 1 && value <= 99;
     }
 
     handleChange = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
