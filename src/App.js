@@ -30,7 +30,7 @@ import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, ProgramStepMovementDirection, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, DisplayedCommandName, ProgramStepMovementDirection, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
