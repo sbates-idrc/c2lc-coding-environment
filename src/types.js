@@ -38,6 +38,8 @@ export type ProgramBlock = {
 
 export type Program = Array<ProgramBlock>;
 
+export type ProgramStepMovementDirection = 'previous' | 'next';
+
 // use running, paused, stopped
 export type RunningState = 'running' | 'stopRequested' | 'stopped' | 'pauseRequested' | 'paused';
 

@@ -30,7 +30,7 @@ import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, ProgramStepMovementDirection, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -89,6 +89,7 @@ type AppState = {
     announcementsEnabled: boolean,
     sonificationEnabled: boolean,
     actionPanelStepIndex: ?number,
+    actionPanelFocusedOptionName: ?string,
     sceneDimensions: SceneDimensions,
     drawingEnabled: boolean,
     runningState: RunningState,
@@ -407,6 +408,7 @@ export class App extends React.Component<AppProps, AppState> {
             announcementsEnabled: true,
             sonificationEnabled: true,
             actionPanelStepIndex: null,
+            actionPanelFocusedOptionName: null,
             sceneDimensions: this.sceneDimensions,
             drawingEnabled: true,
             runningState: 'stopped',
@@ -527,12 +529,13 @@ export class App extends React.Component<AppProps, AppState> {
         );
     }
 
-    handleProgramBlockEditorSwapStep = (indexFrom: number, indexTo: number, commandAtIndexFrom: string) => {
-        this.programChangeController.swapProgramStep(
+    handleProgramBlockEditorMoveStep = (indexFrom: number, direction: ProgramStepMovementDirection, commandAtIndexFrom: string) => {
+        this.programChangeController.moveProgramStep(
             this.programBlockEditorRef.current,
             indexFrom,
-            indexTo,
-            commandAtIndexFrom
+            direction,
+            commandAtIndexFrom,
+            'focusActionPanel'
         )
     }
 
@@ -628,9 +631,10 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ isDraggingCommand: false });
     };
 
-    handleChangeActionPanelStepIndex = (index: ?number) => {
+    handleChangeActionPanelStepIndexAndOption = (index: ?number, focusedOptionName: ?string) => {
         this.setState({
-            actionPanelStepIndex: index
+            actionPanelStepIndex: index,
+            actionPanelFocusedOptionName: focusedOptionName
         });
     };
 
@@ -856,17 +860,19 @@ export class App extends React.Component<AppProps, AppState> {
                         case("swapCurrentStepWithPreviousStep"):
                             if (!this.editingIsDisabled()) {
                                 const currentElement = document.activeElement;
-                                let index = this.state.actionPanelStepIndex;
+                                let index = null;
                                 // $FlowFixMe: Not all elements have dataset property
                                 if (currentElement.dataset.controltype === 'programStep') {
                                     index = parseInt(currentElement.dataset.stepnumber, 10);
                                 }
                                 if (index != null && index > 0) {
-                                    this.programChangeController.swapProgramStep(
+                                    this.programChangeController.moveProgramStep(
                                         this.programBlockEditorRef.current,
                                         index,
-                                        index - 1,
-                                        currentElement.dataset.command
+                                        'previous',
+                                        // $FlowFixMe: Not all elements have dataset property
+                                        currentElement.dataset.command,
+                                        'focusBlockMoved'
                                     )
                                 }
                             }
@@ -874,17 +880,19 @@ export class App extends React.Component<AppProps, AppState> {
                         case("swapCurrentStepWithNextStep"):
                             if (!this.editingIsDisabled()) {
                                 const currentElement = document.activeElement;
-                                let index = this.state.actionPanelStepIndex;
+                                let index = null;
                                 // $FlowFixMe: Not all elements have dataset property
                                 if (currentElement.dataset.controltype === 'programStep') {
                                     index = parseInt(currentElement.dataset.stepnumber, 10);
                                 }
                                 if (index != null && index < this.state.programSequence.getProgramLength() - 1) {
-                                    this.programChangeController.swapProgramStep(
+                                    this.programChangeController.moveProgramStep(
                                         this.programBlockEditorRef.current,
                                         index,
-                                        index + 1,
-                                        currentElement.dataset.command
+                                        'next',
+                                        // $FlowFixMe: Not all elements have dataset property
+                                        currentElement.dataset.command,
+                                        'focusBlockMoved'
                                     )
                                 }
                             }
@@ -1334,6 +1342,7 @@ export class App extends React.Component<AppProps, AppState> {
                         <ProgramBlockEditor
                             ref={this.programBlockEditorRef}
                             actionPanelStepIndex={this.state.actionPanelStepIndex}
+                            actionPanelFocusedOptionName={this.state.actionPanelFocusedOptionName}
                             characterState={this.state.characterState}
                             editingDisabled={this.editingIsDisabled()}
                             programSequence={this.state.programSequence}
@@ -1348,8 +1357,8 @@ export class App extends React.Component<AppProps, AppState> {
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
                             onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
-                            onSwapProgramStep={this.handleProgramBlockEditorSwapStep}
-                            onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
+                            onMoveProgramStep={this.handleProgramBlockEditorMoveStep}
+                            onChangeActionPanelStepIndexAndOption={this.handleChangeActionPanelStepIndexAndOption}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
                         />
                     </div>

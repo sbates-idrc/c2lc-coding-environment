@@ -2,7 +2,7 @@
 
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
-import type {AudioManager, RunningState, ThemeName, ProgramBlock} from './types';
+import type {AudioManager, RunningState, ThemeName, ProgramBlock, ProgramStepMovementDirection} from './types';
 import type { WorldName } from './Worlds';
 import React from 'react';
 import CharacterState from './CharacterState';
@@ -26,6 +26,7 @@ import './ProgramBlockEditor.scss';
 type ProgramBlockEditorProps = {
     intl: IntlShape,
     actionPanelStepIndex: ?number,
+    actionPanelFocusedOptionName: ?string,
     characterState: CharacterState,
     editingDisabled: boolean,
     programSequence: ProgramSequence,
@@ -42,14 +43,13 @@ type ProgramBlockEditorProps = {
     onChangeProgramSequence: (programSequence: ProgramSequence) => void,
     onInsertSelectedActionIntoProgram: (index: number, selectedAction: ?string) => void,
     onDeleteProgramStep: (index: number, command: string) => void,
-    onSwapProgramStep: (indexFrom: number, indexTo: number, commandAtIndexFrom: string) => void,
-    onChangeActionPanelStepIndex: (index: ?number) => void,
+    onMoveProgramStep: (indexFrom: number, direction: ProgramStepMovementDirection, commandAtIndexFrom: string) => void,
+    onChangeActionPanelStepIndexAndOption: (index: ?number, focusedOptionName: ?string) => void,
     onChangeAddNodeExpandedMode: (boolean) => void
 };
 
 type ProgramBlockEditorState = {
     showConfirmDeleteAll: boolean,
-    focusedActionPanelOptionName: ?string,
     replaceIsActive: boolean,
     closestAddNodeIndex: number
 };
@@ -142,13 +142,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     }
 
     closeActionPanel() {
-        // TODO: Can we set focusedActionPanelOptionName to null in response
-        //       to setting actionPanelStepIndex to null? So that we only need
-        //       to set actionPanelStepIndex.
-        this.setState({
-            focusedActionPanelOptionName: null
-        });
-        this.props.onChangeActionPanelStepIndex(null);
+        this.props.onChangeActionPanelStepIndexAndOption(null, null);
     }
 
     setCommandBlockRef(programStepNumber: number, element: ?HTMLElement) {
@@ -163,13 +157,6 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         if (element) {
             this.addNodeRefs.set(programStepNumber, element);
         }
-    }
-
-    updateActionPanelPosition(newActionPanelIndex: number, optionName: string) {
-        this.setState({
-            focusedActionPanelOptionName: optionName
-        });
-        this.props.onChangeActionPanelStepIndex(newActionPanelIndex);
     }
 
     // TODO: Discuss removing this once we have a good way to test drag and drop.
@@ -261,17 +248,17 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     };
 
     handleActionPanelMoveToPreviousStep = (index: number) => {
-        this.props.onSwapProgramStep(
+        this.props.onMoveProgramStep(
             index,
-            index - 1,
+            'previous',
             this.props.programSequence.getProgramStepAt(index).block
         );
     };
 
     handleActionPanelMoveToNextStep = (index: number) => {
-        this.props.onSwapProgramStep(
+        this.props.onMoveProgramStep(
             index,
-            index + 1,
+            'next',
             this.props.programSequence.getProgramStepAt(index).block
         );
     };
@@ -284,7 +271,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             this.closeActionPanel();
         } else {
             // Otherwise, open it
-            this.props.onChangeActionPanelStepIndex(index);
+            this.props.onChangeActionPanelStepIndexAndOption(index, null);
         }
     };
 
@@ -548,7 +535,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                         {showActionPanel &&
                             <div className='ProgramBlockEditor__action-panel-container-inner'>
                                 <ActionPanel
-                                    focusedOptionName={this.state.focusedActionPanelOptionName}
+                                    focusedOptionName={this.props.actionPanelFocusedOptionName}
                                     selectedCommandName={this.props.selectedAction}
                                     programSequence={this.props.programSequence}
                                     pressedStepIndex={programStepNumber}
