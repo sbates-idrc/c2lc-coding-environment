@@ -60,33 +60,24 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.App__app-heading {
-    text-align: center;
-    font-weight: normal;
-    font-size: 1.3rem;
-    margin: 1rem 1rem;
-    padding: 0 1rem;
-}
-
-.App__app-heading > a {
-    color: black;
-    &:hover {
-        text-decoration: none;
-    }
-}
-
 .App__logo-container {
+    font-size: 3.1rem;
+    line-height: 3.3rem;
+    padding: 0;
     width: 7.2rem;
-    margin-bottom: 0.25rem;
-    padding-right: 0;
 
     a {
-        outline-color: #000000;
+        border: 1px solid transparent;
+        border-radius: 2px;
+        outline: none;
+
+        &:focus {
+            border-color: #000000;
+        }
     }
 
     svg {
         padding: 0.25rem;
-
         &:hover {
             path.logo-tile {
                 fill: #F1AE5B;

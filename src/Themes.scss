@@ -529,13 +529,9 @@ body.dark-theme {
         background-color: #18252C;
     }
 
-    .App__app-heading > a {
-        color: white;
-    }
-
     .App__logo-container {
-        a {
-            outline-color: #FFFFFF;
+        a:focus {
+            border-color: #FFFFFF;
         }
     
         svg {
@@ -1653,7 +1649,7 @@ body.contrast-theme {
 
     .App__container {
         background-color: black;
-    }
+    }   
 
     .App__header {
         background-color: black;
@@ -1668,13 +1664,9 @@ body.contrast-theme {
         box-shadow: 0 0 0 2px black;
     }
 
-    .App__app-heading > a {
-        color: white;
-    }
-
     .App__logo-container {
-        a {
-            outline-color: #FFFFFF;
+        a:focus {
+    border-color: #FFFFFF;
         }
     
         svg {

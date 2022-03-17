@@ -1138,7 +1138,6 @@ export class App extends React.Component<AppProps, AppState> {
 
     render() {
         const Logo = getThemeLogo(this.state.settings.theme);
-        // TODO: Use different logo depending on theme.  Confirm working in preview.
         return (
             <React.Fragment>
                 <div
@@ -1148,7 +1147,7 @@ export class App extends React.Component<AppProps, AppState> {
                     onKeyDown={this.handleRootKeyDown}>
                     <header className='App__header'>
                         <div className='App__header-row'>
-                            <div className='App__logo-container'>
+                            <h1 className='App__logo-container'>
                                 <a
                                     className='keyboard-shortcut-focus__app-header'
                                     href='https://weavly.org/learn/resources/facilitating-a-weavly-coding-workshop-beginners/'
@@ -1158,7 +1157,7 @@ export class App extends React.Component<AppProps, AppState> {
                                 >
                                     <Logo alt={this.props.intl.formatMessage({id: 'App.appHeading.link'})}/>
                                 </a>
-                            </div>
+                            </h1>
                             <div className='App__header-menu'>
                                 <IconButton
                                     className="App__header-soundOptions"
