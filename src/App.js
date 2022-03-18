@@ -846,7 +846,7 @@ export class App extends React.Component<AppProps, AppState> {
                         case("focusWorldSelector"):
                             Utils.focusByQuerySelector(".keyboard-shortcut-focus__world-selector");
                             break;
-                        case("swapCurrentStepWithPreviousStep"):
+                        case("moveToPreviousStep"):
                             if (!this.editingIsDisabled()) {
                                 const currentElement = document.activeElement;
                                 let index = null;
@@ -854,7 +854,7 @@ export class App extends React.Component<AppProps, AppState> {
                                 if (currentElement.dataset.controltype === 'programStep') {
                                     index = parseInt(currentElement.dataset.stepnumber, 10);
                                 }
-                                if (index != null && index > 0) {
+                                if (index != null && !Utils.moveToPreviousStepDisabled(this.state.programSequence, index)) {
                                     this.programChangeController.moveProgramStep(
                                         this.programBlockEditorRef.current,
                                         index,
@@ -866,7 +866,7 @@ export class App extends React.Component<AppProps, AppState> {
                                 }
                             }
                             break;
-                        case("swapCurrentStepWithNextStep"):
+                        case("moveToNextStep"):
                             if (!this.editingIsDisabled()) {
                                 const currentElement = document.activeElement;
                                 let index = null;
@@ -874,7 +874,7 @@ export class App extends React.Component<AppProps, AppState> {
                                 if (currentElement.dataset.controltype === 'programStep') {
                                     index = parseInt(currentElement.dataset.stepnumber, 10);
                                 }
-                                if (index != null && index < this.state.programSequence.getProgramLength() - 1) {
+                                if (index != null && !Utils.moveToNextStepDisabled(this.state.programSequence, index)) {
                                     this.programChangeController.moveProgramStep(
                                         this.programBlockEditorRef.current,
                                         index,
