@@ -1,8 +1,9 @@
 // @flow
 
-import { extend, generateEncodedProgramURL, getThemeFromString, getWorldFromString, focusByQuerySelector, generateLoopLabel, parseLoopLabel } from './Utils.js';
+import { extend, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, focusByQuerySelector, generateLoopLabel, parseLoopLabel } from './Utils.js';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
+import ProgramSequence from './ProgramSequence';
 import { mount, configure } from 'enzyme';
 import { makeTestDiv } from './TestUtils';
 
@@ -91,4 +92,30 @@ test('parseLoopLabel', () => {
     expect(parseLoopLabel('AB')).toEqual(28);
     expect(parseLoopLabel('AZ')).toEqual(52);
     expect(parseLoopLabel('BA')).toEqual(53);
+});
+
+test('moveToNextStepDisabled', () => {
+    const programSequence = new ProgramSequence(
+        [{block: 'forward1'}, {block: 'startLoop', iterations: 1, label: 'A'}, {block: 'forward1'}, {block: 'endLoop', label: 'A'}],
+        0,
+        0,
+        new Map([['A', 1]])
+    );
+    expect(moveToNextStepDisabled(programSequence, 0)).toBe(false);
+    expect(moveToNextStepDisabled(programSequence, 1)).toBe(true);
+    expect(moveToNextStepDisabled(programSequence, 2)).toBe(false);
+    expect(moveToNextStepDisabled(programSequence, 3)).toBe(true);
+});
+
+test('moveToPreviousStepDisabled', () => {
+    const programSequence = new ProgramSequence(
+        [{block: 'startLoop', iterations: 1, label: 'A'}, {block: 'forward1'}, {block: 'endLoop', label: 'A'}, {block: 'forward1'}],
+        0,
+        0,
+        new Map([['A', 1]])
+    );
+    expect(moveToPreviousStepDisabled(programSequence, 0)).toBe(true);
+    expect(moveToPreviousStepDisabled(programSequence, 1)).toBe(false);
+    expect(moveToPreviousStepDisabled(programSequence, 2)).toBe(true);
+    expect(moveToPreviousStepDisabled(programSequence, 3)).toBe(false);
 });
