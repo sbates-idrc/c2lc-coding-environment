@@ -23,6 +23,8 @@ export type ActionName =
     | "announceScene"
     | "decreaseProgramSpeed"
     | "increaseProgramSpeed"
+    | "moveToPreviousStep"
+    | "moveToNextStep"
     | "playPauseProgram"
     | "refreshScene"
     | "showHide"
@@ -66,8 +68,6 @@ export type ActionName =
     | "changeToHighContrastTheme"
 
     // Update Program
-    | "swapCurrentStepWithPreviousStep"
-    | "swapCurrentStepWithNextStep"
     | "deleteAll"
     ;
 
@@ -289,18 +289,6 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             }
         },
 
-        swapProgramStep: {
-            keyDef: { code: "KeyM", key: 'm' },
-            left: {
-                keyDef: { code: "KeyL", key: 'l' },
-                actionName: "swapCurrentStepWithPreviousStep"
-            },
-            right: {
-                keyDef: { code: "KeyR", key: 'r' },
-                actionName: "swapCurrentStepWithNextStep"
-            }
-        },
-
         changeTheme: {
             keyDef: { code: "KeyT", key: "t" },
             default: {
@@ -398,6 +386,20 @@ const AltInputScheme: KeyboardInputScheme = Object.assign({
         icon: "IncreaseSpeed.png",
         altText: "Increase speed icon"
     },
+    moveToPreviousStep: {
+        keyDef: { code: "BracketLeft", key: "[", altKey: true, hidden: true},
+        actionName: "moveToPreviousStep",
+        description: "Move the current step to left",
+        icon: "MovePrevious.png",
+        altText: "Move to previous icon"
+    },
+    moveToNextStep: {
+        keyDef: { code: "BracketRight", key: "]", altKey: true, hidden: true},
+        actionName: "moveToNextStep",
+        description: "Move the current step to right",
+        icon: "MoveNext.png",
+        altText: "Move to next icon"
+    },
     playPauseProgram: {
         keyDef: { code: "KeyP", key: "p", altKey: true},
         actionName: "playPauseProgram",
@@ -474,6 +476,12 @@ const ControlAltInputScheme = extend (AltInputScheme, {
     },
     increaseProgramSpeed: {
         keyDef: { key: ">", shiftKey: true, hidden: true}
+    },
+    moveToPreviousStep: {
+        keyDef: { code: "BracketLeft", key: "[", altKey: true, ctrlKey: true, hidden: true}
+    },
+    moveToNextStep: {
+        keyDef: { code: "BracketRight", key: "]", altKey: true, ctrlKey: true, hidden: true}
     },
     playPauseProgram: {
         keyDef: { code: "KeyP", key: "p", altKey: true, ctrlKey: true}
