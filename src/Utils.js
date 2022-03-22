@@ -136,4 +136,16 @@ function moveToPreviousStepDisabled(programSequence: ProgramSequence, stepIndex:
     return stepIndex === 0;
 }
 
-export { extend, focusByQuerySelector, generateId, makeDelayedPromise, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, generateLoopLabel, parseLoopLabel };
+export {
+    extend,
+    focusByQuerySelector,
+    generateEncodedProgramURL,
+    generateId,
+    generateLoopLabel,
+    getThemeFromString,
+    getWorldFromString,
+    makeDelayedPromise,
+    moveToNextStepDisabled,
+    moveToPreviousStepDisabled,
+    parseLoopLabel
+};

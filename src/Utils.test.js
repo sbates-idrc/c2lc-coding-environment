@@ -74,7 +74,7 @@ test('Test focusByQuerySelector', () => {
     testFixture.detach();
 });
 
-test('generateLoopLabel', () => {
+test('Test generateLoopLabel', () => {
     expect(generateLoopLabel(1)).toEqual('A');
     expect(generateLoopLabel(2)).toEqual('B');
     expect(generateLoopLabel(26)).toEqual('Z');
@@ -84,7 +84,7 @@ test('generateLoopLabel', () => {
     expect(generateLoopLabel(53)).toEqual('BA');
 });
 
-test('parseLoopLabel', () => {
+test('Test parseLoopLabel', () => {
     expect(parseLoopLabel('A')).toEqual(1);
     expect(parseLoopLabel('B')).toEqual(2);
     expect(parseLoopLabel('Z')).toEqual(26);
@@ -94,28 +94,101 @@ test('parseLoopLabel', () => {
     expect(parseLoopLabel('BA')).toEqual(53);
 });
 
-test('moveToNextStepDisabled', () => {
-    const programSequence = new ProgramSequence(
-        [{block: 'forward1'}, {block: 'startLoop', iterations: 1, label: 'A'}, {block: 'forward1'}, {block: 'endLoop', label: 'A'}],
-        0,
-        0,
-        new Map([['A', 1]])
-    );
-    expect(moveToNextStepDisabled(programSequence, 0)).toBe(false);
-    expect(moveToNextStepDisabled(programSequence, 1)).toBe(true);
-    expect(moveToNextStepDisabled(programSequence, 2)).toBe(false);
-    expect(moveToNextStepDisabled(programSequence, 3)).toBe(true);
-});
+describe('Test moveToNextStepDisabled and moveToPreviousStepDisabled', () => {
+    test('Single movement', () => {
+        const programSequence = new ProgramSequence(
+            [
+                {block: 'forward1'}
+            ],
+            0,
+            0,
+            new Map()
+        );
+        expect(moveToPreviousStepDisabled(programSequence, 0)).toBe(true);
+        expect(moveToNextStepDisabled(programSequence, 0)).toBe(true);
+    });
 
-test('moveToPreviousStepDisabled', () => {
-    const programSequence = new ProgramSequence(
-        [{block: 'startLoop', iterations: 1, label: 'A'}, {block: 'forward1'}, {block: 'endLoop', label: 'A'}, {block: 'forward1'}],
-        0,
-        0,
-        new Map([['A', 1]])
-    );
-    expect(moveToPreviousStepDisabled(programSequence, 0)).toBe(true);
-    expect(moveToPreviousStepDisabled(programSequence, 1)).toBe(false);
-    expect(moveToPreviousStepDisabled(programSequence, 2)).toBe(true);
-    expect(moveToPreviousStepDisabled(programSequence, 3)).toBe(false);
+    test('Two movements', () => {
+        const programSequence = new ProgramSequence(
+            [
+                {block: 'forward1'},
+                {block: 'left90'}
+            ],
+            0,
+            0,
+            new Map()
+        );
+
+        expect(moveToPreviousStepDisabled(programSequence, 0)).toBe(true);
+        expect(moveToPreviousStepDisabled(programSequence, 1)).toBe(false);
+
+        expect(moveToNextStepDisabled(programSequence, 0)).toBe(false);
+        expect(moveToNextStepDisabled(programSequence, 1)).toBe(true);
+    });
+
+    test('Single empty loop', () => {
+        const programSequence = new ProgramSequence(
+            [
+                {block: 'startLoop', iterations: 1, label: 'A'},
+                {block: 'endLoop', label: 'A'},
+            ],
+            0,
+            0,
+            new Map([['A', 1]])
+        );
+
+        expect(moveToPreviousStepDisabled(programSequence, 0)).toBe(true);
+        expect(moveToPreviousStepDisabled(programSequence, 1)).toBe(true);
+
+        expect(moveToNextStepDisabled(programSequence, 0)).toBe(true);
+        expect(moveToNextStepDisabled(programSequence, 1)).toBe(true);
+    });
+
+    test('Loop at start', () => {
+        const programSequence = new ProgramSequence(
+            [
+                {block: 'startLoop', iterations: 1, label: 'A'},
+                {block: 'forward1'},
+                {block: 'endLoop', label: 'A'},
+                {block: 'forward1'}
+            ],
+            0,
+            0,
+            new Map([['A', 1]])
+        );
+
+        expect(moveToPreviousStepDisabled(programSequence, 0)).toBe(true);
+        expect(moveToPreviousStepDisabled(programSequence, 1)).toBe(false);
+        expect(moveToPreviousStepDisabled(programSequence, 2)).toBe(true);
+        expect(moveToPreviousStepDisabled(programSequence, 3)).toBe(false);
+
+        expect(moveToNextStepDisabled(programSequence, 0)).toBe(false);
+        expect(moveToNextStepDisabled(programSequence, 1)).toBe(false);
+        expect(moveToNextStepDisabled(programSequence, 2)).toBe(false);
+        expect(moveToNextStepDisabled(programSequence, 3)).toBe(true);
+    });
+
+    test('Loop at end', () => {
+        const programSequence = new ProgramSequence(
+            [
+                {block: 'forward1'},
+                {block: 'startLoop', iterations: 1, label: 'A'},
+                {block: 'forward1'},
+                {block: 'endLoop', label: 'A'}
+            ],
+            0,
+            0,
+            new Map([['A', 1]])
+        );
+
+        expect(moveToPreviousStepDisabled(programSequence, 0)).toBe(true);
+        expect(moveToPreviousStepDisabled(programSequence, 1)).toBe(false);
+        expect(moveToPreviousStepDisabled(programSequence, 2)).toBe(false);
+        expect(moveToPreviousStepDisabled(programSequence, 3)).toBe(false);
+
+        expect(moveToNextStepDisabled(programSequence, 0)).toBe(false);
+        expect(moveToNextStepDisabled(programSequence, 1)).toBe(true);
+        expect(moveToNextStepDisabled(programSequence, 2)).toBe(false);
+        expect(moveToNextStepDisabled(programSequence, 3)).toBe(true);
+    });
 });
