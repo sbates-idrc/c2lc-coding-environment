@@ -1,5 +1,6 @@
 // @flow
 
+import ProgramSequence from './ProgramSequence';
 import { isWorldName } from './Worlds';
 import type { ThemeName } from './types';
 import type { WorldName } from './Worlds';
@@ -112,4 +113,39 @@ function parseLoopLabel(label: string): number {
     return n;
 };
 
-export { extend, focusByQuerySelector, generateId, makeDelayedPromise, generateEncodedProgramURL, getThemeFromString, getWorldFromString, generateLoopLabel, parseLoopLabel };
+function moveToNextStepDisabled(programSequence: ProgramSequence, stepIndex: number): boolean {
+    const programLastIndex = programSequence.getProgramLength() - 1;
+    const { block, label } = programSequence.getProgramStepAt(stepIndex);
+    if (block === 'startLoop') {
+        const lastProgramStep = programSequence.getProgramStepAt(programLastIndex);
+        if (lastProgramStep.block === 'endLoop' && lastProgramStep.label === label) {
+            return true;
+        }
+    }
+    return stepIndex === programLastIndex;
+}
+
+function moveToPreviousStepDisabled(programSequence: ProgramSequence, stepIndex: number): boolean {
+    const { block, label } = programSequence.getProgramStepAt(stepIndex);
+    if (block === 'endLoop') {
+        const firstProgramStep = programSequence.getProgramStepAt(0);
+        if (firstProgramStep.block === 'startLoop' && firstProgramStep.label === label) {
+            return true;
+        }
+    }
+    return stepIndex === 0;
+}
+
+export {
+    extend,
+    focusByQuerySelector,
+    generateEncodedProgramURL,
+    generateId,
+    generateLoopLabel,
+    getThemeFromString,
+    getWorldFromString,
+    makeDelayedPromise,
+    moveToNextStepDisabled,
+    moveToPreviousStepDisabled,
+    parseLoopLabel
+};

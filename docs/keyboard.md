@@ -33,6 +33,8 @@ Those key bindings are as follows.
 | Initiate announcement of the scene | Ctrl + Alt + i | Not available |
 | Decrease the program speed | < | ![Decrease speed icon](board-imgs/DecreaseSpeed.png) |
 | Increase the program speed | > | ![Increase speed icon](board-imgs/IncreaseSpeed.png) |
+| Move the current step to left | Ctrl + Alt + [ | ![Move to previous icon](board-imgs/MovePrevious.png) |
+| Move the current step to right | Ctrl + Alt + ] | ![Move to next icon](board-imgs/MoveNext.png) |
 | Play or pause the program | Ctrl + Alt + p | ![Play or pause program icon](board-imgs/PlayPause.png) |
 | Refresh the scene | Ctrl + Alt + r | ![Refresh scene icon](board-imgs/RefreshScene.png) |
 | Show the keyboard shortcuts menu | ? | ![Show keyboard shortcuts menu icon](board-imgs/ShowKeyboardShortcuts.png) |
@@ -84,6 +86,8 @@ Those key bindings are as follows:
 | Initiate announcement of the scene | Alt + i | Not available |
 | Decrease the program speed | < | ![Decrease speed icon](board-imgs/DecreaseSpeed.png) |
 | Increase the program speed | > | ![Increase speed icon](board-imgs/IncreaseSpeed.png) |
+| Move the current step to left | Alt + [ | ![Move to previous icon](board-imgs/MovePrevious.png) |
+| Move the current step to right | Alt + ] | ![Move to next icon](board-imgs/MoveNext.png) |
 | Play or pause the program | Alt + p | ![Play or pause program icon](board-imgs/PlayPause.png) |
 | Refresh the scene | Alt + r | ![Refresh scene icon](board-imgs/RefreshScene.png) |
 | Show the keyboard shortcuts menu | ? | ![Show keyboard shortcuts menu icon](board-imgs/ShowKeyboardShortcuts.png) |

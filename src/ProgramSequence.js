@@ -290,6 +290,17 @@ export default class ProgramSequence {
         }
     }
 
+    // Requirements on indexFrom and indexTo:
+    //     If moving a startLoop
+    //         If moving left
+    //             Then indexTo must === indexFrom - 1
+    //         If moving right
+    //             Then indexTo must === index of endLoop + 1
+    //     If moving an EndLoop
+    //         If moving left
+    //             Then indexTo must === index of startLoop - 1
+    //         If moving right
+    //             Then indexTo must === indexFrom + 1
     swapStep(indexFrom: number, indexTo: number): ProgramSequence {
         const program = this.program.slice();
         if (program[indexFrom] != null && program[indexTo] != null) {

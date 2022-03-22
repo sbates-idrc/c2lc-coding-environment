@@ -44,6 +44,8 @@ export type ProgramBlock = {
 
 export type Program = Array<ProgramBlock>;
 
+export type ProgramStepMovementDirection = 'previous' | 'next';
+
 export type PathSegment = {
     x1: number,
     y1: number,
