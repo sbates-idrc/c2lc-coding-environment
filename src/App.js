@@ -52,12 +52,12 @@ import { ReactComponent as ThemeIcon } from './svg/Theme.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
 import { ReactComponent as ActionsMenuToggleIcon } from './svg/Simplification.svg'
 import ProgramChangeController from './ProgramChangeController';
+import PrivacyModal from './PrivacyModal';
 
 import { ReactComponent as LogoContrast} from './svg/LogoContrast.svg';
 import { ReactComponent as LogoGrayscale} from './svg/LogoGrayscale.svg';
 import { ReactComponent as LogoDark} from './svg/LogoDark.svg';
 import { ReactComponent as LogoMixedAndLight} from './svg/LogoMixedAndLight.svg';
-
 
 function getThemeLogo (theme: ThemeName) {
     if (theme === "contrast") { return LogoContrast; }
@@ -115,7 +115,8 @@ type AppState = {
     showThemeSelectorModal: boolean,
     showWorldSelector: boolean,
     showShareModal: boolean,
-    showActionsSimplificationMenu: boolean
+    showActionsSimplificationMenu: boolean,
+    showPrivacyModal: boolean
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -434,6 +435,7 @@ export class App extends React.Component<AppProps, AppState> {
             showWorldSelector: false,
             showShareModal: false,
             showActionsSimplificationMenu: false,
+            showPrivacyModal: false,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -1189,6 +1191,14 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showShareModal: false });
     }
 
+    handleClickPrivacyButton = () => {
+        this.setState({ showPrivacyModal: true });
+    }
+
+    handleClosePrivacyModal = () => {
+        this.setState({ showPrivacyModal: false });
+    }
+
     render() {
         const Logo = getThemeLogo(this.state.settings.theme);
         return (
@@ -1211,6 +1221,15 @@ export class App extends React.Component<AppProps, AppState> {
                                     <Logo alt={this.props.intl.formatMessage({id: 'App.appHeading.link'})}/>
                                 </a>
                             </h1>
+                            <div className='App__PrivacyButtonContainer'>
+                                <button
+                                    aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
+                                    className="App__PrivacyModal__toggle-button"
+                                    onClick={this.handleClickPrivacyButton}
+                                >
+                                    <FormattedMessage id='App.privacyModalToggle'/>
+                                </button>
+                            </div>
                             <div className='App__header-menu'>
                                 <IconButton
                                     className="App__header-soundOptions"
@@ -1469,6 +1488,10 @@ export class App extends React.Component<AppProps, AppState> {
                     onConfirm={this.handleChangeDisallowedActions}
                     disallowedActions={this.state.disallowedActions}
                     programSequence={this.state.programSequence}
+                />
+                <PrivacyModal
+                    show={this.state.showPrivacyModal}
+                    onClose={this.handleClosePrivacyModal}
                 />
             </React.Fragment>
         );

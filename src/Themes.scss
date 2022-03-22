@@ -533,15 +533,23 @@ body.dark-theme {
         a:focus {
             border-color: #FFFFFF;
         }
-    
+
         svg {
             &:hover {
                 path.logo-title-letter {
                     stroke: black;
                     fill: black;
-                }    
+                }
             }
         }
+    }
+
+    .App__PrivacyModal__toggle-button {
+        color: white;
+    }
+
+    .App__PrivacyModal__toggle-button:focus {
+        border-color: #ffffff;
     }
 
     .App__command-palette {
@@ -777,7 +785,7 @@ body.gray-theme {
         a {
             outline-color: #000000;
         }
-    
+
         svg {
             &:hover {
                 path.logo-tile {
@@ -786,7 +794,7 @@ body.gray-theme {
                 path.logo-title-letter {
                     stroke: #FFFFFF;
                     fill: #FFFFFF;
-                }    
+                }
             }
         }
     }
@@ -1649,7 +1657,7 @@ body.contrast-theme {
 
     .App__container {
         background-color: black;
-    }   
+    }
 
     .App__header {
         background-color: black;
@@ -1666,9 +1674,9 @@ body.contrast-theme {
 
     .App__logo-container {
         a:focus {
-    border-color: #FFFFFF;
+            border-color: #FFFFFF;
         }
-    
+
         svg {
             &:hover {
                 path.logo-tile {
@@ -1677,11 +1685,18 @@ body.contrast-theme {
                 path.logo-title-letter {
                     stroke: #000000;
                     fill: #000000;
-                }    
+                }
             }
         }
-    }    
+    }
 
+    .App__PrivacyModal__toggle-button {
+        color: white;
+    }
+
+    .App__PrivacyModal__toggle-button:focus {
+        border-color: #ffffff;
+    }
 
     .IconButton.App__header-soundOptions {
         svg path {
