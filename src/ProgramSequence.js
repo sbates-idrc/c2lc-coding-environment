@@ -45,6 +45,15 @@ export default class ProgramSequence {
         return this.program[index];
     }
 
+    currentStepIsControlBlock(): boolean {
+        const block = this.program[this.programCounter];
+        if (block) {
+            return block.block === 'startLoop' || block.block === 'endLoop';
+        } else {
+            return false;
+        }
+    }
+
     getMatchingLoopBlockIndex(index: number): ?number {
         const block = this.program[index];
         let matchingBlockIndex = undefined;

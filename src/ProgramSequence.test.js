@@ -14,6 +14,30 @@ test('ProgramSequence constructor', () => {
     expect(programSequence.getLoopIterationsLeft()).toBe(loopIterationsLeft);
 });
 
+describe('Test currentStepIsControlBlock', () => {
+    test('Empty program', () => {
+        const programSequence = new ProgramSequence([], 0, 0, new Map());
+        expect(programSequence.currentStepIsControlBlock()).toBe(false);
+    });
+
+    test('Non-empty program', () => {
+        const program = [
+            { block: 'startLoop', label: 'A', iterations: 3 },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' }
+        ];
+
+        // startLoop
+        expect(new ProgramSequence(program, 0, 0, new Map()).currentStepIsControlBlock()).toBe(true);
+        // forward1
+        expect(new ProgramSequence(program, 1, 0, new Map()).currentStepIsControlBlock()).toBe(false);
+        // endLoop
+        expect(new ProgramSequence(program, 2, 0, new Map()).currentStepIsControlBlock()).toBe(true);
+        // Program counter past the end
+        expect(new ProgramSequence(program, 3, 0, new Map()).currentStepIsControlBlock()).toBe(false);
+    });
+});
+
 test('getMatchingLoopBlockIndex retuns index of corresponding endLoop or startLoop pair', () => {
     const program = [
         {block: 'startLoop', iterations: 3, label: 'A'},

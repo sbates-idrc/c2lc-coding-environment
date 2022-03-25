@@ -400,7 +400,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         const paused = (this.props.runningState === 'paused'
             && programStepNumber === this.props.programSequence.getProgramCounter())
             || (this.props.runningState === 'pauseRequested'
-            && programStepNumber === this.props.programSequence.getProgramCounter() + 1);
+            && programStepNumber === this.props.programSequence.getProgramCounter() + 1
+            && !this.props.programSequence.currentStepIsControlBlock());
         const hasActionPanelControl = this.props.actionPanelStepIndex === programStepNumber;
         const classes = classNames(
             'ProgramBlockEditor__program-block',
