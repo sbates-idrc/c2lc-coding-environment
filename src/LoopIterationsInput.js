@@ -68,6 +68,9 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
             <input
                 // TODO: ARIA label
                 className='command-block-loop-iterations'
+                data-command='startLoop'
+                data-controltype='programStep'
+                data-stepnumber={this.props.stepNumber}
                 maxLength='2'
                 size='2'
                 type='text'
