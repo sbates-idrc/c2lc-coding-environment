@@ -1,5 +1,7 @@
 // @flow
 
+import { findKeyboardEventSequenceMatches } from './KeyboardInputSchemes';
+import type { ActionName, KeyboardInputSchemeName } from './KeyboardInputSchemes';
 import type { RunningState } from './types';
 import React from 'react';
 
@@ -8,6 +10,7 @@ type LoopIterationsInputProps = {
     loopLabel: string,
     stepNumber: number,
     runningState: RunningState,
+    keyboardInputSchemeName: KeyboardInputSchemeName,
     onChangeLoopIterations: (stepNumber: number, loopLabel: string, loopIterations: number) => void
 };
 
@@ -37,7 +40,7 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
 
     handleKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         const enterKey = 'Enter';
-        if (e.key === enterKey) {
+        if (e.key === enterKey || this.isPlayShortcut(e)) {
             e.preventDefault();
             const loopIterationsValue = parseInt(e.currentTarget.value, 10);
             if (this.isValidLoopIterations(loopIterationsValue)) {
@@ -55,6 +58,29 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
         } else {
             this.setState({loopIterationsStr: this.props.loopIterationsStr});
         }
+    }
+
+    // We propagate the loop iterations value when the Play keyboard shortcut
+    // is pressed to ensure that changes are not lost when the Play shortcut is
+    // used to run the program.
+    //
+    // Without this behaviour, when the Play keyboard shortcut is used with
+    // focus on the LoopIterationsInput control changes could be lost because
+    // the value hasn't be propagated yet as focus has not been moved from the
+    // input and Enter has not been pressed.
+    //
+    // This implementation could result in the value being propagated in
+    // some cases that are not the Play keyboard shortcut. For simplicity we
+    // do not reproduce the App's logic to track sequences and test each
+    // key event independently. This approach could trigger propagation of
+    // the value if the Play shortcut also appears as part of another
+    // sequence.
+    isPlayShortcut(e: SyntheticKeyboardEvent<HTMLInputElement>) {
+        const matchingKeyboardAction: ActionName | "partial" | false =
+            findKeyboardEventSequenceMatches(
+                [((e: any): KeyboardEvent)],
+                this.props.keyboardInputSchemeName);
+        return matchingKeyboardAction === 'playPauseProgram';
     }
 
     componentDidUpdate(prevProps: LoopIterationsInputProps) {
