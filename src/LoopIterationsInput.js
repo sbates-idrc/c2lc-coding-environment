@@ -44,8 +44,7 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
     }
 
     handleKeyDown = (e: KeyboardEvent) => {
-        const enterKey = 'Enter';
-        if (e.key === enterKey || this.isPlayShortcut(e)) {
+        if (this.shouldPropagateValueForKeyboardEvent(e)) {
             e.preventDefault();
             if (this.inputRef.current) {
                 const loopIterationsValue = parseInt(this.inputRef.current.value, 10);
@@ -69,27 +68,30 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
         }
     }
 
-    // We propagate the loop iterations value when the Play keyboard shortcut
-    // is pressed to ensure that changes are not lost when the Play shortcut is
-    // used to run the program.
-    //
-    // Without this behaviour, when the Play keyboard shortcut is used with
-    // focus on the LoopIterationsInput control changes could be lost because
-    // the value hasn't be propagated yet as focus has not been moved from the
-    // input and Enter has not been pressed.
-    //
-    // This implementation could result in the value being propagated in
-    // some cases that are not the Play keyboard shortcut. For simplicity we
-    // do not reproduce the App's logic to track sequences and test each
-    // key event independently. This approach could trigger propagation of
-    // the value if the Play shortcut also appears as part of another
-    // sequence.
-    isPlayShortcut(e: KeyboardEvent) {
+    // In addition to when the Enter key is pressed, we also propagate the loop
+    // iterations value when keyboard shortcuts are used that will cause an
+    // update (such as the Play shortcut), to ensure that changes are not lost.
+    shouldPropagateValueForKeyboardEvent(e: KeyboardEvent) {
+        // This implementation could result in the value being propagated in
+        // some cases that are not update keyboard shortcuts. For simplicity we
+        // do not reproduce the App's logic to track sequences. Rather, we test
+        // each keyboard event independently. This approach could trigger
+        // propagation of the value if one of the shortcuts that we look for
+        // also appears as part of a sequence.
+
+        if (e.key === 'Enter') {
+            return true;
+        }
+
         const matchingKeyboardAction: ActionName | "partial" | false =
-            findKeyboardEventSequenceMatches(
-                [e],
+            findKeyboardEventSequenceMatches([e],
                 this.props.keyboardInputSchemeName);
-        return matchingKeyboardAction === 'playPauseProgram';
+
+        return matchingKeyboardAction === ('addCommand': ActionName)
+            || matchingKeyboardAction === ('addCommandToBeginning': ActionName)
+            || matchingKeyboardAction === ('moveToNextStep': ActionName)
+            || matchingKeyboardAction === ('moveToPreviousStep': ActionName)
+            || matchingKeyboardAction === ('playPauseProgram': ActionName);
     }
 
     componentDidUpdate(prevProps: LoopIterationsInputProps) {
