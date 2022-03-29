@@ -1395,6 +1395,7 @@ export class App extends React.Component<AppProps, AppState> {
                             editingDisabled={this.editingIsDisabled()}
                             programSequence={this.state.programSequence}
                             runningState={this.state.runningState}
+                            keyboardInputSchemeName={this.state.keyboardInputSchemeName}
                             selectedAction={this.state.selectedAction}
                             isDraggingCommand={this.state.isDraggingCommand}
                             audioManager={this.audioManager}

@@ -29,6 +29,7 @@ const defaultProgramBlockEditorProps = {
     characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
     programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 0, 0, new Map()),
     runningState: 'stopped',
+    keyboardInputSchemeName: 'controlalt',
     actionPanelStepIndex: null,
     selectedAction: null,
     editingDisabled: false,
