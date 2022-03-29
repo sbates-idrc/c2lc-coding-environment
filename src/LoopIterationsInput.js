@@ -19,44 +19,53 @@ type LoopIterationsInputState = {
 };
 
 export default class LoopIterationsInput extends React.Component<LoopIterationsInputProps, LoopIterationsInputState> {
+    inputRef: { current: null | HTMLInputElement };
+
     constructor(props: LoopIterationsInputProps) {
         super(props);
         this.state = {
             loopIterationsStr: this.props.loopIterationsStr
         }
+        this.inputRef = React.createRef();
     }
 
     isValidLoopIterations(value: number) {
         return value >= 1 && value <= 99;
     }
 
-    handleChange = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        this.setState({loopIterationsStr: e.currentTarget.value});
+    handleChange = () => {
+        if (this.inputRef.current) {
+            this.setState({loopIterationsStr: this.inputRef.current.value});
+        }
     }
 
     handleClick = (e: Event) => {
         e.stopPropagation();
     }
 
-    handleKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+    handleKeyDown = (e: KeyboardEvent) => {
         const enterKey = 'Enter';
         if (e.key === enterKey || this.isPlayShortcut(e)) {
             e.preventDefault();
-            const loopIterationsValue = parseInt(e.currentTarget.value, 10);
+            if (this.inputRef.current) {
+                const loopIterationsValue = parseInt(this.inputRef.current.value, 10);
+                if (this.isValidLoopIterations(loopIterationsValue)) {
+                    this.props.onChangeLoopIterations(this.props.stepNumber, this.props.loopLabel, loopIterationsValue);
+                } else {
+                    this.setState({loopIterationsStr: this.props.loopIterationsStr});
+                }
+            }
+        }
+    }
+
+    handleBlur = () => {
+        if (this.inputRef.current) {
+            const loopIterationsValue = parseInt(this.inputRef.current.value, 10);
             if (this.isValidLoopIterations(loopIterationsValue)) {
                 this.props.onChangeLoopIterations(this.props.stepNumber, this.props.loopLabel, loopIterationsValue);
             } else {
                 this.setState({loopIterationsStr: this.props.loopIterationsStr});
             }
-        }
-    }
-
-    handleBlur = (e: SyntheticEvent<HTMLInputElement>) => {
-        const loopIterationsValue = parseInt(e.currentTarget.value, 10);
-        if (this.isValidLoopIterations(loopIterationsValue)) {
-            this.props.onChangeLoopIterations(this.props.stepNumber, this.props.loopLabel, loopIterationsValue);
-        } else {
-            this.setState({loopIterationsStr: this.props.loopIterationsStr});
         }
     }
 
@@ -75,10 +84,10 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
     // key event independently. This approach could trigger propagation of
     // the value if the Play shortcut also appears as part of another
     // sequence.
-    isPlayShortcut(e: SyntheticKeyboardEvent<HTMLInputElement>) {
+    isPlayShortcut(e: KeyboardEvent) {
         const matchingKeyboardAction: ActionName | "partial" | false =
             findKeyboardEventSequenceMatches(
-                [((e: any): KeyboardEvent)],
+                [e],
                 this.props.keyboardInputSchemeName);
         return matchingKeyboardAction === 'playPauseProgram';
     }
@@ -89,10 +98,23 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
         }
     }
 
+    componentDidMount() {
+        if (this.inputRef.current) {
+            this.inputRef.current.addEventListener('keydown', this.handleKeyDown);
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.inputRef.current) {
+            this.inputRef.current.removeEventListener('keydown', this.handleKeyDown);
+        }
+    }
+
     render() {
         return (
             <input
                 // TODO: ARIA label
+                ref={this.inputRef}
                 className='command-block-loop-iterations'
                 maxLength='2'
                 size='2'
@@ -101,7 +123,6 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
                 value={this.state.loopIterationsStr}
                 onChange={this.handleChange}
                 onClick={this.handleClick}
-                onKeyDown={this.handleKeyDown}
                 onBlur={this.handleBlur}
             />
         );

@@ -71,7 +71,7 @@ test('Pressing Enter should call the registered callback', () => {
     loopIterationsInput.simulate('change');
     expect(wrapper.instance().state.loopIterationsStr).toBe('3');
 
-    loopIterationsInput.simulate('keyDown', {key: 'Enter'});
+    loopIterationsInput.getDOMNode().dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}));
     expect(mockOnChangeLoopIterations.mock.calls.length).toBe(1);
     expect(mockOnChangeLoopIterations.mock.calls[0][2]).toBe(3);
 });
@@ -88,11 +88,8 @@ test('Pressing the Play shortcut should call the registered callback', () => {
     loopIterationsInput.simulate('change');
     expect(wrapper.instance().state.loopIterationsStr).toBe('3');
 
-    loopIterationsInput.simulate('keyDown', {
-        key: 'p',
-        ctrlKey: true,
-        altKey: true
-    });
+    loopIterationsInput.getDOMNode().dispatchEvent(new KeyboardEvent('keydown',
+        {key: 'p', ctrlKey: true, altKey: true}));
     expect(mockOnChangeLoopIterations.mock.calls.length).toBe(1);
     expect(mockOnChangeLoopIterations.mock.calls[0][2]).toBe(3);
 });
