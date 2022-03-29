@@ -850,6 +850,19 @@ export class App extends React.Component<AppProps, AppState> {
                         case("focusCharacterRowInput"):
                             Utils.focusByQuerySelector(".ProgramBlock__character-position-coordinate-box-row");
                             break;
+                        case("focusLoopIterationsInput"):
+                            if (!this.editingIsDisabled()) {
+                                const currentElement = document.activeElement;
+                                if (currentElement) {
+                                    if (currentElement.dataset.controltype === 'programStep' && currentElement.dataset.command === 'startLoop') {
+                                        const iterationsInput = currentElement.querySelector('input');
+                                        if (iterationsInput != null && iterationsInput.focus) {
+                                            iterationsInput.focus();
+                                        }
+                                    }
+                                }
+                            }
+                            break;
                         case("focusPlayShare"):
                             Utils.focusByQuerySelector(".PlayButton--play");
                             break;
