@@ -47,6 +47,7 @@ export type ActionName =
     | "focusCharacterPositionControls"
     | "focusCharacterColumnInput"
     | "focusCharacterRowInput"
+    | "focusLoopIterationsInput"
     | "focusPlayShare"
     | "focusProgramSequence"
     | "focusScene"
@@ -142,6 +143,13 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 description: "Move focus to the character position row input field",
                 icon: "FocusCharacterPositionRow.png",
                 altText: "Focus character position row input icon"
+            },
+            iterationsInput: {
+                keyDef: { code: "KeyL", key: "l" },
+                actionName: "focusLoopIterationsInput",
+                description: "Move focus to the loop iterations input field",
+                icon: "FocusLoopIterationsInput.png",
+                altText: "Focus loop iterations input icon"
             },
             // TODO: rename this since we move focus to the play button, not an area
             playShare: {
