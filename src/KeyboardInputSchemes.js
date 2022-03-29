@@ -138,7 +138,7 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 altText: "Focus character position column input icon"
             },
             characterPositionRowInput: {
-                keyDef: { code: "KeyX", key: "y" },
+                keyDef: { code: "KeyY", key: "y" },
                 actionName: "focusCharacterRowInput",
                 description: "Move focus to the character position row input field",
                 icon: "FocusCharacterPositionRow.png",
