@@ -2,6 +2,7 @@
 
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
+import type {KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import type {AudioManager, RunningState, ThemeName, ProgramBlock, ProgramStepMovementDirection} from './types';
 import type { WorldName } from './Worlds';
 import React from 'react';
@@ -31,6 +32,7 @@ type ProgramBlockEditorProps = {
     editingDisabled: boolean,
     programSequence: ProgramSequence,
     runningState: RunningState,
+    keyboardInputSchemeName: KeyboardInputSchemeName,
     selectedAction: ?string,
     isDraggingCommand: boolean,
     audioManager: AudioManager,
@@ -471,6 +473,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 aria-expanded={hasActionPanelControl}
                 disabled={this.props.editingDisabled}
                 runningState={this.props.runningState}
+                keyboardInputSchemeName={this.props.keyboardInputSchemeName}
                 onClick={this.handleClickStep}
                 onChangeLoopIterations={this.handleChangeLoopIterations}
                 onAnimationEnd={this.handleProgramCommandBlockAnimationEnd}
