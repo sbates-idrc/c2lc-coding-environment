@@ -854,7 +854,7 @@ export class App extends React.Component<AppProps, AppState> {
                             if (!this.editingIsDisabled()) {
                                 const currentElement = document.activeElement;
                                 if (currentElement) {
-                                    if (currentElement.dataset.command === 'startLoop') {
+                                    if (currentElement.dataset.controltype === 'programStep' && currentElement.dataset.command === 'startLoop') {
                                         const iterationsInput = currentElement.querySelector('input');
                                         if (iterationsInput != null && iterationsInput.focus) {
                                             iterationsInput.focus();
