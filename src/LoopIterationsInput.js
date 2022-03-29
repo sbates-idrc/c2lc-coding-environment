@@ -16,11 +16,14 @@ type LoopIterationsInputState = {
 };
 
 export default class LoopIterationsInput extends React.Component<LoopIterationsInputProps, LoopIterationsInputState> {
+    inputRef: { current: null | HTMLInputElement };
+
     constructor(props: LoopIterationsInputProps) {
         super(props);
         this.state = {
             loopIterationsStr: this.props.loopIterationsStr
         }
+        this.inputRef = React.createRef();
     }
 
     isValidLoopIterations(value: number) {
@@ -63,10 +66,30 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
         }
     }
 
+    // We use the 'componentWillUnmount' lifecycle method to ensure that
+    // changes made to the loop iterations are not lost when the component is
+    // unmounted. This could happen if the keyboard shortcut is used to play
+    // the program with focus on a loop iteration text input: in this case,
+    // this component will be unmounted and replaced with a read-only version,
+    // but the value hasn't be propagated yet as focus has not been moved from
+    // the input and Enter has not been pressed.
+    //
+    // If the component is unmounted with focus on the input control,
+    // and the current value is valid, then propagate the value to the client.
+    componentWillUnmount() {
+        if (this.inputRef.current && this.inputRef.current === document.activeElement) {
+            const loopIterationsValue = parseInt(this.inputRef.current.value, 10);
+            if (this.isValidLoopIterations(loopIterationsValue)) {
+                this.props.onChangeLoopIterations(this.props.stepNumber, this.props.loopLabel, loopIterationsValue);
+            }
+        }
+    }
+
     render() {
         return (
             <input
                 // TODO: ARIA label
+                ref={this.inputRef}
                 className='command-block-loop-iterations'
                 maxLength='2'
                 size='2'
