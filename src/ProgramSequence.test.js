@@ -14,6 +14,30 @@ test('ProgramSequence constructor', () => {
     expect(programSequence.getLoopIterationsLeft()).toBe(loopIterationsLeft);
 });
 
+describe('Test currentStepIsControlBlock', () => {
+    test('Empty program', () => {
+        const programSequence = new ProgramSequence([], 0, 0, new Map());
+        expect(programSequence.currentStepIsControlBlock()).toBe(false);
+    });
+
+    test('Non-empty program', () => {
+        const program = [
+            { block: 'startLoop', label: 'A', iterations: 3 },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' }
+        ];
+
+        // startLoop
+        expect(new ProgramSequence(program, 0, 0, new Map()).currentStepIsControlBlock()).toBe(true);
+        // forward1
+        expect(new ProgramSequence(program, 1, 0, new Map()).currentStepIsControlBlock()).toBe(false);
+        // endLoop
+        expect(new ProgramSequence(program, 2, 0, new Map()).currentStepIsControlBlock()).toBe(true);
+        // Program counter past the end
+        expect(new ProgramSequence(program, 3, 0, new Map()).currentStepIsControlBlock()).toBe(false);
+    });
+});
+
 test('getMatchingLoopBlockIndex retuns index of corresponding endLoop or startLoop pair', () => {
     const program = [
         {block: 'startLoop', iterations: 3, label: 'A'},
@@ -204,12 +228,13 @@ test('incrementProgramCounter should increment programCounter by 1', () => {
 });
 
 test('usesAction should return false for any action when the sequence is empty.', () => {
-    expect.assertions(3);
+    expect.assertions(4);
     const program = [];
     const programSequence = new ProgramSequence(program, 0, 0, new Map());
     expect(programSequence.usesAction('forward1')).toBe(false);
     expect(programSequence.usesAction('backward3')).toBe(false);
     expect(programSequence.usesAction('left90')).toBe(false);
+    expect(programSequence.usesAction('loop')).toBe(false);
 });
 
 test('usesAction should return true when an action is part of the sequence.', () => {
@@ -221,11 +246,23 @@ test('usesAction should return true when an action is part of the sequence.', ()
     expect(programSequence.usesAction('left90')).toBe(true);
 });
 
-test('usesAction should return false when an action is not part of the sequence.', () => {
+test('usesAction should return true for loops when a loop is used.', () => {
     expect.assertions(1);
+    const program = [
+        { block: 'startLoop', label: 'A', iterations: 3},
+        { block: 'backward3'},
+        { block: 'endLoop', label: 'A'},
+    ];
+    const programSequence = new ProgramSequence(program, 0, 0, new Map());
+    expect(programSequence.usesAction('loop')).toBe(true);
+});
+
+test('usesAction should return false when an action is not part of the sequence.', () => {
+    expect.assertions(2);
     const program = [{block: 'backward3'}];
     const programSequence = new ProgramSequence(program, 0, 0, new Map());
     expect(programSequence.usesAction('forward1')).toBe(false);
+    expect(programSequence.usesAction('loop')).toBe(false);
 });
 
 type DeleteStepTestCase = {

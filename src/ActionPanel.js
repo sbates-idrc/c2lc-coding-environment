@@ -10,7 +10,7 @@ import { ReactComponent as MovePreviousIcon } from './svg/MovePrevious.svg';
 import { ReactComponent as MoveNextIcon } from './svg/MoveNext.svg';
 import { ReactComponent as DeleteIcon } from './svg/Delete.svg';
 import { ReactComponent as ReplaceIcon } from './svg/replace.svg';
-import { focusByQuerySelector } from './Utils';
+import { focusByQuerySelector, moveToNextStepDisabled, moveToPreviousStepDisabled } from './Utils';
 import './ActionPanel.scss';
 
 type ActionPanelProps = {
@@ -196,31 +196,6 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
         return currentStepName !== 'startLoop' && currentStepName !== 'endLoop';
     }
 
-    getMoveToNextStepDisabled(): boolean {
-        const programSequence = this.props.programSequence;
-        const programLastIndex = programSequence.getProgramLength() - 1;
-        const { block, label } = programSequence.getProgramStepAt(this.props.pressedStepIndex);
-        if (block === 'startLoop') {
-            const lastProgramStep = programSequence.getProgramStepAt(programLastIndex);
-            if (lastProgramStep.block === 'endLoop' && lastProgramStep.label === label) {
-                return true;
-            }
-        }
-        return this.props.pressedStepIndex === programLastIndex;
-    }
-
-    getMoveToPreviousStepDisabled(): boolean {
-        const programSequence = this.props.programSequence;
-        const { block, label } = programSequence.getProgramStepAt(this.props.pressedStepIndex);
-        if (block === 'endLoop') {
-            const firstProgramStep = programSequence.getProgramStepAt(0);
-            if (firstProgramStep.block === 'startLoop' && firstProgramStep.label === label) {
-                return true;
-            }
-        }
-        return this.props.pressedStepIndex === 0;
-    }
-
     // handlers
 
     handleClickDelete = () => {
@@ -241,8 +216,8 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
 
     render() {
         const stepMessageData = this.makeStepMessageData();
-        const moveToNextStepIsDisabled = this.getMoveToNextStepDisabled();
-        const moveToPreviousStepIsDisabled = this.getMoveToPreviousStepDisabled();
+        const moveToNextStepIsDisabled = moveToNextStepDisabled(this.props.programSequence, this.props.pressedStepIndex);
+        const moveToPreviousStepIsDisabled = moveToPreviousStepDisabled(this.props.programSequence, this.props.pressedStepIndex);
         const replaceIsVisible = this.getReplaceIsVisible();
         return (
             <React.Fragment>

@@ -30,7 +30,7 @@ import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, DisplayedCommandName, ProgramStepMovementDirection, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -50,8 +50,22 @@ import { ReactComponent as AudioIcon } from './svg/Audio.svg';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
 import { ReactComponent as ThemeIcon } from './svg/Theme.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
-import { ReactComponent as ActionsMenuToggleIcon } from './svg/ActionsMenuToggle.svg'
+import { ReactComponent as ActionsMenuToggleIcon } from './svg/Simplification.svg'
 import ProgramChangeController from './ProgramChangeController';
+import PrivacyModal from './PrivacyModal';
+
+import { ReactComponent as LogoContrast} from './svg/LogoContrast.svg';
+import { ReactComponent as LogoGrayscale} from './svg/LogoGrayscale.svg';
+import { ReactComponent as LogoDark} from './svg/LogoDark.svg';
+import { ReactComponent as LogoMixedAndLight} from './svg/LogoMixedAndLight.svg';
+
+function getThemeLogo (theme: ThemeName) {
+    if (theme === "contrast") { return LogoContrast; }
+    else if (theme === "gray") { return LogoGrayscale; }
+    else if (theme === "dark") { return LogoDark; }
+
+    return LogoMixedAndLight;
+}
 
 /* Dash connection removed for version 0.5
 import BluetoothApiWarning from './BluetoothApiWarning';
@@ -89,6 +103,7 @@ type AppState = {
     announcementsEnabled: boolean,
     sonificationEnabled: boolean,
     actionPanelStepIndex: ?number,
+    actionPanelFocusedOptionName: ?string,
     sceneDimensions: SceneDimensions,
     drawingEnabled: boolean,
     runningState: RunningState,
@@ -100,7 +115,8 @@ type AppState = {
     showThemeSelectorModal: boolean,
     showWorldSelector: boolean,
     showShareModal: boolean,
-    showActionsSimplificationMenu: boolean
+    showActionsSimplificationMenu: boolean,
+    showPrivacyModal: boolean
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -125,7 +141,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '1.2';
+        this.version = '1.3';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -407,6 +423,7 @@ export class App extends React.Component<AppProps, AppState> {
             announcementsEnabled: true,
             sonificationEnabled: true,
             actionPanelStepIndex: null,
+            actionPanelFocusedOptionName: null,
             sceneDimensions: this.sceneDimensions,
             drawingEnabled: true,
             runningState: 'stopped',
@@ -418,6 +435,7 @@ export class App extends React.Component<AppProps, AppState> {
             showWorldSelector: false,
             showShareModal: false,
             showActionsSimplificationMenu: false,
+            showPrivacyModal: false,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -495,6 +513,10 @@ export class App extends React.Component<AppProps, AppState> {
         }, callback);
     }
 
+    refreshIsDisabled(): boolean {
+        return this.state.runningState !== 'stopped';
+    }
+
     updateProgramCounterAndLoopIterationsLeft(programCounter: number, loopIterationsLeft: Map<string, number>, callback: () => void): void {
         this.setState((state) => {
             return {
@@ -525,6 +547,16 @@ export class App extends React.Component<AppProps, AppState> {
             index,
             command
         );
+    }
+
+    handleProgramBlockEditorMoveStep = (indexFrom: number, direction: ProgramStepMovementDirection, commandAtIndexFrom: string) => {
+        this.programChangeController.moveProgramStep(
+            this.programBlockEditorRef.current,
+            indexFrom,
+            direction,
+            commandAtIndexFrom,
+            'focusActionPanel'
+        )
     }
 
     handlePlay = () => {
@@ -619,9 +651,10 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ isDraggingCommand: false });
     };
 
-    handleChangeActionPanelStepIndex = (index: ?number) => {
+    handleChangeActionPanelStepIndexAndOption = (index: ?number, focusedOptionName: ?string) => {
         this.setState({
-            actionPanelStepIndex: index
+            actionPanelStepIndex: index,
+            actionPanelFocusedOptionName: focusedOptionName
         });
     };
 
@@ -763,7 +796,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("refreshScene"):
-                            if (!this.editingIsDisabled()) {
+                            if (!this.refreshIsDisabled()) {
                                 this.handleRefresh();
                             }
                             break;
@@ -781,20 +814,8 @@ export class App extends React.Component<AppProps, AppState> {
                         case("selectForward1"):
                             this.setState({ "selectedAction": "forward1" });
                             break;
-                        case("selectForward2"):
-                            this.setState({ "selectedAction": "forward2" });
-                            break;
-                        case("selectForward3"):
-                            this.setState({ "selectedAction": "forward3" });
-                            break;
                         case("selectBackward1"):
                             this.setState({ "selectedAction": "backward1" });
-                            break;
-                        case("selectBackward2"):
-                            this.setState({ "selectedAction": "backward2" });
-                            break;
-                        case("selectBackward3"):
-                            this.setState({ "selectedAction": "backward3" });
                             break;
                         case("selectLeft45"):
                             this.setState({ "selectedAction": "left45" });
@@ -802,17 +823,14 @@ export class App extends React.Component<AppProps, AppState> {
                         case("selectLeft90"):
                             this.setState({ "selectedAction": "left90" });
                             break;
-                        case("selectLeft180"):
-                            this.setState({ "selectedAction": "left180" });
-                            break;
                         case("selectRight45"):
                             this.setState({ "selectedAction": "right45" });
                             break;
                         case("selectRight90"):
                             this.setState({ "selectedAction": "right90" });
                             break;
-                        case("selectRight180"):
-                            this.setState({ "selectedAction": "right180" });
+                        case("selectLoop"):
+                            this.setState({ "selectedAction": "loop" });
                             break;
                         case("focusActions"):
                             Utils.focusByQuerySelector(".command-block");
@@ -832,6 +850,19 @@ export class App extends React.Component<AppProps, AppState> {
                         case("focusCharacterRowInput"):
                             Utils.focusByQuerySelector(".ProgramBlock__character-position-coordinate-box-row");
                             break;
+                        case("focusLoopIterationsInput"):
+                            if (!this.editingIsDisabled()) {
+                                const currentElement = document.activeElement;
+                                if (currentElement) {
+                                    if (currentElement.dataset.controltype === 'programStep' && currentElement.dataset.command === 'startLoop') {
+                                        const iterationsInput = currentElement.querySelector('input');
+                                        if (iterationsInput != null && iterationsInput.focus) {
+                                            iterationsInput.focus();
+                                        }
+                                    }
+                                }
+                            }
+                            break;
                         case("focusPlayShare"):
                             Utils.focusByQuerySelector(".PlayButton--play");
                             break;
@@ -843,6 +874,46 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("focusWorldSelector"):
                             Utils.focusByQuerySelector(".keyboard-shortcut-focus__world-selector");
+                            break;
+                        case("moveToPreviousStep"):
+                            if (!this.editingIsDisabled()) {
+                                const currentElement = document.activeElement;
+                                let index = null;
+                                // $FlowFixMe: Not all elements have dataset property
+                                if (currentElement.dataset.controltype === 'programStep') {
+                                    index = parseInt(currentElement.dataset.stepnumber, 10);
+                                }
+                                if (index != null && !Utils.moveToPreviousStepDisabled(this.state.programSequence, index)) {
+                                    this.programChangeController.moveProgramStep(
+                                        this.programBlockEditorRef.current,
+                                        index,
+                                        'previous',
+                                        // $FlowFixMe: Not all elements have dataset property
+                                        currentElement.dataset.command,
+                                        'focusBlockMoved'
+                                    )
+                                }
+                            }
+                            break;
+                        case("moveToNextStep"):
+                            if (!this.editingIsDisabled()) {
+                                const currentElement = document.activeElement;
+                                let index = null;
+                                // $FlowFixMe: Not all elements have dataset property
+                                if (currentElement.dataset.controltype === 'programStep') {
+                                    index = parseInt(currentElement.dataset.stepnumber, 10);
+                                }
+                                if (index != null && !Utils.moveToNextStepDisabled(this.state.programSequence, index)) {
+                                    this.programChangeController.moveProgramStep(
+                                        this.programBlockEditorRef.current,
+                                        index,
+                                        'next',
+                                        // $FlowFixMe: Not all elements have dataset property
+                                        currentElement.dataset.command,
+                                        'focusBlockMoved'
+                                    )
+                                }
+                            }
                             break;
                         case("moveCharacterLeft"):
                             if (!this.editingIsDisabled()) {
@@ -949,7 +1020,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.setStepTime(stepTimeMs);
     }
 
-    renderCommandBlocks = (commands: Array<CommandName>) => {
+    renderCommandBlocks = (commands: Array<DisplayedCommandName>) => {
         const commandBlocks = [];
 
         for (const [index, value] of commands.entries()) {
@@ -1091,16 +1162,6 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    handleKeyDownActionsSimplificationIcon = (event: KeyboardEvent) => {
-        if (!this.editingIsDisabled()) {
-            if (event.key === "Enter" || event.key === " ") {
-                this.setState({
-                    showActionsSimplificationMenu: true
-                });
-            }
-        }
-    }
-
     handleChangeDisallowedActions = (disallowedActions: ActionToggleRegister) => {
         this.setState({
             showActionsSimplificationMenu: false,
@@ -1143,7 +1204,16 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showShareModal: false });
     }
 
+    handleClickPrivacyButton = () => {
+        this.setState({ showPrivacyModal: true });
+    }
+
+    handleClosePrivacyModal = () => {
+        this.setState({ showPrivacyModal: false });
+    }
+
     render() {
+        const Logo = getThemeLogo(this.state.settings.theme);
         return (
             <React.Fragment>
                 <div
@@ -1153,16 +1223,26 @@ export class App extends React.Component<AppProps, AppState> {
                     onKeyDown={this.handleRootKeyDown}>
                     <header className='App__header'>
                         <div className='App__header-row'>
-                            <h1 className='App__app-heading'>
+                            <h1 className='App__logo-container'>
                                 <a
                                     className='keyboard-shortcut-focus__app-header'
-                                    href='https://weavly.org'
+                                    href='https://weavly.org/learn/resources/facilitating-a-weavly-coding-workshop-beginners/'
                                     aria-label={this.props.intl.formatMessage({id: 'App.appHeading.link'})}
                                     target='_blank'
-                                    rel='noopener noreferrer'>
-                                    <FormattedMessage id='App.appHeading'/>
+                                    rel='noopener noreferrer'
+                                >
+                                    <Logo alt={this.props.intl.formatMessage({id: 'App.appHeading.link'})}/>
                                 </a>
                             </h1>
+                            <div className='App__PrivacyButtonContainer'>
+                                <button
+                                    aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
+                                    className="App__PrivacyModal__toggle-button"
+                                    onClick={this.handleClickPrivacyButton}
+                                >
+                                    <FormattedMessage id='App.privacyModalToggle'/>
+                                </button>
+                            </div>
                             <div className='App__header-menu'>
                                 <IconButton
                                     className="App__header-soundOptions"
@@ -1184,6 +1264,14 @@ export class App extends React.Component<AppProps, AppState> {
                                     onClick={this.handleClickKeyboardIcon}
                                 >
                                     <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
+                                </IconButton>
+
+                                <IconButton className="App__ActionsMenu__toggle-button"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
+                                    disabled={this.editingIsDisabled()}
+                                    onClick={this.handleClickActionsSimplificationIcon}
+                                >
+                                    <ActionsMenuToggleIcon className='App__header-actionsMenu-icon'/>
                                 </IconButton>
                             </div>
                             {/* Dash connection removed for version 0.5
@@ -1253,35 +1341,48 @@ export class App extends React.Component<AppProps, AppState> {
                             <h2 className='App__ActionsMenu__header-heading'>
                                 <FormattedMessage id='ActionsMenu.title' />
                             </h2>
-
-                            <div className="App__ActionsMenu__toggle-button"
-                                aria-label={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
-                                aria-disabled={this.editingIsDisabled()}
-                                role="button"
-                                onClick={this.handleClickActionsSimplificationIcon}
-                                onKeyDown={this.handleKeyDownActionsSimplificationIcon}
-                                tabIndex={0}
-                            >
-                                <ActionsMenuToggleIcon/>
-                            </div>
                         </div>
                         <div className='App__command-palette-command-container'>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks([
-                                    'forward1', 'forward2', 'forward3',
-                                    'backward1', 'backward2', 'backward3'
-                                ])}
+                            <div className='App__command-palette-section'>
+                                <div className='App__command-palette-section-heading-container'>
+                                    <h3 className='App__command-palette-section-heading'>
+                                        <FormattedMessage id='CommandPalette.movementsTitle'/>
+                                    </h3>
+                                </div>
+                                <div className='App__command-palette-section-body'>
+                                    <div className='App__command-palette-commands'>
+                                        {this.renderCommandBlocks(['forward1'])}
+                                    </div>
+                                    <div className='App__command-palette-commands'>
+                                        {this.renderCommandBlocks(['backward1'])}
+                                    </div>
+                                    <div className='App__command-palette-commands'>
+                                        {this.renderCommandBlocks([
+                                            'left45', 'left90'
+                                        ])}
+                                    </div>
+                                    <div className='App__command-palette-commands'>
+                                        {this.renderCommandBlocks([
+                                            'right45', 'right90'
+                                        ])}
+                                    </div>
+                                </div>
                             </div>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks([
-                                    'left45', 'left90', 'left180',
-                                    'right45', 'right90', 'right180',
-                                ])}
-                            </div>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks([
-                                    'loop'
-                                ])}
+
+                            <div className='App__command-palette-section'>
+                                <div className='App__command-palette-section-heading-container'>
+                                    <h3 className='App__command-palette-section-heading'>
+                                        <FormattedMessage id='CommandPalette.controlsTitle'/>
+                                    </h3>
+                                </div>
+
+                                <div className='App__command-palette-section-body'>
+                                    <div className='App__command-palette-controls'>
+                                        {this.renderCommandBlocks([
+                                            'loop'
+                                        ])}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1289,10 +1390,12 @@ export class App extends React.Component<AppProps, AppState> {
                         <ProgramBlockEditor
                             ref={this.programBlockEditorRef}
                             actionPanelStepIndex={this.state.actionPanelStepIndex}
+                            actionPanelFocusedOptionName={this.state.actionPanelFocusedOptionName}
                             characterState={this.state.characterState}
                             editingDisabled={this.editingIsDisabled()}
                             programSequence={this.state.programSequence}
                             runningState={this.state.runningState}
+                            keyboardInputSchemeName={this.state.keyboardInputSchemeName}
                             selectedAction={this.state.selectedAction}
                             isDraggingCommand={this.state.isDraggingCommand}
                             audioManager={this.audioManager}
@@ -1303,7 +1406,8 @@ export class App extends React.Component<AppProps, AppState> {
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
                             onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
-                            onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
+                            onMoveProgramStep={this.handleProgramBlockEditorMoveStep}
+                            onChangeActionPanelStepIndexAndOption={this.handleChangeActionPanelStepIndexAndOption}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
                         />
                     </div>
@@ -1316,7 +1420,7 @@ export class App extends React.Component<AppProps, AppState> {
                             <div className='App__playButton-container'>
                                 <RefreshButton
                                     className='App__playControlButton'
-                                    disabled={this.editingIsDisabled()}
+                                    disabled={this.refreshIsDisabled()}
                                     onClick={this.handleRefresh}
                                 />
                                 <PlayButton
@@ -1398,6 +1502,10 @@ export class App extends React.Component<AppProps, AppState> {
                     onConfirm={this.handleChangeDisallowedActions}
                     disallowedActions={this.state.disallowedActions}
                     programSequence={this.state.programSequence}
+                />
+                <PrivacyModal
+                    show={this.state.showPrivacyModal}
+                    onClose={this.handleClosePrivacyModal}
                 />
             </React.Fragment>
         );
