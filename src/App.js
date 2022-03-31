@@ -632,10 +632,6 @@ export class App extends React.Component<AppProps, AppState> {
             this.setState({
                 selectedAction: command
             });
-        } else {
-            this.setState({
-                selectedAction: null
-            });
         }
     };
 
