@@ -627,12 +627,10 @@ export class App extends React.Component<AppProps, AppState> {
         });
     };
 
-    handleCommandFromCommandPalette = (command: ?string) => {
-        if (command) {
-            this.setState({
-                selectedAction: command
-            });
-        }
+    handleCommandFromCommandPalette = (command: string) => {
+        this.setState({
+            selectedAction: command
+        });
     };
 
     handleDragStartCommand = (command: string) => {
@@ -1039,7 +1037,7 @@ export class App extends React.Component<AppProps, AppState> {
                         selectedCommandName={this.getSelectedCommandName()}
                         audioManager={this.audioManager}
                         isDraggingCommand={this.state.isDraggingCommand}
-                        onChange={this.handleCommandFromCommandPalette}
+                        onSelect={this.handleCommandFromCommandPalette}
                         onDragStart={this.handleDragStartCommand}
                         onDragEnd={this.handleDragEndCommand}/>
                 );
