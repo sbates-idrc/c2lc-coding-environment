@@ -116,7 +116,9 @@ type AppState = {
     showWorldSelector: boolean,
     showShareModal: boolean,
     showActionsSimplificationMenu: boolean,
-    showPrivacyModal: boolean
+    showPrivacyModal: boolean,
+    startingX: number,
+    startingY: number
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -436,6 +438,8 @@ export class App extends React.Component<AppProps, AppState> {
             showShareModal: false,
             showActionsSimplificationMenu: false,
             showPrivacyModal: false,
+            startingX: getWorldProperties(this.defaultWorld).startingX,
+            startingY: getWorldProperties(this.defaultWorld).startingY,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -1056,9 +1060,19 @@ export class App extends React.Component<AppProps, AppState> {
 
     makeStartingCharacterState(world: WorldName): CharacterState {
         const worldProperties = getWorldProperties(world);
+        let startingX = worldProperties.startingX;
+        let startingY = worldProperties.startingY;
+        if (this.state && this.state.startingX != null && this.state.startingY != null) {
+            if (startingX !== this.state.startingX) {
+                startingX = this.state.startingX;
+            }
+            if (startingY !== this.state.startingY) {
+                startingY = this.state.startingY;
+            }
+        }
         return new CharacterState(
-            worldProperties.startingX,
-            worldProperties.startingY,
+            startingX,
+            startingY,
             worldProperties.startingDirection,
             [],
             this.sceneDimensions
@@ -1101,29 +1115,37 @@ export class App extends React.Component<AppProps, AppState> {
                 break;
             case 'up':
                 this.setState((state) => {
+                    const updatedCharacterState = state.characterState.moveUpPosition();
                     return {
-                        characterState: state.characterState.moveUpPosition()
+                        characterState: updatedCharacterState,
+                        startingY: updatedCharacterState.yPos
                     }
                 });
                 break;
             case 'right':
                 this.setState((state) => {
+                    const updatedCharacterState = state.characterState.moveRightPosition();
                     return {
-                        characterState: state.characterState.moveRightPosition()
+                        characterState: updatedCharacterState,
+                        startingX: updatedCharacterState.xPos
                     }
                 });
                 break;
             case 'down':
                 this.setState((state) => {
+                    const updatedCharacterState = state.characterState.moveDownPosition();
                     return {
-                        characterState: state.characterState.moveDownPosition()
+                        characterState: updatedCharacterState,
+                        startingY: updatedCharacterState.yPos
                     }
                 });
                 break;
             case 'left':
                 this.setState((state) => {
+                    const updatedCharacterState = state.characterState.moveLeftPosition();
                     return {
-                        characterState: state.characterState.moveLeftPosition()
+                        characterState: updatedCharacterState,
+                        startingX: updatedCharacterState.xPos
                     }
                 });
                 break;
@@ -1133,16 +1155,18 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleChangeCharacterXPosition = (columnLabel: string) => {
-        const currentCharacterState = this.state.characterState;
+        const updatedCharacterState = this.state.characterState.changeXPosition(columnLabel);
         this.setState({
-            characterState: currentCharacterState.changeXPosition(columnLabel)
+            characterState: updatedCharacterState,
+            startingX: updatedCharacterState.xPos
         });
     }
 
     handleChangeCharacterYPosition = (rowLabel: string) => {
-        const currentCharacterState = this.state.characterState;
+        const updatedCharacterState = this.state.characterState.changeYPosition(parseInt(rowLabel, 10));
         this.setState({
-            characterState: currentCharacterState.changeYPosition(parseInt(rowLabel, 10))
+            characterState: updatedCharacterState,
+            startingY: updatedCharacterState.yPos
         });
     }
 
