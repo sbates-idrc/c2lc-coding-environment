@@ -17,6 +17,8 @@ export type SceneProps = {
     characterState: CharacterState,
     theme: ThemeName,
     world: WorldName,
+    startingX: number,
+    startingY: number,
     intl: IntlShape
 };
 
@@ -365,6 +367,24 @@ class Scene extends React.Component<SceneProps, {}> {
                             {grid}
                             <g clipPath='url(#Scene-clippath)'>
                                 {this.drawCharacterPath()}
+                                <rect
+                                    // Dotted rectangle to indicate starting grid cell
+                                    className={`Scene__starting-grid-cell Scene__starting-grid-cell--${this.props.world}`}
+                                    x={this.props.startingX - 0.5}
+                                    y={this.props.startingY - 0.5}
+                                    height={1}
+                                    width={1}
+                                />
+                                <rect
+                                    // A point in the middle of the starting grid cell
+                                    className={`Scene__starting--grid-cell-point--${this.props.world}`}
+                                    // Subtract half of width for x, and subtract half of height for y to make it center
+                                    x={this.props.startingX - 0.08}
+                                    y={this.props.startingY - 0.08}
+                                    rx={0.06}
+                                    height={0.16}
+                                    width={0.16}
+                                />
                                 <Character
                                     world={this.props.world}
                                     theme={this.props.theme}
