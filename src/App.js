@@ -1118,6 +1118,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const updatedCharacterState = state.characterState.moveUpPosition();
                     return {
                         characterState: updatedCharacterState,
+                        startingX: updatedCharacterState.xPos,
                         startingY: updatedCharacterState.yPos
                     }
                 });
@@ -1127,7 +1128,8 @@ export class App extends React.Component<AppProps, AppState> {
                     const updatedCharacterState = state.characterState.moveRightPosition();
                     return {
                         characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos
+                        startingX: updatedCharacterState.xPos,
+                        startingY: updatedCharacterState.yPos
                     }
                 });
                 break;
@@ -1136,6 +1138,7 @@ export class App extends React.Component<AppProps, AppState> {
                     const updatedCharacterState = state.characterState.moveDownPosition();
                     return {
                         characterState: updatedCharacterState,
+                        startingX: updatedCharacterState.xPos,
                         startingY: updatedCharacterState.yPos
                     }
                 });
@@ -1145,7 +1148,8 @@ export class App extends React.Component<AppProps, AppState> {
                     const updatedCharacterState = state.characterState.moveLeftPosition();
                     return {
                         characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos
+                        startingX: updatedCharacterState.xPos,
+                        startingY: updatedCharacterState.yPos
                     }
                 });
                 break;
@@ -1328,6 +1332,8 @@ export class App extends React.Component<AppProps, AppState> {
                             characterState={this.state.characterState}
                             theme={this.state.settings.theme}
                             world={this.state.settings.world}
+                            startingX={this.state.startingX}
+                            startingY={this.state.startingY}
                         />
                     </div>
                     <div className="App__world-container">
