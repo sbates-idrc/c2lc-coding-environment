@@ -14,6 +14,29 @@ test('ProgramSequence constructor', () => {
     expect(programSequence.getLoopIterationsLeft()).toBe(loopIterationsLeft);
 });
 
+describe('Test hasLoopBlock', () => {
+    test('When the program has at leas one loop block', () => {
+        const program = [
+            { block: 'startLoop', label: 'A', iterations: 3 },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' },
+            { block: 'forward1' }
+        ];
+        const programSequence = new ProgramSequence(program, 0, 0, new Map());
+        expect(programSequence.hasLoopBlock()).toBe(true);
+    });
+
+    test('When the program has no loop blocks', () => {
+        const program = [
+            { block: 'forward1' },
+            { block: 'left45' },
+            { block: 'right45' }
+        ];
+        const programSequence = new ProgramSequence(program, 0, 0, new Map());
+        expect(programSequence.hasLoopBlock()).toBe(false);
+    });
+});
+
 describe('Test currentStepIsControlBlock', () => {
     test('Empty program', () => {
         const programSequence = new ProgramSequence([], 0, 0, new Map());
@@ -437,78 +460,107 @@ test.each(([
 type InsertStepTestCase = {
     program: Program,
     programCounter: number,
+    loopCounter: number,
     loopIterationsLeft: Map<string, number>,
     index: number,
     commandName: string,
     expectedProgram: Program,
     expectedProgramCounter: number,
-    expectedLoopIterationsLeft: Map<string, number>
+    expectedLoopIterationsLeft: Map<string, number>,
+    expectedLoopCounter: number
 };
 
 test.each(([
     {
         program: [],
         programCounter: 0,
+        loopCounter: 0,
         loopIterationsLeft: new Map(),
         index: 0,
         commandName: 'left45',
         expectedProgram: [{block: 'left45'}],
         expectedProgramCounter: 1,
-        expectedLoopIterationsLeft: new Map()
+        expectedLoopIterationsLeft: new Map(),
+        expectedLoopCounter: 0
     },
     {
         program: [{block: 'forward1'}],
         programCounter: 0,
+        loopCounter: 0,
         loopIterationsLeft: new Map(),
         index: 0,
         commandName: 'left45',
         expectedProgram: [{block: 'left45'}, {block: 'forward1'}],
         expectedProgramCounter: 1,
-        expectedLoopIterationsLeft: new Map()
+        expectedLoopIterationsLeft: new Map(),
+        expectedLoopCounter: 0
     },
     {
         program: [{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}],
         programCounter: 1,
+        loopCounter: 0,
         loopIterationsLeft: new Map(),
         index: 0,
         commandName: 'left45',
         expectedProgram: [{block: 'left45'}, {block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}],
         expectedProgramCounter: 2,
-        expectedLoopIterationsLeft: new Map()
+        expectedLoopIterationsLeft: new Map(),
+        expectedLoopCounter: 0
     },
     {
         program: [{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}],
         programCounter: 1,
+        loopCounter: 0,
         loopIterationsLeft: new Map(),
         index: 1,
         commandName: 'left45',
         expectedProgram: [{block: 'forward1'}, {block: 'left45'}, {block: 'forward2'}, {block: 'forward3'}],
         expectedProgramCounter: 2,
-        expectedLoopIterationsLeft: new Map()
+        expectedLoopIterationsLeft: new Map(),
+        expectedLoopCounter: 0
     },
     {
         program: [{block: 'forward1'}, {block: 'forward2'}, {block: 'forward3'}],
         programCounter: 1,
+        loopCounter: 0,
         loopIterationsLeft: new Map(),
         index: 2,
         commandName: 'left45',
         expectedProgram: [{block: 'forward1'}, {block: 'forward2'}, {block: 'left45'}, {block: 'forward3'}],
         expectedProgramCounter: 1,
-        expectedLoopIterationsLeft: new Map()
+        expectedLoopIterationsLeft: new Map(),
+        expectedLoopCounter: 0
     },
     {
         program: [],
         programCounter: 0,
+        loopCounter: 4,
         loopIterationsLeft: new Map(),
         index: 0,
         commandName: 'loop',
         expectedProgram: [{block: 'startLoop', iterations: 1, label: 'A'}, {block: 'endLoop', label: 'A'}],
         expectedProgramCounter: 2,
-        expectedLoopIterationsLeft: new Map([['A', 1]])
+        expectedLoopIterationsLeft: new Map([['A', 1]]),
+        expectedLoopCounter: 1
+    },
+    {
+        program: [{block: 'startLoop', iterations: 1, label: 'B'}, {block: 'endLoop', label: 'B'}],
+        programCounter: 0,
+        loopCounter: 2,
+        loopIterationsLeft: new Map([['B', 1]]),
+        index: 2,
+        commandName: 'loop',
+        expectedProgram: [
+            {block: 'startLoop', iterations: 1, label: 'B'}, {block: 'endLoop', label: 'B'}, 
+            {block: 'startLoop', iterations: 1, label: 'C'}, {block: 'endLoop', label: 'C'}],
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['B', 1], ['C', 1]]),
+        expectedLoopCounter: 3
     },
     {
         program: [{block: 'forward1'}],
         programCounter: 0,
+        loopCounter: 0,
         loopIterationsLeft: new Map(),
         index: 0,
         commandName: 'loop',
@@ -518,21 +570,23 @@ test.each(([
             {block: 'forward1'}
         ],
         expectedProgramCounter: 2,
-        expectedLoopIterationsLeft: new Map([['A', 1]])
+        expectedLoopIterationsLeft: new Map([['A', 1]]),
+        expectedLoopCounter: 1
     }
 ]: Array<DeleteStepTestCase>))('insertStep', (testData: InsertStepTestCase) => {
-    expect.assertions(4);
+    expect.assertions(5);
     const programBefore = testData.program.slice();
     const programSequence = new ProgramSequence(
         testData.program,
         testData.programCounter,
-        0,
+        testData.loopCounter,
         testData.loopIterationsLeft
     );
     const result = programSequence.insertStep(testData.index, testData.commandName);
     expect(result.getProgram()).toStrictEqual(testData.expectedProgram);
     expect(result.getProgramCounter()).toBe(testData.expectedProgramCounter);
     expect(result.getLoopIterationsLeft()).toStrictEqual(testData.expectedLoopIterationsLeft);
+    expect(result.loopCounter).toBe(testData.expectedLoopCounter);
     expect(programSequence.getProgram()).toStrictEqual(programBefore);
 });
 
@@ -545,7 +599,8 @@ type OverwriteStepTestCase = {
     overwriteStepName: string,
     expectedProgram: Program,
     expectedProgramCounter: number,
-    expectedLoopIterationsLeft: Map<string, number>
+    expectedLoopIterationsLeft: Map<string, number>,
+    expectedLoopCounter: number
 };
 
 test.each(([
@@ -558,7 +613,8 @@ test.each(([
         overwriteStepName: 'left45',
         expectedProgram: [{block: 'left45'}, {block: 'forward2'}],
         expectedProgramCounter: 0,
-        expectedLoopIterationsLeft: new Map()
+        expectedLoopIterationsLeft: new Map(),
+        expectedLoopCounter: 0
     },
     {
         program: [{block: 'forward1'}, {block: 'forward2'}],
@@ -569,7 +625,8 @@ test.each(([
         overwriteStepName: 'left45',
         expectedProgram: [{block: 'forward1'}, {block: 'left45'}],
         expectedProgramCounter: 0,
-        expectedLoopIterationsLeft: new Map()
+        expectedLoopIterationsLeft: new Map(),
+        expectedLoopCounter: 0
     },
     {
         program: [{block: 'forward1'}, {block: 'forward2'}],
@@ -580,7 +637,8 @@ test.each(([
         overwriteStepName: 'left45',
         expectedProgram: [{block: 'left45'}, {block: 'forward2'}],
         expectedProgramCounter: 1,
-        expectedLoopIterationsLeft: new Map()
+        expectedLoopIterationsLeft: new Map(),
+        expectedLoopCounter: 0
     },
     {
         program: [{block: 'forward1'}, {block: 'forward2'}],
@@ -591,12 +649,13 @@ test.each(([
         overwriteStepName: 'left45',
         expectedProgram: [{block: 'forward1'}, {block: 'left45'}],
         expectedProgramCounter: 1,
-        expectedLoopIterationsLeft: new Map()
+        expectedLoopIterationsLeft: new Map(),
+        expectedLoopCounter: 0
     },
     {
         program: [{block: 'forward1'}],
         programCounter: 0,
-        loopCounter: 0,
+        loopCounter: 4,
         loopIterationsLeft: new Map(),
         index: 0,
         overwriteStepName: 'loop',
@@ -605,7 +664,8 @@ test.each(([
             {block: 'endLoop', label: 'A'}
         ],
         expectedProgramCounter: 0,
-        expectedLoopIterationsLeft: new Map([['A', 1]])
+        expectedLoopIterationsLeft: new Map([['A', 1]]),
+        expectedLoopCounter: 1
     },
     {
         program: [
@@ -656,10 +716,11 @@ test.each(([
             }
         ],
         expectedProgramCounter: 3,
-        expectedLoopIterationsLeft: new Map([['A', 3], ['B', 1]])
+        expectedLoopIterationsLeft: new Map([['A', 3], ['B', 1]]),
+        expectedLoopCounter: 2
     }
 ]: Array<OverwriteStepTestCase>))('overwriteStep', (testData: OverwriteStepTestCase) => {
-    expect.assertions(4);
+    expect.assertions(5);
     const programBefore = testData.program.slice();
     const programSequence = new ProgramSequence(
         testData.program,
@@ -671,6 +732,7 @@ test.each(([
     expect(result.getProgram()).toStrictEqual(testData.expectedProgram);
     expect(result.getProgramCounter()).toBe(testData.expectedProgramCounter);
     expect(result.getLoopIterationsLeft()).toStrictEqual(testData.expectedLoopIterationsLeft);
+    expect(result.loopCounter).toBe(testData.expectedLoopCounter);
     expect(programSequence.getProgram()).toStrictEqual(programBefore);
 });
 
