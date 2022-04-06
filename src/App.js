@@ -141,7 +141,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '1.3';
+        this.version = '1.3.1';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -627,16 +627,10 @@ export class App extends React.Component<AppProps, AppState> {
         });
     };
 
-    handleCommandFromCommandPalette = (command: ?string) => {
-        if (command) {
-            this.setState({
-                selectedAction: command
-            });
-        } else {
-            this.setState({
-                selectedAction: null
-            });
-        }
+    handleCommandFromCommandPalette = (command: string) => {
+        this.setState({
+            selectedAction: command
+        });
     };
 
     handleDragStartCommand = (command: string) => {
@@ -1043,7 +1037,7 @@ export class App extends React.Component<AppProps, AppState> {
                         selectedCommandName={this.getSelectedCommandName()}
                         audioManager={this.audioManager}
                         isDraggingCommand={this.state.isDraggingCommand}
-                        onChange={this.handleCommandFromCommandPalette}
+                        onSelect={this.handleCommandFromCommandPalette}
                         onDragStart={this.handleDragStartCommand}
                         onDragEnd={this.handleDragEndCommand}/>
                 );
