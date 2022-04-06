@@ -1,6 +1,6 @@
 // @flow
 
-import { extend, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, focusByQuerySelector, generateLoopLabel, parseLoopLabel } from './Utils.js';
+import { extend, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, generateLoopLabel, parseLoopLabel } from './Utils.js';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import ProgramSequence from './ProgramSequence';
@@ -10,9 +10,9 @@ import { makeTestDiv } from './TestUtils';
 configure({ adapter: new Adapter()});
 
 test('Test URL encoding', () => {
-    expect(generateEncodedProgramURL('version=5', 'light', 'default', 'f1=f2=f3', '0ab', 'f1=f2=f3')).toBe('?v=version%3D5&t=light&w=default&p=f1%3Df2%3Df3&c=0ab&d=f1%3Df2%3Df3');
-    expect(generateEncodedProgramURL('version?5', 'dark', 'space', 'f1?f2?f3', '0aab0c0', 'f1?f2?f3')).toBe('?v=version%3F5&t=dark&w=space&p=f1%3Ff2%3Ff3&c=0aab0c0&d=f1%3Ff2%3Ff3');
-    expect(generateEncodedProgramURL('version 5', 'contrast', 'forest', 'f1 f2 f3', '0a b c', 'f1 f2 f3')).toBe('?v=version%205&t=contrast&w=forest&p=f1%20f2%20f3&c=0a%20b%20c&d=f1%20f2%20f3');
+    expect(generateEncodedProgramURL('version=5', 'light', 'default', 'f1=f2=f3', '0ab', 'f1=f2=f3', '1-2')).toBe('?v=version%3D5&t=light&w=default&p=f1%3Df2%3Df3&c=0ab&d=f1%3Df2%3Df3&s=1-2');
+    expect(generateEncodedProgramURL('version?5', 'dark', 'space', 'f1?f2?f3', '0aab0c0', 'f1?f2?f3', '16-2')).toBe('?v=version%3F5&t=dark&w=space&p=f1%3Ff2%3Ff3&c=0aab0c0&d=f1%3Ff2%3Ff3&s=16-2');
+    expect(generateEncodedProgramURL('version 5', 'contrast', 'forest', 'f1 f2 f3', '0a b c', 'f1 f2 f3', '4-8')).toBe('?v=version%205&t=contrast&w=forest&p=f1%20f2%20f3&c=0a%20b%20c&d=f1%20f2%20f3&s=4-8');
 });
 
 test('Test getThemeFromString', () => {
@@ -39,6 +39,13 @@ test('Test getWorldFromString', () => {
     expect(getWorldFromString('Sketchpad', 'Sketchpad')).toBe('Sketchpad');
     expect(getWorldFromString('Space', 'Sketchpad')).toBe('Space');
 });
+
+test('Test getStartingPositionFromString', () => {
+    expect(getStartingPositionFromString('1-4', 16, 8, 1, 2)).toStrictEqual({ x: 1, y: 4 });
+    expect(getStartingPositionFromString('19-9', 16, 8, 1, 2)).toStrictEqual({ x: 1, y: 2 });
+    expect(getStartingPositionFromString('19-23-87', 16, 8, 3, 4)).toStrictEqual({ x: 3, y: 4});
+    expect(getStartingPositionFromString('19323', 16, 8, 1, 3)).toStrictEqual({ x: 1, y: 3 });
+})
 
 test('Test extend', () => {
     expect(extend({})).toEqual({});

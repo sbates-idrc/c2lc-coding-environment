@@ -1554,6 +1554,7 @@ export class App extends React.Component<AppProps, AppState> {
             const themeQuery = params.getTheme();
             const disallowedActionsQuery = params.getDisallowedActions();
             const worldQuery = params.getWorld();
+            const startingPositionQuery = params.getStartingPosition();
 
             if (programQuery != null) {
                 try {
@@ -1595,9 +1596,23 @@ export class App extends React.Component<AppProps, AppState> {
                 }
             }
 
+            const world = Utils.getWorldFromString(worldQuery, this.defaultWorld);
+            const startingPosition = Utils.getStartingPositionFromString(
+                startingPositionQuery,
+                this.state.sceneDimensions.getMaxX(),
+                this.state.sceneDimensions.getMaxY(),
+                getWorldProperties(world).startingX,
+                getWorldProperties(world).startingY
+            );
+
+            this.setState({
+                startingX: startingPosition.x,
+                startingY: startingPosition.y
+            });
+
             this.setStateSettings({
                 theme: Utils.getThemeFromString(themeQuery, 'default'),
-                world: Utils.getWorldFromString(worldQuery, this.defaultWorld)
+                world: world
             });
         } else {
             const localProgram = window.localStorage.getItem('c2lc-program');
@@ -1605,6 +1620,7 @@ export class App extends React.Component<AppProps, AppState> {
             const localTheme = window.localStorage.getItem('c2lc-theme');
             const localDisallowedActions = window.localStorage.getItem('c2lc-disallowedActions');
             const localWorld = window.localStorage.getItem('c2lc-world');
+            const localStartingPosition = window.localStorage.getItem('c2lc-startingPosition');
 
             if (localProgram != null) {
                 try {
@@ -1647,6 +1663,20 @@ export class App extends React.Component<AppProps, AppState> {
                 }
             }
 
+            const world = Utils.getWorldFromString(localWorld, this.defaultWorld);
+            const startingPosition = Utils.getStartingPositionFromString(
+                localStartingPosition,
+                this.state.sceneDimensions.getMaxX(),
+                this.state.sceneDimensions.getMaxY(),
+                getWorldProperties(world).startingX,
+                getWorldProperties(world).startingY
+            );
+
+            this.setState({
+                startingX: startingPosition.x,
+                startingY: startingPosition.y
+            });
+
             this.setStateSettings({
                 theme: Utils.getThemeFromString(localTheme, 'default'),
                 world: Utils.getWorldFromString(localWorld, this.defaultWorld)
@@ -1685,10 +1715,13 @@ export class App extends React.Component<AppProps, AppState> {
             || this.state.characterState !== prevState.characterState
             || this.state.settings.theme !== prevState.settings.theme
             || this.state.disallowedActions !== prevState.disallowedActions
+            || this.state.startingX !== prevState.startingX
+            || this.state.startingY !== prevState.startingY
             || this.state.settings.world !== prevState.settings.world) {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedDisallowedActions = this.disallowedActionsSerializer.serialize(this.state.disallowedActions);
+            const serializedStartingPosition = `${this.state.startingX}-${this.state.startingY}`;
 
             // Use setTimeout() to limit how often we call history.pushState().
             // Safari will throw an error if calls to history.pushState() are
@@ -1703,10 +1736,11 @@ export class App extends React.Component<AppProps, AppState> {
                         c: serializedCharacterState,
                         t: this.state.settings.theme,
                         d: serializedDisallowedActions,
-                        w: this.state.settings.world
+                        w: this.state.settings.world,
+                        s: serializedStartingPosition
                     },
                     '',
-                    Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedDisallowedActions),
+                    Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedDisallowedActions, serializedStartingPosition),
                     '',
                 );
             }, pushStateDelayMs);
@@ -1716,7 +1750,8 @@ export class App extends React.Component<AppProps, AppState> {
             window.localStorage.setItem('c2lc-characterState', serializedCharacterState);
             window.localStorage.setItem('c2lc-theme', this.state.settings.theme);
             window.localStorage.setItem('c2lc-disallowedActions', serializedDisallowedActions);
-            window.localStorage.setItem('c2lc-world', this.state.settings.world)
+            window.localStorage.setItem('c2lc-world', this.state.settings.world);
+            window.localStorage.setItem('c2lc-startingPosition', serializedStartingPosition);
         }
 
         if (this.state.keyBindingsEnabled !== prevState.keyBindingsEnabled

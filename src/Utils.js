@@ -23,10 +23,9 @@ function makeDelayedPromise(timeMs: number): Promise<void> {
     });
 }
 
-function generateEncodedProgramURL(versionString: string, themeString: string, worldString: string, programString: string, characterStateString: string, disallowedActionsString: string): string {
-    return `?v=${encodeURIComponent(versionString)}&t=${themeString}&w=${worldString}&p=${encodeURIComponent(programString)}&c=${encodeURIComponent(characterStateString)}&d=${encodeURIComponent(disallowedActionsString)}`;
+function generateEncodedProgramURL(versionString: string, themeString: string, worldString: string, programString: string, characterStateString: string, disallowedActionsString: string, startingPositionString: string): string {
+    return `?v=${encodeURIComponent(versionString)}&t=${themeString}&w=${worldString}&p=${encodeURIComponent(programString)}&c=${encodeURIComponent(characterStateString)}&d=${encodeURIComponent(disallowedActionsString)}&s=${encodeURIComponent(startingPositionString)}`;
 }
-
 
 /*
     "default"    => A mixture of light and dark elements, with colour.
@@ -62,6 +61,24 @@ function getWorldFromString(worldQuery: ?string, defaultWorldName: WorldName): W
                 return defaultWorldName;
             }
     }
+}
+
+function getStartingPositionFromString(startingPositionQuery: ?string, maxX: number, maxY: number, defaultX: number, defaultY: number) {
+    let x = defaultX;
+    let y = defaultY;
+    if (startingPositionQuery) {
+        const startingPosition = startingPositionQuery.split('-');
+        if (startingPosition.length === 2) {
+            const startingX = parseInt(startingPosition[0], 10);
+            const startingY = parseInt(startingPosition[1], 10);
+            if (startingX >= 0 && startingX <= maxX &&
+                startingY >= 0 && startingY <= maxY) {
+                x = startingX;
+                y = startingY;
+            }
+        }
+    }
+    return { x, y }
 }
 
 /**
@@ -144,6 +161,7 @@ export {
     generateLoopLabel,
     getThemeFromString,
     getWorldFromString,
+    getStartingPositionFromString,
     makeDelayedPromise,
     moveToNextStepDisabled,
     moveToPreviousStepDisabled,
