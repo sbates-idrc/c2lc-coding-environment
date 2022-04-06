@@ -47,8 +47,7 @@ export default class ProgramSequence {
 
     hasLoopBlock(): boolean {
         for (const programBlock of this.program) {
-            const { block } = programBlock;
-            if (block === 'startLoop') {
+            if (programBlock.block === 'startLoop') {
                 return true;
             }
         }

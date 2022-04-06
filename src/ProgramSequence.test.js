@@ -15,7 +15,7 @@ test('ProgramSequence constructor', () => {
 });
 
 describe('Test hasLoopBlock', () => {
-    test('When the program has at leas one loop block', () => {
+    test('When the program has at least one loop block', () => {
         const program = [
             { block: 'startLoop', label: 'A', iterations: 3 },
             { block: 'forward1' },
