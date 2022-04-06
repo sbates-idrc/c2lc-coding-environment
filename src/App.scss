@@ -60,20 +60,50 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.App__app-heading {
-    text-align: center;
-    font-weight: normal;
-    font-size: 1.3rem;
-    margin: 1rem 1rem;
-    padding: 0 1rem;
-}
+.App__logo-container {
+    font-size: 3.1rem;
+    line-height: 3.3rem;
+    padding: 0;
+    width: 7.2rem;
 
-.App__app-heading > a {
-    color: black;
-    &:hover {
-        text-decoration: none;
+    a {
+        border: 1px solid transparent;
+        border-radius: 2px;
+        outline: none;
+
+        &:focus {
+            border-color: #000000;
+        }
+    }
+
+    svg {
+        padding: 0.25rem;
+        &:hover {
+            path.logo-tile {
+                fill: #F1AE5B;
+            }
+        }
     }
 }
+
+.App__PrivacyButtonContainer {
+    margin-left: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.App__PrivacyModal__toggle-button {
+    background-color: inherit;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    font-size: 14.14px;
+    outline: none;
+    text-decoration: underline;
+
+    &:focus {
+        border: 1px solid #000000;
+    }
+}
+
 
 /* Dash connection removed for version 0.5
 .App__audio-toggle-switch {

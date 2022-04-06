@@ -529,8 +529,27 @@ body.dark-theme {
         background-color: #18252C;
     }
 
-    .App__app-heading > a {
+    .App__logo-container {
+        a:focus {
+            border-color: #FFFFFF;
+        }
+
+        svg {
+            &:hover {
+                path.logo-title-letter {
+                    stroke: black;
+                    fill: black;
+                }
+            }
+        }
+    }
+
+    .App__PrivacyModal__toggle-button {
         color: white;
+    }
+
+    .App__PrivacyModal__toggle-button:focus {
+        border-color: #ffffff;
     }
 
     .App__command-palette {
@@ -760,6 +779,24 @@ body.gray-theme {
 
     .App__container {
         background-color: #FFF;
+    }
+
+    .App__logo-container {
+        a {
+            outline-color: #000000;
+        }
+
+        svg {
+            &:hover {
+                path.logo-tile {
+                    fill: #505862;
+                }
+                path.logo-title-letter {
+                    stroke: #FFFFFF;
+                    fill: #FFFFFF;
+                }
+            }
+        }
     }
 
     .App__world-container {
@@ -1635,8 +1672,30 @@ body.contrast-theme {
         box-shadow: 0 0 0 2px black;
     }
 
-    .App__app-heading > a {
+    .App__logo-container {
+        a:focus {
+            border-color: #FFFFFF;
+        }
+
+        svg {
+            &:hover {
+                path.logo-tile {
+                    fill: #FFFFFF;
+                }
+                path.logo-title-letter {
+                    stroke: #000000;
+                    fill: #000000;
+                }
+            }
+        }
+    }
+
+    .App__PrivacyModal__toggle-button {
         color: white;
+    }
+
+    .App__PrivacyModal__toggle-button:focus {
+        border-color: #ffffff;
     }
 
     .IconButton.App__header-soundOptions {

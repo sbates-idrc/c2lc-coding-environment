@@ -44,6 +44,15 @@ export type ProgramBlock = {
 
 export type Program = Array<ProgramBlock>;
 
+export type ProgramStepMovementDirection = 'previous' | 'next';
+
+export type PathSegment = {
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number
+};
+
 // use running, paused, stopped
 export type RunningState = 'running' | 'stopRequested' | 'stopped' | 'pauseRequested' | 'paused';
 

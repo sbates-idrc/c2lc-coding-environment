@@ -1,7 +1,7 @@
 // @flow
 
 import type {IntlShape} from 'react-intl';
-import type {AudioManager} from './types';
+import type {AudioManager, ProgramStepMovementDirection} from './types';
 import {App} from './App';
 import {ProgramBlockEditor} from './ProgramBlockEditor';
 
@@ -9,6 +9,8 @@ import {ProgramBlockEditor} from './ProgramBlockEditor';
 // App 'state.programSequence' and coordinating any user interface
 // activities associated with the change, such as making announcements,
 // setting focus, or setting up animations.
+
+type FocusAfterMoveEnum = 'focusBlockMoved' | 'focusActionPanel';
 
 export default class ProgramChangeController {
     app: App;
@@ -120,6 +122,102 @@ export default class ProgramChangeController {
             } else {
                 // If the step to delete has changed, make no changes to the
                 // program
+                return {};
+            }
+        });
+    }
+
+    moveProgramStep(programBlockEditor: ?ProgramBlockEditor,
+        indexFrom: number, direction: ProgramStepMovementDirection, commandAtIndexFrom: string,
+        focusAfterMove: FocusAfterMoveEnum) {
+
+        this.app.setState((state) => {
+            // Check that the steps at indexFrom has changed
+            const stepAtIndexFrom = state.programSequence.getProgramStepAt(indexFrom);
+            if (commandAtIndexFrom === stepAtIndexFrom.block) {
+                let announcementName = '';
+                if (direction === 'next') {
+                    announcementName = 'moveToNext';
+                } else if (direction === 'previous') {
+                    announcementName = 'moveToPrevious';
+                }
+                // Play the announcement
+                this.audioManager.playAnnouncement(
+                    announcementName,
+                    this.intl
+                );
+
+                const program = state.programSequence.getProgram();
+                let indexTo = null;
+                let indexAfterMove = null;
+                let focusedActionPanelOptionName = null;
+
+                if (direction === 'next') {
+                    if (program[indexFrom].block === 'startLoop') {
+                        const label = program[indexFrom].label;
+                        for (let i = indexFrom; i < program.length; i++) {
+                            if (program[i].block === 'endLoop' && program[i].label === label) {
+                                indexTo = i + 1;
+                                break;
+                            }
+                        }
+                    } else {
+                        indexTo = indexFrom + 1;
+                    }
+                    indexAfterMove = indexFrom + 1;
+                    focusedActionPanelOptionName = 'moveToNextStep';
+                } else if (direction === 'previous') {
+                    if (program[indexFrom].block === 'endLoop') {
+                        const label = program[indexFrom].label;
+                        for (let i = 0; i < indexFrom; i++) {
+                            if (program[i].block === 'startLoop' && program[i].label === label) {
+                                indexTo = i - 1;
+                                break;
+                            }
+                        }
+                    } else {
+                        indexTo = indexFrom - 1;
+                    }
+                    indexAfterMove = indexFrom - 1;
+                    focusedActionPanelOptionName = 'moveToPreviousStep';
+                }
+
+                // Case 1: move via action panel button
+                //     - keep action panel open, focus on button used
+                // Case 2: move via shortcut, action panel closed
+                //     - focus moved block, keep action panel closed
+                // Case 3: move via shortcut, action panel open
+                //     - focus moved block, keep action panel open
+
+                if (indexTo != null && indexAfterMove != null) {
+                    if (focusAfterMove === 'focusActionPanel') {
+                        return {
+                            programSequence: state.programSequence.swapStep(indexFrom, indexTo),
+                            actionPanelStepIndex: indexAfterMove,
+                            actionPanelFocusedOptionName: focusedActionPanelOptionName
+                        };
+                    } else if (focusAfterMove === 'focusBlockMoved' && state.actionPanelStepIndex == null) {
+                        if (programBlockEditor != null) {
+                            programBlockEditor.focusCommandBlockAfterUpdate(indexAfterMove);
+                        }
+                        return {
+                            programSequence: state.programSequence.swapStep(indexFrom, indexTo),
+                            actionPanelStepIndex: null,
+                            actionPanelFocusedOptionName: null
+                        };
+                    } else if (focusAfterMove === 'focusBlockMoved' && state.actionPanelStepIndex != null) {
+                        if (programBlockEditor != null) {
+                            programBlockEditor.focusCommandBlockAfterUpdate(indexAfterMove);
+                        }
+                        return {
+                            programSequence: state.programSequence.swapStep(indexFrom, indexTo),
+                            actionPanelStepIndex: indexAfterMove,
+                            actionPanelFocusedOptionName: null
+                        };
+                    }
+                }
+            } else {
+                // If the step to move has changed, make no changes to the program
                 return {};
             }
         });

@@ -45,6 +45,24 @@ export default class ProgramSequence {
         return this.program[index];
     }
 
+    hasLoopBlock(): boolean {
+        for (const programBlock of this.program) {
+            if (programBlock.block === 'startLoop') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    currentStepIsControlBlock(): boolean {
+        const block = this.program[this.programCounter];
+        if (block) {
+            return block.block === 'startLoop' || block.block === 'endLoop';
+        } else {
+            return false;
+        }
+    }
+
     getMatchingLoopBlockIndex(index: number): ?number {
         const block = this.program[index];
         let matchingBlockIndex = undefined;
@@ -181,7 +199,11 @@ export default class ProgramSequence {
         let loopCounter = this.loopCounter;
         const loopIterationsLeft = new Map(this.loopIterationsLeft);
         if (command === 'loop') {
-            loopCounter++;
+            if (this.hasLoopBlock()) {
+                loopCounter++;
+            } else {
+                loopCounter = 1;
+            }
             const loopLabel = generateLoopLabel(loopCounter);
             const startLoopObject = {
                 block: 'startLoop',
@@ -217,7 +239,11 @@ export default class ProgramSequence {
         let loopCounter = this.loopCounter;
         const loopIterationsLeft = new Map(this.loopIterationsLeft);
         if (command === 'loop') {
-            loopCounter++;
+            if (this.hasLoopBlock()) {
+                loopCounter++;
+            } else {
+                loopCounter = 1;
+            }
             const loopLabel = generateLoopLabel(loopCounter);
             const startLoopObject = {
                 block: 'startLoop',
@@ -290,6 +316,17 @@ export default class ProgramSequence {
         }
     }
 
+    // Requirements on indexFrom and indexTo:
+    //     If moving a startLoop
+    //         If moving left
+    //             Then indexTo must === indexFrom - 1
+    //         If moving right
+    //             Then indexTo must === index of endLoop + 1
+    //     If moving an EndLoop
+    //         If moving left
+    //             Then indexTo must === index of startLoop - 1
+    //         If moving right
+    //             Then indexTo must === indexFrom + 1
     swapStep(indexFrom: number, indexTo: number): ProgramSequence {
         const program = this.program.slice();
         if (program[indexFrom] != null && program[indexTo] != null) {
