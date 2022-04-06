@@ -256,7 +256,7 @@ class Scene extends React.Component<SceneProps, {}> {
         }
     }
 
-    componentDidUpdate = (prevProps) => {
+    componentDidUpdate = (prevProps) => {/* eslint-disable no-console */
         // Required to avoid the lack of scrollIntoView on SVG elements in Safari.
         /* istanbul ignore next */
         if ((prevProps.characterState.xPos !== this.props.characterState.xPos ||
@@ -377,7 +377,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                 />
                                 <rect
                                     // A point in the middle of the starting grid cell
-                                    className={`Scene__starting--grid-cell-point--${this.props.world}`}
+                                    className={`Scene__starting-grid-cell-point Scene__starting-grid-cell-point--${this.props.world}`}
                                     // Subtract half of width for x, and subtract half of height for y to make it center
                                     x={this.props.startingX - 0.08}
                                     y={this.props.startingY - 0.08}
