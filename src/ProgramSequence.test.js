@@ -544,15 +544,21 @@ test.each(([
         expectedLoopCounter: 1
     },
     {
-        program: [{block: 'startLoop', iterations: 1, label: 'B'}, {block: 'endLoop', label: 'B'}],
+        program: [
+            {block: 'startLoop', iterations: 1, label: 'B'},
+            {block: 'endLoop', label: 'B'}
+        ],
         programCounter: 0,
         loopCounter: 2,
         loopIterationsLeft: new Map([['B', 1]]),
         index: 2,
         commandName: 'loop',
         expectedProgram: [
-            {block: 'startLoop', iterations: 1, label: 'B'}, {block: 'endLoop', label: 'B'},
-            {block: 'startLoop', iterations: 1, label: 'C'}, {block: 'endLoop', label: 'C'}],
+            {block: 'startLoop', iterations: 1, label: 'B'},
+            {block: 'endLoop', label: 'B'},
+            {block: 'startLoop', iterations: 1, label: 'C'},
+            {block: 'endLoop', label: 'C'}
+        ],
         expectedProgramCounter: 0,
         expectedLoopIterationsLeft: new Map([['B', 1], ['C', 1]]),
         expectedLoopCounter: 3
