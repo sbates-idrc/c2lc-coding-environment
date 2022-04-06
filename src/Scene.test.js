@@ -16,7 +16,9 @@ const defaultSceneProps = {
     dimensions: new SceneDimensions(1, 1, 1, 1),
     characterState: new CharacterState(0, 0, 2, [], new SceneDimensions(1, 1, 1, 1)),
     theme: 'default',
-    world: 'Sketchpad'
+    world: 'Sketchpad',
+    startingX: 1,
+    startingY: 2
 };
 
 function createMountScene(props) {
@@ -76,6 +78,14 @@ function findColumnHeader(sceneWrapper) {
 
 function findSceneBackground(sceneWrapper) {
     return sceneWrapper.find('.Scene__background');
+}
+
+function findStartingPositionGridCell(sceneWrapper) {
+    return sceneWrapper.find('.Scene__starting-grid-cell');
+}
+
+function findStartingPositionGridCellPoint(sceneWrapper) {
+    return sceneWrapper.find('.Scene__starting-grid-cell-point');
 }
 
 // TODO: This function is reproducing logic from Scene (the 0.8) and
@@ -216,6 +226,27 @@ describe('When the Scene renders', () => {
         expect(findCharacterIcon(sceneWrapper).get(0).props.height)
             .toBeCloseTo(expectedCharacterDimensions.height, 5);
     });
+    test('Should mark starting position cell', () => {
+        const sceneWrapper = createMountScene({
+            dimensions: new SceneDimensions(1, 8, 1, 9),
+            startingX: 3,
+            startingY: 3
+        });
+        const startingPositionGridCell = findStartingPositionGridCell(sceneWrapper);
+        const startingPositionGridCellPoint = findStartingPositionGridCellPoint(sceneWrapper);
+
+        // Check starting position indicators are rendered
+        expect(startingPositionGridCell.length).toBe(1);
+        expect(startingPositionGridCellPoint.length).toBe(1);
+
+        // startingPositionGridCell's x and y to be - 0.5 from startingX and startingY values
+        expect(startingPositionGridCell.get(0).props.x).toBe(2.5);
+        expect(startingPositionGridCell.get(0).props.y).toBe(2.5);
+
+        // startingPositionGridCellPoint's x and y to be -0.08 from startingX and startingY values
+        expect(startingPositionGridCellPoint.get(0).props.x).toBe(2.92);
+        expect(startingPositionGridCellPoint.get(0).props.y).toBe(2.92);
+    })
 });
 
 describe('When the character renders, transform should apply', (sceneDimensions = new SceneDimensions(1, 100, 1, 100)) => {
