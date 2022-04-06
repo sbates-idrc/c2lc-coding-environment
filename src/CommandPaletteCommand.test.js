@@ -80,4 +80,12 @@ test('Clicking the button calls the callback onSelect with commandName', () => {
     // Verify that onSelect is called with the commandName
     expect(mockSelectHandler.mock.calls.length).toBe(1);
     expect(mockSelectHandler.mock.calls[0][0]).toBe('forward1');
+    // Update the selectedCommandName
+    wrapper.setProps({selectedCommandName: 'forward1'});
+    wrapper.update();
+    // Click again
+    button.simulate('click');
+    // And verify that onSelect is called again with the commandName
+    expect(mockSelectHandler.mock.calls.length).toBe(2);
+    expect(mockSelectHandler.mock.calls[1][0]).toBe('forward1');
 });
