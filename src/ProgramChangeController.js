@@ -2,6 +2,7 @@
 
 import type {IntlShape} from 'react-intl';
 import type {AudioManager, ProgramStepMovementDirection} from './types';
+import AnnouncementBuilder from './AnnouncementBuilder';
 import {App} from './App';
 import {ProgramBlockEditor} from './ProgramBlockEditor';
 
@@ -16,11 +17,13 @@ export default class ProgramChangeController {
     app: App;
     intl: IntlShape;
     audioManager: AudioManager;
+    announcementBuilder: AnnouncementBuilder;
 
     constructor(app: App, intl: IntlShape, audioManager: AudioManager) {
         this.app = app;
         this.intl = intl;
         this.audioManager = audioManager;
+        this.announcementBuilder = new AnnouncementBuilder(intl);
     }
 
     insertSelectedActionIntoProgram(programBlockEditor: ?ProgramBlockEditor,
@@ -67,28 +70,9 @@ export default class ProgramChangeController {
             const currentStep = state.programSequence.getProgramStepAt(index);
             if (command === currentStep.block) {
                 // Play the announcement
-                const commandString = this.intl.formatMessage(
-                    { id: "Announcement." + command },
-                    { loopLabel: currentStep.label }
-                );
-                let commandType = '';
-                if (command === 'startLoop' || command === 'endLoop') {
-                    commandType = this.intl.formatMessage(
-                        { id: "Announcement.control" }
-                    );
-                } else {
-                    commandType = this.intl.formatMessage(
-                        { id: "Announcement.movement" }
-                    );
-                }
-                this.audioManager.playAnnouncement(
-                    'delete',
-                    this.intl,
-                    {
-                        commandType,
-                        command: commandString
-                    }
-                );
+                const announcementData = this.announcementBuilder.buildDeleteStepAnnouncement(currentStep);
+                this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
+                    this.intl, announcementData.values);
 
                 if (programBlockEditor) {
                     // If there are steps following the one being deleted, focus
@@ -225,19 +209,10 @@ export default class ProgramChangeController {
 
     // Internal methods
 
-    playAnnouncementForAdd(command: string) {
-        const commandString = this.intl.formatMessage({
-            id: "Announcement." + (command || "")
-        });
-        const commandType = command === 'loop' ? 'control' : 'movement';
-        this.audioManager.playAnnouncement(
-            'add',
-            this.intl,
-            {
-                commandType,
-                command: commandString
-            }
-        );
+    playAnnouncementForAdd(action: string) {
+        const announcementData = this.announcementBuilder.buildAddStepAnnouncement(action);
+        this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
+            this.intl, announcementData.values);
     }
 
     doActivitiesForAdd(programBlockEditor: ?ProgramBlockEditor, index: number) {

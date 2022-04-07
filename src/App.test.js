@@ -63,11 +63,6 @@ it('Should play a sound when selectedCommandName changes', () => {
             "command": "forward 1 square"
         });
     });
-
-    app.setState({ selectedAction: null}, function () {
-        expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(2);
-        expect(audioManagerMock.playAnnouncement.mock.calls[1][0]).toBe('noMovementSelected');
-    });
 });
 
 it('Should change showKeyboardModal when key bindings are enabled and question mark is pressed.', () => {
