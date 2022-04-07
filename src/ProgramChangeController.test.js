@@ -59,6 +59,7 @@ describe('Test insertSelectedActionIntoProgram()', () => {
             expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
             expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('add');
             expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
+                commandType: 'movement',
                 command: 'forward 3 squares'
             });
 
@@ -134,6 +135,7 @@ describe('Test addSelectedActionToProgramEnd()', () => {
             expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
             expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('add');
             expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
+                commandType: 'movement',
                 command: 'forward 3 squares'
             });
 
@@ -193,6 +195,7 @@ type DeleteStepTestCase = {
     program: Program,
     deleteStepIndex: number,
     deleteStepName: string,
+    expectedAnnouncementCommandType: string,
     expectedAnnouncementCommand: string
 };
 
@@ -205,6 +208,7 @@ describe('Test deleteProgramStep()', () => {
             ],
             deleteStepIndex: 0,
             deleteStepName: 'forward1',
+            expectedAnnouncementCommandType: 'movement',
             expectedAnnouncementCommand: 'forward 1 square'
         },
         {
@@ -215,6 +219,7 @@ describe('Test deleteProgramStep()', () => {
             ],
             deleteStepIndex: 0,
             deleteStepName: 'startLoop',
+            expectedAnnouncementCommandType: 'control',
             expectedAnnouncementCommand: 'loop A'
         },
         {
@@ -225,6 +230,7 @@ describe('Test deleteProgramStep()', () => {
             ],
             deleteStepIndex: 1,
             deleteStepName: 'endLoop',
+            expectedAnnouncementCommandType: 'control',
             expectedAnnouncementCommand: 'loop A'
         }
     ]: Array<DeleteStepTestCase>))('When deleting a step not at the end, then focus is set to the step now at the deleted index',
@@ -246,6 +252,7 @@ describe('Test deleteProgramStep()', () => {
                 expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
                 expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('delete');
                 expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
+                    commandType: testData.expectedAnnouncementCommandType,
                     command: testData.expectedAnnouncementCommand
                 });
 
@@ -273,6 +280,7 @@ describe('Test deleteProgramStep()', () => {
             ],
             deleteStepIndex: 1,
             deleteStepName: 'forward2',
+            expectedAnnouncementCommandType: 'movement',
             expectedAnnouncementCommand: 'forward 2 squares'
         },
         {
@@ -283,6 +291,7 @@ describe('Test deleteProgramStep()', () => {
             ],
             deleteStepIndex: 1,
             deleteStepName: 'startLoop',
+            expectedAnnouncementCommandType: 'control',
             expectedAnnouncementCommand: 'loop A'
         },
         {
@@ -293,6 +302,7 @@ describe('Test deleteProgramStep()', () => {
             ],
             deleteStepIndex: 2,
             deleteStepName: 'endLoop',
+            expectedAnnouncementCommandType: 'control',
             expectedAnnouncementCommand: 'loop A'
         }
     ]: Array<DeleteStepTestCase>))('When deleting the step at the end, then focus is set to the add-node after the program',
@@ -314,6 +324,7 @@ describe('Test deleteProgramStep()', () => {
                 expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
                 expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('delete');
                 expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
+                    commandType: testData.expectedAnnouncementCommandType,
                     command: testData.expectedAnnouncementCommand
                 });
 
