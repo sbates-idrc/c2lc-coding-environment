@@ -241,7 +241,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 });
             }
         } else {
-            this.props.audioManager.playAnnouncement('noMovementSelected', this.props.intl);
+            this.props.audioManager.playAnnouncement('noActionSelected', this.props.intl);
 
             this.setState({
                 replaceIsActive: true

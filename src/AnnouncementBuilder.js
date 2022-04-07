@@ -27,7 +27,7 @@ export default class AnnouncementBuilder {
             });
         }
         return {
-            messageIdSuffix: 'movementSelected',
+            messageIdSuffix: 'actionSelected',
             values: {
                 commandType: commandType,
                 command: this.intl.formatMessage({

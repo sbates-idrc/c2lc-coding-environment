@@ -20,7 +20,7 @@ test('Test buildSelectActionAnnouncement()', () => {
     const announcementBuilder = createAnnouncementBuilder();
 
     expect(announcementBuilder.buildSelectActionAnnouncement('loop')).toStrictEqual({
-        messageIdSuffix: 'movementSelected',
+        messageIdSuffix: 'actionSelected',
         values: {
             commandType: 'control',
             command: 'loop'
@@ -28,7 +28,7 @@ test('Test buildSelectActionAnnouncement()', () => {
     });
 
     expect(announcementBuilder.buildSelectActionAnnouncement('forward1')).toStrictEqual({
-        messageIdSuffix: 'movementSelected',
+        messageIdSuffix: 'actionSelected',
         values: {
             commandType: 'movement',
             command: 'forward 1 square'

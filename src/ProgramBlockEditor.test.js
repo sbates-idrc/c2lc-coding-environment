@@ -447,7 +447,7 @@ describe('Replace program steps', () => {
                 expect(mockChangeProgramSequenceHandler.mock.calls.length).toBe(1);
                 expect(mockChangeProgramSequenceHandler.mock.calls[0][0].program).toStrictEqual(expectedProgram);
             } else {
-                expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('noMovementSelected');
+                expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('noActionSelected');
 
                 // The program should not be updated
                 expect(mockChangeProgramSequenceHandler.mock.calls.length).toBe(0);
