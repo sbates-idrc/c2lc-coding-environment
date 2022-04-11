@@ -12,10 +12,6 @@
     stroke: #FFC700;
 }
 
-.Scene__starting-grid-cell--Camping {
-    stroke: #FFC700;
-}
-
 .Scene__starting-grid-cell-point--Camping {
     fill: #FFC700;    
 }
@@ -44,10 +40,6 @@ body.gray-theme {
     }
 
     .Scene__path-line--Camping {
-        stroke: #FFFFFF;
-    }
-
-    .Scene__starting-grid-cell--Camping {
         stroke: #FFFFFF;
     }
 
@@ -80,10 +72,6 @@ body.contrast-theme {
     }
 
     .Scene__path-line--Camping {
-        stroke: #FF0000;
-    }
-
-    .Scene__starting-grid-cell--Camping {
         stroke: #FF0000;
     }
 
@@ -121,10 +109,6 @@ body.contrast-theme {
     stroke: #784234;
 }
 
-.Scene__starting-grid-cell--Landmarks {
-    stroke: #784234;
-}
-
 .Scene__starting-grid-cell-point--Landmarks {
     fill: #784234;    
 }
@@ -153,10 +137,6 @@ body.gray-theme {
     }
 
     .Scene__path-line--Landmarks {
-        stroke: #505862;
-    }
-
-    .Scene__starting-grid-cell--Landmarks {
         stroke: #505862;
     }
 
@@ -189,10 +169,6 @@ body.contrast-theme {
     }
 
     .Scene__path-line--Landmarks {
-        stroke: #FF0000;
-    }
-
-    .Scene__starting-grid-cell--Landmarks {
         stroke: #FF0000;
     }
 
@@ -245,10 +221,6 @@ body.contrast-theme {
     stroke: #FFFFFF;
 }
 
-.Scene__starting-grid-cell--DeepOcean {
-    stroke: #FFFFFF;
-}
-
 .Scene__starting-grid-cell-point--DeepOcean {
     fill: #A4D0DA;    
 }
@@ -271,10 +243,6 @@ body.gray-theme {
     }
 
     .Scene__path-line--DeepOcean {
-        stroke: #505862;
-    }
-    
-    .Scene__starting-grid-cell--DeepOcean {
         stroke: #505862;
     }
 
@@ -301,10 +269,6 @@ body.contrast-theme {
     }
 
     .Scene__path-line--DeepOcean {
-        stroke: #FF0000;
-    }
-
-    .Scene__starting-grid-cell--DeepOcean {
         stroke: #FF0000;
     }
 
@@ -348,10 +312,6 @@ body.contrast-theme {
     stroke: #784234;
 }
 
-.Scene__starting-grid-cell--Jungle {
-    stroke: #784234;
-}
-
 .Scene__starting-grid-cell-point--Jungle {
     fill: #784234;    
 }
@@ -374,10 +334,6 @@ body.gray-theme {
     }
 
     .Scene__path-line--Jungle {
-        stroke: #505862;
-    }
-
-    .Scene__starting-grid-cell--Jungle {
         stroke: #505862;
     }
 
@@ -404,10 +360,6 @@ body.contrast-theme {
     }
 
     .Scene__path-line--Jungle {
-        stroke: #FF0000;
-    }
-
-    .Scene__starting-grid-cell--Jungle {
         stroke: #FF0000;
     }
 
@@ -461,10 +413,6 @@ body.contrast-theme {
     stroke: #505862;
 }
 
-.Scene__starting-grid-cell--Sketchpad {
-    stroke: #505862;
-}
-
 .Scene__starting-grid-cell-point--Sketchpad {
     fill: #505862;    
 }
@@ -486,10 +434,6 @@ body.dark-theme {
         stroke: #FFFFFF;
     }
 
-    .Scene__starting-grid-cell--Sketchpad {
-        stroke: #FFFFFF;
-    }
-
     .Scene__starting-grid-cell-point--Sketchpad {
         fill: #FFFFFF;    
     }
@@ -505,10 +449,6 @@ body.gray-theme {
     }
 
     .Scene__path-line--Sketchpad {
-        stroke: #505862;
-    }
-
-    .Scene__starting-grid-cell--Sketchpad {
         stroke: #505862;
     }
 
@@ -535,10 +475,6 @@ body.contrast-theme {
     }
 
     .Scene__path-line--Sketchpad {
-        stroke: #FF0000;
-    }
-
-    .Scene__starting-grid-cell--Sketchpad {
         stroke: #FF0000;
     }
 
@@ -583,10 +519,6 @@ body.contrast-theme {
     stroke: #F1AE5B;
 }
 
-.Scene__starting-grid-cell--Space {
-    stroke: #F1AE5B;
-}
-
 .Scene__starting-grid-cell-point--Space {
     fill: #F1AE5B;    
 }
@@ -609,10 +541,6 @@ body.gray-theme {
     }
 
     .Scene__path-line--Space {
-        stroke: #3A3F46;
-    }
-
-    .Scene__starting-grid-cell--Space {
         stroke: #3A3F46;
     }
 
@@ -639,10 +567,6 @@ body.contrast-theme {
     }
 
     .Scene__path-line--Space {
-        stroke: #FF0000;
-    }
-
-    .Scene__starting-grid-cell--Space {
         stroke: #FF0000;
     }
 

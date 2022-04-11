@@ -80,10 +80,6 @@ function findSceneBackground(sceneWrapper) {
     return sceneWrapper.find('.Scene__background');
 }
 
-function findStartingPositionGridCell(sceneWrapper) {
-    return sceneWrapper.find('.Scene__starting-grid-cell');
-}
-
 function findStartingPositionGridCellPoint(sceneWrapper) {
     return sceneWrapper.find('.Scene__starting-grid-cell-point');
 }
@@ -227,25 +223,24 @@ describe('When the Scene renders', () => {
             .toBeCloseTo(expectedCharacterDimensions.height, 5);
     });
     test('Should mark starting position cell', () => {
+        const startingX = 3;
+        const startingY = 3;
         const sceneWrapper = createMountScene({
             dimensions: new SceneDimensions(1, 8, 1, 9),
-            startingX: 3,
-            startingY: 3
+            startingX,
+            startingY
         });
-        const startingPositionGridCell = findStartingPositionGridCell(sceneWrapper);
         const startingPositionGridCellPoint = findStartingPositionGridCellPoint(sceneWrapper);
 
         // Check starting position indicators are rendered
-        expect(startingPositionGridCell.length).toBe(1);
         expect(startingPositionGridCellPoint.length).toBe(1);
 
-        // startingPositionGridCell's x and y to be - 0.5 from startingX and startingY values
-        expect(startingPositionGridCell.get(0).props.x).toBe(2.5);
-        expect(startingPositionGridCell.get(0).props.y).toBe(2.5);
+        // startingPositionGridCellPoint's x and y to be half of startingX and startingY values
+        const expectedStartingPositionGridCellPointX = startingX - startingPositionGridCellPoint.get(0).props.width/2;
+        const expectedStartingPositionGridCellPointY = startingY - startingPositionGridCellPoint.get(0).props.height/2;
 
-        // startingPositionGridCellPoint's x and y to be -0.08 from startingX and startingY values
-        expect(startingPositionGridCellPoint.get(0).props.x).toBe(2.92);
-        expect(startingPositionGridCellPoint.get(0).props.y).toBe(2.92);
+        expect(startingPositionGridCellPoint.get(0).props.x).toBe(expectedStartingPositionGridCellPointX);
+        expect(startingPositionGridCellPoint.get(0).props.y).toBe(expectedStartingPositionGridCellPointY);
     })
 });
 
