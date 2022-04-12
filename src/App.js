@@ -855,14 +855,13 @@ export class App extends React.Component<AppProps, AppState> {
                                         const previousStep = programBlocks[previousStepNumber];
                                         if (previousStep && previousStep.focus) {
                                             previousStep.focus();
-                                        } else if (!previousStep) {
-                                            // If there's no previousStep, focus the last step of program
-                                            const lastStepNumber = programBlocks.length - 1;
-                                            const lastStep = programBlocks[lastStepNumber];
-                                            if (lastStep && lastStep.focus) {
-                                                lastStep.focus();
-                                            }
                                         }
+                                    }
+                                } else if (this.state.actionPanelStepIndex != null) {
+                                    const previousStepNumber = this.state.actionPanelStepIndex - 1;
+                                    const previousStep = programBlocks[previousStepNumber];
+                                    if (previousStep && previousStep.focus) {
+                                        previousStep.focus();
                                     }
                                 } else {
                                     // If focus is not set, or set on an element other than program blocks, focus the last step of program
@@ -871,6 +870,7 @@ export class App extends React.Component<AppProps, AppState> {
                                         lastProgramBlock.focus();
                                     }
                                 }
+                                this.setState({ actionPanelStepIndex: null });
                             }
                             break;
                         }
@@ -885,13 +885,13 @@ export class App extends React.Component<AppProps, AppState> {
                                         const nextStep = programBlocks[nextStepNumber];
                                         if (nextStep && nextStep.focus) {
                                             nextStep.focus();
-                                        } else if (!nextStep) {
-                                            // If there's no nextStep, focus the first step of program
-                                            const firstStep = programBlocks[0];
-                                            if (firstStep && firstStep.focus()) {
-                                                firstStep.focus();
-                                            }
                                         }
+                                    }
+                                } else if (this.state.actionPanelStepIndex != null) {
+                                    const nextStepNumber = this.state.actionPanelStepIndex + 1;
+                                    const nextStep = programBlocks[nextStepNumber];
+                                    if (nextStep && nextStep.focus) {
+                                        nextStep.focus();
                                     }
                                 } else {
                                     // If focus is not set, or set on an element other than program blocks, focus the first step of program
@@ -900,6 +900,7 @@ export class App extends React.Component<AppProps, AppState> {
                                         firstProgramBlock.focus();
                                     }
                                 }
+                                this.setState({ actionPanelStepIndex: null });
                             }
                             break;
                         }
