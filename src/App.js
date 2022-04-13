@@ -405,14 +405,13 @@ export class App extends React.Component<AppProps, AppState> {
             }
         );
 
-        // We have to calculate the allowed commands and initialise the state here because this is the point at which
-        // the interpreter's commands are populated.
-
-        const disallowedActions = {};
+        // Initialize startingX and startingY to the world starting position
+        const startingX = getWorldProperties(this.defaultWorld).startingX;
+        const startingY = getWorldProperties(this.defaultWorld).startingY;
 
         this.state = {
             programSequence: new ProgramSequence([], 0, 0, new Map()),
-            characterState: this.makeStartingCharacterState(this.defaultWorld),
+            characterState: this.makeStartingCharacterState(this.defaultWorld, startingX, startingY),
             settings: {
                 language: 'en',
                 addNodeExpandedMode: true,
@@ -431,7 +430,7 @@ export class App extends React.Component<AppProps, AppState> {
             sceneDimensions: this.sceneDimensions,
             drawingEnabled: true,
             runningState: 'stopped',
-            disallowedActions: disallowedActions,
+            disallowedActions: {},
             keyBindingsEnabled: false,
             showKeyboardModal: false,
             showSoundOptionsModal: false,
@@ -440,8 +439,8 @@ export class App extends React.Component<AppProps, AppState> {
             showShareModal: false,
             showActionsSimplificationMenu: false,
             showPrivacyModal: false,
-            startingX: getWorldProperties(this.defaultWorld).startingX,
-            startingY: getWorldProperties(this.defaultWorld).startingY,
+            startingX: startingX,
+            startingY: startingY,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -1056,31 +1055,25 @@ export class App extends React.Component<AppProps, AppState> {
         return commandBlocks;
     }
 
-    makeStartingCharacterState(world: WorldName): CharacterState {
-        const worldProperties = getWorldProperties(world);
-        let startingX = worldProperties.startingX;
-        let startingY = worldProperties.startingY;
-        if (this.state && this.state.startingX != null && this.state.startingY != null) {
-            if (startingX !== this.state.startingX) {
-                startingX = this.state.startingX;
-            }
-            if (startingY !== this.state.startingY) {
-                startingY = this.state.startingY;
-            }
-        }
+    makeStartingCharacterState(world: WorldName, startingX: number, startingY: number): CharacterState {
         return new CharacterState(
             startingX,
             startingY,
-            worldProperties.startingDirection,
+            getWorldProperties(world).startingDirection,
             [],
             this.sceneDimensions
         );
     }
 
     handleRefresh = () => {
-        const currentWorld = this.state.settings.world;
-        this.setState({
-            characterState: this.makeStartingCharacterState(currentWorld)
+        this.setState((state) => {
+            return {
+                characterState: this.makeStartingCharacterState(
+                    state.settings.world,
+                    state.startingX,
+                    state.startingY
+                )
+            };
         });
     }
 
