@@ -45,6 +45,15 @@ export default class ProgramSequence {
         return this.program[index];
     }
 
+    hasLoopBlock(): boolean {
+        for (const programBlock of this.program) {
+            if (programBlock.block === 'startLoop') {
+                return true;
+            }
+        }
+        return false;
+    }
+
     currentStepIsControlBlock(): boolean {
         const block = this.program[this.programCounter];
         if (block) {
@@ -190,7 +199,11 @@ export default class ProgramSequence {
         let loopCounter = this.loopCounter;
         const loopIterationsLeft = new Map(this.loopIterationsLeft);
         if (command === 'loop') {
-            loopCounter++;
+            if (this.hasLoopBlock()) {
+                loopCounter++;
+            } else {
+                loopCounter = 1;
+            }
             const loopLabel = generateLoopLabel(loopCounter);
             const startLoopObject = {
                 block: 'startLoop',
@@ -226,7 +239,11 @@ export default class ProgramSequence {
         let loopCounter = this.loopCounter;
         const loopIterationsLeft = new Map(this.loopIterationsLeft);
         if (command === 'loop') {
-            loopCounter++;
+            if (this.hasLoopBlock()) {
+                loopCounter++;
+            } else {
+                loopCounter = 1;
+            }
             const loopLabel = generateLoopLabel(loopCounter);
             const startLoopObject = {
                 block: 'startLoop',

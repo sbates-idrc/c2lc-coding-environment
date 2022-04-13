@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import DisallowedActionsSerializer from './DisallowedActionsSerializer';
+import AnnouncementBuilder from './AnnouncementBuilder';
 import AudioManagerImpl from './AudioManagerImpl';
 import CharacterAriaLive from './CharacterAriaLive';
 import CharacterState from './CharacterState';
@@ -137,6 +138,7 @@ export class App extends React.Component<AppProps, AppState> {
     speedControlRef: { current: null | HTMLElement };
     programBlockEditorRef: { current: any };
     sequenceInProgress: Array<KeyboardEvent>;
+    announcementBuilder: AnnouncementBuilder;
     programChangeController: ProgramChangeController;
     defaultWorld: WorldName;
 
@@ -459,6 +461,8 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.focusTrapManager = new FocusTrapManager();
 
+        this.announcementBuilder = new AnnouncementBuilder(this.props.intl);
+
         this.programChangeController = new ProgramChangeController(this,
             this.props.intl, this.audioManager);
 
@@ -631,16 +635,10 @@ export class App extends React.Component<AppProps, AppState> {
         });
     };
 
-    handleCommandFromCommandPalette = (command: ?string) => {
-        if (command) {
-            this.setState({
-                selectedAction: command
-            });
-        } else {
-            this.setState({
-                selectedAction: null
-            });
-        }
+    handleCommandFromCommandPalette = (command: string) => {
+        this.setState({
+            selectedAction: command
+        });
     };
 
     handleDragStartCommand = (command: string) => {
@@ -1047,7 +1045,7 @@ export class App extends React.Component<AppProps, AppState> {
                         selectedCommandName={this.getSelectedCommandName()}
                         audioManager={this.audioManager}
                         isDraggingCommand={this.state.isDraggingCommand}
-                        onChange={this.handleCommandFromCommandPalette}
+                        onSelect={this.handleCommandFromCommandPalette}
                         onDragStart={this.handleDragStartCommand}
                         onDragEnd={this.handleDragEndCommand}/>
                 );
@@ -1774,18 +1772,11 @@ export class App extends React.Component<AppProps, AppState> {
             this.interpreter.startRun();
         }
 
-        if (this.state.selectedAction !== prevState.selectedAction) {
-            const messagePayload = {};
-            const announcementKey = this.state.selectedAction ?
-                "movementSelected" : "noMovementSelected";
-            if (this.state.selectedAction) {
-                const commandString = this.props.intl.formatMessage({
-                    id: "Announcement." + this.state.selectedAction
-                });
-                messagePayload.command = commandString;
-            }
-            this.audioManager.playAnnouncement(announcementKey,
-                    this.props.intl, messagePayload);
+        if (this.state.selectedAction !== prevState.selectedAction
+                && this.state.selectedAction != null) {
+            const announcementData = this.announcementBuilder.buildSelectActionAnnouncement(this.state.selectedAction);
+            this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
+                    this.props.intl, announcementData.values);
         }
 
         if (this.state.programSequence !== prevState.programSequence) {
