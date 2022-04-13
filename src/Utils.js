@@ -63,7 +63,7 @@ function getWorldFromString(worldQuery: ?string, defaultWorldName: WorldName): W
     }
 }
 
-function getStartingPositionFromString(startingPositionQuery: ?string, maxX: number, maxY: number, defaultX: number, defaultY: number) {
+function getStartingPositionFromString(startingPositionQuery: ?string, maxX: number, maxY: number, defaultX: number, defaultY: number): {| x: number, y: number |} {
     let x = defaultX;
     let y = defaultY;
     if (startingPositionQuery) {
