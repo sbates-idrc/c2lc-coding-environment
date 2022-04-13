@@ -1153,7 +1153,8 @@ export class App extends React.Component<AppProps, AppState> {
         const updatedCharacterState = this.state.characterState.changeXPosition(columnLabel);
         this.setState({
             characterState: updatedCharacterState,
-            startingX: updatedCharacterState.xPos
+            startingX: updatedCharacterState.xPos,
+            startingY: updatedCharacterState.yPos
         });
     }
 
@@ -1161,6 +1162,7 @@ export class App extends React.Component<AppProps, AppState> {
         const updatedCharacterState = this.state.characterState.changeYPosition(parseInt(rowLabel, 10));
         this.setState({
             characterState: updatedCharacterState,
+            startingX: updatedCharacterState.xPos,
             startingY: updatedCharacterState.yPos
         });
     }
