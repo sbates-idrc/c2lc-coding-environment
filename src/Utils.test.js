@@ -1,6 +1,6 @@
 // @flow
 
-import { extend, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, focusByQuerySelector, generateLoopLabel, parseLoopLabel } from './Utils.js';
+import { decodeCoordinate, encodeCoordinate, extend, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, generateLoopLabel, parseLoopLabel } from './Utils.js';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import ProgramSequence from './ProgramSequence';
@@ -10,9 +10,9 @@ import { makeTestDiv } from './TestUtils';
 configure({ adapter: new Adapter()});
 
 test('Test URL encoding', () => {
-    expect(generateEncodedProgramURL('version=5', 'light', 'default', 'f1=f2=f3', '0ab', 'f1=f2=f3')).toBe('?v=version%3D5&t=light&w=default&p=f1%3Df2%3Df3&c=0ab&d=f1%3Df2%3Df3');
-    expect(generateEncodedProgramURL('version?5', 'dark', 'space', 'f1?f2?f3', '0aab0c0', 'f1?f2?f3')).toBe('?v=version%3F5&t=dark&w=space&p=f1%3Ff2%3Ff3&c=0aab0c0&d=f1%3Ff2%3Ff3');
-    expect(generateEncodedProgramURL('version 5', 'contrast', 'forest', 'f1 f2 f3', '0a b c', 'f1 f2 f3')).toBe('?v=version%205&t=contrast&w=forest&p=f1%20f2%20f3&c=0a%20b%20c&d=f1%20f2%20f3');
+    expect(generateEncodedProgramURL('version=5', 'light', 'default', 'f1=f2=f3', '0ab', 'f1=f2=f3', '1-2')).toBe('?v=version%3D5&t=light&w=default&p=f1%3Df2%3Df3&c=0ab&d=f1%3Df2%3Df3&s=1-2');
+    expect(generateEncodedProgramURL('version?5', 'dark', 'space', 'f1?f2?f3', '0aab0c0', 'f1?f2?f3', '16-2')).toBe('?v=version%3F5&t=dark&w=space&p=f1%3Ff2%3Ff3&c=0aab0c0&d=f1%3Ff2%3Ff3&s=16-2');
+    expect(generateEncodedProgramURL('version 5', 'contrast', 'forest', 'f1 f2 f3', '0a b c', 'f1 f2 f3', '4-8')).toBe('?v=version%205&t=contrast&w=forest&p=f1%20f2%20f3&c=0a%20b%20c&d=f1%20f2%20f3&s=4-8');
 });
 
 test('Test getThemeFromString', () => {
@@ -38,6 +38,57 @@ test('Test getWorldFromString', () => {
     expect(getWorldFromString('Jungle', 'Sketchpad')).toBe('Jungle');
     expect(getWorldFromString('Sketchpad', 'Sketchpad')).toBe('Sketchpad');
     expect(getWorldFromString('Space', 'Sketchpad')).toBe('Space');
+});
+
+test('Test getStartingPositionFromString', () => {
+    // (1, 1)
+    expect(getStartingPositionFromString('aa', 16, 8, 2, 3)).toStrictEqual({ x: 1, y: 1 });
+    // Values between min and max
+    expect(getStartingPositionFromString('de', 16, 8, 2, 3)).toStrictEqual({ x: 4, y: 5 });
+    // Max values
+    expect(getStartingPositionFromString('ph', 16, 8, 2, 3)).toStrictEqual({ x: 16, y: 8 });
+    // Empty
+    expect(getStartingPositionFromString('', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    // Null
+    expect(getStartingPositionFromString(null, 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    // Co-ordingates out of range
+    expect(getStartingPositionFromString('zz', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    // Too many characters
+    expect(getStartingPositionFromString('aaa', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3});
+    // Too few characters
+    expect(getStartingPositionFromString('a', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    // Bad characters
+    expect(getStartingPositionFromString('11', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+});
+
+test('Test encodeCoordinate', () => {
+    expect.assertions(9);
+    expect(encodeCoordinate(0)).toBe('0');
+    expect(encodeCoordinate(-1)).toBe('A');
+    expect(encodeCoordinate(1)).toBe('a');
+    expect(encodeCoordinate(-26)).toBe('Z');
+    expect(encodeCoordinate(26)).toBe('z');
+    expect(encodeCoordinate(-130)).toBe('Z');
+    expect(encodeCoordinate(34)).toBe('z');
+    expect(encodeCoordinate(2.8)).toBe('b');
+    expect(() => {
+        encodeCoordinate(NaN)
+    }).toThrowError(/^Bad co-ordinate value: NaN$/);
+});
+
+test('Test decodeCoordinate', () => {
+    expect.assertions(7);
+    expect(decodeCoordinate('0')).toBe(0);
+    expect(decodeCoordinate('A')).toBe(-1);
+    expect(decodeCoordinate('a')).toBe(1);
+    expect(decodeCoordinate('Z')).toBe(-26);
+    expect(decodeCoordinate('z')).toBe(26);
+    expect(() => {
+        decodeCoordinate('')
+    }).toThrowError(/^Bad co-ordinate character: ''$/);
+    expect(() => {
+        decodeCoordinate('!')
+    }).toThrowError(/^Bad co-ordinate character: '!'$/);
 });
 
 test('Test extend', () => {
