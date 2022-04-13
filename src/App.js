@@ -1670,7 +1670,7 @@ export class App extends React.Component<AppProps, AppState> {
 
             this.setStateSettings({
                 theme: Utils.getThemeFromString(localTheme, 'default'),
-                world: Utils.getWorldFromString(localWorld, this.defaultWorld)
+                world: world
             });
         }
 

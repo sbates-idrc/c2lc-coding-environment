@@ -232,10 +232,9 @@ describe('When the Scene renders', () => {
         });
         const startingPositionGridCellPoint = findStartingPositionGridCellPoint(sceneWrapper);
 
-        // Check starting position indicators are rendered
+        // Check starting position indicator is rendered
         expect(startingPositionGridCellPoint.length).toBe(1);
 
-        // startingPositionGridCellPoint's x and y to be half of startingX and startingY values
         const expectedStartingPositionGridCellPointX = startingX - startingPositionGridCellPoint.get(0).props.width/2;
         const expectedStartingPositionGridCellPointY = startingY - startingPositionGridCellPoint.get(0).props.height/2;
 

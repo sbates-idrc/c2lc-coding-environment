@@ -12,6 +12,8 @@ import './Worlds.scss';
 import type { ThemeName } from './types';
 import type { WorldName } from './Worlds';
 
+const startingGridCellPointSize = 0.22;
+
 export type SceneProps = {
     dimensions: SceneDimensions,
     characterState: CharacterState,
@@ -256,7 +258,7 @@ class Scene extends React.Component<SceneProps, {}> {
         }
     }
 
-    componentDidUpdate = (prevProps) => {/* eslint-disable no-console */
+    componentDidUpdate = (prevProps) => {
         // Required to avoid the lack of scrollIntoView on SVG elements in Safari.
         /* istanbul ignore next */
         if ((prevProps.characterState.xPos !== this.props.characterState.xPos ||
@@ -368,14 +370,17 @@ class Scene extends React.Component<SceneProps, {}> {
                             <g clipPath='url(#Scene-clippath)'>
                                 {this.drawCharacterPath()}
                                 <rect
-                                    // A point in the middle of the starting grid cell
+                                    // Starting position indicator
                                     className={`Scene__starting-grid-cell-point Scene__starting-grid-cell-point--${this.props.world}`}
-                                    // Half of width for x, and half of height for y to make it center
-                                    x={this.props.startingX - 0.11}
-                                    y={this.props.startingY - 0.11}
+                                    // The centre of the starting cell is (startingX, startingY).
+                                    // Calculate the top left corner of the indicator
+                                    // by subtracting half of the indicator size from
+                                    // each of the startingX and startingY.
+                                    x={this.props.startingX - (startingGridCellPointSize / 2)}
+                                    y={this.props.startingY - (startingGridCellPointSize / 2)}
                                     rx={0.06}
-                                    height={0.22}
-                                    width={0.22}
+                                    height={startingGridCellPointSize}
+                                    width={startingGridCellPointSize}
                                 />
                                 <Character
                                     world={this.props.world}
