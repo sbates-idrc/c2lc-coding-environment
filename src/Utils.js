@@ -66,19 +66,51 @@ function getWorldFromString(worldQuery: ?string, defaultWorldName: WorldName): W
 function getStartingPositionFromString(startingPositionQuery: ?string, maxX: number, maxY: number, defaultX: number, defaultY: number): {| x: number, y: number |} {
     let x = defaultX;
     let y = defaultY;
-    if (startingPositionQuery) {
-        const startingPosition = startingPositionQuery.split('-');
-        if (startingPosition.length === 2) {
-            const startingX = parseInt(startingPosition[0], 10);
-            const startingY = parseInt(startingPosition[1], 10);
-            if (startingX >= 0 && startingX <= maxX &&
-                startingY >= 0 && startingY <= maxY) {
+    if (startingPositionQuery && startingPositionQuery.length === 2) {
+        try {
+            const startingX = decodeCoordinate(startingPositionQuery.charAt(0));
+            const startingY = decodeCoordinate(startingPositionQuery.charAt(1));
+            if (startingX >= 0 && startingX <= maxX
+                    && startingY >= 0 && startingY <= maxY) {
                 x = startingX;
                 y = startingY;
             }
+        } catch(err) {
+            x = defaultX;
+            y = defaultY;
         }
     }
-    return { x, y }
+    return { x, y };
+}
+
+function encodeCoordinate(value: number): string {
+    // Remove any fractional digits, to make sure we have an integer
+    value = Math.trunc(value);
+    if (value === 0) {
+        return '0';
+    } else if (value > 0 && value <= 26) {
+        return String.fromCharCode('a'.charCodeAt(0) - 1 + value);
+    } else if (value > 26) {
+        return 'z';
+    } else if (value < 0 && value >= -26) {
+        return String.fromCharCode('A'.charCodeAt(0) - 1 + Math.abs(value));
+    } else if (value < -26) {
+        return 'Z';
+    }
+    throw new Error(`Bad co-ordinate value: ${value}`);
+}
+
+function decodeCoordinate(character: string): number {
+    if (character === '0') {
+        return 0;
+    }
+    const charCode = character.charCodeAt(0);
+    if (charCode >= 'a'.charCodeAt(0) && charCode <= 'z'.charCodeAt(0)) {
+        return charCode - 'a'.charCodeAt(0) + 1;
+    } else if (charCode >= 'A'.charCodeAt(0) && charCode <= 'Z'.charCodeAt(0)) {
+        return (charCode - 'A'.charCodeAt(0) + 1) * -1;
+    }
+    throw new Error(`Bad co-ordinate character: '${character}'`);
 }
 
 /**
@@ -154,6 +186,8 @@ function moveToPreviousStepDisabled(programSequence: ProgramSequence, stepIndex:
 }
 
 export {
+    decodeCoordinate,
+    encodeCoordinate,
     extend,
     focusByQuerySelector,
     generateEncodedProgramURL,

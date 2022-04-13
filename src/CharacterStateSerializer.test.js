@@ -34,10 +34,10 @@ test('Deserialize character state', () => {
     expect(serializer.deserialize('AAc00AA')).toStrictEqual(new CharacterState(-1,-1,3,[{x1:0,y1:0,x2:-1,y2:-1}], sceneDimensions));
     expect(() => {
         serializer.deserialize('3ac00AA')
-    }).toThrowError(/^Unrecognized position character: '3'$/);
+    }).toThrowError(/^Bad co-ordinate character: '3'$/);
     expect(() => {
         serializer.deserialize('aab3322')
-    }).toThrowError(/^Unrecognized position character: '3'$/);
+    }).toThrowError(/^Bad co-ordinate character: '3'$/);
 });
 
 test('encodeDirection', () => {
@@ -75,38 +75,4 @@ test('decodeDirection', () => {
     expect(() => {
         serializer.decodeDirection('3')
     }).toThrowError(/^Unrecognized direction character 3$/);
-});
-
-test('encodePosition', () => {
-    expect.assertions(9);
-    const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
-    const serializer = new CharacterStateSerializer(sceneDimensions);
-    expect(serializer.encodePosition(0)).toBe('0');
-    expect(serializer.encodePosition(-1)).toBe('A');
-    expect(serializer.encodePosition(1)).toBe('a');
-    expect(serializer.encodePosition(-26)).toBe('Z');
-    expect(serializer.encodePosition(26)).toBe('z');
-    expect(serializer.encodePosition(-130)).toBe('Z');
-    expect(serializer.encodePosition(34)).toBe('z');
-    expect(serializer.encodePosition(2.8)).toBe('b');
-    expect(() => {
-        serializer.encodePosition(NaN)
-    }).toThrowError(/^Position out of the range: NaN$/);
-});
-
-test('decodePosition', () => {
-    expect.assertions(7);
-    const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
-    const serializer = new CharacterStateSerializer(sceneDimensions);
-    expect(serializer.decodePosition('0')).toBe(0);
-    expect(serializer.decodePosition('A')).toBe(-1);
-    expect(serializer.decodePosition('a')).toBe(1);
-    expect(serializer.decodePosition('Z')).toBe(-26);
-    expect(serializer.decodePosition('z')).toBe(26);
-    expect(() => {
-        serializer.decodePosition('')
-    }).toThrowError(/^Unrecognized position character: ''$/);
-    expect(() => {
-        serializer.decodePosition('!')
-    }).toThrowError(/^Unrecognized position character: '!'$/);
 });

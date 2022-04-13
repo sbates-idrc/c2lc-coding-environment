@@ -1714,7 +1714,7 @@ export class App extends React.Component<AppProps, AppState> {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedDisallowedActions = this.disallowedActionsSerializer.serialize(this.state.disallowedActions);
-            const serializedStartingPosition = `${this.state.startingX}-${this.state.startingY}`;
+            const serializedStartingPosition = `${Utils.encodeCoordinate(this.state.startingX)}${Utils.encodeCoordinate(this.state.startingY)}`;
 
             // Use setTimeout() to limit how often we call history.pushState().
             // Safari will throw an error if calls to history.pushState() are

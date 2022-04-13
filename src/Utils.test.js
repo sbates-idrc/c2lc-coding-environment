@@ -1,6 +1,6 @@
 // @flow
 
-import { extend, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, generateLoopLabel, parseLoopLabel } from './Utils.js';
+import { decodeCoordinate, encodeCoordinate, extend, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, generateLoopLabel, parseLoopLabel } from './Utils.js';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import ProgramSequence from './ProgramSequence';
@@ -42,24 +42,54 @@ test('Test getWorldFromString', () => {
 
 test('Test getStartingPositionFromString', () => {
     // (1, 1)
-    expect(getStartingPositionFromString('1-1', 16, 12, 2, 3)).toStrictEqual({ x: 1, y: 1 });
-    // Single digits
-    expect(getStartingPositionFromString('4-5', 16, 8, 2, 3)).toStrictEqual({ x: 4, y: 5 });
-    // Multiple digits at max values
-    expect(getStartingPositionFromString('16-12', 16, 12, 2, 3)).toStrictEqual({ x: 16, y: 12 });
+    expect(getStartingPositionFromString('aa', 16, 8, 2, 3)).toStrictEqual({ x: 1, y: 1 });
+    // Values between min and max
+    expect(getStartingPositionFromString('de', 16, 8, 2, 3)).toStrictEqual({ x: 4, y: 5 });
+    // Max values
+    expect(getStartingPositionFromString('ph', 16, 8, 2, 3)).toStrictEqual({ x: 16, y: 8 });
     // Empty
     expect(getStartingPositionFromString('', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
     // Null
     expect(getStartingPositionFromString(null, 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
     // Co-ordingates out of range
-    expect(getStartingPositionFromString('19-9', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
-    // Too many values
-    expect(getStartingPositionFromString('19-23-87', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3});
-    // Too few values
-    expect(getStartingPositionFromString('19323', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
-    // Non-numbers
-    expect(getStartingPositionFromString('a-b', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
-})
+    expect(getStartingPositionFromString('zz', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    // Too many characters
+    expect(getStartingPositionFromString('aaa', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3});
+    // Too few characters
+    expect(getStartingPositionFromString('a', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    // Bad characters
+    expect(getStartingPositionFromString('11', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+});
+
+test('Test encodeCoordinate', () => {
+    expect.assertions(9);
+    expect(encodeCoordinate(0)).toBe('0');
+    expect(encodeCoordinate(-1)).toBe('A');
+    expect(encodeCoordinate(1)).toBe('a');
+    expect(encodeCoordinate(-26)).toBe('Z');
+    expect(encodeCoordinate(26)).toBe('z');
+    expect(encodeCoordinate(-130)).toBe('Z');
+    expect(encodeCoordinate(34)).toBe('z');
+    expect(encodeCoordinate(2.8)).toBe('b');
+    expect(() => {
+        encodeCoordinate(NaN)
+    }).toThrowError(/^Bad co-ordinate value: NaN$/);
+});
+
+test('Test decodeCoordinate', () => {
+    expect.assertions(7);
+    expect(decodeCoordinate('0')).toBe(0);
+    expect(decodeCoordinate('A')).toBe(-1);
+    expect(decodeCoordinate('a')).toBe(1);
+    expect(decodeCoordinate('Z')).toBe(-26);
+    expect(decodeCoordinate('z')).toBe(26);
+    expect(() => {
+        decodeCoordinate('')
+    }).toThrowError(/^Bad co-ordinate character: ''$/);
+    expect(() => {
+        decodeCoordinate('!')
+    }).toThrowError(/^Bad co-ordinate character: '!'$/);
+});
 
 test('Test extend', () => {
     expect(extend({})).toEqual({});
