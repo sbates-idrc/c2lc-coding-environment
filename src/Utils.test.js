@@ -41,10 +41,24 @@ test('Test getWorldFromString', () => {
 });
 
 test('Test getStartingPositionFromString', () => {
-    expect(getStartingPositionFromString('1-4', 16, 8, 1, 2)).toStrictEqual({ x: 1, y: 4 });
-    expect(getStartingPositionFromString('19-9', 16, 8, 1, 2)).toStrictEqual({ x: 1, y: 2 });
-    expect(getStartingPositionFromString('19-23-87', 16, 8, 3, 4)).toStrictEqual({ x: 3, y: 4});
-    expect(getStartingPositionFromString('19323', 16, 8, 1, 3)).toStrictEqual({ x: 1, y: 3 });
+    // (1, 1)
+    expect(getStartingPositionFromString('1-1', 16, 12, 2, 3)).toStrictEqual({ x: 1, y: 1 });
+    // Single digits
+    expect(getStartingPositionFromString('4-5', 16, 8, 2, 3)).toStrictEqual({ x: 4, y: 5 });
+    // Multiple digits at max values
+    expect(getStartingPositionFromString('16-12', 16, 12, 2, 3)).toStrictEqual({ x: 16, y: 12 });
+    // Empty
+    expect(getStartingPositionFromString('', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    // Null
+    expect(getStartingPositionFromString(null, 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    // Co-ordingates out of range
+    expect(getStartingPositionFromString('19-9', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    // Too many values
+    expect(getStartingPositionFromString('19-23-87', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3});
+    // Too few values
+    expect(getStartingPositionFromString('19323', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    // Non-numbers
+    expect(getStartingPositionFromString('a-b', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
 })
 
 test('Test extend', () => {
