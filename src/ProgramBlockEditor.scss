@@ -141,6 +141,13 @@
     padding-bottom: 1rem;
 }
 
+.ProgramBlockEditor__loopContainer {
+    display: flex;
+    align-items: center;
+    border-radius: 40px 40px 40px 40px;
+    outline: 0.2rem solid black;
+}
+
 .ProgramBlockEditor__start-indicator {
     background-color: #D5D8DD;
     width: 10px;
