@@ -267,25 +267,29 @@ class Scene extends React.Component<SceneProps, {}> {
             const sceneBounds = sceneElem.getBoundingClientRect();
             const sceneSvgBounds = sceneSvgElem.getBoundingClientRect();
 
+            // Calculate the grid cell width in pixels by dividing the width
+            // of the scene in pixels by the number of columns in the scene
             const cellWidth = sceneSvgBounds.width / this.props.dimensions.getWidth();
+            // Calculate the grid cell height in pixels by dividing the height
+            // of the scene in pixels by the number of rows in the scene
             const cellHeight = sceneSvgBounds.height / this.props.dimensions.getHeight();
 
             // Check to see if the character is visible. If not, scroll to
             // bring it into view. We do this ourselves for two reasons:
             //
             // 1. On Safari, scrollIntoView doesn't work on SVG elements
-            //    (C2LC-347).
+            //    (C2LC-347)
             // 2. On Firefox, scrollIntoView seems to scroll to the center of
             //    the character rather than bringing it completely into view
-            //    (C2LC-343).
-            //
+            //    (C2LC-343)
+
             // We add some padding to the position checking to ensure that we
             // always leave some room between the character and the edge of the
-            // scene (unless we are in the first or last row/col).
-
+            // scene (unless we are in the first or last row/col)
             const paddingH = 0.75 * cellWidth;
             const paddingV = 0.75 * cellHeight;
 
+            // Calculate the location of the grid cell that the character is on
             const cellLeft = (this.props.characterState.xPos - this.props.dimensions.getMinX()) * cellWidth;
             const cellRight = cellLeft + cellWidth;
             const cellTop = (this.props.characterState.yPos - this.props.dimensions.getMinY()) * cellHeight;
