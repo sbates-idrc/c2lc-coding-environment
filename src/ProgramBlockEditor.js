@@ -59,6 +59,7 @@ type ProgramBlockEditorState = {
 export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, ProgramBlockEditorState> {
     commandBlockRefs: Map<number, HTMLElement>;
     addNodeRefs: Map<number, HTMLElement>;
+    loopContainerRefs: Map<string, HTMLElement>;
     focusCommandBlockIndex: ?number;
     focusAddNodeIndex: ?number;
     scrollToAddNodeIndex: ?number;
@@ -70,6 +71,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         super(props);
         this.commandBlockRefs = new Map();
         this.addNodeRefs = new Map();
+        this.loopContainerRefs = new Map();
         this.focusCommandBlockIndex = null;
         this.focusAddNodeIndex = null;
         this.scrollToAddNodeIndex = null;
@@ -158,6 +160,12 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     setAddNodeRef(programStepNumber: number, element: ?HTMLElement) {
         if (element) {
             this.addNodeRefs.set(programStepNumber, element);
+        }
+    }
+
+    setLoopContainerRef(loopLabel: string, element: ?HTMLElement) {
+        if (element) {
+            this.loopContainerRefs.set(loopLabel, element);
         }
     }
 
@@ -291,6 +299,30 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 loopIterationsLeft.set(loopLabel, loopIterations);
             }
             this.props.onChangeProgramSequence(programSequence.updateProgramAndLoopIterationsLeft(program, loopIterationsLeft));
+        }
+    }
+
+    handleFocusProgramBlock = (e: Event) => {
+        // $FlowFixMe: Not all elements have dataset property
+        if (e.currentTarget.dataset.command === 'startLoop' || e.currentTarget.dataset.command === 'endLoop') {
+            const loopLabel = this.props.programSequence.getProgramStepAt(
+                parseInt(e.currentTarget.dataset.stepnumber, 10)
+            ).label;
+            if (loopLabel != null && this.loopContainerRefs.get(loopLabel) != null) {
+                this.loopContainerRefs.get(loopLabel)?.classList.add('ProgramBlockEditor__loopContainer--focused');
+            }
+        }
+    }
+
+    handleBlurProgramBlock = (e: Event) => {
+        // $FlowFixMe: Not all elements have dataset property
+        if (e.currentTarget.dataset.command === 'startLoop' || e.currentTarget.dataset.command === 'endLoop') {
+            const loopLabel = this.props.programSequence.getProgramStepAt(
+                parseInt(e.currentTarget.dataset.stepnumber, 10)
+            ).label;
+            if (loopLabel != null && this.loopContainerRefs.get(loopLabel) != null) {
+                this.loopContainerRefs.get(loopLabel)?.classList.remove('ProgramBlockEditor__loopContainer--focused');
+            }
         }
     }
 
@@ -475,6 +507,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 runningState={this.props.runningState}
                 keyboardInputSchemeName={this.props.keyboardInputSchemeName}
                 onClick={this.handleClickStep}
+                onFocus={this.handleFocusProgramBlock}
+                onBlur={this.handleBlurProgramBlock}
                 onChangeLoopIterations={this.handleChangeLoopIterations}
                 onAnimationEnd={this.handleProgramCommandBlockAnimationEnd}
             />
@@ -565,10 +599,13 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
     makeLoopContainers() {
         const loopContainers = {};
-        for (const programBlock of this.props.programSequence.getProgram()) {
-            const { block, label } = programBlock;
+        for (let i=0; i<this.props.programSequence.getProgram().length; i++) {
+            const { block, label } = this.props.programSequence.getProgramStepAt(i);
             if (block === 'startLoop' && label != null) {
-                loopContainers[label] = [];
+                loopContainers[label] = {
+                    content: [],
+                    startingIndex: i
+                };
             }
         }
         return loopContainers;
@@ -580,14 +617,17 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             if (programBlock.block === 'startLoop') {
                 const loopLabel = programBlock.label;
                 if (loopLabel != null) {
-                    loopContainers[loopLabel].push(this.makeProgramBlockSection(stepNumber, programBlock));
+                    loopContainers[loopLabel].content.push(
+                        <React.Fragment key={`loop-content-startLoop-${loopLabel}`}>
+                            {this.makeProgramBlockSection(stepNumber, programBlock)}
+                        </React.Fragment>);
                 }
             } else if (programBlock.cache != null && programBlock.block !== 'startLoop' && programBlock.block !== 'endLoop') {
                 const containingLoopLabel = programBlock.cache.get('containingLoopLabel');
                 if (containingLoopLabel != null) {
                     if (loopContainers[containingLoopLabel] != null) {
-                        loopContainers[containingLoopLabel].push(
-                            <React.Fragment>
+                        loopContainers[containingLoopLabel].content.push(
+                            <React.Fragment key={`loop-content-${programBlock.block}-${stepNumber}`}>
                                 <div className='ProgramBlockEditor__program-block-connector'/>
                                 <AddNode
                                     aria-label={this.makeAddNodeAriaLabel(stepNumber, false)}
@@ -610,8 +650,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             } else if (programBlock.block === 'endLoop') {
                 const loopLabel = programBlock.label;
                 if (loopLabel != null) {
-                    loopContainers[loopLabel].push(
-                        <React.Fragment>
+                    loopContainers[loopLabel].content.push(
+                        <React.Fragment key={`loop-content-endLoop-${loopLabel}`}>
                             <div className='ProgramBlockEditor__program-block-connector'/>
                             <AddNode
                                 aria-label={this.makeAddNodeAriaLabel(stepNumber, false)}
@@ -632,15 +672,16 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                     if (programBlock.cache != null) {
                         const containingLoopLabel = programBlock.cache.get('containingLoopLabel');
                         if (containingLoopLabel != null) {
-                            loopContainers[containingLoopLabel].push(
-                                <React.Fragment>
+                            const addNodeIndex = loopContainers[loopLabel].startingIndex;
+                            loopContainers[containingLoopLabel].content.push(
+                                <React.Fragment key={`loop-content-endLoop-${loopLabel}`}>
                                     <div className='ProgramBlockEditor__program-block-connector'/>
                                     <AddNode
-                                        aria-label={this.makeAddNodeAriaLabel(stepNumber, false)}
-                                        ref={ (element) => this.setAddNodeRef(stepNumber, element) }
+                                        aria-label={this.makeAddNodeAriaLabel(addNodeIndex, false)}
+                                        ref={ (element) => this.setAddNodeRef(addNodeIndex, element) }
                                         expandedMode={this.props.addNodeExpandedMode}
                                         isDraggingCommand={this.props.isDraggingCommand}
-                                        programStepNumber={stepNumber}
+                                        programStepNumber={addNodeIndex}
                                         closestAddNodeIndex={this.state.closestAddNodeIndex}
                                         disabled={
                                             this.props.editingDisabled ||
@@ -648,8 +689,10 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                                         onClick={this.handleClickAddNode}
                                     />
                                     <div className='ProgramBlockEditor__program-block-connector' />
-                                    <div className='ProgramBlockEditor__loopContainer'>
-                                        {loopContainers[loopLabel]}
+                                    <div
+                                        className='ProgramBlockEditor__loopContainer'
+                                        ref={ (element) => this.setLoopContainerRef(loopLabel, element) }>
+                                        {loopContainers[loopLabel].content}
                                     </div>
                                 </React.Fragment>
                             );
@@ -657,14 +700,15 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                         }
                     }
                     if (loopContainers[loopLabel] != null) {
-                        return <React.Fragment>
+                        const addNodeIndex = loopContainers[loopLabel].startingIndex;
+                        return <React.Fragment key={`loop-container-${loopLabel}`}>
                             <div className='ProgramBlockEditor__program-block-connector'/>
                             <AddNode
-                                aria-label={this.makeAddNodeAriaLabel(stepNumber, false)}
-                                ref={ (element) => this.setAddNodeRef(stepNumber, element) }
+                                aria-label={this.makeAddNodeAriaLabel(addNodeIndex, false)}
+                                ref={ (element) => this.setAddNodeRef(addNodeIndex, element) }
                                 expandedMode={this.props.addNodeExpandedMode}
                                 isDraggingCommand={this.props.isDraggingCommand}
-                                programStepNumber={stepNumber}
+                                programStepNumber={addNodeIndex}
                                 closestAddNodeIndex={this.state.closestAddNodeIndex}
                                 disabled={
                                     this.props.editingDisabled ||
@@ -672,12 +716,16 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                                 onClick={this.handleClickAddNode}
                             />
                             <div className='ProgramBlockEditor__program-block-connector' />
-                            <div className='ProgramBlockEditor__loopContainer'> {loopContainers[loopLabel]} </div>
+                            <div
+                                className='ProgramBlockEditor__loopContainer'
+                                ref={ (element) => this.setLoopContainerRef(loopLabel, element) }>
+                                {loopContainers[loopLabel].content}
+                            </div>
                         </React.Fragment>
                     }
                 }
             } else {
-                return <React.Fragment>
+                return <React.Fragment key={`program-block-section-${stepNumber}`}>
                     <div className='ProgramBlockEditor__program-block-connector'/>
                     <AddNode
                         aria-label={this.makeAddNodeAriaLabel(stepNumber, false)}
@@ -695,7 +743,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                     {this.makeProgramBlockSection(stepNumber, programBlock)}
                 </React.Fragment>
             }
-            return <></>
+            return <React.Fragment key={`loop-content-Fragment-${stepNumber}`}></React.Fragment>
         });
 
         contents.push(this.makeEndOfProgramAddNodeSection(this.props.programSequence.getProgramLength()));

@@ -148,6 +148,10 @@
     outline: 0.2rem solid black;
 }
 
+.ProgramBlockEditor__loopContainer--focused {
+    background-color: #3F5574;
+}
+
 .ProgramBlockEditor__start-indicator {
     background-color: #D5D8DD;
     width: 10px;
