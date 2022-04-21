@@ -5,7 +5,7 @@ import type {IntlShape} from 'react-intl';
 import type {KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import type {AudioManager, RunningState, ThemeName, ProgramBlock, ProgramStepMovementDirection} from './types';
 import type { WorldName } from './Worlds';
-import React from 'react';
+import * as React from 'react';
 import CharacterState from './CharacterState';
 import ConfirmDeleteAllModal from './ConfirmDeleteAllModal';
 import AddNode from './AddNode';
@@ -597,26 +597,16 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         )
     }
 
-    makeLoopContainers() {
+    renderProgramBlocks() {
         const loopContainers = {};
-        for (let i=0; i<this.props.programSequence.getProgram().length; i++) {
-            const { block, label } = this.props.programSequence.getProgramStepAt(i);
-            if (block === 'startLoop' && label != null) {
-                loopContainers[label] = {
-                    content: [],
-                    startingIndex: i
-                };
-            }
-        }
-        return loopContainers;
-    }
-
-    render() {
-        const loopContainers = this.makeLoopContainers();
-        const contents = this.props.programSequence.getProgram().map((programBlock, stepNumber) => {
+        const programBlocks = this.props.programSequence.getProgram().map<React.Element<any>>((programBlock, stepNumber) => {
             if (programBlock.block === 'startLoop') {
                 const loopLabel = programBlock.label;
                 if (loopLabel != null) {
+                    loopContainers[loopLabel] = {
+                        content: [],
+                        startingIndex: stepNumber
+                    };
                     loopContainers[loopLabel].content.push(
                         <React.Fragment key={`loop-content-startLoop-${loopLabel}`}>
                             {this.makeProgramBlockSection(stepNumber, programBlock)}
@@ -746,6 +736,11 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             return <React.Fragment key={`loop-content-Fragment-${stepNumber}`}></React.Fragment>
         });
 
+        return programBlocks;
+    }
+
+    render() {
+        const contents = this.renderProgramBlocks();
         contents.push(this.makeEndOfProgramAddNodeSection(this.props.programSequence.getProgramLength()));
 
         const character = getWorldCharacter(this.props.theme, this.props.world);
