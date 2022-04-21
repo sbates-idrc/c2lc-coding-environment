@@ -145,11 +145,13 @@
     display: flex;
     align-items: center;
     border-radius: 40px 40px 40px 40px;
-    outline: 0.2rem solid black;
+    padding: 0.2rem;
 }
 
 .ProgramBlockEditor__loopContainer--focused {
+    z-index: 2;
     background-color: #3F5574;
+    outline: 0.2rem solid #FFFFFF;
 }
 
 .ProgramBlockEditor__start-indicator {
