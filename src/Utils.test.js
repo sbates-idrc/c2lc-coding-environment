@@ -42,23 +42,23 @@ test('Test getWorldFromString', () => {
 
 test('Test getStartingPositionFromString', () => {
     // (1, 1) facing east
-    expect(getStartingPositionFromString('aab', 16, 8, 2, 3, 2)).toStrictEqual({ x: 1, y: 1, direction: 2 });
+    expect(getStartingPositionFromString('aab', 16, 8, 2, 3, 6)).toStrictEqual({ x: 1, y: 1, direction: 2 });
     // Values between min and max
-    expect(getStartingPositionFromString('dec', 16, 8, 2, 3, 2)).toStrictEqual({ x: 4, y: 5, direction: 3 });
+    expect(getStartingPositionFromString('dec', 16, 8, 2, 3, 6)).toStrictEqual({ x: 4, y: 5, direction: 3 });
     // Max values
-    expect(getStartingPositionFromString('phg', 16, 8, 2, 3, 2)).toStrictEqual({ x: 16, y: 8, direction: 7 });
+    expect(getStartingPositionFromString('phg', 16, 8, 2, 3, 6)).toStrictEqual({ x: 16, y: 8, direction: 7 });
     // Empty
-    expect(getStartingPositionFromString('', 16, 8, 2, 3, 2)).toStrictEqual({ x: 2, y: 3, direction: 2 });
+    expect(getStartingPositionFromString('', 16, 8, 2, 3, 6)).toStrictEqual({ x: 2, y: 3, direction: 6 });
     // Null
-    expect(getStartingPositionFromString(null, 16, 8, 2, 3, 2)).toStrictEqual({ x: 2, y: 3, direction: 2 });
+    expect(getStartingPositionFromString(null, 16, 8, 2, 3, 6)).toStrictEqual({ x: 2, y: 3, direction: 6 });
     // Co-ordingates out of range
-    expect(getStartingPositionFromString('zzh', 16, 8, 2, 3, 2)).toStrictEqual({ x: 2, y: 3, direction: 2 });
+    expect(getStartingPositionFromString('zzh', 16, 8, 2, 3, 6)).toStrictEqual({ x: 2, y: 3, direction: 6 });
     // Too many characters
-    expect(getStartingPositionFromString('aaaa', 16, 8, 2, 3, 2)).toStrictEqual({ x: 2, y: 3, direction: 2 });
+    expect(getStartingPositionFromString('aaaa', 16, 8, 2, 3, 6)).toStrictEqual({ x: 2, y: 3, direction: 6 });
     // Too few characters
-    expect(getStartingPositionFromString('a', 16, 8, 2, 3, 2)).toStrictEqual({ x: 2, y: 3, direction: 2 });
+    expect(getStartingPositionFromString('a', 16, 8, 2, 3, 6)).toStrictEqual({ x: 2, y: 3, direction: 6 });
     // Bad characters
-    expect(getStartingPositionFromString('111', 16, 8, 2, 3, 2)).toStrictEqual({ x: 2, y: 3, direction: 2 });
+    expect(getStartingPositionFromString('111', 16, 8, 2, 3, 6)).toStrictEqual({ x: 2, y: 3, direction: 6 });
 });
 
 test('Test encodeCoordinate', () => {

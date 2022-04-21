@@ -413,7 +413,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.state = {
             programSequence: new ProgramSequence([], 0, 0, new Map()),
-            characterState: this.makeStartingCharacterState(this.defaultWorld, startingDirection, startingX, startingY),
+            characterState: this.makeStartingCharacterState(startingX, startingY, startingDirection),
             settings: {
                 language: 'en',
                 addNodeExpandedMode: true,
@@ -1058,7 +1058,7 @@ export class App extends React.Component<AppProps, AppState> {
         return commandBlocks;
     }
 
-    makeStartingCharacterState(world: WorldName, startingDirection: number, startingX: number, startingY: number): CharacterState {
+    makeStartingCharacterState(startingX: number, startingY: number, startingDirection: number): CharacterState {
         return new CharacterState(
             startingX,
             startingY,
@@ -1072,10 +1072,9 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState((state) => {
             return {
                 characterState: this.makeStartingCharacterState(
-                    state.settings.world,
-                    state.startingDirection,
                     state.startingX,
-                    state.startingY
+                    state.startingY,
+                    state.startingDirection
                 )
             };
         });
@@ -1099,9 +1098,9 @@ export class App extends React.Component<AppProps, AppState> {
                     const updatedCharacterState = state.characterState.turnLeft(1);
                     return {
                         characterState: updatedCharacterState,
-                        startingDirection: updatedCharacterState.direction,
                         startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos
+                        startingY: updatedCharacterState.yPos,
+                        startingDirection: updatedCharacterState.direction,
                     }
                 });
                 break;
@@ -1110,9 +1109,9 @@ export class App extends React.Component<AppProps, AppState> {
                     const updatedCharacterState = state.characterState.turnRight(1);
                     return {
                         characterState: updatedCharacterState,
-                        startingDirection: updatedCharacterState.direction,
                         startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos
+                        startingY: updatedCharacterState.yPos,
+                        startingDirection: updatedCharacterState.direction,
                     }
                 });
                 break;
@@ -1122,7 +1121,8 @@ export class App extends React.Component<AppProps, AppState> {
                     return {
                         characterState: updatedCharacterState,
                         startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos
+                        startingY: updatedCharacterState.yPos,
+                        startingDirection: updatedCharacterState.direction,
                     }
                 });
                 break;
@@ -1132,7 +1132,8 @@ export class App extends React.Component<AppProps, AppState> {
                     return {
                         characterState: updatedCharacterState,
                         startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos
+                        startingY: updatedCharacterState.yPos,
+                        startingDirection: updatedCharacterState.direction,
                     }
                 });
                 break;
@@ -1142,7 +1143,8 @@ export class App extends React.Component<AppProps, AppState> {
                     return {
                         characterState: updatedCharacterState,
                         startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos
+                        startingY: updatedCharacterState.yPos,
+                        startingDirection: updatedCharacterState.direction,
                     }
                 });
                 break;
@@ -1152,7 +1154,8 @@ export class App extends React.Component<AppProps, AppState> {
                     return {
                         characterState: updatedCharacterState,
                         startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos
+                        startingY: updatedCharacterState.yPos,
+                        startingDirection: updatedCharacterState.direction,
                     }
                 });
                 break;
@@ -1166,7 +1169,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({
             characterState: updatedCharacterState,
             startingX: updatedCharacterState.xPos,
-            startingY: updatedCharacterState.yPos
+            startingY: updatedCharacterState.yPos,
+            startingDirection: updatedCharacterState.direction,
         });
     }
 
@@ -1175,7 +1179,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({
             characterState: updatedCharacterState,
             startingX: updatedCharacterState.xPos,
-            startingY: updatedCharacterState.yPos
+            startingY: updatedCharacterState.yPos,
+            startingDirection: updatedCharacterState.direction,
         });
     }
 
