@@ -317,10 +317,9 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     handleBlurProgramBlock = (e: Event) => {
         // $FlowFixMe: Not all elements have dataset property
         if (e.currentTarget.dataset.command === 'startLoop' || e.currentTarget.dataset.command === 'endLoop') {
-            const loopLabel = this.props.programSequence.getProgramStepAt(
-                parseInt(e.currentTarget.dataset.stepnumber, 10)
-            ).label;
-            if (loopLabel != null && this.loopContainerRefs.get(loopLabel) != null) {
+            const stepNumber = parseInt(e.currentTarget.dataset.stepnumber, 10);
+            const loopLabel = this.props.programSequence.getProgramStepAt(stepNumber).label;
+            if (loopLabel != null && this.loopContainerRefs.get(loopLabel) != null && this.props.actionPanelStepIndex !== stepNumber) {
                 this.loopContainerRefs.get(loopLabel)?.classList.remove('ProgramBlockEditor__loopContainer--focused');
             }
         }
