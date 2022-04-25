@@ -154,6 +154,10 @@ function getProgramSequenceContainer(programBlockEditorWrapper) {
     return programBlockEditorWrapper.find('.ProgramBlockEditor__program-sequence-scroll-container').get(0);
 }
 
+function getLoopContainers(programBlockEditorWrapper) {
+    return programBlockEditorWrapper.find('.ProgramBlockEditor__loopContainer');
+}
+
 describe('Program rendering', () => {
     test('Blocks should be rendered for the test program', () => {
         expect.assertions(5);
@@ -187,6 +191,44 @@ describe('Program rendering', () => {
         wrapper.setProps({ runningState: 'stopped' });
         expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('2');
     });
+    test('Loop blocks should be wrapped in a container', () => {
+        expect.assertions(4);
+        const { wrapper } = createMountProgramBlockEditor({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'forward1', cache: new Map([
+                        ['containingLoopLabel', 'A'],
+                        ['containingLoopPosition', 1]
+                    ])},
+                    {block: 'startLoop', label: 'B', iterations: 2, cache: new Map([
+                        ['containingLoopLabel', 'A'],
+                        ['containingLoopPosition', 2]
+                    ])},
+                    {block: 'forward1', cache: new Map([
+                        ['containingLoopLabel', 'B'],
+                        ['containingLoopPosition', 3]
+                    ])},
+                    {block: 'endLoop', label: 'B', cache: new Map([
+                        ['containingLoopLabel', 'A'],
+                        ['containingLoopPosition', 4]
+                    ])},
+                    {block: 'endLoop', label: 'A'},
+                    {block: 'forward1'}
+                ],
+                0,
+                0,
+                new Map([['A', 2], ['B', 2]])
+            )
+        });
+        expect(getLoopContainers(wrapper).length).toBe(2);
+        // getLoopContainers(wrapper).get(0).props.children = [connector, loopContent, connector],
+        // so use index 1 to access specific loop content. Children[1]'s loop content is expected to be
+        // loopContent = [startLoopA, forward1, loopContentB, endLoopB]
+        expect(getLoopContainers(wrapper).get(0).props.children[1].length).toBe(4);
+        expect(getLoopContainers(wrapper).get(0).props.children[1][2].key).toBe('loop-content-loop-B');
+        expect(getLoopContainers(wrapper).get(1).props.children[1].length).toBe(3);
+    })
 });
 
 test('When a step is clicked, action panel should render next to the step', () => {
@@ -206,6 +248,27 @@ test('When a step is clicked, action panel should render next to the step', () =
         expect(actionPanelContainer.contains(ActionPanel)).toBe(true);
     }
 });
+
+test('Loop container should have focus style when its start or end loop block is focused', () => {
+    expect.assertions(3);
+    const { wrapper } = createMountProgramBlockEditor({
+        programSequence: new ProgramSequence(
+            [
+                {block: 'startLoop', label: 'A', iterations: 2},
+                {block: 'endLoop', label: 'A'}
+            ],
+            0,
+            0,
+            new Map([['A', 2]])
+        )
+    });
+    expect(wrapper.html()).not.toContain('ProgramBlockEditor__loopContainer--focused');
+    const startLoopBlock = getProgramBlockAtPosition(wrapper, 0);
+    startLoopBlock.simulate('focus');
+    expect(wrapper.html()).toContain('ProgramBlockEditor__loopContainer--focused');
+    startLoopBlock.simulate('blur');
+    expect(wrapper.html()).not.toContain('ProgramBlockEditor__loopContainer--focused');
+})
 
 describe('The expand add node toggle switch should be configurable via properties', () => {
     describe('Given that addNodeExpandedMode is false', () => {
