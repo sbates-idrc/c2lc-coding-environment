@@ -145,13 +145,16 @@
     display: flex;
     align-items: center;
     border-radius: 40px 40px 40px 40px;
-    padding: 0.2rem;
 }
 
 .ProgramBlockEditor__loopContainer--focused {
+    padding: 0.2rem;
     z-index: 2;
     background-color: #3F5574;
     outline: 0.2rem solid #FFFFFF;
+    > .ProgramBlockEditor__program-block-connector-loop {
+        display: none;
+    }
 }
 
 .ProgramBlockEditor__start-indicator {
@@ -170,6 +173,14 @@
 .ProgramBlockEditor__program-block-connector {
     background-color: #939595;
     min-width: 0.8rem;
+    height: 0.2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.ProgramBlockEditor__program-block-connector-loop {
+    background-color: #939595;
+    min-width: 0.2rem;
     height: 0.2rem;
     position: relative;
     z-index: 1;

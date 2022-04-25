@@ -658,12 +658,14 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                         if (containingLoopLabel != null) {
                             const addNodeIndex = loopContainers[loopLabel].startingIndex;
                             loopContainers[containingLoopLabel].content.push(
-                                <React.Fragment key={`loop-content-endLoop-${loopLabel}`}>
+                                <React.Fragment key={`loop-content-loop-${loopLabel}`}>
                                     {this.makeAddNodeSection(addNodeIndex)}
                                     <div
                                         className='ProgramBlockEditor__loopContainer'
                                         ref={ (element) => this.setLoopContainerRef(loopLabel, element) }>
+                                        <div className='ProgramBlockEditor__program-block-connector-loop' />
                                         {loopContainers[loopLabel].content}
+                                        <div className='ProgramBlockEditor__program-block-connector-loop' />
                                     </div>
                                 </React.Fragment>
                             );
@@ -677,7 +679,9 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                             <div
                                 className='ProgramBlockEditor__loopContainer'
                                 ref={ (element) => this.setLoopContainerRef(loopLabel, element) }>
+                                <div className='ProgramBlockEditor__program-block-connector-loop' />
                                 {loopContainers[loopLabel].content}
+                                <div className='ProgramBlockEditor__program-block-connector-loop' />
                             </div>
                         </React.Fragment>
                     }
