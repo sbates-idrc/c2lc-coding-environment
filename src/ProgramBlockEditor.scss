@@ -150,6 +150,30 @@
     border-radius: 40px 40px 40px 40px;
 }
 
+.ProgramBlockEditor__loopContainer--nested {
+    border-radius: 10px 10px 10px 10px;
+    button.command-block.btn-command-block--startLoop {
+        border-radius: 10px 10px 10px 10px;
+        width: 2.6rem;
+        height: 4.6rem;
+        .command-block-loop-label-container {
+            margin-left: 0.2rem;
+        }
+        .command-block-loop-iterations {
+            width: 2.4em;
+            text-align: center;
+            pointer-events: all;
+            border-radius: 5px;
+            margin-left: 0.1rem;
+        }
+    }
+    button.command-block.btn-command-block--endLoop {
+        border-radius: 10px 10px 10px 10px;
+        width: 2.6rem;
+        height: 4.6rem;
+    }
+}
+
 .ProgramBlockEditor__loopContainer--focused {
     padding: 0.2rem;
     z-index: 2;

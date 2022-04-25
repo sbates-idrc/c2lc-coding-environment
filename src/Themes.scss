@@ -2023,7 +2023,7 @@ body.contrast-theme {
             color: black;
         }
         &:focus {
-            border: 2px solid transparent;
+            border: none;
         }
         &:hover {
             border: 2px solid #FFFFFF;
@@ -2033,6 +2033,10 @@ body.contrast-theme {
                 color: #FFFFFF;
             }
         }
+    }
+    
+    button.command-block.btn-command-block--endLoop:focus {
+        border: 2px solid transparent;
     }
 
     .ProgramBlockEditor__loopContainer--focused {

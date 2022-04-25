@@ -661,7 +661,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                                 <React.Fragment key={`loop-content-loop-${loopLabel}`}>
                                     {this.makeAddNodeSection(addNodeIndex)}
                                     <div
-                                        className='ProgramBlockEditor__loopContainer'
+                                        className='ProgramBlockEditor__loopContainer ProgramBlockEditor__loopContainer--nested'
                                         ref={ (element) => this.setLoopContainerRef(loopLabel, element) }>
                                         <div className='ProgramBlockEditor__program-block-connector-loop' />
                                         {loopContainers[loopLabel].content}
