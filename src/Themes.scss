@@ -198,7 +198,7 @@ body.light-theme {
             color: #FFFFFF;
         }
         &:focus {
-            border: 2px solid transparent;
+            border: none;
             box-shadow: none;
         }
         &:hover {
@@ -207,6 +207,10 @@ body.light-theme {
                 background-color: #5E5D5D;
             }
         }
+    }
+
+    button.command-block.btn-command-block--endLoop:focus {
+        border: 2px solid transparent;
     }
 
     .ProgramBlockEditor__loopContainer--focused {
@@ -1061,7 +1065,7 @@ body.gray-theme {
             color: #FFFFFF;
         }
         &:focus {
-            border: 2px solid transparent;
+            border: none;
             box-shadow: none;
         }
         &:hover {
@@ -1070,6 +1074,10 @@ body.gray-theme {
                 background-color: #626A78;
             }
         }
+    }
+
+    button.command-block.btn-command-block--endLoop:focus {
+        border: 2px solid transparent;
     }
 
     .ProgramBlockEditor__loopContainer--focused {
