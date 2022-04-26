@@ -87,7 +87,7 @@ button.command-block {
     text-align: center;
     width: 1.5rem;
     height: 1.5rem;
-    margin-left: 0.4rem;
+    margin-left: 0.6rem;
     border-radius: 50%;
     background-color: #D0CECE;
     color: #1E1E1E;
@@ -103,9 +103,9 @@ button.btn.command-block:focus {
 }
 
 button.command-block.btn-command-block--startLoop {
-    width: 3rem;
+    width: 4rem;
     height: 5rem;
-    border-radius: 35px 10px 10px 35px;
+    border-radius: 50px 10px 10px 50px;
     background-color: #DDDDDD;
     transition: unset;
     .command-block-loop-iterations {
@@ -113,7 +113,7 @@ button.command-block.btn-command-block--startLoop {
         text-align: center;
         pointer-events: all;
         border-radius: 5px;
-        margin-left: 0.3rem;
+        margin-left: 0.5rem;
     }
     &:focus {
         box-shadow: none;
@@ -128,9 +128,9 @@ button.command-block.btn-command-block--startLoop {
 }
 
 button.command-block.btn-command-block--endLoop {
-    width: 3rem;
+    width: 4rem;
     height: 5rem;
-    border-radius: 10px 35px 35px 10px;
+    border-radius: 10px 50px 50px 10px;
     background-color: #DDDDDD;
     border: 2px solid transparent;
     transition: unset;

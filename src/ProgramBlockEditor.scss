@@ -147,29 +147,29 @@
 .ProgramBlockEditor__loopContainer {
     display: flex;
     align-items: center;
-    border-radius: 40px 40px 40px 40px;
+    border-radius: 50px 50px 50px 50px;
 }
 
 .ProgramBlockEditor__loopContainer--nested {
-    border-radius: 10px 10px 10px 10px;
+    border-radius: 40px 40px 40px 40px;
     button.command-block.btn-command-block--startLoop {
-        border-radius: 10px 10px 10px 10px;
-        width: 2.6rem;
+        border-radius: 35px 10px 10px 35px;
+        width: 3.5rem;
         height: 4.6rem;
         .command-block-loop-label-container {
-            margin-left: 0.2rem;
+            margin-left: 0.4rem;
         }
         .command-block-loop-iterations {
             width: 2.4em;
             text-align: center;
             pointer-events: all;
             border-radius: 5px;
-            margin-left: 0.1rem;
+            margin-left: 0.4rem;
         }
     }
     button.command-block.btn-command-block--endLoop {
-        border-radius: 10px 10px 10px 10px;
-        width: 2.6rem;
+        border-radius: 10px 35px 35px 10px;
+        width: 3.5rem;
         height: 4.6rem;
     }
 }
