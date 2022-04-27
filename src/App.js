@@ -118,9 +118,9 @@ type AppState = {
     showShareModal: boolean,
     showActionsSimplificationMenu: boolean,
     showPrivacyModal: boolean,
-    startingDirection: number,
     startingX: number,
-    startingY: number
+    startingY: number,
+    startingDirection: number
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -406,10 +406,10 @@ export class App extends React.Component<AppProps, AppState> {
             }
         );
 
-        // Initialize startingDirection, startingX and startingY to the world starting position
-        const startingDirection = getWorldProperties(this.defaultWorld).startingDirection;
+        // Initialize startingX, startingY, and startingDirection to the world starting position
         const startingX = getWorldProperties(this.defaultWorld).startingX;
         const startingY = getWorldProperties(this.defaultWorld).startingY;
+        const startingDirection = getWorldProperties(this.defaultWorld).startingDirection;
 
         this.state = {
             programSequence: new ProgramSequence([], 0, 0, new Map()),
@@ -441,9 +441,9 @@ export class App extends React.Component<AppProps, AppState> {
             showShareModal: false,
             showActionsSimplificationMenu: false,
             showPrivacyModal: false,
-            startingDirection: startingDirection,
             startingX: startingX,
             startingY: startingY,
+            startingDirection: startingDirection,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -1731,6 +1731,7 @@ export class App extends React.Component<AppProps, AppState> {
             || this.state.disallowedActions !== prevState.disallowedActions
             || this.state.startingX !== prevState.startingX
             || this.state.startingY !== prevState.startingY
+            || this.state.startingDirection !== prevState.startingDirection
             || this.state.settings.world !== prevState.settings.world) {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
