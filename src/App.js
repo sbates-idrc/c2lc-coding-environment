@@ -983,93 +983,80 @@ export class App extends React.Component<AppProps, AppState> {
         }
     };
 
-    focusPreviousProgramBlock = () => {
+    focusPreviousProgramBlock() {
         const programBlocks = document.querySelectorAll('.ProgramBlockEditor__program-block');
         if (programBlocks.length > 0) {
             const currentElement = document.activeElement;
             if (currentElement && currentElement.dataset.controltype === 'programStep') {
                 const currentStepNumber = currentElement.dataset.stepnumber;
                 if (currentStepNumber != null) {
-                    const previousStepNumber = parseInt(currentStepNumber, 10) - 1;
-                    const previousStep = programBlocks[previousStepNumber];
-                    if (previousStep && previousStep.focus) {
-                        previousStep.focus();
-                    } else if (!previousStep) {
-                        // If there's no previousStep, focus the last step of program
-                        const lastStepNumber = programBlocks.length - 1;
-                        const lastStep = programBlocks[lastStepNumber];
-                        if (lastStep && lastStep.focus) {
-                            lastStep.focus();
-                        }
-                    }
+                    this.focusBlockBefore(parseInt(currentStepNumber, 10), programBlocks);
                 }
             } else if (currentElement && currentElement.dataset.controltype === 'addNode') {
                 const currentAddNodeNumber = currentElement.dataset.stepnumber;
                 if (currentAddNodeNumber != null) {
-                    const previousStepNumber = parseInt(currentAddNodeNumber, 10) - 1;
-                    const previousStep = programBlocks[previousStepNumber];
-                    if (previousStep && previousStep.focus) {
-                        previousStep.focus();
-                    } else if (!previousStep) {
-                        // If there's no previousStep, focus the last step of program
-                        const lastStepNumber = programBlocks.length - 1;
-                        const lastStep = programBlocks[lastStepNumber];
-                        if (lastStep && lastStep.focus) {
-                            lastStep.focus();
-                        }
-                    }
+                    this.focusBlockBefore(parseInt(currentAddNodeNumber, 10), programBlocks);
                 }
+            } else if (this.state.actionPanelStepIndex != null) {
+                this.focusBlockBefore(this.state.actionPanelStepIndex, programBlocks);
             } else {
-                // If focus is not set, or set on an element other than program blocks or add nodes, focus the last step of program
-                const lastProgramBlock = programBlocks[programBlocks.length - 1];
-                if (lastProgramBlock && lastProgramBlock.focus) {
-                    lastProgramBlock.focus();
-                }
+                // If focus is not set, or set on an element other than a
+                // program block or add node, focus the last step of program
+                Utils.focusLastInNodeList(programBlocks);
             }
         }
-    };
+        this.setState({ actionPanelStepIndex: null });
+    }
 
-    focusNextProgramBlock = () => {
+    focusBlockBefore(index: number, programBlocks: NodeList<HTMLElement>) {
+        if (index > 0) {
+            const previousBlock = programBlocks[index - 1];
+            if (previousBlock && previousBlock.focus) {
+                previousBlock.focus();
+            }
+        } else {
+            // Wrap around to the last step of the program
+            Utils.focusLastInNodeList(programBlocks);
+        }
+    }
+
+    focusNextProgramBlock() {
         const programBlocks = document.querySelectorAll('.ProgramBlockEditor__program-block');
         if (programBlocks.length > 0) {
             const currentElement = document.activeElement;
             if (currentElement && currentElement.dataset.controltype === 'programStep') {
                 const currentStepNumber = currentElement.dataset.stepnumber;
                 if (currentStepNumber != null) {
-                    const nextStepNumber = parseInt(currentStepNumber, 10) + 1;
-                    const nextStep = programBlocks[nextStepNumber];
-                    if (nextStep && nextStep.focus) {
-                        nextStep.focus();
-                    } else if (!nextStep) {
-                        // If there's no nextStep, focus the first step of program
-                        const firstStep = programBlocks[0];
-                        if (firstStep && firstStep.focus()) {
-                            firstStep.focus();
-                        }
-                    }
+                    this.focusBlockAfter(parseInt(currentStepNumber, 10), programBlocks);
                 }
             } else if (currentElement && currentElement.dataset.controltype === 'addNode') {
                 const currentAddNodeNumber = currentElement.dataset.stepnumber;
                 if (currentAddNodeNumber != null) {
-                    const nextStepNumber = parseInt(currentAddNodeNumber, 10);
-                    const nextStep = programBlocks[nextStepNumber];
-                    if (nextStep && nextStep.focus) {
-                        nextStep.focus();
-                    } else if (!nextStep) {
-                        // If there's no nextStep, focus the first step of program
-                        const firstStep = programBlocks[0];
-                        if (firstStep && firstStep.focus()) {
-                            firstStep.focus();
-                        }
-                    }
+                    // We pass stepmumber - 1 to focusBlockAfter() for the add
+                    // node case as the block that we want to focus has the same
+                    // stepnumber as the add node
+                    this.focusBlockAfter(parseInt(currentAddNodeNumber, 10) - 1, programBlocks);
                 }
+            } else if (this.state.actionPanelStepIndex != null) {
+                this.focusBlockAfter(this.state.actionPanelStepIndex, programBlocks);
             } else {
-                // If focus is not set, or set on an element other than program blocks or add nodes, focus the first step of program
-                const firstProgramBlock = programBlocks[0];
-                if (firstProgramBlock && firstProgramBlock.focus) {
-                    firstProgramBlock.focus();
-                }
+                // If focus is not set, or set on an element other than a
+                // program block or add node, focus the first step of program
+                Utils.focusFirstInNodeList(programBlocks);
             }
+        }
+        this.setState({ actionPanelStepIndex: null });
+    }
+
+    focusBlockAfter(index: number, programBlocks: NodeList<HTMLElement>) {
+        if (index < programBlocks.length - 1) {
+            const nextBlock = programBlocks[index + 1];
+            if (nextBlock && nextBlock.focus) {
+                nextBlock.focus();
+            }
+        } else {
+            // Wrap around to the first step of the program
+            Utils.focusFirstInNodeList(programBlocks);
         }
     }
 

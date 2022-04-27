@@ -176,6 +176,24 @@ function focusByQuerySelector(selectors: string) {
     }
 }
 
+function focusFirstInNodeList(elements: NodeList<HTMLElement>) {
+    if (elements.length > 0) {
+        const firstElem = elements[0];
+        if (firstElem && firstElem.focus) {
+            firstElem.focus();
+        }
+    }
+}
+
+function focusLastInNodeList(elements: NodeList<HTMLElement>) {
+    if (elements.length > 0) {
+        const lastElem = elements[elements.length - 1];
+        if (lastElem && lastElem.focus) {
+            lastElem.focus();
+        }
+    }
+}
+
 function generateLoopLabel(n: number): string {
     let label = '';
     while (n > 0) {
@@ -225,6 +243,8 @@ export {
     encodeDirection,
     extend,
     focusByQuerySelector,
+    focusFirstInNodeList,
+    focusLastInNodeList,
     generateEncodedProgramURL,
     generateId,
     generateLoopLabel,
