@@ -1,6 +1,6 @@
 // @flow
 
-import { decodeCoordinate, encodeCoordinate, extend, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, generateLoopLabel, parseLoopLabel } from './Utils.js';
+import { decodeCoordinate, decodeDirection, encodeCoordinate, encodeDirection, extend, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, generateLoopLabel, parseLoopLabel } from './Utils.js';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import ProgramSequence from './ProgramSequence';
@@ -41,24 +41,24 @@ test('Test getWorldFromString', () => {
 });
 
 test('Test getStartingPositionFromString', () => {
-    // (1, 1)
-    expect(getStartingPositionFromString('aa', 16, 8, 2, 3)).toStrictEqual({ x: 1, y: 1 });
+    // (1, 1) facing east
+    expect(getStartingPositionFromString('aab', 16, 8, 2, 3, 6)).toStrictEqual({ x: 1, y: 1, direction: 2 });
     // Values between min and max
-    expect(getStartingPositionFromString('de', 16, 8, 2, 3)).toStrictEqual({ x: 4, y: 5 });
+    expect(getStartingPositionFromString('dec', 16, 8, 2, 3, 6)).toStrictEqual({ x: 4, y: 5, direction: 3 });
     // Max values
-    expect(getStartingPositionFromString('ph', 16, 8, 2, 3)).toStrictEqual({ x: 16, y: 8 });
+    expect(getStartingPositionFromString('phg', 16, 8, 2, 3, 6)).toStrictEqual({ x: 16, y: 8, direction: 7 });
     // Empty
-    expect(getStartingPositionFromString('', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    expect(getStartingPositionFromString('', 16, 8, 2, 3, 6)).toStrictEqual({ x: 2, y: 3, direction: 6 });
     // Null
-    expect(getStartingPositionFromString(null, 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    expect(getStartingPositionFromString(null, 16, 8, 2, 3, 6)).toStrictEqual({ x: 2, y: 3, direction: 6 });
     // Co-ordingates out of range
-    expect(getStartingPositionFromString('zz', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    expect(getStartingPositionFromString('zzh', 16, 8, 2, 3, 6)).toStrictEqual({ x: 2, y: 3, direction: 6 });
     // Too many characters
-    expect(getStartingPositionFromString('aaa', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3});
+    expect(getStartingPositionFromString('aaaa', 16, 8, 2, 3, 6)).toStrictEqual({ x: 2, y: 3, direction: 6 });
     // Too few characters
-    expect(getStartingPositionFromString('a', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    expect(getStartingPositionFromString('a', 16, 8, 2, 3, 6)).toStrictEqual({ x: 2, y: 3, direction: 6 });
     // Bad characters
-    expect(getStartingPositionFromString('11', 16, 8, 2, 3)).toStrictEqual({ x: 2, y: 3 });
+    expect(getStartingPositionFromString('111', 16, 8, 2, 3, 6)).toStrictEqual({ x: 2, y: 3, direction: 6 });
 });
 
 test('Test encodeCoordinate', () => {
@@ -89,6 +89,40 @@ test('Test decodeCoordinate', () => {
     expect(() => {
         decodeCoordinate('!')
     }).toThrowError(/^Bad co-ordinate character: '!'$/);
+});
+
+
+test('encodeDirection', () => {
+    expect.assertions(10);
+    expect(encodeDirection(0)).toBe('0');
+    expect(encodeDirection(1)).toBe('a');
+    expect(encodeDirection(2)).toBe('b');
+    expect(encodeDirection(3)).toBe('c');
+    expect(encodeDirection(4)).toBe('d');
+    expect(encodeDirection(5)).toBe('e');
+    expect(encodeDirection(6)).toBe('f');
+    expect(encodeDirection(7)).toBe('g');
+    expect(() => {
+        encodeDirection(8)
+    }).toThrowError(/^Unrecognized direction 8$/);
+    expect(() => {
+        encodeDirection(-1)
+    }).toThrowError(/^Unrecognized direction -1$/);
+});
+
+test('decodeDirection', () => {
+    expect.assertions(9);
+    expect(decodeDirection('0')).toBe(0);
+    expect(decodeDirection('a')).toBe(1);
+    expect(decodeDirection('b')).toBe(2);
+    expect(decodeDirection('c')).toBe(3);
+    expect(decodeDirection('d')).toBe(4);
+    expect(decodeDirection('e')).toBe(5);
+    expect(decodeDirection('f')).toBe(6);
+    expect(decodeDirection('g')).toBe(7);
+    expect(() => {
+        decodeDirection('3')
+    }).toThrowError(/^Unrecognized direction character 3$/);
 });
 
 test('Test extend', () => {

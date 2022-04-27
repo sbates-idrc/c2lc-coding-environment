@@ -63,24 +63,29 @@ function getWorldFromString(worldQuery: ?string, defaultWorldName: WorldName): W
     }
 }
 
-function getStartingPositionFromString(startingPositionQuery: ?string, maxX: number, maxY: number, defaultX: number, defaultY: number): {| x: number, y: number |} {
+function getStartingPositionFromString(startingPositionQuery: ?string, maxX: number, maxY: number, defaultX: number, defaultY: number, defaultDirection: number): {| x: number, y: number, direction: number |} {
     let x = defaultX;
     let y = defaultY;
-    if (startingPositionQuery && startingPositionQuery.length === 2) {
+    let direction = defaultDirection
+    if (startingPositionQuery && startingPositionQuery.length === 3) {
         try {
             const startingX = decodeCoordinate(startingPositionQuery.charAt(0));
             const startingY = decodeCoordinate(startingPositionQuery.charAt(1));
+            const startingDirection = decodeDirection(startingPositionQuery.charAt(2));
             if (startingX >= 0 && startingX <= maxX
-                    && startingY >= 0 && startingY <= maxY) {
+                    && startingY >= 0 && startingY <= maxY
+                    && startingDirection >= 0 && startingDirection <= 7) {
                 x = startingX;
                 y = startingY;
+                direction = startingDirection;
             }
         } catch(err) {
             x = defaultX;
             y = defaultY;
+            direction = defaultDirection;
         }
     }
-    return { x, y };
+    return { x, y, direction };
 }
 
 function encodeCoordinate(value: number): string {
@@ -111,6 +116,34 @@ function decodeCoordinate(character: string): number {
         return (charCode - 'A'.charCodeAt(0) + 1) * -1;
     }
     throw new Error(`Bad co-ordinate character: '${character}'`);
+}
+
+function encodeDirection(direction: number): string {
+    switch(direction) {
+        case(0): return '0';
+        case(1): return 'a';
+        case(2): return 'b';
+        case(3): return 'c';
+        case(4): return 'd';
+        case(5): return 'e';
+        case(6): return 'f';
+        case(7): return 'g';
+        default: throw new Error(`Unrecognized direction ${direction}`);
+    }
+}
+
+function decodeDirection(character: string): number {
+    switch(character) {
+        case('0'): return 0;
+        case('a'): return 1;
+        case('b'): return 2;
+        case('c'): return 3;
+        case('d'): return 4;
+        case('e'): return 5;
+        case('f'): return 6;
+        case('g'): return 7;
+        default: throw new Error(`Unrecognized direction character ${character}`);
+    }
 }
 
 /**
@@ -187,7 +220,9 @@ function moveToPreviousStepDisabled(programSequence: ProgramSequence, stepIndex:
 
 export {
     decodeCoordinate,
+    decodeDirection,
     encodeCoordinate,
+    encodeDirection,
     extend,
     focusByQuerySelector,
     generateEncodedProgramURL,
