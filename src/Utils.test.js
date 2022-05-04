@@ -1,6 +1,6 @@
 // @flow
 
-import { decodeCoordinate, decodeDirection, encodeCoordinate, encodeDirection, extend, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, generateLoopLabel, parseLoopLabel } from './Utils.js';
+import { decodeCoordinate, decodeDirection, encodeCoordinate, encodeDirection, extend, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, focusFirstInNodeList, focusLastInNodeList, generateLoopLabel, parseLoopLabel } from './Utils.js';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import ProgramSequence from './ProgramSequence';
@@ -157,6 +157,44 @@ test('Test focusByQuerySelector', () => {
 
     // make sure to detach after attach
     testFixture.detach();
+});
+
+test ('Test focusFirstInNodeList', () => {
+    // When called on the empty list, it does nothing and succeeds
+    focusFirstInNodeList((([]: any): NodeList<HTMLElement>));
+
+    // When called on a list with 2 elements, it focuses the first one
+    const firstFocus = jest.fn();
+    const secondFocus = jest.fn();
+    focusFirstInNodeList((([
+        {
+            focus: firstFocus
+        },
+        {
+            focus: secondFocus
+        }
+    ]: any): NodeList<HTMLElement>));
+    expect(firstFocus.mock.calls.length).toBe(1);
+    expect(secondFocus.mock.calls.length).toBe(0);
+});
+
+test ('Test focusLastInNodeList', () => {
+    // When called on the empty list, it does nothing and succeeds
+    focusLastInNodeList((([]: any): NodeList<HTMLElement>));
+
+    // When called on a list with 2 elements, it focuses the second one
+    const firstFocus = jest.fn();
+    const secondFocus = jest.fn();
+    focusLastInNodeList((([
+        {
+            focus: firstFocus
+        },
+        {
+            focus: secondFocus
+        }
+    ]: any): NodeList<HTMLElement>));
+    expect(firstFocus.mock.calls.length).toBe(0);
+    expect(secondFocus.mock.calls.length).toBe(1);
 });
 
 test('Test generateLoopLabel', () => {
