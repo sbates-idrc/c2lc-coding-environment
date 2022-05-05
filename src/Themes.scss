@@ -2022,7 +2022,9 @@ body.contrast-theme {
             outline: #FFFFFF solid 0.2rem;
         }
         &:hover {
-            border: 0.2rem solid #FFFFFF;
+            padding: 0.1rem;
+            border: 0.1rem solid #FFFFFF;
+            outline: #FFFFFF solid 0.1rem;
             background-color: black;
             .command-block-loop-label-container {
                 background-color: black;
