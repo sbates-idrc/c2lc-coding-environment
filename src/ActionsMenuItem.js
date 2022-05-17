@@ -4,56 +4,88 @@ import React from 'react';
 import { injectIntl } from 'react-intl';
 import type { IntlShape } from 'react-intl';
 
+import classNames from 'classnames';
+import {commandBlockIconTypes} from './CommandBlock';
+
 import './ActionsMenuItem.scss';
 
 type ActionsMenuItemProps = {
     intl: IntlShape,
-    isAllowed?: boolean,
+    isDisallowed?: boolean,
     isUsed?: boolean,
     itemKey: string,
     onChange: (event: Event) => void
 }
 
 export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} > {
+    handleKeydown = (event: KeyboardEvent) => {
+        if (event.key === ' ' || event.key === 'Enter') {
+            this.handleChange(event);
+        }
+    }
+
+    handleChange = (event: Event) => {
+        // Always reenabled disallowed commands, but do not disable used ones.
+        if (this.props.isDisallowed || !this.props.isUsed) {
+            event.preventDefault();
+            this.props.onChange(event);
+        }
+    }
+
     render () {
         // We don't use FormattedMessage as we are working with a complex chain of templates.
-        const commandName = this.props.intl.formatMessage({ id: `Command.${this.props.itemKey}` });
-        const commandNameShort = this.props.intl.formatMessage({ id: `Command.short.${this.props.itemKey}` });
+        let commandName = this.props.intl.formatMessage({ id: `ActionsMenuItem.command.${this.props.itemKey}` });
+        const usedLabel = this.props.intl.formatMessage({ id: 'ActionsMenuItem.usedItemToggleLabel' });
+        if (this.props.isUsed) {
+            commandName += " " + usedLabel;
+        }
 
-        const actionNameKey = this.props.isAllowed ? "ActionsMenu.item.action.show" : "ActionsMenu.item.action.hide";
-        const actionName = this.props.intl.formatMessage({ id: actionNameKey });
+        const checkboxId = `actions-menu-item-${this.props.itemKey}`;
 
-        // If we're used, show one message. If we're not, show another that differs based on `isAllowed`.
-        const showHideLabelKey = this.props.isUsed ? "ActionsMenu.item.usedItemToggleLabel" : "ActionsMenu.item.unusedItemToggleLabel";
-        const showHideLabel = this.props.intl.formatMessage(
-            { id: showHideLabelKey },
-            { action: actionName, commandName: commandName }
+        const iconClassNames = classNames(
+            'ActionsMenuItem__icon',
+            'ActionsMenuItem__icon--' + this.props.itemKey
         );
 
-        const showHideAriaLabelKey = this.props.isUsed ? "ActionsMenu.item.usedItemToggleAriaLabel" : "ActionsMenu.item.unusedItemToggleAriaLabel";
-        const showHideAriaLabel = this.props.intl.formatMessage(
-            { id: showHideAriaLabelKey },
-            { action: actionName, commandName: commandName }
-        );
+        // $FlowFixMe: Flow is confused about what itemKey is.
+        let icon = null;
+        const key = this.props.itemKey === 'loop' ? 'loopWithShadow' : this.props.itemKey;
+        const iconType = commandBlockIconTypes.get(key);
+        if (iconType) {
+            icon = React.createElement(iconType);
+        }
+
+        // Disable the checkbox if the button is allowed and used.
+        const isCheckboxDisabled = (!this.props.isDisallowed && this.props.isUsed);
 
         return (
-            <div className="ActionsMenuItem">
-                <div className={'ActionsMenuItem__text' + (this.props.isAllowed ? '' : ' ActionsMenuItem__text--disabled')}>
-                    {commandNameShort}
-                </div>
+            <div
+                className="ActionsMenuItem"
+                role="checkbox"
+                aria-checked={!this.props.isDisallowed}
+                aria-label={commandName}
+                aria-disabled={isCheckboxDisabled}
+                tabIndex={0}
+                onKeyDown={this.handleKeydown}
+                onClick={this.handleChange}
+            >
                 <div className="ActionsMenuItem__option">
                     <input
-                        className="ActionsMenuItem__checkbox focus-trap-ActionsMenuItem__checkbox"
+                        className="ActionsMenuItem__checkbox"
                         type="checkbox"
-                        aria-label={showHideAriaLabel}
-                        id={commandNameShort}
-                        checked={this.props.isAllowed}
-                        aria-disabled={this.props.isUsed}
-                        onChange={this.props.onChange}
+                        id={checkboxId}
+                        aria-hidden={true}
+                        checked={!this.props.isDisallowed}
+                        disabled={isCheckboxDisabled}
+                        readOnly={true}
+                        tabIndex={-1}
                     />
-                    <label htmlFor={commandNameShort} className="ActionsMenuItem__option-label">
-                        {showHideLabel}
-                    </label>
+                </div>
+                <div className="ActionsMenuItem__text">
+                    {commandName}
+                </div>
+                <div className={iconClassNames}>
+                    {icon}
                 </div>
             </div>
         );

@@ -3,7 +3,8 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
-import AllowedActionsSerializer from './AllowedActionsSerializer';
+import DisallowedActionsSerializer from './DisallowedActionsSerializer';
+import AnnouncementBuilder from './AnnouncementBuilder';
 import AudioManagerImpl from './AudioManagerImpl';
 import CharacterAriaLive from './CharacterAriaLive';
 import CharacterState from './CharacterState';
@@ -23,15 +24,14 @@ import ProgramBlockEditor from './ProgramBlockEditor';
 import RefreshButton from './RefreshButton';
 import Scene from './Scene';
 import SceneDimensions from './SceneDimensions';
+import SoundOptionsModal from './SoundOptionsModal';
 import StopButton from './StopButton';
-import AudioFeedbackToggleSwitch from './AudioFeedbackToggleSwitch';
 import PenDownToggleSwitch from './PenDownToggleSwitch';
 import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
-import ShareButton from './ShareButton';
-import ActionsMenu from './ActionsMenu';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, RobotDriver, RunningState, ThemeName } from './types';
+import ActionsSimplificationModal from './ActionsSimplificationModal';
+import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, DisplayedCommandName, ProgramStepMovementDirection, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -42,20 +42,30 @@ import './vendor/dragdroptouch/DragDropTouch.js';
 import ThemeSelector from './ThemeSelector';
 import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
 import KeyboardInputModal from './KeyboardInputModal';
+import ShareModal from './ShareModal';
+import { ReactComponent as ShareIcon} from './svg/Share.svg';
 
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
+import { ReactComponent as AudioIcon } from './svg/Audio.svg';
 import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
+import { ReactComponent as ThemeIcon } from './svg/Theme.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
+import { ReactComponent as ActionsMenuToggleIcon } from './svg/Simplification.svg'
 import ProgramChangeController from './ProgramChangeController';
+import PrivacyModal from './PrivacyModal';
 
-// Convenience function to focus on the first element with a given class, used
-// for keyboard shortcuts.
-function focusOnFirstElementWithClass (className) {
-    const elements = document.getElementsByClassName(className);
-    if (elements.length) {
-        elements[0].focus();
-    }
+import { ReactComponent as LogoContrast} from './svg/LogoContrast.svg';
+import { ReactComponent as LogoGrayscale} from './svg/LogoGrayscale.svg';
+import { ReactComponent as LogoDark} from './svg/LogoDark.svg';
+import { ReactComponent as LogoMixedAndLight} from './svg/LogoMixedAndLight.svg';
+
+function getThemeLogo (theme: ThemeName) {
+    if (theme === "contrast") { return LogoContrast; }
+    else if (theme === "gray") { return LogoGrayscale; }
+    else if (theme === "dark") { return LogoDark; }
+
+    return LogoMixedAndLight;
 }
 
 /* Dash connection removed for version 0.5
@@ -92,15 +102,25 @@ type AppState = {
     isDraggingCommand: boolean,
     audioEnabled: boolean,
     announcementsEnabled: boolean,
+    sonificationEnabled: boolean,
     actionPanelStepIndex: ?number,
+    actionPanelFocusedOptionName: ?string,
     sceneDimensions: SceneDimensions,
     drawingEnabled: boolean,
     runningState: RunningState,
-    allowedActions: ActionToggleRegister,
+    disallowedActions: ActionToggleRegister,
     keyBindingsEnabled: boolean,
-    keyboardInputSchemeName: KeyboardInputSchemeName;
+    keyboardInputSchemeName: KeyboardInputSchemeName,
     showKeyboardModal: boolean,
-    showWorldSelector: boolean
+    showSoundOptionsModal: boolean,
+    showThemeSelectorModal: boolean,
+    showWorldSelector: boolean,
+    showShareModal: boolean,
+    showActionsSimplificationMenu: boolean,
+    showPrivacyModal: boolean,
+    startingX: number,
+    startingY: number,
+    startingDirection: number
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -113,19 +133,20 @@ export class App extends React.Component<AppProps, AppState> {
     focusTrapManager: FocusTrapManager;
     programSerializer: ProgramSerializer;
     characterStateSerializer: CharacterStateSerializer;
-    allowedActionsSerializer: AllowedActionsSerializer;
+    disallowedActionsSerializer: DisallowedActionsSerializer;
     speedLookUp: Array<number>;
     pushStateTimeoutID: ?TimeoutID;
     speedControlRef: { current: null | HTMLElement };
     programBlockEditorRef: { current: any };
     sequenceInProgress: Array<KeyboardEvent>;
+    announcementBuilder: AnnouncementBuilder;
     programChangeController: ProgramChangeController;
     defaultWorld: WorldName;
 
     constructor(props: any) {
         super(props);
 
-        this.version = '1.0';
+        this.version = '1.4';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -141,7 +162,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.characterStateSerializer = new CharacterStateSerializer(this.sceneDimensions);
 
-        this.allowedActionsSerializer = new AllowedActionsSerializer();
+        this.disallowedActionsSerializer = new DisallowedActionsSerializer();
 
         this.pushStateTimeoutID = null;
 
@@ -385,22 +406,18 @@ export class App extends React.Component<AppProps, AppState> {
             }
         );
 
-        // We have to calculate the allowed commands and initialise the state here because this is the point at which
-        // the interpreter's commands are populated.
-
-        // TODO: Make this persist in the URL.
-        const allowedActions = {};
-        Object.keys(this.interpreter.commands).forEach((commandName) => {
-            allowedActions[commandName] = true;
-        });
+        // Initialize startingX, startingY, and startingDirection to the world starting position
+        const startingX = getWorldProperties(this.defaultWorld).startingX;
+        const startingY = getWorldProperties(this.defaultWorld).startingY;
+        const startingDirection = getWorldProperties(this.defaultWorld).startingDirection;
 
         this.state = {
-            programSequence: new ProgramSequence([], 0),
-            characterState: this.makeStartingCharacterState(this.defaultWorld),
+            programSequence: new ProgramSequence([], 0, 0, new Map()),
+            characterState: this.makeStartingCharacterState(startingX, startingY, startingDirection),
             settings: {
                 language: 'en',
                 addNodeExpandedMode: true,
-                theme: 'mixed',
+                theme: 'default',
                 world: this.defaultWorld
             },
             dashConnectionStatus: 'notConnected',
@@ -409,14 +426,24 @@ export class App extends React.Component<AppProps, AppState> {
             isDraggingCommand: false,
             audioEnabled: true,
             announcementsEnabled: true,
+            sonificationEnabled: true,
             actionPanelStepIndex: null,
+            actionPanelFocusedOptionName: null,
             sceneDimensions: this.sceneDimensions,
             drawingEnabled: true,
             runningState: 'stopped',
-            allowedActions: allowedActions,
+            disallowedActions: {},
             keyBindingsEnabled: false,
             showKeyboardModal: false,
+            showSoundOptionsModal: false,
+            showThemeSelectorModal: false,
             showWorldSelector: false,
+            showShareModal: false,
+            showActionsSimplificationMenu: false,
+            showPrivacyModal: false,
+            startingX: startingX,
+            startingY: startingY,
+            startingDirection: startingDirection,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -428,13 +455,15 @@ export class App extends React.Component<AppProps, AppState> {
             this.audioManager = props.audioManager
         }
         else if (FeatureDetection.webAudioApiIsAvailable()) {
-            this.audioManager = new AudioManagerImpl(this.state.audioEnabled, this.state.announcementsEnabled);
+            this.audioManager = new AudioManagerImpl(this.state.audioEnabled, this.state.announcementsEnabled, this.state.sonificationEnabled);
         }
         else {
             this.audioManager = new FakeAudioManager();
         }
 
         this.focusTrapManager = new FocusTrapManager();
+
+        this.announcementBuilder = new AnnouncementBuilder(this.props.intl);
 
         this.programChangeController = new ProgramChangeController(this,
             this.props.intl, this.audioManager);
@@ -494,6 +523,18 @@ export class App extends React.Component<AppProps, AppState> {
         }, callback);
     }
 
+    refreshIsDisabled(): boolean {
+        return this.state.runningState !== 'stopped';
+    }
+
+    updateProgramCounterAndLoopIterationsLeft(programCounter: number, loopIterationsLeft: Map<string, number>, callback: () => void): void {
+        this.setState((state) => {
+            return {
+                programSequence: state.programSequence.updateProgramCounterAndLoopIterationsLeft(programCounter, loopIterationsLeft)
+            }
+        }, callback);
+    }
+
     // Handlers
 
     handleProgramSequenceChange = (programSequence: ProgramSequence) => {
@@ -518,6 +559,16 @@ export class App extends React.Component<AppProps, AppState> {
         );
     }
 
+    handleProgramBlockEditorMoveStep = (indexFrom: number, direction: ProgramStepMovementDirection, commandAtIndexFrom: string) => {
+        this.programChangeController.moveProgramStep(
+            this.programBlockEditorRef.current,
+            indexFrom,
+            direction,
+            commandAtIndexFrom,
+            'focusActionPanel'
+        )
+    }
+
     handlePlay = () => {
         switch (this.state.runningState) {
             case 'running':
@@ -537,7 +588,7 @@ export class App extends React.Component<AppProps, AppState> {
             case 'stopped':
                 this.setState((state) => {
                     return {
-                        programSequence: state.programSequence.updateProgramCounter(0),
+                        programSequence: state.programSequence.initiateProgramRun(),
                         runningState: 'running',
                         actionPanelStepIndex: null
                     };
@@ -586,16 +637,10 @@ export class App extends React.Component<AppProps, AppState> {
         });
     };
 
-    handleCommandFromCommandPalette = (command: ?string) => {
-        if (command) {
-            this.setState({
-                selectedAction: command
-            });
-        } else {
-            this.setState({
-                selectedAction: null
-            });
-        }
+    handleCommandFromCommandPalette = (command: string) => {
+        this.setState({
+            selectedAction: command
+        });
     };
 
     handleDragStartCommand = (command: string) => {
@@ -610,9 +655,10 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ isDraggingCommand: false });
     };
 
-    handleChangeActionPanelStepIndex = (index: ?number) => {
+    handleChangeActionPanelStepIndexAndOption = (index: ?number, focusedOptionName: ?string) => {
         this.setState({
-            actionPanelStepIndex: index
+            actionPanelStepIndex: index,
+            actionPanelFocusedOptionName: focusedOptionName
         });
     };
 
@@ -769,7 +815,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("refreshScene"):
-                            if (!this.editingIsDisabled()) {
+                            if (!this.refreshIsDisabled()) {
                                 this.handleRefresh();
                             }
                             break;
@@ -787,20 +833,8 @@ export class App extends React.Component<AppProps, AppState> {
                         case("selectForward1"):
                             this.setState({ "selectedAction": "forward1" });
                             break;
-                        case("selectForward2"):
-                            this.setState({ "selectedAction": "forward2" });
-                            break;
-                        case("selectForward3"):
-                            this.setState({ "selectedAction": "forward3" });
-                            break;
                         case("selectBackward1"):
                             this.setState({ "selectedAction": "backward1" });
-                            break;
-                        case("selectBackward2"):
-                            this.setState({ "selectedAction": "backward2" });
-                            break;
-                        case("selectBackward3"):
-                            this.setState({ "selectedAction": "backward3" });
                             break;
                         case("selectLeft45"):
                             this.setState({ "selectedAction": "left45" });
@@ -808,47 +842,105 @@ export class App extends React.Component<AppProps, AppState> {
                         case("selectLeft90"):
                             this.setState({ "selectedAction": "left90" });
                             break;
-                        case("selectLeft180"):
-                            this.setState({ "selectedAction": "left180" });
-                            break;
                         case("selectRight45"):
                             this.setState({ "selectedAction": "right45" });
                             break;
                         case("selectRight90"):
                             this.setState({ "selectedAction": "right90" });
                             break;
-                        case("selectRight180"):
-                            this.setState({ "selectedAction": "right180" });
+                        case("selectLoop"):
+                            this.setState({ "selectedAction": "loop" });
                             break;
                         case("focusActions"):
-                            focusOnFirstElementWithClass("command-block");
+                            Utils.focusByQuerySelector(".command-block");
                             break;
                         case("focusAppHeader"):
-                            focusOnFirstElementWithClass("keyboard-shortcut-focus__app-header");
+                            Utils.focusByQuerySelector(".keyboard-shortcut-focus__app-header");
                             break;
                         case("focusAddNodeToggle"):
-                            focusOnFirstElementWithClass("ProgramBlockEditor__add-node-toggle-switch");
+                            Utils.focusByQuerySelector(".ProgramBlockEditor__add-node-toggle-switch");
                             break;
                         case("focusCharacterPositionControls"):
-                            focusOnFirstElementWithClass("CharacterPositionController__character-position-button");
+                            Utils.focusByQuerySelector(".CharacterPositionController__character-position-button");
                             break;
                         case("focusCharacterColumnInput"):
-                            focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-column");
+                            Utils.focusByQuerySelector(".ProgramBlock__character-position-coordinate-box-column");
                             break;
                         case("focusCharacterRowInput"):
-                            focusOnFirstElementWithClass("ProgramBlock__character-position-coordinate-box-row");
+                            Utils.focusByQuerySelector(".ProgramBlock__character-position-coordinate-box-row");
+                            break;
+                        case("focusPreviousProgramBlock"): {
+                            this.focusPreviousProgramBlock();
+                            break;
+                        }
+                        case("focusNextProgramBlock"): {
+                            this.focusNextProgramBlock();
+                            break;
+                        }
+                        case("focusLoopIterationsInput"):
+                            if (!this.editingIsDisabled()) {
+                                const currentElement = document.activeElement;
+                                if (currentElement) {
+                                    if (currentElement.dataset.controltype === 'programStep' && currentElement.dataset.command === 'startLoop') {
+                                        const iterationsInput = currentElement.querySelector('input');
+                                        if (iterationsInput != null && iterationsInput.focus) {
+                                            iterationsInput.focus();
+                                        }
+                                    }
+                                }
+                            }
                             break;
                         case("focusPlayShare"):
-                            focusOnFirstElementWithClass("PlayButton--play");
+                            Utils.focusByQuerySelector(".PlayButton--play");
                             break;
                         case("focusProgramSequence"):
-                            focusOnFirstElementWithClass("AddNode__expanded-button");
+                            Utils.focusByQuerySelector(".AddNode__expanded-button");
                             break;
                         case("focusScene"):
-                            focusOnFirstElementWithClass("PenDownToggleSwitch");
+                            Utils.focusByQuerySelector(".PenDownToggleSwitch");
                             break;
                         case("focusWorldSelector"):
-                            focusOnFirstElementWithClass("keyboard-shortcut-focus__world-selector");
+                            Utils.focusByQuerySelector(".keyboard-shortcut-focus__world-selector");
+                            break;
+                        case("moveToPreviousStep"):
+                            if (!this.editingIsDisabled()) {
+                                const currentElement = document.activeElement;
+                                let index = null;
+                                // $FlowFixMe: Not all elements have dataset property
+                                if (currentElement.dataset.controltype === 'programStep') {
+                                    index = parseInt(currentElement.dataset.stepnumber, 10);
+                                }
+                                if (index != null && !Utils.moveToPreviousStepDisabled(this.state.programSequence, index)) {
+                                    this.programChangeController.moveProgramStep(
+                                        this.programBlockEditorRef.current,
+                                        index,
+                                        'previous',
+                                        // $FlowFixMe: Not all elements have dataset property
+                                        currentElement.dataset.command,
+                                        'focusBlockMoved'
+                                    )
+                                }
+                            }
+                            break;
+                        case("moveToNextStep"):
+                            if (!this.editingIsDisabled()) {
+                                const currentElement = document.activeElement;
+                                let index = null;
+                                // $FlowFixMe: Not all elements have dataset property
+                                if (currentElement.dataset.controltype === 'programStep') {
+                                    index = parseInt(currentElement.dataset.stepnumber, 10);
+                                }
+                                if (index != null && !Utils.moveToNextStepDisabled(this.state.programSequence, index)) {
+                                    this.programChangeController.moveProgramStep(
+                                        this.programBlockEditorRef.current,
+                                        index,
+                                        'next',
+                                        // $FlowFixMe: Not all elements have dataset property
+                                        currentElement.dataset.command,
+                                        'focusBlockMoved'
+                                    )
+                                }
+                            }
                             break;
                         case("moveCharacterLeft"):
                             if (!this.editingIsDisabled()) {
@@ -881,7 +973,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("changeToDefaultTheme"):
-                            this.setStateSettings({theme: "mixed"});
+                            this.setStateSettings({theme: "default"});
                             break;
                         case("changeToLightTheme"):
                             this.setStateSettings({theme: "light"});
@@ -906,9 +998,80 @@ export class App extends React.Component<AppProps, AppState> {
         }
     };
 
-    handleKeyboardMenuIconKeydown = (event: KeyboardEvent) => {
-        if (event.key === "Enter" || event.key === " ") {
-            this.handleKeyboardModalToggle();
+    focusPreviousProgramBlock() {
+        const programBlocks = document.querySelectorAll('.ProgramBlockEditor__program-block');
+        if (programBlocks.length > 0) {
+            const currentElement = document.activeElement;
+            if (currentElement && currentElement.dataset.controltype === 'programStep') {
+                const currentStepNumber = currentElement.dataset.stepnumber;
+                if (currentStepNumber != null) {
+                    this.focusBlockBefore(parseInt(currentStepNumber, 10), programBlocks);
+                }
+            } else if (currentElement && currentElement.dataset.controltype === 'addNode') {
+                const currentAddNodeNumber = currentElement.dataset.stepnumber;
+                if (currentAddNodeNumber != null) {
+                    this.focusBlockBefore(parseInt(currentAddNodeNumber, 10), programBlocks);
+                }
+            } else if (this.state.actionPanelStepIndex != null) {
+                this.focusBlockBefore(this.state.actionPanelStepIndex, programBlocks);
+            } else {
+                // If focus is not set, or set on an element other than a
+                // program block or add node, focus the last step of program
+                Utils.focusLastInNodeList(programBlocks);
+            }
+        }
+        this.setState({ actionPanelStepIndex: null });
+    }
+
+    focusBlockBefore(index: number, programBlocks: NodeList<HTMLElement>) {
+        if (index > 0) {
+            const previousBlock = programBlocks[index - 1];
+            if (previousBlock && previousBlock.focus) {
+                previousBlock.focus();
+            }
+        } else {
+            // Wrap around to the last step of the program
+            Utils.focusLastInNodeList(programBlocks);
+        }
+    }
+
+    focusNextProgramBlock() {
+        const programBlocks = document.querySelectorAll('.ProgramBlockEditor__program-block');
+        if (programBlocks.length > 0) {
+            const currentElement = document.activeElement;
+            if (currentElement && currentElement.dataset.controltype === 'programStep') {
+                const currentStepNumber = currentElement.dataset.stepnumber;
+                if (currentStepNumber != null) {
+                    this.focusBlockAfter(parseInt(currentStepNumber, 10), programBlocks);
+                }
+            } else if (currentElement && currentElement.dataset.controltype === 'addNode') {
+                const currentAddNodeNumber = currentElement.dataset.stepnumber;
+                if (currentAddNodeNumber != null) {
+                    // We pass stepmumber - 1 to focusBlockAfter() for the add
+                    // node case as the block that we want to focus has the same
+                    // stepnumber as the add node
+                    this.focusBlockAfter(parseInt(currentAddNodeNumber, 10) - 1, programBlocks);
+                }
+            } else if (this.state.actionPanelStepIndex != null) {
+                this.focusBlockAfter(this.state.actionPanelStepIndex, programBlocks);
+            } else {
+                // If focus is not set, or set on an element other than a
+                // program block or add node, focus the first step of program
+                Utils.focusFirstInNodeList(programBlocks);
+            }
+        }
+        this.setState({ actionPanelStepIndex: null });
+    }
+
+    focusBlockAfter(index: number, programBlocks: NodeList<HTMLElement>) {
+        if (index < programBlocks.length - 1) {
+            const nextBlock = programBlocks[index + 1];
+            if (nextBlock && nextBlock.focus) {
+                nextBlock.focus();
+            }
+        } else {
+            // Wrap around to the first step of the program
+            Utils.focusFirstInNodeList(programBlocks);
         }
     }
 
@@ -916,10 +1079,24 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({showKeyboardModal: false});
     };
 
-    handleKeyboardModalToggle = () => {
-        this.setState((currentState: AppState) => {
-            return { showKeyboardModal: !currentState.showKeyboardModal};
-        });
+    handleClickKeyboardIcon = () => {
+        this.setState({ showKeyboardModal: true});
+    };
+
+    handleClickSoundIcon = () => {
+        this.setState({ showSoundOptionsModal: true });
+    }
+
+    handleSoundOptionsModalClose = () => {
+        this.setState({ showSoundOptionsModal: false });
+    }
+
+    handleChangeSoundOptions = (audioEnabled: boolean, announcementsEnabled: boolean, sonificationEnabled: boolean) => {
+        this.setState({ audioEnabled, announcementsEnabled, sonificationEnabled, showSoundOptionsModal: false });
+    }
+
+    handleClickThemeSelectorIcon = () => {
+        this.setState({ showThemeSelectorModal: true });
     }
 
     // Focus trap escape key handling.
@@ -927,30 +1104,10 @@ export class App extends React.Component<AppProps, AppState> {
         this.focusTrapManager.handleKeyDown(e);
     }
 
-    handleToggleAudioFeedback = (announcementsEnabled: boolean) => {
-        this.setState({
-            announcementsEnabled: announcementsEnabled
-        });
-    }
-
     handleTogglePenDown = (drawingEnabled: boolean) => {
         this.setState({
             drawingEnabled: drawingEnabled
         });
-    }
-
-    handleToggleAllowedCommand = (event: Event, commandName: CommandName) => {
-        // TODO: Use the function form of setState() as the new state
-        //       depends on the current state
-        const currentIsAllowed = this.state.allowedActions[commandName];
-        if (this.state.programSequence.usesAction(commandName) && currentIsAllowed) {
-            event.preventDefault();
-        }
-        else {
-            const newAllowedActions= Object.assign({}, this.state.allowedActions);
-            newAllowedActions[commandName] = !currentIsAllowed;
-            this.setState({ allowedActions: newAllowedActions})
-        }
     }
 
     changeProgramSpeedIndex = (newSpeedIndex: number) => {
@@ -967,24 +1124,12 @@ export class App extends React.Component<AppProps, AppState> {
         this.interpreter.setStepTime(stepTimeMs);
     }
 
-    renderCommandBlocks = (commands: Array<CommandName>) => {
+    renderCommandBlocks = (commands: Array<DisplayedCommandName>) => {
         const commandBlocks = [];
 
         for (const [index, value] of commands.entries()) {
-            const isAllowed = this.state.allowedActions[value];
-            if (isAllowed) {
-                commandBlocks.push(
-                    <CommandPaletteCommand
-                        key={`CommandBlock-${index}`}
-                        commandName={value}
-                        selectedCommandName={this.getSelectedCommandName()}
-                        audioManager={this.audioManager}
-                        isDraggingCommand={this.state.isDraggingCommand}
-                        onChange={this.handleCommandFromCommandPalette}
-                        onDragStart={this.handleDragStartCommand}
-                        onDragEnd={this.handleDragEndCommand}/>
-                );
-            } else {
+            const isDisallowed = this.state.disallowedActions[value];
+            if (isDisallowed) {
                 commandBlocks.push(
                     <div
                         className='command-block--hidden'
@@ -994,74 +1139,123 @@ export class App extends React.Component<AppProps, AppState> {
                     </div>
                 );
             }
+            else {
+                commandBlocks.push(
+                    <CommandPaletteCommand
+                        key={`CommandBlock-${index}`}
+                        commandName={value}
+                        selectedCommandName={this.getSelectedCommandName()}
+                        audioManager={this.audioManager}
+                        isDraggingCommand={this.state.isDraggingCommand}
+                        onSelect={this.handleCommandFromCommandPalette}
+                        onDragStart={this.handleDragStartCommand}
+                        onDragEnd={this.handleDragEndCommand}/>
+                );
+            }
+
         }
 
         return commandBlocks;
     }
 
-    makeStartingCharacterState(world: WorldName): CharacterState {
-        const worldProperties = getWorldProperties(world);
+    makeStartingCharacterState(startingX: number, startingY: number, startingDirection: number): CharacterState {
         return new CharacterState(
-            worldProperties.startingX,
-            worldProperties.startingY,
-            worldProperties.startingDirection,
+            startingX,
+            startingY,
+            startingDirection,
             [],
             this.sceneDimensions
         );
     }
 
     handleRefresh = () => {
-        const currentWorld = this.state.settings.world;
-        this.setState({
-            characterState: this.makeStartingCharacterState(currentWorld)
+        this.setState((state) => {
+            return {
+                characterState: this.makeStartingCharacterState(
+                    state.startingX,
+                    state.startingY,
+                    state.startingDirection
+                )
+            };
         });
     }
 
+    handleSelectTheme = (theme: ThemeName) => {
+        this.setStateSettings({theme});
+    }
+
     handleChangeTheme = (theme: ThemeName) => {
-        this.setStateSettings({ theme });
+        this.setState({
+            showThemeSelectorModal: false,
+            settings: Object.assign({}, this.state.settings, {theme})
+        });
     }
 
     handleChangeCharacterPosition = (positionName: ?string) => {
         switch(positionName) {
             case 'turnLeft':
                 this.setState((state) => {
+                    const updatedCharacterState = state.characterState.turnLeft(1);
                     return {
-                        characterState: state.characterState.turnLeft(1)
+                        characterState: updatedCharacterState,
+                        startingX: updatedCharacterState.xPos,
+                        startingY: updatedCharacterState.yPos,
+                        startingDirection: updatedCharacterState.direction,
                     }
                 });
                 break;
             case 'turnRight':
                 this.setState((state) => {
+                    const updatedCharacterState = state.characterState.turnRight(1);
                     return {
-                        characterState: state.characterState.turnRight(1)
+                        characterState: updatedCharacterState,
+                        startingX: updatedCharacterState.xPos,
+                        startingY: updatedCharacterState.yPos,
+                        startingDirection: updatedCharacterState.direction,
                     }
                 });
                 break;
             case 'up':
                 this.setState((state) => {
+                    const updatedCharacterState = state.characterState.moveUpPosition();
                     return {
-                        characterState: state.characterState.moveUpPosition()
+                        characterState: updatedCharacterState,
+                        startingX: updatedCharacterState.xPos,
+                        startingY: updatedCharacterState.yPos,
+                        startingDirection: updatedCharacterState.direction,
                     }
                 });
                 break;
             case 'right':
                 this.setState((state) => {
+                    const updatedCharacterState = state.characterState.moveRightPosition();
                     return {
-                        characterState: state.characterState.moveRightPosition()
+                        characterState: updatedCharacterState,
+                        startingX: updatedCharacterState.xPos,
+                        startingY: updatedCharacterState.yPos,
+                        startingDirection: updatedCharacterState.direction,
                     }
                 });
                 break;
             case 'down':
                 this.setState((state) => {
+                    const updatedCharacterState = state.characterState.moveDownPosition();
                     return {
-                        characterState: state.characterState.moveDownPosition()
+                        characterState: updatedCharacterState,
+                        startingX: updatedCharacterState.xPos,
+                        startingY: updatedCharacterState.yPos,
+                        startingDirection: updatedCharacterState.direction,
                     }
                 });
                 break;
             case 'left':
                 this.setState((state) => {
+                    const updatedCharacterState = state.characterState.moveLeftPosition();
                     return {
-                        characterState: state.characterState.moveLeftPosition()
+                        characterState: updatedCharacterState,
+                        startingX: updatedCharacterState.xPos,
+                        startingY: updatedCharacterState.yPos,
+                        startingDirection: updatedCharacterState.direction,
                     }
                 });
                 break;
@@ -1071,16 +1265,22 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleChangeCharacterXPosition = (columnLabel: string) => {
-        const currentCharacterState = this.state.characterState;
+        const updatedCharacterState = this.state.characterState.changeXPosition(columnLabel);
         this.setState({
-            characterState: currentCharacterState.changeXPosition(columnLabel)
+            characterState: updatedCharacterState,
+            startingX: updatedCharacterState.xPos,
+            startingY: updatedCharacterState.yPos,
+            startingDirection: updatedCharacterState.direction,
         });
     }
 
     handleChangeCharacterYPosition = (rowLabel: string) => {
-        const currentCharacterState = this.state.characterState;
+        const updatedCharacterState = this.state.characterState.changeYPosition(parseInt(rowLabel, 10));
         this.setState({
-            characterState: currentCharacterState.changeYPosition(parseInt(rowLabel, 10))
+            characterState: updatedCharacterState,
+            startingX: updatedCharacterState.xPos,
+            startingY: updatedCharacterState.yPos,
+            startingDirection: updatedCharacterState.direction,
         });
     }
 
@@ -1092,20 +1292,31 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({keyBindingsEnabled: keyBindingsEnabled});
     }
 
+    handleClickActionsSimplificationIcon = () => {
+        if (!this.editingIsDisabled()) {
+            this.setState({
+                showActionsSimplificationMenu: true
+            });
+        }
+    }
+
+    handleChangeDisallowedActions = (disallowedActions: ActionToggleRegister) => {
+        this.setState({
+            showActionsSimplificationMenu: false,
+            disallowedActions: disallowedActions
+        });
+    }
+
+    handleCancelActionsSimplificationMenu = () => {
+        this.setState({ showActionsSimplificationMenu: false});
+    }
+
     //World handlers
 
     handleClickWorldIcon = () => {
         this.setState({
             showWorldSelector: true
         });
-    }
-
-    handleKeyDownWorldIcon = (event: KeyboardEvent) => {
-        if (event.key === "Enter" || event.key === " ") {
-            this.setState({
-                showWorldSelector: true
-            });
-        }
     }
 
     handleSelectWorld = (world: WorldName) => {
@@ -1121,7 +1332,26 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
+    handleShareButtonClick = (event: Event) => {
+        event.preventDefault();
+        this.setState({ showShareModal: true});
+
+    }
+
+    handleCloseShare = () => {
+        this.setState({ showShareModal: false });
+    }
+
+    handleClickPrivacyButton = () => {
+        this.setState({ showPrivacyModal: true });
+    }
+
+    handleClosePrivacyModal = () => {
+        this.setState({ showPrivacyModal: false });
+    }
+
     render() {
+        const Logo = getThemeLogo(this.state.settings.theme);
         return (
             <React.Fragment>
                 <div
@@ -1131,41 +1361,67 @@ export class App extends React.Component<AppProps, AppState> {
                     onKeyDown={this.handleRootKeyDown}>
                     <header className='App__header'>
                         <div className='App__header-row'>
-                            <h1 className='App__app-heading'>
+                            <h1 className='App__logo-container'>
                                 <a
                                     className='keyboard-shortcut-focus__app-header'
-                                    href='https://weavly.org'
+                                    href='https://weavly.org/learn/resources/facilitating-a-weavly-coding-workshop-beginners/'
                                     aria-label={this.props.intl.formatMessage({id: 'App.appHeading.link'})}
                                     target='_blank'
-                                    rel='noopener noreferrer'>
-                                    <FormattedMessage id='App.appHeading'/>
+                                    rel='noopener noreferrer'
+                                >
+                                    <Logo alt={this.props.intl.formatMessage({id: 'App.appHeading.link'})}/>
                                 </a>
                             </h1>
-                            <IconButton
-                                ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
-                                onClick={this.handleKeyboardModalToggle}
-                                onKeyDown={this.handleKeyboardMenuIconKeydown}
-                            >
-                                <KeyboardModalToggleIcon/>
-                            </IconButton>
-                            <div className='App__header-audio-toggle'>
-                                <div className='App__audio-toggle-switch'>
-                                    <AudioFeedbackToggleSwitch
-                                        value={this.state.announcementsEnabled}
-                                        onChange={this.handleToggleAudioFeedback} />
-                                </div>
-                                {/* Dash connection removed for version 0.5
-                                <DeviceConnectControl
-                                    disabled={
-                                        !this.appContext.bluetoothApiIsAvailable ||
-                                        this.state.dashConnectionStatus === 'connected' }
-                                    connectionStatus={this.state.dashConnectionStatus}
-                                    onClickConnect={this.handleClickConnectDash}>
-                                    <FormattedMessage id='App.connectToDash' />
-                                </DeviceConnectControl>
-                                */}
+                            <div className='App__PrivacyButtonContainer'>
+                                <button
+                                    aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
+                                    className="App__PrivacyModal__toggle-button"
+                                    onClick={this.handleClickPrivacyButton}
+                                >
+                                    <FormattedMessage id='App.privacyModalToggle'/>
+                                </button>
                             </div>
-                            <ThemeSelector onSelect={this.handleChangeTheme} />
+                            <div className='App__header-menu'>
+                                <IconButton
+                                    className="App__header-soundOptions"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'SoundOptionsModal.title' })}
+                                    onClick={this.handleClickSoundIcon}
+                                >
+                                    <AudioIcon className='App__header-soundOptions-icon'/>
+                                </IconButton>
+                                <IconButton
+                                    className="App__header-themeSelectorIcon"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'ThemeSelector.iconButton' })}
+                                    onClick={this.handleClickThemeSelectorIcon}
+                                >
+                                    <ThemeIcon className='App__header-theme-icon'/>
+                                </IconButton>
+                                <IconButton
+                                    className="App__header-keyboardMenuIcon"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                                    onClick={this.handleClickKeyboardIcon}
+                                >
+                                    <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
+                                </IconButton>
+
+                                <IconButton className="App__ActionsMenu__toggle-button"
+                                    ariaLabel={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
+                                    disabled={this.editingIsDisabled()}
+                                    onClick={this.handleClickActionsSimplificationIcon}
+                                >
+                                    <ActionsMenuToggleIcon className='App__header-actionsMenu-icon'/>
+                                </IconButton>
+                            </div>
+                            {/* Dash connection removed for version 0.5
+                            <DeviceConnectControl
+                                disabled={
+                                    !this.appContext.bluetoothApiIsAvailable ||
+                                    this.state.dashConnectionStatus === 'connected' }
+                                connectionStatus={this.state.dashConnectionStatus}
+                                onClickConnect={this.handleClickConnectDash}>
+                                <FormattedMessage id='App.connectToDash' />
+                            </DeviceConnectControl>
+                            */}
                         </div>
                     </header>
                     {/* Dash connection removed for version 0.5
@@ -1186,21 +1442,9 @@ export class App extends React.Component<AppProps, AppState> {
                             characterState={this.state.characterState}
                             theme={this.state.settings.theme}
                             world={this.state.settings.world}
+                            startingX={this.state.startingX}
+                            startingY={this.state.startingY}
                         />
-                        <div className='App__scene-controls'>
-                            <div className='App__scene-controls-group'>
-                                <PenDownToggleSwitch
-                                    className='App__penDown-toggle-switch'
-                                    value={this.state.drawingEnabled}
-                                    onChange={this.handleTogglePenDown}/>
-                                <div className='App__refreshButton-container'>
-                                    <RefreshButton
-                                        disabled={this.editingIsDisabled()}
-                                        onClick={this.handleRefresh}
-                                    />
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div className="App__world-container">
                         <h2 className='sr-only' >
@@ -1211,11 +1455,18 @@ export class App extends React.Component<AppProps, AppState> {
                                 className='keyboard-shortcut-focus__world-selector'
                                 ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelector' })}
                                 onClick={this.handleClickWorldIcon}
-                                onKeyDown={this.handleKeyDownWorldIcon}
                             >
-                                <WorldIcon />
+                                <WorldIcon className='App__world-selector-icon'/>
                             </IconButton>
                         </div>
+
+                        <div className='App__PenDownToggleSwitch-container'>
+                            <PenDownToggleSwitch
+                                className='App__penDown-toggle-switch'
+                                value={this.state.drawingEnabled}
+                                onChange={this.handleTogglePenDown}/>
+                        </div>
+
                         <CharacterPositionController
                             characterState={this.state.characterState}
                             editingDisabled={this.editingIsDisabled()}
@@ -1226,25 +1477,52 @@ export class App extends React.Component<AppProps, AppState> {
                             onChangeCharacterYPosition={this.handleChangeCharacterYPosition} />
                     </div>
                     <div className='App__command-palette'>
-                        <ActionsMenu
-                            allowedActions={this.state.allowedActions}
-                            changeHandler={this.handleToggleAllowedCommand}
-                            editingDisabled={this.editingIsDisabled()}
-                            programSequence={this.state.programSequence}
-                            intl={this.props.intl}
-                        />
+                        <div className='App__ActionsMenu__header'>
+                            <h2 className='App__ActionsMenu__header-heading'>
+                                <FormattedMessage id='ActionsMenu.title' />
+                            </h2>
+                        </div>
                         <div className='App__command-palette-command-container'>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks([
-                                    'forward1', 'forward2', 'forward3',
-                                    'backward1', 'backward2', 'backward3'
-                                ])}
+                            <div className='App__command-palette-section'>
+                                <div className='App__command-palette-section-heading-container'>
+                                    <h3 className='App__command-palette-section-heading'>
+                                        <FormattedMessage id='CommandPalette.movementsTitle'/>
+                                    </h3>
+                                </div>
+                                <div className='App__command-palette-section-body'>
+                                    <div className='App__command-palette-commands'>
+                                        {this.renderCommandBlocks(['forward1'])}
+                                    </div>
+                                    <div className='App__command-palette-commands'>
+                                        {this.renderCommandBlocks(['backward1'])}
+                                    </div>
+                                    <div className='App__command-palette-commands'>
+                                        {this.renderCommandBlocks([
+                                            'left45', 'left90'
+                                        ])}
+                                    </div>
+                                    <div className='App__command-palette-commands'>
+                                        {this.renderCommandBlocks([
+                                            'right45', 'right90'
+                                        ])}
+                                    </div>
+                                </div>
                             </div>
-                            <div className='App__command-palette-commands'>
-                                {this.renderCommandBlocks([
-                                    'left45', 'left90', 'left180',
-                                    'right45', 'right90', 'right180'
-                                ])}
+
+                            <div className='App__command-palette-section'>
+                                <div className='App__command-palette-section-heading-container'>
+                                    <h3 className='App__command-palette-section-heading'>
+                                        <FormattedMessage id='CommandPalette.controlsTitle'/>
+                                    </h3>
+                                </div>
+
+                                <div className='App__command-palette-section-body'>
+                                    <div className='App__command-palette-controls'>
+                                        {this.renderCommandBlocks([
+                                            'loop'
+                                        ])}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1252,10 +1530,12 @@ export class App extends React.Component<AppProps, AppState> {
                         <ProgramBlockEditor
                             ref={this.programBlockEditorRef}
                             actionPanelStepIndex={this.state.actionPanelStepIndex}
+                            actionPanelFocusedOptionName={this.state.actionPanelFocusedOptionName}
                             characterState={this.state.characterState}
                             editingDisabled={this.editingIsDisabled()}
                             programSequence={this.state.programSequence}
                             runningState={this.state.runningState}
+                            keyboardInputSchemeName={this.state.keyboardInputSchemeName}
                             selectedAction={this.state.selectedAction}
                             isDraggingCommand={this.state.isDraggingCommand}
                             audioManager={this.audioManager}
@@ -1266,7 +1546,8 @@ export class App extends React.Component<AppProps, AppState> {
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
                             onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
-                            onChangeActionPanelStepIndex={this.handleChangeActionPanelStepIndex}
+                            onMoveProgramStep={this.handleProgramBlockEditorMoveStep}
+                            onChangeActionPanelStepIndexAndOption={this.handleChangeActionPanelStepIndexAndOption}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
                         />
                     </div>
@@ -1277,6 +1558,11 @@ export class App extends React.Component<AppProps, AppState> {
                         </h2>
                         <div className='App__playControl-container'>
                             <div className='App__playButton-container'>
+                                <RefreshButton
+                                    className='App__playControlButton'
+                                    disabled={this.refreshIsDisabled()}
+                                    onClick={this.handleRefresh}
+                                />
                                 <PlayButton
                                     className='App__playControlButton'
                                     interpreterIsRunning={this.state.runningState === 'running'}
@@ -1297,12 +1583,21 @@ export class App extends React.Component<AppProps, AppState> {
                             </div>
                         </div>
                         <div className='App__shareButton-container'>
-                            <ShareButton/>
+                            <button
+                                className='App__ShareButton'
+                                onClick={this.handleShareButtonClick}
+                            >
+                                <ShareIcon className='App__ShareButton__icon'/>
+                                <div className='App__ShareButton__label'>
+                                    {this.props.intl.formatMessage({id:'ShareButton'})}
+                                </div>
+                            </button>
                         </div>
                     </div>
                 </div>
                 <CharacterAriaLive
                     ariaLiveRegionId='character-position'
+                    ariaHidden={this.state.showWorldSelector}
                     characterState={this.state.characterState}
                     runningState={this.state.runningState}
                     world={this.state.settings.world}/>
@@ -1318,12 +1613,40 @@ export class App extends React.Component<AppProps, AppState> {
                     onChangeKeyBindingsEnabled={this.handleChangeKeyBindingsEnabled}
                     onHide={this.handleKeyboardModalClose}
                 />
+                <SoundOptionsModal
+                    audioEnabled={this.state.audioEnabled}
+                    announcementsEnabled={this.state.announcementsEnabled}
+                    sonificationEnabled={this.state.sonificationEnabled}
+                    show={this.state.showSoundOptionsModal}
+                    onCancel={this.handleSoundOptionsModalClose}
+                    onChangeSoundOptions={this.handleChangeSoundOptions}
+                />
+                <ThemeSelector
+                    show={this.state.showThemeSelectorModal}
+                    currentTheme={this.state.settings.theme}
+                    onSelect={this.handleSelectTheme}
+                    onChange={this.handleChangeTheme}/>
                 <WorldSelector
                     show={this.state.showWorldSelector}
                     currentWorld={this.state.settings.world}
                     theme={this.state.settings.theme}
                     onChange={this.handleChangeWorld}
                     onSelect={this.handleSelectWorld}/>
+                <ShareModal
+                    show={this.state.showShareModal}
+                    onClose={this.handleCloseShare}
+                />
+                <ActionsSimplificationModal
+                    show={this.state.showActionsSimplificationMenu}
+                    onCancel={this.handleCancelActionsSimplificationMenu}
+                    onConfirm={this.handleChangeDisallowedActions}
+                    disallowedActions={this.state.disallowedActions}
+                    programSequence={this.state.programSequence}
+                />
+                <PrivacyModal
+                    show={this.state.showPrivacyModal}
+                    onClose={this.handleClosePrivacyModal}
+                />
             </React.Fragment>
         );
     }
@@ -1339,14 +1662,15 @@ export class App extends React.Component<AppProps, AppState> {
             const programQuery = params.getProgram();
             const characterStateQuery = params.getCharacterState();
             const themeQuery = params.getTheme();
-            const allowedActionsQuery = params.getAllowedActions();
+            const disallowedActionsQuery = params.getDisallowedActions();
             const worldQuery = params.getWorld();
+            const startingPositionQuery = params.getStartingPosition();
 
             if (programQuery != null) {
                 try {
-                    const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(programQuery), 0);
+                    const parserResult = this.programSerializer.deserialize(programQuery);
                     this.setState({
-                        programSequence: programSequence
+                        programSequence: ProgramSequence.makeProgramSequenceFromParserResult(parserResult)
                     });
                 } catch(err) {
                     /* eslint-disable no-console */
@@ -1369,35 +1693,52 @@ export class App extends React.Component<AppProps, AppState> {
                 }
             }
 
-            if (allowedActionsQuery != null) {
+            if (disallowedActionsQuery != null) {
                 try {
                     this.setState({
-                        allowedActions: this.allowedActionsSerializer.deserialize(allowedActionsQuery)
+                        disallowedActions: this.disallowedActionsSerializer.deserialize(disallowedActionsQuery)
                     });
                 } catch(err) {
                     /* eslint-disable no-console */
-                    console.log(`Error parsing allowed actions: ${allowedActionsQuery}`);
+                    console.log(`Error parsing disallowed actions: ${disallowedActionsQuery}`);
                     console.log(err.toString());
                     /* eslint-enable no-console */
                 }
             }
 
+            const world = Utils.getWorldFromString(worldQuery, this.defaultWorld);
+            const startingPosition = Utils.getStartingPositionFromString(
+                startingPositionQuery,
+                this.state.sceneDimensions.getMaxX(),
+                this.state.sceneDimensions.getMaxY(),
+                getWorldProperties(world).startingX,
+                getWorldProperties(world).startingY,
+                getWorldProperties(world).startingDirection
+            );
+
+            this.setState({
+                startingX: startingPosition.x,
+                startingY: startingPosition.y,
+                startingDirection: startingPosition.direction
+            });
+
             this.setStateSettings({
-                theme: Utils.getThemeFromString(themeQuery, 'mixed'),
-                world: Utils.getWorldFromString(worldQuery, this.defaultWorld)
+                theme: Utils.getThemeFromString(themeQuery, 'default'),
+                world: world
             });
         } else {
             const localProgram = window.localStorage.getItem('c2lc-program');
             const localCharacterState = window.localStorage.getItem('c2lc-characterState');
             const localTheme = window.localStorage.getItem('c2lc-theme');
-            const localAllowedActions = window.localStorage.getItem('c2lc-allowedActions');
+            const localDisallowedActions = window.localStorage.getItem('c2lc-disallowedActions');
             const localWorld = window.localStorage.getItem('c2lc-world');
+            const localStartingPosition = window.localStorage.getItem('c2lc-startingPosition');
 
             if (localProgram != null) {
                 try {
-                    const programSequence: ProgramSequence = new ProgramSequence(this.programSerializer.deserialize(localProgram), 0);
+                    const parserResult = this.programSerializer.deserialize(localProgram);
                     this.setState({
-                        programSequence: programSequence
+                        programSequence: ProgramSequence.makeProgramSequenceFromParserResult(parserResult)
                     });
                 } catch(err) {
                     /* eslint-disable no-console */
@@ -1421,22 +1762,38 @@ export class App extends React.Component<AppProps, AppState> {
             }
 
 
-            if (localAllowedActions != null) {
+            if (localDisallowedActions != null) {
                 try {
                     this.setState({
-                        allowedActions: this.allowedActionsSerializer.deserialize(localAllowedActions)
+                        disallowedActions: this.disallowedActionsSerializer.deserialize(localDisallowedActions)
                     });
                 } catch(err) {
                     /* eslint-disable no-console */
-                    console.log(`Error parsing allowed actions: ${localAllowedActions}`);
+                    console.log(`Error parsing disallowed actions: ${localDisallowedActions}`);
                     console.log(err.toString());
                     /* eslint-enable no-console */
                 }
             }
 
+            const world = Utils.getWorldFromString(localWorld, this.defaultWorld);
+            const startingPosition = Utils.getStartingPositionFromString(
+                localStartingPosition,
+                this.state.sceneDimensions.getMaxX(),
+                this.state.sceneDimensions.getMaxY(),
+                getWorldProperties(world).startingX,
+                getWorldProperties(world).startingY,
+                getWorldProperties(world).startingDirection
+            );
+
+            this.setState({
+                startingX: startingPosition.x,
+                startingY: startingPosition.y,
+                startingDirection: startingPosition.direction
+            });
+
             this.setStateSettings({
-                theme: Utils.getThemeFromString(localTheme, 'mixed'),
-                world: Utils.getWorldFromString(localWorld, this.defaultWorld)
+                theme: Utils.getThemeFromString(localTheme, 'default'),
+                world: world
             });
         }
 
@@ -1471,11 +1828,15 @@ export class App extends React.Component<AppProps, AppState> {
         if (this.state.programSequence !== prevState.programSequence
             || this.state.characterState !== prevState.characterState
             || this.state.settings.theme !== prevState.settings.theme
-            || this.state.allowedActions !== prevState.allowedActions
+            || this.state.disallowedActions !== prevState.disallowedActions
+            || this.state.startingX !== prevState.startingX
+            || this.state.startingY !== prevState.startingY
+            || this.state.startingDirection !== prevState.startingDirection
             || this.state.settings.world !== prevState.settings.world) {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
-            const serializedAllowedActions = this.allowedActionsSerializer.serialize(this.state.allowedActions);
+            const serializedDisallowedActions = this.disallowedActionsSerializer.serialize(this.state.disallowedActions);
+            const serializedStartingPosition = `${Utils.encodeCoordinate(this.state.startingX)}${Utils.encodeCoordinate(this.state.startingY)}${Utils.encodeDirection(this.state.startingDirection)}`;
 
             // Use setTimeout() to limit how often we call history.pushState().
             // Safari will throw an error if calls to history.pushState() are
@@ -1489,11 +1850,12 @@ export class App extends React.Component<AppProps, AppState> {
                         p: serializedProgram,
                         c: serializedCharacterState,
                         t: this.state.settings.theme,
-                        a: serializedAllowedActions,
-                        w: this.state.settings.world
+                        d: serializedDisallowedActions,
+                        w: this.state.settings.world,
+                        s: serializedStartingPosition
                     },
                     '',
-                    Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedAllowedActions),
+                    Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedDisallowedActions, serializedStartingPosition),
                     '',
                 );
             }, pushStateDelayMs);
@@ -1502,8 +1864,9 @@ export class App extends React.Component<AppProps, AppState> {
             window.localStorage.setItem('c2lc-program', serializedProgram);
             window.localStorage.setItem('c2lc-characterState', serializedCharacterState);
             window.localStorage.setItem('c2lc-theme', this.state.settings.theme);
-            window.localStorage.setItem('c2lc-allowedActions', serializedAllowedActions);
-            window.localStorage.setItem('c2lc-world', this.state.settings.world)
+            window.localStorage.setItem('c2lc-disallowedActions', serializedDisallowedActions);
+            window.localStorage.setItem('c2lc-world', this.state.settings.world);
+            window.localStorage.setItem('c2lc-startingPosition', serializedStartingPosition);
         }
 
         if (this.state.keyBindingsEnabled !== prevState.keyBindingsEnabled
@@ -1518,23 +1881,19 @@ export class App extends React.Component<AppProps, AppState> {
         if (this.state.audioEnabled !== prevState.audioEnabled) {
             this.audioManager.setAudioEnabled(this.state.audioEnabled);
         }
+        if (this.state.sonificationEnabled !== prevState.sonificationEnabled) {
+            this.audioManager.setSonificationEnabled(this.state.sonificationEnabled);
+        }
         if (this.state.runningState !== prevState.runningState
                 && this.state.runningState === 'running') {
             this.interpreter.startRun();
         }
 
-        if (this.state.selectedAction !== prevState.selectedAction) {
-            const messagePayload = {};
-            const announcementKey = this.state.selectedAction ?
-                "movementSelected" : "noMovementSelected";
-            if (this.state.selectedAction) {
-                const commandString = this.props.intl.formatMessage({
-                    id: "Announcement." + this.state.selectedAction
-                });
-                messagePayload.command = commandString;
-            }
-            this.audioManager.playAnnouncement(announcementKey,
-                    this.props.intl, messagePayload);
+        if (this.state.selectedAction !== prevState.selectedAction
+                && this.state.selectedAction != null) {
+            const announcementData = this.announcementBuilder.buildSelectActionAnnouncement(this.state.selectedAction);
+            this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
+                    this.props.intl, announcementData.values);
         }
 
         if (this.state.programSequence !== prevState.programSequence) {

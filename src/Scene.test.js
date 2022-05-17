@@ -15,8 +15,10 @@ configure({ adapter: new Adapter() });
 const defaultSceneProps = {
     dimensions: new SceneDimensions(1, 1, 1, 1),
     characterState: new CharacterState(0, 0, 2, [], new SceneDimensions(1, 1, 1, 1)),
-    theme: 'mixed',
-    world: 'Sketchpad'
+    theme: 'default',
+    world: 'Sketchpad',
+    startingX: 1,
+    startingY: 2
 };
 
 function createMountScene(props) {
@@ -76,6 +78,10 @@ function findColumnHeader(sceneWrapper) {
 
 function findSceneBackground(sceneWrapper) {
     return sceneWrapper.find('.Scene__background');
+}
+
+function findStartingPositionGridCellPoint(sceneWrapper) {
+    return sceneWrapper.find('.Scene__starting-grid-cell-point');
 }
 
 // TODO: This function is reproducing logic from Scene (the 0.8) and
@@ -216,6 +222,25 @@ describe('When the Scene renders', () => {
         expect(findCharacterIcon(sceneWrapper).get(0).props.height)
             .toBeCloseTo(expectedCharacterDimensions.height, 5);
     });
+    test('Should mark starting position cell', () => {
+        const startingX = 3;
+        const startingY = 3;
+        const sceneWrapper = createMountScene({
+            dimensions: new SceneDimensions(1, 8, 1, 9),
+            startingX,
+            startingY
+        });
+        const startingPositionGridCellPoint = findStartingPositionGridCellPoint(sceneWrapper);
+
+        // Check starting position indicator is rendered
+        expect(startingPositionGridCellPoint.length).toBe(1);
+
+        const expectedStartingPositionGridCellPointX = startingX - startingPositionGridCellPoint.get(0).props.width/2;
+        const expectedStartingPositionGridCellPointY = startingY - startingPositionGridCellPoint.get(0).props.height/2;
+
+        expect(startingPositionGridCellPoint.get(0).props.x).toBe(expectedStartingPositionGridCellPointX);
+        expect(startingPositionGridCellPoint.get(0).props.y).toBe(expectedStartingPositionGridCellPointY);
+    })
 });
 
 describe('When the character renders, transform should apply', (sceneDimensions = new SceneDimensions(1, 100, 1, 100)) => {
@@ -237,17 +262,68 @@ describe('When the character renders, transform should apply', (sceneDimensions 
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
-            .toBe('translate(10 8) rotate(90 0 0)');
+            .toBe('translate(10 8) rotate(90 0 0) scale(1 -1)');
     });
-    test('When xPos = 1, yPos = 9, direction = 0', () => {
-        expect.assertions(1);
+    test('When the character is rotated and the world has enableFlipCharacter=true, rotation and/or mirroring should be applied', () => {
+        expect.assertions(9);
+
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
-            characterState: new CharacterState(1, 9, 0, [], sceneDimensions)
+            characterState: new CharacterState(1, 1, 2, [], sceneDimensions)
         });
+
         const character = findCharacter(sceneWrapper);
-        expect(character.get(0).props.transform)
-            .toBe('translate(1 9) rotate(-90 0 0)');
+
+        expect(character.get(0).props.transform).toBe('translate(1 1) rotate(0 0 0)');
+
+        // Hard-coded to avoid having to test math with math.
+        const expectedValues = [
+            "translate(1 1) rotate(-90 0 0)",
+            "translate(1 1) rotate(-45 0 0)",
+            "translate(1 1) rotate(0 0 0)",
+            "translate(1 1) rotate(45 0 0)",
+            "translate(1 1) rotate(90 0 0) scale(1 -1)",
+            "translate(1 1) rotate(135 0 0) scale(1 -1)",
+            "translate(1 1) rotate(180 0 0) scale(1 -1)",
+            "translate(1 1) rotate(225 0 0) scale(1 -1)"
+        ];
+
+        for (let direction = 0; direction <= 7; direction++) {
+            sceneWrapper.setProps({characterState: new CharacterState(1, 1, direction, [], new SceneDimensions(1, 100, 1, 100))});
+            const rotatedCharacter = findCharacter(sceneWrapper);
+            expect(rotatedCharacter.get(0).props.transform).toBe(expectedValues[direction]);
+        }
+    });
+    test('When the character is rotated and the world has enableFlipCharacter=false, rotation should be applied without mirroring', () => {
+        expect.assertions(9);
+
+        const sceneWrapper = createMountScene({
+            dimensions: sceneDimensions,
+            characterState: new CharacterState(1, 1, 2, [], sceneDimensions),
+            world: 'Landmarks'
+        });
+
+        const character = findCharacter(sceneWrapper);
+
+        expect(character.get(0).props.transform).toBe('translate(1 1) rotate(0 0 0)');
+
+        // Hard-coded to avoid having to test math with math.
+        const expectedValues = [
+            "translate(1 1) rotate(-90 0 0)",
+            "translate(1 1) rotate(-45 0 0)",
+            "translate(1 1) rotate(0 0 0)",
+            "translate(1 1) rotate(45 0 0)",
+            "translate(1 1) rotate(90 0 0)",
+            "translate(1 1) rotate(135 0 0)",
+            "translate(1 1) rotate(180 0 0)",
+            "translate(1 1) rotate(225 0 0)"
+        ];
+
+        for (let direction = 0; direction <= 7; direction++) {
+            sceneWrapper.setProps({characterState: new CharacterState(1, 1, direction, [], new SceneDimensions(1, 100, 1, 100))});
+            const rotatedCharacter = findCharacter(sceneWrapper);
+            expect(rotatedCharacter.get(0).props.transform).toBe(expectedValues[direction]);
+        }
     });
 });
 

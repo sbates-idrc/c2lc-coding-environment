@@ -17,7 +17,7 @@ configure({ adapter: new Adapter()});
 function mountApp(props) {
     // $FlowFixMe: Flow doesn't know about the Jest mock API
     AudioManagerImpl.mockClear();
-    const audioManagerInstance = new AudioManagerImpl(true, true);
+    const audioManagerInstance = new AudioManagerImpl(true, true, true);
 
     // $FlowFixMe: Flow doesn't know about the Jest mock API
     const audioManagerMock = AudioManagerImpl.mock.instances[0];
@@ -57,15 +57,11 @@ it('Should play a sound when selectedCommandName changes', () => {
     // Update the selectedAction
     app.setState({ selectedAction: "forward1"}, function () {
         expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
-        expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('movementSelected');
+        expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('actionSelected');
         expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
+            "commandType": "movement",
             "command": "forward 1 square"
         });
-    });
-
-    app.setState({ selectedAction: null}, function () {
-        expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(2);
-        expect(audioManagerMock.playAnnouncement.mock.calls[1][0]).toBe('noMovementSelected');
     });
 });
 
