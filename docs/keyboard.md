@@ -37,7 +37,7 @@ Those key bindings are as follows.
 | Move the current step to right | Ctrl + Alt + ] | ![Move to next icon](board-imgs/MoveNext.png) |
 | Play or pause the program | Ctrl + Alt + p | ![Play or pause program icon](board-imgs/PlayPause.png) |
 | Refresh the scene | Ctrl + Alt + r | ![Refresh scene icon](board-imgs/RefreshScene.png) |
-| undefined | Ctrl + Alt + c | Not available |
+| Replace the current program step | Ctrl + Alt + c | Not available |
 | Show the keyboard shortcuts menu | ? | ![Show keyboard shortcuts menu icon](board-imgs/ShowKeyboardShortcuts.png) |
 | Stop the program from playing | Ctrl + Alt + s | ![Stop program icon](board-imgs/StopProgram.png) |
 | Change the current visual theme to the dark theme | Ctrl + Alt + x, t, 3 | ![Change to dark theme icon](board-imgs/ChangeToDarkTheme.png) |
@@ -94,7 +94,7 @@ Those key bindings are as follows:
 | Move the current step to right | Alt + ] | ![Move to next icon](board-imgs/MoveNext.png) |
 | Play or pause the program | Alt + p | ![Play or pause program icon](board-imgs/PlayPause.png) |
 | Refresh the scene | Alt + r | ![Refresh scene icon](board-imgs/RefreshScene.png) |
-| undefined | Alt + c | Not available |
+| Replace the current program step | Alt + c | Not available |
 | Show the keyboard shortcuts menu | ? | ![Show keyboard shortcuts menu icon](board-imgs/ShowKeyboardShortcuts.png) |
 | Stop the program from playing | Alt + s | ![Stop program icon](board-imgs/StopProgram.png) |
 | Change the current visual theme to the dark theme | Alt + x, t, 3 | ![Change to dark theme icon](board-imgs/ChangeToDarkTheme.png) |

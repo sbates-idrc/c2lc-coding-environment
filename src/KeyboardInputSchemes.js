@@ -437,7 +437,8 @@ const AltInputScheme: KeyboardInputScheme = Object.assign({
     },
     replaceCurrentStep: {
         keyDef: { code: "KeyC", key: "c", altKey: true },
-        actionName: "replaceCurrentStep"
+        actionName: "replaceCurrentStep",
+        description: "Replace the current program step"
     },
     // TODO: This should be renamed because it doesn't hide the dialog -
     //       keyboard shortcuts are disabled when dialogs are open.
