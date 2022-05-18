@@ -541,7 +541,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({
             programSequence: programSequence
         });
-    }
+    };
 
     handleProgramBlockEditorInsertSelectedAction = (index: number, selectedAction: ?string) => {
         this.programChangeController.insertSelectedActionIntoProgram(
@@ -549,7 +549,7 @@ export class App extends React.Component<AppProps, AppState> {
             index,
             selectedAction
         );
-    }
+    };
 
     handleProgramBlockEditorDeleteStep = (index: number, command: string) => {
         this.programChangeController.deleteProgramStep(
@@ -557,7 +557,15 @@ export class App extends React.Component<AppProps, AppState> {
             index,
             command
         );
-    }
+    };
+
+    handleProgramBlockEditorReplaceStep = (index: number, selectedAction: ?string) => {
+        this.programChangeController.replaceProgramStep(
+            this.programBlockEditorRef.current,
+            index,
+            selectedAction
+        );
+    };
 
     handleProgramBlockEditorMoveStep = (indexFrom: number, direction: ProgramStepMovementDirection, commandAtIndexFrom: string) => {
         this.programChangeController.moveProgramStep(
@@ -567,7 +575,7 @@ export class App extends React.Component<AppProps, AppState> {
             commandAtIndexFrom,
             'focusActionPanel'
         )
-    }
+    };
 
     handlePlay = () => {
         switch (this.state.runningState) {
@@ -601,7 +609,7 @@ export class App extends React.Component<AppProps, AppState> {
 
     handleStop = () => {
         this.setRunningState('stopRequested');
-    }
+    };
 
     handleClickConnectDash = () => {
         this.setState({
@@ -780,14 +788,16 @@ export class App extends React.Component<AppProps, AppState> {
                         case("replaceCurrentStep"):
                             if (!this.editingIsDisabled()) {
                                 const currentElement = document.activeElement;
-                                let index = this.state.actionPanelStepIndex;
-                                // $FlowFixMe: Not all elements have dataset property
-                                if (currentElement.dataset.controltype === 'programStep') {
-                                    index = parseInt(currentElement.dataset.stepnumber, 10);
-                                }
-                                if (index != null) {
-                                    if (this.programBlockEditorRef.current) {
-                                        this.programBlockEditorRef.current.handleActionPanelReplaceStep(index);
+                                if (currentElement) {
+                                    if (currentElement.dataset.controltype === 'programStep') {
+                                        const index = parseInt(currentElement.dataset.stepnumber, 10);
+                                        if (index != null) {
+                                            this.programChangeController.replaceProgramStep(
+                                                this.programBlockEditorRef.current,
+                                                index,
+                                                this.state.selectedAction
+                                            );
+                                        }
                                     }
                                 }
                             }
@@ -1546,6 +1556,7 @@ export class App extends React.Component<AppProps, AppState> {
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
                             onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
+                            onReplaceProgramStep={this.handleProgramBlockEditorReplaceStep}
                             onMoveProgramStep={this.handleProgramBlockEditorMoveStep}
                             onChangeActionPanelStepIndexAndOption={this.handleChangeActionPanelStepIndexAndOption}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}

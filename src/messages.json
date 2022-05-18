@@ -22,6 +22,7 @@
         "Announcement.actionSelected": "{commandType} {command} selected",
         "Announcement.noActionSelected": "no action selected",
         "Announcement.add": "added {commandType} {command}",
+        "Announcement.cannotReplaceLoopBlocks": "replace is not available for loops",
         "Announcement.control": "control",
         "Announcement.delete": "deleted {commandType} {command}",
         "Announcement.deleteAll": "delete program?",

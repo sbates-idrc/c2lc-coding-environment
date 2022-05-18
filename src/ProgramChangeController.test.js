@@ -377,6 +377,101 @@ describe('Test deleteProgramStep()', () => {
 
 });
 
+describe('Test replaceProgramStep()', () => {
+    test('When there is no selectedAction, then an announcement should be made', (done) => {
+        expect.assertions(3);
+
+        const { controller, appMock, audioManagerMock } = createProgramChangeController();
+
+        appMock.setState.mockImplementation((callback) => {
+            const newState = callback({
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}], 0, 0, new Map())
+            });
+
+            // The program should not be updated
+            expect(newState).toStrictEqual({});
+
+            // The announcement should be made
+            expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
+            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('noActionSelected');
+
+            done();
+        });
+
+        // $FlowFixMe: Jest mock API
+        ProgramBlockEditor.mockClear();
+        // $FlowFixMe: Jest mock API
+        controller.replaceProgramStep(new ProgramBlockEditor(), 1, null);
+    });
+
+    test('When the block to replace is a loop block, then an announcement should be made', (done) => {
+        expect.assertions(3);
+
+        const { controller, appMock, audioManagerMock } = createProgramChangeController();
+
+        appMock.setState.mockImplementation((callback) => {
+            const newState = callback({
+                programSequence: new ProgramSequence([{block: 'startLoop'}, {block: 'endLoop'}], 0, 0, new Map())
+            });
+
+            // The program should not be updated
+            expect(newState).toStrictEqual({});
+
+            // The announcement should be made
+            expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
+            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('cannotReplaceLoopBlocks');
+
+            done();
+        });
+
+        // $FlowFixMe: Jest mock API
+        ProgramBlockEditor.mockClear();
+        // $FlowFixMe: Jest mock API
+        controller.replaceProgramStep(new ProgramBlockEditor(), 1, 'right45');
+    });
+
+    test('When there is a selectedAction, then the program should be updated and all expected activities invoked', (done) => {
+        expect.assertions(10);
+
+        const { controller, appMock, audioManagerMock } = createProgramChangeController();
+
+        appMock.setState.mockImplementation((callback) => {
+            const newState = callback({
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}], 0, 0, new Map())
+            });
+
+            // The program should be updated
+            expect(newState.programSequence.getProgram()).toStrictEqual(
+                [{block: 'forward1'}, {block: 'right45'}]);
+
+            // The announcement should be made
+            expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
+            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('replace');
+            expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
+                oldCommand: "turn left 45 degrees",
+                newCommand: "turn right 45 degrees"
+            });
+
+            // The focus, scrolling, and animation should be set up
+            // $FlowFixMe: Jest mock API
+            const programBlockEditorMock = ProgramBlockEditor.mock.instances[0];
+            expect(programBlockEditorMock.focusCommandBlockAfterUpdate.mock.calls.length).toBe(1);
+            expect(programBlockEditorMock.focusCommandBlockAfterUpdate.mock.calls[0][0]).toBe(1);
+            expect(programBlockEditorMock.scrollToAddNodeAfterUpdate.mock.calls.length).toBe(1);
+            expect(programBlockEditorMock.scrollToAddNodeAfterUpdate.mock.calls[0][0]).toBe(2);
+            expect(programBlockEditorMock.setUpdatedCommandBlock.mock.calls.length).toBe(1);
+            expect(programBlockEditorMock.setUpdatedCommandBlock.mock.calls[0][0]).toBe(1);
+
+            done();
+        });
+
+        // $FlowFixMe: Jest mock API
+        ProgramBlockEditor.mockClear();
+        // $FlowFixMe: Jest mock API
+        controller.replaceProgramStep(new ProgramBlockEditor(), 1, 'right45');
+    });
+});
+
 describe('Test moveProgramStep()', () => {
     test.each(([
         {

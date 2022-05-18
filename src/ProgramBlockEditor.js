@@ -45,6 +45,7 @@ type ProgramBlockEditorProps = {
     onChangeProgramSequence: (programSequence: ProgramSequence) => void,
     onInsertSelectedActionIntoProgram: (index: number, selectedAction: ?string) => void,
     onDeleteProgramStep: (index: number, command: string) => void,
+    onReplaceProgramStep: (index: number, selectedAction: ?string) => void,
     onMoveProgramStep: (indexFrom: number, direction: ProgramStepMovementDirection, commandAtIndexFrom: string) => void,
     onChangeActionPanelStepIndexAndOption: (index: ?number, focusedOptionName: ?string) => void,
     onChangeAddNodeExpandedMode: (boolean) => void
@@ -216,37 +217,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     };
 
     handleActionPanelReplaceStep = (index: number) => {
-        if (this.props.selectedAction) {
-            const programStep = this.props.programSequence.getProgramStepAt(index);
-            if (programStep.block !== this.props.selectedAction) {
-                const oldCommandString = this.props.intl.formatMessage({ id: "Announcement." + programStep.block});
-                //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
-                const newCommandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.selectedAction});
-
-                this.props.audioManager.playAnnouncement('replace', this.props.intl, { oldCommand: oldCommandString, newCommand: newCommandString});
-
-                this.props.onChangeProgramSequence(
-                    //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
-                    this.props.programSequence.overwriteStep(index, this.props.selectedAction)
-                );
-                this.focusCommandBlockIndex = index;
-                this.scrollToAddNodeIndex = index + 1;
-                this.setUpdatedCommandBlock(index);
-                this.setState({
-                    replaceIsActive: false
-                });
-            } else {
-                this.setState({
-                    replaceIsActive: true
-                });
-            }
-        } else {
-            this.props.audioManager.playAnnouncement('noActionSelected', this.props.intl);
-
-            this.setState({
-                replaceIsActive: true
-            });
-        }
+        this.props.onReplaceProgramStep(index, this.props.selectedAction);
     };
 
     handleActionPanelMoveToPreviousStep = (index: number) => {

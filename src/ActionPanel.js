@@ -10,7 +10,7 @@ import { ReactComponent as MovePreviousIcon } from './svg/MovePrevious.svg';
 import { ReactComponent as MoveNextIcon } from './svg/MoveNext.svg';
 import { ReactComponent as DeleteIcon } from './svg/Delete.svg';
 import { ReactComponent as ReplaceIcon } from './svg/replace.svg';
-import { focusByQuerySelector, moveToNextStepDisabled, moveToPreviousStepDisabled } from './Utils';
+import { focusByQuerySelector, isLoopBlock, moveToNextStepDisabled, moveToPreviousStepDisabled } from './Utils';
 import './ActionPanel.scss';
 
 type ActionPanelProps = {
@@ -192,8 +192,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
     }
 
     getReplaceIsVisible(): boolean {
-        const currentStepName = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex).block;
-        return currentStepName !== 'startLoop' && currentStepName !== 'endLoop';
+        return !isLoopBlock(this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex).block);
     }
 
     // handlers

@@ -1,6 +1,6 @@
 // @flow
 
-import { decodeCoordinate, decodeDirection, encodeCoordinate, encodeDirection, extend, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, focusFirstInNodeList, focusLastInNodeList, generateLoopLabel, parseLoopLabel } from './Utils.js';
+import { decodeCoordinate, decodeDirection, encodeCoordinate, encodeDirection, extend, isLoopBlock, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, focusFirstInNodeList, focusLastInNodeList, generateLoopLabel, parseLoopLabel } from './Utils.js';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import ProgramSequence from './ProgramSequence';
@@ -215,6 +215,12 @@ test('Test parseLoopLabel', () => {
     expect(parseLoopLabel('AB')).toEqual(28);
     expect(parseLoopLabel('AZ')).toEqual(52);
     expect(parseLoopLabel('BA')).toEqual(53);
+});
+
+test('Test isLoopBlock', () => {
+    expect(isLoopBlock('startLoop')).toEqual(true);
+    expect(isLoopBlock('endLoop')).toEqual(true);
+    expect(isLoopBlock('forward1')).toEqual(false);
 });
 
 describe('Test moveToNextStepDisabled and moveToPreviousStepDisabled', () => {

@@ -5,6 +5,7 @@ import type {AudioManager, ProgramStepMovementDirection} from './types';
 import AnnouncementBuilder from './AnnouncementBuilder';
 import {App} from './App';
 import {ProgramBlockEditor} from './ProgramBlockEditor';
+import {isLoopBlock} from './Utils';
 
 // The ProgramChangeController is responsible for making changes to the
 // App 'state.programSequence' and coordinating any user interface
@@ -111,12 +112,44 @@ export default class ProgramChangeController {
         });
     }
 
+    replaceProgramStep(programBlockEditor: ?ProgramBlockEditor,
+        index: number, selectedAction: ?string) {
+
+        this.app.setState((state) => {
+            const currentStep = state.programSequence.getProgramStepAt(index);
+            if (isLoopBlock(currentStep.block)) {
+                this.audioManager.playAnnouncement('cannotReplaceLoopBlocks', this.intl);
+                return {};
+            } else if (selectedAction) {
+                // Play the announcement
+                const announcementData = this.announcementBuilder.buildReplaceStepAnnouncement(
+                    currentStep, selectedAction);
+                this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
+                    this.intl, announcementData.values);
+
+                // Set up focus, scrolling, and animation
+                if (programBlockEditor) {
+                    programBlockEditor.focusCommandBlockAfterUpdate(index);
+                    programBlockEditor.scrollToAddNodeAfterUpdate(index + 1);
+                    programBlockEditor.setUpdatedCommandBlock(index);
+                }
+
+                return {
+                    programSequence: state.programSequence.overwriteStep(index, selectedAction)
+                };
+            } else {
+                this.audioManager.playAnnouncement('noActionSelected', this.intl);
+                return {};
+            }
+        });
+    }
+
     moveProgramStep(programBlockEditor: ?ProgramBlockEditor,
         indexFrom: number, direction: ProgramStepMovementDirection, commandAtIndexFrom: string,
         focusAfterMove: FocusAfterMoveEnum) {
 
         this.app.setState((state) => {
-            // Check that the steps at indexFrom has changed
+            // Check that the step at indexFrom has not changed
             const stepAtIndexFrom = state.programSequence.getProgramStepAt(indexFrom);
             if (commandAtIndexFrom === stepAtIndexFrom.block) {
                 let announcementName = '';
