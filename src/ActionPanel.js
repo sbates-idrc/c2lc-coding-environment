@@ -241,7 +241,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                             name='replaceCurrentStep'
                             disabled={false}
                             aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.replace'}, stepMessageData)}
-                            className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button focus-trap-action-panel-replace__replace_button'
+                            className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                             onClick={this.handleClickReplace}>
                             <ReplaceIcon className='ActionPanel__action-button-svg' />
                         </AriaDisablingButton>

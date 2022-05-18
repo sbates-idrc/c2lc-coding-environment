@@ -53,7 +53,6 @@ type ProgramBlockEditorProps = {
 
 type ProgramBlockEditorState = {
     showConfirmDeleteAll: boolean,
-    replaceIsActive: boolean,
     closestAddNodeIndex: number
 };
 
@@ -80,7 +79,6 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         this.state = {
             showConfirmDeleteAll : false,
             focusedActionPanelOptionName: null,
-            replaceIsActive: false,
             closestAddNodeIndex: -1
         }
     }
@@ -346,13 +344,6 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     /* istanbul ignore next */
     handleCloseActionPanelFocusTrap = () => {
         this.closeActionPanel();
-    };
-
-    /* istanbul ignore next */
-    handleCloseReplaceFocusTrap = () => {
-        this.setState({
-            replaceIsActive: false
-        });
     };
 
     // Rendering
@@ -665,25 +656,14 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             }
         }
         if (this.props.actionPanelStepIndex != null) {
-            if (this.state.replaceIsActive) {
-                this.props.focusTrapManager.setFocusTrap(
-                    this.handleCloseReplaceFocusTrap,
-                    [
-                        '.focus-trap-action-panel-replace__replace_button',
-                        '.focus-trap-action-panel-replace__command_button'
-                    ],
-                    '.focus-trap-action-panel-replace__replace_button'
-                );
-            } else {
-                this.props.focusTrapManager.setFocusTrap(
-                    this.handleCloseActionPanelFocusTrap,
-                    [
-                        '.focus-trap-action-panel__program-block',
-                        '.focus-trap-action-panel__action-panel-button'
-                    ],
-                    '.focus-trap-action-panel__program-block'
-                );
-            }
+            this.props.focusTrapManager.setFocusTrap(
+                this.handleCloseActionPanelFocusTrap,
+                [
+                    '.focus-trap-action-panel__program-block',
+                    '.focus-trap-action-panel__action-panel-button'
+                ],
+                '.focus-trap-action-panel__program-block'
+            );
         } else {
             this.props.focusTrapManager.unsetFocusTrap();
         }
