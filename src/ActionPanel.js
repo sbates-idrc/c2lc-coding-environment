@@ -218,6 +218,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
         const moveToNextStepIsDisabled = moveToNextStepDisabled(this.props.programSequence, this.props.pressedStepIndex);
         const moveToPreviousStepIsDisabled = moveToPreviousStepDisabled(this.props.programSequence, this.props.pressedStepIndex);
         const replaceIsVisible = this.getReplaceIsVisible();
+        const replaceIsDisabled = this.props.selectedCommandName == null;
         return (
             <React.Fragment>
                 <div className="ActionPanel__background">
@@ -239,7 +240,8 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     {replaceIsVisible &&
                         <AriaDisablingButton
                             name='replaceCurrentStep'
-                            disabled={false}
+                            disabled={replaceIsDisabled}
+                            disabledClassName='ActionPanel__action-buttons--disabled'
                             aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.replace'}, stepMessageData)}
                             className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                             onClick={this.handleClickReplace}>
