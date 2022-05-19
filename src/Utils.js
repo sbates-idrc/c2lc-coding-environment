@@ -201,7 +201,7 @@ function generateLoopLabel(n: number): string {
         n = Math.floor((n - 1) / 26);
     }
     return label;
-};
+}
 
 function parseLoopLabel(label: string): number {
     let n = 0;
@@ -211,7 +211,11 @@ function parseLoopLabel(label: string): number {
         label = label.substring(1);
     }
     return n;
-};
+}
+
+function isLoopBlock(blockType: string): boolean {
+    return blockType === 'startLoop' || blockType === 'endLoop';
+}
 
 function moveToNextStepDisabled(programSequence: ProgramSequence, stepIndex: number): boolean {
     const programLastIndex = programSequence.getProgramLength() - 1;
@@ -251,6 +255,7 @@ export {
     getThemeFromString,
     getWorldFromString,
     getStartingPositionFromString,
+    isLoopBlock,
     makeDelayedPromise,
     moveToNextStepDisabled,
     moveToPreviousStepDisabled,

@@ -109,3 +109,21 @@ describe('Test buildDeleteStepAnnouncement()', () => {
         });
     });
 });
+
+test('Test buildReplaceStepAnnouncement()', () => {
+    expect.assertions(1);
+
+    const announcementBuilder = createAnnouncementBuilder();
+
+    const forwardBlock = {
+        block: 'forward1'
+    };
+
+    expect(announcementBuilder.buildReplaceStepAnnouncement(forwardBlock, 'right45')).toStrictEqual({
+        messageIdSuffix: 'replace',
+        values: {
+            oldCommand: 'forward 1 square',
+            newCommand: 'turn right 45 degrees'
+        }
+    });
+});
