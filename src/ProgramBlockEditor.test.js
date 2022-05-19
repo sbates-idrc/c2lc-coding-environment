@@ -53,7 +53,8 @@ function createMountProgramBlockEditor(props) {
     const mockInsertSelectedActionIntoProgramHandler = jest.fn();
     const mockDeleteProgramStepHandler = jest.fn();
     const mockReplaceProgramStepHandler = jest.fn();
-    const mockMoveProgramStepHandler = jest.fn();
+    const mockMoveProgramStepNextHandler = jest.fn();
+    const mockMoveProgramStepPreviousHandler = jest.fn();
     const mockChangeActionPanelStepIndexAndOption = jest.fn();
     const mockChangeAddNodeExpandedModeHandler = jest.fn();
 
@@ -73,7 +74,8 @@ function createMountProgramBlockEditor(props) {
                     onInsertSelectedActionIntoProgram: mockInsertSelectedActionIntoProgramHandler,
                     onDeleteProgramStep: mockDeleteProgramStepHandler,
                     onReplaceProgramStep: mockReplaceProgramStepHandler,
-                    onMoveProgramStep: mockMoveProgramStepHandler,
+                    onMoveProgramStepNext: mockMoveProgramStepNextHandler,
+                    onMoveProgramStepPrevious: mockMoveProgramStepPreviousHandler,
                     onChangeActionPanelStepIndexAndOption: mockChangeActionPanelStepIndexAndOption,
                     onChangeAddNodeExpandedMode: mockChangeAddNodeExpandedModeHandler
                 },
@@ -98,7 +100,8 @@ function createMountProgramBlockEditor(props) {
         mockInsertSelectedActionIntoProgramHandler,
         mockDeleteProgramStepHandler,
         mockReplaceProgramStepHandler,
-        mockMoveProgramStepHandler,
+        mockMoveProgramStepNextHandler,
+        mockMoveProgramStepPreviousHandler,
         mockChangeActionPanelStepIndexAndOption,
         mockChangeAddNodeExpandedModeHandler
     };
@@ -452,9 +455,9 @@ describe('Move to previous program step', () => {
     test.each([
         [ 1, 'left45' ],
         [ 2, 'forward1' ]
-    ])('When the move to previous button is clicked for step %i, then the onMoveProgramStep callback should be called',
+    ])('When the move to previous button is clicked for step %i, then the onMoveProgramStepPrevious callback should be called',
         (stepNum, expectedCommandToMove) => {
-            const { wrapper, mockMoveProgramStepHandler }
+            const { wrapper, mockMoveProgramStepPreviousHandler }
             = createMountProgramBlockEditor({
                 actionPanelStepIndex: stepNum
             });
@@ -463,10 +466,9 @@ describe('Move to previous program step', () => {
             moveToPreviousButton.simulate('click');
 
             // The onMoveProgramStep callback should be called
-            expect(mockMoveProgramStepHandler.mock.calls.length).toBe(1);
-            expect(mockMoveProgramStepHandler.mock.calls[0][0]).toBe(stepNum);
-            expect(mockMoveProgramStepHandler.mock.calls[0][1]).toBe('previous');
-            expect(mockMoveProgramStepHandler.mock.calls[0][2]).toBe(expectedCommandToMove);
+            expect(mockMoveProgramStepPreviousHandler.mock.calls.length).toBe(1);
+            expect(mockMoveProgramStepPreviousHandler.mock.calls[0][0]).toBe(stepNum);
+            expect(mockMoveProgramStepPreviousHandler.mock.calls[0][1]).toBe(expectedCommandToMove);
         }
     )
 });
@@ -475,9 +477,9 @@ describe('Move to next program step', () => {
     test.each([
         [ 1, 'left45' ],
         [ 2, 'forward1' ]
-    ])('When the move to next button is clicked for step %i, then the onMoveProgramStep callback should be called',
+    ])('When the move to next button is clicked for step %i, then the onMoveProgramStepNext callback should be called',
         (stepNum, expectedCommandToMove) => {
-            const { wrapper, mockMoveProgramStepHandler }
+            const { wrapper, mockMoveProgramStepNextHandler }
             = createMountProgramBlockEditor({
                 actionPanelStepIndex: stepNum
             });
@@ -486,10 +488,9 @@ describe('Move to next program step', () => {
             moveToNextButton.simulate('click');
 
             // The onMoveProgramStep callback should be called
-            expect(mockMoveProgramStepHandler.mock.calls.length).toBe(1);
-            expect(mockMoveProgramStepHandler.mock.calls[0][0]).toBe(stepNum);
-            expect(mockMoveProgramStepHandler.mock.calls[0][1]).toBe('next');
-            expect(mockMoveProgramStepHandler.mock.calls[0][2]).toBe(expectedCommandToMove);
+            expect(mockMoveProgramStepNextHandler.mock.calls.length).toBe(1);
+            expect(mockMoveProgramStepNextHandler.mock.calls[0][0]).toBe(stepNum);
+            expect(mockMoveProgramStepNextHandler.mock.calls[0][1]).toBe(expectedCommandToMove);
         }
     )
 });

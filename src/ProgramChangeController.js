@@ -1,11 +1,13 @@
 // @flow
 
+import type {AppState} from './App';
 import type {IntlShape} from 'react-intl';
-import type {AudioManager, ProgramStepMovementDirection} from './types';
+import type {AudioManager} from './types';
 import AnnouncementBuilder from './AnnouncementBuilder';
 import {App} from './App';
 import {ProgramBlockEditor} from './ProgramBlockEditor';
-import {isLoopBlock} from './Utils';
+import ProgramSequence from './ProgramSequence';
+import {isLoopBlock, moveToNextStepDisabled, moveToPreviousStepDisabled} from './Utils';
 
 // The ProgramChangeController is responsible for making changes to the
 // App 'state.programSequence' and coordinating any user interface
@@ -144,32 +146,26 @@ export default class ProgramChangeController {
         });
     }
 
-    moveProgramStep(programBlockEditor: ?ProgramBlockEditor,
-        indexFrom: number, direction: ProgramStepMovementDirection, commandAtIndexFrom: string,
+    moveProgramStepNext(programBlockEditor: ?ProgramBlockEditor,
+        indexFrom: number, commandAtIndexFrom: string,
         focusAfterMove: FocusAfterMoveEnum) {
 
         this.app.setState((state) => {
             // Check that the step at indexFrom has not changed
             const stepAtIndexFrom = state.programSequence.getProgramStepAt(indexFrom);
             if (commandAtIndexFrom === stepAtIndexFrom.block) {
-                let announcementName = '';
-                if (direction === 'next') {
-                    announcementName = 'moveToNext';
-                } else if (direction === 'previous') {
-                    announcementName = 'moveToPrevious';
-                }
-                // Play the announcement
-                this.audioManager.playAnnouncement(
-                    announcementName,
-                    this.intl
-                );
+                if (moveToNextStepDisabled(state.programSequence, indexFrom)) {
+                    // Move next is not possible:
+                    // Play an announcement and do not change the program
+                    this.audioManager.playAnnouncement('cannotMoveNext', this.intl);
+                    return {};
+                } else {
+                    // Play the announcement
+                    this.audioManager.playAnnouncement('moveToNext', this.intl);
 
-                const program = state.programSequence.getProgram();
-                let indexTo = null;
-                let indexAfterMove = null;
-                let focusedActionPanelOptionName = null;
+                    const program = state.programSequence.getProgram();
+                    let indexTo = null;
 
-                if (direction === 'next') {
                     if (program[indexFrom].block === 'startLoop') {
                         const label = program[indexFrom].label;
                         for (let i = indexFrom; i < program.length; i++) {
@@ -181,9 +177,45 @@ export default class ProgramChangeController {
                     } else {
                         indexTo = indexFrom + 1;
                     }
-                    indexAfterMove = indexFrom + 1;
-                    focusedActionPanelOptionName = 'moveToNextStep';
-                } else if (direction === 'previous') {
+
+                    if (indexTo != null) {
+                        return this.doMove(
+                            programBlockEditor,
+                            state,
+                            state.programSequence.swapStep(indexFrom, indexTo),
+                            focusAfterMove,
+                            indexFrom + 1,
+                            'moveToNextStep'
+                        );
+                    }
+                }
+            } else {
+                // If the step to move has changed, make no changes to the program
+                return {};
+            }
+        });
+    }
+
+    moveProgramStepPrevious(programBlockEditor: ?ProgramBlockEditor,
+        indexFrom: number, commandAtIndexFrom: string,
+        focusAfterMove: FocusAfterMoveEnum) {
+
+        this.app.setState((state) => {
+            // Check that the step at indexFrom has not changed
+            const stepAtIndexFrom = state.programSequence.getProgramStepAt(indexFrom);
+            if (commandAtIndexFrom === stepAtIndexFrom.block) {
+                if (moveToPreviousStepDisabled(state.programSequence, indexFrom)) {
+                    // Move previous is not possible:
+                    // Play an announcement and do not change the program
+                    this.audioManager.playAnnouncement('cannotMovePrevious', this.intl);
+                    return {};
+                } else {
+                    // Play the announcement
+                    this.audioManager.playAnnouncement('moveToPrevious', this.intl);
+
+                    const program = state.programSequence.getProgram();
+                    let indexTo = null;
+
                     if (program[indexFrom].block === 'endLoop') {
                         const label = program[indexFrom].label;
                         for (let i = 0; i < indexFrom; i++) {
@@ -195,42 +227,16 @@ export default class ProgramChangeController {
                     } else {
                         indexTo = indexFrom - 1;
                     }
-                    indexAfterMove = indexFrom - 1;
-                    focusedActionPanelOptionName = 'moveToPreviousStep';
-                }
 
-                // Case 1: move via action panel button
-                //     - keep action panel open, focus on button used
-                // Case 2: move via shortcut, action panel closed
-                //     - focus moved block, keep action panel closed
-                // Case 3: move via shortcut, action panel open
-                //     - focus moved block, keep action panel open
-
-                if (indexTo != null && indexAfterMove != null) {
-                    if (focusAfterMove === 'focusActionPanel') {
-                        return {
-                            programSequence: state.programSequence.swapStep(indexFrom, indexTo),
-                            actionPanelStepIndex: indexAfterMove,
-                            actionPanelFocusedOptionName: focusedActionPanelOptionName
-                        };
-                    } else if (focusAfterMove === 'focusBlockMoved' && state.actionPanelStepIndex == null) {
-                        if (programBlockEditor != null) {
-                            programBlockEditor.focusCommandBlockAfterUpdate(indexAfterMove);
-                        }
-                        return {
-                            programSequence: state.programSequence.swapStep(indexFrom, indexTo),
-                            actionPanelStepIndex: null,
-                            actionPanelFocusedOptionName: null
-                        };
-                    } else if (focusAfterMove === 'focusBlockMoved' && state.actionPanelStepIndex != null) {
-                        if (programBlockEditor != null) {
-                            programBlockEditor.focusCommandBlockAfterUpdate(indexAfterMove);
-                        }
-                        return {
-                            programSequence: state.programSequence.swapStep(indexFrom, indexTo),
-                            actionPanelStepIndex: indexAfterMove,
-                            actionPanelFocusedOptionName: null
-                        };
+                    if (indexTo != null) {
+                        return this.doMove(
+                            programBlockEditor,
+                            state,
+                            state.programSequence.swapStep(indexFrom, indexTo),
+                            focusAfterMove,
+                            indexFrom - 1,
+                            'moveToPreviousStep'
+                        );
                     }
                 }
             } else {
@@ -257,4 +263,43 @@ export default class ProgramChangeController {
         }
     }
 
+    // Performs activities on the programBlockEditor and returns the
+    // new state for App
+    doMove(programBlockEditor: ?ProgramBlockEditor, appState: AppState,
+        newProgramSequence: ProgramSequence, focusAfterMove: FocusAfterMoveEnum,
+        indexAfterMove: number, focusedActionPanelOptionName: string) {
+
+        // Case 1: move via action panel button
+        //     - keep action panel open, focus on button used
+        // Case 2: move via shortcut, action panel closed
+        //     - focus moved block, keep action panel closed
+        // Case 3: move via shortcut, action panel open
+        //     - focus moved block, keep action panel open
+
+        if (focusAfterMove === 'focusActionPanel') {
+            return {
+                programSequence: newProgramSequence,
+                actionPanelStepIndex: indexAfterMove,
+                actionPanelFocusedOptionName: focusedActionPanelOptionName
+            };
+        } else if (focusAfterMove === 'focusBlockMoved' && appState.actionPanelStepIndex == null) {
+            if (programBlockEditor != null) {
+                programBlockEditor.focusCommandBlockAfterUpdate(indexAfterMove);
+            }
+            return {
+                programSequence: newProgramSequence,
+                actionPanelStepIndex: null,
+                actionPanelFocusedOptionName: null
+            };
+        } else if (focusAfterMove === 'focusBlockMoved' && appState.actionPanelStepIndex != null) {
+            if (programBlockEditor != null) {
+                programBlockEditor.focusCommandBlockAfterUpdate(indexAfterMove);
+            }
+            return {
+                programSequence: newProgramSequence,
+                actionPanelStepIndex: indexAfterMove,
+                actionPanelFocusedOptionName: null
+            };
+        }
+    }
 };

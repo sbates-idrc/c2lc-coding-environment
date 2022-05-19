@@ -31,7 +31,7 @@ import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
-import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, DisplayedCommandName, ProgramStepMovementDirection, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -92,7 +92,7 @@ type AppProps = {
     audioManager?: AudioManager
 };
 
-type AppState = {
+export type AppState = {
     programSequence: ProgramSequence,
     characterState: CharacterState,
     settings: AppSettings,
@@ -567,11 +567,19 @@ export class App extends React.Component<AppProps, AppState> {
         );
     };
 
-    handleProgramBlockEditorMoveStep = (indexFrom: number, direction: ProgramStepMovementDirection, commandAtIndexFrom: string) => {
-        this.programChangeController.moveProgramStep(
+    handleProgramBlockEditorMoveStepNext = (indexFrom: number, commandAtIndexFrom: string) => {
+        this.programChangeController.moveProgramStepNext(
             this.programBlockEditorRef.current,
             indexFrom,
-            direction,
+            commandAtIndexFrom,
+            'focusActionPanel'
+        )
+    };
+
+    handleProgramBlockEditorMoveStepPrevious = (indexFrom: number, commandAtIndexFrom: string) => {
+        this.programChangeController.moveProgramStepPrevious(
+            this.programBlockEditorRef.current,
+            indexFrom,
             commandAtIndexFrom,
             'focusActionPanel'
         )
@@ -915,40 +923,36 @@ export class App extends React.Component<AppProps, AppState> {
                         case("moveToPreviousStep"):
                             if (!this.editingIsDisabled()) {
                                 const currentElement = document.activeElement;
-                                let index = null;
-                                // $FlowFixMe: Not all elements have dataset property
-                                if (currentElement.dataset.controltype === 'programStep') {
-                                    index = parseInt(currentElement.dataset.stepnumber, 10);
-                                }
-                                if (index != null && !Utils.moveToPreviousStepDisabled(this.state.programSequence, index)) {
-                                    this.programChangeController.moveProgramStep(
-                                        this.programBlockEditorRef.current,
-                                        index,
-                                        'previous',
-                                        // $FlowFixMe: Not all elements have dataset property
-                                        currentElement.dataset.command,
-                                        'focusBlockMoved'
-                                    )
+                                if (currentElement) {
+                                    if (currentElement.dataset.controltype === 'programStep') {
+                                        const index = parseInt(currentElement.dataset.stepnumber, 10);
+                                        if (index != null) {
+                                            this.programChangeController.moveProgramStepPrevious(
+                                                this.programBlockEditorRef.current,
+                                                index,
+                                                currentElement.dataset.command,
+                                                'focusBlockMoved'
+                                            )
+                                        }
+                                    }
                                 }
                             }
                             break;
                         case("moveToNextStep"):
                             if (!this.editingIsDisabled()) {
                                 const currentElement = document.activeElement;
-                                let index = null;
-                                // $FlowFixMe: Not all elements have dataset property
-                                if (currentElement.dataset.controltype === 'programStep') {
-                                    index = parseInt(currentElement.dataset.stepnumber, 10);
-                                }
-                                if (index != null && !Utils.moveToNextStepDisabled(this.state.programSequence, index)) {
-                                    this.programChangeController.moveProgramStep(
-                                        this.programBlockEditorRef.current,
-                                        index,
-                                        'next',
-                                        // $FlowFixMe: Not all elements have dataset property
-                                        currentElement.dataset.command,
-                                        'focusBlockMoved'
-                                    )
+                                if (currentElement) {
+                                    if (currentElement.dataset.controltype === 'programStep') {
+                                        const index = parseInt(currentElement.dataset.stepnumber, 10);
+                                        if (index != null) {
+                                            this.programChangeController.moveProgramStepNext(
+                                                this.programBlockEditorRef.current,
+                                                index,
+                                                currentElement.dataset.command,
+                                                'focusBlockMoved'
+                                            )
+                                        }
+                                    }
                                 }
                             }
                             break;
@@ -1557,7 +1561,8 @@ export class App extends React.Component<AppProps, AppState> {
                             onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
                             onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
                             onReplaceProgramStep={this.handleProgramBlockEditorReplaceStep}
-                            onMoveProgramStep={this.handleProgramBlockEditorMoveStep}
+                            onMoveProgramStepNext={this.handleProgramBlockEditorMoveStepNext}
+                            onMoveProgramStepPrevious={this.handleProgramBlockEditorMoveStepPrevious}
                             onChangeActionPanelStepIndexAndOption={this.handleChangeActionPanelStepIndexAndOption}
                             onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
                         />

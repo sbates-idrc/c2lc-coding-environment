@@ -3,7 +3,7 @@
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import type {KeyboardInputSchemeName} from './KeyboardInputSchemes';
-import type {AudioManager, RunningState, ThemeName, ProgramBlock, ProgramStepMovementDirection} from './types';
+import type {AudioManager, RunningState, ThemeName, ProgramBlock} from './types';
 import type { WorldName } from './Worlds';
 import React from 'react';
 import CharacterState from './CharacterState';
@@ -46,7 +46,8 @@ type ProgramBlockEditorProps = {
     onInsertSelectedActionIntoProgram: (index: number, selectedAction: ?string) => void,
     onDeleteProgramStep: (index: number, command: string) => void,
     onReplaceProgramStep: (index: number, selectedAction: ?string) => void,
-    onMoveProgramStep: (indexFrom: number, direction: ProgramStepMovementDirection, commandAtIndexFrom: string) => void,
+    onMoveProgramStepNext: (indexFrom: number, commandAtIndexFrom: string) => void,
+    onMoveProgramStepPrevious: (indexFrom: number, commandAtIndexFrom: string) => void,
     onChangeActionPanelStepIndexAndOption: (index: ?number, focusedOptionName: ?string) => void,
     onChangeAddNodeExpandedMode: (boolean) => void
 };
@@ -219,17 +220,15 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     };
 
     handleActionPanelMoveToPreviousStep = (index: number) => {
-        this.props.onMoveProgramStep(
+        this.props.onMoveProgramStepPrevious(
             index,
-            'previous',
             this.props.programSequence.getProgramStepAt(index).block
         );
     };
 
     handleActionPanelMoveToNextStep = (index: number) => {
-        this.props.onMoveProgramStep(
+        this.props.onMoveProgramStepNext(
             index,
-            'next',
             this.props.programSequence.getProgramStepAt(index).block
         );
     };
