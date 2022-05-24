@@ -12,7 +12,7 @@ import './Worlds.scss';
 import type { ThemeName } from './types';
 import type { WorldName } from './Worlds';
 
-const startingGridCellPointSize = 0.22;
+const startingGridCellPointSize = 0.25;
 
 export type SceneProps = {
     dimensions: SceneDimensions,
