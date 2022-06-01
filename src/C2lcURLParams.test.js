@@ -22,6 +22,17 @@ test('Given URL query parameters with special characters, get decoded param valu
     expect(urlParams.getDisallowedActions()).toBe('("');
 });
 
+test('Given empty URL query parameters, getters each return null', () => {
+    const urlParams = new C2lcURLParams('?');
+    expect(urlParams.getVersion()).toBeNull();
+    expect(urlParams.getProgram()).toBeNull();
+    expect(urlParams.getCharacterState()).toBeNull();
+    expect(urlParams.getTheme()).toBeNull();
+    expect(urlParams.getDisallowedActions()).toBeNull();
+    expect(urlParams.getWorld()).toBeNull();
+    expect(urlParams.getStartingPosition()).toBeNull();
+});
+
 test('The old allowed actions parameter should be ignored.', () => {
     const urlParams = new C2lcURLParams('?v=0.5&t=dark&p=f1f2&c=00b&a=f3');
     expect(urlParams.getDisallowedActions()).toBe(null);

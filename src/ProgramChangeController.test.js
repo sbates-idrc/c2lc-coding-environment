@@ -377,7 +377,102 @@ describe('Test deleteProgramStep()', () => {
 
 });
 
-describe('Test moveProgramStep()', () => {
+describe('Test replaceProgramStep()', () => {
+    test('When there is no selectedAction, then an announcement should be made', (done) => {
+        expect.assertions(3);
+
+        const { controller, appMock, audioManagerMock } = createProgramChangeController();
+
+        appMock.setState.mockImplementation((callback) => {
+            const newState = callback({
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}], 0, 0, new Map())
+            });
+
+            // The program should not be updated
+            expect(newState).toStrictEqual({});
+
+            // The announcement should be made
+            expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
+            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('noActionSelected');
+
+            done();
+        });
+
+        // $FlowFixMe: Jest mock API
+        ProgramBlockEditor.mockClear();
+        // $FlowFixMe: Jest mock API
+        controller.replaceProgramStep(new ProgramBlockEditor(), 1, null);
+    });
+
+    test('When the block to replace is a loop block, then an announcement should be made', (done) => {
+        expect.assertions(3);
+
+        const { controller, appMock, audioManagerMock } = createProgramChangeController();
+
+        appMock.setState.mockImplementation((callback) => {
+            const newState = callback({
+                programSequence: new ProgramSequence([{block: 'startLoop'}, {block: 'endLoop'}], 0, 0, new Map())
+            });
+
+            // The program should not be updated
+            expect(newState).toStrictEqual({});
+
+            // The announcement should be made
+            expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
+            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('cannotReplaceLoopBlocks');
+
+            done();
+        });
+
+        // $FlowFixMe: Jest mock API
+        ProgramBlockEditor.mockClear();
+        // $FlowFixMe: Jest mock API
+        controller.replaceProgramStep(new ProgramBlockEditor(), 1, 'right45');
+    });
+
+    test('When there is a selectedAction, then the program should be updated and all expected activities invoked', (done) => {
+        expect.assertions(10);
+
+        const { controller, appMock, audioManagerMock } = createProgramChangeController();
+
+        appMock.setState.mockImplementation((callback) => {
+            const newState = callback({
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}], 0, 0, new Map())
+            });
+
+            // The program should be updated
+            expect(newState.programSequence.getProgram()).toStrictEqual(
+                [{block: 'forward1'}, {block: 'right45'}]);
+
+            // The announcement should be made
+            expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
+            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('replace');
+            expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
+                oldCommand: "turn left 45 degrees",
+                newCommand: "turn right 45 degrees"
+            });
+
+            // The focus, scrolling, and animation should be set up
+            // $FlowFixMe: Jest mock API
+            const programBlockEditorMock = ProgramBlockEditor.mock.instances[0];
+            expect(programBlockEditorMock.focusCommandBlockAfterUpdate.mock.calls.length).toBe(1);
+            expect(programBlockEditorMock.focusCommandBlockAfterUpdate.mock.calls[0][0]).toBe(1);
+            expect(programBlockEditorMock.scrollToAddNodeAfterUpdate.mock.calls.length).toBe(1);
+            expect(programBlockEditorMock.scrollToAddNodeAfterUpdate.mock.calls[0][0]).toBe(2);
+            expect(programBlockEditorMock.setUpdatedCommandBlock.mock.calls.length).toBe(1);
+            expect(programBlockEditorMock.setUpdatedCommandBlock.mock.calls[0][0]).toBe(1);
+
+            done();
+        });
+
+        // $FlowFixMe: Jest mock API
+        ProgramBlockEditor.mockClear();
+        // $FlowFixMe: Jest mock API
+        controller.replaceProgramStep(new ProgramBlockEditor(), 1, 'right45');
+    });
+});
+
+describe('Test moveProgramStepNext()', () => {
     test.each(([
         {
             program: [
@@ -385,7 +480,6 @@ describe('Test moveProgramStep()', () => {
                 {block: 'forward2'}
             ],
             indexFrom: 0,
-            movementDirection: 'next',
             commandAtIndexFrom: 'forward1',
             focusAfterMove: 'focusBlockMoved',
             expectedProgram: [
@@ -403,7 +497,6 @@ describe('Test moveProgramStep()', () => {
                 {block: 'forward2'}
             ],
             indexFrom: 1,
-            movementDirection: 'next',
             commandAtIndexFrom: 'startLoop',
             focusAfterMove: 'focusActionPanel',
             expectedProgram: [
@@ -414,44 +507,8 @@ describe('Test moveProgramStep()', () => {
             ],
             expectedAnnouncementCommand: 'moveToNext',
             expectedFocusCommandBlockAfterUpdateCall: 0
-        },
-        {
-            program: [
-                {block: 'forward1'},
-                {block: 'forward2'}
-            ],
-            indexFrom: 1,
-            movementDirection: 'previous',
-            commandAtIndexFrom: 'forward2',
-            focusAfterMove: 'focusBlockMoved',
-            expectedProgram: [
-                {block: 'forward2'},
-                {block: 'forward1'}
-            ],
-            expectedAnnouncementCommand: 'moveToPrevious',
-            expectedFocusCommandBlockAfterUpdateCall: 1
-        },
-        {
-            program: [
-                {block: 'forward1'},
-                {block: 'startLoop', label: 'A', iterations: 1},
-                {block: 'endLoop', label: 'A'},
-                {block: 'forward2'}
-            ],
-            indexFrom: 2,
-            movementDirection: 'previous',
-            commandAtIndexFrom: 'endLoop',
-            focusAfterMove: 'focusActionPanel',
-            expectedProgram: [
-                {block: 'startLoop', label: 'A', iterations: 1},
-                {block: 'endLoop', label: 'A'},
-                {block: 'forward1'},
-                {block: 'forward2'}
-            ],
-            expectedAnnouncementCommand: 'moveToPrevious',
-            expectedFocusCommandBlockAfterUpdateCall: 0
-        },
-    ]))('When moveProgramStep command is usable', (testData, done) => {
+        }
+    ]))('When movement is possible, then the program should be updated and all expected activities invoked', (testData, done) => {
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
         appMock.setState.mockImplementation((callback) => {
             const newState = callback({
@@ -475,6 +532,126 @@ describe('Test moveProgramStep()', () => {
         // $FlowFixMe: Jest mock API
         ProgramBlockEditor.mockClear();
         // $FlowFixMe: Jest mock API
-        controller.moveProgramStep(new ProgramBlockEditor(), testData.indexFrom, testData.movementDirection, testData.commandAtIndexFrom, testData.focusAfterMove);
+        controller.moveProgramStepNext(new ProgramBlockEditor(),
+            testData.indexFrom, testData.commandAtIndexFrom,
+            testData.focusAfterMove);
+    });
+
+    test('When move next is not possible, then an announcement should be made', (done) => {
+        expect.assertions(3);
+
+        const { controller, appMock, audioManagerMock } = createProgramChangeController();
+
+        appMock.setState.mockImplementation((callback) => {
+            const newState = callback({
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'right45'}], 0, 0, new Map())
+            });
+
+            // The program should not be updated
+            expect(newState).toStrictEqual({});
+
+            // The announcement should be made
+            expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
+            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('cannotMoveNext');
+
+            done();
+        });
+
+        // $FlowFixMe: Jest mock API
+        ProgramBlockEditor.mockClear();
+        // $FlowFixMe: Jest mock API
+        controller.moveProgramStepNext(new ProgramBlockEditor(), 1, 'right45', 'focusBlockMoved');
+    });
+});
+
+describe('Test moveProgramStepPrevious()', () => {
+    test.each(([
+        {
+            program: [
+                {block: 'forward1'},
+                {block: 'forward2'}
+            ],
+            indexFrom: 1,
+            commandAtIndexFrom: 'forward2',
+            focusAfterMove: 'focusBlockMoved',
+            expectedProgram: [
+                {block: 'forward2'},
+                {block: 'forward1'}
+            ],
+            expectedAnnouncementCommand: 'moveToPrevious',
+            expectedFocusCommandBlockAfterUpdateCall: 1
+        },
+        {
+            program: [
+                {block: 'forward1'},
+                {block: 'startLoop', label: 'A', iterations: 1},
+                {block: 'endLoop', label: 'A'},
+                {block: 'forward2'}
+            ],
+            indexFrom: 2,
+            commandAtIndexFrom: 'endLoop',
+            focusAfterMove: 'focusActionPanel',
+            expectedProgram: [
+                {block: 'startLoop', label: 'A', iterations: 1},
+                {block: 'endLoop', label: 'A'},
+                {block: 'forward1'},
+                {block: 'forward2'}
+            ],
+            expectedAnnouncementCommand: 'moveToPrevious',
+            expectedFocusCommandBlockAfterUpdateCall: 0
+        },
+    ]))('When movement is possible, then the program should be updated and all expected activities invoked', (testData, done) => {
+        const { controller, appMock, audioManagerMock } = createProgramChangeController();
+        appMock.setState.mockImplementation((callback) => {
+            const newState = callback({
+                programSequence: new ProgramSequence(testData.program, 0, 0, new Map())
+            });
+
+            // The program should be updated
+            expect(newState.programSequence.getProgram()).toStrictEqual(testData.expectedProgram);
+
+            // The announcement should be made
+            expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
+            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe(testData.expectedAnnouncementCommand);
+
+            // $FlowFixMe: Jest mock API
+            const programBlockEditorMock = ProgramBlockEditor.mock.instances[0];
+            expect(programBlockEditorMock.focusCommandBlockAfterUpdate.mock.calls.length).toBe(testData.expectedFocusCommandBlockAfterUpdateCall);
+
+            done();
+        });
+
+        // $FlowFixMe: Jest mock API
+        ProgramBlockEditor.mockClear();
+        // $FlowFixMe: Jest mock API
+        controller.moveProgramStepPrevious(new ProgramBlockEditor(),
+            testData.indexFrom, testData.commandAtIndexFrom,
+            testData.focusAfterMove);
+    });
+
+    test('When move previous is not possible, then an announcement should be made', (done) => {
+        expect.assertions(3);
+
+        const { controller, appMock, audioManagerMock } = createProgramChangeController();
+
+        appMock.setState.mockImplementation((callback) => {
+            const newState = callback({
+                programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'right45'}], 0, 0, new Map())
+            });
+
+            // The program should not be updated
+            expect(newState).toStrictEqual({});
+
+            // The announcement should be made
+            expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
+            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('cannotMovePrevious');
+
+            done();
+        });
+
+        // $FlowFixMe: Jest mock API
+        ProgramBlockEditor.mockClear();
+        // $FlowFixMe: Jest mock API
+        controller.moveProgramStepPrevious(new ProgramBlockEditor(), 0, 'forward1', 'focusBlockMoved');
     });
 });

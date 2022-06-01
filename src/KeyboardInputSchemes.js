@@ -72,6 +72,7 @@ export type ActionName =
 
     // Update Program
     | "deleteAll"
+    | "replaceCurrentStep"
     ;
 
 type ActionKeyStep = {
@@ -434,6 +435,11 @@ const AltInputScheme: KeyboardInputScheme = Object.assign({
         icon: "RefreshScene.png",
         altText: "Refresh scene icon"
     },
+    replaceCurrentStep: {
+        keyDef: { code: "KeyC", key: "c", altKey: true },
+        actionName: "replaceCurrentStep",
+        description: "Replace the current program step"
+    },
     // TODO: This should be renamed because it doesn't hide the dialog -
     //       keyboard shortcuts are disabled when dialogs are open.
     //       We should also add 'esc' to the docs as a shortcut for closing dialogs.
@@ -508,6 +514,10 @@ const ControlAltInputScheme = extend (AltInputScheme, {
     },
     refreshScene: {
         keyDef: { code: "KeyR", key: "r", altKey: true, ctrlKey: true }
+    },
+    replaceCurrentStep: {
+        keyDef: { code: "KeyC", key: "c", altKey: true, ctrlKey: true },
+        actionName: "replaceCurrentStep"
     },
     showHide: {
         keyDef: { key: "?", shiftKey: true }

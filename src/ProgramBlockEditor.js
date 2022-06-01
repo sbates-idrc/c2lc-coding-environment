@@ -3,7 +3,7 @@
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import type {KeyboardInputSchemeName} from './KeyboardInputSchemes';
-import type {AudioManager, RunningState, ThemeName, ProgramBlock, ProgramStepMovementDirection} from './types';
+import type {AudioManager, RunningState, ThemeName, ProgramBlock} from './types';
 import type { WorldName } from './Worlds';
 import * as React from 'react';
 import CharacterState from './CharacterState';
@@ -45,14 +45,15 @@ type ProgramBlockEditorProps = {
     onChangeProgramSequence: (programSequence: ProgramSequence) => void,
     onInsertSelectedActionIntoProgram: (index: number, selectedAction: ?string) => void,
     onDeleteProgramStep: (index: number, command: string) => void,
-    onMoveProgramStep: (indexFrom: number, direction: ProgramStepMovementDirection, commandAtIndexFrom: string) => void,
+    onReplaceProgramStep: (index: number, selectedAction: ?string) => void,
+    onMoveProgramStepNext: (indexFrom: number, commandAtIndexFrom: string) => void,
+    onMoveProgramStepPrevious: (indexFrom: number, commandAtIndexFrom: string) => void,
     onChangeActionPanelStepIndexAndOption: (index: ?number, focusedOptionName: ?string) => void,
     onChangeAddNodeExpandedMode: (boolean) => void
 };
 
 type ProgramBlockEditorState = {
     showConfirmDeleteAll: boolean,
-    replaceIsActive: boolean,
     closestAddNodeIndex: number,
     loopLabelOfFocusedLoopBlock: ?string
 };
@@ -80,7 +81,6 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         this.state = {
             showConfirmDeleteAll : false,
             focusedActionPanelOptionName: null,
-            replaceIsActive: false,
             closestAddNodeIndex: -1,
             loopLabelOfFocusedLoopBlock: null
         }
@@ -218,51 +218,19 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     };
 
     handleActionPanelReplaceStep = (index: number) => {
-        if (this.props.selectedAction) {
-            const programStep = this.props.programSequence.getProgramStepAt(index);
-            if (programStep.block !== this.props.selectedAction) {
-                const oldCommandString = this.props.intl.formatMessage({ id: "Announcement." + programStep.block});
-                //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
-                const newCommandString = this.props.intl.formatMessage({ id: "Announcement." + this.props.selectedAction});
-
-                this.props.audioManager.playAnnouncement('replace', this.props.intl, { oldCommand: oldCommandString, newCommand: newCommandString});
-
-                this.props.onChangeProgramSequence(
-                    //$FlowFixMe: Flow thinks `this.props.selectedAction` might be null even though we check it above.
-                    this.props.programSequence.overwriteStep(index, this.props.selectedAction)
-                );
-                this.setState({
-                    replaceIsActive: false
-                });
-                this.focusCommandBlockIndex = index;
-                this.scrollToAddNodeIndex = index + 1;
-                this.setUpdatedCommandBlock(index);
-            } else {
-                this.setState({
-                    replaceIsActive: true
-                });
-            }
-        } else {
-            this.props.audioManager.playAnnouncement('noActionSelected', this.props.intl);
-
-            this.setState({
-                replaceIsActive: true
-            });
-        }
+        this.props.onReplaceProgramStep(index, this.props.selectedAction);
     };
 
     handleActionPanelMoveToPreviousStep = (index: number) => {
-        this.props.onMoveProgramStep(
+        this.props.onMoveProgramStepPrevious(
             index,
-            'previous',
             this.props.programSequence.getProgramStepAt(index).block
         );
     };
 
     handleActionPanelMoveToNextStep = (index: number) => {
-        this.props.onMoveProgramStep(
+        this.props.onMoveProgramStepNext(
             index,
-            'next',
             this.props.programSequence.getProgramStepAt(index).block
         );
     };
@@ -400,13 +368,6 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     /* istanbul ignore next */
     handleCloseActionPanelFocusTrap = () => {
         this.closeActionPanel();
-    };
-
-    /* istanbul ignore next */
-    handleCloseReplaceFocusTrap = () => {
-        this.setState({
-            replaceIsActive: false
-        });
     };
 
     // Rendering
@@ -821,25 +782,14 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             }
         }
         if (this.props.actionPanelStepIndex != null) {
-            if (this.state.replaceIsActive) {
-                this.props.focusTrapManager.setFocusTrap(
-                    this.handleCloseReplaceFocusTrap,
-                    [
-                        '.focus-trap-action-panel-replace__replace_button',
-                        '.focus-trap-action-panel-replace__command_button'
-                    ],
-                    '.focus-trap-action-panel-replace__replace_button'
-                );
-            } else {
-                this.props.focusTrapManager.setFocusTrap(
-                    this.handleCloseActionPanelFocusTrap,
-                    [
-                        '.focus-trap-action-panel__program-block',
-                        '.focus-trap-action-panel__action-panel-button'
-                    ],
-                    '.focus-trap-action-panel__program-block'
-                );
-            }
+            this.props.focusTrapManager.setFocusTrap(
+                this.handleCloseActionPanelFocusTrap,
+                [
+                    '.focus-trap-action-panel__program-block',
+                    '.focus-trap-action-panel__action-panel-button'
+                ],
+                '.focus-trap-action-panel__program-block'
+            );
         } else {
             this.props.focusTrapManager.unsetFocusTrap();
         }
