@@ -58,6 +58,24 @@ type ProgramBlockEditorState = {
     loopLabelOfFocusedLoopBlock: ?string
 };
 
+class ProgramIterator {
+    constructor(program) {
+        this.program = program;
+        this.done = program.length === 0;
+        this.stepNumber = 0;
+        this.programBlock = program[0];
+    }
+
+    next() {
+        if (this.stepNumber < this.program.length - 1) {
+            this.stepNumber += 1;
+            this.programBlock = this.program[this.stepNumber];
+        } else {
+            this.done = true;
+        }
+    }
+}
+
 export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps, ProgramBlockEditorState> {
     commandBlockRefs: Map<number, HTMLElement>;
     addNodeRefs: Map<number, HTMLElement>;
@@ -265,7 +283,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     };
 
     handleFocusProgramBlock = (e: Event) => {
-        // $FlowFixMe: Not all elements have dataset property
+        // $FlowFixMe: property 'dataset' is missing in 'EventTarget'
         if (e.currentTarget.dataset.command === 'startLoop' || e.currentTarget.dataset.command === 'endLoop') {
             const loopLabel = this.props.programSequence.getProgramStepAt(
                 parseInt(e.currentTarget.dataset.stepnumber, 10)
@@ -279,7 +297,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     };
 
     handleBlurProgramBlock = (e: Event) => {
-        // $FlowFixMe: Not all elements have dataset property
+        // $FlowFixMe: property 'dataset' is missing in 'EventTarget'
         if (e.currentTarget.dataset.command === 'startLoop' || e.currentTarget.dataset.command === 'endLoop') {
             this.setState({
                 loopLabelOfFocusedLoopBlock: null
@@ -587,83 +605,86 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             showLoopFocused && 'ProgramBlockEditor__loopContainer--focused'
         );
 
-        return <React.Fragment key={`loop-content-loop-${loopLabel}`}>
-            {this.makeAddNodeSection(startLoopIndex)}
+        return (
             <div className={classes}>
                 <div className='ProgramBlockEditor__program-block-connector-loop' />
                 {content}
                 <div className='ProgramBlockEditor__program-block-connector-loop' />
             </div>
-        </React.Fragment>;
+        );
+    }
+
+    renderLoop(programIterator) {
+        const startLoopBlock = programIterator.programBlock;
+        const startLoopIndex = programIterator.stepNumber;
+        const loopLabel = startLoopBlock.label;
+
+        // Consume the startLoop block
+        programIterator.next();
+
+        const loopContent = [
+            <React.Fragment key={`loop-content-startLoop-${loopLabel}`}>
+                {this.makeProgramBlockSection(startLoopIndex, startLoopBlock)}
+            </React.Fragment>
+        ];
+
+        while (!programIterator.done && programIterator.programBlock.block !== 'endLoop') {
+            loopContent.push(this.renderNextSection(programIterator));
+        }
+
+        if (programIterator.programBlock.block === 'endLoop') {
+            const endLoopBlock = programIterator.programBlock;
+            const endLoopIndex = programIterator.stepNumber;
+
+            // Consume the endLoop block
+            programIterator.next();
+
+            loopContent.push(
+                <React.Fragment key={`loop-content-endLoop-${loopLabel}`}>
+                    {this.makeAddNodeSection(endLoopIndex)}
+                    {this.makeProgramBlockSection(endLoopIndex, endLoopBlock)}
+                </React.Fragment>
+            );
+
+            return this.makeLoopContainer(
+                startLoopIndex,
+                endLoopIndex,
+                loopLabel,
+                loopContent
+            );
+        }
+    }
+
+    renderNextSection(programIterator) {
+        if (programIterator.programBlock.block === 'startLoop') {
+            const loopLabel = programIterator.programBlock.label;
+            const startLoopIndex = programIterator.stepNumber;
+            return (
+                <React.Fragment key={`loop-content-loop-${loopLabel}`}>
+                    {this.makeAddNodeSection(startLoopIndex)}
+                    {this.renderLoop(programIterator)}
+                </React.Fragment>
+            );
+        } else {
+            const section = (
+                <React.Fragment key={`program-block-section-${programIterator.stepNumber}`}>
+                    {this.makeAddNodeSection(programIterator.stepNumber)}
+                    {this.makeProgramBlockSection(programIterator.stepNumber, programIterator.programBlock)}
+                </React.Fragment>
+            );
+            // Consume the block
+            programIterator.next();
+            return section;
+        }
     }
 
     renderProgramBlocks() {
-        const loopContainers = {};
-        const programBlocks = this.props.programSequence.getProgram().map<React.Element<any>>((programBlock, stepNumber) => {
-            if (programBlock.block === 'startLoop') {
-                const loopLabel = programBlock.label;
-                if (loopLabel != null) {
-                    loopContainers[loopLabel] = {
-                        content: [],
-                        startingIndex: stepNumber
-                    };
-                    loopContainers[loopLabel].content.push(
-                        <React.Fragment key={`loop-content-startLoop-${loopLabel}`}>
-                            {this.makeProgramBlockSection(stepNumber, programBlock)}
-                        </React.Fragment>);
-                }
-            } else if (programBlock.cache != null && programBlock.block !== 'startLoop' && programBlock.block !== 'endLoop') {
-                const containingLoopLabel = programBlock.cache.get('containingLoopLabel');
-                if (containingLoopLabel != null) {
-                    if (loopContainers[containingLoopLabel] != null) {
-                        loopContainers[containingLoopLabel].content.push(
-                            <React.Fragment key={`loop-content-${programBlock.block}-${stepNumber}`}>
-                                {this.makeAddNodeSection(stepNumber)}
-                                {this.makeProgramBlockSection(stepNumber, programBlock)}
-                            </React.Fragment>
-                        );
-                    }
-                }
-            } else if (programBlock.block === 'endLoop') {
-                const loopLabel = programBlock.label;
-                if (loopLabel != null) {
-                    loopContainers[loopLabel].content.push(
-                        <React.Fragment key={`loop-content-endLoop-${loopLabel}`}>
-                            {this.makeAddNodeSection(stepNumber)}
-                            {this.makeProgramBlockSection(stepNumber, programBlock)}
-                        </React.Fragment>
-                    );
-                    if (programBlock.cache != null) {
-                        const containingLoopLabel = programBlock.cache.get('containingLoopLabel');
-                        if (containingLoopLabel != null) {
-                            loopContainers[containingLoopLabel].content.push(
-                                this.makeLoopContainer(
-                                    loopContainers[loopLabel].startingIndex,
-                                    stepNumber,
-                                    loopLabel,
-                                    loopContainers[loopLabel].content
-                                )
-                            );
-                            delete loopContainers[loopLabel];
-                        }
-                    }
-                    if (loopContainers[loopLabel] != null) {
-                        return this.makeLoopContainer(
-                            loopContainers[loopLabel].startingIndex,
-                            stepNumber,
-                            loopLabel,
-                            loopContainers[loopLabel].content
-                        );
-                    }
-                }
-            } else {
-                return <React.Fragment key={`program-block-section-${stepNumber}`}>
-                    {this.makeAddNodeSection(stepNumber)}
-                    {this.makeProgramBlockSection(stepNumber, programBlock)}
-                </React.Fragment>
-            }
-            return <React.Fragment key={`loop-content-Fragment-${stepNumber}`}></React.Fragment>
-        });
+        const programBlocks = [];
+        const iterator = new ProgramIterator(this.props.programSequence.getProgram());
+
+        while (!iterator.done) {
+            programBlocks.push(this.renderNextSection(iterator));
+        }
 
         return programBlocks;
     }
