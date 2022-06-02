@@ -587,6 +587,81 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         );
     }
 
+    renderLoop(programIterator) {
+        const startLoopBlock = programIterator.programBlock;
+        const startLoopIndex = programIterator.stepNumber;
+        const loopLabel = startLoopBlock.label;
+
+        // Consume the startLoop block
+        programIterator.next();
+
+        const loopContent = [
+            this.makeProgramBlockWithPanel(startLoopIndex, startLoopBlock)
+        ];
+
+        while (!programIterator.done && programIterator.programBlock.block !== 'endLoop') {
+            loopContent.push(this.renderNextSection(programIterator));
+        }
+
+        if (programIterator.programBlock.block === 'endLoop') {
+            const endLoopBlock = programIterator.programBlock;
+            const endLoopIndex = programIterator.stepNumber;
+
+            // Consume the endLoop block
+            programIterator.next();
+
+            loopContent.push(<div className='ProgramBlockEditor__program-block-connector'/>);
+            loopContent.push(this.makeAddNode(endLoopIndex));
+            loopContent.push(<div className='ProgramBlockEditor__program-block-connector'/>);
+            loopContent.push(this.makeProgramBlockWithPanel(endLoopIndex, endLoopBlock));
+
+            return this.makeLoopContainer(
+                startLoopIndex,
+                endLoopIndex,
+                loopLabel,
+                loopContent
+            );
+        }
+    }
+
+    renderNextSection(programIterator) {
+        if (programIterator.programBlock.block === 'startLoop') {
+            const loopLabel = programIterator.programBlock.label;
+            const startLoopIndex = programIterator.stepNumber;
+            return (
+                <React.Fragment key={`loopSection-${loopLabel}`}>
+                    <div className='ProgramBlockEditor__program-block-connector'/>
+                    {this.makeAddNode(startLoopIndex)}
+                    <div className='ProgramBlockEditor__program-block-connector'/>
+                    {this.renderLoop(programIterator)}
+                </React.Fragment>
+            );
+        } else {
+            const section = (
+                <React.Fragment key={`programBlockSection-${programIterator.stepNumber}-${programIterator.programBlock}`}>
+                    <div className='ProgramBlockEditor__program-block-connector'/>
+                    {this.makeAddNode(programIterator.stepNumber)}
+                    <div className='ProgramBlockEditor__program-block-connector' />
+                    {this.makeProgramBlockWithPanel(programIterator.stepNumber, programIterator.programBlock)}
+                </React.Fragment>
+            );
+            // Consume the block
+            programIterator.next();
+            return section;
+        }
+    }
+
+    renderProgramSections() {
+        const sections = [];
+        const iterator = new ProgramIterator(this.props.programSequence.getProgram());
+
+        while (!iterator.done) {
+            sections.push(this.renderNextSection(iterator));
+        }
+
+        return sections;
+    }
+
     makeEndOfProgramAddNodeSection(programStepNumber: number) {
         const isEmptyProgram = this.props.programSequence.getProgramLength() === 0;
         return (
@@ -608,89 +683,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         )
     }
 
-    renderLoop(programIterator) {
-        const startLoopBlock = programIterator.programBlock;
-        const startLoopIndex = programIterator.stepNumber;
-        const loopLabel = startLoopBlock.label;
-
-        // Consume the startLoop block
-        programIterator.next();
-
-        const loopContent = [
-            <React.Fragment key={`loop-content-startLoop-${loopLabel}`}>
-                {this.makeProgramBlockWithPanel(startLoopIndex, startLoopBlock)}
-            </React.Fragment>
-        ];
-
-        while (!programIterator.done && programIterator.programBlock.block !== 'endLoop') {
-            loopContent.push(this.renderNextSection(programIterator));
-        }
-
-        if (programIterator.programBlock.block === 'endLoop') {
-            const endLoopBlock = programIterator.programBlock;
-            const endLoopIndex = programIterator.stepNumber;
-
-            // Consume the endLoop block
-            programIterator.next();
-
-            loopContent.push(
-                <React.Fragment key={`loop-content-endLoop-${loopLabel}`}>
-                    <div className='ProgramBlockEditor__program-block-connector'/>
-                    {this.makeAddNode(endLoopIndex)}
-                    <div className='ProgramBlockEditor__program-block-connector' />
-                    {this.makeProgramBlockWithPanel(endLoopIndex, endLoopBlock)}
-                </React.Fragment>
-            );
-
-            return this.makeLoopContainer(
-                startLoopIndex,
-                endLoopIndex,
-                loopLabel,
-                loopContent
-            );
-        }
-    }
-
-    renderNextSection(programIterator) {
-        if (programIterator.programBlock.block === 'startLoop') {
-            const loopLabel = programIterator.programBlock.label;
-            const startLoopIndex = programIterator.stepNumber;
-            return (
-                <React.Fragment key={`loop-content-loop-${loopLabel}`}>
-                    <div className='ProgramBlockEditor__program-block-connector'/>
-                    {this.makeAddNode(startLoopIndex)}
-                    <div className='ProgramBlockEditor__program-block-connector'/>
-                    {this.renderLoop(programIterator)}
-                </React.Fragment>
-            );
-        } else {
-            const section = (
-                <React.Fragment key={`program-block-section-${programIterator.stepNumber}`}>
-                    <div className='ProgramBlockEditor__program-block-connector'/>
-                    {this.makeAddNode(programIterator.stepNumber)}
-                    <div className='ProgramBlockEditor__program-block-connector' />
-                    {this.makeProgramBlockWithPanel(programIterator.stepNumber, programIterator.programBlock)}
-                </React.Fragment>
-            );
-            // Consume the block
-            programIterator.next();
-            return section;
-        }
-    }
-
-    renderProgramBlocks() {
-        const programBlocks = [];
-        const iterator = new ProgramIterator(this.props.programSequence.getProgram());
-
-        while (!iterator.done) {
-            programBlocks.push(this.renderNextSection(iterator));
-        }
-
-        return programBlocks;
-    }
-
     render() {
-        const contents = this.renderProgramBlocks();
+        const contents = this.renderProgramSections();
         contents.push(this.makeEndOfProgramAddNodeSection(this.props.programSequence.getProgramLength()));
 
         const character = getWorldCharacter(this.props.theme, this.props.world);
