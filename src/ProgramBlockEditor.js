@@ -588,8 +588,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     }
 
     renderLoop(programIterator) {
-        const startLoopBlock = programIterator.programBlock;
         const startLoopIndex = programIterator.stepNumber;
+        const startLoopBlock = programIterator.programBlock;
         const loopLabel = startLoopBlock.label;
 
         // Consume the startLoop block
@@ -606,8 +606,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         }
 
         if (programIterator.programBlock.block === 'endLoop') {
-            const endLoopBlock = programIterator.programBlock;
             const endLoopIndex = programIterator.stepNumber;
+            const endLoopBlock = programIterator.programBlock;
 
             // Consume the endLoop block
             programIterator.next();
@@ -632,23 +632,25 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
     renderNextSection(programIterator) {
         if (programIterator.programBlock.block === 'startLoop') {
+            const stepNumber = programIterator.stepNumber;
             const loopLabel = programIterator.programBlock.label;
-            const startLoopIndex = programIterator.stepNumber;
             return (
                 <React.Fragment key={`loopSection-${loopLabel}`}>
                     <div className='ProgramBlockEditor__program-block-connector'/>
-                    {this.makeAddNode(startLoopIndex)}
+                    {this.makeAddNode(stepNumber)}
                     <div className='ProgramBlockEditor__program-block-connector'/>
                     {this.renderLoop(programIterator)}
                 </React.Fragment>
             );
         } else {
+            const stepNumber = programIterator.stepNumber;
+            const programBlock = programIterator.programBlock;
             const section = (
-                <React.Fragment key={`programBlockSection-${programIterator.stepNumber}-${programIterator.programBlock}`}>
+                <React.Fragment key={`programBlockSection-${stepNumber}-${programBlock.block}`}>
                     <div className='ProgramBlockEditor__program-block-connector'/>
-                    {this.makeAddNode(programIterator.stepNumber)}
+                    {this.makeAddNode(stepNumber)}
                     <div className='ProgramBlockEditor__program-block-connector' />
-                    {this.makeProgramBlockWithPanel(programIterator.stepNumber, programIterator.programBlock)}
+                    {this.makeProgramBlockWithPanel(stepNumber, programBlock)}
                 </React.Fragment>
             );
             // Consume the block
