@@ -596,7 +596,9 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         programIterator.next();
 
         const loopContent = [
-            this.makeProgramBlockWithPanel(startLoopIndex, startLoopBlock)
+            <React.Fragment key={`startLoop`}>
+                {this.makeProgramBlockWithPanel(startLoopIndex, startLoopBlock)}
+            </React.Fragment>
         ];
 
         while (!programIterator.done && programIterator.programBlock.block !== 'endLoop') {
@@ -610,10 +612,14 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             // Consume the endLoop block
             programIterator.next();
 
-            loopContent.push(<div className='ProgramBlockEditor__program-block-connector'/>);
-            loopContent.push(this.makeAddNode(endLoopIndex));
-            loopContent.push(<div className='ProgramBlockEditor__program-block-connector'/>);
-            loopContent.push(this.makeProgramBlockWithPanel(endLoopIndex, endLoopBlock));
+            loopContent.push(
+                <React.Fragment key={`endLoop`}>
+                    <div className='ProgramBlockEditor__program-block-connector'/>
+                    {this.makeAddNode(endLoopIndex)}
+                    <div className='ProgramBlockEditor__program-block-connector' />
+                    {this.makeProgramBlockWithPanel(endLoopIndex, endLoopBlock)}
+                </React.Fragment>
+            );
 
             return this.makeLoopContainer(
                 startLoopIndex,
