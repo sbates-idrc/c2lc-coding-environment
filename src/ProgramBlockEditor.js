@@ -546,30 +546,6 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         );
     }
 
-    makeLoopContainer(startLoopIndex: number, endLoopIndex: number, loopLabel: string, content: any) {
-        // Show the loop focused styling if:
-        // - the start loop block or the end loop block has focus
-        // - or, the ActionPanel is open for the start loop block or the end
-        //   loop block
-        const showLoopFocused =
-            this.state.loopLabelOfFocusedLoopBlock === loopLabel
-            || this.props.actionPanelStepIndex === startLoopIndex
-            || this.props.actionPanelStepIndex === endLoopIndex;
-
-        const classes = classNames(
-            'ProgramBlockEditor__loopContainer',
-            showLoopFocused && 'ProgramBlockEditor__loopContainer--focused'
-        );
-
-        return (
-            <div className={classes}>
-                <div className='ProgramBlockEditor__program-block-connector-loop' />
-                {content}
-                <div className='ProgramBlockEditor__program-block-connector-loop' />
-            </div>
-        );
-    }
-
     renderLoop(programIterator: ProgramIterator) {
         if (programIterator.programBlock == null) {
             return;
@@ -582,12 +558,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         // Consume the startLoop block
         programIterator.next();
 
-        const loopContent = [
-            <React.Fragment key={`startLoop`}>
-                {this.makeProgramBlockWithPanel(startLoopIndex, startLoopBlock)}
-            </React.Fragment>
-        ];
-
+        const loopContent = [];
         while (!programIterator.done
                 && programIterator.programBlock != null
                 && programIterator.programBlock.block !== 'endLoop') {
@@ -603,20 +574,35 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             // Consume the endLoop block
             programIterator.next();
 
-            loopContent.push(
-                <React.Fragment key={`endLoop`}>
-                    <div className='ProgramBlockEditor__program-block-connector'/>
-                    {this.makeAddNode(endLoopIndex)}
-                    <div className='ProgramBlockEditor__program-block-connector' />
-                    {this.makeProgramBlockWithPanel(endLoopIndex, endLoopBlock)}
-                </React.Fragment>
+            // Show the loop focused styling if:
+            // - the startLoop block or the endLoop block has focus
+            // - or, the ActionPanel is open for the startLoop block or the
+            //   endLoop block
+            const showLoopFocused =
+                this.state.loopLabelOfFocusedLoopBlock === loopLabel
+                || this.props.actionPanelStepIndex === startLoopIndex
+                || this.props.actionPanelStepIndex === endLoopIndex;
+
+            const classes = classNames(
+                'ProgramBlockEditor__loopContainer',
+                showLoopFocused && 'ProgramBlockEditor__loopContainer--focused'
             );
 
-            return this.makeLoopContainer(
-                startLoopIndex,
-                endLoopIndex,
-                loopLabel,
-                loopContent
+            return (
+                <div className={classes}>
+                    <div className='ProgramBlockEditor__program-block-connector-loop' />
+                    <React.Fragment key={`startLoop`}>
+                        {this.makeProgramBlockWithPanel(startLoopIndex, startLoopBlock)}
+                    </React.Fragment>
+                    {loopContent}
+                    <React.Fragment key={`endLoop`}>
+                        <div className='ProgramBlockEditor__program-block-connector'/>
+                        {this.makeAddNode(endLoopIndex)}
+                        <div className='ProgramBlockEditor__program-block-connector' />
+                        {this.makeProgramBlockWithPanel(endLoopIndex, endLoopBlock)}
+                    </React.Fragment>
+                    <div className='ProgramBlockEditor__program-block-connector-loop' />
+                </div>
             );
         }
     }
