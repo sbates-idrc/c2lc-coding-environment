@@ -122,7 +122,8 @@
 
 .ProgramBlockEditor__program-sequence-scroll-container {
     border-radius: 0 3px 3px 0px;
-    display: flex;
+    display: grid;
+    grid-template-rows: auto 9rem auto;
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 2;
@@ -134,11 +135,29 @@
 }
 
 .ProgramBlockEditor__program-sequence {
+    grid-row-start: 2;
+    grid-row-end: 3;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     padding-top: 2.5rem;
     padding-bottom: 1rem;
+}
+
+.ProgramBlockEditor__loopContainer {
+    display: flex;
+    align-items: center;
+    border-radius: 40px 40px 40px 40px;
+}
+
+.ProgramBlockEditor__loopContainer--focused {
+    padding: 0.2rem;
+    z-index: 2;
+    background-color: #3F5574;
+    outline: 0.2rem solid #FFFFFF;
+    > .ProgramBlockEditor__program-block-connector-loop {
+        display: none;
+    }
 }
 
 .ProgramBlockEditor__start-indicator {
@@ -157,6 +176,14 @@
 .ProgramBlockEditor__program-block-connector {
     background-color: #939595;
     min-width: 0.8rem;
+    height: 0.2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.ProgramBlockEditor__program-block-connector-loop {
+    background-color: #939595;
+    min-width: 0.2rem;
     height: 0.2rem;
     position: relative;
     z-index: 1;

@@ -7,8 +7,10 @@ import { Button } from 'react-bootstrap';
 import { IntlProvider } from 'react-intl';
 import AudioManagerImpl from './AudioManagerImpl';
 import ActionPanel from './ActionPanel';
+import AddNode from './AddNode';
 import AriaDisablingButton from './AriaDisablingButton';
 import CharacterState from './CharacterState';
+import CommandBlock from './CommandBlock';
 import FocusTrapManager from './FocusTrapManager';
 import ProgramSequence from './ProgramSequence';
 import SceneDimensions from './SceneDimensions';
@@ -193,6 +195,143 @@ describe('Program rendering', () => {
         wrapper.setProps({ runningState: 'stopped' });
         expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('2');
     });
+    test('Loop blocks should be wrapped in a container', () => {
+        const { wrapper } = createMountProgramBlockEditor({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'forward1', cache: new Map([
+                        ['containingLoopLabel', 'A'],
+                        ['containingLoopPosition', 1]
+                    ])},
+                    {block: 'startLoop', label: 'B', iterations: 2, cache: new Map([
+                        ['containingLoopLabel', 'A'],
+                        ['containingLoopPosition', 2]
+                    ])},
+                    {block: 'left45', cache: new Map([
+                        ['containingLoopLabel', 'B'],
+                        ['containingLoopPosition', 3]
+                    ])},
+                    {block: 'endLoop', label: 'B', cache: new Map([
+                        ['containingLoopLabel', 'A'],
+                        ['containingLoopPosition', 4]
+                    ])},
+                    {block: 'endLoop', label: 'A'},
+                    {block: 'right45'}
+                ],
+                0,
+                0,
+                new Map([['A', 2], ['B', 2]])
+            )
+        });
+
+        const nodes = wrapper.findWhere((node) => {
+            return node.hasClass('ProgramBlockEditor__loopContainer')
+                || node.type() === CommandBlock
+                || node.type() === AddNode;
+        });
+
+        expect(nodes.length).toBe(17);
+
+        // 0: AddNode
+        expect(nodes.at(0).type()).toBe(AddNode);
+        expect(nodes.at(0).prop('programStepNumber')).toBe(0);
+
+        // 1: loopContainer for loop A
+        expect(nodes.at(1).type()).toBe('div');
+        expect(nodes.at(1).hasClass('ProgramBlockEditor__loopContainer')).toBe(true);
+
+        // 2: startLoop A
+        expect(nodes.at(2).type()).toBe(CommandBlock);
+        expect(nodes.at(2).prop('data-stepnumber')).toBe(0);
+        expect(nodes.at(2).prop('data-command')).toBe('startLoop');
+        expect(nodes.at(2).prop('loopLabel')).toBe('A');
+
+        // 3: AddNode
+        expect(nodes.at(3).type()).toBe(AddNode);
+        expect(nodes.at(3).prop('programStepNumber')).toBe(1);
+
+        // 4: forward1
+        expect(nodes.at(4).type()).toBe(CommandBlock);
+        expect(nodes.at(4).prop('data-stepnumber')).toBe(1);
+        expect(nodes.at(4).prop('data-command')).toBe('forward1');
+
+        // 5: AddNode
+        expect(nodes.at(5).type()).toBe(AddNode);
+        expect(nodes.at(5).prop('programStepNumber')).toBe(2);
+
+        // 6: loopContainer for loop B
+        expect(nodes.at(6).type()).toBe('div');
+        expect(nodes.at(6).hasClass('ProgramBlockEditor__loopContainer')).toBe(true);
+
+        // 7: startLoop B
+        expect(nodes.at(7).type()).toBe(CommandBlock);
+        expect(nodes.at(7).prop('data-stepnumber')).toBe(2);
+        expect(nodes.at(7).prop('data-command')).toBe('startLoop');
+        expect(nodes.at(7).prop('loopLabel')).toBe('B');
+
+        // 8: AddNode
+        expect(nodes.at(8).type()).toBe(AddNode);
+        expect(nodes.at(8).prop('programStepNumber')).toBe(3);
+
+        // 9: left45
+        expect(nodes.at(9).type()).toBe(CommandBlock);
+        expect(nodes.at(9).prop('data-stepnumber')).toBe(3);
+        expect(nodes.at(9).prop('data-command')).toBe('left45');
+
+        // 10: AddNode
+        expect(nodes.at(10).type()).toBe(AddNode);
+        expect(nodes.at(10).prop('programStepNumber')).toBe(4);
+
+        // 11: endLoop B
+        expect(nodes.at(11).type()).toBe(CommandBlock);
+        expect(nodes.at(11).prop('data-stepnumber')).toBe(4);
+        expect(nodes.at(11).prop('data-command')).toBe('endLoop');
+
+        // 12: AddNode
+        expect(nodes.at(12).type()).toBe(AddNode);
+        expect(nodes.at(12).prop('programStepNumber')).toBe(5);
+
+        // 13: endLoop A
+        expect(nodes.at(13).type()).toBe(CommandBlock);
+        expect(nodes.at(13).prop('data-stepnumber')).toBe(5);
+        expect(nodes.at(13).prop('data-command')).toBe('endLoop');
+
+        // 14: AddNode
+        expect(nodes.at(14).type()).toBe(AddNode);
+        expect(nodes.at(14).prop('programStepNumber')).toBe(6);
+
+        // 15: right45
+        expect(nodes.at(15).type()).toBe(CommandBlock);
+        expect(nodes.at(15).prop('data-stepnumber')).toBe(6);
+        expect(nodes.at(15).prop('data-command')).toBe('right45');
+
+        // 16: AddNode
+        expect(nodes.at(16).type()).toBe(AddNode);
+        expect(nodes.at(16).prop('programStepNumber')).toBe(7);
+
+        // Check that the loop A contents are contained in the loop A container
+        expect(nodes.at(1).contains(nodes.get(2))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(3))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(4))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(5))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(6))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(12))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(13))).toBe(true);
+
+        // Check that the loop B contents are contained in the loop B container
+        expect(nodes.at(6).contains(nodes.get(7))).toBe(true);
+        expect(nodes.at(6).contains(nodes.get(8))).toBe(true);
+        expect(nodes.at(6).contains(nodes.get(9))).toBe(true);
+        expect(nodes.at(6).contains(nodes.get(10))).toBe(true);
+        expect(nodes.at(6).contains(nodes.get(11))).toBe(true);
+
+        // Check that the remaining nodes are outside the loop A container
+        expect(nodes.at(1).contains(nodes.get(0))).toBe(false);
+        expect(nodes.at(1).contains(nodes.get(14))).toBe(false);
+        expect(nodes.at(1).contains(nodes.get(15))).toBe(false);
+        expect(nodes.at(1).contains(nodes.get(16))).toBe(false);
+    });
 });
 
 test('When a step is clicked, action panel should render next to the step', () => {
@@ -212,6 +351,27 @@ test('When a step is clicked, action panel should render next to the step', () =
         expect(actionPanelContainer.contains(ActionPanel)).toBe(true);
     }
 });
+
+test('Loop container should have focus style when its start or end loop block is focused', () => {
+    expect.assertions(3);
+    const { wrapper } = createMountProgramBlockEditor({
+        programSequence: new ProgramSequence(
+            [
+                {block: 'startLoop', label: 'A', iterations: 2},
+                {block: 'endLoop', label: 'A'}
+            ],
+            0,
+            0,
+            new Map([['A', 2]])
+        )
+    });
+    expect(wrapper.html()).not.toContain('ProgramBlockEditor__loopContainer--focused');
+    const startLoopBlock = getProgramBlockAtPosition(wrapper, 0);
+    startLoopBlock.simulate('focus');
+    expect(wrapper.html()).toContain('ProgramBlockEditor__loopContainer--focused');
+    startLoopBlock.simulate('blur');
+    expect(wrapper.html()).not.toContain('ProgramBlockEditor__loopContainer--focused');
+})
 
 describe('The expand add node toggle switch should be configurable via properties', () => {
     describe('Given that addNodeExpandedMode is false', () => {

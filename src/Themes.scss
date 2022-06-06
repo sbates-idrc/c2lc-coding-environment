@@ -197,12 +197,21 @@ body.light-theme {
             background-color: #858383;
             color: #FFFFFF;
         }
+        &:focus {
+            border: 0.2rem solid #30444E;
+            box-shadow: none;
+        }
         &:hover {
             background-color: #787878;
             .command-block-loop-label-container {
                 background-color: #5E5D5D;
             }
         }
+    }
+
+    .ProgramBlockEditor__loopContainer--focused {
+        background-color: #EAEEF3;
+        outline: 0.2rem solid #30444E;
     }
 
     .ActionsMenuItem__icon--right45, .ActionsMenuItem__icon--right90, .ActionsMenuItem__icon--right180 {
@@ -1047,9 +1056,14 @@ body.gray-theme {
     button.command-block.btn-command-block--startLoop,
     button.command-block.btn-command-block--endLoop {
         background-color: #B9BEC6;
+        border: 0.2rem solid transparent;
         .command-block-loop-label-container {
             background-color: #989DA7;
             color: #FFFFFF;
+        }
+        &:focus {
+            border: 0.2rem solid #505862;
+            box-shadow: none;
         }
         &:hover {
             background-color: #818A98;
@@ -1057,6 +1071,11 @@ body.gray-theme {
                 background-color: #626A78;
             }
         }
+    }
+
+    .ProgramBlockEditor__loopContainer--focused {
+        background-color: #F1F2F4;
+        outline: 0.2rem solid #505862;
     }
 
     .ActionsMenuItem {
@@ -1341,7 +1360,8 @@ body.gray-theme {
         background-color: #818A98;
     }
 
-    .ProgramBlockEditor__program-block-connector {
+    .ProgramBlockEditor__program-block-connector,
+    .ProgramBlockEditor__program-block-connector-loop {
         background-color: #505862;
     }
 
@@ -1995,8 +2015,16 @@ body.contrast-theme {
             background-color: #FFFFFF;
             color: black;
         }
+        &:focus {
+            padding: 0.1rem;
+            border: 0.1rem solid #000000;
+            outline-style: inset;
+            outline: #FFFFFF solid 0.2rem;
+        }
         &:hover {
-            border: 2px solid #FFFFFF;
+            padding: 0.1rem;
+            border: 0.1rem solid #FFFFFF;
+            outline: #FFFFFF solid 0.1rem;
             background-color: black;
             .command-block-loop-label-container {
                 background-color: black;
@@ -2005,6 +2033,10 @@ body.contrast-theme {
         }
     }
 
+    .ProgramBlockEditor__loopContainer--focused {
+        background-color: #000000;
+        outline: 0.2rem solid #FFFFFF;
+    }
 
     .ActionsMenuItem {
         &:focus {
@@ -2346,7 +2378,8 @@ body.contrast-theme {
         background-color: white;
     }
 
-    .ProgramBlockEditor__program-block-connector {
+    .ProgramBlockEditor__program-block-connector,
+    .ProgramBlockEditor__program-block-connector-loop {
         background-color: white;
     }
 

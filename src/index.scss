@@ -76,45 +76,6 @@ button.command-block {
     padding: 0;
 }
 
-button.command-block.btn-command-block--startLoop {
-    width: 3rem;
-    height: 5rem;
-    border-radius: 35px 10px 10px 35px;
-    background-color: #DDDDDD;
-    transition: unset;
-    .command-block-loop-iterations {
-        width: 2.5em;
-        text-align: center;
-        pointer-events: all;
-        border-radius: 5px;
-        margin-left: 0.3rem;
-    }
-    &:hover {
-        background-color: #B8B6B6;
-        .command-block-loop-label-container {
-            background-color: #9D9C9C;
-        }
-    }
-}
-
-button.command-block.btn-command-block--endLoop {
-    width: 3rem;
-    height: 5rem;
-    border-radius: 10px 35px 35px 10px;
-    background-color: #DDDDDD;
-    border: 2px solid transparent;
-    transition: unset;
-    .command-block-loop-block-container {
-        margin-right: 1.5rem;
-    }
-    &:hover {
-        background-color: #B8B6B6;
-        .command-block-loop-label-container {
-            background-color: #9D9C9C;
-        }
-    }
-}
-
 .command-block-loop-block-container {
     display: grid;
     justify-items: center;
@@ -139,6 +100,56 @@ button.command-block.btn-command-block--endLoop {
 button.btn.command-block:focus {
     box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     border: 2px solid #30444E;
+}
+
+button.command-block.btn-command-block--startLoop {
+    box-sizing: content-box;
+    width: 3rem;
+    height: 5rem;
+    border-radius: 35px 10px 10px 35px;
+    background-color: #DDDDDD;
+    border: 0.2rem solid transparent;
+    transition: unset;
+    .command-block-loop-iterations {
+        width: 2.5em;
+        text-align: center;
+        pointer-events: all;
+        border-radius: 5px;
+        margin-left: 0.3rem;
+    }
+    &:focus {
+        box-shadow: none;
+        border: 0.2rem solid #FFFFFF;
+    }
+    &:hover {
+        background-color: #B8B6B6;
+        .command-block-loop-label-container {
+            background-color: #9D9C9C;
+        }
+    }
+}
+
+button.command-block.btn-command-block--endLoop {
+    box-sizing: content-box;
+    width: 3rem;
+    height: 5rem;
+    border-radius: 10px 35px 35px 10px;
+    background-color: #DDDDDD;
+    border: 0.2rem solid transparent;
+    transition: unset;
+    .command-block-loop-block-container {
+        margin-right: 1.5rem;
+    }
+    &:focus {
+        box-shadow: none;
+        border: 0.2rem solid #FFFFFF;
+    }
+    &:hover {
+        background-color: #B8B6B6;
+        .command-block-loop-label-container {
+            background-color: #9D9C9C;
+        }
+    }
 }
 
 button.btn.command-block.command-block--pressed,
