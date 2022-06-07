@@ -48,6 +48,8 @@ export type ActionName =
     | "focusCharacterColumnInput"
     | "focusCharacterRowInput"
     | "focusLoopIterationsInput"
+    | "focusNextProgramBlock"
+    | "focusPreviousProgramBlock"
     | "focusPlayShare"
     | "focusProgramSequence"
     | "focusScene"
@@ -70,6 +72,7 @@ export type ActionName =
 
     // Update Program
     | "deleteAll"
+    | "replaceCurrentStep"
     ;
 
 type ActionKeyStep = {
@@ -150,6 +153,16 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                 description: "Move focus to the loop iterations input field",
                 icon: "FocusLoopIterationsInput.png",
                 altText: "Focus loop iterations input icon"
+            },
+            nextProgramBlock: {
+                keyDef: { code: "BracketRight", key: "]" },
+                actionName: "focusNextProgramBlock",
+                description: "Move focus to the next program block"
+            },
+            previousProgramBlock: {
+                keyDef: { code: "BracketLeft", key: "[" },
+                actionName: "focusPreviousProgramBlock",
+                description: "Move focus to the previous program block"
             },
             // TODO: rename this since we move focus to the play button, not an area
             playShare: {
@@ -422,6 +435,11 @@ const AltInputScheme: KeyboardInputScheme = Object.assign({
         icon: "RefreshScene.png",
         altText: "Refresh scene icon"
     },
+    replaceCurrentStep: {
+        keyDef: { code: "KeyC", key: "c", altKey: true },
+        actionName: "replaceCurrentStep",
+        description: "Replace the current program step"
+    },
     // TODO: This should be renamed because it doesn't hide the dialog -
     //       keyboard shortcuts are disabled when dialogs are open.
     //       We should also add 'esc' to the docs as a shortcut for closing dialogs.
@@ -496,6 +514,10 @@ const ControlAltInputScheme = extend (AltInputScheme, {
     },
     refreshScene: {
         keyDef: { code: "KeyR", key: "r", altKey: true, ctrlKey: true }
+    },
+    replaceCurrentStep: {
+        keyDef: { code: "KeyC", key: "c", altKey: true, ctrlKey: true },
+        actionName: "replaceCurrentStep"
     },
     showHide: {
         keyDef: { key: "?", shiftKey: true }

@@ -85,4 +85,20 @@ export default class AnnouncementBuilder {
             }
         };
     }
+
+    buildReplaceStepAnnouncement(programBlock: ProgramBlock,
+        selectedAction: string): AnnouncementData {
+
+        return {
+            messageIdSuffix: 'replace',
+            values: {
+                oldCommand: this.intl.formatMessage({
+                    id: `Announcement.${programBlock.block}`
+                }),
+                newCommand: this.intl.formatMessage({
+                    id: `Announcement.${selectedAction}`
+                })
+            }
+        };
+    }
 };

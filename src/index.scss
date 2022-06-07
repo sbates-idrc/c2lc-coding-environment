@@ -103,10 +103,12 @@ button.btn.command-block:focus {
 }
 
 button.command-block.btn-command-block--startLoop {
+    box-sizing: content-box;
     width: 4rem;
     height: 5rem;
     border-radius: 50px 10px 10px 50px;
     background-color: #DDDDDD;
+    border: 0.2rem solid transparent;
     transition: unset;
     .command-block-loop-iterations {
         width: 2.5em;
@@ -117,7 +119,7 @@ button.command-block.btn-command-block--startLoop {
     }
     &:focus {
         box-shadow: none;
-        border: none;
+        border: 0.2rem solid #FFFFFF;
     }
     &:hover {
         background-color: #B8B6B6;
@@ -128,18 +130,19 @@ button.command-block.btn-command-block--startLoop {
 }
 
 button.command-block.btn-command-block--endLoop {
+    box-sizing: content-box;
     width: 4rem;
     height: 5rem;
     border-radius: 10px 50px 50px 10px;
     background-color: #DDDDDD;
-    border: 2px solid transparent;
+    border: 0.2rem solid transparent;
     transition: unset;
     .command-block-loop-block-container {
         margin-right: 1.5rem;
     }
     &:focus {
         box-shadow: none;
-        border: 2px solid transparent;
+        border: 0.2rem solid #FFFFFF;
     }
     &:hover {
         background-color: #B8B6B6;

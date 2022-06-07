@@ -7,8 +7,10 @@ import { Button } from 'react-bootstrap';
 import { IntlProvider } from 'react-intl';
 import AudioManagerImpl from './AudioManagerImpl';
 import ActionPanel from './ActionPanel';
+import AddNode from './AddNode';
 import AriaDisablingButton from './AriaDisablingButton';
 import CharacterState from './CharacterState';
+import CommandBlock from './CommandBlock';
 import FocusTrapManager from './FocusTrapManager';
 import ProgramSequence from './ProgramSequence';
 import SceneDimensions from './SceneDimensions';
@@ -52,7 +54,9 @@ function createMountProgramBlockEditor(props) {
     const mockChangeProgramSequenceHandler = jest.fn();
     const mockInsertSelectedActionIntoProgramHandler = jest.fn();
     const mockDeleteProgramStepHandler = jest.fn();
-    const mockMoveProgramStepHandler = jest.fn();
+    const mockReplaceProgramStepHandler = jest.fn();
+    const mockMoveProgramStepNextHandler = jest.fn();
+    const mockMoveProgramStepPreviousHandler = jest.fn();
     const mockChangeActionPanelStepIndexAndOption = jest.fn();
     const mockChangeAddNodeExpandedModeHandler = jest.fn();
 
@@ -71,7 +75,9 @@ function createMountProgramBlockEditor(props) {
                     onChangeProgramSequence: mockChangeProgramSequenceHandler,
                     onInsertSelectedActionIntoProgram: mockInsertSelectedActionIntoProgramHandler,
                     onDeleteProgramStep: mockDeleteProgramStepHandler,
-                    onMoveProgramStep: mockMoveProgramStepHandler,
+                    onReplaceProgramStep: mockReplaceProgramStepHandler,
+                    onMoveProgramStepNext: mockMoveProgramStepNextHandler,
+                    onMoveProgramStepPrevious: mockMoveProgramStepPreviousHandler,
                     onChangeActionPanelStepIndexAndOption: mockChangeActionPanelStepIndexAndOption,
                     onChangeAddNodeExpandedMode: mockChangeAddNodeExpandedModeHandler
                 },
@@ -95,7 +101,9 @@ function createMountProgramBlockEditor(props) {
         mockChangeProgramSequenceHandler,
         mockInsertSelectedActionIntoProgramHandler,
         mockDeleteProgramStepHandler,
-        mockMoveProgramStepHandler,
+        mockReplaceProgramStepHandler,
+        mockMoveProgramStepNextHandler,
+        mockMoveProgramStepPreviousHandler,
         mockChangeActionPanelStepIndexAndOption,
         mockChangeAddNodeExpandedModeHandler
     };
@@ -154,10 +162,6 @@ function getProgramSequenceContainer(programBlockEditorWrapper) {
     return programBlockEditorWrapper.find('.ProgramBlockEditor__program-sequence-scroll-container').get(0);
 }
 
-function getLoopContainers(programBlockEditorWrapper) {
-    return programBlockEditorWrapper.find('.ProgramBlockEditor__loopContainer');
-}
-
 describe('Program rendering', () => {
     test('Blocks should be rendered for the test program', () => {
         expect.assertions(5);
@@ -192,7 +196,6 @@ describe('Program rendering', () => {
         expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('2');
     });
     test('Loop blocks should be wrapped in a container', () => {
-        expect.assertions(4);
         const { wrapper } = createMountProgramBlockEditor({
             programSequence: new ProgramSequence(
                 [
@@ -205,7 +208,7 @@ describe('Program rendering', () => {
                         ['containingLoopLabel', 'A'],
                         ['containingLoopPosition', 2]
                     ])},
-                    {block: 'forward1', cache: new Map([
+                    {block: 'left45', cache: new Map([
                         ['containingLoopLabel', 'B'],
                         ['containingLoopPosition', 3]
                     ])},
@@ -214,21 +217,121 @@ describe('Program rendering', () => {
                         ['containingLoopPosition', 4]
                     ])},
                     {block: 'endLoop', label: 'A'},
-                    {block: 'forward1'}
+                    {block: 'right45'}
                 ],
                 0,
                 0,
                 new Map([['A', 2], ['B', 2]])
             )
         });
-        expect(getLoopContainers(wrapper).length).toBe(2);
-        // getLoopContainers(wrapper).get(0).props.children = [connector, loopContent, connector],
-        // so use index 1 to access specific loop content. Children[1]'s loop content is expected to be
-        // loopContent = [startLoopA, forward1, loopContentB, endLoopB]
-        expect(getLoopContainers(wrapper).get(0).props.children[1].length).toBe(4);
-        expect(getLoopContainers(wrapper).get(0).props.children[1][2].key).toBe('loop-content-loop-B');
-        expect(getLoopContainers(wrapper).get(1).props.children[1].length).toBe(3);
-    })
+
+        const nodes = wrapper.findWhere((node) => {
+            return node.hasClass('ProgramBlockEditor__loopContainer')
+                || node.type() === CommandBlock
+                || node.type() === AddNode;
+        });
+
+        expect(nodes.length).toBe(17);
+
+        // 0: AddNode
+        expect(nodes.at(0).type()).toBe(AddNode);
+        expect(nodes.at(0).prop('programStepNumber')).toBe(0);
+
+        // 1: loopContainer for loop A
+        expect(nodes.at(1).type()).toBe('div');
+        expect(nodes.at(1).hasClass('ProgramBlockEditor__loopContainer')).toBe(true);
+
+        // 2: startLoop A
+        expect(nodes.at(2).type()).toBe(CommandBlock);
+        expect(nodes.at(2).prop('data-stepnumber')).toBe(0);
+        expect(nodes.at(2).prop('data-command')).toBe('startLoop');
+        expect(nodes.at(2).prop('loopLabel')).toBe('A');
+
+        // 3: AddNode
+        expect(nodes.at(3).type()).toBe(AddNode);
+        expect(nodes.at(3).prop('programStepNumber')).toBe(1);
+
+        // 4: forward1
+        expect(nodes.at(4).type()).toBe(CommandBlock);
+        expect(nodes.at(4).prop('data-stepnumber')).toBe(1);
+        expect(nodes.at(4).prop('data-command')).toBe('forward1');
+
+        // 5: AddNode
+        expect(nodes.at(5).type()).toBe(AddNode);
+        expect(nodes.at(5).prop('programStepNumber')).toBe(2);
+
+        // 6: loopContainer for loop B
+        expect(nodes.at(6).type()).toBe('div');
+        expect(nodes.at(6).hasClass('ProgramBlockEditor__loopContainer')).toBe(true);
+
+        // 7: startLoop B
+        expect(nodes.at(7).type()).toBe(CommandBlock);
+        expect(nodes.at(7).prop('data-stepnumber')).toBe(2);
+        expect(nodes.at(7).prop('data-command')).toBe('startLoop');
+        expect(nodes.at(7).prop('loopLabel')).toBe('B');
+
+        // 8: AddNode
+        expect(nodes.at(8).type()).toBe(AddNode);
+        expect(nodes.at(8).prop('programStepNumber')).toBe(3);
+
+        // 9: left45
+        expect(nodes.at(9).type()).toBe(CommandBlock);
+        expect(nodes.at(9).prop('data-stepnumber')).toBe(3);
+        expect(nodes.at(9).prop('data-command')).toBe('left45');
+
+        // 10: AddNode
+        expect(nodes.at(10).type()).toBe(AddNode);
+        expect(nodes.at(10).prop('programStepNumber')).toBe(4);
+
+        // 11: endLoop B
+        expect(nodes.at(11).type()).toBe(CommandBlock);
+        expect(nodes.at(11).prop('data-stepnumber')).toBe(4);
+        expect(nodes.at(11).prop('data-command')).toBe('endLoop');
+
+        // 12: AddNode
+        expect(nodes.at(12).type()).toBe(AddNode);
+        expect(nodes.at(12).prop('programStepNumber')).toBe(5);
+
+        // 13: endLoop A
+        expect(nodes.at(13).type()).toBe(CommandBlock);
+        expect(nodes.at(13).prop('data-stepnumber')).toBe(5);
+        expect(nodes.at(13).prop('data-command')).toBe('endLoop');
+
+        // 14: AddNode
+        expect(nodes.at(14).type()).toBe(AddNode);
+        expect(nodes.at(14).prop('programStepNumber')).toBe(6);
+
+        // 15: right45
+        expect(nodes.at(15).type()).toBe(CommandBlock);
+        expect(nodes.at(15).prop('data-stepnumber')).toBe(6);
+        expect(nodes.at(15).prop('data-command')).toBe('right45');
+
+        // 16: AddNode
+        expect(nodes.at(16).type()).toBe(AddNode);
+        expect(nodes.at(16).prop('programStepNumber')).toBe(7);
+
+        // Check that the loop A contents are contained in the loop A container
+        expect(nodes.at(1).contains(nodes.get(2))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(3))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(4))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(5))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(6))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(12))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(13))).toBe(true);
+
+        // Check that the loop B contents are contained in the loop B container
+        expect(nodes.at(6).contains(nodes.get(7))).toBe(true);
+        expect(nodes.at(6).contains(nodes.get(8))).toBe(true);
+        expect(nodes.at(6).contains(nodes.get(9))).toBe(true);
+        expect(nodes.at(6).contains(nodes.get(10))).toBe(true);
+        expect(nodes.at(6).contains(nodes.get(11))).toBe(true);
+
+        // Check that the remaining nodes are outside the loop A container
+        expect(nodes.at(1).contains(nodes.get(0))).toBe(false);
+        expect(nodes.at(1).contains(nodes.get(14))).toBe(false);
+        expect(nodes.at(1).contains(nodes.get(15))).toBe(false);
+        expect(nodes.at(1).contains(nodes.get(16))).toBe(false);
+    });
 });
 
 test('When a step is clicked, action panel should render next to the step', () => {
@@ -486,36 +589,24 @@ describe('Delete program steps', () => {
 
 describe('Replace program steps', () => {
     test.each([
-        [ 0, [{block: 'right45'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 'right45'],
-        [ 0, [{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], null]
-    ]) ('Replace a program if selectedAction is not null',
-        (stepNum, expectedProgram, selectedAction) => {
-            expect.assertions(4);
-            const { wrapper, audioManagerMock, mockChangeProgramSequenceHandler }
+        [ 0 ],
+        [ 3 ]
+    ]) ('When the replace step button is clicked for step %i, then the onReplaceProgramStep callback should be called',
+        (stepNum) => {
+            expect.assertions(3);
+            const { wrapper, mockReplaceProgramStepHandler }
             = createMountProgramBlockEditor({
-                selectedAction,
-                actionPanelStepIndex: stepNum
+                actionPanelStepIndex: stepNum,
+                selectedAction: 'right45'
             });
 
             const replaceButton = getActionPanelActionButtons(wrapper).at(1);
             replaceButton.simulate('click');
 
-            // An announcement should be played.
-            expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
-
-            if (selectedAction) {
-                expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('replace');
-
-                // The program should be updated
-                expect(mockChangeProgramSequenceHandler.mock.calls.length).toBe(1);
-                expect(mockChangeProgramSequenceHandler.mock.calls[0][0].program).toStrictEqual(expectedProgram);
-            } else {
-                expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('noActionSelected');
-
-                // The program should not be updated
-                expect(mockChangeProgramSequenceHandler.mock.calls.length).toBe(0);
-                expect(wrapper.props().programSequence.getProgram()).toStrictEqual(expectedProgram);
-            }
+            // Then the onReplaceProgramStep callback should be called
+            expect(mockReplaceProgramStepHandler.mock.calls.length).toBe(1);
+            expect(mockReplaceProgramStepHandler.mock.calls[0][0]).toBe(stepNum);
+            expect(mockReplaceProgramStepHandler.mock.calls[0][1]).toBe('right45');
         }
     );
 });
@@ -524,9 +615,9 @@ describe('Move to previous program step', () => {
     test.each([
         [ 1, 'left45' ],
         [ 2, 'forward1' ]
-    ])('When the move to previous button is clicked for step %i, then the onMoveProgramStep callback should be called',
+    ])('When the move to previous button is clicked for step %i, then the onMoveProgramStepPrevious callback should be called',
         (stepNum, expectedCommandToMove) => {
-            const { wrapper, mockMoveProgramStepHandler }
+            const { wrapper, mockMoveProgramStepPreviousHandler }
             = createMountProgramBlockEditor({
                 actionPanelStepIndex: stepNum
             });
@@ -535,10 +626,9 @@ describe('Move to previous program step', () => {
             moveToPreviousButton.simulate('click');
 
             // The onMoveProgramStep callback should be called
-            expect(mockMoveProgramStepHandler.mock.calls.length).toBe(1);
-            expect(mockMoveProgramStepHandler.mock.calls[0][0]).toBe(stepNum);
-            expect(mockMoveProgramStepHandler.mock.calls[0][1]).toBe('previous');
-            expect(mockMoveProgramStepHandler.mock.calls[0][2]).toBe(expectedCommandToMove);
+            expect(mockMoveProgramStepPreviousHandler.mock.calls.length).toBe(1);
+            expect(mockMoveProgramStepPreviousHandler.mock.calls[0][0]).toBe(stepNum);
+            expect(mockMoveProgramStepPreviousHandler.mock.calls[0][1]).toBe(expectedCommandToMove);
         }
     )
 });
@@ -547,9 +637,9 @@ describe('Move to next program step', () => {
     test.each([
         [ 1, 'left45' ],
         [ 2, 'forward1' ]
-    ])('When the move to next button is clicked for step %i, then the onMoveProgramStep callback should be called',
+    ])('When the move to next button is clicked for step %i, then the onMoveProgramStepNext callback should be called',
         (stepNum, expectedCommandToMove) => {
-            const { wrapper, mockMoveProgramStepHandler }
+            const { wrapper, mockMoveProgramStepNextHandler }
             = createMountProgramBlockEditor({
                 actionPanelStepIndex: stepNum
             });
@@ -558,10 +648,9 @@ describe('Move to next program step', () => {
             moveToNextButton.simulate('click');
 
             // The onMoveProgramStep callback should be called
-            expect(mockMoveProgramStepHandler.mock.calls.length).toBe(1);
-            expect(mockMoveProgramStepHandler.mock.calls[0][0]).toBe(stepNum);
-            expect(mockMoveProgramStepHandler.mock.calls[0][1]).toBe('next');
-            expect(mockMoveProgramStepHandler.mock.calls[0][2]).toBe(expectedCommandToMove);
+            expect(mockMoveProgramStepNextHandler.mock.calls.length).toBe(1);
+            expect(mockMoveProgramStepNextHandler.mock.calls[0][0]).toBe(stepNum);
+            expect(mockMoveProgramStepNextHandler.mock.calls[0][1]).toBe(expectedCommandToMove);
         }
     )
 });
