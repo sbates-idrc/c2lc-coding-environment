@@ -214,6 +214,33 @@ body.light-theme {
         outline: 0.2rem solid #30444E;
     }
 
+    .ProgramBlockEditor__loopContainer--nested {
+        button.command-block.btn-command-block--startLoop {
+            background-color: #787878;
+            .command-block-loop-label-container {
+                background-color: #5D5D5D;
+            }
+            &:hover {
+                background-color: #4B4B4B;
+                .command-block-loop-label-container {
+                    background-color: #242424;
+                }
+            }
+        }
+        button.command-block.btn-command-block--endLoop {
+            background-color: #787878;
+            .command-block-loop-label-container {
+                background-color: #5D5D5D;
+            }
+            &:hover {
+                background-color: #4B4B4B;
+                .command-block-loop-label-container {
+                    background-color: #242424;
+                }
+            }
+        }
+    }
+
     .ActionsMenuItem__icon--right45, .ActionsMenuItem__icon--right90, .ActionsMenuItem__icon--right180 {
         &:not(.ActionsMenuItem__icon--disabled) {
             background-color: #C13925;
@@ -1076,6 +1103,33 @@ body.gray-theme {
     .ProgramBlockEditor__loopContainer--focused {
         background-color: #F1F2F4;
         outline: 0.2rem solid #505862;
+    }
+
+    .ProgramBlockEditor__loopContainer--nested {
+        button.command-block.btn-command-block--startLoop {
+            background-color: #9DA4AF;
+            .command-block-loop-label-container {
+                background-color: #898F98;
+            }
+            &:hover {
+                background-color: #505862;
+                .command-block-loop-label-container {
+                    background-color: #383D44;
+                }
+            }
+        }
+        button.command-block.btn-command-block--endLoop {
+            background-color: #9DA4AF;
+            .command-block-loop-label-container {
+                background-color: #898F98;
+            }
+            &:hover {
+                background-color: #505862;
+                .command-block-loop-label-container {
+                    background-color: #383D44;
+                }
+            }
+        }
     }
 
     .ActionsMenuItem {

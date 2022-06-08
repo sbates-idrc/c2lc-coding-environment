@@ -240,6 +240,7 @@ describe('Program rendering', () => {
         // 1: loopContainer for loop A
         expect(nodes.at(1).type()).toBe('div');
         expect(nodes.at(1).hasClass('ProgramBlockEditor__loopContainer')).toBe(true);
+        expect(nodes.at(1).hasClass('ProgramBlockEditor__loopContainer--nested')).toBe(false);
 
         // 2: startLoop A
         expect(nodes.at(2).type()).toBe(CommandBlock);
@@ -263,6 +264,7 @@ describe('Program rendering', () => {
         // 6: loopContainer for loop B
         expect(nodes.at(6).type()).toBe('div');
         expect(nodes.at(6).hasClass('ProgramBlockEditor__loopContainer')).toBe(true);
+        expect(nodes.at(6).hasClass('ProgramBlockEditor__loopContainer--nested')).toBe(true);
 
         // 7: startLoop B
         expect(nodes.at(7).type()).toBe(CommandBlock);

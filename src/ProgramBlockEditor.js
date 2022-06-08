@@ -546,7 +546,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         );
     }
 
-    renderLoop(programIterator: ProgramIterator) {
+    renderLoop(programIterator: ProgramIterator, inLoop: boolean) {
         if (programIterator.programBlock == null) {
             return;
         }
@@ -562,7 +562,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         while (!programIterator.done
                 && programIterator.programBlock != null
                 && programIterator.programBlock.block !== 'endLoop') {
-            loopContent.push(this.renderNextSection(programIterator));
+            loopContent.push(this.renderNextSection(programIterator, true));
         }
 
         if (programIterator.programBlock != null
@@ -585,7 +585,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
             const classes = classNames(
                 'ProgramBlockEditor__loopContainer',
-                showLoopFocused && 'ProgramBlockEditor__loopContainer--focused'
+                showLoopFocused && 'ProgramBlockEditor__loopContainer--focused',
+                inLoop && 'ProgramBlockEditor__loopContainer--nested'
             );
 
             return (
@@ -607,7 +608,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         }
     }
 
-    renderNextSection(programIterator: ProgramIterator) {
+    renderNextSection(programIterator: ProgramIterator, inLoop: boolean) {
         if (programIterator.programBlock != null) {
             if (programIterator.programBlock.block === 'startLoop'
                     && programIterator.programBlock.label != null) {
@@ -618,7 +619,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                         <div className='ProgramBlockEditor__program-block-connector'/>
                         {this.makeAddNode(stepNumber)}
                         <div className='ProgramBlockEditor__program-block-connector'/>
-                        {this.renderLoop(programIterator)}
+                        {this.renderLoop(programIterator, inLoop)}
                     </React.Fragment>
                 );
             } else {
@@ -644,7 +645,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         const iterator = new ProgramIterator(this.props.programSequence.getProgram());
 
         while (!iterator.done) {
-            sections.push(this.renderNextSection(iterator));
+            sections.push(this.renderNextSection(iterator, false));
         }
 
         return sections;
