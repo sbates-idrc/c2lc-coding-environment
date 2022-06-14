@@ -243,13 +243,6 @@ test('updateProgramCounter should only update programCounter', () => {
     expect(programSequence.getLoopIterationsLeft()).toBe(loopIterationsLeft);
 });
 
-test('incrementProgramCounter should increment programCounter by 1', () => {
-    expect.assertions(1);
-    let programSequence = new ProgramSequence([], 0, 0, new Map());
-    programSequence = programSequence.incrementProgramCounter();
-    expect(programSequence.getProgramCounter()).toBe(1);
-});
-
 test('usesAction should return false for any action when the sequence is empty.', () => {
     expect.assertions(4);
     const program = [];

@@ -189,10 +189,6 @@ export default class ProgramSequence {
         );
     }
 
-    incrementProgramCounter(): ProgramSequence {
-        return new ProgramSequence(this.program, this.programCounter + 1, this.loopCounter, this.loopIterationsLeft);
-    }
-
     overwriteStep(index: number, command: string): ProgramSequence {
         const program = this.program.slice();
         let programCounter = this.programCounter;

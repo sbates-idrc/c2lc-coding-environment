@@ -515,14 +515,6 @@ export class App extends React.Component<AppProps, AppState> {
             || this.state.runningState === 'paused');
     }
 
-    incrementProgramCounter(callback: () => void): void {
-        this.setState((state) => {
-            return {
-                programSequence: state.programSequence.incrementProgramCounter()
-            }
-        }, callback);
-    }
-
     refreshIsDisabled(): boolean {
         return this.state.runningState !== 'stopped';
     }
