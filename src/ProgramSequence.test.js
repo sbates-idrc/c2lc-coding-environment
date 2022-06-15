@@ -243,6 +243,139 @@ test('updateProgramCounter should only update programCounter', () => {
     expect(programSequence.getLoopIterationsLeft()).toBe(loopIterationsLeft);
 });
 
+type AdvanceProgramCounterTestCase = {
+    program: Program,
+    programCounter: number,
+    loopIterationsLeft: Map<string, number>,
+    expectedProgramCounter: number,
+    expectedLoopIterationsLeft: Map<string, number>
+};
+
+test.each(([
+    {
+        program: [
+            { block: 'forward1' }
+        ],
+        programCounter: 0,
+        loopIterationsLeft: new Map(),
+        expectedProgramCounter: 1,
+        expectedLoopIterationsLeft: new Map()
+    },
+    {
+        program: [
+            { block: 'forward1' },
+            { block: 'left45' }
+        ],
+        programCounter: 0,
+        loopIterationsLeft: new Map(),
+        expectedProgramCounter: 1,
+        expectedLoopIterationsLeft: new Map()
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 0,
+        loopIterationsLeft: new Map([['A', 2]]),
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 0,
+        loopIterationsLeft: new Map([['A', 1]]),
+        expectedProgramCounter: 2,
+        expectedLoopIterationsLeft: new Map([['A', 0]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 0,
+        loopIterationsLeft: new Map([['A', 2]]),
+        expectedProgramCounter: 1,
+        expectedLoopIterationsLeft: new Map([['A', 2]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 1,
+        loopIterationsLeft: new Map([['A', 2]]),
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 2,
+        loopIterationsLeft: new Map([['A', 2]]),
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 1,
+        loopIterationsLeft: new Map([['A', 1]]),
+        expectedProgramCounter: 3,
+        expectedLoopIterationsLeft: new Map([['A', 0]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A', iterations: 10 },
+            { block: 'startLoop', label: 'B', iterations: 20  },
+            { block: 'endLoop', label: 'B'},
+            { block: 'startLoop', label: 'C', iterations: 30  },
+            { block: 'endLoop', label: 'C' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 3,
+        loopIterationsLeft: new Map([['A', 2], ['B', 0], ['C', 1]]),
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1], ['B', 20], ['C', 30]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A', iterations: 10 },
+            { block: 'startLoop', label: 'B', iterations: 20  },
+            { block: 'endLoop', label: 'B'},
+            { block: 'startLoop', label: 'C', iterations: 30  },
+            { block: 'endLoop', label: 'C' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 3,
+        loopIterationsLeft: new Map([['A', 1], ['B', 0], ['C', 1]]),
+        expectedProgramCounter: 6,
+        expectedLoopIterationsLeft: new Map([['A', 0], ['B', 0], ['C', 0]])
+    }
+]: Array<AdvanceProgramCounterTestCase>))('advanceProgramCounter', (testData: AdvanceProgramCounterTestCase) => {
+    expect.assertions(2);
+    const programSequence = new ProgramSequence(
+        testData.program,
+        testData.programCounter,
+        0,
+        testData.loopIterationsLeft
+    );
+    const result = programSequence.advanceProgramCounter();
+    expect(result.getProgramCounter()).toBe(testData.expectedProgramCounter);
+    expect(result.getLoopIterationsLeft()).toStrictEqual(testData.expectedLoopIterationsLeft);
+});
+
 test('usesAction should return false for any action when the sequence is empty.', () => {
     expect.assertions(4);
     const program = [];

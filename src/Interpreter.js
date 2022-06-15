@@ -90,82 +90,23 @@ export default class Interpreter {
                 const command = currentProgramStep.block;
                 if (command === 'startLoop') {
                     this.doStartLoop(programSequence).then(() => {
-                        this.advanceProgramCounter(programSequence, resolve);
+                        this.app.advanceProgramCounter(resolve);
                     });
                 } else if (command === 'endLoop') {
                     // We don't intend for the programCounter to ever be on an
                     // 'endLoop' block, but we might have a bug that would
                     // cause that case to happen and we want to handle it
                     // gracefully
-                    this.advanceProgramCounter(programSequence, resolve);
+                    this.app.advanceProgramCounter(resolve);
                 } else {
                     this.doCommand(currentProgramStep).then(() => {
-                        this.advanceProgramCounter(programSequence, resolve);
+                        this.app.advanceProgramCounter(resolve);
                     }, (error: Error) => {
                         reject(error);
                     });
                 }
             }
         });
-    }
-
-    advanceProgramCounter(programSequence: ProgramSequence, callback: () => void) {
-        let programCounter = programSequence.getProgramCounter();
-        const loopIterationsLeft = new Map(programSequence.getLoopIterationsLeft());
-
-        // We don't intend for the programCounter to ever be on an 'endLoop'
-        // block, but we might have a bug that would cause that case to happen
-        // and we want to handle it gracefully
-        if (programSequence.getProgramStepAt(programCounter).block !== 'endLoop') {
-            programCounter += 1;
-        }
-
-        while (programCounter < programSequence.getProgramLength()
-                && programSequence.getProgramStepAt(programCounter).block === 'endLoop') {
-            const label = programSequence.getProgramStepAt(programCounter).label;
-            if (label != null) {
-                const currentIterationsLeft = loopIterationsLeft.get(label);
-                if (currentIterationsLeft != null) {
-                    // If the number of iterations left for the loop is > 0,
-                    // decrement it
-                    let newIterationsLeft = currentIterationsLeft;
-                    if (currentIterationsLeft > 0) {
-                        newIterationsLeft = currentIterationsLeft - 1
-                        loopIterationsLeft.set(label, newIterationsLeft);
-                    }
-                    if (newIterationsLeft > 0) {
-                        // Look for startLoop blocks
-                        for (let i = programCounter; i > -1; i--) {
-                            const block = programSequence.program[i];
-                            if (block.block === 'startLoop') {
-                                // Check if the startLoop has same label as the endLoop itself
-                                if (block.label != null && block.label === label) {
-                                    // Set the programCounter to the start of the loop
-                                    programCounter = i;
-                                    break;
-                                } else {
-                                    // When startLoop has a different label, we have found
-                                    // a nested loop: reset its iterationsLeft
-                                    const nestedLoopLabel = programSequence.program[i].label;
-                                    const nestLoopIterations = programSequence.program[i].iterations;
-                                    if (nestedLoopLabel != null && nestLoopIterations != null) {
-                                        loopIterationsLeft.set(nestedLoopLabel, nestLoopIterations);
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        // When there's no more iterations left, increment the programCounter
-                        programCounter += 1;
-                    }
-                }
-            }
-        }
-        this.app.updateProgramCounterAndLoopIterationsLeft(
-            programCounter,
-            loopIterationsLeft,
-            callback
-        );
     }
 
     doStartLoop(programSequence: ProgramSequence): Promise<any> {

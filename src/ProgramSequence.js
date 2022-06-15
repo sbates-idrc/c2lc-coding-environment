@@ -189,6 +189,66 @@ export default class ProgramSequence {
         );
     }
 
+    advanceProgramCounter(): ProgramSequence {
+        let newProgramCounter = this.programCounter;
+        const newLoopIterationsLeft = new Map(this.loopIterationsLeft);
+
+        // We don't intend for the programCounter to ever be on an 'endLoop'
+        // block, but we might have a bug that would cause that case to happen
+        // and we want to handle it gracefully
+        if (this.program[newProgramCounter].block !== 'endLoop') {
+            newProgramCounter += 1;
+        }
+
+        while (newProgramCounter < this.getProgramLength()
+                && this.program[newProgramCounter].block === 'endLoop') {
+            const label = this.program[newProgramCounter].label;
+            if (label != null) {
+                const currentIterationsLeft = newLoopIterationsLeft.get(label);
+                if (currentIterationsLeft != null) {
+                    // If the number of iterations left for the loop is > 0,
+                    // decrement it
+                    let newIterationsLeft = currentIterationsLeft;
+                    if (currentIterationsLeft > 0) {
+                        newIterationsLeft = currentIterationsLeft - 1
+                        newLoopIterationsLeft.set(label, newIterationsLeft);
+                    }
+                    if (newIterationsLeft > 0) {
+                        // Look for startLoop blocks
+                        for (let i = newProgramCounter; i > -1; i--) {
+                            const block = this.program[i];
+                            if (block.block === 'startLoop') {
+                                // Check if the startLoop has same label as the endLoop
+                                if (block.label != null && block.label === label) {
+                                    // Set the newProgramCounter to the start of the loop
+                                    newProgramCounter = i;
+                                    break;
+                                } else {
+                                    // When startLoop has a different label,
+                                    // we have found a nested loop:
+                                    // reset its iterationsLeft
+                                    const nestedLoopLabel = this.program[i].label;
+                                    const nestLoopIterations = this.program[i].iterations;
+                                    if (nestedLoopLabel != null && nestLoopIterations != null) {
+                                        newLoopIterationsLeft.set(nestedLoopLabel, nestLoopIterations);
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // When there's no more iterations left,
+                        // increment the newProgramCounter
+                        newProgramCounter += 1;
+                    }
+                }
+            }
+        }
+        return this.updateProgramCounterAndLoopIterationsLeft(
+            newProgramCounter,
+            newLoopIterationsLeft
+        );
+    }
+
     overwriteStep(index: number, command: string): ProgramSequence {
         const program = this.program.slice();
         let programCounter = this.programCounter;

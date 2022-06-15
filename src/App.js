@@ -488,6 +488,21 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
+    editingIsDisabled(): boolean {
+        return !(this.state.runningState === 'stopped'
+            || this.state.runningState === 'paused');
+    }
+
+    refreshIsDisabled(): boolean {
+        return this.state.runningState !== 'stopped';
+    }
+
+    // API for Interpreter
+
+    getRunningState(): RunningState {
+        return this.state.runningState;
+    }
+
     setRunningState(runningState: RunningState): void {
         this.setState((state) => {
             // If stop is requested when we are in the 'paused' state,
@@ -500,29 +515,14 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    // API for Interpreter
-
     getProgramSequence(): ProgramSequence {
         return this.state.programSequence;
     }
 
-    getRunningState(): RunningState {
-        return this.state.runningState;
-    }
-
-    editingIsDisabled(): boolean {
-        return !(this.state.runningState === 'stopped'
-            || this.state.runningState === 'paused');
-    }
-
-    refreshIsDisabled(): boolean {
-        return this.state.runningState !== 'stopped';
-    }
-
-    updateProgramCounterAndLoopIterationsLeft(programCounter: number, loopIterationsLeft: Map<string, number>, callback: () => void): void {
+    advanceProgramCounter(callback: () => void): void {
         this.setState((state) => {
             return {
-                programSequence: state.programSequence.updateProgramCounterAndLoopIterationsLeft(programCounter, loopIterationsLeft)
+                programSequence: state.programSequence.advanceProgramCounter()
             }
         }, callback);
     }
