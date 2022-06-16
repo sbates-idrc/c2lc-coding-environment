@@ -522,7 +522,7 @@ export class App extends React.Component<AppProps, AppState> {
     advanceProgramCounter(callback: () => void): void {
         this.setState((state) => {
             return {
-                programSequence: state.programSequence.advanceProgramCounter()
+                programSequence: state.programSequence.advanceProgramCounter(false)
             }
         }, callback);
     }
