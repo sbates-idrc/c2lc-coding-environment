@@ -88,6 +88,22 @@ export default class ProgramSequence {
         return matchingBlockIndex;
     }
 
+    areMatchingLoopBlocks(index1: number, index2: number) {
+        const block1 = this.program[index1];
+        if (block1 != null) {
+            if (block1.block === 'startLoop') {
+                const block2 = this.program[index2];
+                return block2 != null && block2.block === 'endLoop'
+                    && block1.label === block2.label;
+            } else if (block1.block === 'endLoop') {
+                const block2 = this.program[index2];
+                return block2 != null && block2.block === 'startLoop'
+                    && block1.label === block2.label;
+            }
+        }
+        return false;
+    }
+
     static makeProgramSequenceFromParserResult(parserResult: ProgramParserResult) {
         return new ProgramSequence(
             ProgramSequence.calculateCachedLoopData(parserResult.program),
@@ -357,10 +373,12 @@ export default class ProgramSequence {
         let newLoopIterationsLeft = this.loopIterationsLeft;
 
         // If we are deleting the block that the programCounter is on,
-        // we first advance the programCounter to what would have happened
-        // after the block we are deleting
+        // or the corresponding loop block for the block that the
+        // programCounter is on, we first advance the programCounter to what
+        // would have happened after the block we are deleting
 
-        if (index === this.programCounter) {
+        if (index === this.programCounter
+                || this.areMatchingLoopBlocks(index, this.programCounter)) {
             const advancedProgramSequence = this.advanceProgramCounter(true);
             newProgramCounter = advancedProgramSequence.programCounter;
             newLoopIterationsLeft = advancedProgramSequence.loopIterationsLeft;

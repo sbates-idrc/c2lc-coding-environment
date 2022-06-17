@@ -61,7 +61,7 @@ describe('Test currentStepIsControlBlock', () => {
     });
 });
 
-test('getMatchingLoopBlockIndex retuns index of corresponding endLoop or startLoop pair', () => {
+test('getMatchingLoopBlockIndex returns index of corresponding endLoop or startLoop block', () => {
     const program = [
         {block: 'startLoop', iterations: 3, label: 'A'},
         {block: 'startLoop', iterations: 2, label: 'B'},
@@ -75,15 +75,45 @@ test('getMatchingLoopBlockIndex retuns index of corresponding endLoop or startLo
         {block: 'endLoop', label: 'A'}
     ];
     const programSequence = new ProgramSequence(program, 0, 0, new Map());
-    // Finding endLoop pair
+
+    // Finding endLoop
     expect(programSequence.getMatchingLoopBlockIndex(0)).toBe(9);
     expect(programSequence.getMatchingLoopBlockIndex(1)).toBe(8);
     expect(programSequence.getMatchingLoopBlockIndex(3)).toBe(6);
 
-    // Finding startLoop pair
+    // Finding startLoop
     expect(programSequence.getMatchingLoopBlockIndex(6)).toBe(3);
     expect(programSequence.getMatchingLoopBlockIndex(8)).toBe(1);
     expect(programSequence.getMatchingLoopBlockIndex(9)).toBe(0);
+});
+
+test('Test areMatchingLoopBlocks', () => {
+    const program = [
+        /* 0 */ {block: 'startLoop', iterations: 10, label: 'A'},
+        /* 1 */ {block: 'startLoop', iterations: 20, label: 'B'},
+        /* 2 */ {block: 'forward1'},
+        /* 3 */ {block: 'forward1'},
+        /* 4 */ {block: 'endLoop', label: 'B'},
+        /* 5 */ {block: 'endLoop', label: 'A'}
+    ];
+    const programSequence = new ProgramSequence(program, 0, 0, new Map());
+
+    expect(programSequence.areMatchingLoopBlocks(0, 5)).toBe(true);
+    expect(programSequence.areMatchingLoopBlocks(5, 0)).toBe(true);
+    expect(programSequence.areMatchingLoopBlocks(1, 4)).toBe(true);
+    expect(programSequence.areMatchingLoopBlocks(4, 1)).toBe(true);
+
+    expect(programSequence.areMatchingLoopBlocks(0, 1)).toBe(false);
+    expect(programSequence.areMatchingLoopBlocks(0, 2)).toBe(false);
+    expect(programSequence.areMatchingLoopBlocks(0, 4)).toBe(false);
+
+    expect(programSequence.areMatchingLoopBlocks(5, 1)).toBe(false);
+    expect(programSequence.areMatchingLoopBlocks(5, 2)).toBe(false);
+    expect(programSequence.areMatchingLoopBlocks(5, 4)).toBe(false);
+
+    expect(programSequence.areMatchingLoopBlocks(2, 0)).toBe(false);
+    expect(programSequence.areMatchingLoopBlocks(2, 3)).toBe(false);
+    expect(programSequence.areMatchingLoopBlocks(2, 5)).toBe(false);
 });
 
 test('calculateCachedLoopData returns a program with additional loop data', () => {
@@ -737,6 +767,82 @@ test.each(([
             }
         ],
         programCounter: 1,
+        loopIterationsLeft: new Map([['A', 2], ['B', 3]]),
+        index: 1,
+        expectedProgram: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 20
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1], ['B', 30]])
+    },
+    {
+        program: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 20
+            },
+            {
+                block: 'startLoop',
+                label: 'B',
+                iterations: 30
+            },
+            {
+                block: 'endLoop',
+                label: 'B'
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        programCounter: 1,
+        loopIterationsLeft: new Map([['A', 2], ['B', 3]]),
+        index: 2,
+        expectedProgram: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 20
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1], ['B', 30]])
+    },
+    {
+        program: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 20
+            },
+            {
+                block: 'startLoop',
+                label: 'B',
+                iterations: 30
+            },
+            {
+                block: 'endLoop',
+                label: 'B'
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        programCounter: 2,
         loopIterationsLeft: new Map([['A', 2], ['B', 3]]),
         index: 1,
         expectedProgram: [
