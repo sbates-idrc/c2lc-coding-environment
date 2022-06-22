@@ -37,27 +37,30 @@ describe('Test hasLoopBlock', () => {
     });
 });
 
-describe('Test currentStepIsControlBlock', () => {
+describe('Test stepIsEndLoopBlock', () => {
     test('Empty program', () => {
         const programSequence = new ProgramSequence([], 0, 0, new Map());
-        expect(programSequence.currentStepIsControlBlock()).toBe(false);
+        expect(programSequence.stepIsEndLoopBlock(0)).toBe(false);
     });
 
     test('Non-empty program', () => {
-        const program = [
-            { block: 'startLoop', label: 'A', iterations: 3 },
-            { block: 'forward1' },
-            { block: 'endLoop', label: 'A' }
-        ];
+        const programSequence = new ProgramSequence(
+            [
+                { block: 'startLoop', label: 'A', iterations: 3 },
+                { block: 'forward1' },
+                { block: 'endLoop', label: 'A' }
+            ],
+            0, 0, new Map()
+        );
 
         // startLoop
-        expect(new ProgramSequence(program, 0, 0, new Map()).currentStepIsControlBlock()).toBe(true);
+        expect(programSequence.stepIsEndLoopBlock(0)).toBe(false);
         // forward1
-        expect(new ProgramSequence(program, 1, 0, new Map()).currentStepIsControlBlock()).toBe(false);
+        expect(programSequence.stepIsEndLoopBlock(1)).toBe(false);
         // endLoop
-        expect(new ProgramSequence(program, 2, 0, new Map()).currentStepIsControlBlock()).toBe(true);
-        // Program counter past the end
-        expect(new ProgramSequence(program, 3, 0, new Map()).currentStepIsControlBlock()).toBe(false);
+        expect(programSequence.stepIsEndLoopBlock(2)).toBe(true);
+        // Index past the end
+        expect(programSequence.stepIsEndLoopBlock(3)).toBe(false);
     });
 });
 
