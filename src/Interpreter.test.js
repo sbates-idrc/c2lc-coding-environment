@@ -76,8 +76,8 @@ test('Step a program with 2 commands', (done) => {
     });
 });
 
-test('Step a program with an empty loop', (done) => {
-    expect.assertions(3);
+test('Step on a startLoop block of an empty loop', (done) => {
+    expect.assertions(1);
     const { interpreter, appMock } = createInterpreter();
 
     const program = [
@@ -87,13 +87,23 @@ test('Step a program with an empty loop', (done) => {
 
     interpreter.step(new ProgramSequence(program, 0, 1, new Map([[ 'A', 2 ]]))).then(() => {
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
-        interpreter.step(new ProgramSequence(program, 0, 1, new Map([[ 'A', 1 ]]))).then(() => {
-            expect(appMock.advanceProgramCounter.mock.calls.length).toBe(2);
-            interpreter.step(new ProgramSequence(program, 2, 1, new Map([[ 'A', 0 ]]))).then(() => {
-                expect(appMock.advanceProgramCounter.mock.calls.length).toBe(2);
-                done();
-            });
-        });
+        done();
+    });
+});
+
+test('Step on a startLoop block of a non-empty loop', (done) => {
+    expect.assertions(1);
+    const { interpreter, appMock } = createInterpreter();
+
+    const program = [
+        {block: 'startLoop', iterations: 2, label: 'A'},
+        {block: 'forward1'},
+        {block: 'endLoop', label: 'A'}
+    ];
+
+    interpreter.step(new ProgramSequence(program, 0, 1, new Map([[ 'A', 2 ]]))).then(() => {
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
+        done();
     });
 });
 
@@ -109,33 +119,6 @@ test('Step on an endLoop block', (done) => {
     interpreter.step(new ProgramSequence(program, 1, 1, new Map([[ 'A', 2 ]]))).then(() => {
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
         done();
-    });
-});
-
-test('Step a program with a loop and a command', (done) => {
-    expect.assertions(6);
-    const { interpreter, appMock } = createInterpreter();
-    const mockCommandHandler = createMockCommandHandler();
-    interpreter.addCommandHandler('command', 'test', mockCommandHandler);
-
-    const program = [
-        {block: 'startLoop', iterations: 1, label: 'A'},
-        {block: 'command'},
-        {block: 'endLoop', label: 'A'}
-    ];
-
-    interpreter.step(new ProgramSequence(program, 0, 1, new Map([[ 'A', 1 ]]))).then(() => {
-        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
-        expect(mockCommandHandler.mock.calls.length).toBe(0);
-        interpreter.step(new ProgramSequence(program, 1, 1, new Map([[ 'A', 1 ]]))).then(() => {
-            expect(appMock.advanceProgramCounter.mock.calls.length).toBe(2);
-            expect(mockCommandHandler.mock.calls.length).toBe(1);
-            interpreter.step(new ProgramSequence(program, 3, 1, new Map([[ 'A', 0 ]]))).then(() => {
-                expect(appMock.advanceProgramCounter.mock.calls.length).toBe(2);
-                expect(mockCommandHandler.mock.calls.length).toBe(1);
-                done();
-            })
-        });
     });
 });
 
@@ -254,64 +237,6 @@ test('Run a program with three commands from beginning to end without an error',
     interpreter.startRun().then(() => {
         expect(mockCommandHandler.mock.calls.length).toBe(3);
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(3);
-        expect(appMock.setRunningState.mock.calls.length).toBe(1);
-        expect(appMock.setRunningState.mock.calls[0][0]).toBe('stopped');
-        done();
-    });
-});
-
-test('Run a program with a nested loop', (done) => {
-    expect.assertions(5);
-    const { interpreter, appMock } = createInterpreter();
-    const mockCommandHandler1 = createMockCommandHandler();
-    interpreter.addCommandHandler('command1', 'test', mockCommandHandler1);
-    const mockCommandHandler2 = createMockCommandHandler();
-    interpreter.addCommandHandler('command2', 'test', mockCommandHandler2);
-
-    const program = [
-        /* 0 */ {block: 'startLoop', iterations: 2, label: 'A'},
-        /* 1 */ {block: 'command1'},
-        /* 2 */ {block: 'startLoop', iterations: 2, label: 'B'},
-        /* 3 */ {block: 'command2'},
-        /* 4 */ {block: 'endLoop', label: 'B'},
-        /* 5 */ {block: 'endLoop', label: 'A'}
-    ];
-
-    // Sets of expected [programCounter, loopIterationsLeft, type]
-    const expectedStates = [
-        [ 0, [[ 'A', 2 ], [ 'B', 2 ]]], // Initial
-        [ 1, [[ 'A', 2 ], [ 'B', 2 ]]], // Did startLoop A, next command1
-        [ 2, [[ 'A', 2 ], [ 'B', 2 ]]], // Did command1, next startLoop B
-        [ 3, [[ 'A', 2 ], [ 'B', 2 ]]], // Did startLoop B, next command2
-        [ 2, [[ 'A', 2 ], [ 'B', 1 ]]], // Did command2, next startLoop B
-        [ 3, [[ 'A', 2 ], [ 'B', 1 ]]], // Did startLoop B, next command2
-        [ 0, [[ 'A', 1 ], [ 'B', 2 ]]], // Did command2, next startLoop A
-        [ 1, [[ 'A', 1 ], [ 'B', 2 ]]], // Did startLoop A, next command1
-        [ 2, [[ 'A', 1 ], [ 'B', 2 ]]], // Did command1, next startLoop B
-        [ 3, [[ 'A', 1 ], [ 'B', 2 ]]], // Did startLoop B, next command2
-        [ 2, [[ 'A', 1 ], [ 'B', 1 ]]], // Did command2, next startLoop B
-        [ 3, [[ 'A', 1 ], [ 'B', 1 ]]], // Did startLoop B, next command2
-        [ 6, [[ 'A', 0 ], [ 'B', 0 ]]]  // Did command2, end
-    ];
-
-    // Set up mock getProgramSequence() results
-    for (const expectedState of expectedStates) {
-        appMock.getProgramSequence.mockImplementationOnce(() => {
-            return new ProgramSequence(
-                program,
-                expectedState[0],
-                0,
-                new Map(expectedState[1])
-            );
-        });
-    }
-
-    appMock.getRunningState.mockImplementation(() => {return 'running'});
-
-    interpreter.startRun().then(() => {
-        expect(mockCommandHandler1.mock.calls.length).toBe(2);
-        expect(mockCommandHandler2.mock.calls.length).toBe(4);
-        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(expectedStates.length - 1);
         expect(appMock.setRunningState.mock.calls.length).toBe(1);
         expect(appMock.setRunningState.mock.calls[0][0]).toBe('stopped');
         done();
