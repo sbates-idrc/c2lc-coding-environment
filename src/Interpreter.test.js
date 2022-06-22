@@ -12,8 +12,7 @@ function createInterpreter() {
     const interpreter = new Interpreter(1000, new App());
     // $FlowFixMe: Flow doesn't know about the Jest mock API
     const appMock = App.mock.instances[0];
-    appMock.incrementProgramCounter.mockImplementation((callback) => {callback()});
-    appMock.updateProgramCounterAndLoopIterationsLeft.mockImplementation((programCounter, loopIterationsLeft, callback) => {callback()});
+    appMock.advanceProgramCounter.mockImplementation((callback) => {callback()});
     return {
         interpreter,
         appMock
@@ -35,7 +34,7 @@ function createMockCommandHandler() {
 test('Stepping an empty program leaves the program counter at 0', (done) => {
     const { interpreter, appMock } = createInterpreter();
     interpreter.step(new ProgramSequence([], 0, 0, new Map())).then(() => {
-        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(0);
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(0);
         done();
     });
 });
@@ -46,10 +45,10 @@ test('Step a program with 1 command', (done) => {
     interpreter.addCommandHandler('command', 'test', mockCommandHandler);
 
     interpreter.step(new ProgramSequence([{block: 'command'}], 0, 0, new Map())).then(() => {
-        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
         // Test step at end of program
         interpreter.step(new ProgramSequence([{block: 'command'}], 1, 0, new Map())).then(() => {
-            expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
+            expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
             expect(mockCommandHandler.mock.calls.length).toBe(1);
             done();
         });
@@ -62,14 +61,14 @@ test('Step a program with 2 commands', (done) => {
     interpreter.addCommandHandler('command', 'test', mockCommandHandler);
 
     interpreter.step(new ProgramSequence([{block: 'command'}, {block: 'command'}], 0, 0, new Map())).then(() => {
-        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
         expect(mockCommandHandler.mock.calls.length).toBe(1);
         interpreter.step(new ProgramSequence([{block: 'command'}, {block: 'command'}], 1, 0, new Map())).then(() => {
-            expect(appMock.incrementProgramCounter.mock.calls.length).toBe(2);
+            expect(appMock.advanceProgramCounter.mock.calls.length).toBe(2);
             expect(mockCommandHandler.mock.calls.length).toBe(2);
             // Test step at end of program
             interpreter.step(new ProgramSequence([{block: 'command'}, {block: 'command'}], 2, 0, new Map())).then(() => {
-                expect(appMock.incrementProgramCounter.mock.calls.length).toBe(2);
+                expect(appMock.advanceProgramCounter.mock.calls.length).toBe(2);
                 expect(mockCommandHandler.mock.calls.length).toBe(2);
                 done();
             });
@@ -77,8 +76,8 @@ test('Step a program with 2 commands', (done) => {
     });
 });
 
-test('Step a program with an empty loop', (done) => {
-    expect.assertions(14);
+test('Step on a startLoop block of an empty loop', (done) => {
+    expect.assertions(1);
     const { interpreter, appMock } = createInterpreter();
 
     const program = [
@@ -87,69 +86,39 @@ test('Step a program with an empty loop', (done) => {
     ];
 
     interpreter.step(new ProgramSequence(program, 0, 1, new Map([[ 'A', 2 ]]))).then(() => {
-        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
-        expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls.length).toBe(0);
-        interpreter.step(new ProgramSequence(program, 1, 1, new Map([[ 'A', 2 ]]))).then(() => {
-            expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
-            expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls.length).toBe(1);
-            expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls[0][0]).toBe(0);
-            expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls[0][1])
-                .toStrictEqual(new Map([[ 'A', 1 ]]));
-            interpreter.step(new ProgramSequence(program, 0, 1, new Map([[ 'A', 1 ]]))).then(() => {
-                expect(appMock.incrementProgramCounter.mock.calls.length).toBe(2);
-                expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls.length).toBe(1);
-                interpreter.step(new ProgramSequence(program, 1, 1, new Map([[ 'A', 1 ]]))).then(() => {
-                    expect(appMock.incrementProgramCounter.mock.calls.length).toBe(2);
-                    expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls.length).toBe(2);
-                    expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls[1][0]).toBe(2);
-                    expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls[1][1])
-                        .toStrictEqual(new Map([[ 'A', 0 ]]));
-                    interpreter.step(new ProgramSequence(program, 2, 1, new Map([[ 'A', 0 ]]))).then(() => {
-                        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(2);
-                        expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls.length).toBe(2);
-                        done();
-                    });
-                });
-            });
-        });
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
+        done();
     });
 });
 
-test('Step a program with a loop and a command', (done) => {
-    expect.assertions(14);
+test('Step on a startLoop block of a non-empty loop', (done) => {
+    expect.assertions(1);
     const { interpreter, appMock } = createInterpreter();
-    const mockCommandHandler = createMockCommandHandler();
-    interpreter.addCommandHandler('command', 'test', mockCommandHandler);
 
     const program = [
-        {block: 'startLoop', iterations: 1, label: 'A'},
-        {block: 'command'},
+        {block: 'startLoop', iterations: 2, label: 'A'},
+        {block: 'forward1'},
         {block: 'endLoop', label: 'A'}
     ];
 
-    interpreter.step(new ProgramSequence(program, 0, 1, new Map([[ 'A', 1 ]]))).then(() => {
-        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
-        expect(mockCommandHandler.mock.calls.length).toBe(0);
-        expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls.length).toBe(0);
-        interpreter.step(new ProgramSequence(program, 1, 1, new Map([[ 'A', 1 ]]))).then(() => {
-            expect(appMock.incrementProgramCounter.mock.calls.length).toBe(2);
-            expect(mockCommandHandler.mock.calls.length).toBe(1);
-            expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls.length).toBe(0);
-            interpreter.step(new ProgramSequence(program, 2, 1, new Map([[ 'A', 1 ]]))).then(() => {
-                expect(appMock.incrementProgramCounter.mock.calls.length).toBe(2);
-                expect(mockCommandHandler.mock.calls.length).toBe(1);
-                expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls.length).toBe(1);
-                expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls[0][0]).toBe(3);
-                expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls[0][1])
-                    .toStrictEqual(new Map([[ 'A', 0 ]]));
-                interpreter.step(new ProgramSequence(program, 3, 1, new Map([[ 'A', 0 ]]))).then(() => {
-                    expect(appMock.incrementProgramCounter.mock.calls.length).toBe(2);
-                    expect(mockCommandHandler.mock.calls.length).toBe(1);
-                    expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls.length).toBe(1);
-                    done();
-                })
-            });
-        });
+    interpreter.step(new ProgramSequence(program, 0, 1, new Map([[ 'A', 2 ]]))).then(() => {
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
+        done();
+    });
+});
+
+test('Step on an endLoop block', (done) => {
+    expect.assertions(1);
+    const { interpreter, appMock } = createInterpreter();
+
+    const program = [
+        {block: 'startLoop', iterations: 2, label: 'A'},
+        {block: 'endLoop', label: 'A'}
+    ];
+
+    interpreter.step(new ProgramSequence(program, 1, 1, new Map([[ 'A', 2 ]]))).then(() => {
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
+        done();
     });
 });
 
@@ -161,7 +130,7 @@ test('Step a program with 2 handlers for the same command', (done) => {
     interpreter.addCommandHandler('command', 'test2', anotherMockCommandHandler);
 
     interpreter.step(new ProgramSequence([{block: 'command'}], 0, 0, new Map())).then(() => {
-        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
         expect(mockCommandHandler.mock.calls.length).toBe(1);
         expect(anotherMockCommandHandler.mock.calls.length).toBe(1);
         done();
@@ -181,7 +150,7 @@ test('Do a command without a program', (done) => {
     interpreter.addCommandHandler('command', 'test', mockCommandHandler);
 
     interpreter.doCommand({block: 'command'}).then(() => {
-        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(0);
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(0);
         done();
     });
 });
@@ -195,10 +164,10 @@ test('Do a command with a program', (done) => {
 
     // Do a command independently of the program
     interpreter.doCommand({block: 'command'}).then(() => {
-        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(0);
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(0);
         // Then step the program
         interpreter.step(new ProgramSequence([{block: 'anotherCommand'}], 0, 0, new Map())).then(() => {
-            expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
+            expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
             done();
         });
     });
@@ -218,7 +187,7 @@ test('startRun() Promise is rejected on first command error', (done) => {
         return new ProgramSequence([{block: 'unknown-command1'}, {block: 'unknown-command2'}], 0, 0, new Map());
     });
     interpreter.startRun().catch((error) => {
-        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(0);
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(0);
         expect(error.message).toBe('Unknown command: unknown-command1');
         done();
     });
@@ -239,7 +208,7 @@ test('Run a program with one command from beginning to end without an error', (d
 
     interpreter.startRun().then(() => {
         expect(mockCommandHandler.mock.calls.length).toBe(1);
-        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
         expect(appMock.setRunningState.mock.calls.length).toBe(1);
         expect(appMock.setRunningState.mock.calls[0][0]).toBe('stopped');
         done();
@@ -267,96 +236,7 @@ test('Run a program with three commands from beginning to end without an error',
 
     interpreter.startRun().then(() => {
         expect(mockCommandHandler.mock.calls.length).toBe(3);
-        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(3);
-        expect(appMock.setRunningState.mock.calls.length).toBe(1);
-        expect(appMock.setRunningState.mock.calls[0][0]).toBe('stopped');
-        done();
-    });
-});
-
-test('Run a program with a nested loop', (done) => {
-    expect.assertions(18);
-    const { interpreter, appMock } = createInterpreter();
-    const mockCommandHandler1 = createMockCommandHandler();
-    interpreter.addCommandHandler('command1', 'test', mockCommandHandler1);
-    const mockCommandHandler2 = createMockCommandHandler();
-    interpreter.addCommandHandler('command2', 'test', mockCommandHandler2);
-
-    const program = [
-        /* 0 */ {block: 'startLoop', iterations: 2, label: 'A'},
-        /* 1 */ {block: 'command1'},
-        /* 2 */ {block: 'startLoop', iterations: 2, label: 'B'},
-        /* 3 */ {block: 'command2'},
-        /* 4 */ {block: 'endLoop', label: 'B'},
-        /* 5 */ {block: 'endLoop', label: 'A'}
-    ];
-
-    // Sets of expected [programCounter, loopIterationsLeft, type]
-    const expectedStates = [
-        [ 0, [[ 'A', 2 ], [ 'B', 2 ]], 'initial' ],
-        [ 1, [[ 'A', 2 ], [ 'B', 2 ]], 'after-startLoop' ], // A
-        [ 2, [[ 'A', 2 ], [ 'B', 2 ]], 'after-command' ],   // command1
-        [ 3, [[ 'A', 2 ], [ 'B', 2 ]], 'after-startLoop' ], // B
-        [ 4, [[ 'A', 2 ], [ 'B', 2 ]], 'after-command' ],   // command2
-        [ 2, [[ 'A', 2 ], [ 'B', 1 ]], 'after-endLoop' ],   // B
-        [ 3, [[ 'A', 2 ], [ 'B', 1 ]], 'after-startLoop' ], // B
-        [ 4, [[ 'A', 2 ], [ 'B', 1 ]], 'after-command' ],   // command2
-        [ 5, [[ 'A', 2 ], [ 'B', 0 ]], 'after-endLoop' ],   // B
-        [ 0, [[ 'A', 1 ], [ 'B', 2 ]], 'after-endLoop' ],   // A
-        [ 1, [[ 'A', 1 ], [ 'B', 2 ]], 'after-startLoop' ], // A
-        [ 2, [[ 'A', 1 ], [ 'B', 2 ]], 'after-command' ],   // command1
-        [ 3, [[ 'A', 1 ], [ 'B', 2 ]], 'after-startLoop' ], // B
-        [ 4, [[ 'A', 1 ], [ 'B', 2 ]], 'after-command' ],   // command2
-        [ 2, [[ 'A', 1 ], [ 'B', 1 ]], 'after-endLoop' ],   // B
-        [ 3, [[ 'A', 1 ], [ 'B', 1 ]], 'after-startLoop' ], // B
-        [ 4, [[ 'A', 1 ], [ 'B', 1 ]], 'after-command' ],   // command2
-        [ 5, [[ 'A', 1 ], [ 'B', 0 ]], 'after-endLoop' ],   // B
-        [ 6, [[ 'A', 0 ], [ 'B', 0 ]], 'after-endLoop' ]    // A
-    ];
-
-    // Set up mock getProgramSequence() results
-    for (const expectedState of expectedStates) {
-        appMock.getProgramSequence.mockImplementationOnce(() => {
-            return new ProgramSequence(
-                program,
-                expectedState[0],
-                0,
-                new Map(expectedState[1])
-            );
-        });
-    }
-
-    appMock.getRunningState.mockImplementation(() => {return 'running'});
-
-    interpreter.startRun().then(() => {
-        expect(mockCommandHandler1.mock.calls.length).toBe(2);
-        expect(mockCommandHandler2.mock.calls.length).toBe(4);
-
-        // We expect one call to incrementProgramCounter for each command
-        // execution and startLoop
-        expect(appMock.incrementProgramCounter.mock.calls.length)
-            .toBe(expectedStates.filter(state =>
-                (state[2] === 'after-command')
-                    || (state[2] === 'after-startLoop'))
-                .length);
-
-        // We expect a call to updateProgramCounterAndLoopIterationsLeft for
-        // each endLoop
-        let endLoopBlockCount = 0;
-        for (let i = 0; i < expectedStates.length; i++) {
-            if (expectedStates[i][2] === 'after-endLoop') {
-                // The following assertions include the loop index 'i' in them
-                // to cause the value of 'i' to be included in any failure
-                // messages, to make debugging easier
-                expect([i, appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls[endLoopBlockCount][0]])
-                    .toStrictEqual([i, expectedStates[i][0]]);
-                expect([i, appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls[endLoopBlockCount][1]])
-                    .toStrictEqual([i, new Map(expectedStates[i][1])]);
-                endLoopBlockCount += 1;
-            }
-        }
-        expect(appMock.updateProgramCounterAndLoopIterationsLeft.mock.calls.length).toBe(endLoopBlockCount);
-
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(3);
         expect(appMock.setRunningState.mock.calls.length).toBe(1);
         expect(appMock.setRunningState.mock.calls[0][0]).toBe('stopped');
         done();
@@ -380,7 +260,7 @@ test('Do not continue through program if runningState changes to stopped', (done
     interpreter.startRun().then(() => {
         expect(mockCommandHandler.mock.calls.length).toBe(1);
         expect(anotherMockCommandHandler.mock.calls.length).toBe(0);
-        expect(appMock.incrementProgramCounter.mock.calls.length).toBe(1);
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
         done();
     });
 });

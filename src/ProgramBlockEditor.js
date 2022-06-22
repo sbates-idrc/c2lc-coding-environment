@@ -379,24 +379,21 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         // programSequence.getProgramCounter(). And when the runningState is
         // 'pauseRequested', show the pause indicator on
         // programSequence.getProgramCounter() + 1, to indicate where the
-        // program will pause when the running state transitions to 'paused'.
-        // Showing the pause indicator on
-        // programSequence.getProgramCounter() + 1 when in 'pauseRequested'
-        // works because the next step after programSequence.getProgramCounter()
-        // is the one with index programCounter + 1. This is currently true but
-        // we will need to revisit this logic when we introduce control flow or
-        // blocks into the language.
-        const paused = (this.props.runningState === 'paused'
+        // program will pause when the running state transitions to 'paused'
+        // (unless the block at programSequence.getProgramCounter() + 1 is an
+        // endLoop block, in which case we don't attempt to calculate where
+        // the program will pause and we don't show the indicator).
+        const showPausedIndicator = (this.props.runningState === 'paused'
             && programStepNumber === this.props.programSequence.getProgramCounter())
             || (this.props.runningState === 'pauseRequested'
             && programStepNumber === this.props.programSequence.getProgramCounter() + 1
-            && !this.props.programSequence.currentStepIsControlBlock());
+            && !this.props.programSequence.stepIsEndLoopBlock(this.props.programSequence.getProgramCounter() + 1));
         const hasActionPanelControl = this.props.actionPanelStepIndex === programStepNumber;
         const classes = classNames(
             'ProgramBlockEditor__program-block',
             active && 'ProgramBlockEditor__program-block--active',
             hasActionPanelControl && 'focus-trap-action-panel__program-block',
-            paused && 'ProgramBlockEditor__program-block--paused'
+            showPausedIndicator && 'ProgramBlockEditor__program-block--paused'
         );
         const command = programBlock.block;
         const loopLabel = programBlock.label;

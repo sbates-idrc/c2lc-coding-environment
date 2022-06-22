@@ -89,16 +89,18 @@ export default class Interpreter {
                 const currentProgramStep = programSequence.getCurrentProgramStep();
                 const command = currentProgramStep.block;
                 if (command === 'startLoop') {
-                    this.doStartLoop(programSequence, currentProgramStep, resolve);
+                    this.doStartLoop(programSequence).then(() => {
+                        this.app.advanceProgramCounter(resolve);
+                    });
                 } else if (command === 'endLoop') {
-                    this.doEndLoop(programSequence, currentProgramStep, resolve);
+                    // We don't intend for the programCounter to ever be on an
+                    // 'endLoop' block, but we might have a bug that would
+                    // cause that case to happen and we want to handle it
+                    // gracefully
+                    this.app.advanceProgramCounter(resolve);
                 } else {
                     this.doCommand(currentProgramStep).then(() => {
-                        // When the command has completed, increment
-                        // the programCounter and resolve the step Promise
-                        this.app.incrementProgramCounter(() => {
-                            resolve();
-                        });
+                        this.app.advanceProgramCounter(resolve);
                     }, (error: Error) => {
                         reject(error);
                     });
@@ -107,65 +109,17 @@ export default class Interpreter {
         });
     }
 
-    doStartLoop(programSequence: ProgramSequence, currentProgramStep: ProgramBlock, callback: () => void) {
-        this.app.incrementProgramCounter(callback);
-    }
-
-    doEndLoop(programSequence: ProgramSequence, currentProgramStep: ProgramBlock, callback: () => void) {
-        const loopIterationsLeft = new Map(programSequence.getLoopIterationsLeft());
-        const label = currentProgramStep.label;
-        let programCounter = programSequence.getProgramCounter();
-        const isEmptyLoop = programSequence.getProgramStepAt(programCounter - 1).block === 'startLoop';
-        if (label != null) {
-            const currentIterationsLeft = loopIterationsLeft.get(label);
-            if (currentIterationsLeft != null) {
-                // Decrement the iterations left for the loop, if it's > 0
-                let newIterationsLeft = currentIterationsLeft;
-                if (currentIterationsLeft > 0) {
-                    newIterationsLeft = currentIterationsLeft - 1
-                    loopIterationsLeft.set(label, newIterationsLeft);
-                }
-                if (newIterationsLeft > 0) {
-                    for (let i = programCounter; i > -1; i--) {
-                        const block = programSequence.program[i];
-                        // Look for startLoop blocks
-                        if (block.block === 'startLoop') {
-                            // Check if the startLoop has same label as the endLoop itself
-                            if (block.label != null && block.label === label) {
-                                // Set the programCounter to the start of the loop
-                                programCounter = i;
-                                break;
-                            } else {
-                                // When startLoop has a different label, we have found
-                                // a nested loop: reset its iterationsLeft
-                                const nestedLoopLabel = programSequence.program[i].label;
-                                const nestLoopIterations = programSequence.program[i].iterations;
-                                if (nestedLoopLabel != null && nestLoopIterations != null) {
-                                    loopIterationsLeft.set(nestedLoopLabel, nestLoopIterations);
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    // When there's no more iterations left, increment the programCounter
-                    programCounter += 1;
-                }
-            }
-        }
-        if (isEmptyLoop) {
-            setTimeout(() => {
-                this.app.updateProgramCounterAndLoopIterationsLeft(
-                    programCounter,
-                    loopIterationsLeft,
-                    callback
-                );
-            }, this.stepTimeMs);
+    doStartLoop(programSequence: ProgramSequence): Promise<any> {
+        const programCounter = programSequence.getProgramCounter();
+        if (programCounter < programSequence.getProgramLength() - 1
+                && programSequence.getProgramStepAt(programCounter + 1).block === 'endLoop') {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve();
+                }, this.stepTimeMs);
+            });
         } else {
-            this.app.updateProgramCounterAndLoopIterationsLeft(
-                programCounter,
-                loopIterationsLeft,
-                callback
-            );
+            return Promise.resolve();
         }
     }
 

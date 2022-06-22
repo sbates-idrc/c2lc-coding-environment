@@ -20,6 +20,7 @@ type LoopIterationsInputState = {
 
 export default class LoopIterationsInput extends React.Component<LoopIterationsInputProps, LoopIterationsInputState> {
     inputRef: { current: null | HTMLInputElement };
+    userHasChangedLoopIterations: boolean;
 
     constructor(props: LoopIterationsInputProps) {
         super(props);
@@ -27,6 +28,7 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
             loopIterationsStr: this.props.loopIterationsStr
         }
         this.inputRef = React.createRef();
+        this.userHasChangedLoopIterations = false;
     }
 
     isValidLoopIterations(value: number) {
@@ -36,6 +38,7 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
     handleChange = () => {
         if (this.inputRef.current) {
             this.setState({loopIterationsStr: this.inputRef.current.value});
+            this.userHasChangedLoopIterations = true;
         }
     }
 
@@ -44,7 +47,8 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
     }
 
     handleKeyDown = (e: KeyboardEvent) => {
-        if (this.shouldPropagateValueForKeyboardEvent(e)) {
+        if (e.key === 'Enter'
+                || (this.userHasChangedLoopIterations && this.shouldPropagateValueForKeyboardEvent(e))) {
             e.preventDefault();
             if (this.inputRef.current) {
                 const loopIterationsValue = parseInt(this.inputRef.current.value, 10);
@@ -58,7 +62,7 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
     }
 
     handleBlur = () => {
-        if (this.inputRef.current) {
+        if (this.userHasChangedLoopIterations && this.inputRef.current) {
             const loopIterationsValue = parseInt(this.inputRef.current.value, 10);
             if (this.isValidLoopIterations(loopIterationsValue)) {
                 this.props.onChangeLoopIterations(this.props.stepNumber, this.props.loopLabel, loopIterationsValue);
@@ -79,10 +83,6 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
         // propagation of the value if one of the shortcuts that we look for
         // also appears as part of a sequence.
 
-        if (e.key === 'Enter') {
-            return true;
-        }
-
         const matchingKeyboardAction: ActionName | "partial" | false =
             findKeyboardEventSequenceMatches([e],
                 this.props.keyboardInputSchemeName);
@@ -95,8 +95,16 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
     }
 
     componentDidUpdate(prevProps: LoopIterationsInputProps) {
+        // If the number of loop iterations has changed in the program,
+        // update our input with the new number
+        if (this.props.loopIterationsStr !== prevProps.loopIterationsStr) {
+            this.setState({loopIterationsStr: this.props.loopIterationsStr});
+            this.userHasChangedLoopIterations = false;
+        }
+        // If we change to 'stopped' running state, reset our input contents
         if (this.props.runningState !== prevProps.runningState && this.props.runningState === 'stopped') {
             this.setState({loopIterationsStr: this.props.loopIterationsStr});
+            this.userHasChangedLoopIterations = false;
         }
     }
 
