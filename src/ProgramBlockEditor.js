@@ -580,27 +580,37 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 || this.props.actionPanelStepIndex === startLoopIndex
                 || this.props.actionPanelStepIndex === endLoopIndex;
 
+            const showLoopActive =
+                this.props.runningState !== 'stopped'
+                && this.props.programSequence.getProgramCounter() >= startLoopIndex
+                && this.props.programSequence.getProgramCounter() <= endLoopIndex;
+
             const classes = classNames(
                 'ProgramBlockEditor__loopContainer',
+                showLoopActive && 'ProgramBlockEditor__loopContainer--active',
                 showLoopFocused && 'ProgramBlockEditor__loopContainer--focused',
                 inLoop && 'ProgramBlockEditor__loopContainer--nested'
             );
 
             return (
-                <div className={classes}>
-                    <div className='ProgramBlockEditor__program-block-connector-loop' />
-                    <React.Fragment key={`startLoop`}>
-                        {this.makeProgramBlockWithPanel(startLoopIndex, startLoopBlock)}
-                    </React.Fragment>
-                    {loopContent}
-                    <React.Fragment key={`endLoop`}>
-                        <div className='ProgramBlockEditor__program-block-connector'/>
-                        {this.makeAddNode(endLoopIndex)}
-                        <div className='ProgramBlockEditor__program-block-connector' />
-                        {this.makeProgramBlockWithPanel(endLoopIndex, endLoopBlock)}
-                    </React.Fragment>
-                    <div className='ProgramBlockEditor__program-block-connector-loop' />
-                </div>
+                <React.Fragment>
+                    {showLoopActive && <div className='ProgramBlockEditor__program-block-connector-loop--active' />}
+                    <div className={classes}>
+                        <div className='ProgramBlockEditor__program-block-connector-loop' />
+                        <React.Fragment key={`startLoop`}>
+                            {this.makeProgramBlockWithPanel(startLoopIndex, startLoopBlock)}
+                        </React.Fragment>
+                        {loopContent}
+                        <React.Fragment key={`endLoop`}>
+                            <div className='ProgramBlockEditor__program-block-connector'/>
+                            {this.makeAddNode(endLoopIndex)}
+                            <div className='ProgramBlockEditor__program-block-connector' />
+                            {this.makeProgramBlockWithPanel(endLoopIndex, endLoopBlock)}
+                        </React.Fragment>
+                        <div className='ProgramBlockEditor__program-block-connector-loop' />
+                    </div>
+                    {showLoopActive && <div className='ProgramBlockEditor__program-block-connector-loop--active' />}
+                </React.Fragment>
             );
         }
     }

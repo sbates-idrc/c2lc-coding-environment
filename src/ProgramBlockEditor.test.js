@@ -373,7 +373,57 @@ test('Loop container should have focus style when its start or end loop block is
     expect(wrapper.html()).toContain('ProgramBlockEditor__loopContainer--focused');
     startLoopBlock.simulate('blur');
     expect(wrapper.html()).not.toContain('ProgramBlockEditor__loopContainer--focused');
-})
+});
+
+describe('Active loop container highlight', () => {
+    test('Loop container should have active style when the program is running and the program counter is within the container', () => {
+        const { wrapper } = createMountProgramBlockEditor({
+            runningState: 'running',
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'endLoop', label: 'A'},
+                    {block: 'forward1'}
+                ],
+                0,
+                0,
+                new Map([['A', 2]])
+            )
+        });
+        expect(wrapper.html()).toContain('ProgramBlockEditor__loopContainer--active');
+    });
+    test('Loop container should not have active style when the program is running and the program counter is out of the container', () => {
+        const { wrapper } = createMountProgramBlockEditor({
+            runningState: 'running',
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'endLoop', label: 'A'},
+                    {block: 'forward1'}
+                ],
+                2,
+                0,
+                new Map([['A', 2]])
+            )
+        });
+        expect(wrapper.html()).not.toContain('ProgramBlockEditor__loopContainer--active');
+    });
+    test('Loop container should not have active style when the program is not running', () => {
+        const { wrapper } = createMountProgramBlockEditor({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'endLoop', label: 'A'},
+                    {block: 'forward1'}
+                ],
+                2,
+                0,
+                new Map([['A', 2]])
+            )
+        });
+        expect(wrapper.html()).not.toContain('ProgramBlockEditor__loopContainer--active');
+    })
+});
 
 describe('The expand add node toggle switch should be configurable via properties', () => {
     describe('Given that addNodeExpandedMode is false', () => {
