@@ -417,68 +417,93 @@ export default class ProgramSequence {
         );
     }
 
-    // Requirements on indexFrom and indexTo:
-    //     If moving a startLoop
-    //         If moving left
-    //             Then indexTo must === indexFrom - 1
-    //         If moving right
-    //             Then indexTo must === index of endLoop + 1
-    //     If moving an EndLoop
-    //         If moving left
-    //             Then indexTo must === index of startLoop - 1
-    //         If moving right
-    //             Then indexTo must === indexFrom + 1
-    swapStep(indexFrom: number, indexTo: number): ProgramSequence {
-        const program = this.program.slice();
-        if (program[indexFrom] != null && program[indexTo] != null) {
-            const swappedStep = program[indexTo];
-            const currentStep = program[indexFrom];
-            if (currentStep.block === 'startLoop') {
-                const loopLabel = currentStep.label;
-                let loopContent = [];
-                for (let i = indexFrom + 1; i < program.length; i++) {
-                    if (program[i].block === 'endLoop') {
-                        if (program[i].label != null && program[i].label === loopLabel) {
-                            loopContent = program.slice(indexFrom, i + 1);
-                            break;
-                        }
-                    }
-                }
-                // Move to left
-                if (indexFrom > indexTo) {
-                    program.splice(indexTo, loopContent.length, ...loopContent);
-                    program[indexTo + loopContent.length] = swappedStep;
-                // Move to right
-                } else if (indexFrom < indexTo) {
-                    program[indexFrom] = swappedStep;
-                    program.splice(indexFrom + 1, loopContent.length, ...loopContent);
-                }
-            } else if (currentStep.block === 'endLoop') {
-                const loopLabel = currentStep.label;
-                let loopContent = [];
-                for (let i = 0; i < indexFrom; i++) {
-                    if (program[i].block === 'startLoop') {
-                        if (program[i].label != null && program[i].label === loopLabel) {
-                            loopContent = program.slice(i, indexFrom + 1);
-                            break;
-                        }
-                    }
-                }
-                // Move to left
-                if (indexFrom > indexTo) {
-                    program.splice(indexTo, loopContent.length, ...loopContent);
-                    program[indexFrom] = swappedStep;
-                // Move to right
-                } else if (indexFrom < indexTo) {
-                    program[indexFrom - loopContent.length + 1] = swappedStep;
-                    program.splice(indexFrom - loopContent.length + 2, loopContent.length, ...loopContent);
-                }
-            } else {
-                program[indexFrom] = program[indexTo];
-                program[indexTo] = currentStep;
+    moveToNextStepDisabled(indexFrom: number): boolean {
+        if (this.program.length === 0) {
+            return true;
+        }
+        const programLastIndex = this.program.length - 1;
+        if (indexFrom < 0 || indexFrom >= programLastIndex) {
+            return true;
+        }
+        const { block, label } = this.program[indexFrom];
+        if (block === 'startLoop') {
+            const lastProgramStep = this.program[programLastIndex];
+            if (lastProgramStep.block === 'endLoop' && lastProgramStep.label === label) {
+                return true;
             }
         }
-        return this.updateProgram(program);
+        return false;
+    }
+
+    moveToPreviousStepDisabled(indexFrom: number): boolean {
+        if (this.program.length === 0) {
+            return true;
+        }
+        if (indexFrom <= 0 || indexFrom >= this.program.length) {
+            return true;
+        }
+        const { block, label } = this.program[indexFrom];
+        if (block === 'endLoop') {
+            const firstProgramStep = this.program[0];
+            if (firstProgramStep.block === 'startLoop' && firstProgramStep.label === label) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    moveStepNext(indexFrom: number): ProgramSequence {
+        if (this.moveToNextStepDisabled(indexFrom)) {
+            return this;
+        }
+
+        const newProgram = this.program.slice();
+
+        if (this.program[indexFrom] != null && this.program[indexFrom].block === 'startLoop') {
+            const endLoopIndex = this.getMatchingLoopBlockIndex(indexFrom);
+            if (endLoopIndex != null) {
+                newProgram.splice(indexFrom, 0, this.program[endLoopIndex + 1]);
+                newProgram.splice(endLoopIndex + 2, 1);
+            }
+        } else if (this.program[indexFrom] != null && this.program[indexFrom].block === 'endLoop') {
+            const startLoopIndex = this.getMatchingLoopBlockIndex(indexFrom);
+            if (startLoopIndex != null) {
+                newProgram.splice(startLoopIndex, 0, this.program[indexFrom + 1]);
+                newProgram.splice(indexFrom + 2, 1);
+            }
+        } else {
+            newProgram[indexFrom] = this.program[indexFrom + 1];
+            newProgram[indexFrom + 1] = this.program[indexFrom];
+        }
+
+        return this.updateProgram(newProgram);
+    }
+
+    moveStepPrevious(indexFrom: number): ProgramSequence {
+        if (this.moveToPreviousStepDisabled(indexFrom)) {
+            return this;
+        }
+
+        const newProgram = this.program.slice();
+
+        if (this.program[indexFrom] != null && this.program[indexFrom].block === 'startLoop') {
+            const endLoopIndex = this.getMatchingLoopBlockIndex(indexFrom);
+            if (endLoopIndex != null) {
+                newProgram.splice(endLoopIndex + 1, 0, this.program[indexFrom - 1]);
+                newProgram.splice(indexFrom - 1, 1);
+            }
+        } else if (this.program[indexFrom] != null && this.program[indexFrom].block === 'endLoop') {
+            const startLoopIndex = this.getMatchingLoopBlockIndex(indexFrom);
+            if (startLoopIndex != null) {
+                newProgram.splice(indexFrom + 1, 0, this.program[startLoopIndex - 1]);
+                newProgram.splice(startLoopIndex - 1, 1);
+            }
+        } else {
+            newProgram[indexFrom] = this.program[indexFrom - 1];
+            newProgram[indexFrom - 1] = this.program[indexFrom];
+        }
+
+        return this.updateProgram(newProgram);
     }
 
     usesAction(action: CommandName): boolean {
