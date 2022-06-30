@@ -7,7 +7,7 @@ import AnnouncementBuilder from './AnnouncementBuilder';
 import {App} from './App';
 import {ProgramBlockEditor} from './ProgramBlockEditor';
 import ProgramSequence from './ProgramSequence';
-import {isLoopBlock, moveToNextStepDisabled, moveToPreviousStepDisabled} from './Utils';
+import {isLoopBlock} from './Utils';
 
 // The ProgramChangeController is responsible for making changes to the
 // App 'state.programSequence' and coordinating any user interface
@@ -154,7 +154,7 @@ export default class ProgramChangeController {
             // Check that the step at indexFrom has not changed
             const stepAtIndexFrom = state.programSequence.getProgramStepAt(indexFrom);
             if (commandAtIndexFrom === stepAtIndexFrom.block) {
-                if (moveToNextStepDisabled(state.programSequence, indexFrom)) {
+                if (state.programSequence.moveToNextStepDisabled(indexFrom)) {
                     // Move next is not possible:
                     // Play an announcement and do not change the program
                     this.audioManager.playAnnouncement('cannotMoveNext', this.intl);
@@ -163,31 +163,14 @@ export default class ProgramChangeController {
                     // Play the announcement
                     this.audioManager.playAnnouncement('moveToNext', this.intl);
 
-                    const program = state.programSequence.getProgram();
-                    let indexTo = null;
-
-                    if (program[indexFrom].block === 'startLoop') {
-                        const label = program[indexFrom].label;
-                        for (let i = indexFrom; i < program.length; i++) {
-                            if (program[i].block === 'endLoop' && program[i].label === label) {
-                                indexTo = i + 1;
-                                break;
-                            }
-                        }
-                    } else {
-                        indexTo = indexFrom + 1;
-                    }
-
-                    if (indexTo != null) {
-                        return this.doMove(
-                            programBlockEditor,
-                            state,
-                            state.programSequence.swapStep(indexFrom, indexTo),
-                            focusAfterMove,
-                            indexFrom + 1,
-                            'moveToNextStep'
-                        );
-                    }
+                    return this.doMove(
+                        programBlockEditor,
+                        state,
+                        state.programSequence.moveStepNext(indexFrom),
+                        focusAfterMove,
+                        indexFrom + 1,
+                        'moveToNextStep'
+                    );
                 }
             } else {
                 // If the step to move has changed, make no changes to the program
@@ -204,7 +187,7 @@ export default class ProgramChangeController {
             // Check that the step at indexFrom has not changed
             const stepAtIndexFrom = state.programSequence.getProgramStepAt(indexFrom);
             if (commandAtIndexFrom === stepAtIndexFrom.block) {
-                if (moveToPreviousStepDisabled(state.programSequence, indexFrom)) {
+                if (state.programSequence.moveToPreviousStepDisabled(indexFrom)) {
                     // Move previous is not possible:
                     // Play an announcement and do not change the program
                     this.audioManager.playAnnouncement('cannotMovePrevious', this.intl);
@@ -213,31 +196,14 @@ export default class ProgramChangeController {
                     // Play the announcement
                     this.audioManager.playAnnouncement('moveToPrevious', this.intl);
 
-                    const program = state.programSequence.getProgram();
-                    let indexTo = null;
-
-                    if (program[indexFrom].block === 'endLoop') {
-                        const label = program[indexFrom].label;
-                        for (let i = 0; i < indexFrom; i++) {
-                            if (program[i].block === 'startLoop' && program[i].label === label) {
-                                indexTo = i - 1;
-                                break;
-                            }
-                        }
-                    } else {
-                        indexTo = indexFrom - 1;
-                    }
-
-                    if (indexTo != null) {
-                        return this.doMove(
-                            programBlockEditor,
-                            state,
-                            state.programSequence.swapStep(indexFrom, indexTo),
-                            focusAfterMove,
-                            indexFrom - 1,
-                            'moveToPreviousStep'
-                        );
-                    }
+                    return this.doMove(
+                        programBlockEditor,
+                        state,
+                        state.programSequence.moveStepPrevious(indexFrom),
+                        focusAfterMove,
+                        indexFrom - 1,
+                        'moveToPreviousStep'
+                    );
                 }
             } else {
                 // If the step to move has changed, make no changes to the program
