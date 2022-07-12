@@ -391,7 +391,28 @@ describe('Active loop container highlight', () => {
             )
         });
         expect(wrapper.html()).toContain('ProgramBlockEditor__loopContainer--active');
+        expect(wrapper.html()).toContain('ProgramBlockEditor__loopContainer-active-outline');
     });
+    test('There should be only one loop container with active outline', () => {
+        const { wrapper } = createMountProgramBlockEditor({
+            runningState: 'running',
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'startLoop', label: 'B', iterations: 2},
+                    {block: 'endLoop', label: 'B'},
+                    {block: 'endLoop', label: 'A'},
+                    {block: 'forward1'}
+                ],
+                1,
+                0,
+                new Map([['A', 2], ['B', 2]])
+            )
+        });
+        expect(wrapper.html()).toContain('ProgramBlockEditor__loopContainer--active');
+        expect(wrapper.html().match(new RegExp('ProgramBlockEditor__loopContainer-active-outline','g')).length).toBe(1);
+
+    })
     test('Loop container should not have active style when the program is running and the program counter is out of the container', () => {
         const { wrapper } = createMountProgramBlockEditor({
             runningState: 'running',
@@ -422,7 +443,7 @@ describe('Active loop container highlight', () => {
             )
         });
         expect(wrapper.html()).not.toContain('ProgramBlockEditor__loopContainer--active');
-    })
+    });
 });
 
 describe('The expand add node toggle switch should be configurable via properties', () => {
@@ -748,6 +769,8 @@ describe('Autoscroll to show a step after the active program step', () => {
     test('When a step after active program block is outside of the container, on the right', () => {
         expect.assertions(1);
 
+        const mockScrollTo = jest.fn();
+
         const { wrapper } = createMountProgramBlockEditor({runningState: 'running'});
 
         // Set the container ref object to a custom object with just enough
@@ -760,7 +783,8 @@ describe('Autoscroll to show a step after the active program step', () => {
                 };
             },
             clientWidth: 1000,
-            scrollLeft: 200
+            scrollLeft: 200,
+            scrollTo: mockScrollTo
         };
 
         // Set the location of the next block
@@ -779,10 +803,15 @@ describe('Autoscroll to show a step after the active program step', () => {
             programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 2, 0, new Map())
         });
 
-        expect(programSequenceContainer.ref.current.scrollLeft).toBe(200 + 2300 - 100 - 1000);
+        expect(mockScrollTo.mock.calls[0][0]).toStrictEqual({
+            left: 200 + 2300 - 100 - 1000,
+            behavior: 'smooth'
+        });
     });
     test('When a step after active program block is outside of the container, on the left', () => {
         expect.assertions(1);
+
+        const mockScrollTo = jest.fn();
 
         const { wrapper } = createMountProgramBlockEditor({runningState: 'running'});
 
@@ -796,7 +825,8 @@ describe('Autoscroll to show a step after the active program step', () => {
                 };
             },
             clientWidth: 1000,
-            scrollLeft: 2000
+            scrollLeft: 2000,
+            scrollTo: mockScrollTo
         };
 
         // Set the location of the next block
@@ -815,10 +845,15 @@ describe('Autoscroll to show a step after the active program step', () => {
             programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 2, 0, new Map())
         });
 
-        expect(programSequenceContainer.ref.current.scrollLeft).toBe(2000 - 100 - 200);
+        expect(mockScrollTo.mock.calls[0][0]).toStrictEqual({
+            left: 2000 - 100 + 200,
+            behavior: 'smooth'
+        });
     });
     test('When active program block is the last program block, autoscroll to the last add node', () => {
         expect.assertions(1);
+
+        const mockScrollTo = jest.fn();
 
         const { wrapper } = createMountProgramBlockEditor();
 
@@ -832,7 +867,8 @@ describe('Autoscroll to show a step after the active program step', () => {
                 };
             },
             clientWidth: 1000,
-            scrollLeft: 2000
+            scrollLeft: 2000,
+            scrollTo: mockScrollTo
         };
 
         // Set the last add node location
@@ -851,7 +887,10 @@ describe('Autoscroll to show a step after the active program step', () => {
             programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 3, 0, new Map())
         });
 
-        expect(programSequenceContainer.ref.current.scrollLeft).toBe(2000 - 100 - 200);
+        expect(mockScrollTo.mock.calls[0][0]).toStrictEqual({
+            left: 2000 - 100 + 200,
+            behavior: 'smooth'
+        });
     })
 });
 

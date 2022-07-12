@@ -98,12 +98,20 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 const toElementLeft = toElement.getBoundingClientRect().left;
                 const toElementRight = toElement.getBoundingClientRect().right;
 
-                if (toElementRight > containerLeft + containerWidth) {
+                if (containerElem.scrollTo != null && toElementRight > containerLeft + containerWidth) {
                     // toElement is outside of the container, on the right
-                    containerElem.scrollLeft += toElementRight - containerLeft - containerWidth;
-                } else if (toElementLeft < containerLeft) {
+                    const scrollToLeft = containerElem.scrollLeft + toElementRight - containerLeft - containerWidth;
+                    containerElem.scrollTo({
+                        left: scrollToLeft,
+                        behavior: 'smooth'
+                    });
+                } else if (containerElem.scrollTo != null && toElementLeft < containerLeft) {
                     // toElement is outside of the container, on the left
-                    containerElem.scrollLeft -= containerLeft - toElementLeft;
+                    const scrollToLeft = containerElem.scrollLeft - containerLeft - toElementLeft;
+                    containerElem.scrollTo({
+                        left: scrollToLeft,
+                        behavior: 'smooth'
+                    });
                 }
             }
         }
@@ -556,10 +564,21 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         programIterator.next();
 
         const loopContent = [];
+        let hasChildLoopContainingProgramCounter = false;
         while (!programIterator.done
                 && programIterator.programBlock != null
                 && programIterator.programBlock.block !== 'endLoop') {
-            loopContent.push(this.renderNextSection(programIterator, true));
+            // Check if there's a loop that contains the program counter
+            if (programIterator.programBlock.block === 'startLoop') {
+                const childLoopStartBlockIndex = programIterator.stepNumber;
+                loopContent.push(this.renderNextSection(programIterator, true));
+                if (this.props.programSequence.getProgramCounter() >= childLoopStartBlockIndex
+                        && this.props.programSequence.getProgramCounter() < programIterator.stepNumber) {
+                    hasChildLoopContainingProgramCounter = true;
+                }
+            } else {
+                loopContent.push(this.renderNextSection(programIterator, true));
+            }
         }
 
         if (programIterator.programBlock != null
@@ -585,9 +604,13 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 && this.props.programSequence.getProgramCounter() >= startLoopIndex
                 && this.props.programSequence.getProgramCounter() <= endLoopIndex;
 
+            const showLoopActiveOutline = showLoopActive
+                && !hasChildLoopContainingProgramCounter;
+
             const classes = classNames(
                 'ProgramBlockEditor__loopContainer',
                 showLoopActive && 'ProgramBlockEditor__loopContainer--active',
+                showLoopActiveOutline && 'ProgramBlockEditor__loopContainer-active-outline',
                 showLoopFocused && 'ProgramBlockEditor__loopContainer--focused',
                 inLoop && 'ProgramBlockEditor__loopContainer--nested'
             );
