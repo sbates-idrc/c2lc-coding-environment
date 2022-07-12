@@ -9,7 +9,7 @@ import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import './Scene.scss';
 import './Worlds.scss';
-import type { ThemeName } from './types';
+import type { ThemeName, RunningState } from './types';
 import type { WorldName } from './Worlds';
 
 const startingGridCellPointSize = 0.25;
@@ -21,6 +21,7 @@ export type SceneProps = {
     world: WorldName,
     startingX: number,
     startingY: number,
+    runningState: RunningState,
     intl: IntlShape
 };
 
@@ -258,12 +259,10 @@ class Scene extends React.Component<SceneProps, {}> {
         }
     }
 
-    componentDidUpdate = (prevProps) => {
+    scrollCharacterIntoView() {
         // Required to avoid the lack of scrollIntoView on SVG elements in Safari.
         /* istanbul ignore next */
-        if ((prevProps.characterState.xPos !== this.props.characterState.xPos
-                || prevProps.characterState.yPos !== this.props.characterState.yPos)
-                && this.sceneRef.current !== null && this.sceneSvgRef.current !== null) {
+        if (this.sceneRef.current !== null && this.sceneSvgRef.current !== null) {
 
             const sceneElem = this.sceneRef.current;
             const sceneSvgElem = this.sceneSvgRef.current;
@@ -407,6 +406,17 @@ class Scene extends React.Component<SceneProps, {}> {
                 </div>
             </React.Fragment>
         );
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.characterState.xPos !== this.props.characterState.xPos
+                || prevProps.characterState.yPos !== this.props.characterState.yPos) {
+            this.scrollCharacterIntoView();
+        }
+        if (prevProps.runningState !== this.props.runningState
+                && this.props.runningState === 'running') {
+            this.scrollCharacterIntoView();
+        }
     }
 }
 

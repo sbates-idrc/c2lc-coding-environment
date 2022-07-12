@@ -1450,6 +1450,7 @@ export class App extends React.Component<AppProps, AppState> {
                             world={this.state.settings.world}
                             startingX={this.state.startingX}
                             startingY={this.state.startingY}
+                            runningState={this.state.runningState}
                         />
                     </div>
                     <div className="App__world-container">

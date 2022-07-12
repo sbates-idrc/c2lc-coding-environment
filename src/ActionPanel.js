@@ -10,7 +10,7 @@ import { ReactComponent as MovePreviousIcon } from './svg/MovePrevious.svg';
 import { ReactComponent as MoveNextIcon } from './svg/MoveNext.svg';
 import { ReactComponent as DeleteIcon } from './svg/Delete.svg';
 import { ReactComponent as ReplaceIcon } from './svg/replace.svg';
-import { focusByQuerySelector, isLoopBlock, moveToNextStepDisabled, moveToPreviousStepDisabled } from './Utils';
+import { focusByQuerySelector, isLoopBlock } from './Utils';
 import './ActionPanel.scss';
 
 type ActionPanelProps = {
@@ -215,8 +215,8 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
 
     render() {
         const stepMessageData = this.makeStepMessageData();
-        const moveToNextStepIsDisabled = moveToNextStepDisabled(this.props.programSequence, this.props.pressedStepIndex);
-        const moveToPreviousStepIsDisabled = moveToPreviousStepDisabled(this.props.programSequence, this.props.pressedStepIndex);
+        const moveToNextStepIsDisabled = this.props.programSequence.moveToNextStepDisabled(this.props.pressedStepIndex);
+        const moveToPreviousStepIsDisabled = this.props.programSequence.moveToPreviousStepDisabled(this.props.pressedStepIndex);
         const replaceIsVisible = this.getReplaceIsVisible();
         const replaceIsDisabled = this.props.selectedCommandName == null;
         return (

@@ -46,8 +46,8 @@ describe('Test insertSelectedActionIntoProgram()', () => {
 
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
-        appMock.setState.mockImplementation((callback) => {
-            const newState = callback({
+        appMock.setState.mockImplementation((updater) => {
+            const newState = updater({
                 programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0, new Map())
             });
 
@@ -88,8 +88,8 @@ describe('Test insertSelectedActionIntoProgram()', () => {
 
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
-        appMock.setState.mockImplementation((callback) => {
-            const newState = callback({
+        appMock.setState.mockImplementation((updater) => {
+            const newState = updater({
                 programSequence: new ProgramSequence([], 0, 0, new Map())
             });
 
@@ -122,8 +122,8 @@ describe('Test addSelectedActionToProgramEnd()', () => {
 
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
-        appMock.setState.mockImplementation((callback) => {
-            const newState = callback({
+        appMock.setState.mockImplementation((updater) => {
+            const newState = updater({
                 programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0, new Map())
             });
 
@@ -163,8 +163,8 @@ describe('Test addSelectedActionToProgramEnd()', () => {
 
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
-        appMock.setState.mockImplementation((callback) => {
-            const newState = callback({
+        appMock.setState.mockImplementation((updater) => {
+            const newState = updater({
                 programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0, new Map())
             });
 
@@ -239,8 +239,8 @@ describe('Test deleteProgramStep()', () => {
 
             const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
-            appMock.setState.mockImplementation((callback) => {
-                const newState = callback({
+            appMock.setState.mockImplementation((updater) => {
+                const newState = updater({
                     programSequence: new ProgramSequence(testData.program, 0, 0, new Map())
                 });
 
@@ -311,8 +311,8 @@ describe('Test deleteProgramStep()', () => {
 
             const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
-            appMock.setState.mockImplementation((callback) => {
-                const newState = callback({
+            appMock.setState.mockImplementation((updater) => {
+                const newState = updater({
                     programSequence: new ProgramSequence(testData.program, 0, 0, new Map())
                 });
 
@@ -349,8 +349,8 @@ describe('Test deleteProgramStep()', () => {
 
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
-        appMock.setState.mockImplementation((callback) => {
-            const newState = callback({
+        appMock.setState.mockImplementation((updater) => {
+            const newState = updater({
                 programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'forward2'}], 0, 0, new Map())
             });
 
@@ -383,8 +383,8 @@ describe('Test replaceProgramStep()', () => {
 
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
-        appMock.setState.mockImplementation((callback) => {
-            const newState = callback({
+        appMock.setState.mockImplementation((updater) => {
+            const newState = updater({
                 programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}], 0, 0, new Map())
             });
 
@@ -409,8 +409,8 @@ describe('Test replaceProgramStep()', () => {
 
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
-        appMock.setState.mockImplementation((callback) => {
-            const newState = callback({
+        appMock.setState.mockImplementation((updater) => {
+            const newState = updater({
                 programSequence: new ProgramSequence([{block: 'startLoop'}, {block: 'endLoop'}], 0, 0, new Map())
             });
 
@@ -435,8 +435,8 @@ describe('Test replaceProgramStep()', () => {
 
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
-        appMock.setState.mockImplementation((callback) => {
-            const newState = callback({
+        appMock.setState.mockImplementation((updater) => {
+            const newState = updater({
                 programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}], 0, 0, new Map())
             });
 
@@ -510,8 +510,8 @@ describe('Test moveProgramStepNext()', () => {
         }
     ]))('When movement is possible, then the program should be updated and all expected activities invoked', (testData, done) => {
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
-        appMock.setState.mockImplementation((callback) => {
-            const newState = callback({
+        appMock.setState.mockImplementation((updater) => {
+            const newState = updater({
                 programSequence: new ProgramSequence(testData.program, 0, 0, new Map())
             });
 
@@ -542,8 +542,8 @@ describe('Test moveProgramStepNext()', () => {
 
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
-        appMock.setState.mockImplementation((callback) => {
-            const newState = callback({
+        appMock.setState.mockImplementation((updater) => {
+            const newState = updater({
                 programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'right45'}], 0, 0, new Map())
             });
 
@@ -602,8 +602,8 @@ describe('Test moveProgramStepPrevious()', () => {
         },
     ]))('When movement is possible, then the program should be updated and all expected activities invoked', (testData, done) => {
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
-        appMock.setState.mockImplementation((callback) => {
-            const newState = callback({
+        appMock.setState.mockImplementation((updater) => {
+            const newState = updater({
                 programSequence: new ProgramSequence(testData.program, 0, 0, new Map())
             });
 
@@ -634,8 +634,8 @@ describe('Test moveProgramStepPrevious()', () => {
 
         const { controller, appMock, audioManagerMock } = createProgramChangeController();
 
-        appMock.setState.mockImplementation((callback) => {
-            const newState = callback({
+        appMock.setState.mockImplementation((updater) => {
+            const newState = updater({
                 programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'right45'}], 0, 0, new Map())
             });
 
