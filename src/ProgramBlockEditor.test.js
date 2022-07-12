@@ -410,7 +410,7 @@ describe('Active loop container highlight', () => {
             )
         });
         expect(wrapper.html()).toContain('ProgramBlockEditor__loopContainer--active');
-        expect(wrapper.html().match(new RegExp('ProgramBlockEditor__loopContainer-active-outline','g')).length).toBe(1);
+        expect(wrapper.find('.ProgramBlockEditor__loopContainer-active-outline').length).toBe(1);
 
     })
     test('Loop container should not have active style when the program is running and the program counter is out of the container', () => {
