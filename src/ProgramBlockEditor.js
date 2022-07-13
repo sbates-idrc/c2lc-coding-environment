@@ -68,6 +68,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     updatedCommandBlockIndex: ?number;
     programSequenceContainerRef: { current: null | HTMLDivElement };
     lastCalculatedClosestAddNode: number;
+    lastScrollLeftValue: number;
+    lastScrollLeftTimeMs: number;
 
     constructor(props: ProgramBlockEditorProps) {
         super(props);
@@ -79,6 +81,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         this.updatedCommandBlockIndex = null;
         this.programSequenceContainerRef = React.createRef();
         this.lastCalculatedClosestAddNode = Date.now();
+        this.lastScrollLeftValue = 0;
+        this.lastScrollLeftTimeMs = 0;
         this.state = {
             showConfirmDeleteAll : false,
             focusedActionPanelOptionName: null,
@@ -90,28 +94,52 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     scrollProgramSequenceContainer(toElement: HTMLElement) {
         if (this.programSequenceContainerRef.current) {
             const containerElem = this.programSequenceContainerRef.current;
-            if (toElement != null && toElement.dataset.stepnumber === '0') {
-                containerElem.scrollTo(0, 0);
-            } else if (toElement != null){
+            if (toElement != null) {
                 const containerLeft = containerElem.getBoundingClientRect().left;
                 const containerWidth = containerElem.clientWidth;
                 const toElementLeft = toElement.getBoundingClientRect().left;
                 const toElementRight = toElement.getBoundingClientRect().right;
 
-                if (containerElem.scrollTo != null && toElementRight > containerLeft + containerWidth) {
+                // TODO: If scrollLeftPaddingPx is small enough that scrolling
+                //       to the first block in the program doesn't show the
+                //       start program marker, then we need to treat that case
+                //       specially (as we did before and just scroll to 0)
+                const scrollRightPaddingPx = 128;
+                const scrollLeftPaddingPx = 14;
+                const scrollTimeThresholdMs = 400;
+
+                if (containerElem.scrollTo != null
+                        && toElementRight + scrollRightPaddingPx > containerLeft + containerWidth) {
                     // toElement is outside of the container, on the right
-                    const scrollToLeft = containerElem.scrollLeft + toElementRight - containerLeft - containerWidth;
+                    const scrollToLeft = containerElem.scrollLeft + toElementRight + scrollRightPaddingPx - containerLeft - containerWidth;
                     containerElem.scrollTo({
                         left: scrollToLeft,
                         behavior: 'smooth'
                     });
-                } else if (containerElem.scrollTo != null && toElementLeft < containerLeft) {
+                } else if (containerElem.scrollTo != null
+                        && toElementLeft - scrollLeftPaddingPx < containerLeft) {
                     // toElement is outside of the container, on the left
-                    const scrollToLeft = containerElem.scrollLeft - containerLeft - toElementLeft;
-                    containerElem.scrollTo({
-                        left: scrollToLeft,
-                        behavior: 'smooth'
-                    });
+                    const scrollToLeft = Math.max(0, containerElem.scrollLeft + toElementLeft - scrollLeftPaddingPx - containerLeft);
+                    const timeNowMs = Date.now();
+                    // Do the scroll to the left if we are scrolling left
+                    // further than the last time we scrolled left, or if the
+                    // last time we scrolled left was greater than
+                    // 'scrollTimeThresholdMs' milliseconds ago.
+                    // We do these checks because scrolling from the end of a
+                    // loop with many elements back to the start of the loop
+                    // may take long enough that the first block in the loop
+                    // becomes active before we are finished scrolling. In this
+                    // case we will scroll to the first block in the loop,
+                    // rather than the startLoop block.
+                    if (scrollToLeft < this.lastScrollLeftValue
+                            || timeNowMs - this.lastScrollLeftTimeMs > scrollTimeThresholdMs) {
+                        this.lastScrollLeftValue = scrollToLeft;
+                        this.lastScrollLeftTimeMs = timeNowMs;
+                        containerElem.scrollTo({
+                            left: scrollToLeft,
+                            behavior: 'smooth'
+                        });
+                    }
                 }
             }
         }
@@ -808,16 +836,9 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         }
         if (this.props.runningState === 'running') {
             const activeProgramStepNum = this.props.programSequence.getProgramCounter();
-
             const activeProgramStep = this.commandBlockRefs.get(activeProgramStepNum);
-            const nextProgramStep = this.commandBlockRefs.get(activeProgramStepNum + 1);
-            const lastAddNode = this.addNodeRefs.get(this.props.programSequence.getProgramLength());
-            if (activeProgramStep && activeProgramStepNum === 0) {
+            if (activeProgramStep) {
                 this.scrollProgramSequenceContainer(activeProgramStep);
-            } else if (nextProgramStep) {
-                this.scrollProgramSequenceContainer(nextProgramStep);
-            } else if (lastAddNode){
-                this.scrollProgramSequenceContainer(lastAddNode);
             }
         }
         if (this.props.actionPanelStepIndex != null) {
