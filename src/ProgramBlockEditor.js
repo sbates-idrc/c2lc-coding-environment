@@ -107,8 +107,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 const toElementLeft = toElement.getBoundingClientRect().left;
                 const toElementRight = toElement.getBoundingClientRect().right;
 
-                const scrollRightPaddingPx = 128;
-                const scrollLeftPaddingPx = 14;
+                const scrollRightPaddingPx = 256;
+                const scrollLeftPaddingPx = 128;
                 const scrollTimeThresholdMs = 400;
 
                 if (containerElem.scrollTo != null
