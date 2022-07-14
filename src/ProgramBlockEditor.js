@@ -41,6 +41,9 @@ type ProgramBlockEditorProps = {
     addNodeExpandedMode: boolean,
     theme: ThemeName,
     world: WorldName,
+    scrollRightPaddingPx: number,
+    scrollLeftPaddingPx: number,
+    scrollTimeThresholdMs: number,
     // TODO: Remove onChangeProgramSequence once we have callbacks
     //       for each specific change
     onChangeProgramSequence: (programSequence: ProgramSequence) => void,
@@ -94,13 +97,14 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     scrollProgramSequenceContainer(toElement: HTMLElement, scrollInstantly: boolean) {
         if (this.programSequenceContainerRef.current) {
             const containerElem = this.programSequenceContainerRef.current;
+            const scrollBehavior = scrollInstantly ? 'instant' : 'smooth';
             if (toElement != null && toElement.dataset.stepnumber === '0') {
                 this.lastScrollLeftValue = 0;
                 this.lastScrollLeftTimeMs = Date.now();
                 // $FlowFixMe: scrollTo behavior missing value 'instant'
                 containerElem.scrollTo({
                     left: 0,
-                    behavior: scrollInstantly ? 'instant' : 'smooth'
+                    behavior: scrollBehavior
                 });
             } else if (toElement != null) {
                 const containerLeft = containerElem.getBoundingClientRect().left;
@@ -108,23 +112,19 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 const toElementLeft = toElement.getBoundingClientRect().left;
                 const toElementRight = toElement.getBoundingClientRect().right;
 
-                const scrollRightPaddingPx = 256;
-                const scrollLeftPaddingPx = 128;
-                const scrollTimeThresholdMs = 400;
-
                 if (containerElem.scrollTo != null
-                        && toElementRight + scrollRightPaddingPx > containerLeft + containerWidth) {
+                        && toElementRight + this.props.scrollRightPaddingPx > containerLeft + containerWidth) {
                     // toElement is outside of the container, on the right
-                    const scrollToLeft = containerElem.scrollLeft + toElementRight + scrollRightPaddingPx - containerLeft - containerWidth;
+                    const scrollToLeft = containerElem.scrollLeft + toElementRight + this.props.scrollRightPaddingPx - containerLeft - containerWidth;
                     // $FlowFixMe: scrollTo behavior missing value 'instant'
                     containerElem.scrollTo({
                         left: scrollToLeft,
-                        behavior: scrollInstantly ? 'instant' : 'smooth'
+                        behavior: scrollBehavior
                     });
                 } else if (containerElem.scrollTo != null
-                        && toElementLeft - scrollLeftPaddingPx < containerLeft) {
+                        && toElementLeft - this.props.scrollLeftPaddingPx < containerLeft) {
                     // toElement is outside of the container, on the left
-                    const scrollToLeft = Math.max(0, containerElem.scrollLeft + toElementLeft - scrollLeftPaddingPx - containerLeft);
+                    const scrollToLeft = Math.max(0, containerElem.scrollLeft + toElementLeft - this.props.scrollLeftPaddingPx - containerLeft);
                     const timeNowMs = Date.now();
                     // Do the scroll to the left if we are scrolling left
                     // further than the last time we scrolled left, or if the
@@ -138,13 +138,13 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                     //  scroll to the first (or later) block in the loop,
                     //  rather than the startLoop block.
                     if (scrollToLeft < this.lastScrollLeftValue
-                            || timeNowMs - this.lastScrollLeftTimeMs > scrollTimeThresholdMs) {
+                            || timeNowMs - this.lastScrollLeftTimeMs > this.props.scrollTimeThresholdMs) {
                         this.lastScrollLeftValue = scrollToLeft;
                         this.lastScrollLeftTimeMs = timeNowMs;
                         // $FlowFixMe: scrollTo behavior missing value 'instant'
                         containerElem.scrollTo({
                             left: scrollToLeft,
-                            behavior: scrollInstantly ? 'instant' : 'smooth'
+                            behavior: scrollBehavior
                         });
                     }
                 }
