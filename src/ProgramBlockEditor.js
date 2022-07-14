@@ -97,6 +97,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             if (toElement != null && toElement.dataset.stepnumber === '0') {
                 this.lastScrollLeftValue = 0;
                 this.lastScrollLeftTimeMs = Date.now();
+                // $FlowFixMe: scrollTo behavior missing value 'instant'
                 containerElem.scrollTo({
                     left: 0,
                     behavior: scrollInstantly ? 'instant' : 'smooth'
@@ -115,6 +116,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                         && toElementRight + scrollRightPaddingPx > containerLeft + containerWidth) {
                     // toElement is outside of the container, on the right
                     const scrollToLeft = containerElem.scrollLeft + toElementRight + scrollRightPaddingPx - containerLeft - containerWidth;
+                    // $FlowFixMe: scrollTo behavior missing value 'instant'
                     containerElem.scrollTo({
                         left: scrollToLeft,
                         behavior: scrollInstantly ? 'instant' : 'smooth'
@@ -139,6 +141,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                             || timeNowMs - this.lastScrollLeftTimeMs > scrollTimeThresholdMs) {
                         this.lastScrollLeftValue = scrollToLeft;
                         this.lastScrollLeftTimeMs = timeNowMs;
+                        // $FlowFixMe: scrollTo behavior missing value 'instant'
                         containerElem.scrollTo({
                             left: scrollToLeft,
                             behavior: scrollInstantly ? 'instant' : 'smooth'
@@ -809,7 +812,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         );
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: ProgramBlockEditorProps) {
         if (this.scrollToAddNodeIndex != null) {
             const element = this.addNodeRefs.get(this.scrollToAddNodeIndex);
             if (element && element.scrollIntoView) {
