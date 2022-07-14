@@ -91,7 +91,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         }
     }
 
-    scrollProgramSequenceContainer(toElement: HTMLElement) {
+    scrollProgramSequenceContainer(toElement: HTMLElement, scrollInstantly: boolean) {
         if (this.programSequenceContainerRef.current) {
             const containerElem = this.programSequenceContainerRef.current;
             if (toElement != null && toElement.dataset.stepnumber === '0') {
@@ -99,7 +99,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 this.lastScrollLeftTimeMs = Date.now();
                 containerElem.scrollTo({
                     left: 0,
-                    behavior: 'smooth'
+                    behavior: scrollInstantly ? 'instant' : 'smooth'
                 });
             } else if (toElement != null) {
                 const containerLeft = containerElem.getBoundingClientRect().left;
@@ -117,7 +117,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                     const scrollToLeft = containerElem.scrollLeft + toElementRight + scrollRightPaddingPx - containerLeft - containerWidth;
                     containerElem.scrollTo({
                         left: scrollToLeft,
-                        behavior: 'smooth'
+                        behavior: scrollInstantly ? 'instant' : 'smooth'
                     });
                 } else if (containerElem.scrollTo != null
                         && toElementLeft - scrollLeftPaddingPx < containerLeft) {
@@ -141,7 +141,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                         this.lastScrollLeftTimeMs = timeNowMs;
                         containerElem.scrollTo({
                             left: scrollToLeft,
-                            behavior: 'smooth'
+                            behavior: scrollInstantly ? 'instant' : 'smooth'
                         });
                     }
                 }
@@ -809,7 +809,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         );
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
         if (this.scrollToAddNodeIndex != null) {
             const element = this.addNodeRefs.get(this.scrollToAddNodeIndex);
             if (element && element.scrollIntoView) {
@@ -842,7 +842,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             const activeProgramStepNum = this.props.programSequence.getProgramCounter();
             const activeProgramStep = this.commandBlockRefs.get(activeProgramStepNum);
             if (activeProgramStep) {
-                this.scrollProgramSequenceContainer(activeProgramStep);
+                const scrollInstantly = (prevProps.runningState !== 'running');
+                this.scrollProgramSequenceContainer(activeProgramStep, scrollInstantly);
             }
         }
         if (this.props.actionPanelStepIndex != null) {
