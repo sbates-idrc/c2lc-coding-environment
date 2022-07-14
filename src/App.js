@@ -1550,6 +1550,9 @@ export class App extends React.Component<AppProps, AppState> {
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
                             theme={this.state.settings.theme}
                             world={this.state.settings.world}
+                            scrollRightPaddingPx={256}
+                            scrollLeftPaddingPx={128}
+                            scrollTimeThresholdMs={400}
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
                             onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}

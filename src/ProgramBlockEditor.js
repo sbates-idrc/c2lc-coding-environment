@@ -41,6 +41,9 @@ type ProgramBlockEditorProps = {
     addNodeExpandedMode: boolean,
     theme: ThemeName,
     world: WorldName,
+    scrollRightPaddingPx: number,
+    scrollLeftPaddingPx: number,
+    scrollTimeThresholdMs: number,
     // TODO: Remove onChangeProgramSequence once we have callbacks
     //       for each specific change
     onChangeProgramSequence: (programSequence: ProgramSequence) => void,
@@ -68,6 +71,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     updatedCommandBlockIndex: ?number;
     programSequenceContainerRef: { current: null | HTMLDivElement };
     lastCalculatedClosestAddNode: number;
+    lastScrollLeftValue: number;
+    lastScrollLeftTimeMs: number;
 
     constructor(props: ProgramBlockEditorProps) {
         super(props);
@@ -79,6 +84,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         this.updatedCommandBlockIndex = null;
         this.programSequenceContainerRef = React.createRef();
         this.lastCalculatedClosestAddNode = Date.now();
+        this.lastScrollLeftValue = 0;
+        this.lastScrollLeftTimeMs = 0;
         this.state = {
             showConfirmDeleteAll : false,
             focusedActionPanelOptionName: null,
@@ -87,31 +94,59 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         }
     }
 
-    scrollProgramSequenceContainer(toElement: HTMLElement) {
+    scrollProgramSequenceContainer(toElement: HTMLElement, scrollInstantly: boolean) {
         if (this.programSequenceContainerRef.current) {
             const containerElem = this.programSequenceContainerRef.current;
+            const scrollBehavior = scrollInstantly ? 'instant' : 'smooth';
             if (toElement != null && toElement.dataset.stepnumber === '0') {
-                containerElem.scrollTo(0, 0);
-            } else if (toElement != null){
+                this.lastScrollLeftValue = 0;
+                this.lastScrollLeftTimeMs = Date.now();
+                // $FlowFixMe: scrollTo behavior missing value 'instant'
+                containerElem.scrollTo({
+                    left: 0,
+                    behavior: scrollBehavior
+                });
+            } else if (toElement != null) {
                 const containerLeft = containerElem.getBoundingClientRect().left;
                 const containerWidth = containerElem.clientWidth;
                 const toElementLeft = toElement.getBoundingClientRect().left;
                 const toElementRight = toElement.getBoundingClientRect().right;
 
-                if (containerElem.scrollTo != null && toElementRight > containerLeft + containerWidth) {
+                if (containerElem.scrollTo != null
+                        && toElementRight + this.props.scrollRightPaddingPx > containerLeft + containerWidth) {
                     // toElement is outside of the container, on the right
-                    const scrollToLeft = containerElem.scrollLeft + toElementRight - containerLeft - containerWidth;
+                    const scrollToLeft = containerElem.scrollLeft + toElementRight + this.props.scrollRightPaddingPx - containerLeft - containerWidth;
+                    // $FlowFixMe: scrollTo behavior missing value 'instant'
                     containerElem.scrollTo({
                         left: scrollToLeft,
-                        behavior: 'smooth'
+                        behavior: scrollBehavior
                     });
-                } else if (containerElem.scrollTo != null && toElementLeft < containerLeft) {
+                } else if (containerElem.scrollTo != null
+                        && toElementLeft - this.props.scrollLeftPaddingPx < containerLeft) {
                     // toElement is outside of the container, on the left
-                    const scrollToLeft = containerElem.scrollLeft - containerLeft - toElementLeft;
-                    containerElem.scrollTo({
-                        left: scrollToLeft,
-                        behavior: 'smooth'
-                    });
+                    const scrollToLeft = Math.max(0, containerElem.scrollLeft + toElementLeft - this.props.scrollLeftPaddingPx - containerLeft);
+                    const timeNowMs = Date.now();
+                    // Do the scroll to the left if we are scrolling left
+                    // further than the last time we scrolled left, or if the
+                    // last time we scrolled left was greater than
+                    // 'scrollTimeThresholdMs' milliseconds ago. We do these
+                    //  checks because scrolling from the end of a loop with
+                    //  many elements back to the start of the loop may take
+                    //  long enough that the first block (or later block
+                    //  depending on the play speed) in the loop becomes active
+                    //  before we are finished scrolling. In this case we would
+                    //  scroll to the first (or later) block in the loop,
+                    //  rather than the startLoop block.
+                    if (scrollToLeft < this.lastScrollLeftValue
+                            || timeNowMs - this.lastScrollLeftTimeMs > this.props.scrollTimeThresholdMs) {
+                        this.lastScrollLeftValue = scrollToLeft;
+                        this.lastScrollLeftTimeMs = timeNowMs;
+                        // $FlowFixMe: scrollTo behavior missing value 'instant'
+                        containerElem.scrollTo({
+                            left: scrollToLeft,
+                            behavior: scrollBehavior
+                        });
+                    }
                 }
             }
         }
@@ -777,7 +812,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         );
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps: ProgramBlockEditorProps) {
         if (this.scrollToAddNodeIndex != null) {
             const element = this.addNodeRefs.get(this.scrollToAddNodeIndex);
             if (element && element.scrollIntoView) {
@@ -808,16 +843,10 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         }
         if (this.props.runningState === 'running') {
             const activeProgramStepNum = this.props.programSequence.getProgramCounter();
-
             const activeProgramStep = this.commandBlockRefs.get(activeProgramStepNum);
-            const nextProgramStep = this.commandBlockRefs.get(activeProgramStepNum + 1);
-            const lastAddNode = this.addNodeRefs.get(this.props.programSequence.getProgramLength());
-            if (activeProgramStep && activeProgramStepNum === 0) {
-                this.scrollProgramSequenceContainer(activeProgramStep);
-            } else if (nextProgramStep) {
-                this.scrollProgramSequenceContainer(nextProgramStep);
-            } else if (lastAddNode){
-                this.scrollProgramSequenceContainer(lastAddNode);
+            if (activeProgramStep) {
+                const scrollInstantly = (prevProps.runningState !== 'running');
+                this.scrollProgramSequenceContainer(activeProgramStep, scrollInstantly);
             }
         }
         if (this.props.actionPanelStepIndex != null) {
