@@ -94,16 +94,19 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     scrollProgramSequenceContainer(toElement: HTMLElement) {
         if (this.programSequenceContainerRef.current) {
             const containerElem = this.programSequenceContainerRef.current;
-            if (toElement != null) {
+            if (toElement != null && toElement.dataset.stepnumber === '0') {
+                this.lastScrollLeftValue = 0;
+                this.lastScrollLeftTimeMs = Date.now();
+                containerElem.scrollTo({
+                    left: 0,
+                    behavior: 'smooth'
+                });
+            } else if (toElement != null) {
                 const containerLeft = containerElem.getBoundingClientRect().left;
                 const containerWidth = containerElem.clientWidth;
                 const toElementLeft = toElement.getBoundingClientRect().left;
                 const toElementRight = toElement.getBoundingClientRect().right;
 
-                // TODO: If scrollLeftPaddingPx is small enough that scrolling
-                //       to the first block in the program doesn't show the
-                //       start program marker, then we need to treat that case
-                //       specially (as we did before and just scroll to 0)
                 const scrollRightPaddingPx = 128;
                 const scrollLeftPaddingPx = 14;
                 const scrollTimeThresholdMs = 400;
@@ -124,13 +127,14 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                     // Do the scroll to the left if we are scrolling left
                     // further than the last time we scrolled left, or if the
                     // last time we scrolled left was greater than
-                    // 'scrollTimeThresholdMs' milliseconds ago.
-                    // We do these checks because scrolling from the end of a
-                    // loop with many elements back to the start of the loop
-                    // may take long enough that the first block in the loop
-                    // becomes active before we are finished scrolling. In this
-                    // case we will scroll to the first block in the loop,
-                    // rather than the startLoop block.
+                    // 'scrollTimeThresholdMs' milliseconds ago. We do these
+                    //  checks because scrolling from the end of a loop with
+                    //  many elements back to the start of the loop may take
+                    //  long enough that the first block (or later block
+                    //  depending on the play speed) in the loop becomes active
+                    //  before we are finished scrolling. In this case we will
+                    //  scroll to the first (or later) block in the loop,
+                    //  rather than the startLoop block.
                     if (scrollToLeft < this.lastScrollLeftValue
                             || timeNowMs - this.lastScrollLeftTimeMs > scrollTimeThresholdMs) {
                         this.lastScrollLeftValue = scrollToLeft;
