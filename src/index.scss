@@ -89,7 +89,7 @@ button.command-block {
     height: 1.5rem;
     margin-left: 0.6rem;
     border-radius: 50%;
-    background-color: #D0CECE;
+    background-color: #878787;
     color: #1E1E1E;
     font-weight: bold;
     grid-column-start: 1;
@@ -107,7 +107,7 @@ button.command-block.btn-command-block--startLoop {
     width: 4rem;
     height: 5rem;
     border-radius: 50px 10px 10px 50px;
-    background-color: #DDDDDD;
+    background-color: #9F9F9F;
     border: 0.2rem solid transparent;
     transition: unset;
     .command-block-loop-iterations {
@@ -122,9 +122,10 @@ button.command-block.btn-command-block--startLoop {
         border: 0.2rem solid #FFFFFF;
     }
     &:hover {
-        background-color: #B8B6B6;
+        background-color: #7C7C7C;
         .command-block-loop-label-container {
-            background-color: #9D9C9C;
+            background-color: #656565;
+            color: #F1F2F4;
         }
     }
 }
@@ -134,7 +135,7 @@ button.command-block.btn-command-block--endLoop {
     width: 4rem;
     height: 5rem;
     border-radius: 10px 50px 50px 10px;
-    background-color: #DDDDDD;
+    background-color: #9F9F9F;
     border: 0.2rem solid transparent;
     transition: unset;
     .command-block-loop-block-container {
@@ -145,9 +146,10 @@ button.command-block.btn-command-block--endLoop {
         border: 0.2rem solid #FFFFFF;
     }
     &:hover {
-        background-color: #B8B6B6;
+        background-color: #7C7C7C;
         .command-block-loop-label-container {
-            background-color: #9D9C9C;
+            background-color: #656565;
+            color: #F1F2F4;
         }
     }
 }

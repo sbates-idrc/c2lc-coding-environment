@@ -153,13 +153,11 @@
 .ProgramBlockEditor__loopContainer--nested {
     border-radius: 40px 40px 40px 40px;
     button.command-block.btn-command-block--startLoop {
-        background-color: #C4C4C4;
         border-radius: 35px 10px 10px 35px;
         width: 3.5rem;
         height: 4.6rem;
         .command-block-loop-label-container {
             margin-left: 0.4rem;
-            background-color: #ACACAC;
         }
         .command-block-loop-iterations {
             width: 2.4em;
@@ -168,27 +166,11 @@
             border-radius: 5px;
             margin-left: 0.4rem;
         }
-        &:hover {
-            background-color: #9F9F9F;
-            .command-block-loop-label-container {
-                background-color: #878787;
-            }
-        }
     }
     button.command-block.btn-command-block--endLoop {
-        background-color: #C4C4C4;
         border-radius: 10px 35px 35px 10px;
         width: 3.5rem;
         height: 4.6rem;
-        .command-block-loop-label-container {
-            background-color: #ACACAC;
-        }
-        &:hover {
-            background-color: #9F9F9F;
-            .command-block-loop-label-container {
-                background-color: #878787;
-            }
-        }
     }
 }
 
