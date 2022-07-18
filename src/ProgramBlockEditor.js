@@ -112,19 +112,25 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 const toElementLeft = toElement.getBoundingClientRect().left;
                 const toElementRight = toElement.getBoundingClientRect().right;
 
+                // Limit scroll padding to 1/4 of the containerWidth
+                const scrollRightPaddingPx = Math.min(containerWidth / 4,
+                    this.props.scrollRightPaddingPx);
+                const scrollLeftPaddingPx = Math.min(containerWidth / 4,
+                    this.props.scrollLeftPaddingPx);
+
                 if (containerElem.scrollTo != null
-                        && toElementRight + this.props.scrollRightPaddingPx > containerLeft + containerWidth) {
+                        && toElementRight + scrollRightPaddingPx > containerLeft + containerWidth) {
                     // toElement is outside of the container, on the right
-                    const scrollToLeft = containerElem.scrollLeft + toElementRight + this.props.scrollRightPaddingPx - containerLeft - containerWidth;
+                    const scrollToLeft = containerElem.scrollLeft + toElementRight + scrollRightPaddingPx - containerLeft - containerWidth;
                     // $FlowFixMe: scrollTo behavior missing value 'instant'
                     containerElem.scrollTo({
                         left: scrollToLeft,
                         behavior: scrollBehavior
                     });
                 } else if (containerElem.scrollTo != null
-                        && toElementLeft - this.props.scrollLeftPaddingPx < containerLeft) {
+                        && toElementLeft - scrollLeftPaddingPx < containerLeft) {
                     // toElement is outside of the container, on the left
-                    const scrollToLeft = Math.max(0, containerElem.scrollLeft + toElementLeft - this.props.scrollLeftPaddingPx - containerLeft);
+                    const scrollToLeft = Math.max(0, containerElem.scrollLeft + toElementLeft - scrollLeftPaddingPx - containerLeft);
                     const timeNowMs = Date.now();
                     // Do the scroll to the left if we are scrolling left
                     // further than the last time we scrolled left, or if the

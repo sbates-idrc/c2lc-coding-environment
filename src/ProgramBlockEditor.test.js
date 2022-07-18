@@ -785,7 +785,7 @@ describe('Autoscroll to show the active program step', () => {
 
         const mockScrollTo = jest.fn();
 
-        const scrollRightPaddingPx = 512;
+        const scrollRightPaddingPx = 128;
 
         const { wrapper } = createMountProgramBlockEditor({
             runningState: 'running',
@@ -841,7 +841,7 @@ describe('Autoscroll to show the active program step', () => {
 
         const mockScrollTo = jest.fn();
 
-        const scrollLeftPaddingPx = 512;
+        const scrollLeftPaddingPx = 128;
 
         const { wrapper } = createMountProgramBlockEditor({
             runningState: 'running',
