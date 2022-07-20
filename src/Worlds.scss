@@ -13,7 +13,7 @@
 }
 
 .Scene__starting-grid-cell-point--Camping {
-    fill: #FFC700;    
+    fill: #FFC700;
 }
 
 .WorldSelector__option-image--Camping:hover {
@@ -44,7 +44,7 @@ body.gray-theme {
     }
 
     .Scene__starting-grid-cell-point--Camping {
-        fill: #FFFFFF;    
+        fill: #FFFFFF;
     }
 
     .WorldSelector__option-image--Camping:hover {
@@ -76,7 +76,7 @@ body.contrast-theme {
     }
 
     .Scene__starting-grid-cell-point--Camping {
-        fill: #FF0000;    
+        fill: #FF0000;
     }
 
     .WorldSelector__option-image--Camping:hover {
@@ -95,6 +95,113 @@ body.contrast-theme {
     }
 }
 
+/* Haunted House */
+
+.ProgramBlockEditor__character-column-character-container--Haunted {
+    background-color: #454675;
+}
+
+.Scene__grid-line--Haunted {
+    stroke: #5F607B;
+}
+
+.Scene__path-line--Haunted {
+    stroke: #FFC700;
+}
+
+.Scene__starting-grid-cell-point--Haunted {
+    fill: #FFC700;
+}
+
+.WorldSelector__option-image--Haunted:hover {
+    svg {
+        .thumbnail-background {
+            fill: #454675;
+        }
+        .thumbnail-light {
+            fill: #E2C068;
+        }
+        .thumbnail-dimlight {
+            fill: #CA9A68;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Haunted {
+        background-color: #D3D3D3;
+    }
+
+    .Scene__grid-line--Haunted {
+        stroke: #7B7B7B;
+    }
+
+    .Scene__path-line--Haunted {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__starting-grid-cell-point--Haunted {
+        fill: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--Haunted:hover {
+        svg {
+            .thumbnail-background {
+                fill: #343434;
+            }
+            .thumbnail-light {
+                fill: #CFCFCF
+            }
+            .thumbnail-dimlight {
+                fill: #ABABAB;
+            }
+            .thumbnail-candle {
+                fill: #7D7D7D;
+            }
+            .thumbnail-hand {
+                fill: #7E7E7E;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Haunted {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Haunted {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Haunted {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--Haunted {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--Haunted:hover {
+        svg {
+            .thumbnail-light {
+                fill: black;
+            }
+            .thumbnail-dark {
+                fill: white;
+            }
+            .thumbnail-outline {
+                stroke: white;
+            }
+            .thumbnail-light-outline {
+                fill: black;
+                stroke: white;
+            }
+        }
+    }
+}
+
+
 /* Landmarks */
 
 .ProgramBlockEditor__character-column-character-container--Landmarks {
@@ -110,7 +217,7 @@ body.contrast-theme {
 }
 
 .Scene__starting-grid-cell-point--Landmarks {
-    fill: #784234;    
+    fill: #784234;
 }
 
 .WorldSelector__option-image--Landmarks:hover {
@@ -141,7 +248,7 @@ body.gray-theme {
     }
 
     .Scene__starting-grid-cell-point--Landmarks {
-        fill: #505862;    
+        fill: #505862;
     }
 
     .WorldSelector__option-image--Landmarks:hover {
@@ -173,7 +280,7 @@ body.contrast-theme {
     }
 
     .Scene__starting-grid-cell-point--Landmarks {
-        fill: #FF0000;    
+        fill: #FF0000;
     }
 
     .WorldSelector__option-image--Landmarks:hover {
@@ -222,7 +329,7 @@ body.contrast-theme {
 }
 
 .Scene__starting-grid-cell-point--DeepOcean {
-    fill: #FFFFFF;    
+    fill: #FFFFFF;
 }
 
 .WorldSelector__option-image--DeepOcean:hover {
@@ -247,7 +354,7 @@ body.gray-theme {
     }
 
     .Scene__starting-grid-cell-point--DeepOcean {
-        fill: #505862;    
+        fill: #505862;
     }
 
     .WorldSelector__option-image--DeepOcean:hover {
@@ -263,7 +370,7 @@ body.contrast-theme {
     .ProgramBlockEditor__character-column-character-container--DeepOcean {
         background-color: #FFFFFF;
     }
-    
+
     .Scene__grid-line--DeepOcean {
         stroke: #0078FF;
     }
@@ -273,7 +380,7 @@ body.contrast-theme {
     }
 
     .Scene__starting-grid-cell-point--DeepOcean {
-        fill: #FF0000;    
+        fill: #FF0000;
     }
 
     .WorldSelector__option-image--DeepOcean:hover {
@@ -313,7 +420,7 @@ body.contrast-theme {
 }
 
 .Scene__starting-grid-cell-point--Jungle {
-    fill: #784234;    
+    fill: #784234;
 }
 
 .WorldSelector__option-image--Jungle:hover {
@@ -338,7 +445,7 @@ body.gray-theme {
     }
 
     .Scene__starting-grid-cell-point--Jungle {
-        fill: #505862;    
+        fill: #505862;
     }
 
     .WorldSelector__option-image--Jungle:hover {
@@ -364,7 +471,7 @@ body.contrast-theme {
     }
 
     .Scene__starting-grid-cell-point--Jungle {
-        fill: #FF0000;    
+        fill: #FF0000;
     }
 
     .WorldSelector__option-image--Jungle:hover {
@@ -414,7 +521,7 @@ body.contrast-theme {
 }
 
 .Scene__starting-grid-cell-point--Sketchpad {
-    fill: #505862;    
+    fill: #505862;
 }
 
 .WorldSelector__option-image--Sketchpad:hover {
@@ -435,7 +542,7 @@ body.dark-theme {
     }
 
     .Scene__starting-grid-cell-point--Sketchpad {
-        fill: #FFFFFF;    
+        fill: #FFFFFF;
     }
 }
 
@@ -453,7 +560,7 @@ body.gray-theme {
     }
 
     .Scene__starting-grid-cell-point--Sketchpad {
-        fill: #505862;    
+        fill: #505862;
     }
 
     .WorldSelector__option-image--Sketchpad:hover {
@@ -479,7 +586,7 @@ body.contrast-theme {
     }
 
     .Scene__starting-grid-cell-point--Sketchpad {
-        fill: #FF0000;    
+        fill: #FF0000;
     }
 
     .WorldSelector__option-image--Sketchpad:hover {
@@ -520,7 +627,7 @@ body.contrast-theme {
 }
 
 .Scene__starting-grid-cell-point--Space {
-    fill: #F1AE5B;    
+    fill: #F1AE5B;
 }
 
 .WorldSelector__option-image--Space:hover {
@@ -545,7 +652,7 @@ body.gray-theme {
     }
 
     .Scene__starting-grid-cell-point--Space {
-        fill: #3A3F46;    
+        fill: #3A3F46;
     }
 
     .WorldSelector__option-image--Space:hover {
@@ -571,7 +678,7 @@ body.contrast-theme {
     }
 
     .Scene__starting-grid-cell-point--Space {
-        fill: #FF0000;    
+        fill: #FF0000;
     }
 
     .WorldSelector__option-image--Space:hover {

@@ -25,6 +25,17 @@ import { ReactComponent as Submarine } from './svg/Submarine.svg';
 import { ReactComponent as SubmarineGray } from './svg/Submarine-gray.svg';
 import { ReactComponent as SubmarineContrast } from './svg/Submarine-contrast.svg';
 
+// Haunted House
+import { ReactComponent as Haunted } from './svg/Haunted.svg';
+import { ReactComponent as HauntedGray } from './svg/Haunted-gray.svg';
+import { ReactComponent as HauntedContrast } from './svg/Haunted-contrast.svg';
+import { ReactComponent as HauntedThumbnail } from './svg/HauntedThumbnail.svg';
+import { ReactComponent as HauntedThumbnailGray } from './svg/HauntedThumbnail-gray.svg';
+import { ReactComponent as HauntedThumbnailContrast } from './svg/HauntedThumbnail-contrast.svg';
+import { ReactComponent as Candle } from './svg/Candle.svg';
+import { ReactComponent as CandleGray } from './svg/Candle-gray.svg';
+import { ReactComponent as CandleContrast } from './svg/Candle-contrast.svg';
+
 // Jungle
 import { ReactComponent as Jungle } from './svg/Jungle.svg';
 import { ReactComponent as JungleGray } from './svg/Jungle-gray.svg';
@@ -88,6 +99,7 @@ export type WorldProperties = {|
 const worlds: {|
     'Camping': WorldProperties,
     'DeepOcean': WorldProperties,
+    'Haunted': WorldProperties,
     'Jungle': WorldProperties,
     'Landmarks': WorldProperties,
     'Sketchpad': WorldProperties,
@@ -219,6 +231,76 @@ const worlds: {|
         character: Submarine,
         characterGray: SubmarineGray,
         characterContrast: SubmarineContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
+    },
+    'Haunted': {
+        background: Haunted,
+        backgroundGray: HauntedGray,
+        backgroundContrast: HauntedContrast,
+        backgroundInfo: {
+            A2: 'stairs',
+            B2: 'stairs',
+            A3: 'stairs',
+            B3: 'stairs',
+            C3: 'stairs',
+            A4: 'shelf',
+            B4: 'shelf',
+            C4: 'stairs',
+            D4: 'stairs',
+            E4: 'stairs',
+            F4: 'stairs',
+            G4: 'stairs',
+            H4: 'stairs',
+            A5: 'shelf',
+            B5: 'shelf',
+            C5: 'shelf',
+            D5: 'stairs',
+            E5: 'stairs',
+            F5: 'stairs',
+            G5: 'stairs',
+            H5: 'stairs',
+            I5: 'stairs',
+            J5: 'stairs',
+            K5: 'stairs',
+            A6: 'shelf',
+            B6: 'shelf',
+            C6: 'shelf',
+            E6: 'fireplace',
+            F6: 'fireplace',
+            G6: 'fireplace',
+            H6: 'chair',
+            I6: 'stairs',
+            J6: 'stairs',
+            K6: 'stairs',
+            L6: 'stairs',
+            A7: 'shelf',
+            B7: 'shelf',
+            C7: 'shelf',
+            E7: 'fireplace',
+            F7: 'fireplace',
+            G7: 'fireplace',
+            H7: 'chair',
+            I7: 'stairs',
+            J7: 'stairs',
+            K7: 'stairs',
+            L7: 'stairs',
+            A8: 'shelf',
+            B8: 'shelf',
+            C8: 'shelf',
+            J8: 'stairs',
+            K8: 'stairs',
+            L8: 'stairs'
+        },
+        thumbnail: HauntedThumbnail,
+        thumbnailDark: HauntedThumbnail,
+        thumbnailGray: HauntedThumbnailGray,
+        thumbnailContrast: HauntedThumbnailContrast,
+        character: Candle,
+        characterGray: CandleGray,
+        characterContrast: CandleContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
