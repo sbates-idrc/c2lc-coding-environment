@@ -653,7 +653,14 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             const showLoopActiveOutline = showLoopActive
                 && !hasChildLoopContainingProgramCounter;
 
-            const classes = classNames(
+            const includeLoopConnector = !showLoopFocused || showLoopActive;
+
+            const loopConnectorClasses = classNames(
+                'ProgramBlockEditor__program-block-connector-loop',
+                showLoopActiveOutline && 'ProgramBlockEditor__program-block-connector-loop--active-outline',
+            );
+
+            const loopContainerClasses = classNames(
                 'ProgramBlockEditor__loopContainer',
                 showLoopActive && 'ProgramBlockEditor__loopContainer--active',
                 showLoopActiveOutline && 'ProgramBlockEditor__loopContainer-active-outline',
@@ -663,9 +670,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
             return (
                 <React.Fragment>
-                    {showLoopActive && <div className='ProgramBlockEditor__program-block-connector-loop--active' />}
-                    <div className={classes}>
-                        <div className='ProgramBlockEditor__program-block-connector-loop' />
+                    {includeLoopConnector && <div className={loopConnectorClasses} />}
+                    <div className={loopContainerClasses}>
                         <React.Fragment key={`startLoop`}>
                             {this.makeProgramBlockWithPanel(startLoopIndex, startLoopBlock)}
                         </React.Fragment>
@@ -676,9 +682,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                             <div className='ProgramBlockEditor__program-block-connector' />
                             {this.makeProgramBlockWithPanel(endLoopIndex, endLoopBlock)}
                         </React.Fragment>
-                        <div className='ProgramBlockEditor__program-block-connector-loop' />
                     </div>
-                    {showLoopActive && <div className='ProgramBlockEditor__program-block-connector-loop--active' />}
+                    {includeLoopConnector && <div className={loopConnectorClasses} />}
                 </React.Fragment>
             );
         }

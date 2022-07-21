@@ -178,17 +178,11 @@
     padding: 0.2rem;
     z-index: 2;
     outline: 0.2rem solid #FFFFFF;
-    > .ProgramBlockEditor__program-block-connector-loop {
-        display: none;
-    }
 }
 
 .ProgramBlockEditor__loopContainer--active {
     z-index: 2;
     background-color: #3F5574;
-    > .ProgramBlockEditor__program-block-connector-loop {
-        display: none;
-    }
 }
 
 .ProgramBlockEditor__loopContainer-active-outline {
@@ -216,8 +210,7 @@
     z-index: 1;
 }
 
-.ProgramBlockEditor__program-block-connector-loop,
-.ProgramBlockEditor__program-block-connector-loop--active {
+.ProgramBlockEditor__program-block-connector-loop {
     background-color: #939595;
     min-width: 0.2rem;
     height: 0.2rem;
