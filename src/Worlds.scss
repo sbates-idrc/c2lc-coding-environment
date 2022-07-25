@@ -201,7 +201,6 @@ body.contrast-theme {
     }
 }
 
-
 /* Landmarks */
 
 .ProgramBlockEditor__character-column-character-container--Landmarks {
@@ -501,6 +500,93 @@ body.contrast-theme {
             .thumbnail-character-part {
                 fill: #000000;
                 stroke: #FFFFFF;
+            }
+        }
+    }
+}
+
+/* Marble */
+
+.ProgramBlockEditor__character-column-character-container--Marble {
+    background-color: #EBFAF8;
+}
+
+.Scene__grid-line--Marble {
+    stroke: #F9F2EC;
+}
+
+.Scene__path-line--Marble {
+    stroke: #3F5574;
+}
+
+.Scene__starting-grid-cell-point--Marble {
+    fill: #3F5574;
+}
+
+.WorldSelector__option-image--Marble:hover {
+    svg {
+        .thumbnail-background {
+            fill: #89D3BD;
+        }
+        .thumbnail-top {
+            fill: #ED972C
+        }
+        .thumbnail-bottom {
+            fill: #4C9990;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Marble {
+        background-color: #67717E;
+    }
+
+    .Scene__grid-line--Marble {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--Marble {
+        stroke: #505862;
+    }
+
+    .Scene__starting-grid-cell-point--Marble {
+        fill: #505862;
+    }
+
+    .WorldSelector__option-image--Marble:hover {
+        svg {
+            .thumbnail-background {
+                fill: #3A3F46;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Marble {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Marble {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Marble {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--Marble {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--Marble:hover {
+        svg {
+            .thumbnail-dark {
+                fill: #FFFFFF;
+            }
+            .thumbnail-light {
+                fill: #1E1E1E;
             }
         }
     }
