@@ -95,113 +95,6 @@ body.contrast-theme {
     }
 }
 
-/* Haunted House */
-
-.ProgramBlockEditor__character-column-character-container--Haunted {
-    background-color: #454675;
-}
-
-.Scene__grid-line--Haunted {
-    stroke: #5F607B;
-}
-
-.Scene__path-line--Haunted {
-    stroke: #FFC700;
-}
-
-.Scene__starting-grid-cell-point--Haunted {
-    fill: #FFC700;
-}
-
-.WorldSelector__option-image--Haunted:hover {
-    svg {
-        .thumbnail-background {
-            fill: #454675;
-        }
-        .thumbnail-light {
-            fill: #E2C068;
-        }
-        .thumbnail-dimlight {
-            fill: #CA9A68;
-        }
-    }
-}
-
-body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--Haunted {
-        background-color: #D3D3D3;
-    }
-
-    .Scene__grid-line--Haunted {
-        stroke: #7B7B7B;
-    }
-
-    .Scene__path-line--Haunted {
-        stroke: #FFFFFF;
-    }
-
-    .Scene__starting-grid-cell-point--Haunted {
-        fill: #FFFFFF;
-    }
-
-    .WorldSelector__option-image--Haunted:hover {
-        svg {
-            .thumbnail-background {
-                fill: #343434;
-            }
-            .thumbnail-light {
-                fill: #CFCFCF
-            }
-            .thumbnail-dimlight {
-                fill: #ABABAB;
-            }
-            .thumbnail-candle {
-                fill: #7D7D7D;
-            }
-            .thumbnail-hand {
-                fill: #7E7E7E;
-            }
-        }
-    }
-}
-
-body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--Haunted {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--Haunted {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--Haunted {
-        stroke: #FF0000;
-    }
-
-    .Scene__starting-grid-cell-point--Haunted {
-        fill: #FF0000;
-    }
-
-    .WorldSelector__option-image--Haunted:hover {
-        svg {
-            .thumbnail-light {
-                fill: black;
-            }
-            .thumbnail-dark {
-                fill: white;
-            }
-            .thumbnail-outline {
-                stroke: white;
-            }
-            .thumbnail-light-outline {
-                fill: black;
-                stroke: white;
-            }
-        }
-    }
-}
-
-
 /* Landmarks */
 
 .ProgramBlockEditor__character-column-character-container--Landmarks {
@@ -400,6 +293,112 @@ body.contrast-theme {
 
             .thumbnail-character-innerline-black {
                 fill: #FFFFFF;
+            }
+        }
+    }
+}
+
+/* Haunted House */
+
+.ProgramBlockEditor__character-column-character-container--Haunted {
+    background-color: #454675;
+}
+
+.Scene__grid-line--Haunted {
+    stroke: #5F607B;
+}
+
+.Scene__path-line--Haunted {
+    stroke: #FFC700;
+}
+
+.Scene__starting-grid-cell-point--Haunted {
+    fill: #FFC700;
+}
+
+.WorldSelector__option-image--Haunted:hover {
+    svg {
+        .thumbnail-background {
+            fill: #454675;
+        }
+        .thumbnail-light {
+            fill: #E2C068;
+        }
+        .thumbnail-dimlight {
+            fill: #CA9A68;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Haunted {
+        background-color: #D3D3D3;
+    }
+
+    .Scene__grid-line--Haunted {
+        stroke: #7B7B7B;
+    }
+
+    .Scene__path-line--Haunted {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__starting-grid-cell-point--Haunted {
+        fill: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--Haunted:hover {
+        svg {
+            .thumbnail-background {
+                fill: #343434;
+            }
+            .thumbnail-light {
+                fill: #CFCFCF
+            }
+            .thumbnail-dimlight {
+                fill: #ABABAB;
+            }
+            .thumbnail-candle {
+                fill: #7D7D7D;
+            }
+            .thumbnail-hand {
+                fill: #7E7E7E;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Haunted {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Haunted {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Haunted {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--Haunted {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--Haunted:hover {
+        svg {
+            .thumbnail-light {
+                fill: black;
+            }
+            .thumbnail-dark {
+                fill: white;
+            }
+            .thumbnail-outline {
+                stroke: white;
+            }
+            .thumbnail-light-outline {
+                fill: black;
+                stroke: white;
             }
         }
     }
