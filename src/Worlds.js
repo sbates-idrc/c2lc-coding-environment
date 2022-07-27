@@ -58,6 +58,17 @@ import { ReactComponent as Bot } from './svg/Bot.svg';
 import { ReactComponent as BotGray } from './svg/BotGray.svg';
 import { ReactComponent as BotContrast } from './svg/BotContrast.svg';
 
+// Marble
+import { ReactComponent as MarbleWorld } from './svg/MarbleWorld.svg';
+import { ReactComponent as MarbleWorldGray } from './svg/MarbleWorldGray.svg';
+import { ReactComponent as MarbleWorldContrast } from './svg/MarbleWorldContrast.svg';
+import { ReactComponent as MarbleThumbnail } from './svg/MarbleThumbnail.svg';
+import { ReactComponent as MarbleThumbnailGray } from './svg/MarbleThumbnailGray.svg';
+import { ReactComponent as MarbleThumbnailContrast } from './svg/MarbleThumbnailContrast.svg';
+import { ReactComponent as Marble } from './svg/Marble.svg';
+import { ReactComponent as MarbleGray } from './svg/MarbleGray.svg';
+import { ReactComponent as MarbleContrast } from './svg/MarbleContrast.svg';
+
 // Sketchpad
 import { ReactComponent as SketchpadThumbnail } from './svg/SketchpadThumbnail.svg';
 import { ReactComponent as SketchpadThumbnailDark } from './svg/SketchpadThumbnail-dark.svg';
@@ -102,6 +113,7 @@ const worlds: {|
     'Haunted': WorldProperties,
     'Jungle': WorldProperties,
     'Landmarks': WorldProperties,
+    'Marble': WorldProperties,
     'Sketchpad': WorldProperties,
     'Space': WorldProperties
 |} = {
@@ -394,6 +406,73 @@ const worlds: {|
         character: Bot,
         characterGray: BotGray,
         characterContrast: BotContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: false
+    },
+    'Marble': {
+        background: MarbleWorld,
+        backgroundGray: MarbleWorldGray,
+        backgroundContrast: MarbleWorldContrast,
+        backgroundInfo : {
+            A1: 'bricks',
+            B1: 'bricks',
+            C1: 'bricks',
+            E1: 'bricks',
+            F1: 'bricks',
+            G1: 'bricks',
+            H1: 'bricks',
+            I1: 'bricks',
+            J1: 'bricks',
+            K1: 'bricks',
+            I2: 'bricks',
+            J2: 'bricks',
+            A3: 'bricks',
+            C3: 'bricks',
+            E3: 'bricks',
+            F3: 'bricks',
+            J3: 'bricks',
+            L3: 'bricks',
+            A4: 'bricks',
+            C4: 'bricks',
+            J4: 'bricks',
+            L4: 'bricks',
+            A5: 'bricks',
+            C5: 'bricks',
+            G5: 'bricks',
+            H5: 'bricks',
+            I5: 'bricks',
+            J5: 'bricks',
+            L5: 'bricks',
+            A6: 'bricks',
+            C6: 'bricks',
+            D6: 'bricks',
+            G6: 'bricks',
+            H6: 'bricks',
+            I6: 'bricks',
+            J6: 'bricks',
+            L6: 'bricks',
+            A7: 'bricks',
+            E7: 'bricks',
+            L7: 'bricks',
+            A8: 'bricks',
+            B8: 'bricks',
+            E8: 'bricks',
+            F8: 'bricks',
+            G8: 'bricks',
+            H8: 'bricks',
+            I8: 'bricks',
+            K8: 'bricks',
+            L8: 'bricks'
+        },
+        thumbnail: MarbleThumbnail,
+        thumbnailDark: MarbleThumbnail,
+        thumbnailGray: MarbleThumbnailGray,
+        thumbnailContrast: MarbleThumbnailContrast,
+        character: Marble,
+        characterGray: MarbleGray,
+        characterContrast: MarbleContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
