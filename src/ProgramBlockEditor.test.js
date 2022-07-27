@@ -165,6 +165,14 @@ function getProgramSequenceContainer(programBlockEditorWrapper) {
     return programBlockEditorWrapper.find('.ProgramBlockEditor__program-sequence-scroll-container').get(0);
 }
 
+function hasLoopContainerActiveClass(wrapper) {
+    return wrapper.hasClass('ProgramBlockEditor__loopContainer--active');
+}
+
+function hasLoopContainerActiveOutlineClass(wrapper) {
+    return wrapper.hasClass('ProgramBlockEditor__loopContainer-active-outline');
+}
+
 describe('Program rendering', () => {
     test('Blocks should be rendered for the test program', () => {
         expect.assertions(5);
@@ -379,9 +387,55 @@ test('Loop container should have focus style when its start or end loop block is
 });
 
 describe('Active loop container highlight', () => {
-    test('Loop container should have active style when the program is running and the program counter is within the container', () => {
+    test.each([
+        [ 0, false, false, false, false, false, false ],
+        [ 1, true,  true,  false, false, false, false ],
+        [ 2, true,  true,  false, false, false, false ],
+        [ 3, true,  false, true,  true,  false, false ],
+        [ 4, true,  false, true,  true,  false, false ],
+        [ 5, true,  false, true,  true,  false, false ],
+        [ 6, true,  true,  false, false, false, false ],
+        [ 7, false, false, false, false, false, false ],
+        [ 8, false, false, false, false, true,  true  ],
+        [ 9, false, false, false, false, true,  true  ]
+    ]) ('Loop container should have active style when the program is running and the program counter is within the container; and outline style on the closet loop',
+        (programCounter, aActive, aOutline, bActive, bOutline, cActive, cOutline) => {
+            const { wrapper } = createMountProgramBlockEditor({
+                runningState: 'running',
+                programSequence: new ProgramSequence(
+                    [
+                        {block: 'forward1'},
+                        {block: 'startLoop', label: 'A', iterations: 2},
+                        {block: 'forward1'},
+                        {block: 'startLoop', label: 'B', iterations: 2},
+                        {block: 'forward1'},
+                        {block: 'endLoop', label: 'B'},
+                        {block: 'endLoop', label: 'A'},
+                        {block: 'forward1'},
+                        {block: 'startLoop', label: 'C', iterations: 2},
+                        {block: 'endLoop', label: 'C'}
+                    ],
+                    programCounter,
+                    0,
+                    new Map([['A', 2], ['B', 2], ['C', 2]])
+                )
+            });
+            const loopContainers = wrapper.find('.ProgramBlockEditor__loopContainer');
+            expect(loopContainers.length).toBe(3);
+            // Loop A
+            expect(hasLoopContainerActiveClass(loopContainers.at(0))).toBe(aActive);
+            expect(hasLoopContainerActiveOutlineClass(loopContainers.at(0))).toBe(aOutline);
+            // Loop B
+            expect(hasLoopContainerActiveClass(loopContainers.at(1))).toBe(bActive);
+            expect(hasLoopContainerActiveOutlineClass(loopContainers.at(1))).toBe(bOutline);
+            // Loop C
+            expect(hasLoopContainerActiveClass(loopContainers.at(2))).toBe(cActive);
+            expect(hasLoopContainerActiveOutlineClass(loopContainers.at(2))).toBe(cOutline);
+        }
+    );
+    test('Loop container should have active style when the program is paused and the program counter is within the container', () => {
         const { wrapper } = createMountProgramBlockEditor({
-            runningState: 'running',
+            runningState: 'paused',
             programSequence: new ProgramSequence(
                 [
                     {block: 'startLoop', label: 'A', iterations: 2},
@@ -393,59 +447,29 @@ describe('Active loop container highlight', () => {
                 new Map([['A', 2]])
             )
         });
-        expect(wrapper.html()).toContain('ProgramBlockEditor__loopContainer--active');
-        expect(wrapper.html()).toContain('ProgramBlockEditor__loopContainer-active-outline');
-    });
-    test('There should be only one loop container with active outline', () => {
-        const { wrapper } = createMountProgramBlockEditor({
-            runningState: 'running',
-            programSequence: new ProgramSequence(
-                [
-                    {block: 'startLoop', label: 'A', iterations: 2},
-                    {block: 'startLoop', label: 'B', iterations: 2},
-                    {block: 'endLoop', label: 'B'},
-                    {block: 'endLoop', label: 'A'},
-                    {block: 'forward1'}
-                ],
-                1,
-                0,
-                new Map([['A', 2], ['B', 2]])
-            )
-        });
-        expect(wrapper.html()).toContain('ProgramBlockEditor__loopContainer--active');
-        expect(wrapper.find('.ProgramBlockEditor__loopContainer-active-outline').length).toBe(1);
-
-    })
-    test('Loop container should not have active style when the program is running and the program counter is out of the container', () => {
-        const { wrapper } = createMountProgramBlockEditor({
-            runningState: 'running',
-            programSequence: new ProgramSequence(
-                [
-                    {block: 'startLoop', label: 'A', iterations: 2},
-                    {block: 'endLoop', label: 'A'},
-                    {block: 'forward1'}
-                ],
-                2,
-                0,
-                new Map([['A', 2]])
-            )
-        });
-        expect(wrapper.html()).not.toContain('ProgramBlockEditor__loopContainer--active');
+        const loopContainers = wrapper.find('.ProgramBlockEditor__loopContainer');
+        expect(loopContainers.length).toBe(1);
+        expect(hasLoopContainerActiveClass(loopContainers.at(0))).toBe(true);
+        expect(hasLoopContainerActiveOutlineClass(loopContainers.at(0))).toBe(true);
     });
     test('Loop container should not have active style when the program is not running', () => {
         const { wrapper } = createMountProgramBlockEditor({
+            runningState: 'stopped',
             programSequence: new ProgramSequence(
                 [
                     {block: 'startLoop', label: 'A', iterations: 2},
                     {block: 'endLoop', label: 'A'},
                     {block: 'forward1'}
                 ],
-                2,
+                0,
                 0,
                 new Map([['A', 2]])
             )
         });
-        expect(wrapper.html()).not.toContain('ProgramBlockEditor__loopContainer--active');
+        const loopContainers = wrapper.find('.ProgramBlockEditor__loopContainer');
+        expect(loopContainers.length).toBe(1);
+        expect(hasLoopContainerActiveClass(loopContainers.at(0))).toBe(false);
+        expect(hasLoopContainerActiveOutlineClass(loopContainers.at(0))).toBe(false);
     });
 });
 
