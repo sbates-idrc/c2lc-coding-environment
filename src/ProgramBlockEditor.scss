@@ -153,13 +153,11 @@
 .ProgramBlockEditor__loopContainer--nested {
     border-radius: 40px 40px 40px 40px;
     button.command-block.btn-command-block--startLoop {
-        background-color: #C4C4C4;
         border-radius: 35px 10px 10px 35px;
         width: 3.5rem;
         height: 4.6rem;
         .command-block-loop-label-container {
             margin-left: 0.4rem;
-            background-color: #ACACAC;
         }
         .command-block-loop-iterations {
             width: 2.4em;
@@ -168,38 +166,27 @@
             border-radius: 5px;
             margin-left: 0.4rem;
         }
-        &:hover {
-            background-color: #9F9F9F;
-            .command-block-loop-label-container {
-                background-color: #878787;
-            }
-        }
     }
     button.command-block.btn-command-block--endLoop {
-        background-color: #C4C4C4;
         border-radius: 10px 35px 35px 10px;
         width: 3.5rem;
         height: 4.6rem;
-        .command-block-loop-label-container {
-            background-color: #ACACAC;
-        }
-        &:hover {
-            background-color: #9F9F9F;
-            .command-block-loop-label-container {
-                background-color: #878787;
-            }
-        }
     }
 }
 
-.ProgramBlockEditor__loopContainer--focused {
+.ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer--active) {
     padding: 0.2rem;
     z-index: 2;
-    background-color: #3F5574;
     outline: 0.2rem solid #FFFFFF;
-    > .ProgramBlockEditor__program-block-connector-loop {
-        display: none;
-    }
+}
+
+.ProgramBlockEditor__loopContainer--active {
+    z-index: 2;
+    background-color: #3F5574;
+}
+
+.ProgramBlockEditor__loopContainer-active-outline {
+    outline: 0.4rem solid #FFFFFF;
 }
 
 .ProgramBlockEditor__start-indicator {
@@ -231,7 +218,7 @@
     z-index: 1;
 }
 
-button.ProgramBlockEditor__program-block--active {
+button.ProgramBlockEditor__program-block--active:not(.btn-command-block--startLoop) {
     box-shadow: 0 0 0 6px white;
 }
 

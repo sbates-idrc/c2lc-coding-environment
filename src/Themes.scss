@@ -209,36 +209,17 @@ body.light-theme {
         }
     }
 
-    .ProgramBlockEditor__loopContainer--focused {
-        background-color: #EAEEF3;
+    .ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer--active) {
         outline: 0.2rem solid #30444E;
     }
 
-    .ProgramBlockEditor__loopContainer--nested {
-        button.command-block.btn-command-block--startLoop {
-            background-color: #787878;
-            .command-block-loop-label-container {
-                background-color: #5D5D5D;
-            }
-            &:hover {
-                background-color: #4B4B4B;
-                .command-block-loop-label-container {
-                    background-color: #242424;
-                }
-            }
-        }
-        button.command-block.btn-command-block--endLoop {
-            background-color: #787878;
-            .command-block-loop-label-container {
-                background-color: #5D5D5D;
-            }
-            &:hover {
-                background-color: #4B4B4B;
-                .command-block-loop-label-container {
-                    background-color: #242424;
-                }
-            }
-        }
+    .ProgramBlockEditor__loopContainer--active {
+        z-index: 2;
+        background-color: #EAEEF3;
+    }
+
+    .ProgramBlockEditor__loopContainer-active-outline {
+        outline: 0.4rem solid #30444E;
     }
 
     .ActionsMenuItem__icon--right45, .ActionsMenuItem__icon--right90, .ActionsMenuItem__icon--right180 {
@@ -319,7 +300,7 @@ body.light-theme {
         100% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width #30444E;}
     }
 
-    button.ProgramBlockEditor__program-block--active {
+    button.ProgramBlockEditor__program-block--active:not(.btn-command-block--startLoop) {
         box-shadow: 0 0 0 6px #30444E;
     }
 
@@ -756,7 +737,7 @@ body.dark-theme {
         animation: pausedDarkAnimation 2s infinite;
     }
 
-    button.ProgramBlockEditor__program-block--active {
+    button.ProgramBlockEditor__program-block--active:not(.btn-command-block--startLoop) {
         box-shadow: 0 0 0 $c2lc-active-button-width white;
     }
 
@@ -1100,36 +1081,17 @@ body.gray-theme {
         }
     }
 
-    .ProgramBlockEditor__loopContainer--focused {
-        background-color: #F1F2F4;
+    .ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer--active) {
         outline: 0.2rem solid #505862;
     }
 
-    .ProgramBlockEditor__loopContainer--nested {
-        button.command-block.btn-command-block--startLoop {
-            background-color: #9DA4AF;
-            .command-block-loop-label-container {
-                background-color: #898F98;
-            }
-            &:hover {
-                background-color: #505862;
-                .command-block-loop-label-container {
-                    background-color: #383D44;
-                }
-            }
-        }
-        button.command-block.btn-command-block--endLoop {
-            background-color: #9DA4AF;
-            .command-block-loop-label-container {
-                background-color: #898F98;
-            }
-            &:hover {
-                background-color: #505862;
-                .command-block-loop-label-container {
-                    background-color: #383D44;
-                }
-            }
-        }
+    .ProgramBlockEditor__loopContainer--active {
+        z-index: 2;
+        background-color: #F1F2F4;
+    }
+
+    .ProgramBlockEditor__loopContainer-active-outline {
+        outline: 0.4rem solid #505862;
     }
 
     .ActionsMenuItem {
@@ -1419,7 +1381,7 @@ body.gray-theme {
         background-color: #505862;
     }
 
-    button.ProgramBlockEditor__program-block--active {
+    button.ProgramBlockEditor__program-block--active:not(.btn-command-block--startLoop) {
         border: 1px solid white;
         box-shadow: 0 0 0 6px #505862;
     }
@@ -2087,9 +2049,18 @@ body.contrast-theme {
         }
     }
 
-    .ProgramBlockEditor__loopContainer--focused {
-        background-color: #000000;
+    .ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer--active) {
         outline: 0.2rem solid #FFFFFF;
+    }
+
+    .ProgramBlockEditor__loopContainer--active {
+        z-index: 2;
+        background-color: #205493;
+    }
+
+    .ProgramBlockEditor__loopContainer-active-outline {
+        border: 0.2rem solid #000000;
+        outline: 0.4rem solid #FFFFFF;
     }
 
     .ActionsMenuItem {
@@ -2151,7 +2122,7 @@ body.contrast-theme {
         fill: white;
     }
 
-    button.ProgramBlockEditor__program-block--active {
+    button.ProgramBlockEditor__program-block--active:not(.btn-command-block--startLoop) {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
         border: 2px solid black;
         border-color: black;
@@ -2435,6 +2406,10 @@ body.contrast-theme {
     .ProgramBlockEditor__program-block-connector,
     .ProgramBlockEditor__program-block-connector-loop {
         background-color: white;
+    }
+
+    .ProgramBlockEditor__program-block-connector-loop--active-outline {
+        display: none;
     }
 
     .AddNode__collapsed-icon {
