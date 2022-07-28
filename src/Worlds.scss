@@ -557,7 +557,10 @@ body.gray-theme {
     .WorldSelector__option-image--Marble:hover {
         svg {
             .thumbnail-background {
-                fill: #3A3F46;
+                fill: #67717E;
+            }
+            .thumbnail-edge {
+                fill: #3A3F46
             }
         }
     }
@@ -615,6 +618,9 @@ body.contrast-theme {
         .thumbnail-background {
             fill: #F1AE5B;
         }
+        .thumbnail-line {
+            stroke: #546D79;
+        }
     }
 }
 
@@ -629,6 +635,14 @@ body.dark-theme {
 
     .Scene__starting-grid-cell-point--Sketchpad {
         fill: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--Sketchpad:hover {
+        svg {
+            .thumbnail-background {
+                fill: #F1AE5B;
+            }
+        }
     }
 }
 
@@ -677,20 +691,15 @@ body.contrast-theme {
 
     .WorldSelector__option-image--Sketchpad:hover {
         svg {
-            .thumbnail-background {
+            .thumbnail-dark {
                 fill: #FFFFFF;
             }
 
-            .thumbnail-character-container {
+            .thumbnail-light {
                 fill: #1E1E1E;
             }
 
-            .thumbnail-character-outline {
-                fill: #FFFFFF;
-                stroke: #FFFFFF;
-            }
-
-            .thumbnail-character-innerline {
+            .thumbnail-light-outline {
                 fill: #1E1E1E;
                 stroke: #FFFFFF;
             }
