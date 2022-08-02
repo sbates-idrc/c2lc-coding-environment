@@ -316,7 +316,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         // For FakeRobotDriver, replace with:
         // this.arduinoDriver = new FakeRobotDriver();
-        this.arduinoDriver = new ArduinoDriver();
+        this.arduinoDriver = new ArduinoDriver(1000);
 
         if (props.audioManager) {
             this.audioManager = props.audioManager
@@ -512,6 +512,7 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleChangeProgramSpeed = (stepTimeMs: number) => {
+		this.arduinoDriver = new ArduinoDriver(stepTimeMs);
         this.interpreter.setStepTime(stepTimeMs);
     }
 
