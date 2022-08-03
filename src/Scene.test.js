@@ -433,6 +433,30 @@ describe('When Scene gets scrolled', () => {
 });
 
 describe('Scene background changes when world and theme change', () => {
+    test('world property changes to DeepOcean', () => {
+        expect.assertions(3);
+        const sceneWrapper = createMountScene({world: 'DeepOcean'});
+        let sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('DeepOcean.svg');
+        sceneWrapper.setProps({theme: 'gray'});
+        sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('DeepOcean-gray.svg');
+        sceneWrapper.setProps({theme: 'contrast'});
+        sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('DeepOcean-contrast.svg');
+    });
+    test('world property changes to Savannah', () => {
+        expect.assertions(3);
+        const sceneWrapper = createMountScene({world: 'Savannah'});
+        let sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('Savannah.svg');
+        sceneWrapper.setProps({theme: 'gray'});
+        sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('Savannah-gray.svg');
+        sceneWrapper.setProps({theme: 'contrast'});
+        sceneBackground = findSceneBackground(sceneWrapper);
+        expect(sceneBackground.get(0).type.render().props.children).toBe('Savannah-contrast.svg');
+    });
     test('world property changes to Sketchpad(default)', () => {
         expect.assertions(3);
         const sceneWrapper = createMountScene();
@@ -455,29 +479,5 @@ describe('Scene background changes when world and theme change', () => {
         sceneWrapper.setProps({theme: 'contrast'});
         sceneBackground = findSceneBackground(sceneWrapper);
         expect(sceneBackground.get(0).type.render().props.children).toBe('Space-contrast.svg');
-    });
-    test('world property changes to Jungle', () => {
-        expect.assertions(3);
-        const sceneWrapper = createMountScene({world: 'Jungle'});
-        let sceneBackground = findSceneBackground(sceneWrapper);
-        expect(sceneBackground.get(0).type.render().props.children).toBe('Jungle.svg');
-        sceneWrapper.setProps({theme: 'gray'});
-        sceneBackground = findSceneBackground(sceneWrapper);
-        expect(sceneBackground.get(0).type.render().props.children).toBe('Jungle-gray.svg');
-        sceneWrapper.setProps({theme: 'contrast'});
-        sceneBackground = findSceneBackground(sceneWrapper);
-        expect(sceneBackground.get(0).type.render().props.children).toBe('Jungle-contrast.svg');
-    });
-    test('world property changes to DeepOcean', () => {
-        expect.assertions(3);
-        const sceneWrapper = createMountScene({world: 'DeepOcean'});
-        let sceneBackground = findSceneBackground(sceneWrapper);
-        expect(sceneBackground.get(0).type.render().props.children).toBe('DeepOcean.svg');
-        sceneWrapper.setProps({theme: 'gray'});
-        sceneBackground = findSceneBackground(sceneWrapper);
-        expect(sceneBackground.get(0).type.render().props.children).toBe('DeepOcean-gray.svg');
-        sceneWrapper.setProps({theme: 'contrast'});
-        sceneBackground = findSceneBackground(sceneWrapper);
-        expect(sceneBackground.get(0).type.render().props.children).toBe('DeepOcean-contrast.svg');
     });
 });

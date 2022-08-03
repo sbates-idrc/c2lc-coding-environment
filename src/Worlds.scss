@@ -292,107 +292,6 @@ body.contrast-theme {
     }
 }
 
-/* Jungle */
-
-.ProgramBlockEditor__character-column-character-container--Jungle {
-    background-color: #FFE5B4;
-}
-
-.Scene__grid-line--Jungle {
-    stroke: #F9F2EC;
-}
-
-.Scene__path-line--Jungle {
-    stroke: #784234;
-}
-
-.Scene__starting-grid-cell-point--Jungle {
-    fill: #784234;
-}
-
-.WorldSelector__option-image--Jungle:hover {
-    svg {
-        .thumbnail-background {
-            fill: #D37D12;
-        }
-    }
-}
-
-body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--Jungle {
-        background-color: #505862;
-    }
-
-    .Scene__grid-line--Jungle {
-        stroke: #FFFFFF;
-    }
-
-    .Scene__path-line--Jungle {
-        stroke: #505862;
-    }
-
-    .Scene__starting-grid-cell-point--Jungle {
-        fill: #505862;
-    }
-
-    .WorldSelector__option-image--Jungle:hover {
-        svg {
-            .thumbnail-background {
-                fill: #3A3F46;
-            }
-        }
-    }
-}
-
-body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--Jungle {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--Jungle {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--Jungle {
-        stroke: #FF0000;
-    }
-
-    .Scene__starting-grid-cell-point--Jungle {
-        fill: #FF0000;
-    }
-
-    .WorldSelector__option-image--Jungle:hover {
-        svg {
-            .thumbnail-background {
-                fill: #1E1E1E;
-            }
-
-            .thumbnail-character-outline-white {
-                fill: #1E1E1E;
-            }
-
-            .thumbnail-character-outline-black {
-                fill: #FFFFFF;
-            }
-
-            .thumbnail-character-innerline-white {
-                fill: #1E1E1E;
-                stroke: #FFFFFF;
-            }
-
-            .thumbnail-character-innerline-black {
-                fill: #FFFFFF;
-                stroke: #1E1E1E;
-            }
-
-            .thumbnail-character-part {
-                fill: #000000;
-                stroke: #FFFFFF;
-            }
-        }
-    }
-}
-
 /* Landmarks */
 
 .ProgramBlockEditor__character-column-character-container--Landmarks {
@@ -701,6 +600,107 @@ body.contrast-theme {
 
             .thumbnail-light-outline {
                 fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+        }
+    }
+}
+
+/* Savannah */
+
+.ProgramBlockEditor__character-column-character-container--Savannah {
+    background-color: #FFE5B4;
+}
+
+.Scene__grid-line--Savannah {
+    stroke: #F9F2EC;
+}
+
+.Scene__path-line--Savannah {
+    stroke: #784234;
+}
+
+.Scene__starting-grid-cell-point--Savannah {
+    fill: #784234;
+}
+
+.WorldSelector__option-image--Savannah:hover {
+    svg {
+        .thumbnail-background {
+            fill: #D37D12;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Savannah {
+        background-color: #505862;
+    }
+
+    .Scene__grid-line--Savannah {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--Savannah {
+        stroke: #505862;
+    }
+
+    .Scene__starting-grid-cell-point--Savannah {
+        fill: #505862;
+    }
+
+    .WorldSelector__option-image--Savannah:hover {
+        svg {
+            .thumbnail-background {
+                fill: #3A3F46;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Savannah {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Savannah {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Savannah {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--Savannah {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--Savannah:hover {
+        svg {
+            .thumbnail-background {
+                fill: #1E1E1E;
+            }
+
+            .thumbnail-character-outline-white {
+                fill: #1E1E1E;
+            }
+
+            .thumbnail-character-outline-black {
+                fill: #FFFFFF;
+            }
+
+            .thumbnail-character-innerline-white {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+
+            .thumbnail-character-innerline-black {
+                fill: #FFFFFF;
+                stroke: #1E1E1E;
+            }
+
+            .thumbnail-character-part {
+                fill: #000000;
                 stroke: #FFFFFF;
             }
         }

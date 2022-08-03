@@ -78,8 +78,8 @@ describe('When rendering selector options', () => {
         expect(selectorOptions.get(1).props.value).toBe('Space');
         expect(selectorOptions.get(1).props.checked).toBe(false);
 
-        // Jungle world
-        expect(selectorOptions.get(2).props.value).toBe('Jungle');
+        // Savannah world
+        expect(selectorOptions.get(2).props.value).toBe('Savannah');
         expect(selectorOptions.get(2).props.checked).toBe(false);
 
         // Deep Ocean world
@@ -92,7 +92,7 @@ describe('When rendering selector options', () => {
 
         expect(selectorThumbnails.get(0).props.children.type.render().props.children).toBe('SketchpadThumbnail.svg');
         expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('SpaceThumbnail.svg');
-        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('JungleThumbnail.svg');
+        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('SavannahThumbnail.svg');
         expect(selectorThumbnails.get(3).props.children.type.render().props.children).toBe('DeepOceanThumbnail.svg');
 
         // Grayscale theme
@@ -100,7 +100,7 @@ describe('When rendering selector options', () => {
         selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
 
         expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('SpaceThumbnail-gray.svg');
-        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('JungleThumbnail-gray.svg');
+        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('SavannahThumbnail-gray.svg');
         expect(selectorThumbnails.get(3).props.children.type.render().props.children).toBe('DeepOceanThumbnail-gray.svg');
 
         // High contrast theme
@@ -108,7 +108,7 @@ describe('When rendering selector options', () => {
         selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
 
         expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('SpaceThumbnail-contrast.svg');
-        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('JungleThumbnail-contrast.svg');
+        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('SavannahThumbnail-contrast.svg');
         expect(selectorThumbnails.get(3).props.children.type.render().props.children).toBe('DeepOceanThumbnail-contrast.svg');
     });
 });
@@ -121,7 +121,7 @@ describe('When selecting a world', () => {
 
         const sketchpadWorldSelector = selectorOptions.at(0);
         const spaceWorldSelector = selectorOptions.at(1);
-        const jungleWorldSelector = selectorOptions.at(2);
+        const savannahWorldSelector = selectorOptions.at(2);
         const deepOceanWorldSelector = selectorOptions.at(3);
 
         // Space World
@@ -129,10 +129,10 @@ describe('When selecting a world', () => {
         expect(mockOnSelect.mock.calls.length).toBe(1);
         expect(mockOnSelect.mock.calls[0][0]).toBe('Space');
 
-        // Jungle World
-        jungleWorldSelector.simulate('change');
+        // Savannah World
+        savannahWorldSelector.simulate('change');
         expect(mockOnSelect.mock.calls.length).toBe(2);
-        expect(mockOnSelect.mock.calls[1][0]).toBe('Jungle');
+        expect(mockOnSelect.mock.calls[1][0]).toBe('Savannah');
 
         // Deep Ocean World
         deepOceanWorldSelector.simulate('change');
@@ -151,7 +151,7 @@ describe('When the cancel button is clicked', () => {
         expect.assertions(2);
         const { wrapper, mockOnChange } = createMountWorldSelector({currentWorld: 'Space'});
         const cancelButton = getCancelButton(wrapper).at(0);
-        wrapper.setProps({currentWorld: 'Jungle'});
+        wrapper.setProps({currentWorld: 'Savannah'});
         cancelButton.simulate('click');
         expect(mockOnChange.mock.calls.length).toBe(1);
         expect(mockOnChange.mock.calls[0][0]).toBe('Space');
@@ -176,15 +176,15 @@ test('When one of the thumbnail images is clicked, onSelect prop gets called', (
     const selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
     const sketchPadThumbnailImage = selectorThumbnails.at(0);
     const spaceThumbnailImage = selectorThumbnails.at(1);
-    const jungleThumbnailImage = selectorThumbnails.at(2);
+    const savannahThumbnailImage = selectorThumbnails.at(2);
     const deepOceanThumbnailImage = selectorThumbnails.at(3);
 
     sketchPadThumbnailImage.simulate('click');
     expect(mockOnSelect.mock.calls[0][0]).toBe('Sketchpad');
     spaceThumbnailImage.simulate('click');
     expect(mockOnSelect.mock.calls[1][0]).toBe('Space');
-    jungleThumbnailImage.simulate('click');
-    expect(mockOnSelect.mock.calls[2][0]).toBe('Jungle');
+    savannahThumbnailImage.simulate('click');
+    expect(mockOnSelect.mock.calls[2][0]).toBe('Savannah');
     deepOceanThumbnailImage.simulate('click');
     expect(mockOnSelect.mock.calls[3][0]).toBe('DeepOcean');
 });

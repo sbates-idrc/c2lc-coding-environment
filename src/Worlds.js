@@ -36,17 +36,6 @@ import { ReactComponent as Candle } from './svg/Candle.svg';
 import { ReactComponent as CandleGray } from './svg/Candle-gray.svg';
 import { ReactComponent as CandleContrast } from './svg/Candle-contrast.svg';
 
-// Jungle
-import { ReactComponent as Jungle } from './svg/Jungle.svg';
-import { ReactComponent as JungleGray } from './svg/Jungle-gray.svg';
-import { ReactComponent as JungleContrast } from './svg/Jungle-contrast.svg';
-import { ReactComponent as JungleThumbnail } from './svg/JungleThumbnail.svg';
-import { ReactComponent as JungleThumbnailGray } from './svg/JungleThumbnail-gray.svg';
-import { ReactComponent as JungleThumbnailContrast } from './svg/JungleThumbnail-contrast.svg';
-import { ReactComponent as SafariJeep } from './svg/SafariJeep.svg';
-import { ReactComponent as SafariJeepGray } from './svg/SafariJeep-gray.svg';
-import { ReactComponent as SafariJeepContrast } from './svg/SafariJeep-contrast.svg';
-
 // Landmarks
 import { ReactComponent as LandmarksWorld } from './svg/LandmarksWorld.svg';
 import { ReactComponent as LandmarksWorldGray } from './svg/LandmarksWorldGray.svg';
@@ -68,6 +57,17 @@ import { ReactComponent as MarbleThumbnailContrast } from './svg/MarbleThumbnail
 import { ReactComponent as Marble } from './svg/Marble.svg';
 import { ReactComponent as MarbleGray } from './svg/MarbleGray.svg';
 import { ReactComponent as MarbleContrast } from './svg/MarbleContrast.svg';
+
+// Savannah
+import { ReactComponent as Savannah } from './svg/Savannah.svg';
+import { ReactComponent as SavannahGray } from './svg/Savannah-gray.svg';
+import { ReactComponent as SavannahContrast } from './svg/Savannah-contrast.svg';
+import { ReactComponent as SavannahThumbnail } from './svg/SavannahThumbnail.svg';
+import { ReactComponent as SavannahThumbnailGray } from './svg/SavannahThumbnail-gray.svg';
+import { ReactComponent as SavannahThumbnailContrast } from './svg/SavannahThumbnail-contrast.svg';
+import { ReactComponent as SavannahJeep } from './svg/SavannahJeep.svg';
+import { ReactComponent as SavannahJeepGray } from './svg/SavannahJeep-gray.svg';
+import { ReactComponent as SavannahJeepContrast } from './svg/SavannahJeep-contrast.svg';
 
 // Sketchpad
 import { ReactComponent as SketchpadThumbnail } from './svg/SketchpadThumbnail.svg';
@@ -111,9 +111,9 @@ const worlds: {|
     'Camping': WorldProperties,
     'DeepOcean': WorldProperties,
     'Haunted': WorldProperties,
-    'Jungle': WorldProperties,
     'Landmarks': WorldProperties,
     'Marble': WorldProperties,
+    'Savannah': WorldProperties,
     'Sketchpad': WorldProperties,
     'Space': WorldProperties
 |} = {
@@ -318,56 +318,6 @@ const worlds: {|
         startingDirection: 2, // East
         enableFlipCharacter: true
     },
-    'Jungle': {
-        background: Jungle,
-        backgroundGray: JungleGray,
-        backgroundContrast: JungleContrast,
-        backgroundInfo: {
-            G1: 'giraffe',
-            J1: 'lion',
-            F2: 'giraffe',
-            G2: 'babyGiraffe',
-            A4: 'tree',
-            B4: 'tree',
-            C4: 'tree',
-            E4: 'bush',
-            F4: 'bush',
-            K4: 'tree',
-            L4: 'tree',
-            A5: 'tree',
-            B5: 'tree',
-            H5: 'flamingo',
-            E6: 'babyAlligator',
-            F6: 'babyAlligator',
-            G6: 'pond',
-            H6: 'flamingo',
-            I6: 'pond',
-            J6: 'hippo',
-            K6: 'hippo',
-            C7: 'alligator',
-            D7: 'alligator',
-            E7: 'alligator',
-            F7: 'alligator',
-            G7: 'pond',
-            H7: 'pond',
-            I7: 'pond',
-            J7: 'pond',
-            A8: 'bush',
-            B8: 'bush',
-            L8: 'bush'
-        },
-        thumbnail: JungleThumbnail,
-        thumbnailDark: JungleThumbnail,
-        thumbnailGray: JungleThumbnailGray,
-        thumbnailContrast: JungleThumbnailContrast,
-        character: SafariJeep,
-        characterGray: SafariJeepGray,
-        characterContrast: SafariJeepContrast,
-        startingX: 1,
-        startingY: 2,
-        startingDirection: 2, // East
-        enableFlipCharacter: true
-    },
     'Landmarks': {
         background: LandmarksWorld,
         backgroundGray: LandmarksWorldGray,
@@ -477,6 +427,56 @@ const worlds: {|
         startingY: 2,
         startingDirection: 2, // East
         enableFlipCharacter: false
+    },
+    'Savannah': {
+        background: Savannah,
+        backgroundGray: SavannahGray,
+        backgroundContrast: SavannahContrast,
+        backgroundInfo: {
+            G1: 'giraffe',
+            J1: 'lion',
+            F2: 'giraffe',
+            G2: 'babyGiraffe',
+            A4: 'tree',
+            B4: 'tree',
+            C4: 'tree',
+            E4: 'bush',
+            F4: 'bush',
+            K4: 'tree',
+            L4: 'tree',
+            A5: 'tree',
+            B5: 'tree',
+            H5: 'flamingo',
+            E6: 'babyAlligator',
+            F6: 'babyAlligator',
+            G6: 'pond',
+            H6: 'flamingo',
+            I6: 'pond',
+            J6: 'hippo',
+            K6: 'hippo',
+            C7: 'alligator',
+            D7: 'alligator',
+            E7: 'alligator',
+            F7: 'alligator',
+            G7: 'pond',
+            H7: 'pond',
+            I7: 'pond',
+            J7: 'pond',
+            A8: 'bush',
+            B8: 'bush',
+            L8: 'bush'
+        },
+        thumbnail: SavannahThumbnail,
+        thumbnailDark: SavannahThumbnail,
+        thumbnailGray: SavannahThumbnailGray,
+        thumbnailContrast: SavannahThumbnailContrast,
+        character: SavannahJeep,
+        characterGray: SavannahJeepGray,
+        characterContrast: SavannahJeepContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
     },
     'Sketchpad': {
         background: null,

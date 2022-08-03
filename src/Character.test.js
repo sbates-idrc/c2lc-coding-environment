@@ -34,19 +34,28 @@ function findCharacter(wrapper) {
 }
 
 describe('Right character should render based on world and theme props', () => {
+    test('DeepOcean', () => {
+        expect.assertions(3);
+        const wrapper = createMountCharacter({world: 'DeepOcean'});
+        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('Submarine.svg');
+        wrapper.setProps({theme: 'gray'});
+        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('Submarine-gray.svg');
+        wrapper.setProps({theme: 'contrast'});
+        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('Submarine-contrast.svg');
+    });
+    test('Savannah', () => {
+        expect.assertions(3);
+        const wrapper = createMountCharacter({world: 'Savannah'});
+        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('SavannahJeep.svg');
+        wrapper.setProps({theme: 'gray'});
+        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('SavannahJeep-gray.svg');
+        wrapper.setProps({theme: 'contrast'});
+        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('SavannahJeep-contrast.svg');
+    });
     test('Sketchpad', () => {
         expect.assertions(1);
         const wrapper = createMountCharacter();
         expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('Robot.svg');
-    });
-    test('Jungle', () => {
-        expect.assertions(3);
-        const wrapper = createMountCharacter({world: 'Jungle'});
-        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('SafariJeep.svg');
-        wrapper.setProps({theme: 'gray'});
-        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('SafariJeep-gray.svg');
-        wrapper.setProps({theme: 'contrast'});
-        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('SafariJeep-contrast.svg');
     });
     test('Space', () => {
         expect.assertions(3);
@@ -56,14 +65,5 @@ describe('Right character should render based on world and theme props', () => {
         expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('SpaceShip-gray.svg');
         wrapper.setProps({theme: 'contrast'});
         expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('SpaceShip-contrast.svg');
-    });
-    test('DeepOcean', () => {
-        expect.assertions(3);
-        const wrapper = createMountCharacter({world: 'DeepOcean'});
-        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('Submarine.svg');
-        wrapper.setProps({theme: 'gray'});
-        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('Submarine-gray.svg');
-        wrapper.setProps({theme: 'contrast'});
-        expect(findCharacter(wrapper).get(0).type.render().props.children).toBe('Submarine-contrast.svg');
     });
 })
