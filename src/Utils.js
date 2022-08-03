@@ -50,7 +50,10 @@ function getWorldFromString(worldQuery: ?string, defaultWorldName: WorldName): W
         case('space'):
             return 'Space';
         case('forest'):
-            return 'Jungle';
+            return 'Savannah';
+        // For the 1.5 release, we renamed "Jungle" to "Savannah"
+        case('Jungle'):
+            return 'Savannah';
         // If 'worldQuery' is a known world name, use it,
         // otherwise return 'defaultWorldName'
         default:

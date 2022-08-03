@@ -204,20 +204,6 @@ describe('Using change character position by column/row labels', () => {
     test('Changing world changes the character icon', () => {
         expect.assertions(9);
         const { wrapper } = createShallowCharacterPositionController();
-        // Space World
-        wrapper.setProps({world: 'Space'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip.svg');
-        wrapper.setProps({theme: 'gray'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip-gray.svg');
-        wrapper.setProps({theme: 'contrast'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip-contrast.svg');
-        // Jungle World
-        wrapper.setProps({world: 'Jungle', theme: 'light'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SafariJeep.svg');
-        wrapper.setProps({theme: 'gray'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SafariJeep-gray.svg');
-        wrapper.setProps({theme: 'contrast'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SafariJeep-contrast.svg');
         // DeepOcean World
         wrapper.setProps({world: 'DeepOcean', theme: 'light'});
         expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine.svg');
@@ -225,6 +211,20 @@ describe('Using change character position by column/row labels', () => {
         expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine-gray.svg');
         wrapper.setProps({theme: 'contrast'});
         expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine-contrast.svg');
+        // Savannah World
+        wrapper.setProps({world: 'Savannah', theme: 'light'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SavannahJeep.svg');
+        wrapper.setProps({theme: 'gray'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SavannahJeep-gray.svg');
+        wrapper.setProps({theme: 'contrast'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SavannahJeep-contrast.svg');
+        // Space World
+        wrapper.setProps({world: 'Space', theme: 'light'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip.svg');
+        wrapper.setProps({theme: 'gray'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip-gray.svg');
+        wrapper.setProps({theme: 'contrast'});
+        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip-contrast.svg');
     });
     test('When a world has enableFlipCharacter=true, character icon gets class names to rotate and enable flip', () => {
         expect.assertions(18);

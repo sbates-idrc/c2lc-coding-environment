@@ -60,7 +60,7 @@ describe('Character position gets updated on character-position div', () => {
         });
         // $FlowFixMe: Flow doesn't know about character-position div
         expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('the robot is at column A, row 1 facing right');
-        wrapper.setProps({runningState: 'stopped', world: 'Jungle', characterState: new CharacterState(2, 1, 2, [], new SceneDimensions(1, 100, 1, 100))});
+        wrapper.setProps({runningState: 'stopped', world: 'Savannah', characterState: new CharacterState(2, 1, 2, [], new SceneDimensions(1, 100, 1, 100))});
         // $FlowFixMe: Flow doesn't know about character-position div
         expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('the jeep is at column B, row 1 facing right');
         wrapper.setProps({runningState: 'stopped', world: 'Space', characterState: new CharacterState(3, 1, 2, [], new SceneDimensions(1, 100, 1, 100))});
@@ -69,7 +69,7 @@ describe('Character position gets updated on character-position div', () => {
     });
     test('When runningState prop is changed', () => {
         const wrapper = createMountCharacterAriaLive();
-        wrapper.setProps({ runningState: 'pauseRequested', world: 'Jungle' });
+        wrapper.setProps({ runningState: 'pauseRequested', world: 'Savannah' });
         // $FlowFixMe: Flow doesn't know about character-position div
         expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('the jeep is at column A, row 1 facing right');
         wrapper.setProps({ runningState: 'stopRequested', world: 'Space' });
