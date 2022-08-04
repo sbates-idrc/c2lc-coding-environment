@@ -66,84 +66,69 @@ function getDoneButton(wrapper) {
 
 describe('When rendering selector options', () => {
     test('All worlds should be displayed as options and only one is checked', () => {
-        expect.assertions(8);
+        expect.assertions(17);
         const { wrapper } = createMountWorldSelector();
         const selectorOptions = getWorldSelectorRadioButton(wrapper);
 
-        // Sketchpad world
+        expect(selectorOptions.length).toBe(8);
+
         expect(selectorOptions.get(0).props.value).toBe('Sketchpad');
         expect(selectorOptions.get(0).props.checked).toBe(true);
-
-        // Space world
-        expect(selectorOptions.get(1).props.value).toBe('Space');
+        expect(selectorOptions.get(1).props.value).toBe('Camping');
         expect(selectorOptions.get(1).props.checked).toBe(false);
-
-        // Savannah world
-        expect(selectorOptions.get(2).props.value).toBe('Savannah');
+        expect(selectorOptions.get(2).props.value).toBe('DeepOcean');
         expect(selectorOptions.get(2).props.checked).toBe(false);
-
-        // Deep Ocean world
-        expect(selectorOptions.get(3).props.value).toBe('DeepOcean');
+        expect(selectorOptions.get(3).props.value).toBe('Haunted');
         expect(selectorOptions.get(3).props.checked).toBe(false);
+        expect(selectorOptions.get(4).props.value).toBe('Landmarks');
+        expect(selectorOptions.get(4).props.checked).toBe(false);
+        expect(selectorOptions.get(5).props.value).toBe('Marble');
+        expect(selectorOptions.get(5).props.checked).toBe(false);
+        expect(selectorOptions.get(6).props.value).toBe('Savannah');
+        expect(selectorOptions.get(6).props.checked).toBe(false);
+        expect(selectorOptions.get(7).props.value).toBe('Space');
+        expect(selectorOptions.get(7).props.checked).toBe(false);
     });
     test('Thumbnail icons get rendered with the selector options', () => {
         const { wrapper } = createMountWorldSelector();
-        let selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
 
+        let selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
         expect(selectorThumbnails.get(0).props.children.type.render().props.children).toBe('SketchpadThumbnail.svg');
-        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('SpaceThumbnail.svg');
-        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('SavannahThumbnail.svg');
-        expect(selectorThumbnails.get(3).props.children.type.render().props.children).toBe('DeepOceanThumbnail.svg');
+        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('CampingThumbnail.svg');
 
         // Grayscale theme
         wrapper.setProps({theme: 'gray'});
         selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
-
-        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('SpaceThumbnail-gray.svg');
-        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('SavannahThumbnail-gray.svg');
-        expect(selectorThumbnails.get(3).props.children.type.render().props.children).toBe('DeepOceanThumbnail-gray.svg');
+        expect(selectorThumbnails.get(0).props.children.type.render().props.children).toBe('SketchpadThumbnail-gray.svg');
+        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('CampingThumbnail-gray.svg');
 
         // High contrast theme
         wrapper.setProps({theme: 'contrast'});
         selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
-
-        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('SpaceThumbnail-contrast.svg');
-        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('SavannahThumbnail-contrast.svg');
-        expect(selectorThumbnails.get(3).props.children.type.render().props.children).toBe('DeepOceanThumbnail-contrast.svg');
+        expect(selectorThumbnails.get(0).props.children.type.render().props.children).toBe('SketchpadThumbnail-contrast.svg');
+        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('CampingThumbnail-contrast.svg');
     });
 });
 
 describe('When selecting a world', () => {
     test('should call onSelect prop', () => {
-        expect.assertions(8);
+        expect.assertions(4);
         const { wrapper, mockOnSelect } = createMountWorldSelector();
         const selectorOptions = getWorldSelectorRadioButton(wrapper);
 
         const sketchpadWorldSelector = selectorOptions.at(0);
-        const spaceWorldSelector = selectorOptions.at(1);
-        const savannahWorldSelector = selectorOptions.at(2);
-        const deepOceanWorldSelector = selectorOptions.at(3);
-
-        // Space World
-        spaceWorldSelector.simulate('change');
-        expect(mockOnSelect.mock.calls.length).toBe(1);
-        expect(mockOnSelect.mock.calls[0][0]).toBe('Space');
-
-        // Savannah World
-        savannahWorldSelector.simulate('change');
-        expect(mockOnSelect.mock.calls.length).toBe(2);
-        expect(mockOnSelect.mock.calls[1][0]).toBe('Savannah');
-
-        // Deep Ocean World
-        deepOceanWorldSelector.simulate('change');
-        expect(mockOnSelect.mock.calls.length).toBe(3);
-        expect(mockOnSelect.mock.calls[2][0]).toBe('DeepOcean');
+        const campingWorldSelector = selectorOptions.at(1);
 
         // Sketchpad World
         sketchpadWorldSelector.simulate('change');
-        expect(mockOnSelect.mock.calls.length).toBe(4);
-        expect(mockOnSelect.mock.calls[3][0]).toBe('Sketchpad');
-    })
+        expect(mockOnSelect.mock.calls.length).toBe(1);
+        expect(mockOnSelect.mock.calls[0][0]).toBe('Sketchpad');
+
+        // Camping Trip World
+        campingWorldSelector.simulate('change');
+        expect(mockOnSelect.mock.calls.length).toBe(2);
+        expect(mockOnSelect.mock.calls[1][0]).toBe('Camping');
+    });
 });
 
 describe('When the cancel button is clicked', () => {
@@ -155,7 +140,7 @@ describe('When the cancel button is clicked', () => {
         cancelButton.simulate('click');
         expect(mockOnChange.mock.calls.length).toBe(1);
         expect(mockOnChange.mock.calls[0][0]).toBe('Space');
-    })
+    });
 });
 
 describe('When the done button is clicked', () => {
@@ -171,20 +156,15 @@ describe('When the done button is clicked', () => {
 });
 
 test('When one of the thumbnail images is clicked, onSelect prop gets called', () => {
-    expect.assertions(4);
+    expect.assertions(2);
     const { wrapper, mockOnSelect } = createMountWorldSelector();
     const selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
+
     const sketchPadThumbnailImage = selectorThumbnails.at(0);
-    const spaceThumbnailImage = selectorThumbnails.at(1);
-    const savannahThumbnailImage = selectorThumbnails.at(2);
-    const deepOceanThumbnailImage = selectorThumbnails.at(3);
+    const campingThumbnailImage = selectorThumbnails.at(1);
 
     sketchPadThumbnailImage.simulate('click');
     expect(mockOnSelect.mock.calls[0][0]).toBe('Sketchpad');
-    spaceThumbnailImage.simulate('click');
-    expect(mockOnSelect.mock.calls[1][0]).toBe('Space');
-    savannahThumbnailImage.simulate('click');
-    expect(mockOnSelect.mock.calls[2][0]).toBe('Savannah');
-    deepOceanThumbnailImage.simulate('click');
-    expect(mockOnSelect.mock.calls[3][0]).toBe('DeepOcean');
+    campingThumbnailImage.simulate('click');
+    expect(mockOnSelect.mock.calls[1][0]).toBe('Camping');
 });
