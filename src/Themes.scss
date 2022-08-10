@@ -209,7 +209,7 @@ body.light-theme {
         }
     }
 
-    .ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer--active) {
+    .ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer-active-outline) {
         outline: 0.2rem solid #30444E;
     }
 
@@ -1081,7 +1081,7 @@ body.gray-theme {
         }
     }
 
-    .ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer--active) {
+    .ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer-active-outline) {
         outline: 0.2rem solid #505862;
     }
 
@@ -2049,7 +2049,7 @@ body.contrast-theme {
         }
     }
 
-    .ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer--active) {
+    .ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer-active-outline) {
         outline: 0.2rem solid #FFFFFF;
     }
 
