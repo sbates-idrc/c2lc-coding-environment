@@ -653,7 +653,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             const showLoopActiveOutline = showLoopActive
                 && !hasChildLoopContainingProgramCounter;
 
-            const includeLoopConnector = !showLoopFocused || showLoopActive;
+            const includeLoopConnector = !showLoopFocused || showLoopActiveOutline;
 
             const loopConnectorClasses = classNames(
                 'ProgramBlockEditor__program-block-connector-loop',
