@@ -696,7 +696,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 const stepNumber = programIterator.stepNumber;
                 const loopLabel = programIterator.programBlock.label;
                 return (
-                    <React.Fragment key={`loopSection-${loopLabel}`}>
+                    <React.Fragment key={`loopSection-${stepNumber}-${loopLabel}`}>
                         <div className='ProgramBlockEditor__program-block-connector'/>
                         {this.makeAddNode(stepNumber)}
                         <div className='ProgramBlockEditor__program-block-connector'/>
