@@ -210,7 +210,7 @@ body.light-theme {
     }
 
     .ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer-active-outline) {
-        box-shadow: 0 0 0 0.2rem #30444E;
+        box-shadow: 0 0 0.1px 0.2rem #30444E;
     }
 
     .ProgramBlockEditor__loopContainer--active {
@@ -219,7 +219,7 @@ body.light-theme {
     }
 
     .ProgramBlockEditor__loopContainer-active-outline {
-        box-shadow: 0 0 0 0.4rem #30444E;
+        box-shadow: 0 0 0.1px 0.4rem #30444E;
     }
 
     .ActionsMenuItem__icon--right45, .ActionsMenuItem__icon--right90, .ActionsMenuItem__icon--right180 {
@@ -1082,7 +1082,7 @@ body.gray-theme {
     }
 
     .ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer-active-outline) {
-        box-shadow: 0 0 0 0.2rem #505862;
+        box-shadow: 0 0 0.1px 0.2rem #505862;
     }
 
     .ProgramBlockEditor__loopContainer--active {
@@ -1091,7 +1091,7 @@ body.gray-theme {
     }
 
     .ProgramBlockEditor__loopContainer-active-outline {
-        box-shadow: 0 0 0 0.4rem #505862;
+        box-shadow: 0 0 0.1px 0.4rem #505862;
     }
 
     .ActionsMenuItem {
@@ -2034,7 +2034,7 @@ body.contrast-theme {
         &:focus {
             padding: 0.1rem;
             border: 0.1rem solid #000000;
-            box-shadow: 0 0 0 0.2rem #FFFFFF;
+            box-shadow: 0 0 0.1px 0.2rem #FFFFFF;
         }
         &:hover {
             padding: 0.1rem;
@@ -2049,7 +2049,7 @@ body.contrast-theme {
     }
 
     .ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer-active-outline) {
-        box-shadow: 0 0 0 0.2rem #FFFFFF;
+        box-shadow: 0 0 0.1px 0.2rem #FFFFFF;
     }
 
     .ProgramBlockEditor__loopContainer--active {
@@ -2059,7 +2059,7 @@ body.contrast-theme {
 
     .ProgramBlockEditor__loopContainer-active-outline {
         border: 0.2rem solid #000000;
-        box-shadow: 0 0 0 0.4rem #FFFFFF;
+        box-shadow: 0 0 0.1px 0.4rem #FFFFFF;
     }
 
     .ActionsMenuItem {
