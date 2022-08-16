@@ -174,7 +174,7 @@
     }
 }
 
-.ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer--active) {
+.ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer-active-outline) {
     padding: 0.2rem;
     z-index: 2;
     box-shadow: 0 0 0 0.2rem #FFFFFF;
