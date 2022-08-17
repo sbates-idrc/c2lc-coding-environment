@@ -2039,7 +2039,7 @@ body.contrast-theme {
         &:hover {
             padding: 0.1rem;
             border: 0.1rem solid #FFFFFF;
-            outline: #FFFFFF solid 0.1rem;
+            box-shadow: 0 0 0.1px 0.1rem #FFFFFF;
             background-color: black;
             .command-block-loop-label-container {
                 background-color: black;
