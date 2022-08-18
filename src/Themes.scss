@@ -2014,6 +2014,7 @@ body.contrast-theme {
         &.command-block--pressed,
         &.command-block--pressed:hover,
         &.command-block--pressed:active {
+            padding: calc(0.2rem - 2px);
             border: 2px solid black;
             border-color: black;
             box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
@@ -2032,13 +2033,13 @@ body.contrast-theme {
             color: black;
         }
         &:focus {
-            padding: 0.1rem;
-            border: 0.1rem solid #000000;
+            padding: calc(0.2rem - 2px);
+            border: 2px solid #000000;
             box-shadow: 0 0 0.1px 0.2rem #FFFFFF;
         }
         &:hover {
-            padding: 0.1rem;
-            border: 0.1rem solid #FFFFFF;
+            padding: calc(0.2rem - 2px);
+            border: 2px solid #FFFFFF;
             box-shadow: 0 0 0.1px 0.1rem #FFFFFF;
             background-color: black;
             .command-block-loop-label-container {
@@ -2504,7 +2505,9 @@ body.contrast-theme {
         100% {box-shadow: 0 0 0 $c2lc-paused-button-outer-width white;}
     }
 
+    /* Note that this rule applies to both loop blocks and non-loop blocks */
     button.ProgramBlockEditor__program-block--paused {
+        padding: calc(0.2rem - 1px);
         border: 1px solid black;
         animation-timing-function: ease;
         animation: pausedContrastAnimation 2s infinite;
