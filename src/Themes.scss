@@ -1784,7 +1784,7 @@ body.contrast-theme {
         &:focus {
             box-shadow:
                 0 0 0 2px black,
-                0 0 0 6px white;
+                0 0 0 6px $c2lc-high-contrast-focus-indicator-color;
         }
 
         .App__header-keyboard-icon {
@@ -2005,12 +2005,17 @@ body.contrast-theme {
         }
 
         &:focus:hover {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-high-contrast-focus-indicator-color;
         }
 
         &:focus:not(:hover),
         &:active,
-        &:not(:disabled):not(.disabled):active,
+        &:not(:disabled):not(.disabled):active {
+            border: 2px solid black;
+            border-color: black;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-high-contrast-focus-indicator-color;
+        }
+
         &.command-block--pressed,
         &.command-block--pressed:hover,
         &.command-block--pressed:active {
@@ -2032,9 +2037,9 @@ body.contrast-theme {
             color: black;
         }
         &:focus {
-            padding: 0.1rem;
-            border: 0.1rem solid #000000;
-            box-shadow: 0 0 0.1px 0.2rem #FFFFFF;
+            padding: 0;
+            border: 0.2rem solid #000000;
+            box-shadow: 0 0 0.1px 0.2rem $c2lc-high-contrast-focus-indicator-color;
         }
         &:hover {
             padding: 0.1rem;
@@ -2049,12 +2054,14 @@ body.contrast-theme {
     }
 
     .ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer-active-outline) {
-        box-shadow: 0 0 0.1px 0.2rem #FFFFFF;
+        box-shadow: 0 0 0.1px 0.2rem $c2lc-high-contrast-focus-indicator-color;
     }
 
     .ProgramBlockEditor__loopContainer--active {
         z-index: 2;
-        background-color: #205493;
+        /*background-color: #205493;*/
+        background-color: #000000;
+background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f0f0f0' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
     }
 
     .ProgramBlockEditor__loopContainer-active-outline {
@@ -2074,7 +2081,7 @@ body.contrast-theme {
 
         &:hover:focus {
             box-shadow:
-                0 0 0 0.1rem white,
+                0 0 0 0.1rem $pre-c2lc-high-contrast-focus-indicator-color,
                 0 0 0 0.2rem black;
         }
     }
@@ -2142,7 +2149,7 @@ body.contrast-theme {
 
     .CharacterPositionController__character-position-button {
         &:focus {
-            outline: $c2lc-focus-indicator-width solid white;
+            outline: $c2lc-focus-indicator-width solid $c2lc-high-contrast-focus-indicator-color;
         }
     }
 
@@ -2194,7 +2201,7 @@ body.contrast-theme {
     }
 
     .ProgramBlock__character-position-coordinate-box:focus {
-        outline: $c2lc-focus-indicator-width solid white;
+        outline: $c2lc-focus-indicator-width solid $c2lc-high-contrast-focus-indicator-color;
     }
 
     .Scene__container {
@@ -2228,7 +2235,7 @@ body.contrast-theme {
     }
 
     .PenDownToggleSwitch:focus {
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-high-contrast-focus-indicator-color;
         border: none;
     }
 
@@ -2267,7 +2274,7 @@ body.contrast-theme {
         .WorldIcon--selected:not(.WorldIcon--disabled),
         button.btn:focus {
             background-color: white;
-            box-shadow: 0 0 0 0.2rem white;
+            box-shadow: 0 0 0 0.2rem $pre-c2lc-high-contrast-focus-indicator-color;
             border: 0.2rem solid black;
         }
 
@@ -2298,7 +2305,7 @@ body.contrast-theme {
         }
 
         &:focus {
-            border: 2px solid white;
+            border: 2px solid $c2lc-high-contrast-focus-indicator-color;
             padding: 0.2rem;
         }
     }
@@ -2318,7 +2325,7 @@ body.contrast-theme {
         }
 
         &:focus {
-            border: 2px solid black;
+            border: 2px solid $c2lc-high-contrast-focus-indicator-color;
         }
     }
 
@@ -2339,7 +2346,7 @@ body.contrast-theme {
         }
 
         &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-high-contrast-focus-indicator-color;
         }
     }
 
@@ -2434,7 +2441,7 @@ body.contrast-theme {
         }
 
         &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-high-contrast-focus-indicator-color;
         }
 
         &:hover {
@@ -2482,7 +2489,7 @@ body.contrast-theme {
         &:focus {
             box-shadow:
                 0 0 0 0.1rem #30444E,
-                0 0 0 $c2lc-focus-indicator-width white,
+                0 0 0 $c2lc-focus-indicator-width $c2lc-high-contrast-focus-indicator-color,
                 0 0 0 0.3rem #30444E;
         }
     }
@@ -2505,7 +2512,8 @@ body.contrast-theme {
     }
 
     button.ProgramBlockEditor__program-block--paused {
-        border: 1px solid black;
+        padding: 0.1rem;
+        border: 0.1rem solid black;
         animation-timing-function: ease;
         animation: pausedContrastAnimation 2s infinite;
     }
@@ -2549,7 +2557,7 @@ body.contrast-theme {
         }
 
         &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-high-contrast-focus-indicator-color;
         }
     }
 
@@ -2565,7 +2573,7 @@ body.contrast-theme {
             }
         }
         &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-high-contrast-focus-indicator-color;
         }
 
         svg {
@@ -2596,7 +2604,7 @@ body.contrast-theme {
             }
         }
         &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-high-contrast-focus-indicator-color;
         }
     }
 
@@ -2610,7 +2618,7 @@ body.contrast-theme {
             }
         }
         &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-high-contrast-focus-indicator-color;
         }
     }
 
@@ -2774,7 +2782,7 @@ body.contrast-theme {
         }
 
         &:focus {
-            outline-color: #1E1E1E;
+            outline-color: $c2lc-high-contrast-focus-indicator-color;
         }
     }
 
@@ -2782,7 +2790,7 @@ body.contrast-theme {
         &:focus {
             box-shadow:
                 0 0 0 0.1rem white,
-                0 0 0 0.2rem black;
+                0 0 0 0.2rem $c2lc-high-contrast-focus-indicator-color;
         }
 
         &:hover {

@@ -1,4 +1,5 @@
-/* Colors for default theme. */
+/* Colours for default theme */
+
 $c2lc-primary-button-color: #FFFFFF;
 
 $c2lc-forward-command-color: #52BDA4;
@@ -17,6 +18,12 @@ $c2lc-focus-indicator-color: #1E1E1E;
 
 $c2lc-disabled-background-color: #B9BEC6;
 $c2lc-disabled-foreground-color: #F1F2F4;
+
+/* Colours for high contrast theme */
+
+$pre-c2lc-high-contrast-focus-indicator-color: #FF60A0;
+
+$c2lc-high-contrast-focus-indicator-color: #0078FF;
 
 /* Borders */
 
