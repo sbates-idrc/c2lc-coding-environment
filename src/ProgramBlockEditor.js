@@ -478,14 +478,10 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             );
         }
 
-        let loopIterations = programBlock.iterations;
-
-        // Show loopItertionsLeft when program is not stopped, or else, show iterations
-        if (this.props.runningState !== 'stopped') {
-            if (loopLabel != null && this.props.programSequence.getLoopIterationsLeft().get(loopLabel) != null) {
-                loopIterations = this.props.programSequence.getLoopIterationsLeft().get(loopLabel);
-            }
-        }
+        const loopIterations = programBlock.iterations;
+        const loopIterationsLeft = (loopLabel != null
+            ? this.props.programSequence.getLoopIterationsLeft().get(loopLabel)
+            : null);
 
         let key = `${programStepNumber}-${command}`;
         if ((command === 'startLoop' || command === 'endLoop') && loopLabel != null) {
@@ -505,6 +501,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 className={classes}
                 loopLabel={programBlock.label}
                 loopIterations={loopIterations}
+                loopIterationsLeft={loopIterationsLeft}
                 stepNumber={programStepNumber}
                 aria-label={ariaLabel}
                 aria-controls={hasActionPanelControl ? 'ActionPanel' : undefined}

@@ -67,28 +67,20 @@ describe('Rendering commands', () => {
         expect(getAriaDiabledButton(wrapper).length).toBe(1);
         expect(getLoopIterationsInput(wrapper).length).toBe(0);
     });
-    test('startLoop editing not disabled', () => {
+    test('startLoop', () => {
         const wrapper = createMountCommandBlock({
             commandName: 'startLoop',
-            disabled: false,
-            runningState: 'stopped',
-            keyboardInputSchemeName: 'controlalt',
+            loopIterations: 4,
+            loopIterationsLeft: 2,
             loopLabel: 'A',
             stepNumber: 1,
+            runningState: 'stopped',
+            keyboardInputSchemeName: 'controlalt',
             onChangeLoopIterations: () => {}
         });
         expect(getCommandBlock(wrapper).get(0).props.variant).toBe('command-block--startLoop');
         expect(getAriaDiabledButton(wrapper).length).toBe(1);
         expect(getLoopIterationsInput(wrapper).length).toBe(1);
-    });
-    test('startLoop editing disabled', () => {
-        const wrapper = createMountCommandBlock({
-            commandName: 'startLoop',
-            disabled: true
-        });
-        expect(getCommandBlock(wrapper).get(0).props.variant).toBe('command-block--startLoop');
-        expect(getAriaDiabledButton(wrapper).length).toBe(1);
-        expect(getLoopIterationsInput(wrapper).length).toBe(0);
     });
     test('endLoop', () => {
         const wrapper = createMountCommandBlock({commandName: 'endLoop'});

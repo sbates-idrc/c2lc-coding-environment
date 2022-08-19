@@ -8,7 +8,8 @@ import LoopIterationsInput from './LoopIterationsInput';
 configure({ adapter: new Adapter() });
 
 const defaultLoopIterationsInputProps = {
-    loopIterationsStr: '2',
+    loopIterations: 4,
+    loopIterationsLeft: 2,
     loopLabel: 'A',
     stepNumber: 2,
     runningState: 'stopped',
@@ -39,23 +40,35 @@ function getLoopIterationsInputValue(wrapper): string {
     return ((wrapper.find('.command-block-loop-iterations').getDOMNode(): any): HTMLInputElement).value;
 }
 
-test('Number of iterations should be rendered', () => {
+test('When stopped, the number of iterations should be rendered in an editable input', () => {
     expect.assertions(1);
     const {wrapper} = createMountLoopIterationsInput();
-    expect(getLoopIterationsInputValue(wrapper)).toBe('2');
+    expect(getLoopIterationsInputValue(wrapper)).toBe('4');
+    // TODO: Check that not read-only
 });
+
+test('When paused, the number of iterations left should be rendered in an editable input', () => {
+    expect.assertions(1);
+    const {wrapper} = createMountLoopIterationsInput({
+        runningState: 'paused'
+    });
+    expect(getLoopIterationsInputValue(wrapper)).toBe('2');
+    // TODO: Check that not read-only
+});
+
+// TODO: When playing, the number of iterations left should be rendered in a read-only input
 
 test('Blur should call the registered callback if the user changed the value', () => {
     expect.assertions(4);
     const {wrapper, mockOnChangeLoopIterations} = createMountLoopIterationsInput();
-    expect(getLoopIterationsInputValue(wrapper)).toBe('2');
+    expect(getLoopIterationsInputValue(wrapper)).toBe('4');
 
     // Change the value and check that the callback is called on blur
 
     const loopIterationsInput = getLoopIterationsInput(wrapper);
     ((loopIterationsInput.getDOMNode(): any): HTMLInputElement).value = '3';
     loopIterationsInput.simulate('change');
-    expect(wrapper.instance().state.loopIterationsStr).toBe('3');
+    expect(wrapper.instance().state.editStr).toBe('3');
 
     loopIterationsInput.simulate('blur');
     expect(mockOnChangeLoopIterations.mock.calls.length).toBe(1);
@@ -65,7 +78,7 @@ test('Blur should call the registered callback if the user changed the value', (
 test('Blur should not call the registered callback if the user has not changed the value', () => {
     expect.assertions(2);
     const {wrapper, mockOnChangeLoopIterations} = createMountLoopIterationsInput();
-    expect(getLoopIterationsInputValue(wrapper)).toBe('2');
+    expect(getLoopIterationsInputValue(wrapper)).toBe('4');
 
     const loopIterationsInput = getLoopIterationsInput(wrapper);
     loopIterationsInput.simulate('blur');
@@ -75,14 +88,14 @@ test('Blur should not call the registered callback if the user has not changed t
 test('Pressing Enter should call the registered callback', () => {
     expect.assertions(4);
     const {wrapper, mockOnChangeLoopIterations} = createMountLoopIterationsInput();
-    expect(getLoopIterationsInputValue(wrapper)).toBe('2');
+    expect(getLoopIterationsInputValue(wrapper)).toBe('4');
 
     // Change the value and check that the callback is called on press Enter
 
     const loopIterationsInput = getLoopIterationsInput(wrapper);
     ((loopIterationsInput.getDOMNode(): any): HTMLInputElement).value = '3';
     loopIterationsInput.simulate('change');
-    expect(wrapper.instance().state.loopIterationsStr).toBe('3');
+    expect(wrapper.instance().state.editStr).toBe('3');
 
     loopIterationsInput.getDOMNode().dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}));
     expect(mockOnChangeLoopIterations.mock.calls.length).toBe(1);
@@ -100,14 +113,14 @@ const shortcutKeyboardEvents = [
 test.each(shortcutKeyboardEvents)('Shortcuts that cause an update should call the registered callback if the user changed the value', (keyboardEvent) => {
     expect.assertions(4);
     const {wrapper, mockOnChangeLoopIterations} = createMountLoopIterationsInput();
-    expect(getLoopIterationsInputValue(wrapper)).toBe('2');
+    expect(getLoopIterationsInputValue(wrapper)).toBe('4');
 
     // Change the value, send the keyboard event, and check that the callback is called
 
     const loopIterationsInput = getLoopIterationsInput(wrapper);
     ((loopIterationsInput.getDOMNode(): any): HTMLInputElement).value = '3';
     loopIterationsInput.simulate('change');
-    expect(wrapper.instance().state.loopIterationsStr).toBe('3');
+    expect(wrapper.instance().state.editStr).toBe('3');
 
     loopIterationsInput.getDOMNode().dispatchEvent(keyboardEvent);
 
@@ -118,7 +131,7 @@ test.each(shortcutKeyboardEvents)('Shortcuts that cause an update should call th
 test.each(shortcutKeyboardEvents)('Shortcuts that cause an update should not call the registered callback if the user has not changed the value', (keyboardEvent) => {
     expect.assertions(2);
     const {wrapper, mockOnChangeLoopIterations} = createMountLoopIterationsInput();
-    expect(getLoopIterationsInputValue(wrapper)).toBe('2');
+    expect(getLoopIterationsInputValue(wrapper)).toBe('4');
 
     const loopIterationsInput = getLoopIterationsInput(wrapper);
     loopIterationsInput.getDOMNode().dispatchEvent(keyboardEvent);
@@ -128,14 +141,14 @@ test.each(shortcutKeyboardEvents)('Shortcuts that cause an update should not cal
 test('Other shortcuts should not cause the registered callback to be called', () => {
     expect.assertions(3);
     const {wrapper, mockOnChangeLoopIterations} = createMountLoopIterationsInput();
-    expect(getLoopIterationsInputValue(wrapper)).toBe('2');
+    expect(getLoopIterationsInputValue(wrapper)).toBe('4');
 
     // Change the value, send the keyboard event, and check that the callback is not called
 
     const loopIterationsInput = getLoopIterationsInput(wrapper);
     ((loopIterationsInput.getDOMNode(): any): HTMLInputElement).value = '3';
     loopIterationsInput.simulate('change');
-    expect(wrapper.instance().state.loopIterationsStr).toBe('3');
+    expect(wrapper.instance().state.editStr).toBe('3');
 
     loopIterationsInput.getDOMNode().dispatchEvent(new KeyboardEvent('keydown',
         {key: 'x', ctrlKey: true, altKey: true}));

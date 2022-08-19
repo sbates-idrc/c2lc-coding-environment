@@ -6,7 +6,8 @@ import type { RunningState } from './types';
 import React from 'react';
 
 type LoopIterationsInputProps = {
-    loopIterationsStr: string,
+    loopIterations: number,
+    loopIterationsLeft: ?number,
     loopLabel: string,
     stepNumber: number,
     runningState: RunningState,
@@ -15,7 +16,7 @@ type LoopIterationsInputProps = {
 };
 
 type LoopIterationsInputState = {
-    loopIterationsStr: string
+    editStr: string
 };
 
 export default class LoopIterationsInput extends React.Component<LoopIterationsInputProps, LoopIterationsInputState> {
@@ -25,10 +26,27 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
     constructor(props: LoopIterationsInputProps) {
         super(props);
         this.state = {
-            loopIterationsStr: this.props.loopIterationsStr
+            editStr: this.getInitialEditValueForRunningState()
         }
         this.inputRef = React.createRef();
         this.userHasChangedLoopIterations = false;
+    }
+
+    getInitialEditValueForRunningState(): string {
+        if (this.props.runningState === 'paused') {
+            if (this.props.loopIterationsLeft != null) {
+                return this.props.loopIterationsLeft.toString();
+            } else {
+                return '';
+            }
+        } else {
+            return this.props.loopIterations.toString();
+        }
+    }
+
+    isPlaying(): boolean {
+        return !(this.props.runningState === 'stopped'
+            || this.props.runningState === 'paused');
     }
 
     isValidLoopIterations(value: number) {
@@ -37,7 +55,9 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
 
     handleChange = () => {
         if (this.inputRef.current) {
-            this.setState({loopIterationsStr: this.inputRef.current.value});
+            this.setState({
+                editStr: this.inputRef.current.value
+            });
             this.userHasChangedLoopIterations = true;
         }
     }
@@ -55,7 +75,10 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
                 if (this.isValidLoopIterations(loopIterationsValue)) {
                     this.props.onChangeLoopIterations(this.props.stepNumber, this.props.loopLabel, loopIterationsValue);
                 } else {
-                    this.setState({loopIterationsStr: this.props.loopIterationsStr});
+                    this.setState({
+                        editStr: this.getInitialEditValueForRunningState()
+                    });
+                    this.userHasChangedLoopIterations = false;
                 }
             }
         }
@@ -67,7 +90,10 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
             if (this.isValidLoopIterations(loopIterationsValue)) {
                 this.props.onChangeLoopIterations(this.props.stepNumber, this.props.loopLabel, loopIterationsValue);
             } else {
-                this.setState({loopIterationsStr: this.props.loopIterationsStr});
+                this.setState({
+                    editStr: this.getInitialEditValueForRunningState()
+                });
+                this.userHasChangedLoopIterations = false;
             }
         }
     }
@@ -95,15 +121,11 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
     }
 
     componentDidUpdate(prevProps: LoopIterationsInputProps) {
-        // If the number of loop iterations has changed in the program,
-        // update our input with the new number
-        if (this.props.loopIterationsStr !== prevProps.loopIterationsStr) {
-            this.setState({loopIterationsStr: this.props.loopIterationsStr});
-            this.userHasChangedLoopIterations = false;
-        }
-        // If we change to 'stopped' running state, reset our input contents
-        if (this.props.runningState !== prevProps.runningState && this.props.runningState === 'stopped') {
-            this.setState({loopIterationsStr: this.props.loopIterationsStr});
+        if (this.props.runningState !== prevProps.runningState
+                && (this.props.runningState === 'stopped' || this.props.runningState === 'paused')) {
+            this.setState({
+                editStr: this.getInitialEditValueForRunningState()
+            });
             this.userHasChangedLoopIterations = false;
         }
     }
@@ -133,7 +155,8 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
                 size='2'
                 type='text'
                 inputmode='decimal'
-                value={this.state.loopIterationsStr}
+                value={this.isPlaying() ? this.props.loopIterationsLeft : this.state.editStr}
+                readOnly={this.isPlaying()}
                 onChange={this.handleChange}
                 onClick={this.handleClick}
                 onBlur={this.handleBlur}
