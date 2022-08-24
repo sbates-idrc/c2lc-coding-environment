@@ -29,6 +29,7 @@ type CommandBlockProps = {
     disabled: boolean,
     loopLabel?: string,
     loopIterations?: ?number,
+    loopIterationsLeft?: ?number,
     stepNumber?: number,
     className?: string,
     runningState?: RunningState,
@@ -65,6 +66,7 @@ export default React.forwardRef<CommandBlockProps, Button>(
             disabled,
             loopLabel,
             loopIterations,
+            loopIterationsLeft,
             stepNumber,
             className,
             runningState,
@@ -81,19 +83,8 @@ export default React.forwardRef<CommandBlockProps, Button>(
                     <div className='command-block-loop-label-container'>
                         {loopLabel}
                     </div>
-                    {commandName === 'startLoop' && disabled &&
-                        <input
-                            // TODO: ARIA label
-                            className='command-block-loop-iterations'
-                            maxLength='2'
-                            size='2'
-                            type='text'
-                            value={loopIterations}
-                            readOnly={true}
-                        />
-                    }
                     {commandName === 'startLoop'
-                            && !disabled
+                            && loopIterations != null
                             && loopLabel != null
                             && stepNumber != null
                             && runningState != null
@@ -101,7 +92,8 @@ export default React.forwardRef<CommandBlockProps, Button>(
                             && onChangeLoopIterations != null
                             &&
                         <LoopIterationsInput
-                            loopIterationsStr={loopIterations != null ? loopIterations.toString() : ''}
+                            loopIterations={loopIterations}
+                            loopIterationsLeft={loopIterationsLeft}
                             loopLabel={loopLabel}
                             stepNumber={stepNumber}
                             runningState={runningState}
