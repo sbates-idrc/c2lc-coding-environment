@@ -148,7 +148,7 @@ test.each([
     });
     expect(getLoopIterationsInputValue(wrapper)).toBe(expectedValue);
 
-    // Change the value and check that the value is reset on blur
+    // Change the value and check that the value is reset on Enter
 
     const loopIterationsInput = getLoopIterationsInput(wrapper);
     ((loopIterationsInput.getDOMNode(): any): HTMLInputElement).value = 'a';
