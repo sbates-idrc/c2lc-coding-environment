@@ -16,35 +16,55 @@ type LoopIterationsInputProps = {
 };
 
 type LoopIterationsInputState = {
-    editStr: string
+    editStr: string,
+    userHasChangedLoopIterations: boolean,
+    runningState: RunningState
 };
 
 export default class LoopIterationsInput extends React.Component<LoopIterationsInputProps, LoopIterationsInputState> {
     inputRef: { current: null | HTMLInputElement };
-    userHasChangedLoopIterations: boolean;
 
     constructor(props: LoopIterationsInputProps) {
         super(props);
         this.state = {
-            editStr: this.getInitialEditValueForRunningState()
-        }
+            editStr: LoopIterationsInput.getInitialEditValueForRunningState(props),
+            userHasChangedLoopIterations: false,
+            runningState: props.runningState
+        };
         this.inputRef = React.createRef();
-        this.userHasChangedLoopIterations = false;
     }
 
-    getInitialEditValueForRunningState(): string {
-        if (this.props.runningState === 'paused') {
-            if (this.props.loopIterationsLeft != null) {
-                return this.props.loopIterationsLeft.toString();
+    static getInitialEditValueForRunningState(props: LoopIterationsInputProps): string {
+        if (props.runningState === 'paused') {
+            if (props.loopIterationsLeft != null) {
+                return props.loopIterationsLeft.toString();
             } else {
                 return '';
             }
         } else {
-            return this.props.loopIterations.toString();
+            return props.loopIterations.toString();
         }
     }
 
-    isPlaying(): boolean {
+    static getDerivedStateFromProps(props: LoopIterationsInputProps, state: LoopIterationsInputState) {
+        if (props.runningState !== state.runningState) {
+            if (props.runningState === 'stopped' || props.runningState === 'paused') {
+                return {
+                    editStr: LoopIterationsInput.getInitialEditValueForRunningState(props),
+                    userHasChangedLoopIterations: false,
+                    runningState: props.runningState
+                };
+            } else {
+                return {
+                    runningState: props.runningState
+                };
+            }
+        } else {
+            return null;
+        }
+    }
+
+    isRunning(): boolean {
         return !(this.props.runningState === 'stopped'
             || this.props.runningState === 'paused');
     }
@@ -56,9 +76,9 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
     handleChange = () => {
         if (this.inputRef.current) {
             this.setState({
-                editStr: this.inputRef.current.value
+                editStr: this.inputRef.current.value,
+                userHasChangedLoopIterations: true
             });
-            this.userHasChangedLoopIterations = true;
         }
     }
 
@@ -68,7 +88,7 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
 
     handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Enter'
-                || (this.userHasChangedLoopIterations && this.shouldPropagateValueForKeyboardEvent(e))) {
+                || (this.state.userHasChangedLoopIterations && this.shouldPropagateValueForKeyboardEvent(e))) {
             e.preventDefault();
             if (this.inputRef.current) {
                 const loopIterationsValue = parseInt(this.inputRef.current.value, 10);
@@ -76,24 +96,24 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
                     this.props.onChangeLoopIterations(this.props.stepNumber, this.props.loopLabel, loopIterationsValue);
                 } else {
                     this.setState({
-                        editStr: this.getInitialEditValueForRunningState()
+                        editStr: LoopIterationsInput.getInitialEditValueForRunningState(this.props),
+                        userHasChangedLoopIterations: false
                     });
-                    this.userHasChangedLoopIterations = false;
                 }
             }
         }
     }
 
     handleBlur = () => {
-        if (this.userHasChangedLoopIterations && this.inputRef.current) {
+        if (this.state.userHasChangedLoopIterations && this.inputRef.current) {
             const loopIterationsValue = parseInt(this.inputRef.current.value, 10);
             if (this.isValidLoopIterations(loopIterationsValue)) {
                 this.props.onChangeLoopIterations(this.props.stepNumber, this.props.loopLabel, loopIterationsValue);
             } else {
                 this.setState({
-                    editStr: this.getInitialEditValueForRunningState()
+                    editStr: LoopIterationsInput.getInitialEditValueForRunningState(this.props),
+                    userHasChangedLoopIterations: false
                 });
-                this.userHasChangedLoopIterations = false;
             }
         }
     }
@@ -117,17 +137,8 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
             || matchingKeyboardAction === ('addCommandToBeginning': ActionName)
             || matchingKeyboardAction === ('moveToNextStep': ActionName)
             || matchingKeyboardAction === ('moveToPreviousStep': ActionName)
-            || matchingKeyboardAction === ('playPauseProgram': ActionName);
-    }
-
-    componentDidUpdate(prevProps: LoopIterationsInputProps) {
-        if (this.props.runningState !== prevProps.runningState
-                && (this.props.runningState === 'stopped' || this.props.runningState === 'paused')) {
-            this.setState({
-                editStr: this.getInitialEditValueForRunningState()
-            });
-            this.userHasChangedLoopIterations = false;
-        }
+            || matchingKeyboardAction === ('playPauseProgram': ActionName)
+            || matchingKeyboardAction === ('stopProgram': ActionName);
     }
 
     componentDidMount() {
@@ -155,8 +166,8 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
                 size='2'
                 type='text'
                 inputmode='decimal'
-                value={this.isPlaying() ? this.props.loopIterationsLeft : this.state.editStr}
-                readOnly={this.isPlaying()}
+                value={this.isRunning() ? this.props.loopIterationsLeft : this.state.editStr}
+                readOnly={this.isRunning()}
                 onChange={this.handleChange}
                 onClick={this.handleClick}
                 onBlur={this.handleBlur}
