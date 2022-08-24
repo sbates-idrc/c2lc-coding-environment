@@ -165,7 +165,7 @@ export default class LoopIterationsInput extends React.Component<LoopIterationsI
                 maxLength='2'
                 size='2'
                 type='text'
-                inputmode='decimal'
+                inputMode='decimal'
                 value={this.isRunning() ? this.props.loopIterationsLeft : this.state.editStr}
                 readOnly={this.isRunning()}
                 onChange={this.handleChange}
