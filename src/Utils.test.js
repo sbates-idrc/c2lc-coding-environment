@@ -334,6 +334,10 @@ describe('selectSpeechSynthesisVoice', () => {
             expect(selectSpeechSynthesisVoice('en', 'fr-FR', noEnUSvoices)).toBe(noEnUSvoices[2]);
         });
 
+        test('When utterance is not English, and user language is the same, but we have no matching voice, find the first voice for the utterance language', () => {
+            expect(selectSpeechSynthesisVoice('fr', 'fr-CH', voices)).toBe(voices[2]);
+        });
+
         test('When utterance is not English, and user language is not the same, find the first voice for the utterance language', () => {
             expect(selectSpeechSynthesisVoice('fr', 'en-US', voices)).toBe(voices[2]);
         });
