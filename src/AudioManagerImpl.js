@@ -205,6 +205,7 @@ export default class AudioManagerImpl implements AudioManager {
         right90: Sampler,
         right180: Sampler
     };
+    speechSynthesisVoices: Array<SpeechSynthesisVoice>;
 
     constructor(audioEnabled: boolean, announcementsEnabled: boolean, sonificationEnabled: boolean) {
         this.audioEnabled = audioEnabled;
@@ -216,6 +217,9 @@ export default class AudioManagerImpl implements AudioManager {
 
         this.samplers = {};
 
+        this.updateSpeechSynthesisVoices();
+        window.speechSynthesis.onvoiceschanged = this.updateSpeechSynthesisVoices;
+
         Object.keys(SamplerDefs).forEach((samplerKey) => {
             const samplerDef = SamplerDefs[samplerKey];
             const sampler = new Sampler(samplerDef);
@@ -223,6 +227,10 @@ export default class AudioManagerImpl implements AudioManager {
             this.samplers[samplerKey] = sampler;
         });
     }
+
+    updateSpeechSynthesisVoices = () => {
+        this.speechSynthesisVoices = window.speechSynthesis.getVoices();
+    };
 
     playAnnouncement(messageIdSuffix: string, intl: IntlShape, messagePayload: any) {
         if (this.audioEnabled && this.announcementsEnabled) {
@@ -238,7 +246,7 @@ export default class AudioManagerImpl implements AudioManager {
             utterance.voice = selectSpeechSynthesisVoice(
                 'en',
                 window.navigator.language,
-                window.speechSynthesis.getVoices()
+                this.speechSynthesisVoices
             );
 
             window.speechSynthesis.speak(utterance);
