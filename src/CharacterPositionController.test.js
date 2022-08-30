@@ -338,9 +338,8 @@ describe('Character position row/column input Blur event', () => {
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(0);
     });
     test('When there is changes in row/column value, blue event does update', () => {
-        const { wrapper, mockChangeCharacterYPosition, mockChangeCharacterXPosition } = createShallowCharacterPositionController();
+        const { wrapper, mockChangeCharacterXPosition } = createShallowCharacterPositionController();
         const characterXPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(0);
-        const characterYPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(1);
         const sampleXPosition = 'X';
         const currentTarget = (value: string) => ({
             name: 'xPosition',
