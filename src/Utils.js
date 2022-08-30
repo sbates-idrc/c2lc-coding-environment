@@ -255,19 +255,14 @@ function selectSpeechSynthesisVoice(utteranceLangTag: ?string,
     // hear the speech with their preferred pronunciation, if applicable.
 
     if (userLangTag.startsWith(utteranceLanguage)) {
-        const filtered = voices.filter(voice => voice.lang === userLangTag);
-        if (filtered.length > 0) {
-            stage1 = filtered;
-        }
+        stage1 = voices.filter(voice => voice.lang === userLangTag);
     }
 
-    // Otherwise, if the utterance language is 'en', look for voices for 'en-US'
+    // If we haven't found any matches yet, and the utterance language is
+    // 'en', look for voices for 'en-US'
 
     if (stage1.length === 0 && utteranceLanguage === 'en') {
-        const filtered = voices.filter(voice => voice.lang === 'en-US');
-        if (filtered.length > 0) {
-            stage1 = filtered;
-        }
+        stage1 = voices.filter(voice => voice.lang === 'en-US');
     }
 
     // Finally, look for voices with the same language as the utterance
