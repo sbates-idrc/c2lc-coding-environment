@@ -74,12 +74,12 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         if (e.currentTarget.name === 'xPosition') {
             this.setState({
                 characterColumnLabel: e.currentTarget.value,
-                userHasChangedCharacterPosition: true
+                userHasChangedCharacterPosition: this.props.characterState.isValidXPosition(e.currentTarget.value)
             });
         } else if (e.currentTarget.name === 'yPosition'){
             this.setState({
                 characterRowLabel: e.currentTarget.value,
-                userHasChangedCharacterPosition: true
+                userHasChangedCharacterPosition: this.props.characterState.isValidYPosition(parseInt(e.currentTarget.value, 10))
             });
         }
     }
@@ -91,6 +91,11 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
             } else if (e.currentTarget.name === 'yPosition'){
                 this.props.onChangeCharacterYPosition(this.state.characterRowLabel);
             }
+        } else {
+            this.setState({
+                characterColumnLabel: this.props.characterState.getColumnLabel(),
+                characterRowLabel: this.props.characterState.getRowLabel(),
+            });
         }
     }
 
