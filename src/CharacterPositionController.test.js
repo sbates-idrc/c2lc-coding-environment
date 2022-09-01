@@ -363,7 +363,7 @@ describe('Character position row/column input Blur event', () => {
         const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
         const initialColumnValue = 'B';
         const initialCharacterState = new CharacterState(initialColumnValue.charCodeAt(0) - 64, 6, 3, [], sceneDimensions);
-        
+
         wrapper.setProps({
             characterState: initialCharacterState
         });
