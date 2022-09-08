@@ -37,31 +37,34 @@ describe('Test hasLoopBlock', () => {
     });
 });
 
-describe('Test currentStepIsControlBlock', () => {
+describe('Test stepIsEndLoopBlock', () => {
     test('Empty program', () => {
         const programSequence = new ProgramSequence([], 0, 0, new Map());
-        expect(programSequence.currentStepIsControlBlock()).toBe(false);
+        expect(programSequence.stepIsEndLoopBlock(0)).toBe(false);
     });
 
     test('Non-empty program', () => {
-        const program = [
-            { block: 'startLoop', label: 'A', iterations: 3 },
-            { block: 'forward1' },
-            { block: 'endLoop', label: 'A' }
-        ];
+        const programSequence = new ProgramSequence(
+            [
+                { block: 'startLoop', label: 'A', iterations: 3 },
+                { block: 'forward1' },
+                { block: 'endLoop', label: 'A' }
+            ],
+            0, 0, new Map()
+        );
 
         // startLoop
-        expect(new ProgramSequence(program, 0, 0, new Map()).currentStepIsControlBlock()).toBe(true);
+        expect(programSequence.stepIsEndLoopBlock(0)).toBe(false);
         // forward1
-        expect(new ProgramSequence(program, 1, 0, new Map()).currentStepIsControlBlock()).toBe(false);
+        expect(programSequence.stepIsEndLoopBlock(1)).toBe(false);
         // endLoop
-        expect(new ProgramSequence(program, 2, 0, new Map()).currentStepIsControlBlock()).toBe(true);
-        // Program counter past the end
-        expect(new ProgramSequence(program, 3, 0, new Map()).currentStepIsControlBlock()).toBe(false);
+        expect(programSequence.stepIsEndLoopBlock(2)).toBe(true);
+        // Index past the end
+        expect(programSequence.stepIsEndLoopBlock(3)).toBe(false);
     });
 });
 
-test('getMatchingLoopBlockIndex retuns index of corresponding endLoop or startLoop pair', () => {
+test('getMatchingLoopBlockIndex returns index of corresponding endLoop or startLoop block', () => {
     const program = [
         {block: 'startLoop', iterations: 3, label: 'A'},
         {block: 'startLoop', iterations: 2, label: 'B'},
@@ -75,15 +78,45 @@ test('getMatchingLoopBlockIndex retuns index of corresponding endLoop or startLo
         {block: 'endLoop', label: 'A'}
     ];
     const programSequence = new ProgramSequence(program, 0, 0, new Map());
-    // Finding endLoop pair
+
+    // Finding endLoop
     expect(programSequence.getMatchingLoopBlockIndex(0)).toBe(9);
     expect(programSequence.getMatchingLoopBlockIndex(1)).toBe(8);
     expect(programSequence.getMatchingLoopBlockIndex(3)).toBe(6);
 
-    // Finding startLoop pair
+    // Finding startLoop
     expect(programSequence.getMatchingLoopBlockIndex(6)).toBe(3);
     expect(programSequence.getMatchingLoopBlockIndex(8)).toBe(1);
     expect(programSequence.getMatchingLoopBlockIndex(9)).toBe(0);
+});
+
+test('Test areMatchingLoopBlocks', () => {
+    const program = [
+        /* 0 */ {block: 'startLoop', iterations: 10, label: 'A'},
+        /* 1 */ {block: 'startLoop', iterations: 20, label: 'B'},
+        /* 2 */ {block: 'forward1'},
+        /* 3 */ {block: 'forward1'},
+        /* 4 */ {block: 'endLoop', label: 'B'},
+        /* 5 */ {block: 'endLoop', label: 'A'}
+    ];
+    const programSequence = new ProgramSequence(program, 0, 0, new Map());
+
+    expect(programSequence.areMatchingLoopBlocks(0, 5)).toBe(true);
+    expect(programSequence.areMatchingLoopBlocks(5, 0)).toBe(true);
+    expect(programSequence.areMatchingLoopBlocks(1, 4)).toBe(true);
+    expect(programSequence.areMatchingLoopBlocks(4, 1)).toBe(true);
+
+    expect(programSequence.areMatchingLoopBlocks(0, 1)).toBe(false);
+    expect(programSequence.areMatchingLoopBlocks(0, 2)).toBe(false);
+    expect(programSequence.areMatchingLoopBlocks(0, 4)).toBe(false);
+
+    expect(programSequence.areMatchingLoopBlocks(5, 1)).toBe(false);
+    expect(programSequence.areMatchingLoopBlocks(5, 2)).toBe(false);
+    expect(programSequence.areMatchingLoopBlocks(5, 4)).toBe(false);
+
+    expect(programSequence.areMatchingLoopBlocks(2, 0)).toBe(false);
+    expect(programSequence.areMatchingLoopBlocks(2, 3)).toBe(false);
+    expect(programSequence.areMatchingLoopBlocks(2, 5)).toBe(false);
 });
 
 test('calculateCachedLoopData returns a program with additional loop data', () => {
@@ -231,6 +264,11 @@ test('calculateCachedLoopData replaces existing cached loop data and removes cac
         .toStrictEqual(expectedProgram);
 });
 
+test('calculateCachedLoopData works on an empty program', () => {
+    expect(ProgramSequence.calculateCachedLoopData([]))
+        .toStrictEqual([]);
+});
+
 test('updateProgramCounter should only update programCounter', () => {
     expect.assertions(3);
     const program = [{block: 'forward1'}];
@@ -243,11 +281,159 @@ test('updateProgramCounter should only update programCounter', () => {
     expect(programSequence.getLoopIterationsLeft()).toBe(loopIterationsLeft);
 });
 
-test('incrementProgramCounter should increment programCounter by 1', () => {
-    expect.assertions(1);
-    let programSequence = new ProgramSequence([], 0, 0, new Map());
-    programSequence = programSequence.incrementProgramCounter();
-    expect(programSequence.getProgramCounter()).toBe(1);
+type AdvanceProgramCounterTestCase = {
+    program: Program,
+    programCounter: number,
+    loopIterationsLeft: Map<string, number>,
+    advancePastEmptyLoopEntirely: boolean,
+    expectedProgramCounter: number,
+    expectedLoopIterationsLeft: Map<string, number>
+};
+
+test.each(([
+    {
+        program: [
+            { block: 'forward1' }
+        ],
+        programCounter: 0,
+        loopIterationsLeft: new Map(),
+        advancePastEmptyLoopEntirely: false,
+        expectedProgramCounter: 1,
+        expectedLoopIterationsLeft: new Map()
+    },
+    {
+        program: [
+            { block: 'forward1' },
+            { block: 'left45' }
+        ],
+        programCounter: 0,
+        loopIterationsLeft: new Map(),
+        advancePastEmptyLoopEntirely: false,
+        expectedProgramCounter: 1,
+        expectedLoopIterationsLeft: new Map()
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 0,
+        loopIterationsLeft: new Map([['A', 2]]),
+        advancePastEmptyLoopEntirely: false,
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 0,
+        loopIterationsLeft: new Map([['A', 1]]),
+        advancePastEmptyLoopEntirely: false,
+        expectedProgramCounter: 2,
+        expectedLoopIterationsLeft: new Map([['A', 0]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 0,
+        loopIterationsLeft: new Map([['A', 2]]),
+        advancePastEmptyLoopEntirely: true,
+        expectedProgramCounter: 2,
+        expectedLoopIterationsLeft: new Map([['A', 0]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 0,
+        loopIterationsLeft: new Map([['A', 2]]),
+        advancePastEmptyLoopEntirely: false,
+        expectedProgramCounter: 1,
+        expectedLoopIterationsLeft: new Map([['A', 2]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 1,
+        loopIterationsLeft: new Map([['A', 2]]),
+        advancePastEmptyLoopEntirely: false,
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 2,
+        loopIterationsLeft: new Map([['A', 2]]),
+        advancePastEmptyLoopEntirely: false,
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 1,
+        loopIterationsLeft: new Map([['A', 1]]),
+        advancePastEmptyLoopEntirely: false,
+        expectedProgramCounter: 3,
+        expectedLoopIterationsLeft: new Map([['A', 0]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A', iterations: 10 },
+            { block: 'startLoop', label: 'B', iterations: 20  },
+            { block: 'endLoop', label: 'B'},
+            { block: 'startLoop', label: 'C', iterations: 30  },
+            { block: 'endLoop', label: 'C' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 3,
+        loopIterationsLeft: new Map([['A', 2], ['B', 0], ['C', 1]]),
+        advancePastEmptyLoopEntirely: false,
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1], ['B', 20], ['C', 30]])
+    },
+    {
+        program: [
+            { block: 'startLoop', label: 'A', iterations: 10 },
+            { block: 'startLoop', label: 'B', iterations: 20  },
+            { block: 'endLoop', label: 'B'},
+            { block: 'startLoop', label: 'C', iterations: 30  },
+            { block: 'endLoop', label: 'C' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        programCounter: 3,
+        loopIterationsLeft: new Map([['A', 1], ['B', 0], ['C', 1]]),
+        advancePastEmptyLoopEntirely: false,
+        expectedProgramCounter: 6,
+        expectedLoopIterationsLeft: new Map([['A', 0], ['B', 0], ['C', 0]])
+    }
+]: Array<AdvanceProgramCounterTestCase>))('advanceProgramCounter', (testData: AdvanceProgramCounterTestCase) => {
+    expect.assertions(2);
+    const programSequence = new ProgramSequence(
+        testData.program,
+        testData.programCounter,
+        0,
+        testData.loopIterationsLeft
+    );
+    const result = programSequence.advanceProgramCounter(testData.advancePastEmptyLoopEntirely);
+    expect(result.getProgramCounter()).toBe(testData.expectedProgramCounter);
+    expect(result.getLoopIterationsLeft()).toStrictEqual(testData.expectedLoopIterationsLeft);
 });
 
 test('usesAction should return false for any action when the sequence is empty.', () => {
@@ -291,27 +477,33 @@ test('usesAction should return false when an action is not part of the sequence.
 type DeleteStepTestCase = {
     program: Program,
     programCounter: number,
+    loopIterationsLeft: Map<string, number>,
     index: number,
     expectedProgram: Program,
-    expectedProgramCounter: number
+    expectedProgramCounter: number,
+    expectedLoopIterationsLeft: Map<string, number>
 };
 
 test.each(([
     {
         program: [],
         programCounter: 0,
+        loopIterationsLeft: new Map(),
         index: 0,
         expectedProgram: [],
-        expectedProgramCounter: 0
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map()
     },
     {
         program: [
             { block: 'forward1' }
         ],
         programCounter: 0,
+        loopIterationsLeft: new Map(),
         index: 0,
         expectedProgram: [],
-        expectedProgramCounter: 0
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map()
     },
     {
         program: [
@@ -319,11 +511,13 @@ test.each(([
             { block: 'forward2' }
         ],
         programCounter: 0,
+        loopIterationsLeft: new Map(),
         index: 0,
         expectedProgram: [
             { block: 'forward2' }
         ],
-        expectedProgramCounter: 0
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map()
     },
     {
         program: [
@@ -331,11 +525,13 @@ test.each(([
             { block: 'forward2' }
         ],
         programCounter: 0,
+        loopIterationsLeft: new Map(),
         index: 1,
         expectedProgram: [
             { block: 'forward1' }
         ],
-        expectedProgramCounter: 0
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map()
     },
     {
         program: [
@@ -343,11 +539,13 @@ test.each(([
             { block: 'forward2' }
         ],
         programCounter: 1,
+        loopIterationsLeft: new Map(),
         index: 0,
         expectedProgram: [
             { block: 'forward2' }
         ],
-        expectedProgramCounter: 0
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map()
     },
     {
         program: [
@@ -355,11 +553,13 @@ test.each(([
             { block: 'forward2' }
         ],
         programCounter: 1,
+        loopIterationsLeft: new Map(),
         index: 1,
         expectedProgram: [
             { block: 'forward1' }
         ],
-        expectedProgramCounter: 1
+        expectedProgramCounter: 1,
+        expectedLoopIterationsLeft: new Map()
     },
     {
         program: [
@@ -368,12 +568,14 @@ test.each(([
             { block: 'forward3' }
         ],
         programCounter: 1,
+        loopIterationsLeft: new Map(),
         index: 0,
         expectedProgram: [
             { block: 'forward2' },
             { block: 'forward3' }
         ],
-        expectedProgramCounter: 0
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map()
     },
     {
         program: [
@@ -382,12 +584,14 @@ test.each(([
             { block: 'forward3' }
         ],
         programCounter: 1,
+        loopIterationsLeft: new Map(),
         index: 1,
         expectedProgram: [
             { block: 'forward1' },
             { block: 'forward3' }
         ],
-        expectedProgramCounter: 1
+        expectedProgramCounter: 1,
+        expectedLoopIterationsLeft: new Map()
     },
     {
         program: [
@@ -396,12 +600,38 @@ test.each(([
             { block: 'forward3' }
         ],
         programCounter: 1,
+        loopIterationsLeft: new Map(),
         index: 2,
         expectedProgram: [
             { block: 'forward1' },
             { block: 'forward2' }
         ],
-        expectedProgramCounter: 1
+        expectedProgramCounter: 1,
+        expectedLoopIterationsLeft: new Map()
+    },
+    {
+        program: [
+            {
+                block: 'forward1'
+            },
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 1
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        programCounter: 0,
+        loopIterationsLeft: new Map([['A', 1]]),
+        index: 1,
+        expectedProgram: [
+            { block: 'forward1' }
+        ],
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1]])
     },
     {
         program: [
@@ -419,11 +649,13 @@ test.each(([
             }
         ],
         programCounter: 1,
+        loopIterationsLeft: new Map([['A', 1]]),
         index: 1,
         expectedProgram: [
             { block: 'forward1' }
         ],
-        expectedProgramCounter: 1
+        expectedProgramCounter: 1,
+        expectedLoopIterationsLeft: new Map([['A', 0]])
     },
     {
         program: [
@@ -441,19 +673,245 @@ test.each(([
             }
         ],
         programCounter: 1,
+        loopIterationsLeft: new Map([['A', 1]]),
         index: 1,
         expectedProgram: [
             { block: 'forward1' }
         ],
-        expectedProgramCounter: 1
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 0]])
+    },
+    {
+        program: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 1
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            },
+            {
+                block: 'forward1'
+            }
+        ],
+        programCounter: 2,
+        loopIterationsLeft: new Map([['A', 1]]),
+        index: 0,
+        expectedProgram: [
+            { block: 'forward1' }
+        ],
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1]])
+    },
+    {
+        program: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 2
+            },
+            {
+                block: 'forward1'
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        programCounter: 1,
+        loopIterationsLeft: new Map([['A', 1]]),
+        index: 0,
+        expectedProgram: [
+            { block: 'forward1' }
+        ],
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1]])
+    },
+    {
+        program: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 2
+            },
+            {
+                block: 'forward1'
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        programCounter: 1,
+        loopIterationsLeft: new Map([['A', 1]]),
+        index: 2,
+        expectedProgram: [
+            { block: 'forward1' }
+        ],
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1]])
+    },
+    {
+        program: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 20
+            },
+            {
+                block: 'startLoop',
+                label: 'B',
+                iterations: 30
+            },
+            {
+                block: 'endLoop',
+                label: 'B'
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        programCounter: 1,
+        loopIterationsLeft: new Map([['A', 2], ['B', 3]]),
+        index: 1,
+        expectedProgram: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 20
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1], ['B', 30]])
+    },
+    {
+        program: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 20
+            },
+            {
+                block: 'startLoop',
+                label: 'B',
+                iterations: 30
+            },
+            {
+                block: 'endLoop',
+                label: 'B'
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        programCounter: 1,
+        loopIterationsLeft: new Map([['A', 2], ['B', 3]]),
+        index: 2,
+        expectedProgram: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 20
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1], ['B', 30]])
+    },
+    {
+        program: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 20
+            },
+            {
+                block: 'startLoop',
+                label: 'B',
+                iterations: 30
+            },
+            {
+                block: 'endLoop',
+                label: 'B'
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        programCounter: 2,
+        loopIterationsLeft: new Map([['A', 2], ['B', 3]]),
+        index: 1,
+        expectedProgram: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 20
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            }
+        ],
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1], ['B', 30]])
+    },
+    {
+        program: [
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 10
+            },
+            {
+                block: 'forward1'
+            },
+            {
+                block: 'endLoop',
+                label: 'A'
+            },
+            {
+                block: 'left45'
+            }
+        ],
+        programCounter: 2,
+        loopIterationsLeft: new Map([['A', 2]]),
+        index: 2,
+        expectedProgram: [
+            {
+                block: 'forward1'
+            },
+            {
+                block: 'left45'
+            }
+        ],
+        expectedProgramCounter: 0,
+        expectedLoopIterationsLeft: new Map([['A', 1]])
     }
 ]: Array<DeleteStepTestCase>))('deleteStep', (testData: DeleteStepTestCase) => {
-    expect.assertions(3);
+    expect.assertions(4);
     const programBefore = testData.program.slice();
-    const programSequence = new ProgramSequence(testData.program, testData.programCounter, 0, new Map());
+    const programSequence = new ProgramSequence(
+        testData.program,
+        testData.programCounter,
+        0,
+        testData.loopIterationsLeft
+    );
     const result = programSequence.deleteStep(testData.index);
     expect(result.getProgram()).toStrictEqual(testData.expectedProgram);
     expect(result.getProgramCounter()).toBe(testData.expectedProgramCounter);
+    expect(result.getLoopIterationsLeft()).toStrictEqual(testData.expectedLoopIterationsLeft);
     expect(programSequence.getProgram()).toStrictEqual(programBefore);
 });
 
@@ -742,76 +1200,379 @@ test.each(([
     expect(programSequence.getProgram()).toStrictEqual(programBefore);
 });
 
-type SwapStepTestCase = {
+describe('Test moveToNextStepDisabled and moveToPreviousStepDisabled', () => {
+    test('Empty program', () => {
+        const programSequence = new ProgramSequence(
+            [],
+            0,
+            0,
+            new Map()
+        );
+        expect(programSequence.moveToNextStepDisabled(0)).toBe(true);
+        expect(programSequence.moveToPreviousStepDisabled(0)).toBe(true);
+    });
+
+    test('Single movement', () => {
+        const programSequence = new ProgramSequence(
+            [
+                {block: 'forward1'}
+            ],
+            0,
+            0,
+            new Map()
+        );
+        expect(programSequence.moveToNextStepDisabled(0)).toBe(true);
+        expect(programSequence.moveToPreviousStepDisabled(0)).toBe(true);
+    });
+
+    test('Two movements', () => {
+        const programSequence = new ProgramSequence(
+            [
+                {block: 'forward1'},
+                {block: 'left90'}
+            ],
+            0,
+            0,
+            new Map()
+        );
+
+        expect(programSequence.moveToNextStepDisabled(0)).toBe(false);
+        expect(programSequence.moveToNextStepDisabled(1)).toBe(true);
+
+        expect(programSequence.moveToPreviousStepDisabled(0)).toBe(true);
+        expect(programSequence.moveToPreviousStepDisabled(1)).toBe(false);
+    });
+
+    test('Single empty loop', () => {
+        const programSequence = new ProgramSequence(
+            [
+                {block: 'startLoop', iterations: 1, label: 'A'},
+                {block: 'endLoop', label: 'A'},
+            ],
+            0,
+            0,
+            new Map([['A', 1]])
+        );
+
+        expect(programSequence.moveToNextStepDisabled(0)).toBe(true);
+        expect(programSequence.moveToNextStepDisabled(1)).toBe(true);
+
+        expect(programSequence.moveToPreviousStepDisabled(0)).toBe(true);
+        expect(programSequence.moveToPreviousStepDisabled(1)).toBe(true);
+    });
+
+    test('Loop at start', () => {
+        const programSequence = new ProgramSequence(
+            [
+                {block: 'startLoop', iterations: 1, label: 'A'},
+                {block: 'forward1'},
+                {block: 'endLoop', label: 'A'},
+                {block: 'forward1'}
+            ],
+            0,
+            0,
+            new Map([['A', 1]])
+        );
+
+        expect(programSequence.moveToNextStepDisabled(0)).toBe(false);
+        expect(programSequence.moveToNextStepDisabled(1)).toBe(false);
+        expect(programSequence.moveToNextStepDisabled(2)).toBe(false);
+        expect(programSequence.moveToNextStepDisabled(3)).toBe(true);
+
+        expect(programSequence.moveToPreviousStepDisabled(0)).toBe(true);
+        expect(programSequence.moveToPreviousStepDisabled(1)).toBe(false);
+        expect(programSequence.moveToPreviousStepDisabled(2)).toBe(true);
+        expect(programSequence.moveToPreviousStepDisabled(3)).toBe(false);
+    });
+
+    test('Loop at end', () => {
+        const programSequence = new ProgramSequence(
+            [
+                {block: 'forward1'},
+                {block: 'startLoop', iterations: 1, label: 'A'},
+                {block: 'forward1'},
+                {block: 'endLoop', label: 'A'}
+            ],
+            0,
+            0,
+            new Map([['A', 1]])
+        );
+
+        expect(programSequence.moveToNextStepDisabled(0)).toBe(false);
+        expect(programSequence.moveToNextStepDisabled(1)).toBe(true);
+        expect(programSequence.moveToNextStepDisabled(2)).toBe(false);
+        expect(programSequence.moveToNextStepDisabled(3)).toBe(true);
+
+        expect(programSequence.moveToPreviousStepDisabled(0)).toBe(true);
+        expect(programSequence.moveToPreviousStepDisabled(1)).toBe(false);
+        expect(programSequence.moveToPreviousStepDisabled(2)).toBe(false);
+        expect(programSequence.moveToPreviousStepDisabled(3)).toBe(false);
+    });
+});
+
+type MoveStepTestCase = {
     program: Program,
-    programCounter: number,
     indexFrom: number,
-    indexTo: number,
     expectedProgram: Program,
-    expectedProgramCounter: number
 };
 
 test.each(([
     {
+        // Empty program
+        program: [],
+        indexFrom: 0,
+        expectedProgram: []
+    },
+    {
+        // Swap a movement block with another one
         program: [
             { block: 'forward1' },
             { block: 'forward2' },
             { block: 'forward3' }
         ],
-        programCounter: 1,
         indexFrom: 0,
-        indexTo: 0,
-        expectedProgram: [
-            { block: 'forward1' },
-            { block: 'forward2' },
-            { block: 'forward3' }
-        ],
-        expectedProgramCounter: 1
-    },
-    {
-        program: [
-            { block: 'forward1' },
-            { block: 'forward2' },
-            { block: 'forward3' }
-        ],
-        programCounter: 1,
-        indexFrom: 0,
-        indexTo: 1,
         expectedProgram: [
             { block: 'forward2' },
             { block: 'forward1' },
             { block: 'forward3' }
-        ],
-        expectedProgramCounter: 1
+        ]
     },
     {
-        program: [
-            { block: 'forward1' },
-            { block: 'forward2' },
-            { block: 'forward3' }
-        ],
-        programCounter: 1,
-        indexFrom: 0,
-        indexTo: 2,
-        expectedProgram: [
-            { block: 'forward3' },
-            { block: 'forward2' },
-            { block: 'forward1' }
-        ],
-        expectedProgramCounter: 1
-    },
-    {
+        // Move a block into a loop
         program: [
             { block: 'forward1' },
             { block: 'startLoop', label: 'A' },
             { block: 'forward2' },
             { block: 'endLoop', label: 'A' }
         ],
-        programCounter: 1,
-        indexFrom: 1,
-        indexTo: 0,
+        indexFrom: 0,
         expectedProgram: [
+            { block: 'startLoop', label: 'A' },
+            {
+                block: 'forward1',
+                cache: new Map([
+                    ['containingLoopLabel', 'A'],
+                    ['containingLoopPosition', 1]
+                ])
+            },
+            {
+                block: 'forward2',
+                cache: new Map([
+                    ['containingLoopLabel', 'A'],
+                    ['containingLoopPosition', 2]
+                ])
+            },
+            { block: 'endLoop', label: 'A' }
+        ]
+    },
+    {
+        // Move a block out of a loop
+        program: [
+            { block: 'forward1' },
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward2' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        indexFrom: 2,
+        expectedProgram: [
+            { block: 'forward1' },
+            { block: 'startLoop', label: 'A' },
+            { block: 'endLoop', label: 'A' },
+            { block: 'forward2' }
+        ]
+    },
+    {
+        // Move a loop using startLoop
+        program: [
             { block: 'startLoop', label: 'A'},
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' },
+            { block: 'forward2' }
+        ],
+        indexFrom: 0,
+        expectedProgram: [
+            { block: 'forward2' },
+            { block: 'startLoop', label: 'A'},
+            {
+                block: 'forward1',
+                cache: new Map([
+                    ['containingLoopLabel', 'A'],
+                    ['containingLoopPosition', 1]
+                ])
+            },
+            { block: 'endLoop', label: 'A' }
+        ]
+    },
+    {
+        // Move a loop using endLoop
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' },
+            { block: 'forward2' }
+        ],
+        indexFrom: 2,
+        expectedProgram: [
+            { block: 'forward2' },
+            { block: 'startLoop', label: 'A' },
+            {
+                block: 'forward1',
+                cache: new Map([
+                    ['containingLoopLabel', 'A'],
+                    ['containingLoopPosition', 1]
+                ])
+            },
+            { block: 'endLoop', label: 'A' }
+        ]
+    },
+    {
+        // Move a loop into another loop
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' },
+            { block: 'startLoop', label: 'B' },
+            { block: 'endLoop', label: 'B' }
+        ],
+        indexFrom: 0,
+        expectedProgram: [
+            { block: 'startLoop', label: 'B' },
+            {
+                block: 'startLoop',
+                label: 'A',
+                cache: new Map([
+                    ['containingLoopLabel', 'B'],
+                    ['containingLoopPosition', 1]
+                ])
+            },
+            {
+                block: 'forward1',
+                cache: new Map([
+                    ['containingLoopLabel', 'A'],
+                    ['containingLoopPosition', 1]
+                ])
+            },
+            {
+                block: 'endLoop',
+                label: 'A',
+                cache: new Map([
+                    ['containingLoopLabel', 'B'],
+                    ['containingLoopPosition', 3]
+                ])
+            },
+            { block: 'endLoop', label: 'B' }
+        ]
+    },
+    {
+        // Move a loop out of another loop
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'B' },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'B' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        indexFrom: 1,
+        expectedProgram: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'endLoop', label: 'A' },
+            { block: 'startLoop', label: 'B' },
+            {
+                block: 'forward1',
+                cache: new Map([
+                    ['containingLoopLabel', 'B'],
+                    ['containingLoopPosition', 1]
+                ])
+            },
+            { block: 'endLoop', label: 'B' }
+        ]
+    }
+]: Array<MoveStepTestCase>))('moveStepNext', (testData: MoveStepTestCase) => {
+    expect.assertions(3);
+    const programBefore = testData.program.slice();
+    const programSequence = new ProgramSequence(testData.program, 0, 0, new Map());
+    const result = programSequence.moveStepNext(testData.indexFrom);
+    expect(result.getProgram()).toStrictEqual(testData.expectedProgram);
+    expect(result.getProgramCounter()).toBe(0);
+    expect(programSequence.getProgram()).toStrictEqual(programBefore);
+});
+
+test.each(([
+    {
+        // Empty program
+        program: [],
+        indexFrom: 0,
+        expectedProgram: []
+    },
+    {
+        // Swap a movement block with another one
+        program: [
+            { block: 'forward1' },
+            { block: 'forward2' },
+            { block: 'forward3' }
+        ],
+        indexFrom: 1,
+        expectedProgram: [
+            { block: 'forward2' },
+            { block: 'forward1' },
+            { block: 'forward3' }
+        ]
+    },
+    {
+        // Move a block into a loop
+        program: [
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'A' },
+            { block: 'forward2' }
+        ],
+        indexFrom: 3,
+        expectedProgram: [
+            { block: 'startLoop', label: 'A' },
+            {
+                block: 'forward1',
+                cache: new Map([
+                    ['containingLoopLabel', 'A'],
+                    ['containingLoopPosition', 1]
+                ])
+            },
+            {
+                block: 'forward2',
+                cache: new Map([
+                    ['containingLoopLabel', 'A'],
+                    ['containingLoopPosition', 2]
+                ])
+            },
+            { block: 'endLoop', label: 'A' }
+        ]
+    },
+    {
+        // Move a block out of a loop
+        program: [
+            { block: 'forward1' },
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward2' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        indexFrom: 2,
+        expectedProgram: [
+            { block: 'forward1' },
+            { block: 'forward2' },
+            { block: 'startLoop', label: 'A' },
+            { block: 'endLoop', label: 'A' }
+        ]
+    },
+    {
+        // Move a loop using startLoop
+        program: [
+            { block: 'forward1' },
+            { block: 'startLoop', label: 'A' },
+            { block: 'forward2' },
+            { block: 'endLoop', label: 'A' }
+        ],
+        indexFrom: 1,
+        expectedProgram: [
+            { block: 'startLoop', label: 'A' },
             {
                 block: 'forward2',
                 cache: new Map([
@@ -821,21 +1582,19 @@ test.each(([
             },
             { block: 'endLoop', label: 'A' },
             { block: 'forward1' }
-        ],
-        expectedProgramCounter: 1
+        ]
     },
     {
+        // Move a loop using endLoop
         program: [
             { block: 'forward1' },
             { block: 'startLoop', label: 'A' },
             { block: 'forward2' },
             { block: 'endLoop', label: 'A' }
         ],
-        programCounter: 1,
         indexFrom: 3,
-        indexTo: 0,
         expectedProgram: [
-            { block: 'startLoop', label: 'A'},
+            { block: 'startLoop', label: 'A' },
             {
                 block: 'forward2',
                 cache: new Map([
@@ -844,100 +1603,77 @@ test.each(([
             },
             { block: 'endLoop', label: 'A' },
             { block: 'forward1' }
-        ],
-        expectedProgramCounter: 1
+        ]
     },
     {
+        // Move a loop into another loop
         program: [
-            { block: 'forward1' },
             { block: 'startLoop', label: 'A' },
-            { block: 'forward2' },
-            { block: 'endLoop', label: 'A' }
-        ],
-        programCounter: 1,
-        indexFrom: 2,
-        indexTo: 1,
-        expectedProgram: [
-            { block: 'forward1' },
-            { block: 'forward2' },
-            { block: 'startLoop', label: 'A' },
-            { block: 'endLoop', label: 'A' }
-        ],
-        expectedProgramCounter: 1
-    },
-    {
-        program: [
-            { block: 'startLoop', label: 'A'},
-            { block: 'forward2' },
             { block: 'endLoop', label: 'A' },
-            { block: 'forward1' }
-        ],
-        programCounter: 1,
-        indexFrom: 0,
-        indexTo: 3,
-        expectedProgram: [
+            { block: 'startLoop', label: 'B' },
             { block: 'forward1' },
-            { block: 'startLoop', label: 'A'},
+            { block: 'endLoop', label: 'B' }
+        ],
+        indexFrom: 2,
+        expectedProgram: [
+            { block: 'startLoop', label: 'A' },
             {
-                block: 'forward2',
+                block: 'startLoop',
+                label: 'B',
                 cache: new Map([
                     ['containingLoopLabel', 'A'],
                     ['containingLoopPosition', 1]
                 ])
             },
-            { block: 'endLoop', label: 'A' }
-        ],
-        expectedProgramCounter: 1
-    },
-    {
-        program: [
-            { block: 'startLoop', label: 'A' },
-            { block: 'forward2' },
-            { block: 'endLoop', label: 'A' },
-            { block: 'forward1' }
-        ],
-        programCounter: 1,
-        indexFrom: 2,
-        indexTo: 3,
-        expectedProgram: [
-            { block: 'forward1' },
-            { block: 'startLoop', label: 'A' },
             {
-                block: 'forward2',
+                block: 'forward1',
                 cache: new Map([
-                    ['containingLoopLabel', 'A'],
+                    ['containingLoopLabel', 'B'],
                     ['containingLoopPosition', 1]
                 ])
             },
+            {
+                block: 'endLoop',
+                label: 'B',
+                cache: new Map([
+                    ['containingLoopLabel', 'A'],
+                    ['containingLoopPosition', 3]
+                ])
+            },
             { block: 'endLoop', label: 'A' }
-        ],
-        expectedProgramCounter: 1
+        ]
     },
     {
+        // Move a loop out of another loop
         program: [
-            { block: 'forward1' },
             { block: 'startLoop', label: 'A' },
-            { block: 'forward2' },
+            { block: 'startLoop', label: 'B' },
+            { block: 'forward1' },
+            { block: 'endLoop', label: 'B' },
             { block: 'endLoop', label: 'A' }
         ],
-        programCounter: 1,
-        indexFrom: 2,
-        indexTo: 3,
+        indexFrom: 1,
         expectedProgram: [
-            { block: 'forward1' },
+            { block: 'startLoop', label: 'B' },
+            {
+                block: 'forward1',
+                cache: new Map([
+                    ['containingLoopLabel', 'B'],
+                    ['containingLoopPosition', 1]
+                ])
+            },
+            { block: 'endLoop', label: 'B' },
             { block: 'startLoop', label: 'A' },
-            { block: 'endLoop', label: 'A' },
-            { block: 'forward2' }
-        ],
-        expectedProgramCounter: 1
+            { block: 'endLoop', label: 'A' }
+        ]
     }
-]: Array<SwapStepTestCase>))('swapStep', (testData: SwapStepTestCase) => {
+]: Array<MoveStepTestCase>))('moveStepPrevious', (testData: MoveStepTestCase) => {
     expect.assertions(3);
     const programBefore = testData.program.slice();
-    const programSequence = new ProgramSequence(testData.program, testData.programCounter, 0, new Map());
-    const result = programSequence.swapStep(testData.indexFrom, testData.indexTo);
+    const programSequence = new ProgramSequence(testData.program, 0, 0, new Map());
+    const result = programSequence.moveStepPrevious(testData.indexFrom);
     expect(result.getProgram()).toStrictEqual(testData.expectedProgram);
-    expect(result.getProgramCounter()).toBe(testData.expectedProgramCounter);
+    expect(result.getProgramCounter()).toBe(0);
     expect(programSequence.getProgram()).toStrictEqual(programBefore);
 });
 

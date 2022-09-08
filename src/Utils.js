@@ -1,6 +1,5 @@
 // @flow
 
-import ProgramSequence from './ProgramSequence';
 import { isWorldName } from './Worlds';
 import type { ThemeName } from './types';
 import type { WorldName } from './Worlds';
@@ -51,7 +50,10 @@ function getWorldFromString(worldQuery: ?string, defaultWorldName: WorldName): W
         case('space'):
             return 'Space';
         case('forest'):
-            return 'Jungle';
+            return 'Savannah';
+        // For the 1.5 release, we renamed "Jungle" to "Savannah"
+        case('Jungle'):
+            return 'Savannah';
         // If 'worldQuery' is a known world name, use it,
         // otherwise return 'defaultWorldName'
         default:
@@ -217,27 +219,75 @@ function isLoopBlock(blockType: string): boolean {
     return blockType === 'startLoop' || blockType === 'endLoop';
 }
 
-function moveToNextStepDisabled(programSequence: ProgramSequence, stepIndex: number): boolean {
-    const programLastIndex = programSequence.getProgramLength() - 1;
-    const { block, label } = programSequence.getProgramStepAt(stepIndex);
-    if (block === 'startLoop') {
-        const lastProgramStep = programSequence.getProgramStepAt(programLastIndex);
-        if (lastProgramStep.block === 'endLoop' && lastProgramStep.label === label) {
-            return true;
-        }
-    }
-    return stepIndex === programLastIndex;
-}
+// Select the voice to use for a speech systhesis utterance.
+// This function exists to work around a bug in Safari on Mac where
+// making a call to window.speechSynthesis.speak() with a
+// SpeechSynthesisUtterance with an unset voice causes no speech to happen.
+// See: https://issues.fluidproject.org/browse/C2LC-668
+//
+// utteranceLangTag: BCP 47 language tag
+// userLangTag: BCP 47 language tag, as from window.navigator.language
+// voices: available voices, as returned from window.speechSynthesis.getVoices()
+//
+// For details on BCP 47, see: https://datatracker.ietf.org/doc/html/rfc5646
+//
+function selectSpeechSynthesisVoice(utteranceLangTag: ?string,
+    userLangTag: ?string,
+    voices: ?Array<SpeechSynthesisVoice>): SpeechSynthesisVoice | null {
 
-function moveToPreviousStepDisabled(programSequence: ProgramSequence, stepIndex: number): boolean {
-    const { block, label } = programSequence.getProgramStepAt(stepIndex);
-    if (block === 'endLoop') {
-        const firstProgramStep = programSequence.getProgramStepAt(0);
-        if (firstProgramStep.block === 'startLoop' && firstProgramStep.label === label) {
-            return true;
-        }
+    if (utteranceLangTag == null
+            || utteranceLangTag.length < 2
+            || userLangTag == null
+            || userLangTag.length < 2
+            || voices == null
+            || voices.length === 0) {
+        return null;
     }
-    return stepIndex === 0;
+
+    const utteranceLanguage = utteranceLangTag.substring(0, 2);
+
+    // Stage 1: filter by language
+
+    let stage1 = [];
+
+    // If the user's language tag has the same language as the utterance,
+    // look for voices that match the user's language tag. So that users
+    // hear the speech with their preferred pronunciation, if applicable.
+
+    if (userLangTag.startsWith(utteranceLanguage)) {
+        stage1 = voices.filter(voice => voice.lang === userLangTag);
+    }
+
+    // If we haven't found any matches yet, and the utterance language is
+    // 'en', look for voices for 'en-US'
+
+    if (stage1.length === 0 && utteranceLanguage === 'en') {
+        stage1 = voices.filter(voice => voice.lang === 'en-US');
+    }
+
+    // Finally, look for voices with the same language as the utterance
+
+    if (stage1.length === 0) {
+        stage1 = voices.filter(voice => voice.lang.startsWith(utteranceLanguage));
+    }
+
+    // Stage 2: Prefer voices with default: true
+
+    const defaultVoices = stage1.filter(voice => voice.default);
+    const stage2 = defaultVoices.length > 0 ? defaultVoices : stage1;
+
+    // Stage 3: Prefer voices with localService: true
+
+    const localVoices = stage2.filter(voice => voice.localService);
+    const stage3 = localVoices.length > 0 ? localVoices : stage2;
+
+    // Stage 4: Pick the voice
+
+    if (stage3.length === 0) {
+        return null;
+    } else {
+        return stage3[0];
+    }
 }
 
 export {
@@ -257,7 +307,6 @@ export {
     getStartingPositionFromString,
     isLoopBlock,
     makeDelayedPromise,
-    moveToNextStepDisabled,
-    moveToPreviousStepDisabled,
-    parseLoopLabel
+    parseLoopLabel,
+    selectSpeechSynthesisVoice
 };

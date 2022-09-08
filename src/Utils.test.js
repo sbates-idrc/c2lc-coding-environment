@@ -1,9 +1,8 @@
 // @flow
 
-import { decodeCoordinate, decodeDirection, encodeCoordinate, encodeDirection, extend, isLoopBlock, moveToNextStepDisabled, moveToPreviousStepDisabled, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, focusFirstInNodeList, focusLastInNodeList, generateLoopLabel, parseLoopLabel } from './Utils.js';
+import { decodeCoordinate, decodeDirection, encodeCoordinate, encodeDirection, extend, isLoopBlock, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, focusFirstInNodeList, focusLastInNodeList, generateLoopLabel, parseLoopLabel, selectSpeechSynthesisVoice } from './Utils.js';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import ProgramSequence from './ProgramSequence';
 import { mount, configure } from 'enzyme';
 import { makeTestDiv } from './TestUtils';
 
@@ -28,14 +27,17 @@ test('Test getThemeFromString', () => {
 test('Test getWorldFromString', () => {
     // World names before 0.9 release
     expect(getWorldFromString('default', 'Sketchpad')).toBe('Sketchpad');
-    expect(getWorldFromString('forest', 'Sketchpad')).toBe('Jungle');
+    expect(getWorldFromString('forest', 'Sketchpad')).toBe('Savannah');
     expect(getWorldFromString('space', 'Sketchpad')).toBe('Space');
+
+    // For the 1.5 release, we renamed "Jungle" to "Savannah"
+    expect(getWorldFromString('Jungle', 'Sketchpad')).toBe('Savannah');
 
     expect(getWorldFromString('', 'Sketchpad')).toBe('Sketchpad');
     expect(getWorldFromString(null, 'Sketchpad')).toBe('Sketchpad');
 
     expect(getWorldFromString('DeepOcean', 'Sketchpad')).toBe('DeepOcean');
-    expect(getWorldFromString('Jungle', 'Sketchpad')).toBe('Jungle');
+    expect(getWorldFromString('Savannah', 'Sketchpad')).toBe('Savannah');
     expect(getWorldFromString('Sketchpad', 'Sketchpad')).toBe('Sketchpad');
     expect(getWorldFromString('Space', 'Sketchpad')).toBe('Space');
 });
@@ -223,101 +225,215 @@ test('Test isLoopBlock', () => {
     expect(isLoopBlock('forward1')).toEqual(false);
 });
 
-describe('Test moveToNextStepDisabled and moveToPreviousStepDisabled', () => {
-    test('Single movement', () => {
-        const programSequence = new ProgramSequence(
-            [
-                {block: 'forward1'}
-            ],
-            0,
-            0,
-            new Map()
-        );
-        expect(moveToPreviousStepDisabled(programSequence, 0)).toBe(true);
-        expect(moveToNextStepDisabled(programSequence, 0)).toBe(true);
+describe('selectSpeechSynthesisVoice', () => {
+    describe('Check parameters', () => {
+        const voices = (([
+            {
+                default: true,
+                lang: 'en-US',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            }
+        ]: any): Array<SpeechSynthesisVoice>);
+
+        test('When utteranceLangTag or userLangTag is bad, return null', () => {
+            expect(selectSpeechSynthesisVoice(null, 'en', voices)).toBeNull();
+            expect(selectSpeechSynthesisVoice('',   'en', voices)).toBeNull();
+            expect(selectSpeechSynthesisVoice('a',  'en', voices)).toBeNull();
+            expect(selectSpeechSynthesisVoice('en', null, voices)).toBeNull();
+            expect(selectSpeechSynthesisVoice('en', '',   voices)).toBeNull();
+            expect(selectSpeechSynthesisVoice('en', 'a',  voices)).toBeNull();
+        });
+
+        test('When there are no voices, return null', () => {
+            expect(selectSpeechSynthesisVoice('en', 'en', [])).toBeNull();
+            expect(selectSpeechSynthesisVoice('en', 'en', null)).toBeNull();
+        });
     });
 
-    test('Two movements', () => {
-        const programSequence = new ProgramSequence(
-            [
-                {block: 'forward1'},
-                {block: 'left90'}
-            ],
-            0,
-            0,
-            new Map()
-        );
+    describe('Selection by language', () => {
+        const voices = (([
+            {
+                default: true,
+                lang: 'en-CA',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'en-US',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'fr-CA',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'fr-FR',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            }
+        ]: any): Array<SpeechSynthesisVoice>);
 
-        expect(moveToPreviousStepDisabled(programSequence, 0)).toBe(true);
-        expect(moveToPreviousStepDisabled(programSequence, 1)).toBe(false);
+        test('When available, match the user language', () => {
+            expect(selectSpeechSynthesisVoice('en', 'en-CA', voices)).toBe(voices[0]);
+            expect(selectSpeechSynthesisVoice('en', 'en-US', voices)).toBe(voices[1]);
+            expect(selectSpeechSynthesisVoice('fr', 'fr-CA', voices)).toBe(voices[2]);
+            expect(selectSpeechSynthesisVoice('fr', 'fr-FR', voices)).toBe(voices[3]);
+        });
 
-        expect(moveToNextStepDisabled(programSequence, 0)).toBe(false);
-        expect(moveToNextStepDisabled(programSequence, 1)).toBe(true);
+        test('When utterance is English and user language is English, but we have no matching voice, find en-US', () => {
+            expect(selectSpeechSynthesisVoice('en', 'en-GB', voices)).toBe(voices[1]);
+        });
+
+        test('When utterance is English and user language is not, find en-US', () => {
+            expect(selectSpeechSynthesisVoice('en', 'fr-FR', voices)).toBe(voices[1]);
+        });
+
+        test('When utterance is English, user language is not, and there is no en-US, find the first English', () => {
+            const noEnUSvoices = (([
+                {
+                    default: true,
+                    lang: 'fr-CA',
+                    localService: true,
+                    name: 'Voice',
+                    voiceURI: 'Voice'
+                },
+                {
+                    default: true,
+                    lang: 'fr-FR',
+                    localService: true,
+                    name: 'Voice',
+                    voiceURI: 'Voice'
+                },
+                {
+                    default: true,
+                    lang: 'en-CA',
+                    localService: true,
+                    name: 'Voice',
+                    voiceURI: 'Voice'
+                },
+                {
+                    default: true,
+                    lang: 'en-GB',
+                    localService: true,
+                    name: 'Voice',
+                    voiceURI: 'Voice'
+                }
+            ]: any): Array<SpeechSynthesisVoice>);
+
+            expect(selectSpeechSynthesisVoice('en', 'fr-FR', noEnUSvoices)).toBe(noEnUSvoices[2]);
+        });
+
+        test('When utterance is not English, and user language is the same, but we have no matching voice, find the first voice for the utterance language', () => {
+            expect(selectSpeechSynthesisVoice('fr', 'fr-CH', voices)).toBe(voices[2]);
+        });
+
+        test('When utterance is not English, and user language is not the same, find the first voice for the utterance language', () => {
+            expect(selectSpeechSynthesisVoice('fr', 'en-US', voices)).toBe(voices[2]);
+        });
+
+        test('When there is no match, return null', () => {
+            const noEnVoices = (([
+                {
+                    default: true,
+                    lang: 'fr-CA',
+                    localService: true,
+                    name: 'Voice',
+                    voiceURI: 'Voice'
+                },
+                {
+                    default: true,
+                    lang: 'fr-FR',
+                    localService: true,
+                    name: 'Voice',
+                    voiceURI: 'Voice'
+                }
+            ]: any): Array<SpeechSynthesisVoice>);
+
+            expect(selectSpeechSynthesisVoice('en', 'fr-FR', noEnVoices)).toBeNull();
+        });
     });
 
-    test('Single empty loop', () => {
-        const programSequence = new ProgramSequence(
-            [
-                {block: 'startLoop', iterations: 1, label: 'A'},
-                {block: 'endLoop', label: 'A'},
-            ],
-            0,
-            0,
-            new Map([['A', 1]])
-        );
+    test('Prefer voices with default: true, then localService: true', () => {
+        const voices = (([
+            {
+                default: false,
+                lang: 'fr-CA',
+                localService: false,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: false,
+                lang: 'fr-FR',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: false,
+                lang: 'en-CA',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'en-CA',
+                localService: false,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'en-US',
+                localService: false,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'en-US',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            }
+        ]: any): Array<SpeechSynthesisVoice>);
 
-        expect(moveToPreviousStepDisabled(programSequence, 0)).toBe(true);
-        expect(moveToPreviousStepDisabled(programSequence, 1)).toBe(true);
-
-        expect(moveToNextStepDisabled(programSequence, 0)).toBe(true);
-        expect(moveToNextStepDisabled(programSequence, 1)).toBe(true);
+        expect(selectSpeechSynthesisVoice('fr', 'fr-CA', voices)).toBe(voices[0]);
+        expect(selectSpeechSynthesisVoice('fr', 'en-US', voices)).toBe(voices[1]);
+        expect(selectSpeechSynthesisVoice('en', 'en-CA', voices)).toBe(voices[3]);
+        expect(selectSpeechSynthesisVoice('en', 'en-US', voices)).toBe(voices[5]);
     });
 
-    test('Loop at start', () => {
-        const programSequence = new ProgramSequence(
-            [
-                {block: 'startLoop', iterations: 1, label: 'A'},
-                {block: 'forward1'},
-                {block: 'endLoop', label: 'A'},
-                {block: 'forward1'}
-            ],
-            0,
-            0,
-            new Map([['A', 1]])
-        );
+    test('When there are multiple matches, pick the first', () => {
+        const voices = (([
+            {
+                default: true,
+                lang: 'en-US',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'en-US',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            }
+        ]: any): Array<SpeechSynthesisVoice>);
 
-        expect(moveToPreviousStepDisabled(programSequence, 0)).toBe(true);
-        expect(moveToPreviousStepDisabled(programSequence, 1)).toBe(false);
-        expect(moveToPreviousStepDisabled(programSequence, 2)).toBe(true);
-        expect(moveToPreviousStepDisabled(programSequence, 3)).toBe(false);
-
-        expect(moveToNextStepDisabled(programSequence, 0)).toBe(false);
-        expect(moveToNextStepDisabled(programSequence, 1)).toBe(false);
-        expect(moveToNextStepDisabled(programSequence, 2)).toBe(false);
-        expect(moveToNextStepDisabled(programSequence, 3)).toBe(true);
-    });
-
-    test('Loop at end', () => {
-        const programSequence = new ProgramSequence(
-            [
-                {block: 'forward1'},
-                {block: 'startLoop', iterations: 1, label: 'A'},
-                {block: 'forward1'},
-                {block: 'endLoop', label: 'A'}
-            ],
-            0,
-            0,
-            new Map([['A', 1]])
-        );
-
-        expect(moveToPreviousStepDisabled(programSequence, 0)).toBe(true);
-        expect(moveToPreviousStepDisabled(programSequence, 1)).toBe(false);
-        expect(moveToPreviousStepDisabled(programSequence, 2)).toBe(false);
-        expect(moveToPreviousStepDisabled(programSequence, 3)).toBe(false);
-
-        expect(moveToNextStepDisabled(programSequence, 0)).toBe(false);
-        expect(moveToNextStepDisabled(programSequence, 1)).toBe(true);
-        expect(moveToNextStepDisabled(programSequence, 2)).toBe(false);
-        expect(moveToNextStepDisabled(programSequence, 3)).toBe(true);
+        expect(selectSpeechSynthesisVoice('en', 'en-US', voices)).toBe(voices[0]);
     });
 });

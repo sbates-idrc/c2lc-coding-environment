@@ -7,8 +7,10 @@ import { Button } from 'react-bootstrap';
 import { IntlProvider } from 'react-intl';
 import AudioManagerImpl from './AudioManagerImpl';
 import ActionPanel from './ActionPanel';
+import AddNode from './AddNode';
 import AriaDisablingButton from './AriaDisablingButton';
 import CharacterState from './CharacterState';
+import CommandBlock from './CommandBlock';
 import FocusTrapManager from './FocusTrapManager';
 import ProgramSequence from './ProgramSequence';
 import SceneDimensions from './SceneDimensions';
@@ -39,7 +41,10 @@ const defaultProgramBlockEditorProps = {
     addNodeExpandedMode: false,
     theme: 'default',
     disallowedActions: {},
-    world: 'Sketchpad'
+    world: 'Sketchpad',
+    scrollRightPaddingPx: 0,
+    scrollLeftPaddingPx: 0,
+    scrollTimeThresholdMs: 0
 };
 
 function createMountProgramBlockEditor(props) {
@@ -160,6 +165,14 @@ function getProgramSequenceContainer(programBlockEditorWrapper) {
     return programBlockEditorWrapper.find('.ProgramBlockEditor__program-sequence-scroll-container').get(0);
 }
 
+function hasLoopContainerActiveClass(wrapper) {
+    return wrapper.hasClass('ProgramBlockEditor__loopContainer--active');
+}
+
+function hasLoopContainerActiveOutlineClass(wrapper) {
+    return wrapper.hasClass('ProgramBlockEditor__loopContainer-active-outline');
+}
+
 describe('Program rendering', () => {
     test('Blocks should be rendered for the test program', () => {
         expect.assertions(5);
@@ -193,6 +206,145 @@ describe('Program rendering', () => {
         wrapper.setProps({ runningState: 'stopped' });
         expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('2');
     });
+    test('Loop blocks should be wrapped in a container', () => {
+        const { wrapper } = createMountProgramBlockEditor({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'forward1', cache: new Map([
+                        ['containingLoopLabel', 'A'],
+                        ['containingLoopPosition', 1]
+                    ])},
+                    {block: 'startLoop', label: 'B', iterations: 2, cache: new Map([
+                        ['containingLoopLabel', 'A'],
+                        ['containingLoopPosition', 2]
+                    ])},
+                    {block: 'left45', cache: new Map([
+                        ['containingLoopLabel', 'B'],
+                        ['containingLoopPosition', 3]
+                    ])},
+                    {block: 'endLoop', label: 'B', cache: new Map([
+                        ['containingLoopLabel', 'A'],
+                        ['containingLoopPosition', 4]
+                    ])},
+                    {block: 'endLoop', label: 'A'},
+                    {block: 'right45'}
+                ],
+                0,
+                0,
+                new Map([['A', 2], ['B', 2]])
+            )
+        });
+
+        const nodes = wrapper.findWhere((node) => {
+            return node.hasClass('ProgramBlockEditor__loopContainer')
+                || node.type() === CommandBlock
+                || node.type() === AddNode;
+        });
+
+        expect(nodes.length).toBe(17);
+
+        // 0: AddNode
+        expect(nodes.at(0).type()).toBe(AddNode);
+        expect(nodes.at(0).prop('programStepNumber')).toBe(0);
+
+        // 1: loopContainer for loop A
+        expect(nodes.at(1).type()).toBe('div');
+        expect(nodes.at(1).hasClass('ProgramBlockEditor__loopContainer')).toBe(true);
+        expect(nodes.at(1).hasClass('ProgramBlockEditor__loopContainer--nested')).toBe(false);
+
+        // 2: startLoop A
+        expect(nodes.at(2).type()).toBe(CommandBlock);
+        expect(nodes.at(2).prop('data-stepnumber')).toBe(0);
+        expect(nodes.at(2).prop('data-command')).toBe('startLoop');
+        expect(nodes.at(2).prop('loopLabel')).toBe('A');
+
+        // 3: AddNode
+        expect(nodes.at(3).type()).toBe(AddNode);
+        expect(nodes.at(3).prop('programStepNumber')).toBe(1);
+
+        // 4: forward1
+        expect(nodes.at(4).type()).toBe(CommandBlock);
+        expect(nodes.at(4).prop('data-stepnumber')).toBe(1);
+        expect(nodes.at(4).prop('data-command')).toBe('forward1');
+
+        // 5: AddNode
+        expect(nodes.at(5).type()).toBe(AddNode);
+        expect(nodes.at(5).prop('programStepNumber')).toBe(2);
+
+        // 6: loopContainer for loop B
+        expect(nodes.at(6).type()).toBe('div');
+        expect(nodes.at(6).hasClass('ProgramBlockEditor__loopContainer')).toBe(true);
+        expect(nodes.at(6).hasClass('ProgramBlockEditor__loopContainer--nested')).toBe(true);
+
+        // 7: startLoop B
+        expect(nodes.at(7).type()).toBe(CommandBlock);
+        expect(nodes.at(7).prop('data-stepnumber')).toBe(2);
+        expect(nodes.at(7).prop('data-command')).toBe('startLoop');
+        expect(nodes.at(7).prop('loopLabel')).toBe('B');
+
+        // 8: AddNode
+        expect(nodes.at(8).type()).toBe(AddNode);
+        expect(nodes.at(8).prop('programStepNumber')).toBe(3);
+
+        // 9: left45
+        expect(nodes.at(9).type()).toBe(CommandBlock);
+        expect(nodes.at(9).prop('data-stepnumber')).toBe(3);
+        expect(nodes.at(9).prop('data-command')).toBe('left45');
+
+        // 10: AddNode
+        expect(nodes.at(10).type()).toBe(AddNode);
+        expect(nodes.at(10).prop('programStepNumber')).toBe(4);
+
+        // 11: endLoop B
+        expect(nodes.at(11).type()).toBe(CommandBlock);
+        expect(nodes.at(11).prop('data-stepnumber')).toBe(4);
+        expect(nodes.at(11).prop('data-command')).toBe('endLoop');
+
+        // 12: AddNode
+        expect(nodes.at(12).type()).toBe(AddNode);
+        expect(nodes.at(12).prop('programStepNumber')).toBe(5);
+
+        // 13: endLoop A
+        expect(nodes.at(13).type()).toBe(CommandBlock);
+        expect(nodes.at(13).prop('data-stepnumber')).toBe(5);
+        expect(nodes.at(13).prop('data-command')).toBe('endLoop');
+
+        // 14: AddNode
+        expect(nodes.at(14).type()).toBe(AddNode);
+        expect(nodes.at(14).prop('programStepNumber')).toBe(6);
+
+        // 15: right45
+        expect(nodes.at(15).type()).toBe(CommandBlock);
+        expect(nodes.at(15).prop('data-stepnumber')).toBe(6);
+        expect(nodes.at(15).prop('data-command')).toBe('right45');
+
+        // 16: AddNode
+        expect(nodes.at(16).type()).toBe(AddNode);
+        expect(nodes.at(16).prop('programStepNumber')).toBe(7);
+
+        // Check that the loop A contents are contained in the loop A container
+        expect(nodes.at(1).contains(nodes.get(2))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(3))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(4))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(5))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(6))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(12))).toBe(true);
+        expect(nodes.at(1).contains(nodes.get(13))).toBe(true);
+
+        // Check that the loop B contents are contained in the loop B container
+        expect(nodes.at(6).contains(nodes.get(7))).toBe(true);
+        expect(nodes.at(6).contains(nodes.get(8))).toBe(true);
+        expect(nodes.at(6).contains(nodes.get(9))).toBe(true);
+        expect(nodes.at(6).contains(nodes.get(10))).toBe(true);
+        expect(nodes.at(6).contains(nodes.get(11))).toBe(true);
+
+        // Check that the remaining nodes are outside the loop A container
+        expect(nodes.at(1).contains(nodes.get(0))).toBe(false);
+        expect(nodes.at(1).contains(nodes.get(14))).toBe(false);
+        expect(nodes.at(1).contains(nodes.get(15))).toBe(false);
+        expect(nodes.at(1).contains(nodes.get(16))).toBe(false);
+    });
 });
 
 test('When a step is clicked, action panel should render next to the step', () => {
@@ -211,6 +363,114 @@ test('When a step is clicked, action panel should render next to the step', () =
         // $FlowFixMe: The flow-typed definitions for enzyme introduce a type-checking error here.
         expect(actionPanelContainer.contains(ActionPanel)).toBe(true);
     }
+});
+
+test('Loop container should have focus style when its start or end loop block is focused', () => {
+    expect.assertions(3);
+    const { wrapper } = createMountProgramBlockEditor({
+        programSequence: new ProgramSequence(
+            [
+                {block: 'startLoop', label: 'A', iterations: 2},
+                {block: 'endLoop', label: 'A'}
+            ],
+            0,
+            0,
+            new Map([['A', 2]])
+        )
+    });
+    expect(wrapper.html()).not.toContain('ProgramBlockEditor__loopContainer--focused');
+    const startLoopBlock = getProgramBlockAtPosition(wrapper, 0);
+    startLoopBlock.simulate('focus');
+    expect(wrapper.html()).toContain('ProgramBlockEditor__loopContainer--focused');
+    startLoopBlock.simulate('blur');
+    expect(wrapper.html()).not.toContain('ProgramBlockEditor__loopContainer--focused');
+});
+
+describe('Active loop container highlight', () => {
+    test.each([
+        [ 0, false, false, false, false, false, false ],
+        [ 1, true,  true,  false, false, false, false ],
+        [ 2, true,  true,  false, false, false, false ],
+        [ 3, true,  false, true,  true,  false, false ],
+        [ 4, true,  false, true,  true,  false, false ],
+        [ 5, true,  false, true,  true,  false, false ],
+        [ 6, true,  true,  false, false, false, false ],
+        [ 7, false, false, false, false, false, false ],
+        [ 8, false, false, false, false, true,  true  ],
+        [ 9, false, false, false, false, true,  true  ]
+    ]) ('Loop container should have active style when the program is running and the program counter is within the container; and outline style on the closet loop',
+        (programCounter, aActive, aOutline, bActive, bOutline, cActive, cOutline) => {
+            const { wrapper } = createMountProgramBlockEditor({
+                runningState: 'running',
+                programSequence: new ProgramSequence(
+                    [
+                        {block: 'forward1'},
+                        {block: 'startLoop', label: 'A', iterations: 2},
+                        {block: 'forward1'},
+                        {block: 'startLoop', label: 'B', iterations: 2},
+                        {block: 'forward1'},
+                        {block: 'endLoop', label: 'B'},
+                        {block: 'endLoop', label: 'A'},
+                        {block: 'forward1'},
+                        {block: 'startLoop', label: 'C', iterations: 2},
+                        {block: 'endLoop', label: 'C'}
+                    ],
+                    programCounter,
+                    0,
+                    new Map([['A', 2], ['B', 2], ['C', 2]])
+                )
+            });
+            const loopContainers = wrapper.find('.ProgramBlockEditor__loopContainer');
+            expect(loopContainers.length).toBe(3);
+            // Loop A
+            expect(hasLoopContainerActiveClass(loopContainers.at(0))).toBe(aActive);
+            expect(hasLoopContainerActiveOutlineClass(loopContainers.at(0))).toBe(aOutline);
+            // Loop B
+            expect(hasLoopContainerActiveClass(loopContainers.at(1))).toBe(bActive);
+            expect(hasLoopContainerActiveOutlineClass(loopContainers.at(1))).toBe(bOutline);
+            // Loop C
+            expect(hasLoopContainerActiveClass(loopContainers.at(2))).toBe(cActive);
+            expect(hasLoopContainerActiveOutlineClass(loopContainers.at(2))).toBe(cOutline);
+        }
+    );
+    test('Loop container should have active style when the program is paused and the program counter is within the container', () => {
+        const { wrapper } = createMountProgramBlockEditor({
+            runningState: 'paused',
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'endLoop', label: 'A'},
+                    {block: 'forward1'}
+                ],
+                0,
+                0,
+                new Map([['A', 2]])
+            )
+        });
+        const loopContainers = wrapper.find('.ProgramBlockEditor__loopContainer');
+        expect(loopContainers.length).toBe(1);
+        expect(hasLoopContainerActiveClass(loopContainers.at(0))).toBe(true);
+        expect(hasLoopContainerActiveOutlineClass(loopContainers.at(0))).toBe(true);
+    });
+    test('Loop container should not have active style when the program is not running', () => {
+        const { wrapper } = createMountProgramBlockEditor({
+            runningState: 'stopped',
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'endLoop', label: 'A'},
+                    {block: 'forward1'}
+                ],
+                0,
+                0,
+                new Map([['A', 2]])
+            )
+        });
+        const loopContainers = wrapper.find('.ProgramBlockEditor__loopContainer');
+        expect(loopContainers.length).toBe(1);
+        expect(hasLoopContainerActiveClass(loopContainers.at(0))).toBe(false);
+        expect(hasLoopContainerActiveOutlineClass(loopContainers.at(0))).toBe(false);
+    });
 });
 
 describe('The expand add node toggle switch should be configurable via properties', () => {
@@ -517,26 +777,44 @@ describe('Delete All button can be disabled', () => {
     });
 });
 
-describe('Autoscroll to show a step after the active program step', () => {
+describe('Autoscroll to show the active program step', () => {
     test('When active program step number is 0, scroll to the beginning of the container', () => {
-        expect.assertions(3);
+        expect.assertions(2);
         const mockScrollTo = jest.fn();
         const { wrapper } = createMountProgramBlockEditor({runningState: 'running'});
         getProgramSequenceContainer(wrapper).ref.current.scrollTo = mockScrollTo;
 
         wrapper.setProps({
-            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 0, 0, new Map())
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'forward1'},
+                    {block: 'left45'},
+                    {block: 'forward1'},
+                    {block: 'left45'}
+                ],
+                0,
+                0,
+                new Map()
+            )
         });
 
         expect(mockScrollTo.mock.calls.length).toBe(1);
-        // mock.calls[0][0] for x position, [0][1] for y position
-        expect(mockScrollTo.mock.calls[0][0]).toBe(0);
-        expect(mockScrollTo.mock.calls[0][1]).toBe(0);
+        expect(mockScrollTo.mock.calls[0][0]).toStrictEqual({
+            left: 0,
+            behavior: 'smooth'
+        });
     });
-    test('When a step after active program block is outside of the container, on the right', () => {
+    test('When the active program block is outside of the container, on the right', () => {
         expect.assertions(1);
 
-        const { wrapper } = createMountProgramBlockEditor({runningState: 'running'});
+        const mockScrollTo = jest.fn();
+
+        const scrollRightPaddingPx = 128;
+
+        const { wrapper } = createMountProgramBlockEditor({
+            runningState: 'running',
+            scrollRightPaddingPx
+        });
 
         // Set the container ref object to a custom object with just enough
         // of the DOM API implemented to support the scroll logic
@@ -548,13 +826,14 @@ describe('Autoscroll to show a step after the active program step', () => {
                 };
             },
             clientWidth: 1000,
-            scrollLeft: 200
+            scrollLeft: 200,
+            scrollTo: mockScrollTo
         };
 
-        // Set the location of the next block
-        const nextProgramStep = getProgramBlockAtPosition(wrapper, 3);
+        // Set the location of the active block
+        const activeProgramStep = getProgramBlockAtPosition(wrapper, 2);
         // $FlowFixMe: Flow complains that getBoundingClientRect is not writable
-        nextProgramStep.getDOMNode().getBoundingClientRect = () => {
+        activeProgramStep.getDOMNode().getBoundingClientRect = () => {
             return {
                 left: 2000,
                 right: 2300
@@ -563,16 +842,35 @@ describe('Autoscroll to show a step after the active program step', () => {
 
         // Trigger a scroll
         wrapper.setProps({
-            runningState: 'running',
-            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 2, 0, new Map())
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'forward1'},
+                    {block: 'left45'},
+                    {block: 'forward1'},
+                    {block: 'left45'}
+                ],
+                2,
+                0,
+                new Map()
+            )
         });
 
-        expect(programSequenceContainer.ref.current.scrollLeft).toBe(200 + 2300 - 100 - 1000);
+        expect(mockScrollTo.mock.calls[0][0]).toStrictEqual({
+            left: 200 + 2300 + scrollRightPaddingPx - 100 - 1000,
+            behavior: 'smooth'
+        });
     });
-    test('When a step after active program block is outside of the container, on the left', () => {
+    test('When the active program block is outside of the container, on the left', () => {
         expect.assertions(1);
 
-        const { wrapper } = createMountProgramBlockEditor({runningState: 'running'});
+        const mockScrollTo = jest.fn();
+
+        const scrollLeftPaddingPx = 128;
+
+        const { wrapper } = createMountProgramBlockEditor({
+            runningState: 'running',
+            scrollLeftPaddingPx
+        });
 
         // Set the container ref object to a custom object with just enough
         // of the DOM API implemented to support the scroll logic
@@ -584,13 +882,14 @@ describe('Autoscroll to show a step after the active program step', () => {
                 };
             },
             clientWidth: 1000,
-            scrollLeft: 2000
+            scrollLeft: 2000,
+            scrollTo: mockScrollTo
         };
 
-        // Set the location of the next block
-        const nextProgramStep = getProgramBlockAtPosition(wrapper, 3);
+        // Set the location of the active block
+        const activeProgramStep = getProgramBlockAtPosition(wrapper, 2);
         // $FlowFixMe: Flow complains that getBoundingClientRect is not writable
-        nextProgramStep.getDOMNode().getBoundingClientRect = () => {
+        activeProgramStep.getDOMNode().getBoundingClientRect = () => {
             return {
                 left: -200,
                 right: -100
@@ -599,48 +898,56 @@ describe('Autoscroll to show a step after the active program step', () => {
 
         // Trigger a scroll
         wrapper.setProps({
-            runningState: 'running',
-            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 2, 0, new Map())
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'forward1'},
+                    {block: 'left45'},
+                    {block: 'forward1'},
+                    {block: 'left45'}
+                ],
+                2,
+                0,
+                new Map()
+            )
         });
 
-        expect(programSequenceContainer.ref.current.scrollLeft).toBe(2000 - 100 - 200);
+        expect(mockScrollTo.mock.calls[0][0]).toStrictEqual({
+            left: 2000 - 200 - scrollLeftPaddingPx - 100,
+            behavior: 'smooth'
+        });
     });
-    test('When active program block is the last program block, autoscroll to the last add node', () => {
-        expect.assertions(1);
+    test('When runningState changes to running, use instant scrolling', () => {
+        expect.assertions(2);
 
-        const { wrapper } = createMountProgramBlockEditor();
+        const mockScrollTo = jest.fn();
 
-        // Set the container ref object to a custom object with just enough
-        // of the DOM API implemented to support the scroll logic
-        const programSequenceContainer = getProgramSequenceContainer(wrapper);
-        programSequenceContainer.ref.current = {
-            getBoundingClientRect: () => {
-                return {
-                    left : 100
-                };
-            },
-            clientWidth: 1000,
-            scrollLeft: 2000
-        };
-
-        // Set the last add node location
-        const lastAddNode = getAddNodeButtonAtPosition(wrapper, 0);
-        // $FlowFixMe: Flow complains that getBoundingClientRect is not writable
-        lastAddNode.getDOMNode().getBoundingClientRect = () => {
-            return {
-                left: -200,
-                right: -100
-            };
-        };
-
-        // Trigger a scroll
-        wrapper.setProps({
-            runningState: 'running',
-            programSequence: new ProgramSequence([{block: 'forward1'}, {block: 'left45'}, {block: 'forward1'}, {block: 'left45'}], 3, 0, new Map())
+        const { wrapper } = createMountProgramBlockEditor({
+            runningState: 'stopped',
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'forward1'},
+                    {block: 'left45'},
+                    {block: 'forward1'},
+                    {block: 'left45'}
+                ],
+                0,
+                0,
+                new Map()
+            )
         });
 
-        expect(programSequenceContainer.ref.current.scrollLeft).toBe(2000 - 100 - 200);
-    })
+        getProgramSequenceContainer(wrapper).ref.current.scrollTo = mockScrollTo;
+
+        wrapper.setProps({
+            runningState: 'running'
+        });
+
+        expect(mockScrollTo.mock.calls.length).toBe(1);
+        expect(mockScrollTo.mock.calls[0][0]).toStrictEqual({
+            left: 0,
+            behavior: 'instant'
+        });
+    });
 });
 
 test('focusCommandBlockAfterUpdate', () => {

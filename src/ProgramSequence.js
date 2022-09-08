@@ -54,13 +54,9 @@ export default class ProgramSequence {
         return false;
     }
 
-    currentStepIsControlBlock(): boolean {
-        const block = this.program[this.programCounter];
-        if (block) {
-            return block.block === 'startLoop' || block.block === 'endLoop';
-        } else {
-            return false;
-        }
+    stepIsEndLoopBlock(index: number): boolean {
+        const block = this.program[index];
+        return block != null && block.block === 'endLoop';
     }
 
     getMatchingLoopBlockIndex(index: number): ?number {
@@ -86,6 +82,22 @@ export default class ProgramSequence {
             }
         }
         return matchingBlockIndex;
+    }
+
+    areMatchingLoopBlocks(index1: number, index2: number) {
+        const block1 = this.program[index1];
+        if (block1 != null) {
+            if (block1.block === 'startLoop') {
+                const block2 = this.program[index2];
+                return block2 != null && block2.block === 'endLoop'
+                    && block1.label === block2.label;
+            } else if (block1.block === 'endLoop') {
+                const block2 = this.program[index2];
+                return block2 != null && block2.block === 'startLoop'
+                    && block1.label === block2.label;
+            }
+        }
+        return false;
     }
 
     static makeProgramSequenceFromParserResult(parserResult: ProgramParserResult) {
@@ -189,8 +201,79 @@ export default class ProgramSequence {
         );
     }
 
-    incrementProgramCounter(): ProgramSequence {
-        return new ProgramSequence(this.program, this.programCounter + 1, this.loopCounter, this.loopIterationsLeft);
+    advanceProgramCounter(advancePastEmptyLoopEntirely: boolean): ProgramSequence {
+        let newProgramCounter = this.programCounter;
+        const newLoopIterationsLeft = new Map(this.loopIterationsLeft);
+
+        // We don't intend for the programCounter to ever be on an 'endLoop'
+        // block, but we might have a bug that would cause that case to happen
+        // and we want to handle it gracefully
+        if (this.program[newProgramCounter].block !== 'endLoop') {
+            newProgramCounter += 1;
+        }
+
+        while (newProgramCounter < this.getProgramLength()
+                && this.program[newProgramCounter].block === 'endLoop') {
+            const label = this.program[newProgramCounter].label;
+            if (label != null) {
+                const currentIterationsLeft = newLoopIterationsLeft.get(label);
+                if (currentIterationsLeft != null) {
+                    // If the number of iterations left for the loop is > 0,
+                    // decrement it
+                    let newIterationsLeft = currentIterationsLeft;
+                    if (currentIterationsLeft > 0) {
+                        newIterationsLeft = currentIterationsLeft - 1
+                        newLoopIterationsLeft.set(label, newIterationsLeft);
+                    }
+                    if (newIterationsLeft > 0) {
+                        // Look for startLoop blocks
+                        for (let i = newProgramCounter; i > -1; i--) {
+                            const block = this.program[i];
+                            if (block.block === 'startLoop') {
+                                // Check if the startLoop has same label as the endLoop
+                                if (block.label != null && block.label === label) {
+                                    // The startLoop block has the same label
+                                    // as the endLoop block: we have found the
+                                    // corresponding startLoop block
+                                    if (advancePastEmptyLoopEntirely && i === newProgramCounter - 1) {
+                                        newIterationsLeft = 0
+                                        newLoopIterationsLeft.set(label, newIterationsLeft);
+                                        newProgramCounter += 1;
+                                        break;
+                                    } else {
+                                        // Set the newProgramCounter to the start of the loop
+                                        newProgramCounter = i;
+                                        break;
+                                    }
+                                } else {
+                                    // When the startLoop block has a different
+                                    // label than the endLoop block, we have
+                                    // found a nested loop:
+                                    // reset its iterationsLeft
+                                    const nestedLoopLabel = this.program[i].label;
+                                    const nestLoopIterations = this.program[i].iterations;
+                                    if (nestedLoopLabel != null && nestLoopIterations != null) {
+                                        newLoopIterationsLeft.set(nestedLoopLabel, nestLoopIterations);
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // When there's no more iterations left,
+                        // increment the newProgramCounter
+                        newProgramCounter += 1;
+                    }
+                } else {
+                    // Iterations left is missing for the loop, we can't
+                    // process it
+                    break;
+                }
+            }
+        }
+        return this.updateProgramCounterAndLoopIterationsLeft(
+            newProgramCounter,
+            newLoopIterationsLeft
+        );
     }
 
     overwriteStep(index: number, command: string): ProgramSequence {
@@ -277,107 +360,150 @@ export default class ProgramSequence {
     }
 
     deleteStep(index: number): ProgramSequence {
-        const program = this.program.slice();
-        const programBlock = program[index];
-        let programCounter = this.programCounter;
-        if (programBlock != null && programBlock.block === 'startLoop') {
-            const loopLabel = programBlock.label;
-            for (let i = index + 1; i < program.length; i++) {
-                // Remove corresponding endLoop block
-                if (program[i].block === 'endLoop') {
-                    if (program[i].label != null && program[i].label === loopLabel) {
-                        program.splice(i, 1);
-                        break;
-                    }
+        if (index >= this.getProgramLength()) {
+            return this;
+        }
+
+        const newProgram = this.program.slice();
+        let newProgramCounter = this.programCounter;
+        let newLoopIterationsLeft = this.loopIterationsLeft;
+
+        // If we are deleting the block that the programCounter is on,
+        // or the corresponding loop block for the block that the
+        // programCounter is on, we first advance the programCounter to what
+        // would have happened after the block we are deleting
+
+        if (index === this.programCounter
+                || this.areMatchingLoopBlocks(index, this.programCounter)) {
+            const advancedProgramSequence = this.advanceProgramCounter(true);
+            newProgramCounter = advancedProgramSequence.programCounter;
+            newLoopIterationsLeft = advancedProgramSequence.loopIterationsLeft;
+        }
+
+        let numDeletedBeforePC = 0;
+
+        if (index < newProgramCounter) {
+            numDeletedBeforePC = 1;
+        }
+
+        const block = newProgram[index];
+        if (block != null && block.block === 'startLoop') {
+            const matchingBlockIndex = this.getMatchingLoopBlockIndex(index);
+            if (matchingBlockIndex != null) {
+                if (matchingBlockIndex < newProgramCounter) {
+                    numDeletedBeforePC += 1;
                 }
+                newProgram.splice(matchingBlockIndex, 1);
+                newProgram.splice(index, 1);
             }
-            program.splice(index, 1);
-        } else if (programBlock != null && programBlock.block === 'endLoop') {
-            const loopLabel = programBlock.label;
-            program.splice(index, 1);
-            for (let i = 0; i < index; i++) {
-                // Remove corresponding startLoop block
-                if (program[i].block === 'startLoop') {
-                    if (program[i].label != null && program[i].label === loopLabel) {
-                        program.splice(i, 1);
-                        programCounter = i;
-                        break;
-                    }
+        } else if (block != null && block.block === 'endLoop') {
+            const matchingBlockIndex = this.getMatchingLoopBlockIndex(index);
+            if (matchingBlockIndex != null) {
+                if (matchingBlockIndex < newProgramCounter) {
+                    numDeletedBeforePC += 1;
                 }
+                newProgram.splice(index, 1);
+                newProgram.splice(matchingBlockIndex, 1);
             }
         } else {
-            program.splice(index, 1);
-            programCounter--;
+            newProgram.splice(index, 1);
         }
-        if (index < this.programCounter && this.program.length > 1) {
-            return this.updateProgramAndProgramCounter(program, programCounter);
-        } else {
-            return this.updateProgram(program);
-        }
+
+        return this.updateProgramSequence(
+            newProgram,
+            newProgramCounter - numDeletedBeforePC,
+            this.loopCounter,
+            newLoopIterationsLeft
+        );
     }
 
-    // Requirements on indexFrom and indexTo:
-    //     If moving a startLoop
-    //         If moving left
-    //             Then indexTo must === indexFrom - 1
-    //         If moving right
-    //             Then indexTo must === index of endLoop + 1
-    //     If moving an EndLoop
-    //         If moving left
-    //             Then indexTo must === index of startLoop - 1
-    //         If moving right
-    //             Then indexTo must === indexFrom + 1
-    swapStep(indexFrom: number, indexTo: number): ProgramSequence {
-        const program = this.program.slice();
-        if (program[indexFrom] != null && program[indexTo] != null) {
-            const swappedStep = program[indexTo];
-            const currentStep = program[indexFrom];
-            if (currentStep.block === 'startLoop') {
-                const loopLabel = currentStep.label;
-                let loopContent = [];
-                for (let i = indexFrom + 1; i < program.length; i++) {
-                    if (program[i].block === 'endLoop') {
-                        if (program[i].label != null && program[i].label === loopLabel) {
-                            loopContent = program.slice(indexFrom, i + 1);
-                            break;
-                        }
-                    }
-                }
-                // Move to left
-                if (indexFrom > indexTo) {
-                    program.splice(indexTo, loopContent.length, ...loopContent);
-                    program[indexTo + loopContent.length] = swappedStep;
-                // Move to right
-                } else if (indexFrom < indexTo) {
-                    program[indexFrom] = swappedStep;
-                    program.splice(indexFrom + 1, loopContent.length, ...loopContent);
-                }
-            } else if (currentStep.block === 'endLoop') {
-                const loopLabel = currentStep.label;
-                let loopContent = [];
-                for (let i = 0; i < indexFrom; i++) {
-                    if (program[i].block === 'startLoop') {
-                        if (program[i].label != null && program[i].label === loopLabel) {
-                            loopContent = program.slice(i, indexFrom + 1);
-                            break;
-                        }
-                    }
-                }
-                // Move to left
-                if (indexFrom > indexTo) {
-                    program.splice(indexTo, loopContent.length, ...loopContent);
-                    program[indexFrom] = swappedStep;
-                // Move to right
-                } else if (indexFrom < indexTo) {
-                    program[indexFrom - loopContent.length + 1] = swappedStep;
-                    program.splice(indexFrom - loopContent.length + 2, loopContent.length, ...loopContent);
-                }
-            } else {
-                program[indexFrom] = program[indexTo];
-                program[indexTo] = currentStep;
+    moveToNextStepDisabled(indexFrom: number): boolean {
+        if (this.program.length === 0) {
+            return true;
+        }
+        const programLastIndex = this.program.length - 1;
+        if (indexFrom < 0 || indexFrom >= programLastIndex) {
+            return true;
+        }
+        const { block, label } = this.program[indexFrom];
+        if (block === 'startLoop') {
+            const lastProgramStep = this.program[programLastIndex];
+            if (lastProgramStep.block === 'endLoop' && lastProgramStep.label === label) {
+                return true;
             }
         }
-        return this.updateProgram(program);
+        return false;
+    }
+
+    moveToPreviousStepDisabled(indexFrom: number): boolean {
+        if (this.program.length === 0) {
+            return true;
+        }
+        if (indexFrom <= 0 || indexFrom >= this.program.length) {
+            return true;
+        }
+        const { block, label } = this.program[indexFrom];
+        if (block === 'endLoop') {
+            const firstProgramStep = this.program[0];
+            if (firstProgramStep.block === 'startLoop' && firstProgramStep.label === label) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    moveStepNext(indexFrom: number): ProgramSequence {
+        if (this.moveToNextStepDisabled(indexFrom)) {
+            return this;
+        }
+
+        const newProgram = this.program.slice();
+
+        if (this.program[indexFrom] != null && this.program[indexFrom].block === 'startLoop') {
+            const endLoopIndex = this.getMatchingLoopBlockIndex(indexFrom);
+            if (endLoopIndex != null) {
+                newProgram.splice(indexFrom, 0, this.program[endLoopIndex + 1]);
+                newProgram.splice(endLoopIndex + 2, 1);
+            }
+        } else if (this.program[indexFrom] != null && this.program[indexFrom].block === 'endLoop') {
+            const startLoopIndex = this.getMatchingLoopBlockIndex(indexFrom);
+            if (startLoopIndex != null) {
+                newProgram.splice(startLoopIndex, 0, this.program[indexFrom + 1]);
+                newProgram.splice(indexFrom + 2, 1);
+            }
+        } else {
+            newProgram[indexFrom] = this.program[indexFrom + 1];
+            newProgram[indexFrom + 1] = this.program[indexFrom];
+        }
+
+        return this.updateProgram(newProgram);
+    }
+
+    moveStepPrevious(indexFrom: number): ProgramSequence {
+        if (this.moveToPreviousStepDisabled(indexFrom)) {
+            return this;
+        }
+
+        const newProgram = this.program.slice();
+
+        if (this.program[indexFrom] != null && this.program[indexFrom].block === 'startLoop') {
+            const endLoopIndex = this.getMatchingLoopBlockIndex(indexFrom);
+            if (endLoopIndex != null) {
+                newProgram.splice(endLoopIndex + 1, 0, this.program[indexFrom - 1]);
+                newProgram.splice(indexFrom - 1, 1);
+            }
+        } else if (this.program[indexFrom] != null && this.program[indexFrom].block === 'endLoop') {
+            const startLoopIndex = this.getMatchingLoopBlockIndex(indexFrom);
+            if (startLoopIndex != null) {
+                newProgram.splice(indexFrom + 1, 0, this.program[startLoopIndex - 1]);
+                newProgram.splice(startLoopIndex - 1, 1);
+            }
+        } else {
+            newProgram[indexFrom] = this.program[indexFrom - 1];
+            newProgram[indexFrom - 1] = this.program[indexFrom];
+        }
+
+        return this.updateProgram(newProgram);
     }
 
     usesAction(action: CommandName): boolean {

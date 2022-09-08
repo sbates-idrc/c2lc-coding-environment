@@ -146,7 +146,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '1.4';
+        this.version = '1.5';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -488,6 +488,21 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
+    editingIsDisabled(): boolean {
+        return !(this.state.runningState === 'stopped'
+            || this.state.runningState === 'paused');
+    }
+
+    refreshIsDisabled(): boolean {
+        return this.state.runningState !== 'stopped';
+    }
+
+    // API for Interpreter
+
+    getRunningState(): RunningState {
+        return this.state.runningState;
+    }
+
     setRunningState(runningState: RunningState): void {
         this.setState((state) => {
             // If stop is requested when we are in the 'paused' state,
@@ -500,37 +515,14 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    // API for Interpreter
-
     getProgramSequence(): ProgramSequence {
         return this.state.programSequence;
     }
 
-    getRunningState(): RunningState {
-        return this.state.runningState;
-    }
-
-    editingIsDisabled(): boolean {
-        return !(this.state.runningState === 'stopped'
-            || this.state.runningState === 'paused');
-    }
-
-    incrementProgramCounter(callback: () => void): void {
+    advanceProgramCounter(callback: () => void): void {
         this.setState((state) => {
             return {
-                programSequence: state.programSequence.incrementProgramCounter()
-            }
-        }, callback);
-    }
-
-    refreshIsDisabled(): boolean {
-        return this.state.runningState !== 'stopped';
-    }
-
-    updateProgramCounterAndLoopIterationsLeft(programCounter: number, loopIterationsLeft: Map<string, number>, callback: () => void): void {
-        this.setState((state) => {
-            return {
-                programSequence: state.programSequence.updateProgramCounterAndLoopIterationsLeft(programCounter, loopIterationsLeft)
+                programSequence: state.programSequence.advanceProgramCounter(false)
             }
         }, callback);
     }
@@ -1458,6 +1450,7 @@ export class App extends React.Component<AppProps, AppState> {
                             world={this.state.settings.world}
                             startingX={this.state.startingX}
                             startingY={this.state.startingY}
+                            runningState={this.state.runningState}
                         />
                     </div>
                     <div className="App__world-container">
@@ -1557,6 +1550,9 @@ export class App extends React.Component<AppProps, AppState> {
                             addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
                             theme={this.state.settings.theme}
                             world={this.state.settings.world}
+                            scrollRightPaddingPx={256}
+                            scrollLeftPaddingPx={128}
+                            scrollTimeThresholdMs={400}
                             onChangeProgramSequence={this.handleProgramSequenceChange}
                             onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
                             onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}

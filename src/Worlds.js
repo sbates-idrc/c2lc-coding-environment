@@ -25,16 +25,16 @@ import { ReactComponent as Submarine } from './svg/Submarine.svg';
 import { ReactComponent as SubmarineGray } from './svg/Submarine-gray.svg';
 import { ReactComponent as SubmarineContrast } from './svg/Submarine-contrast.svg';
 
-// Jungle
-import { ReactComponent as Jungle } from './svg/Jungle.svg';
-import { ReactComponent as JungleGray } from './svg/Jungle-gray.svg';
-import { ReactComponent as JungleContrast } from './svg/Jungle-contrast.svg';
-import { ReactComponent as JungleThumbnail } from './svg/JungleThumbnail.svg';
-import { ReactComponent as JungleThumbnailGray } from './svg/JungleThumbnail-gray.svg';
-import { ReactComponent as JungleThumbnailContrast } from './svg/JungleThumbnail-contrast.svg';
-import { ReactComponent as SafariJeep } from './svg/SafariJeep.svg';
-import { ReactComponent as SafariJeepGray } from './svg/SafariJeep-gray.svg';
-import { ReactComponent as SafariJeepContrast } from './svg/SafariJeep-contrast.svg';
+// Haunted House
+import { ReactComponent as Haunted } from './svg/Haunted.svg';
+import { ReactComponent as HauntedGray } from './svg/Haunted-gray.svg';
+import { ReactComponent as HauntedContrast } from './svg/Haunted-contrast.svg';
+import { ReactComponent as HauntedThumbnail } from './svg/HauntedThumbnail.svg';
+import { ReactComponent as HauntedThumbnailGray } from './svg/HauntedThumbnail-gray.svg';
+import { ReactComponent as HauntedThumbnailContrast } from './svg/HauntedThumbnail-contrast.svg';
+import { ReactComponent as Candle } from './svg/Candle.svg';
+import { ReactComponent as CandleGray } from './svg/Candle-gray.svg';
+import { ReactComponent as CandleContrast } from './svg/Candle-contrast.svg';
 
 // Landmarks
 import { ReactComponent as LandmarksWorld } from './svg/LandmarksWorld.svg';
@@ -46,6 +46,28 @@ import { ReactComponent as LandmarksThumbnailContrast } from './svg/LandmarksThu
 import { ReactComponent as Bot } from './svg/Bot.svg';
 import { ReactComponent as BotGray } from './svg/BotGray.svg';
 import { ReactComponent as BotContrast } from './svg/BotContrast.svg';
+
+// Marble
+import { ReactComponent as MarbleWorld } from './svg/MarbleWorld.svg';
+import { ReactComponent as MarbleWorldGray } from './svg/MarbleWorldGray.svg';
+import { ReactComponent as MarbleWorldContrast } from './svg/MarbleWorldContrast.svg';
+import { ReactComponent as MarbleThumbnail } from './svg/MarbleThumbnail.svg';
+import { ReactComponent as MarbleThumbnailGray } from './svg/MarbleThumbnailGray.svg';
+import { ReactComponent as MarbleThumbnailContrast } from './svg/MarbleThumbnailContrast.svg';
+import { ReactComponent as Marble } from './svg/Marble.svg';
+import { ReactComponent as MarbleGray } from './svg/MarbleGray.svg';
+import { ReactComponent as MarbleContrast } from './svg/MarbleContrast.svg';
+
+// Savannah
+import { ReactComponent as Savannah } from './svg/Savannah.svg';
+import { ReactComponent as SavannahGray } from './svg/Savannah-gray.svg';
+import { ReactComponent as SavannahContrast } from './svg/Savannah-contrast.svg';
+import { ReactComponent as SavannahThumbnail } from './svg/SavannahThumbnail.svg';
+import { ReactComponent as SavannahThumbnailGray } from './svg/SavannahThumbnail-gray.svg';
+import { ReactComponent as SavannahThumbnailContrast } from './svg/SavannahThumbnail-contrast.svg';
+import { ReactComponent as SavannahJeep } from './svg/SavannahJeep.svg';
+import { ReactComponent as SavannahJeepGray } from './svg/SavannahJeep-gray.svg';
+import { ReactComponent as SavannahJeepContrast } from './svg/SavannahJeep-contrast.svg';
 
 // Sketchpad
 import { ReactComponent as SketchpadThumbnail } from './svg/SketchpadThumbnail.svg';
@@ -88,8 +110,10 @@ export type WorldProperties = {|
 const worlds: {|
     'Camping': WorldProperties,
     'DeepOcean': WorldProperties,
-    'Jungle': WorldProperties,
+    'Haunted': WorldProperties,
     'Landmarks': WorldProperties,
+    'Marble': WorldProperties,
+    'Savannah': WorldProperties,
     'Sketchpad': WorldProperties,
     'Space': WorldProperties
 |} = {
@@ -224,51 +248,87 @@ const worlds: {|
         startingDirection: 2, // East
         enableFlipCharacter: true
     },
-    'Jungle': {
-        background: Jungle,
-        backgroundGray: JungleGray,
-        backgroundContrast: JungleContrast,
+    'Haunted': {
+        background: Haunted,
+        backgroundGray: HauntedGray,
+        backgroundContrast: HauntedContrast,
         backgroundInfo: {
-            G1: 'giraffe',
-            J1: 'lion',
-            F2: 'giraffe',
-            G2: 'babyGiraffe',
-            A4: 'tree',
-            B4: 'tree',
-            C4: 'tree',
-            E4: 'bush',
-            F4: 'bush',
-            K4: 'tree',
-            L4: 'tree',
-            A5: 'tree',
-            B5: 'tree',
-            H5: 'flamingo',
-            E6: 'babyAlligator',
-            F6: 'babyAlligator',
-            G6: 'pond',
-            H6: 'flamingo',
-            I6: 'pond',
-            J6: 'hippo',
-            K6: 'hippo',
-            C7: 'alligator',
-            D7: 'alligator',
-            E7: 'alligator',
-            F7: 'alligator',
-            G7: 'pond',
-            H7: 'pond',
-            I7: 'pond',
-            J7: 'pond',
-            A8: 'bush',
-            B8: 'bush',
-            L8: 'bush'
+            C1: 'painting',
+            D1: 'painting',
+            E1: 'painting',
+            F1: 'deerSkull',
+            G1: 'deerSkull',
+            H1: 'painting',
+            I1: 'painting',
+            J1: 'painting',
+            A2: 'stairs',
+            B2: 'stairs',
+            D2: 'painting',
+            E2: 'painting',
+            F2: 'painting',
+            G2: 'painting',
+            H2: 'painting',
+            I2: 'painting',
+            J2: 'mirror',
+            A3: 'stairs',
+            B3: 'stairs',
+            C3: 'stairs',
+            J3: 'mirror',
+            A4: 'shelf',
+            B4: 'shelf',
+            C4: 'stairs',
+            D4: 'stairs',
+            E4: 'stairs',
+            F4: 'stairs',
+            G4: 'stairs',
+            H4: 'stairs',
+            A5: 'shelf',
+            B5: 'shelf',
+            C5: 'shelf',
+            D5: 'stairs',
+            E5: 'stairs',
+            F5: 'stairs',
+            G5: 'stairs',
+            H5: 'stairs',
+            I5: 'stairs',
+            J5: 'stairs',
+            K5: 'stairs',
+            A6: 'shelf',
+            B6: 'shelf',
+            C6: 'shelf',
+            E6: 'fireplace',
+            F6: 'fireplace',
+            G6: 'fireplace',
+            H6: 'chair',
+            I6: 'stairs',
+            J6: 'stairs',
+            K6: 'stairs',
+            L6: 'stairs',
+            A7: 'shelf',
+            B7: 'shelf',
+            C7: 'shelf',
+            E7: 'fireplace',
+            F7: 'fireplace',
+            G7: 'fireplace',
+            H7: 'chair',
+            I7: 'stairs',
+            J7: 'stairs',
+            K7: 'stairs',
+            L7: 'stairs',
+            A8: 'shelf',
+            B8: 'shelf',
+            C8: 'shelf',
+            J8: 'stairs',
+            K8: 'stairs',
+            L8: 'stairs'
         },
-        thumbnail: JungleThumbnail,
-        thumbnailDark: JungleThumbnail,
-        thumbnailGray: JungleThumbnailGray,
-        thumbnailContrast: JungleThumbnailContrast,
-        character: SafariJeep,
-        characterGray: SafariJeepGray,
-        characterContrast: SafariJeepContrast,
+        thumbnail: HauntedThumbnail,
+        thumbnailDark: HauntedThumbnail,
+        thumbnailGray: HauntedThumbnailGray,
+        thumbnailContrast: HauntedThumbnailContrast,
+        character: Candle,
+        characterGray: CandleGray,
+        characterContrast: CandleContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
@@ -316,6 +376,123 @@ const worlds: {|
         startingY: 2,
         startingDirection: 2, // East
         enableFlipCharacter: false
+    },
+    'Marble': {
+        background: MarbleWorld,
+        backgroundGray: MarbleWorldGray,
+        backgroundContrast: MarbleWorldContrast,
+        backgroundInfo : {
+            A1: 'bricks',
+            B1: 'bricks',
+            C1: 'bricks',
+            E1: 'bricks',
+            F1: 'bricks',
+            G1: 'bricks',
+            H1: 'bricks',
+            I1: 'bricks',
+            J1: 'bricks',
+            K1: 'bricks',
+            I2: 'bricks',
+            J2: 'bricks',
+            A3: 'bricks',
+            C3: 'bricks',
+            E3: 'bricks',
+            F3: 'bricks',
+            J3: 'bricks',
+            L3: 'bricks',
+            A4: 'bricks',
+            C4: 'bricks',
+            J4: 'bricks',
+            L4: 'bricks',
+            A5: 'bricks',
+            C5: 'bricks',
+            G5: 'bricks',
+            H5: 'bricks',
+            I5: 'bricks',
+            J5: 'bricks',
+            L5: 'bricks',
+            A6: 'bricks',
+            C6: 'bricks',
+            D6: 'bricks',
+            G6: 'bricks',
+            H6: 'bricks',
+            I6: 'bricks',
+            J6: 'bricks',
+            L6: 'bricks',
+            A7: 'bricks',
+            E7: 'bricks',
+            L7: 'bricks',
+            A8: 'bricks',
+            B8: 'bricks',
+            E8: 'bricks',
+            F8: 'bricks',
+            G8: 'bricks',
+            H8: 'bricks',
+            I8: 'bricks',
+            K8: 'bricks',
+            L8: 'bricks'
+        },
+        thumbnail: MarbleThumbnail,
+        thumbnailDark: MarbleThumbnail,
+        thumbnailGray: MarbleThumbnailGray,
+        thumbnailContrast: MarbleThumbnailContrast,
+        character: Marble,
+        characterGray: MarbleGray,
+        characterContrast: MarbleContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: false
+    },
+    'Savannah': {
+        background: Savannah,
+        backgroundGray: SavannahGray,
+        backgroundContrast: SavannahContrast,
+        backgroundInfo: {
+            G1: 'giraffe',
+            J1: 'lion',
+            F2: 'giraffe',
+            G2: 'babyGiraffe',
+            A4: 'tree',
+            B4: 'tree',
+            C4: 'tree',
+            E4: 'bush',
+            F4: 'bush',
+            K4: 'tree',
+            L4: 'tree',
+            A5: 'tree',
+            B5: 'tree',
+            H5: 'flamingo',
+            E6: 'babyAlligator',
+            F6: 'babyAlligator',
+            G6: 'pond',
+            H6: 'flamingo',
+            I6: 'pond',
+            J6: 'hippo',
+            K6: 'hippo',
+            C7: 'alligator',
+            D7: 'alligator',
+            E7: 'alligator',
+            F7: 'alligator',
+            G7: 'pond',
+            H7: 'pond',
+            I7: 'pond',
+            J7: 'pond',
+            A8: 'bush',
+            B8: 'bush',
+            L8: 'bush'
+        },
+        thumbnail: SavannahThumbnail,
+        thumbnailDark: SavannahThumbnail,
+        thumbnailGray: SavannahThumbnailGray,
+        thumbnailContrast: SavannahThumbnailContrast,
+        character: SavannahJeep,
+        characterGray: SavannahJeepGray,
+        characterContrast: SavannahJeepContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
     },
     'Sketchpad': {
         background: null,

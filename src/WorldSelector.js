@@ -36,7 +36,16 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
             selectedWorld: props.currentWorld,
             focusedWorld: null
         }
-        this.availableWorldOptions = ['Sketchpad', 'Space', 'Jungle', 'DeepOcean', 'Camping', 'Landmarks'];
+        this.availableWorldOptions = [
+            'Sketchpad',
+            'Camping',
+            'DeepOcean',
+            'Haunted',
+            'Landmarks',
+            'Marble',
+            'Savannah',
+            'Space'
+        ];
     }
 
     handleOnSelect = (e: Event) => {
@@ -81,8 +90,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
     }
 
     renderWorldOptions = () => {
-        const worldOptionsFirstColumn = [];
-        const worldOptionsSecondColumn = [];
+        const worldOptions = [];
         const numberOfWorlds = this.availableWorldOptions.length;
 
         for (let i = 0; i < numberOfWorlds; i++) {
@@ -116,23 +124,14 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                     </label>
                 </div>
             </div>
-
-            if (i < Math.ceil(numberOfWorlds/2)) {
-                worldOptionsFirstColumn.push(worldOption);
-            } else {
-                worldOptionsSecondColumn.push(worldOption);
-            }
+            worldOptions.push(worldOption);
         }
+
         return (
             <div className='WorldSelector__options'>
-                <div>
-                    {worldOptionsFirstColumn}
-                </div>
-                <div>
-                    {worldOptionsSecondColumn}
-                </div>
+                {worldOptions}
             </div>
-        )
+        );
     }
 
     componentDidUpdate(prevProps: WorldSelectorProps, prevState: WorldSelectorState) {

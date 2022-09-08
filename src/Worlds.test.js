@@ -15,7 +15,7 @@ import { ReactComponent as SketchpadThumbnailDark } from './svg/SketchpadThumbna
 test('isWorldName', () => {
     expect.assertions(7);
     expect(isWorldName('DeepOcean')).toBe(true);
-    expect(isWorldName('Jungle')).toBe(true);
+    expect(isWorldName('Savannah')).toBe(true);
     expect(isWorldName('Sketchpad')).toBe(true)
     expect(isWorldName('Space')).toBe(true);
     expect(isWorldName('')).toBe(false);
@@ -26,7 +26,7 @@ test('isWorldName', () => {
 test('getWorldProperties', () => {
     expect.assertions(4);
     expect(getWorldProperties('DeepOcean')).not.toBeUndefined();
-    expect(getWorldProperties('Jungle')).not.toBeUndefined();
+    expect(getWorldProperties('Savannah')).not.toBeUndefined();
     expect(getWorldProperties('Sketchpad')).not.toBeUndefined();
     expect(getWorldProperties('Space')).not.toBeUndefined();
 });
@@ -40,17 +40,17 @@ test('getWorldCharacter', () => {
 
 test('getWorldThumbnail', () => {
     expect.assertions(5);
+    expect(getWorldThumbnail('dark', 'Sketchpad')).toBe(SketchpadThumbnailDark);
     expect(getWorldThumbnail('light', 'Space')).toBe(SpaceThumbnail);
     expect(getWorldThumbnail('gray', 'Space')).toBe(SpaceThumbnailGray);
     expect(getWorldThumbnail('contrast', 'Space')).toBe(SpaceThumbnailContrast);
     expect(getWorldThumbnail('dark', 'Space')).toBe(SpaceThumbnail);
-    expect(getWorldThumbnail('dark', 'Sketchpad')).toBe(SketchpadThumbnailDark);
 })
 test('getBackgroundInfo', () => {
     expect.assertions(5);
-    expect(getBackgroundInfo('Sketchpad', 'B', '1')).toBe(null);
-    expect(getBackgroundInfo('Jungle', 'G', '1')).toBe('giraffe');
     expect(getBackgroundInfo('DeepOcean', 'I', '7')).toBe('treasure');
+    expect(getBackgroundInfo('Savannah', 'G', '1')).toBe('giraffe');
+    expect(getBackgroundInfo('Sketchpad', 'B', '1')).toBe(null);
     expect(getBackgroundInfo('Space', 'A', '1')).toBe('earth');
     expect(getBackgroundInfo('Space', 'G', '1')).toBe(null);
 });

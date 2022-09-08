@@ -122,7 +122,8 @@
 
 .ProgramBlockEditor__program-sequence-scroll-container {
     border-radius: 0 3px 3px 0px;
-    display: flex;
+    display: grid;
+    grid-template-rows: auto 9rem auto;
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 2;
@@ -134,11 +135,58 @@
 }
 
 .ProgramBlockEditor__program-sequence {
+    grid-row-start: 2;
+    grid-row-end: 3;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     padding-top: 2.5rem;
     padding-bottom: 1rem;
+}
+
+.ProgramBlockEditor__loopContainer {
+    display: flex;
+    align-items: center;
+    border-radius: 50px 50px 50px 50px;
+}
+
+.ProgramBlockEditor__loopContainer--nested {
+    border-radius: 40px 40px 40px 40px;
+    button.command-block.btn-command-block--startLoop {
+        border-radius: 35px 10px 10px 35px;
+        width: 3rem;
+        height: 4.6rem;
+        .command-block-loop-label-container {
+            margin-left: 0.4rem;
+        }
+        .command-block-loop-iterations {
+            width: 2.4em;
+            text-align: center;
+            pointer-events: all;
+            border-radius: 5px;
+            margin-left: 0.4rem;
+        }
+    }
+    button.command-block.btn-command-block--endLoop {
+        border-radius: 10px 35px 35px 10px;
+        width: 3rem;
+        height: 4.6rem;
+    }
+}
+
+.ProgramBlockEditor__loopContainer--focused:not(.ProgramBlockEditor__loopContainer-active-outline) {
+    padding: 0.2rem;
+    z-index: 2;
+    box-shadow: 0 0 0.1px 0.2rem #FFFFFF;
+}
+
+.ProgramBlockEditor__loopContainer--active {
+    z-index: 2;
+    background-color: #3F5574;
+}
+
+.ProgramBlockEditor__loopContainer-active-outline {
+    box-shadow: 0 0 0.1px 0.4rem #FFFFFF;
 }
 
 .ProgramBlockEditor__start-indicator {
@@ -162,7 +210,15 @@
     z-index: 1;
 }
 
-button.ProgramBlockEditor__program-block--active {
+.ProgramBlockEditor__program-block-connector-loop {
+    background-color: #939595;
+    min-width: 0.2rem;
+    height: 0.2rem;
+    position: relative;
+    z-index: 1;
+}
+
+button.ProgramBlockEditor__program-block--active:not(.btn-command-block--startLoop) {
     box-shadow: 0 0 0 6px white;
 }
 
