@@ -5,6 +5,7 @@ import CharacterState from './CharacterState';
 import type {IntlShape} from 'react-intl';
 import {AudioManager} from './types';
 import SceneDimensions from './SceneDimensions';
+import {selectSpeechSynthesisVoice} from './Utils.js';
 
 const SamplerDefs = {
     // The percussion instruments we use actually don't vary their pitch, so we use the same sample at different
@@ -204,6 +205,7 @@ export default class AudioManagerImpl implements AudioManager {
         right90: Sampler,
         right180: Sampler
     };
+    speechSynthesisVoices: Array<SpeechSynthesisVoice>;
 
     constructor(audioEnabled: boolean, announcementsEnabled: boolean, sonificationEnabled: boolean) {
         this.audioEnabled = audioEnabled;
@@ -215,6 +217,9 @@ export default class AudioManagerImpl implements AudioManager {
 
         this.samplers = {};
 
+        this.updateSpeechSynthesisVoices();
+        window.speechSynthesis.onvoiceschanged = this.updateSpeechSynthesisVoices;
+
         Object.keys(SamplerDefs).forEach((samplerKey) => {
             const samplerDef = SamplerDefs[samplerKey];
             const sampler = new Sampler(samplerDef);
@@ -222,6 +227,10 @@ export default class AudioManagerImpl implements AudioManager {
             this.samplers[samplerKey] = sampler;
         });
     }
+
+    updateSpeechSynthesisVoices = () => {
+        this.speechSynthesisVoices = window.speechSynthesis.getVoices();
+    };
 
     playAnnouncement(messageIdSuffix: string, intl: IntlShape, messagePayload: any) {
         if (this.audioEnabled && this.announcementsEnabled) {
@@ -231,6 +240,15 @@ export default class AudioManagerImpl implements AudioManager {
             const messageId = "Announcement." + messageIdSuffix;
             const toAnnounce = intl.formatMessage({ id: messageId}, messagePayload);
             const utterance = new SpeechSynthesisUtterance(toAnnounce);
+
+            // TODO: When we support non-English UI language(s),
+            //       ensure that the language is specified correctly
+            utterance.voice = selectSpeechSynthesisVoice(
+                'en',
+                window.navigator.language,
+                this.speechSynthesisVoices
+            );
+
             window.speechSynthesis.speak(utterance);
         }
     }
