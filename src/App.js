@@ -146,6 +146,10 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
+        /* eslint-disable no-console */
+        const timeStartConstructorMs = Date.now();
+        console.log("Starting App constructor");
+
         this.version = '1.6';
 
         this.appContext = {
@@ -470,6 +474,9 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.speedControlRef = React.createRef();
         this.programBlockEditorRef = React.createRef();
+
+        const timeFinishConstructorMs = Date.now();
+        console.log(`Finished App constructor, took: ${timeFinishConstructorMs - timeStartConstructorMs} ms`);
     }
 
     setStateSettings(settings: $Shape<AppSettings>) {

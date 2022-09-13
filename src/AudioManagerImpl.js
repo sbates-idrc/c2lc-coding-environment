@@ -229,7 +229,11 @@ export default class AudioManagerImpl implements AudioManager {
     }
 
     updateSpeechSynthesisVoices = () => {
+        const timeBeforeMs = Date.now();
         this.speechSynthesisVoices = window.speechSynthesis.getVoices();
+        const timeAfterMs = Date.now();
+        /* eslint-disable no-console */
+        console.log(`Time to get voices: ${timeAfterMs - timeBeforeMs} ms`);
     };
 
     playAnnouncement(messageIdSuffix: string, intl: IntlShape, messagePayload: any) {
