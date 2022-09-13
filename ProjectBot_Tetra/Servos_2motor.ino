@@ -8,8 +8,8 @@ Servo servo2;
 BLEService servoService("19B10000-E8F2-537E-4F6C-D104768A1214"); // BLE LED Service
 
 // BLE LED Switch Characteristic - custom 128-bit UUID, read and writable by central
-BLEByteCharacteristic switchCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
-BLEByteCharacteristic switchCharacteristic2("19B10002-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
+BLEByteCharacteristic switchCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite | BLENotify);
+BLEByteCharacteristic switchCharacteristic2("19B10002-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite | BLENotify);
 
 //const int ledPin = 9; // pin to use for the LED
 
@@ -59,7 +59,6 @@ Serial.begin(9600);
 }
 
 void loop() {
-  // listen for BLE peripherals to connect:
   BLEDevice central = BLE.central();
 
   // if a central is connected to peripheral:
@@ -73,34 +72,37 @@ void loop() {
       // if the remote device wrote to the characteristic,
       // use the value to control the LED:
       int code_speed;
-      if (switchCharacteristic2.written()){
-        if (switchCharacteristic2.value()== 1){
-          code_speed = 250;
-      }
-        else if (switchCharacteristic2.value()== 2){
-          code_speed = 400;
-      }
-         else if (switchCharacteristic2.value()== 4){
-          code_speed = 900;
-      }
-         else if (switchCharacteristic2.value()== 6){
-          code_speed = 1400;
-      }
-         else if (switchCharacteristic2.value()== 5){
-          code_speed = 1900;
-      }
+      //if (switchCharacteristic2.written()){
+        //if (switchCharacteristic2.value()== 1){
+          //code_speed = 250;
+      //}
+        //else if (switchCharacteristic2.value()== 2){
+          //code_speed = 400;
+      //}
+         //else if (switchCharacteristic2.value()== 4){
+          //code_speed = 900;
+      //}
+         //else if (switchCharacteristic2.value()== 6){
+          //code_speed = 1400;
+      //}
+         //else if (switchCharacteristic2.value()== 5){
+          //code_speed = 1900;
+      //}
 
-     }
+     //}
       if (switchCharacteristic.written()) {
+        Serial.println(switchCharacteristic2.value());
+        switchCharacteristic2.writeValue((byte)0x01);
+        Serial.println(switchCharacteristic2.value());
         Serial.println(switchCharacteristic.value());
           if (switchCharacteristic.value() == 1){
             Serial.println("LED on");
             servo1.write(-180);
             servo2.write(180);
-            Serial.println(code_speed);
             delay(code_speed);
             servo1.write(89);
             servo2.write(86);
+            Serial.println("I wrote a 1");
           }
           else if (switchCharacteristic.value() == 2){
             Serial.println("LED on");
@@ -109,6 +111,7 @@ void loop() {
             delay(code_speed);
             servo1.write(89);
             servo2.write(86);
+            Serial.println("I wrote a 2");
           }
           else if (switchCharacteristic.value() == 3){
             Serial.println(F("LED off"));
@@ -117,6 +120,7 @@ void loop() {
             delay(code_speed);
             servo1.write(89);
             servo2.write(86);
+            Serial.println("I wrote a 3");
           }
             }
    }
