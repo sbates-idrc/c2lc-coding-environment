@@ -32,11 +32,11 @@ jobs:
       - name: NPM install (ci)
         run: npm ci
       - name: Lint
-        run: npx eslint .
+        run: npm run eslint
       - name: Build
         run: npm run build
       - name: Flow
-        run: npx flow check
+        run: npm run flow check
       - name: Test
         run: npm test -- --verbose --coverage
       - name: Archive Test Code Coverage Report
