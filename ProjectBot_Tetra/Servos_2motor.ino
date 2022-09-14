@@ -92,8 +92,10 @@ void loop() {
      //}
       if (switchCharacteristic.written()) {
         Serial.println(switchCharacteristic2.value());
+        // The line below should be at the end of each command for the queue or any sync to work
         switchCharacteristic2.writeValue((byte)0x01);
         Serial.println(switchCharacteristic2.value());
+        // The line below was where I was seeing 0x00 is read as 128
         Serial.println(switchCharacteristic.value());
           if (switchCharacteristic.value() == 1){
             Serial.println("LED on");
