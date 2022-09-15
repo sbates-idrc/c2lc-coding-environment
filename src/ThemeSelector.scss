@@ -1,9 +1,30 @@
-@import 'variables';
+@import '_variables';
 
-.ThemeSelector {
-    margin-left: 2rem;
+.ThemeSelector__option {
+    display: grid;
+    grid-template-columns: min-content max-content;
+    column-gap: 0.5rem;
+    padding: 1.4rem 1.5rem;
+    font-weight: 500;
+    font-size: 18px;
+    color: #1E1E1E;
+    align-items: center;
+    label {
+        margin-bottom: 0;
+    }
+    &:hover {
+        background-color: #F5C58A;
+    }
+    &:focus {
+        outline: none;
+        box-shadow: inset 0 0 0 $c2lc-focus-indicator-width #1E1E1E;
+    }
 }
 
-.ThemeSelector button:focus {
-    box-shadow: 0 0 0 $c2lc-focus-indicator-width #299DCE;
+.ThemeSelector__option-radio {
+    pointer-events: none;
+}
+
+.ThemeSelector__body {
+    padding: 0.3rem;
 }

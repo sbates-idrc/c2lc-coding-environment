@@ -1,0 +1,51 @@
+@import 'variables';
+
+.WorldSelector__content {
+    padding: 0;
+}
+
+.WorldSelector__prompt {
+    padding: 1.5rem 0 1.5rem 3rem;
+}
+
+.WorldSelector__options {
+    background-color: #F1F2F4;
+    column-gap: 1.5rem;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: max-content max-content;
+    padding: 1rem 0;
+}
+
+.WorldSelector__option-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.WorldSelector__option-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    width: 5.6rem;
+    height: 5.6rem;
+    svg {
+        width: 5rem;
+        height: 5rem;
+    }
+}
+
+.WorldSelector__option--selected {
+    box-shadow: 0 0 0 $c2lc-focus-indicator-width #000;
+}
+
+.WorldSelector__option-row {
+    display: flex;
+    column-gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    align-items: center;
+    label {
+        margin-bottom: 0;
+    }
+}

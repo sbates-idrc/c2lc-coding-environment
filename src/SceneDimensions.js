@@ -10,13 +10,14 @@ export default class SceneDimensions {
     #maxX: number;
     #maxY: number;
 
-    constructor(width: number, height: number) {
-        this.#width = width;
-        this.#height = height;
-        this.#minX = width * -0.5;
-        this.#minY = height * -0.5;
-        this.#maxX = width * 0.5;
-        this.#maxY = height * 0.5;
+    constructor(minX: number, maxX:number, minY:number, maxY: number) {
+        this.#minX = minX;
+        this.#maxX = maxX;
+        this.#maxY = maxY;
+        this.#minY = minY;
+
+        this.#width = (maxX - minX) + 1;
+        this.#height = (maxY - minY) + 1;
     }
 
     getWidth(): number {

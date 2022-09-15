@@ -9,6 +9,9 @@ $theme-colors: (
     'command-block--forward1': $c2lc-forward-command-color,
     'command-block--forward2': $c2lc-forward-command-color,
     'command-block--forward3': $c2lc-forward-command-color,
+    'command-block--backward1': $c2lc-backward-command-color,
+    'command-block--backward2': $c2lc-backward-command-color,
+    'command-block--backward3': $c2lc-backward-command-color,
     'command-block--left45': $c2lc-left-command-color,
     'command-block--left90': $c2lc-left-command-color,
     'command-block--left180': $c2lc-left-command-color,
@@ -32,30 +35,33 @@ body {
 }
 
 button.btn {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 0.6rem;
+    border-radius: 0.2rem;
 }
 
 button.btn:focus {
-    box-shadow: 0 0 0 $c2lc-focus-indicator-width $c2lc-focus-indicator-color;
+    box-shadow:
+        0 0 0 0.1rem #30444E,
+        0 0 0 $c2lc-focus-indicator-width white;
     z-index: 1;
 }
 
 button.btn-primary,
 button.btn-primary:hover {
-    border: $c2lc-button-border-width solid #000000;
     font-weight: bold;
     padding: 1.15rem 1.25rem;
 }
 
 button.btn:hover {
-    box-shadow: 0 0 0 $c2lc-hover-indicator-width $c2lc-focus-indicator-color;
     z-index: 1;
 }
 
+button.btn:hover:not(:focus) {
+    box-shadow: none;
+}
+
 button.btn-primary:disabled {
-    border: $c2lc-button-border-width solid $c2lc-disabled-color;
-    color: $c2lc-disabled-color;
+    border: $c2lc-button-border-width solid $c2lc-disabled-background-color;
+    color: $c2lc-disabled-foreground-color;
 }
 
 button.btn-command-block--none {
@@ -63,16 +69,95 @@ button.btn-command-block--none {
 }
 
 button.command-block {
-    width: 4rem;
-    height: 4rem;
-    position: relative;
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 45px;
+    min-height: 45px;
     padding: 0;
+}
+
+.command-block-loop-block-container {
+    display: grid;
+    justify-items: center;
+    grid-template-rows: min-content 2rem;
+    row-gap: 0.2rem;
+}
+
+.command-block-loop-label-container {
+    text-align: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 0.6rem;
+    border-radius: 50%;
+    background-color: #878787;
+    color: #1E1E1E;
+    font-weight: bold;
+    grid-column-start: 1;
+    grid-column-end: 2;
+} 
+
+
+button.btn.command-block:focus {
+    box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    border: 2px solid #30444E;
+}
+
+button.command-block.btn-command-block--startLoop {
+    box-sizing: content-box;
+    width: 3.5rem;
+    height: 5rem;
+    border-radius: 50px 10px 10px 50px;
+    background-color: #9F9F9F;
+    border: 0.2rem solid transparent;
+    transition: unset;
+    .command-block-loop-iterations {
+        width: 2.5em;
+        text-align: center;
+        pointer-events: all;
+        border-radius: 5px;
+        margin-left: 0.5rem;
+    }
+    &:focus {
+        box-shadow: none;
+        border: 0.2rem solid #FFFFFF;
+    }
+    &:hover {
+        background-color: #7C7C7C;
+        .command-block-loop-label-container {
+            background-color: #656565;
+            color: #F1F2F4;
+        }
+    }
+}
+
+button.command-block.btn-command-block--endLoop {
+    box-sizing: content-box;
+    width: 3.5rem;
+    height: 5rem;
+    border-radius: 10px 50px 50px 10px;
+    background-color: #9F9F9F;
+    border: 0.2rem solid transparent;
+    transition: unset;
+    .command-block-loop-block-container {
+        margin-right: 1.5rem;
+    }
+    &:focus {
+        box-shadow: none;
+        border: 0.2rem solid #FFFFFF;
+    }
+    &:hover {
+        background-color: #7C7C7C;
+        .command-block-loop-label-container {
+            background-color: #656565;
+            color: #F1F2F4;
+        }
+    }
 }
 
 button.btn.command-block.command-block--pressed,
 button.btn.command-block.command-block--pressed:hover,
 button.btn.command-block.command-block--pressed:active {
-    border: $c2lc-button-border-width dashed #000000;
+    border: $c2lc-button-border-width solid white;
 }
 
 button.btn.command-block--dragged {
@@ -80,6 +165,53 @@ button.btn.command-block--dragged {
 }
 
 .command-block-svg {
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 2rem;
+    height: 2rem;
+
+    path, circle {
+        stroke: #1E1E1E;
+    }
+    circle, path.filled {
+        fill: #1E1E1E;
+    }
+}
+
+.command-block--hidden {
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 45px;
+    min-height: 45px;
+    padding-top: 0.5rem;
+}
+
+.command-block--hidden > svg {
+    width: 1rem;
+    height: 1rem;
+    fill: #B9BEC6;
+}
+
+.btn-command-block--backward1:hover,
+.btn-command-block--backward2:hover,
+.btn-command-block--backward3:hover {
+    background-color: $c2lc-backward-command-hover-color;
+}
+
+
+button.btn.btn-command-block--forward1:hover,
+button.btn.btn-command-block--forward2:hover,
+button.btn.btn-command-block--forward3:hover {
+    background-color: $c2lc-forward-command-hover-color;
+
+}
+
+button.btn.btn-command-block--left45:hover,
+button.btn.btn-command-block--left90:hover,
+button.btn.btn-command-block--left180:hover {
+    background-color: $c2lc-left-command-hover-color;
+}
+
+button.btn.btn-command-block--right45:hover,
+button.btn.btn-command-block--right90:hover,
+button.btn.btn-command-block--right180:hover {
+    background-color: $c2lc-right-command-hover-color;
 }

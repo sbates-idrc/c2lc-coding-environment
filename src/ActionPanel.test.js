@@ -20,10 +20,20 @@ function createMountActionPanel(props) {
         React.createElement(
             ActionPanel,
             Object.assign(
+                {},
                 {
                     focusedOptionName: null,
                     selectedCommandName: 'right45',
-                    programSequence: new ProgramSequence(['forward1', 'left45', 'right45'], 0),
+                    programSequence: new ProgramSequence(
+                        [
+                            {block: 'forward1'},
+                            {block: 'left45'},
+                            {block: 'right45'}
+                        ],
+                        0,
+                        0,
+                        new Map()
+                    ),
                     pressedStepIndex: 1,
                     position: {
                         top: 0,
@@ -87,6 +97,17 @@ describe('ActionPanel options', () => {
         expect(mockReplaceHandler.mock.calls[0][0]).toBe(pressedStepIndex);
     });
 
+    test('Given that there is no selected action, then the Replace button should be disabled', () => {
+        const { wrapper } = createMountActionPanel({
+            pressedStepIndex: 1,
+            selectedCommandName: null
+        });
+        const replaceButton = getActionPanelOptionButtons(wrapper, 'replaceCurrentStep');
+        const expectedAriaLabel = 'Replace Step 2 turn left 45 degrees ';
+        expect(replaceButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        expect(replaceButton.get(0).props['disabled']).toBe(true);
+    });
+
     test('When the moveToPreviousStep option is selected on second step turn left 45 of the program', () => {
         const pressedStepIndex = 1;
         const { wrapper, mockMoveToPreviousStep } = createMountActionPanel({
@@ -113,6 +134,190 @@ describe('ActionPanel options', () => {
         expect(mockMoveToPreviousStep.mock.calls.length).toBe(0);
     });
 
+    test('When the moveToPreviousStep option is selected on a startLoop block at the beginning', () => {
+        const { wrapper, mockMoveToPreviousStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 1},
+                    {block: 'forward1'},
+                    {block: 'endLoop', label: 'A' }
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 0
+        });
+        const moveToPreviousStepButton = getActionPanelOptionButtons(wrapper, 'moveToPreviousStep');
+        const expectedAriaLabel = "Move Step 1 loop A ";
+        expect(moveToPreviousStepButton.get(0).props['disabled']).toBe(true);
+        moveToPreviousStepButton.simulate('click');
+        expect(moveToPreviousStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        // Move to previous button is disabled when a block is the first block, clicking doesn't do anything
+        expect(mockMoveToPreviousStep.mock.calls.length).toBe(0);
+    });
+
+    test('When the moveToPreviousStep option is selected on an endLoop block with its pair startLoop block at the beginning', () => {
+        const { wrapper, mockMoveToPreviousStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 1},
+                    {block: 'forward1'},
+                    {block: 'endLoop', label: 'A' }
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 2
+        });
+        const moveToPreviousStepButton = getActionPanelOptionButtons(wrapper, 'moveToPreviousStep');
+        const expectedAriaLabel = "Move Step 3 loop A ";
+        expect(moveToPreviousStepButton.get(0).props['disabled']).toBe(true);
+        moveToPreviousStepButton.simulate('click');
+        expect(moveToPreviousStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        // Move to previous button is disabled when a block is the first block, clicking doesn't do anything
+        expect(mockMoveToPreviousStep.mock.calls.length).toBe(0);
+    });
+
+    test('When the moveToPreviousStep option is selected on a startLoop block on second step of a program', () => {
+        const { wrapper, mockMoveToPreviousStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'forward1'},
+                    {block: 'startLoop', label: 'A', iterations: 1},
+                    {block: 'endLoop', label: 'A' }
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 1
+        });
+        const moveToPreviousStepButton = getActionPanelOptionButtons(wrapper, 'moveToPreviousStep');
+        const expectedAriaLabel = "Move Step 2 loop A before step 1 forward 1 square";
+        moveToPreviousStepButton.simulate('click');
+        expect(moveToPreviousStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        expect(mockMoveToPreviousStep.mock.calls.length).toBe(1);
+    });
+
+    test('When the moveToPreviousStep option is selected on a endLoop block on third step of a program', () => {
+        const { wrapper, mockMoveToPreviousStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'forward1'},
+                    {block: 'startLoop', label: 'A', iterations: 1},
+                    {block: 'endLoop', label: 'A' }
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 2
+        });
+        const moveToPreviousStepButton = getActionPanelOptionButtons(wrapper, 'moveToPreviousStep');
+        const expectedAriaLabel = "Move Step 3 loop A before step 1 forward 1 square";
+        moveToPreviousStepButton.simulate('click');
+        expect(moveToPreviousStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        expect(mockMoveToPreviousStep.mock.calls.length).toBe(1);
+    });
+
+    test('When the moveToPreviousStep option is selected on a step next to a startLoop', () => {
+        const { wrapper, mockMoveToPreviousStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {
+                        block: 'startLoop',
+                        label: 'A',
+                        iterations: 1
+                    },
+                    {
+                        block: 'forward1',
+                        cache: new Map([
+                            ['containingLoopPosition', 1],
+                            ['containingLoopLabel', 'A']
+                        ])
+                    },
+                    {
+                        block: 'endLoop',
+                        label: 'A'
+                    }
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 1
+        });
+        const moveToPreviousStepButton = getActionPanelOptionButtons(wrapper, 'moveToPreviousStep');
+        const expectedAriaLabel = "Move Step 1 forward 1 square out of loop A";
+        moveToPreviousStepButton.simulate('click');
+        expect(moveToPreviousStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        expect(mockMoveToPreviousStep.mock.calls.length).toBe(1);
+    });
+
+    test('When the moveToPreviousStep option is selected on a step next to a endLoop', () => {
+        const { wrapper, mockMoveToPreviousStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 1},
+                    {block: 'endLoop', label: 'A' },
+                    {block: 'forward1'}
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 2
+        });
+        const moveToPreviousStepButton = getActionPanelOptionButtons(wrapper, 'moveToPreviousStep');
+        const expectedAriaLabel = "Move Step 3 forward 1 square into loop A";
+        moveToPreviousStepButton.simulate('click');
+        expect(moveToPreviousStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        expect(mockMoveToPreviousStep.mock.calls.length).toBe(1);
+    });
+
+    test('When the moveToPreviousStep option is selected on second step in a loop', () => {
+        const { wrapper, mockMoveToPreviousStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {
+                        block: 'startLoop',
+                        label: 'A',
+                        iterations: 1
+                    },
+                    {
+                        block: 'forward1',
+                        cache: new Map([
+                            ['containingLoopPosition', 1],
+                            ['containingLoopLabel', 'A']
+                        ])
+                    },
+                    {
+                        block: 'forward2',
+                        cache: new Map([
+                            ['containingLoopPosition', 2],
+                            ['containingLoopLabel', 'A']
+                        ])
+                    },
+                    {
+                        block: 'endLoop',
+                        label: 'A'
+                    }
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 2
+        });
+        const moveToPreviousStepButton = getActionPanelOptionButtons(wrapper, 'moveToPreviousStep');
+        const expectedAriaLabel = "Move Step 2 forward 2 squares before step 1 forward 1 square of loop A";
+        moveToPreviousStepButton.simulate('click');
+        expect(moveToPreviousStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        expect(mockMoveToPreviousStep.mock.calls.length).toBe(1);
+    });
+
     test('When the moveToNextStep option is selected on second step turn left 45 of the program', () => {
         const pressedStepIndex = 1;
         const { wrapper, mockMoveToNextStep } = createMountActionPanel({
@@ -137,6 +342,190 @@ describe('ActionPanel options', () => {
         moveToNextStepButton.simulate('click');
         // Move to next button is disabled when a block is the last block, clicking doesn't do anything
         expect(mockMoveToNextStep.mock.calls.length).toBe(0);
+    });
+
+    test('When the moveToNextStep option is selected on a startLoop block at the beginning with its pair endLoop block at the end', () => {
+        const { wrapper, mockMoveToNextStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 1},
+                    {block: 'forward1'},
+                    {block: 'endLoop', label: 'A' }
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 0
+        });
+        const moveToNextStepButton = getActionPanelOptionButtons(wrapper, 'moveToNextStep');
+        const expectedAriaLabel = "Move Step 1 loop A ";
+        expect(moveToNextStepButton.get(0).props['disabled']).toBe(true);
+        moveToNextStepButton.simulate('click');
+        expect(moveToNextStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        // Move to previous button is disabled when a block is the first block, clicking doesn't do anything
+        expect(mockMoveToNextStep.mock.calls.length).toBe(0);
+    });
+
+    test('When the moveToNextStep option is selected on an endLoop block with its pair startLoop block at the beginning', () => {
+        const { wrapper, mockMoveToNextStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 1},
+                    {block: 'forward1'},
+                    {block: 'endLoop', label: 'A' }
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 2
+        });
+        const moveToNextStepButton = getActionPanelOptionButtons(wrapper, 'moveToNextStep');
+        const expectedAriaLabel = "Move Step 3 loop A ";
+        expect(moveToNextStepButton.get(0).props['disabled']).toBe(true);
+        moveToNextStepButton.simulate('click');
+        expect(moveToNextStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        // Move to previous button is disabled when a block is the first block, clicking doesn't do anything
+        expect(mockMoveToNextStep.mock.calls.length).toBe(0);
+    });
+
+    test('When the moveToNextStep option is selected on a startLoop block on first step of a program', () => {
+        const { wrapper, mockMoveToNextStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 1},
+                    {block: 'endLoop', label: 'A' },
+                    {block: 'forward1'}
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 0
+        });
+        const moveToNextStepButton = getActionPanelOptionButtons(wrapper, 'moveToNextStep');
+        const expectedAriaLabel = "Move Step 1 loop A after step 3 forward 1 square";
+        moveToNextStepButton.simulate('click');
+        expect(moveToNextStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        expect(mockMoveToNextStep.mock.calls.length).toBe(1);
+    });
+
+    test('When the moveToNextStep option is selected on a endLoop block on third step of a program', () => {
+        const { wrapper, mockMoveToNextStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 1},
+                    {block: 'endLoop', label: 'A' },
+                    {block: 'forward1'}
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 1
+        });
+        const moveToNextStepButton = getActionPanelOptionButtons(wrapper, 'moveToNextStep');
+        const expectedAriaLabel = "Move Step 2 loop A after step 3 forward 1 square";
+        moveToNextStepButton.simulate('click');
+        expect(moveToNextStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        expect(mockMoveToNextStep.mock.calls.length).toBe(1);
+    });
+
+    test('When the moveToNextStep option is selected on a step next to a endLoop', () => {
+        const { wrapper, mockMoveToNextStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {
+                        block: 'startLoop',
+                        label: 'A',
+                        iterations: 1
+                    },
+                    {
+                        block: 'forward1',
+                        cache: new Map([
+                            ['containingLoopPosition', 1],
+                            ['containingLoopLabel', 'A']
+                        ])
+                    },
+                    {
+                        block: 'endLoop',
+                        label: 'A'
+                    }
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 1
+        });
+        const moveToNextStepButton = getActionPanelOptionButtons(wrapper, 'moveToNextStep');
+        const expectedAriaLabel = "Move Step 1 forward 1 square out of loop A";
+        moveToNextStepButton.simulate('click');
+        expect(moveToNextStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        expect(mockMoveToNextStep.mock.calls.length).toBe(1);
+    });
+
+    test('When the moveToNextStep option is selected on a step next to a startLoop', () => {
+        const { wrapper, mockMoveToNextStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'forward1'},
+                    {block: 'startLoop', label: 'A', iterations: 1},
+                    {block: 'endLoop', label: 'A' }
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 0
+        });
+        const moveToNextStepButton = getActionPanelOptionButtons(wrapper, 'moveToNextStep');
+        const expectedAriaLabel = "Move Step 1 forward 1 square into loop A";
+        moveToNextStepButton.simulate('click');
+        expect(moveToNextStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        expect(mockMoveToNextStep.mock.calls.length).toBe(1);
+    });
+
+    test('When the moveToNextStep option is selected on first step in a loop', () => {
+        const { wrapper, mockMoveToNextStep } = createMountActionPanel({
+            programSequence: new ProgramSequence(
+                [
+                    {
+                        block: 'startLoop',
+                        label: 'A',
+                        iterations: 1
+                    },
+                    {
+                        block: 'forward1',
+                        cache: new Map([
+                            ['containingLoopPosition', 1],
+                            ['containingLoopLabel', 'A']
+                        ])
+                    },
+                    {
+                        block: 'forward2',
+                        cache: new Map([
+                            ['containingLoopPosition', 2],
+                            ['containingLoopLabel', 'A']
+                        ])
+                    },
+                    {
+                        block: 'endLoop',
+                        label: 'A'
+                    }
+                ],
+                0,
+                1,
+                new Map()
+            ),
+            pressedStepIndex: 1
+        });
+        const moveToNextStepButton = getActionPanelOptionButtons(wrapper, 'moveToNextStep');
+        const expectedAriaLabel = "Move Step 1 forward 1 square after step 2 forward 2 squares of loop A";
+        moveToNextStepButton.simulate('click');
+        expect(moveToNextStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
+        expect(mockMoveToNextStep.mock.calls.length).toBe(1);
     });
 });
 

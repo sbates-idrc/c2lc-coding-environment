@@ -5,6 +5,8 @@ import classNames from 'classnames';
 import './ToggleSwitch.scss';
 
 type ToggleSwitchProps = {
+    disabled?: boolean,
+    id?: string,
     ariaLabel: string,
     value: boolean,
     className?: string,
@@ -15,14 +17,17 @@ type ToggleSwitchProps = {
 
 export default class ToggleSwitch extends React.Component<ToggleSwitchProps, {}> {
     handleClick = () => {
-        this.toggleStateChange();
+        if (!this.props.disabled) {
+            this.toggleStateChange();
+        }
     }
 
     handleKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        const spaceKey = ' ';
-        if (e.key === spaceKey) {
+        if (e.key === ' ' || e.key === 'Enter') {
             e.preventDefault();
-            this.toggleStateChange();
+            if (!this.props.disabled) {
+                this.toggleStateChange();
+            }
         }
     }
 
@@ -38,7 +43,9 @@ export default class ToggleSwitch extends React.Component<ToggleSwitchProps, {}>
         );
         return (
             <div
-                className= {classes}
+                aria-disabled={this.props.disabled}
+                id={this.props.id}
+                className={classes}
                 role='switch'
                 aria-label={this.props.ariaLabel}
                 aria-checked={this.props.value}

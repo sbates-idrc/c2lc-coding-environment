@@ -1,55 +1,33 @@
 // @flow
 
 import React from 'react';
-import { ReactComponent as RobotIcon } from './svg/Robot.svg';
-import { ReactComponent as SpaceShipIcon } from './svg/SpaceShip.svg';
-import { ReactComponent as RabbitIcon } from './svg/Rabbit.svg';
-import './Character.scss';
+import { getWorldCharacter } from './Worlds';
+import type { ThemeName } from './types';
+import type { WorldName } from './Worlds';
 
 type CharacterProps = {
-    theme: string,
+    world: WorldName,
+    theme: ThemeName,
     transform: string,
-    width: number
+    width: number,
 };
 
 export default class Character extends React.Component<CharacterProps, {}> {
-    getThemedCharacter = () => {
-        if (this.props.theme === 'space') {
-            return (
-                <SpaceShipIcon
-                    className='Character__icon'
-                    x={-this.props.width/2}
-                    y={-this.props.width/2}
-                    width={this.props.width}
-                    height={this.props.width} />
-            )
-        } else if (this.props.theme === 'forest') {
-            return (
-                <RabbitIcon
-                    className='Character__icon'
-                    x={-this.props.width/2}
-                    y={-this.props.width/2}
-                    width={this.props.width}
-                    height={this.props.width} />
-            )
-        } else {
-            return (
-                <RobotIcon
-                    className='Character__icon'
-                    x={-this.props.width/2}
-                    y={-this.props.width/2}
-                    width={this.props.width}
-                    height={this.props.width} />
-            )
-        }
-    }
-
     render() {
+        const character = getWorldCharacter(this.props.theme, this.props.world);
         return (
             <g
                 className='Character'
                 transform={this.props.transform}>
-                {this.getThemedCharacter()}
+                {React.createElement(character,
+                    {
+                        className: 'Character__icon',
+                        x: -this.props.width/2,
+                        y: -this.props.width/2,
+                        width: this.props.width,
+                        height: this.props.width
+                    }
+                )}
             </g>
         );
     }

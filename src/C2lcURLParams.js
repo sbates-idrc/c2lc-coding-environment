@@ -22,4 +22,16 @@ export default class C2lcURLParams {
     getTheme() {
         return this.urlSearchParams.get('t');
     }
+
+    getDisallowedActions() {
+        return this.urlSearchParams.get('d');
+    }
+
+    getWorld() {
+        return this.urlSearchParams.get('w');
+    }
+
+    getStartingPosition() {
+        return this.urlSearchParams.get('s');
+    }
 }

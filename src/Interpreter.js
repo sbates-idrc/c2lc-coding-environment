@@ -2,10 +2,9 @@
 
 import {App} from './App';
 import ProgramSequence from './ProgramSequence';
+import type { ProgramBlock } from './types';
 
-/* eslint-disable no-use-before-define */
-export type CommandHandler = { (Interpreter, stepTimeMs: number): Promise<void> };
-/* eslint-enable no-use-before-define */
+export type CommandHandler = { (stepTimeMs: number): Promise<void> };
 
 export default class Interpreter {
     commands: { [command: string]: { [namespace: string]: CommandHandler } };
@@ -87,20 +86,45 @@ export default class Interpreter {
                 // We're at the end, nothing to do
                 resolve();
             } else {
-                this.doCommand(programSequence.getCurrentProgramStep()).then(() => {
-                    // When the command has completed, increment
-                    // the programCounter and resolve the step Promise
-                    this.app.incrementProgramCounter(() => {
-                        resolve();
+                const currentProgramStep = programSequence.getCurrentProgramStep();
+                const command = currentProgramStep.block;
+                if (command === 'startLoop') {
+                    this.doStartLoop(programSequence).then(() => {
+                        this.app.advanceProgramCounter(resolve);
                     });
-                }, (error: Error) => {
-                    reject(error);
-                });
+                } else if (command === 'endLoop') {
+                    // We don't intend for the programCounter to ever be on an
+                    // 'endLoop' block, but we might have a bug that would
+                    // cause that case to happen and we want to handle it
+                    // gracefully
+                    this.app.advanceProgramCounter(resolve);
+                } else {
+                    this.doCommand(currentProgramStep).then(() => {
+                        this.app.advanceProgramCounter(resolve);
+                    }, (error: Error) => {
+                        reject(error);
+                    });
+                }
             }
         });
     }
 
-    doCommand(command: string): Promise<any> {
+    doStartLoop(programSequence: ProgramSequence): Promise<any> {
+        const programCounter = programSequence.getProgramCounter();
+        if (programCounter < programSequence.getProgramLength() - 1
+                && programSequence.getProgramStepAt(programCounter + 1).block === 'endLoop') {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve();
+                }, this.stepTimeMs);
+            });
+        } else {
+            return Promise.resolve();
+        }
+    }
+
+    doCommand(programStep: ProgramBlock): Promise<any> {
+        const command = programStep.block;
         const handlers = this.lookUpCommandHandlers(command);
         if (handlers.length === 0) {
             return Promise.reject(new Error(`Unknown command: ${command}`));
@@ -113,7 +137,7 @@ export default class Interpreter {
         const promises = [];
         const stepTimeMs = this.stepTimeMs;
         for (const handler of handlers) {
-            promises.push(handler(this, stepTimeMs));
+            promises.push(handler(stepTimeMs));
         }
         return Promise.all(promises);
     }

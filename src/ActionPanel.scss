@@ -1,38 +1,28 @@
 @import 'variables';
 
-// TODO: Rework the arrow implementation. For example, it is not quite
-//       centered with respect to the action panel.
+.ActionPanel__background {
+    position: absolute;
+    top: -0.3rem;
+
+    svg {
+        width: $c2lc-action-panel-width;
+        path {
+            fill: #30444E;
+            stroke: #4C9990;
+        }
+    }
+}
 
 .ActionPanel__panel {
-    width: $c2lc-action-panel-width;
-    height: $c2lc-action-panel-height;
-    background-color: #F1F1F1;
-    border: 0.1rem solid #939595;
-    border-radius: 3rem;
-    display: flex;
-    justify-content: space-evenly;
     align-items: center;
-}
-
-.ActionPanel__panel::before {
-    content: '';
+    background-color: transparent;
+    display: flex;
+    height: $c2lc-action-panel-height;
+    justify-content: space-evenly;
+    padding-left: 2.4rem;
+    padding-right: 2.4rem;
     position: absolute;
-    left: 45%;
-    top: 100%;
-    border-left: 0.7rem solid transparent;
-    border-top: 1rem solid #F1F1F1;
-    border-right: 0.7rem solid transparent;
-    z-index: 1;
-}
-
-.ActionPanel__panel::after {
-    content: '';
-    position: absolute;
-    left: 43.8%;
-    top: 100%;
-    border-left: 0.9rem solid transparent;
-    border-top: 1.2rem solid #939595;
-    border-right: 0.9rem solid transparent;
+    width: $c2lc-action-panel-width;
 }
 
 .ActionPanel__panel--hidden {
@@ -40,17 +30,46 @@
 }
 
 button.btn.ActionPanel__action-buttons {
-    background-color: #8F8F8F;
-    width: 3rem;
-    height: 3rem;
+    background-color: #4C9990;
+    border: none;
     border-radius: 50%;
-    padding: 0.3rem;
+    height: 2.5rem;
+    padding: 0.1rem;
+    margin: 0.2rem;
+    width: 2.5rem;
+
+    svg {
+        height: 1.4rem;
+        width: 1.4rem;
+        path.stroked {
+            stroke: #1e1e1e;
+        }
+        path.filled {
+            fill: #1e1e1e;
+        }
+    }
+
+    &:hover {
+        background-color: #F1AE5B;
+    }
+
+    &:focus {
+        box-shadow:
+            0 0 0 0.1rem #30444E,
+            0 0 0 $c2lc-focus-indicator-width white;
+    }
 }
 
 button.btn.ActionPanel__action-buttons--disabled {
-    opacity: 0.3;
+    svg {
+        path.stroked {
+            stroke: #9DA4AF;
+        }
+        path.filled {
+            fill: #9DA4AF;
+        }
+    }
 }
-
 
 .ActionPanel__action-button-svg {
     position: relative;

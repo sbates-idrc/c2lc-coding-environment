@@ -1,0 +1,799 @@
+/* Camping */
+
+.ProgramBlockEditor__character-column-character-container--Camping {
+    background-color: #A3BA8B;
+}
+
+.Scene__grid-line--Camping {
+    stroke: #8F8F8F;
+}
+
+.Scene__path-line--Camping {
+    stroke: #FFC700;
+}
+
+.Scene__starting-grid-cell-point--Camping {
+    fill: #FFC700;
+}
+
+.WorldSelector__option-image--Camping:hover {
+    svg {
+        .thumbnail-background {
+            fill: #67804C;
+        }
+        .thumbnail-fur-light {
+            fill: #714503;
+        }
+        .thumbnail-fur-dark {
+            fill: #3A2402;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Camping {
+        background-color: #D3D3D3;
+    }
+
+    .Scene__grid-line--Camping {
+        stroke: #8F8F8F;
+    }
+
+    .Scene__path-line--Camping {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__starting-grid-cell-point--Camping {
+        fill: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--Camping:hover {
+        svg {
+            .thumbnail-background {
+                fill: #8F8F8F;
+            }
+            .thumbnail-fur-light {
+                fill: #605F5F;
+            }
+            .thumbnail-fur-dark {
+                fill: #0F0F0F;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Camping {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Camping {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Camping {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--Camping {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--Camping:hover {
+        svg {
+            .thumbnail-background {
+                fill: #000000;
+            }
+            .thumbnail-fur-light {
+                fill: #000000;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-fur-dark {
+                fill: #FFFFFF;
+            }
+        }
+    }
+}
+
+/* DeepOcean */
+
+.ProgramBlockEditor__character-column-character-container--DeepOcean {
+    background-color: #1B2432;
+}
+
+.Scene__grid-line--DeepOcean {
+    stroke: #8BA2C0;
+}
+
+.Scene__path-line--DeepOcean {
+    stroke: #FFFFFF;
+}
+
+.Scene__starting-grid-cell-point--DeepOcean {
+    fill: #FFFFFF;
+}
+
+.WorldSelector__option-image--DeepOcean:hover {
+    svg {
+        .thumbnail-background {
+            fill: #33717F;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--DeepOcean {
+        background-color: #67717E;
+    }
+
+    .Scene__grid-line--DeepOcean {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--DeepOcean {
+        stroke: #505862;
+    }
+
+    .Scene__starting-grid-cell-point--DeepOcean {
+        fill: #505862;
+    }
+
+    .WorldSelector__option-image--DeepOcean:hover {
+        svg {
+            .thumbnail-background {
+                fill: #3A3F46;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--DeepOcean {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--DeepOcean {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--DeepOcean {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--DeepOcean {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--DeepOcean:hover {
+        svg {
+            .thumbnail-background {
+                fill: #1E1E1E;
+            }
+
+            .thumbnail-character-outline {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+
+            .thumbnail-character-innerline-white {
+                fill: #1E1E1E;
+            }
+
+            .thumbnail-character-innerline-black {
+                fill: #FFFFFF;
+            }
+        }
+    }
+}
+
+/* Haunted House */
+
+.ProgramBlockEditor__character-column-character-container--Haunted {
+    background-color: #454675;
+}
+
+.Scene__grid-line--Haunted {
+    stroke: #5F607B;
+}
+
+.Scene__path-line--Haunted {
+    stroke: #FFC700;
+}
+
+.Scene__starting-grid-cell-point--Haunted {
+    fill: #FFC700;
+}
+
+.WorldSelector__option-image--Haunted:hover {
+    svg {
+        .thumbnail-background {
+            fill: #454675;
+        }
+        .thumbnail-light {
+            fill: #E2C068;
+        }
+        .thumbnail-dimlight {
+            fill: #CA9A68;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Haunted {
+        background-color: #D3D3D3;
+    }
+
+    .Scene__grid-line--Haunted {
+        stroke: #7B7B7B;
+    }
+
+    .Scene__path-line--Haunted {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__starting-grid-cell-point--Haunted {
+        fill: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--Haunted:hover {
+        svg {
+            .thumbnail-background {
+                fill: #343434;
+            }
+            .thumbnail-light {
+                fill: #CFCFCF
+            }
+            .thumbnail-dimlight {
+                fill: #ABABAB;
+            }
+            .thumbnail-candle {
+                fill: #7D7D7D;
+            }
+            .thumbnail-hand {
+                fill: #7E7E7E;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Haunted {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Haunted {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Haunted {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--Haunted {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--Haunted:hover {
+        svg {
+            .thumbnail-light {
+                fill: black;
+            }
+            .thumbnail-dark {
+                fill: white;
+            }
+            .thumbnail-outline {
+                stroke: white;
+            }
+            .thumbnail-light-outline {
+                fill: black;
+                stroke: white;
+            }
+        }
+    }
+}
+
+/* Landmarks */
+
+.ProgramBlockEditor__character-column-character-container--Landmarks {
+    background-color: #FFE5B4;
+}
+
+.Scene__grid-line--Landmarks {
+    stroke: #F9F2EC;
+}
+
+.Scene__path-line--Landmarks {
+    stroke: #784234;
+}
+
+.Scene__starting-grid-cell-point--Landmarks {
+    fill: #784234;
+}
+
+.WorldSelector__option-image--Landmarks:hover {
+    svg {
+        .thumbnail-background {
+            fill: #BCA490;
+        }
+        .thumbnail-background-item-2 {
+            fill: #CEAF95
+        }
+        .thumbnail-background-item {
+            fill: #9C7D63;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Landmarks {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Landmarks {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--Landmarks {
+        stroke: #505862;
+    }
+
+    .Scene__starting-grid-cell-point--Landmarks {
+        fill: #505862;
+    }
+
+    .WorldSelector__option-image--Landmarks:hover {
+        svg {
+            .thumbnail-background {
+                fill: #9DA0A6;
+            }
+            .thumbnail-background-item-2 {
+                fill: #828892
+            }
+            .thumbnail-background-item {
+                fill: #656B72;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Landmarks {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Landmarks {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Landmarks {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--Landmarks {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--Landmarks:hover {
+        svg {
+            .thumbnail-background {
+                fill: #1E1E1E;
+            }
+            .thumbnail-background-item {
+                fill: #FFFFFF;
+            }
+            .thumbnail-character-body {
+                fill: #FFFFFF;
+            }
+            .thumbnail-character-eye {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-character-eye-pupil {
+                fill: #FFFFFF;
+            }
+            .thumbnail-character-outline {
+                fill: #1E1E1E;
+            }
+            .thumbnail-character-stripe {
+                fill: #1E1E1E;
+            }
+            .thumbnail-character-wing {
+                fill: #FFFFFF;
+            }
+        }
+    }
+}
+
+/* Marble */
+
+.ProgramBlockEditor__character-column-character-container--Marble {
+    background-color: #EBFAF8;
+}
+
+.Scene__grid-line--Marble {
+    stroke: #F9F2EC;
+}
+
+.Scene__path-line--Marble {
+    stroke: #3F5574;
+}
+
+.Scene__starting-grid-cell-point--Marble {
+    fill: #3F5574;
+}
+
+.WorldSelector__option-image--Marble:hover {
+    svg {
+        .thumbnail-background {
+            fill: #89D3BD;
+        }
+        .thumbnail-top {
+            fill: #ED972C
+        }
+        .thumbnail-bottom {
+            fill: #4C9990;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Marble {
+        background-color: #67717E;
+    }
+
+    .Scene__grid-line--Marble {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--Marble {
+        stroke: #22262A;
+    }
+
+    .Scene__starting-grid-cell-point--Marble {
+        fill: #22262A;
+    }
+
+    .WorldSelector__option-image--Marble:hover {
+        svg {
+            .thumbnail-background {
+                fill: #67717E;
+            }
+            .thumbnail-edge {
+                fill: #3A3F46;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Marble {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Marble {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Marble {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--Marble {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--Marble:hover {
+        svg {
+            .thumbnail-dark {
+                fill: #FFFFFF;
+            }
+            .thumbnail-light {
+                fill: #1E1E1E;
+            }
+        }
+    }
+}
+
+/* Sketchpad */
+
+.ProgramBlockEditor__character-column-character-container--Sketchpad {
+    background-color: #4C9990;
+}
+
+.Scene__grid-line--Sketchpad {
+    stroke: #F1F2F4;
+}
+
+.Scene__path-line--Sketchpad {
+    stroke: #505862;
+}
+
+.Scene__starting-grid-cell-point--Sketchpad {
+    fill: #505862;
+}
+
+.WorldSelector__option-image--Sketchpad:hover {
+    svg {
+        .thumbnail-background {
+            fill: #F1AE5B;
+        }
+        .thumbnail-line {
+            stroke: #546D79;
+        }
+    }
+}
+
+body.dark-theme {
+    .Scene__grid-line--Sketchpad {
+        stroke: #30444E;
+    }
+
+    .Scene__path-line--Sketchpad {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__starting-grid-cell-point--Sketchpad {
+        fill: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--Sketchpad:hover {
+        svg {
+            .thumbnail-background {
+                fill: #F1AE5B;
+            }
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Sketchpad {
+        background-color: #9DA4AF;
+    }
+
+    .Scene__grid-line--Sketchpad {
+        stroke: #D5D8DD;
+    }
+
+    .Scene__path-line--Sketchpad {
+        stroke: #505862;
+    }
+
+    .Scene__starting-grid-cell-point--Sketchpad {
+        fill: #505862;
+    }
+
+    .WorldSelector__option-image--Sketchpad:hover {
+        svg {
+            .thumbnail-background {
+                fill: #505862;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Sketchpad {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Sketchpad {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Sketchpad {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--Sketchpad {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--Sketchpad:hover {
+        svg {
+            .thumbnail-dark {
+                fill: #FFFFFF;
+            }
+
+            .thumbnail-light {
+                fill: #1E1E1E;
+            }
+
+            .thumbnail-light-outline {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+        }
+    }
+}
+
+/* Savannah */
+
+.ProgramBlockEditor__character-column-character-container--Savannah {
+    background-color: #FFE5B4;
+}
+
+.Scene__grid-line--Savannah {
+    stroke: #F9F2EC;
+}
+
+.Scene__path-line--Savannah {
+    stroke: #784234;
+}
+
+.Scene__starting-grid-cell-point--Savannah {
+    fill: #784234;
+}
+
+.WorldSelector__option-image--Savannah:hover {
+    svg {
+        .thumbnail-background {
+            fill: #D37D12;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Savannah {
+        background-color: #505862;
+    }
+
+    .Scene__grid-line--Savannah {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--Savannah {
+        stroke: #505862;
+    }
+
+    .Scene__starting-grid-cell-point--Savannah {
+        fill: #505862;
+    }
+
+    .WorldSelector__option-image--Savannah:hover {
+        svg {
+            .thumbnail-background {
+                fill: #3A3F46;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Savannah {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Savannah {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Savannah {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--Savannah {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--Savannah:hover {
+        svg {
+            .thumbnail-background {
+                fill: #1E1E1E;
+            }
+
+            .thumbnail-character-outline-white {
+                fill: #1E1E1E;
+            }
+
+            .thumbnail-character-outline-black {
+                fill: #FFFFFF;
+            }
+
+            .thumbnail-character-innerline-white {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+
+            .thumbnail-character-innerline-black {
+                fill: #FFFFFF;
+                stroke: #1E1E1E;
+            }
+
+            .thumbnail-character-part {
+                fill: #000000;
+                stroke: #FFFFFF;
+            }
+        }
+    }
+}
+
+/* Space */
+
+.ProgramBlockEditor__character-column-character-container--Space {
+    background-color: #1B2432;
+}
+
+.Scene__grid-line--Space {
+    stroke: #8BA2C0;
+}
+
+.Scene__path-line--Space {
+    stroke: #F1AE5B;
+}
+
+.Scene__starting-grid-cell-point--Space {
+    fill: #F1AE5B;
+}
+
+.WorldSelector__option-image--Space:hover {
+    svg {
+        .thumbnail-background {
+            fill: #33717F;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Space {
+        background-color: #505862;
+    }
+
+    .Scene__grid-line--Space {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__path-line--Space {
+        stroke: #3A3F46;
+    }
+
+    .Scene__starting-grid-cell-point--Space {
+        fill: #3A3F46;
+    }
+
+    .WorldSelector__option-image--Space:hover {
+        svg {
+            .thumbnail-background {
+                fill: #3A3F46;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Space {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Space {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Space {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--Space {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--Space:hover {
+        svg {
+            .thumbnail-background {
+                fill: #1E1E1E;
+            }
+
+            .thumbnail-background-item {
+                fill: #FFFFFF;
+                stroke: #FFFFFF;
+            }
+
+            .thumbnail-character-outline {
+                fill: #FFFFFF;
+            }
+
+            .thumbnail-character-innerline {
+                fill: #1E1E1E;
+            }
+        }
+    }
+}

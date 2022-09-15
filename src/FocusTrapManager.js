@@ -1,4 +1,5 @@
 // @flow
+import { focusByQuerySelector } from "./Utils";
 
 const tabKey = 'Tab';
 const escKey = 'Escape';
@@ -30,7 +31,7 @@ export default class FocusTrapManager {
         this.returnElementSelector = null;
     }
 
-    handleKeyDown(e: SyntheticKeyboardEvent<HTMLInputElement>) {
+    handleKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         if (this.active) {
             if (e.key === tabKey) {
                 // Find the elements in our focus trap
@@ -63,10 +64,7 @@ export default class FocusTrapManager {
                 e.preventDefault();
                 this.onFocusTrapClosed();
                 if (this.returnElementSelector) {
-                    const returnElement = document.querySelector(this.returnElementSelector);
-                    if (returnElement) {
-                        returnElement.focus();
-                    }
+                    focusByQuerySelector(this.returnElementSelector);
                 }
             }
         }
