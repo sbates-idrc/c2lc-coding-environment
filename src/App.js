@@ -1932,7 +1932,9 @@ export class App extends React.Component<AppProps, AppState> {
         }
 
         if (this.state.arduinoConnectionStatus !== prevState.arduinoConnectionStatus) {
+            /* eslint-disable no-console */
             console.log(this.state.arduinoConnectionStatus);
+            /* eslint-enable no-console */
             if (this.state.arduinoConnectionStatus === 'connected') {
                 this.interpreter.addCommandHandler('forward1', 'arduino',
                     this.arduinoDriver.forward.bind(this.arduinoDriver));

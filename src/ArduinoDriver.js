@@ -9,12 +9,12 @@ const arduinoLedSwitchCharacteristicUuid2 = '19b10002-e8f2-537e-4f6c-d104768a121
 
 export default class ArduinoDriver implements RobotDriver {
     switchCharacteristic: any;
-	arduinoValueRecieved: ?number;
-	arduinoCommandQueue: any;
-	constructor () {
-		this.arduinoValueRecieved = 1;
-		this.arduinoCommandQueue = [];
-	}
+    arduinoValueRecieved: ?number;
+    arduinoCommandQueue: any;
+    constructor () {
+        this.arduinoValueRecieved = 1;
+        this.arduinoCommandQueue = [];
+    }
 
     connect(onDisconnected: () => void): Promise<void> {
         return new Promise((resolve, reject) => {
@@ -27,68 +27,78 @@ export default class ArduinoDriver implements RobotDriver {
                 return server.getPrimaryService(arduinoLedServiceUuid);
             }).then((service) => {
                 return Promise.all(
-					[
-						service.getCharacteristic(arduinoLedSwitchCharacteristicUuid),
-						service.getCharacteristic(arduinoLedSwitchCharacteristicUuid2)
-					]
-				);
+                    [
+                        service.getCharacteristic(arduinoLedSwitchCharacteristicUuid),
+                        service.getCharacteristic(arduinoLedSwitchCharacteristicUuid2)
+                    ]
+                );
             }).then((characteristic) => {
                 this.switchCharacteristic = {
-					servo1:characteristic[0],
-					servo2:characteristic[1]
-				};
-				this.switchCharacteristic.servo2.addEventListener('characteristicvaluechanged',this.handleNotifications);
-				this.switchCharacteristic.servo2.startNotifications().then(
-					console.log('Notification')
-				);
-				resolve();
+                    servo1:characteristic[0],
+                    servo2:characteristic[1]
+                };
+                this.switchCharacteristic.servo2.addEventListener('characteristicvaluechanged',this.handleNotifications);
+                this.switchCharacteristic.servo2.startNotifications().then(
+                    /* eslint-disable no-console */
+                    console.log('Notification')
+                    /* eslint-enable no-console */
+                );
+                resolve();
             }).catch((error: Error) => {
                 reject(error);
             });
         });
     }
 
-	setSwitch(bytes: Array<number>): Promise<void> {
-		return new Promise((resolve,reject)=>{
-			if (this.arduinoValueRecieved === 1){
-				// Current implementation throws away a command when there's a command in the queue
-				// because it is ignoring the execuion of command that just recieved. Move the if condition and
-				// its content inside of the handleNotifications
-				if (this.arduinoCommandQueue.length > 0){
-					const queuedByte = this.arduinoCommandQueue.shift();
-					this.switchCharacteristic.servo1.writeValueWithResponse(new Uint8Array(queuedByte)).then(()=>{
-						console.log("resolved");
-						this.arduinoValueRecieved = 0;
-					}).catch((e)=>{
-						console.log(e);
-					});
-					resolve();
-				}
-				else{
-					this.switchCharacteristic.servo1.writeValueWithResponse(new Uint8Array(bytes)).then(()=>{
-						console.log("resolved");
-						this.arduinoValueRecieved = 0;
-					}).catch((e)=>{
-						console.log(e);
-					});
-					resolve();
-				}
-			}
-			else {
-				this.arduinoCommandQueue.push(bytes);
-				resolve();
-			}
-		});
+    setSwitch(bytes: Array<number>): Promise<void> {
+        return new Promise((resolve)=>{
+            if (this.arduinoValueRecieved === 1){
+                // Current implementation throws away a command when there's a command in the queue
+                // because it is ignoring the execuion of command that just recieved. Move the if condition and
+                // its content inside of the handleNotifications
+                if (this.arduinoCommandQueue.length > 0){
+                    const queuedByte = this.arduinoCommandQueue.shift();
+                    this.switchCharacteristic.servo1.writeValueWithResponse(new Uint8Array(queuedByte)).then(()=>{
+                        /* eslint-disable no-console */
+                        console.log("resolved");
+                        /* eslint-enable no-console */
+                        this.arduinoValueRecieved = 0;
+                    }).catch((e)=>{
+                        /* eslint-disable no-console */
+                        console.log(e);
+                        /* eslint-enable no-console */
+                    });
+                    resolve();
+                }
+                else{
+                    this.switchCharacteristic.servo1.writeValueWithResponse(new Uint8Array(bytes)).then(()=>{
+                        /* eslint-disable no-console */
+                        console.log("resolved");
+                        /* eslint-enable no-console */
+                        this.arduinoValueRecieved = 0;
+                    }).catch((e)=>{
+                        /* eslint-disable no-console */
+                        console.log(e);
+                        /* eslint-enable no-console */
+                    });
+                    resolve();
+                }
+            }
+            else {
+                this.arduinoCommandQueue.push(bytes);
+                resolve();
+            }
+        });
     }
-	setSwitch2(bytes: Array<number>): Promise<void> {
-        return new Promise((resolve, reject) => {
+    setSwitch2(bytes: Array<number>): Promise<void> {
+        return new Promise((resolve) => {
             this.switchCharacteristic.servo2.writeValueWithResponse(new Uint8Array(bytes));
             resolve();
         });
     }
 
     forward(): Promise<void> {
-		return this.setSwitch([0x01]);
+        return this.setSwitch([0x01]);
     }
 
     left(): Promise<void> {
@@ -99,7 +109,7 @@ export default class ArduinoDriver implements RobotDriver {
         return this.setSwitch([0x02]);
     }
 
-	handleNotifications() {
-		this.arduinoValueRecieved = 1;
-	}
+    handleNotifications() {
+        this.arduinoValueRecieved = 1;
+    }
 }
