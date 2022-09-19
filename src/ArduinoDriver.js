@@ -80,6 +80,10 @@ export default class ArduinoDriver implements RobotDriver {
         return this.sendCommand([0x02]);
     }
 
+    backward(): Promise<void> {
+        return this.sendCommand([0x04]);
+    }
+
     handleNotification = (event: any) => {
         if (event.target.value.getUint8(0) === 2) {
             /* eslint-disable no-console */

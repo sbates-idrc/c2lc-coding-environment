@@ -33,4 +33,10 @@ export default class FakeRobotDriver implements RobotDriver {
         console.log("FakeRobot: Right");
         return this.fakeCommandImpl();
     }
+
+    backward(): Promise<void> {
+        // eslint-disable-next-line no-console
+        console.log("FakeRobot: Backward");
+        return this.fakeCommandImpl();
+    }
 }

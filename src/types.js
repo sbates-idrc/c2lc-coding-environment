@@ -57,6 +57,7 @@ export type RunningState = 'running' | 'stopRequested' | 'stopped' | 'pauseReque
 export interface RobotDriver {
     connect(onDisconnected: () => void): Promise<void>;
     forward(): Promise<void>;
+    backward(): Promise<void>;
     left(): Promise<void>;
     right(): Promise<void>;
 };

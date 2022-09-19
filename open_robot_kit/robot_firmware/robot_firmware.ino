@@ -71,21 +71,32 @@ void loop() {
                     servo2.write(86);
                     notificationCharacteristic.writeValue((byte)0x02);
                 } else if (commandCharacteristic.value() == 2) {
-                    Serial.println("LED on");
+                    Serial.println("Left");
+                    notificationCharacteristic.writeValue((byte)0x01);
                     servo1.write(180);
                     servo2.write(180);
                     delay(code_speed);
                     servo1.write(89);
                     servo2.write(86);
-                    Serial.println("I wrote a 2");
+                    notificationCharacteristic.writeValue((byte)0x02);
                 } else if (commandCharacteristic.value() == 3) {
-                    Serial.println(F("LED off"));
+                    Serial.println("Right");
+                    notificationCharacteristic.writeValue((byte)0x01);
                     servo1.write(-180);
                     servo2.write(-180);
                     delay(code_speed);
                     servo1.write(89);
                     servo2.write(86);
-                    Serial.println("I wrote a 3");
+                    notificationCharacteristic.writeValue((byte)0x02);
+                } else if (commandCharacteristic.value() == 4) {
+                    Serial.println("backward");
+                    notificationCharacteristic.writeValue((byte)0x01);
+                    servo1.write(180);
+                    servo2.write(-180);
+                    delay(code_speed);
+                    servo1.write(89);
+                    servo2.write(86);
+                    notificationCharacteristic.writeValue((byte)0x02);
                 }
             }
         }
