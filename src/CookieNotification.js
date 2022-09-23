@@ -19,7 +19,10 @@ class CookieNotification extends React.Component<CookieNotificationProps, {}> {
                 <button className='CookieNotification__button' onClick={this.props.onDismiss}>
                     <FormattedMessage id='CookieNotification.dismiss'/>
                 </button>
-                <button className='CookieNotification__button' onClick={this.props.onLearnMore}>
+                <button
+                    className='CookieNotification__learnMoreButton CookieNotification__button'
+                    onClick={this.props.onLearnMore}
+                >
                     <FormattedMessage id='CookieNotification.learnMore'/>
                 </button>
             </div>

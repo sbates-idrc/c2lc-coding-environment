@@ -12,6 +12,7 @@ import './PrivacyModal.scss';
 
 type PrivacyModalProps = {
     intl: IntlShape,
+    focusOnCloseSelector: string,
     onClose: () => void,
     show: boolean
 }
@@ -28,7 +29,7 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
             <ModalWithFooter
                 show={this.props.show}
                 focusOnOpenSelector={'.TextButton--primaryButton'}
-                focusOnCloseSelector={'.App__PrivacyModal__toggle-button'}
+                focusOnCloseSelector={this.props.focusOnCloseSelector}
                 onClose={this.props.onClose}
                 buttonProperties={[closeButtonProperties]}
             >

@@ -120,6 +120,7 @@ export type AppState = {
     showShareModal: boolean,
     showActionsSimplificationMenu: boolean,
     showPrivacyModal: boolean,
+    focusOnClosePrivacyModalSelector: string,
     startingX: number,
     startingY: number,
     startingDirection: number
@@ -447,6 +448,7 @@ export class App extends React.Component<AppProps, AppState> {
             showShareModal: false,
             showActionsSimplificationMenu: false,
             showPrivacyModal: false,
+            focusOnClosePrivacyModalSelector: '',
             startingX: startingX,
             startingY: startingY,
             startingDirection: startingDirection,
@@ -534,6 +536,20 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     // Handlers
+
+    handleCookieNotificationDismiss = () => {
+        window.localStorage.setItem('c2lc-hasDismissedCookieNotification', true);
+        this.setState({
+            showCookieNotification: false
+        });
+    };
+
+    handleCookieNotificationLearnMore = () => {
+        this.setState({
+            showPrivacyModal: true,
+            focusOnClosePrivacyModalSelector: '.CookieNotification__learnMoreButton'
+        });
+    };
 
     handleProgramSequenceChange = (programSequence: ProgramSequence) => {
         this.setState({
@@ -1354,21 +1370,11 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showShareModal: false });
     }
 
-    handleCookieNotificationDismiss = () => {
-        window.localStorage.setItem('c2lc-hasDismissedCookieNotification', true);
-        this.setState({
-            showCookieNotification: false
-        });
-    }
-
-    handleCookieNotificationLearnMore = () => {
-        /* eslint-disable no-console */
-        console.log("TODO: Learn more");
-        /* eslint-enable no-console */
-    }
-
     handleClickPrivacyButton = () => {
-        this.setState({ showPrivacyModal: true });
+        this.setState({
+            showPrivacyModal: true,
+            focusOnClosePrivacyModalSelector: '.App__PrivacyModal__toggle-button'
+        });
     }
 
     handleClosePrivacyModal = () => {
@@ -1684,6 +1690,7 @@ export class App extends React.Component<AppProps, AppState> {
                 />
                 <PrivacyModal
                     show={this.state.showPrivacyModal}
+                    focusOnCloseSelector={this.state.focusOnClosePrivacyModalSelector}
                     onClose={this.handleClosePrivacyModal}
                 />
             </React.Fragment>
