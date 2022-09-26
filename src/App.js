@@ -1392,10 +1392,12 @@ export class App extends React.Component<AppProps, AppState> {
                     onKeyDown={this.handleRootKeyDown}>
                     <div className='App__notificationArea'>
                         {this.state.showCookieNotification &&
-                            <CookieNotification
-                                onDismiss={this.handleCookieNotificationDismiss}
-                                onLearnMore={this.handleCookieNotificationLearnMore}
-                            />
+                            <div className='App__notificationContainer'>
+                                <CookieNotification
+                                    onDismiss={this.handleCookieNotificationDismiss}
+                                    onLearnMore={this.handleCookieNotificationLearnMore}
+                                />
+                            </div>
                         }
                     </div>
                     <header className='App__header'>
