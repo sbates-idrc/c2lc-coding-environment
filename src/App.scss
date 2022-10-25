@@ -13,9 +13,10 @@ body {
     box-sizing: border-box;
     display: grid;
     grid-template-columns: 1fr min-content minmax(auto, calc(#{$c2lc-scene-border-width} + #{$c2lc-scene-border-width} + #{$c2lc-scene-row-header-width} + #{$c2lc-scene-width} + #{$c2lc-scene-space-for-scrollbar} + #{$c2lc-app-scene-container-margin-right})) min-content 1fr;
-    grid-template-rows: auto auto 1fr 4.5rem;
+    grid-template-rows: auto auto 1fr 4.6rem;
     row-gap: 0.25rem;
     height: 100vh;
+    overflow: auto;
     // On mobile Safari, limit the height of the App to the browser content
     // area. See:
     // https://allthingssmitty.com/2020/05/11/css-fix-for-100vh-in-mobile-webkit/
