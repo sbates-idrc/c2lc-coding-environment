@@ -108,7 +108,7 @@
         "ConfirmDeleteAllModal.title": "Delete Program",
         "CookieNotification.dismiss": "Dismiss",
         "CookieNotification.learnMore": "Learn more",
-        "CookieNotification.message": "Weavly uses cookies to distinguish different users of the website. We don't use cookies to track user's behaviour on this website or collect their personal information.",
+        "CookieNotification.message": "Weavly records information about how many people are using it, approximately where they are located, and what devices they are using. We use cookies to distinguish between users and to record where you came to Weavly from. We don't track what you do on Weavly or collect your personal information.",
         "CharacterPositionController.editPosition.turnLeft": "Turn the character left",
         "CharacterPositionController.editPosition.turnRight": "Turn the character right",
         "CharacterPositionController.editPosition.moveUp": "Move the character up",
