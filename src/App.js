@@ -1939,9 +1939,9 @@ export class App extends React.Component<AppProps, AppState> {
                 // TODO: Update how to handle 45 and 90 degree turns
                 this.interpreter.addCommandHandler('forward1', 'arduino',
                     this.arduinoDriver.forward.bind(this.arduinoDriver));
-                this.interpreter.addCommandHandler('left45', 'arduino',
+                this.interpreter.addCommandHandler('left90', 'arduino',
                     this.arduinoDriver.left.bind(this.arduinoDriver));
-                this.interpreter.addCommandHandler('right45', 'arduino',
+                this.interpreter.addCommandHandler('right90', 'arduino',
                     this.arduinoDriver.right.bind(this.arduinoDriver));
                 this.interpreter.addCommandHandler('backward1', 'arduino',
                     this.arduinoDriver.backward.bind(this.arduinoDriver));
