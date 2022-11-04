@@ -1385,17 +1385,19 @@ export class App extends React.Component<AppProps, AppState> {
         const Logo = getThemeLogo(this.state.settings.theme);
         return (
             <React.Fragment>
-                {this.state.showCookieNotification &&
-                    <CookieNotification
-                        onDismiss={this.handleCookieNotificationDismiss}
-                        onLearnMore={this.handleCookieNotificationLearnMore}
-                    />
-                }
                 <div
                     className='App__container'
                     role='main'
                     onClick={this.handleRootClick}
                     onKeyDown={this.handleRootKeyDown}>
+                    <div className='App__notificationArea'>
+                        {this.state.showCookieNotification &&
+                            <CookieNotification
+                                onDismiss={this.handleCookieNotificationDismiss}
+                                onLearnMore={this.handleCookieNotificationLearnMore}
+                            />
+                        }
+                    </div>
                     <header className='App__header'>
                         <div className='App__header-row'>
                             <h1 className='App__logo-container'>

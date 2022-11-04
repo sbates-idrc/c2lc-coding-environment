@@ -42,7 +42,7 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
 
                 <ModalBody>
                     <div className='PrivacyModal__content'>
-                        <h5>Updated November 3rd, 2022</h5>
+                        <h5>Updated November 7th, 2022</h5>
 
                         <p>
                             At Weavly, we believe that privacy is a fundamental human right, and acknowledge how important
@@ -61,6 +61,36 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
                                 How we keep your information safe
                             </li>
                         </ul>
+
+                        <h5>Use of cookies for web analytics</h5>
+
+                        <p>We use a web analytics application called "Matomo" to help us
+                        understand how many people are using Weavly, approximately where they
+                        are located, and what types of devices they are using Weavly on.</p>
+
+                        <p>When you use Weavly, we create cookies that record the following
+                        information:</p>
+
+                        <ul>
+                            <li>A random unique identifier used to distinguish one user’s device
+                            from another (so that we don't count someone’s device more than
+                            once, or count different devices as one device)</li>
+                            <li>If you started Weavly by clicking on a link, then we record the
+                            location of the webpage that the link was on</li>
+                        </ul>
+
+                        <p>When you first load Weavly, we record an anonymized version of your IP
+                        address (with the last 2 parts, of 4, removed). For example, if your IP
+                        address was 1.2.3.4, we would store 1.2.0.0. We use this anonymized version
+                        of the IP address to look up an approximate location, so that we can
+                        understand where Weavly is being used.</p>
+
+                        <p>When you go to a website, your browser sends information about itself
+                        and the operating system that you are using. We record this information to
+                        understand which types of devices Weavly is being used on.</p>
+
+                        <p>We do not track what you are doing in Weavly or collect your personal
+                        information.</p>
 
                         <h5>What information does Weavly store?</h5>
 
@@ -119,34 +149,6 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
                             running from that domain may access it. Thus, other websites cannot access the data. However,
                             local storage is not encrypted on disk and someone with access to the device could get access to
                             the data.</p>
-
-                        <h5>Use of cookies and web analytics</h5>
-
-                        <p>We use a web analytics application called "Matomo" to help us
-                        understand how many people are using Weavly and approximately where they
-                        are located. When you use Weavly, we create cookies that record the
-                        following information:</p>
-
-                        <ul>
-                            <li>A random unique identifier used to distinguish one user’s device
-                            from another (so that we don't count someone’s device more than
-                            once)</li>
-                            <li>If you started Weavly by clicking on a link, then we record the
-                            location of the webpage that the link was on</li>
-                        </ul>
-
-                        <p>When you first load Weavly, we record an anonymized version of your IP
-                        address (with the last 2 parts, of 4, removed). For example, if your IP
-                        address was 1.2.3.4, we would store 1.2.0.0. We use this anonymized version
-                        of the IP address to look up an approximate location, so that we can
-                        understand where Weavly is being used.</p>
-
-                        <p>When you go to a website, your browser sends information about itself
-                        and the operating system that you are using. We record this information to
-                        understand which types of devices Weavly is being accessed from.</p>
-
-                        <p>We do not track what you are doing in Weavly or collect your personal
-                        information.</p>
 
                         <h5>Children’s Privacy</h5>
 
