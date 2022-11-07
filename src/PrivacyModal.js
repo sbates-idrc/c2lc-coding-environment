@@ -72,8 +72,8 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
                         information:</p>
 
                         <ul>
-                            <li>A random unique identifier used to distinguish one user’s device
-                            from another (so that we don't count someone’s device more than
+                            <li>A random unique identifier used to distinguish one user's device
+                            from another (so that we don't count someone's device more than
                             once, or count different devices as one device)</li>
                             <li>If you started Weavly by clicking on a link, then we record the
                             location of the webpage that the link was on</li>
@@ -114,7 +114,7 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
 
                         <p>
                             You can delete any information that Weavly has generated from your usage by clearing your
-                            browser’s cache and local storage. Check your browser's documentation for details.
+                            browser's cache and local storage. Check your browser's documentation for details.
                         </p>
 
                         <h5>How does Weavly use this information?</h5>
@@ -150,7 +150,7 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
                             local storage is not encrypted on disk and someone with access to the device could get access to
                             the data.</p>
 
-                        <h5>Children’s Privacy</h5>
+                        <h5>Children's Privacy</h5>
 
                         <p>
                             We do not knowingly collect personally identifiable information from anyone under the age of 18.
