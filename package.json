@@ -36,10 +36,11 @@
     "eslintConfig": {
         "extends": "react-app",
         "ignorePatterns": [
+            "build/",
+            "extras/log_headers.js",
             "flow-typed/npm",
             "node_modules/",
-            "src/vendor/",
-            "build/"
+            "src/vendor/"
         ],
         "rules": {
             "indent": [
