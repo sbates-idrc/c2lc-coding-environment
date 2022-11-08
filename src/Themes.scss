@@ -1599,6 +1599,12 @@ body.gray-theme {
         }
     }
 
+    .ThemeSelector__option {
+        &:hover {
+            background-color: #D5D8DD;
+        }
+    }
+
     .ToggleSwitch:not(.ToggleSwitch--checked).SoundOptionsToggle {
         background-color: #B9BEC6;
     }
@@ -2727,6 +2733,13 @@ body.contrast-theme {
 
         svg rect {
             fill: #8E8E8E;
+        }
+    }
+
+    .ThemeSelector__option {
+        &:hover {
+            color: white;
+            background-color: black;
         }
     }
 
