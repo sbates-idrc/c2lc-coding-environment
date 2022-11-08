@@ -1,4 +1,5 @@
 #include <bluefruit.h>
+#include <Adafruit_Circuit_Playground.h>
 #include <Adafruit_Crickit.h>
 #include <seesaw_motor.h>
 
@@ -74,10 +75,19 @@ void setup()
         delay(10);
     }
 
+    if (!CircuitPlayground.begin()) {
+        Serial.println("Error starting CircuitPlayground");
+        while (1) {
+            delay(10);
+        }
+    } else {
+        Serial.println("CircuitPlayground started");
+    }
+
     if (!crickit.begin()) {
         Serial.println("Error starting crickit");
         while (1) {
-            delay(1);
+            delay(10);
         }
     } else {
         Serial.println("Crickit started");
@@ -113,4 +123,10 @@ void setup()
 
 void loop()
 {
+    Serial.print("motionX: ");
+    Serial.print(CircuitPlayground.motionX());
+    Serial.print(" motionY: ");
+    Serial.print(CircuitPlayground.motionY());
+    Serial.print(" motionZ: ");
+    Serial.println(CircuitPlayground.motionZ());
 }
