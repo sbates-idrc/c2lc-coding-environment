@@ -31,7 +31,7 @@
         "serve": "serve build",
         "prenetlify-build": "npm rebuild",
         "netlify-build": "react-scripts build",
-        "markdownlint": "markdownlint-cli2 \"./**/*.md\" \"#node_modules\" \"#src/vendor\" \"#build\" \"#docs/Arduino BLE.md\""
+        "markdownlint": "markdownlint-cli2 \"./**/*.md\" \"#node_modules\" \"#src/vendor\" \"#build\" \"#open_robot_kit/Arduino BLE.md\""
     },
     "eslintConfig": {
         "extends": "react-app",
