@@ -15,7 +15,7 @@ import CookieNotification from './CookieNotification';
 import C2lcURLParams from './C2lcURLParams';
 import DeviceConnectControl from './DeviceConnectControl';
 import RobotConnectionErrorModal from './RobotConnectionErrorModal';
-import ArduinoDriver from './ArduinoDriver';
+import WeavlyRobotDriver from './WeavlyRobotDriver';
 import * as FeatureDetection from './FeatureDetection';
 import FakeAudioManager from './FakeAudioManager';
 import FocusTrapManager from './FocusTrapManager';
@@ -97,7 +97,7 @@ export type AppState = {
     programSequence: ProgramSequence,
     characterState: CharacterState,
     settings: AppSettings,
-    arduinoConnectionStatus: DeviceConnectionStatus,
+    robotConnectionStatus: DeviceConnectionStatus,
     showRobotConnectionError: boolean,
     selectedAction: ?string,
     isDraggingCommand: boolean,
@@ -129,7 +129,7 @@ export type AppState = {
 export class App extends React.Component<AppProps, AppState> {
     version: string;
     appContext: AppContext;
-    arduinoDriver: RobotDriver;
+    robotDriver: RobotDriver;
     sceneDimensions: SceneDimensions;
     interpreter: Interpreter;
     audioManager: AudioManager;
@@ -426,7 +426,7 @@ export class App extends React.Component<AppProps, AppState> {
                 theme: 'default',
                 world: this.defaultWorld
             },
-            arduinoConnectionStatus: 'notConnected',
+            robotConnectionStatus: 'notConnected',
             showRobotConnectionError: false,
             selectedAction: null,
             isDraggingCommand: false,
@@ -456,8 +456,8 @@ export class App extends React.Component<AppProps, AppState> {
         };
 
         // For FakeRobotDriver, replace with:
-        // this.arduinoDriver = new FakeRobotDriver();
-        this.arduinoDriver = new ArduinoDriver();
+        // this.robotDriver = new FakeRobotDriver();
+        this.robotDriver = new WeavlyRobotDriver();
 
         if (props.audioManager) {
             this.audioManager = props.audioManager
@@ -633,14 +633,14 @@ export class App extends React.Component<AppProps, AppState> {
         this.setRunningState('stopRequested');
     };
 
-    handleClickConnectArduino = () => {
+    handleClickConnectRobot = () => {
         this.setState({
-            arduinoConnectionStatus: 'connecting',
+            robotConnectionStatus: 'connecting',
             showRobotConnectionError: false
         });
-        this.arduinoDriver.connect(this.handleArduinoDisconnect).then(() => {
+        this.robotDriver.connect(this.handleRobotDisconnect).then(() => {
             this.setState({
-                arduinoConnectionStatus: 'connected'
+                robotConnectionStatus: 'connected'
             });
         }, (error: Error) => {
             /* eslint-disable no-console */
@@ -649,21 +649,21 @@ export class App extends React.Component<AppProps, AppState> {
             console.log(error.message);
             /* eslint-enable no-console */
             this.setState({
-                arduinoConnectionStatus: 'notConnected',
+                robotConnectionStatus: 'notConnected',
                 showRobotConnectionError: true
             });
         });
     };
 
-    handleCancelArduinoConnection = () => {
+    handleCancelRobotConnection = () => {
         this.setState({
             showRobotConnectionError: false
         });
     };
 
-    handleArduinoDisconnect = () => {
+    handleRobotDisconnect = () => {
         this.setState({
-            arduinoConnectionStatus : 'notConnected'
+            robotConnectionStatus : 'notConnected'
         });
     };
 
@@ -1501,10 +1501,10 @@ export class App extends React.Component<AppProps, AppState> {
                             <DeviceConnectControl
                                 disabled={
                                     !this.appContext.bluetoothApiIsAvailable ||
-                                    this.state.arduinoConnectionStatus === 'connected' }
-                                connectionStatus={this.state.arduinoConnectionStatus}
-                                onClickConnect={this.handleClickConnectArduino}>
-                                <FormattedMessage id='App.connectToArduino' />
+                                    this.state.robotConnectionStatus === 'connected' }
+                                connectionStatus={this.state.robotConnectionStatus}
+                                onClickConnect={this.handleClickConnectRobot}>
+                                <FormattedMessage id='App.connectToRobot' />
                             </DeviceConnectControl>
                         </div>
 
@@ -1656,8 +1656,8 @@ export class App extends React.Component<AppProps, AppState> {
                     world={this.state.settings.world}/>
                 <RobotConnectionErrorModal
                     show={this.state.showRobotConnectionError}
-                    onCancel={this.handleCancelArduinoConnection}
-                    onRetry={this.handleClickConnectArduino}/>
+                    onCancel={this.handleCancelRobotConnection}
+                    onRetry={this.handleClickConnectRobot}/>
                 <KeyboardInputModal
                     show={this.state.showKeyboardModal}
                     keyBindingsEnabled={this.state.keyBindingsEnabled}
@@ -1965,20 +1965,20 @@ export class App extends React.Component<AppProps, AppState> {
             document.body.className = `${this.state.settings.theme}-theme`;
         }
 
-        if (this.state.arduinoConnectionStatus !== prevState.arduinoConnectionStatus) {
+        if (this.state.robotConnectionStatus !== prevState.robotConnectionStatus) {
             /* eslint-disable no-console */
-            console.log(this.state.arduinoConnectionStatus);
+            console.log(this.state.robotConnectionStatus);
             /* eslint-enable no-console */
-            if (this.state.arduinoConnectionStatus === 'connected') {
+            if (this.state.robotConnectionStatus === 'connected') {
                 // TODO: Update how to handle 45 and 90 degree turns
-                this.interpreter.addCommandHandler('forward1', 'arduino',
-                    this.arduinoDriver.forward.bind(this.arduinoDriver));
-                this.interpreter.addCommandHandler('left90', 'arduino',
-                    this.arduinoDriver.left.bind(this.arduinoDriver));
-                this.interpreter.addCommandHandler('right90', 'arduino',
-                    this.arduinoDriver.right.bind(this.arduinoDriver));
-                this.interpreter.addCommandHandler('backward1', 'arduino',
-                    this.arduinoDriver.backward.bind(this.arduinoDriver));
+                this.interpreter.addCommandHandler('forward1', 'robot',
+                    this.robotDriver.forward.bind(this.robotDriver));
+                this.interpreter.addCommandHandler('left90', 'robot',
+                    this.robotDriver.left.bind(this.robotDriver));
+                this.interpreter.addCommandHandler('right90', 'robot',
+                    this.robotDriver.right.bind(this.robotDriver));
+                this.interpreter.addCommandHandler('backward1', 'robot',
+                    this.robotDriver.backward.bind(this.robotDriver));
             }
         }
     }

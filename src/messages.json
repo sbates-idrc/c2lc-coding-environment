@@ -52,7 +52,7 @@
         "App.blockMode": "Block",
         "App.changeMode": "Change Mode",
         "App.connectToDash": "Connect to Dash",
-        "App.connectToArduino": "Connect to Arduino",
+        "App.connectToRobot": "Connect to Robot",
         "App.privacyModalToggle": "Privacy",
         "App.privacyModalToggle.ariaLabel": "Weavly privacy policy",
         "App.run": "Run",

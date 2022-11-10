@@ -72,7 +72,6 @@
             "!src/**/*.test.js",
             "!src/AddModeImage.js",
             "!src/App.js",
-            "!src/ArduinoDriver.js",
             "!src/AudioManagerImpl.js",
             "!src/DashDriver.js",
             "!src/DeleteModeImage.js",
@@ -81,6 +80,7 @@
             "!src/FeatureDetection.js",
             "!src/FocusTrapManager.js",
             "!src/TestUtils.js",
+            "!src/WeavlyRobotDriver.js",
             "!src/index.js",
             "!src/serviceWorker.js",
             "!src/vendor/**/*"

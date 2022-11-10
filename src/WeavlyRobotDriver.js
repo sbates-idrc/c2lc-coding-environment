@@ -5,12 +5,13 @@ import type { RobotDriver } from './types';
 // TODO: Implement a timeout to handle the case where we never get a
 //       notification from the robot to say that a command has completed
 
+// TODO: Generate new UUIDs
 // UUIDs from the Arduino example: ArduinoBLE / Peripheral / LED
 const robotServiceUuid = '19b10000-e8f2-537e-4f6c-d104768a1214';
 const commandCharacteristicUuid = '19b10001-e8f2-537e-4f6c-d104768a1214';
 const notificationCharacteristicUuid = '19b10002-e8f2-537e-4f6c-d104768a1214';
 
-export default class ArduinoDriver implements RobotDriver {
+export default class WeavlyRobotDriver implements RobotDriver {
     commandCharacteristic: any;
     notificationCharacteristic: any;
     resolveActiveCommand: any;
