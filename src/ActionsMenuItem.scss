@@ -1,8 +1,8 @@
 @import 'variables';
 
 .ActionsMenuItem {
-    padding: 0.5rem 0.5rem;
-    border-radius: 0.2rem;
+    position: relative;
+    padding: 0.75rem 0.5rem;
     display: grid;
     grid-template-columns: min-content 1fr min-content;
     column-gap: 0.5rem;
@@ -12,6 +12,7 @@
     &:focus {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
         outline: none;
+        z-index: 1;
     }
 
     &:hover {

@@ -1599,6 +1599,15 @@ body.gray-theme {
         }
     }
 
+    .ThemeSelector__option {
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+        &:hover {
+            background-color: #D5D8DD;
+        }
+    }
+
     .ToggleSwitch:not(.ToggleSwitch--checked).SoundOptionsToggle {
         background-color: #B9BEC6;
     }
@@ -2727,6 +2736,19 @@ body.contrast-theme {
 
         svg rect {
             fill: #8E8E8E;
+        }
+    }
+
+    .ThemeSelector__option {
+        &:hover {
+            color: white;
+            background-color: black;
+        }
+
+        &:hover:focus {
+            box-shadow:
+                0 0 0 0.1rem white,
+                0 0 0 0.2rem black;
         }
     }
 
