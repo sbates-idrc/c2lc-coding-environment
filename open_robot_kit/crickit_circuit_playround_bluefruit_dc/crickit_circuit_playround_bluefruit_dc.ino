@@ -17,6 +17,8 @@ const uint8_t notificationCommandFinished = 2;
 
 // Globals
 
+const char name[] = "WeavlyRobot";
+
 BLEService robotService(robotServiceUuid);
 BLECharacteristic commandCharacteristic(commandCharacteristicUuid);
 BLECharacteristic notificationCharacteristic(notificationCharacteristicUuid);
@@ -70,6 +72,11 @@ void setupBluetooth()
     }
 
     Bluefruit.setTxPower(4);
+
+    Bluefruit.setName(name);
+    Serial.print("Set name: ");
+    Serial.println(name);
+
     Bluefruit.Periph.setConnectCallback(connectCallback);
     Bluefruit.Periph.setDisconnectCallback(disconnectCallback);
 
@@ -109,7 +116,13 @@ void setupBluetooth()
         Serial.println("notificationCharacteristic started");
     }
 
+    startAdvertising();
+}
+
+void startAdvertising()
+{
     Bluefruit.Advertising.addService(robotService);
+    Bluefruit.Advertising.addName();
     Bluefruit.Advertising.start(0);
 }
 
