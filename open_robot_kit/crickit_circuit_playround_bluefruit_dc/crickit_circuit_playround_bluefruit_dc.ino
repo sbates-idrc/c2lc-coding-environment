@@ -3,6 +3,16 @@
 #include <Adafruit_Crickit.h>
 #include <seesaw_motor.h>
 
+#define WEAVLY_ROBOT_DEBUG
+
+#ifdef WEAVLY_ROBOT_DEBUG
+    #define WEAVLY_ROBOT_PRINT(x) Serial.print(x);
+    #define WEAVLY_ROBOT_PRINTLN(x) Serial.println(x);
+#else
+    #define WEAVLY_ROBOT_PRINT(x) ;
+    #define WEAVLY_ROBOT_PRINTLN(x) ;
+#endif
+
 // Weavly robot protocol
 
 const char robotServiceUuid[] = "19B10000-E8F2-537E-4F6C-D104768A1214";
@@ -30,27 +40,29 @@ seesaw_Motor rightMotor(&crickit);
 
 void setup()
 {
+#ifdef WEAVLY_ROBOT_DEBUG
     Serial.begin(115200);
     while (!Serial) {
         delay(10);
     }
+#endif
 
     if (!CircuitPlayground.begin()) {
-        Serial.println("Error starting CircuitPlayground");
+        WEAVLY_ROBOT_PRINTLN("Error starting CircuitPlayground");
         while (1) {
             delay(10);
         }
     } else {
-        Serial.println("CircuitPlayground started");
+        WEAVLY_ROBOT_PRINTLN("CircuitPlayground started");
     }
 
     if (!crickit.begin()) {
-        Serial.println("Error starting crickit");
+        WEAVLY_ROBOT_PRINTLN("Error starting crickit");
         while (1) {
             delay(10);
         }
     } else {
-        Serial.println("Crickit started");
+        WEAVLY_ROBOT_PRINTLN("Crickit started");
     }
 
     // Attach motors
@@ -63,30 +75,30 @@ void setup()
 void setupBluetooth()
 {
     if (!Bluefruit.begin()) {
-        Serial.println("Error starting Bluefruit");
+        WEAVLY_ROBOT_PRINTLN("Error starting Bluefruit");
         while (1) {
             delay(10);
         }
     } else {
-        Serial.println("Bluefruit started");
+        WEAVLY_ROBOT_PRINTLN("Bluefruit started");
     }
 
     Bluefruit.setTxPower(4);
 
     Bluefruit.setName(name);
-    Serial.print("Set name: ");
-    Serial.println(name);
+    WEAVLY_ROBOT_PRINT("Set name: ");
+    WEAVLY_ROBOT_PRINTLN(name);
 
     Bluefruit.Periph.setConnectCallback(connectCallback);
     Bluefruit.Periph.setDisconnectCallback(disconnectCallback);
 
     if (robotService.begin() != ERROR_NONE) {
-        Serial.println("Error starting robotService");
+        WEAVLY_ROBOT_PRINTLN("Error starting robotService");
         while (1) {
             delay(10);
         }
     } else {
-        Serial.println("robotService started");
+        WEAVLY_ROBOT_PRINTLN("robotService started");
     }
 
     commandCharacteristic.setProperties(CHR_PROPS_WRITE);
@@ -95,12 +107,12 @@ void setupBluetooth()
     commandCharacteristic.setWriteCallback(commandCallback);
 
     if (commandCharacteristic.begin() != ERROR_NONE) {
-        Serial.println("Error starting commandCharacteristic");
+        WEAVLY_ROBOT_PRINTLN("Error starting commandCharacteristic");
         while (1) {
             delay(10);
         }
     } else {
-        Serial.println("commandCharacteristic started");
+        WEAVLY_ROBOT_PRINTLN("commandCharacteristic started");
     }
 
     notificationCharacteristic.setProperties(CHR_PROPS_NOTIFY);
@@ -108,12 +120,12 @@ void setupBluetooth()
     notificationCharacteristic.setFixedLen(1);
 
     if (notificationCharacteristic.begin() != ERROR_NONE) {
-        Serial.println("Error starting notificationCharacteristic");
+        WEAVLY_ROBOT_PRINTLN("Error starting notificationCharacteristic");
         while (1) {
             delay(10);
         }
     } else {
-        Serial.println("notificationCharacteristic started");
+        WEAVLY_ROBOT_PRINTLN("notificationCharacteristic started");
     }
 
     startAdvertising();
@@ -124,21 +136,22 @@ void startAdvertising()
     Bluefruit.Advertising.addService(robotService);
     Bluefruit.Advertising.addName();
     Bluefruit.Advertising.start(0);
+    WEAVLY_ROBOT_PRINTLN("Advertising started");
 }
 
 void connectCallback(uint16_t conn_handle)
 {
-    Serial.println("Connected");
+    WEAVLY_ROBOT_PRINTLN("Connected");
 }
 
 void disconnectCallback(uint16_t conn_handle, uint8_t reason)
 {
-    Serial.println("Disconnected");
+    WEAVLY_ROBOT_PRINTLN("Disconnected");
 }
 
 void commandCallback(uint16_t conn_hdl, BLECharacteristic* chr, uint8_t* data, uint16_t len)
 {
-    Serial.println("Command received");
+    WEAVLY_ROBOT_PRINTLN("Command received");
 
     if (len == 1) {
         if (data[0] == commandForward) {
@@ -165,7 +178,7 @@ void commandCallback(uint16_t conn_hdl, BLECharacteristic* chr, uint8_t* data, u
         }
     }
 
-    Serial.println("Command completed");
+    WEAVLY_ROBOT_PRINTLN("Command completed");
 }
 
 void loop()
@@ -175,10 +188,10 @@ void loop()
 
 void logAccelerometer()
 {
-    Serial.print("motionX: ");
-    Serial.print(CircuitPlayground.motionX());
-    Serial.print(" motionY: ");
-    Serial.print(CircuitPlayground.motionY());
-    Serial.print(" motionZ: ");
-    Serial.println(CircuitPlayground.motionZ());
+    WEAVLY_ROBOT_PRINT("motionX: ");
+    WEAVLY_ROBOT_PRINT(CircuitPlayground.motionX());
+    WEAVLY_ROBOT_PRINT(" motionY: ");
+    WEAVLY_ROBOT_PRINT(CircuitPlayground.motionY());
+    WEAVLY_ROBOT_PRINT(" motionZ: ");
+    WEAVLY_ROBOT_PRINTLN(CircuitPlayground.motionZ());
 }
