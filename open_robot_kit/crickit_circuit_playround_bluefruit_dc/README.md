@@ -20,7 +20,7 @@
   - $1.95 USD each at Adafruit <https://www.adafruit.com/product/3948>
 - Power source supplying 4V to 5.5VDC
 - M3 nuts and bolts
-  - 4 x 40mm, for attaching the motors to the chassis
+  - 4 x 30mm, for attaching the motors to the chassis
   - 4 x 20mm, for attaching the metal castor bearing wheels to the chassis
   - 3 x 20mm, for attaching the CRICKIT board to the chassis
 
