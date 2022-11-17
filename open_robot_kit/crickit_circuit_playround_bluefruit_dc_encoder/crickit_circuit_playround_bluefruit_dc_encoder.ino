@@ -3,7 +3,7 @@
 #include <Adafruit_Crickit.h>
 #include <seesaw_motor.h>
 
-//#define WEAVLY_ROBOT_DEBUG
+#define WEAVLY_ROBOT_DEBUG
 
 #ifdef WEAVLY_ROBOT_DEBUG
     #define WEAVLY_ROBOT_PRINT(x) Serial.print(x);
@@ -15,6 +15,83 @@
 
 #define LEFT_ENCODER_SIGNAL CRICKIT_SIGNAL1
 #define RIGHT_ENCODER_SIGNAL CRICKIT_SIGNAL2
+
+#define ENCODER_HISTORY_LENGTH 1000
+
+// Classes
+
+namespace Weavly::Robot {
+
+class MotorWithEncoder {
+public:
+    MotorWithEncoder(Adafruit_Crickit& crickit, int encoderPin)
+        : m_crickit(crickit), m_motor(&crickit), m_encoderPin(encoderPin),
+        m_previousEncoderVal(false), m_encoderCount(0),
+        m_encoderHistoryIndex(0)
+    {
+    }
+
+    void begin(int motorPinA, int motorPinB)
+    {
+        m_crickit.pinMode(m_encoderPin, INPUT_PULLUP);
+        m_motor.attach(motorPinA, motorPinB);
+    }
+
+    int getEncoderCount()
+    {
+        return m_encoderCount;
+    }
+
+    void setEncoderCount(int count)
+    {
+        m_encoderCount = count;
+    }
+
+    void pollEncoder()
+    {
+        bool encoderVal = m_crickit.digitalRead(m_encoderPin);
+        if (m_previousEncoderVal && !encoderVal) {
+            ++m_encoderCount;
+        }
+        m_previousEncoderVal = encoderVal;
+        if (m_encoderHistoryIndex < ENCODER_HISTORY_LENGTH) {
+            m_encoderHistory[m_encoderHistoryIndex] = encoderVal;
+            ++m_encoderHistoryIndex;
+        }
+    }
+
+    void throttle(float value)
+    {
+        m_motor.throttle(value);
+    }
+
+    void resetEncoderHistory()
+    {
+        m_encoderHistoryIndex = 0;
+        for (int i = 0; i < ENCODER_HISTORY_LENGTH; ++i) {
+            m_encoderHistory[i] = false;
+        }
+    }
+
+    void dumpEncoderHistory()
+    {
+        for (int i = 0; i < ENCODER_HISTORY_LENGTH; ++i) {
+            WEAVLY_ROBOT_PRINT(m_encoderHistory[i]);
+        }
+        WEAVLY_ROBOT_PRINTLN();
+    }
+
+private:
+    Adafruit_Crickit& m_crickit;
+    seesaw_Motor m_motor;
+    int m_encoderPin;
+    bool m_previousEncoderVal;
+    int m_encoderCount;
+    bool m_encoderHistory[ENCODER_HISTORY_LENGTH];
+    int m_encoderHistoryIndex;
+};
+
+}
 
 // Weavly robot protocol
 
@@ -38,8 +115,8 @@ BLECharacteristic notificationCharacteristic(notificationCharacteristicUuid);
 
 Adafruit_Crickit crickit;
 
-seesaw_Motor leftMotor(&crickit);
-seesaw_Motor rightMotor(&crickit);
+Weavly::Robot::MotorWithEncoder leftMotor(crickit, LEFT_ENCODER_SIGNAL);
+Weavly::Robot::MotorWithEncoder rightMotor(crickit, RIGHT_ENCODER_SIGNAL);
 
 void setup()
 {
@@ -68,13 +145,8 @@ void setup()
         WEAVLY_ROBOT_PRINTLN("Crickit started");
     }
 
-    // Configure the GPIO pins for reading the motor encoders
-    crickit.pinMode(LEFT_ENCODER_SIGNAL, INPUT_PULLUP);
-    crickit.pinMode(RIGHT_ENCODER_SIGNAL, INPUT_PULLUP);
-
-    // Attach motors
-    leftMotor.attach(CRICKIT_MOTOR_A1, CRICKIT_MOTOR_A2);
-    rightMotor.attach(CRICKIT_MOTOR_B1, CRICKIT_MOTOR_B2);
+    leftMotor.begin(CRICKIT_MOTOR_A1, CRICKIT_MOTOR_A2);
+    rightMotor.begin(CRICKIT_MOTOR_B1, CRICKIT_MOTOR_B2);
 
     setupBluetooth();
 }
@@ -178,34 +250,34 @@ void commandCallback(uint16_t conn_hdl, BLECharacteristic* chr, uint8_t* data, u
 
 void runMotors(float leftThrottle, float rightThrottle, int leftCount, int rightCount)
 {
-    int leftEncoderCount = 0;
-    int rightEncoderCount = 0;
+    leftMotor.setEncoderCount(0);
+    leftMotor.resetEncoderHistory();
+    rightMotor.setEncoderCount(0);
     bool leftDone = false;
     bool rightDone = false;
     leftMotor.throttle(leftThrottle);
     rightMotor.throttle(rightThrottle);
-    bool previousLeftEncoderVal = crickit.digitalRead(LEFT_ENCODER_SIGNAL);
-    bool previousRightEncoderVal = crickit.digitalRead(RIGHT_ENCODER_SIGNAL);
     while (!leftDone || !rightDone) {
-        bool leftEncoderVal = crickit.digitalRead(LEFT_ENCODER_SIGNAL);
-        bool rightEncoderVal = crickit.digitalRead(RIGHT_ENCODER_SIGNAL);
-        if (previousLeftEncoderVal && !leftEncoderVal) {
-            ++leftEncoderCount;
-        }
-        if (previousRightEncoderVal && !rightEncoderVal) {
-            ++rightEncoderCount;
-        }
-        previousLeftEncoderVal = leftEncoderVal;
-        previousRightEncoderVal = rightEncoderVal;
-        if (!leftDone && leftEncoderCount > leftCount) {
+        leftMotor.pollEncoder();
+        rightMotor.pollEncoder();
+        if (!leftDone && leftMotor.getEncoderCount() > leftCount) {
             leftMotor.throttle(0);
             leftDone = true;
+            WEAVLY_ROBOT_PRINT("Left encoder count: ");
+            WEAVLY_ROBOT_PRINTLN(leftMotor.getEncoderCount());
+            WEAVLY_ROBOT_PRINT("Right encoder count: ");
+            WEAVLY_ROBOT_PRINTLN(rightMotor.getEncoderCount());
         }
-        if (!rightDone && rightEncoderCount > rightCount) {
+        if (!rightDone && rightMotor.getEncoderCount() > rightCount) {
             rightMotor.throttle(0);
             rightDone = true;
+            WEAVLY_ROBOT_PRINT("Left encoder count: ");
+            WEAVLY_ROBOT_PRINTLN(leftMotor.getEncoderCount());
+            WEAVLY_ROBOT_PRINT("Right encoder count: ");
+            WEAVLY_ROBOT_PRINTLN(rightMotor.getEncoderCount());
         }
     }
+    leftMotor.dumpEncoderHistory();
 }
 
 void loop()
