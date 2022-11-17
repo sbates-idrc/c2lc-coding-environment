@@ -28,3 +28,8 @@
 
 - Phillips-head screwdriver, size PH00, for the DC motor terminals on the CRICKIT
 - Tools to tighten the M3 nuts and bolts
+
+## Notes
+
+- Controlling the motors by how long they are run for does not produce
+  accurate enough motion
