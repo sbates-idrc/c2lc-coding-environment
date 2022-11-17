@@ -28,7 +28,9 @@
 
 ## Tools
 
-- Phillips-head screwdriver, size PH00, for the DC motor terminals on the CRICKIT
+- Phillips-head screwdriver size PH1, for attaching the Circuit Playground
+  Bluefruit to the CRICKIT
+- Phillips-head screwdriver size PH00, for the DC motor terminals on the CRICKIT
 - Tools to tighten the M3 nuts and bolts
 
 ## Wiring
