@@ -3,7 +3,7 @@
 #include <Adafruit_Crickit.h>
 #include <seesaw_motor.h>
 
-#define WEAVLY_ROBOT_DEBUG
+//#define WEAVLY_ROBOT_DEBUG
 
 #ifdef WEAVLY_ROBOT_DEBUG
     #define WEAVLY_ROBOT_PRINT(x) Serial.print(x);
@@ -16,8 +16,6 @@
 #define LEFT_ENCODER_PIN A2
 #define RIGHT_ENCODER_PIN A3
 
-#define ENCODER_HISTORY_LENGTH 1000
-
 // Classes
 
 namespace Weavly::Robot {
@@ -25,13 +23,38 @@ namespace Weavly::Robot {
 class MotorWithEncoder {
 public:
     MotorWithEncoder(Adafruit_Crickit& crickit)
-        : m_motor(&crickit), m_encoderCount(0)
+        : m_crickit(crickit),
+        m_motorPinA(-1),
+        m_motorPinB(-1),
+        m_encoderCount(0)
     {
     }
 
-    void attach(int motorPinA, int motorPinB)
+    void attachMotor(int pinA, int pinB)
     {
-        m_motor.attach(motorPinA, motorPinB);
+        m_motorPinA = pinA;
+        m_motorPinB = pinB;
+    }
+
+    void throttle(float value)
+    {
+        if (m_motorPinA < 0 || m_motorPinB < 0) {
+            return;
+        }
+
+        value = constrain(value, -1.0, 1.0);
+
+        // Operate the motor in 'slow decay mode'
+
+        uint16_t absolute = fabs(value) * 0xFFFF;
+
+        if (value < 0) {
+            m_crickit.analogWrite(m_motorPinA, 0xFFFF);
+            m_crickit.analogWrite(m_motorPinB, 0xFFFF - absolute);
+        } else {
+            m_crickit.analogWrite(m_motorPinA, 0xFFFF - absolute);
+            m_crickit.analogWrite(m_motorPinB, 0xFFFF);
+        }
     }
 
     int getEncoderCount()
@@ -49,13 +72,10 @@ public:
         ++m_encoderCount;
     }
 
-    void throttle(float value)
-    {
-        m_motor.throttle(value);
-    }
-
 private:
-    seesaw_Motor m_motor;
+    Adafruit_Crickit& m_crickit;
+    int m_motorPinA;
+    int m_motorPinB;
     int m_encoderCount;
 };
 
@@ -113,13 +133,21 @@ void setup()
         WEAVLY_ROBOT_PRINTLN("Crickit started");
     }
 
+    // Set up pins to read the motor encoders
     pinMode(LEFT_ENCODER_PIN, INPUT_PULLUP);
     pinMode(RIGHT_ENCODER_PIN, INPUT_PULLUP);
     attachInterrupt(LEFT_ENCODER_PIN, handleLeftEncoderInterrupt, FALLING);
     attachInterrupt(RIGHT_ENCODER_PIN, handleRightEncoderInterrupt, FALLING);
 
-    leftMotor.attach(CRICKIT_MOTOR_A1, CRICKIT_MOTOR_A2);
-    rightMotor.attach(CRICKIT_MOTOR_B1, CRICKIT_MOTOR_B2);
+    // Set PWM frequencies for the motor pins
+    crickit.setPWMFreq(CRICKIT_MOTOR_A1, 50);
+    crickit.setPWMFreq(CRICKIT_MOTOR_A2, 50);
+    crickit.setPWMFreq(CRICKIT_MOTOR_B1, 50);
+    crickit.setPWMFreq(CRICKIT_MOTOR_B2, 50);
+
+    // Attach the motors
+    leftMotor.attachMotor(CRICKIT_MOTOR_A1, CRICKIT_MOTOR_A2);
+    rightMotor.attachMotor(CRICKIT_MOTOR_B1, CRICKIT_MOTOR_B2);
 
     setupBluetooth();
 }
@@ -217,13 +245,13 @@ void commandCallback(uint16_t conn_hdl, BLECharacteristic* chr, uint8_t* data, u
 
     if (len == 1) {
         if (data[0] == commandForward) {
-            runMotors(0.6, 0.6, 120, 120);
+            runMotors(0.75, 0.75, 120, 120);
             notificationCharacteristic.notify8(notificationCommandFinished);
         } else if (data[0] == commandLeft) {
-            runMotors(-0.6, 0.6, 50, 50);
+            runMotors(-0.5, 0.5, 58, 58);
             notificationCharacteristic.notify8(notificationCommandFinished);
         } else if (data[0] == commandRight) {
-            runMotors(0.6, -0.6, 50, 50);
+            runMotors(0.5, -0.5, 58, 58);
             notificationCharacteristic.notify8(notificationCommandFinished);
         }
     }
