@@ -25,6 +25,17 @@ import { ReactComponent as Submarine } from './svg/Submarine.svg';
 import { ReactComponent as SubmarineGray } from './svg/Submarine-gray.svg';
 import { ReactComponent as SubmarineContrast } from './svg/Submarine-contrast.svg';
 
+// Grocery Store
+import { ReactComponent as GroceryStore } from './svg/GroceryStore.svg';
+import { ReactComponent as GroceryStoreGray } from './svg/GroceryStoreGray.svg';
+import { ReactComponent as GroceryStoreContrast } from './svg/GroceryStoreContrast.svg';
+import { ReactComponent as GroceryStoreThumbnail } from './svg/GroceryStoreThumbnail.svg';
+import { ReactComponent as GroceryStoreThumbnailGray } from './svg/GroceryStoreThumbnailGray.svg';
+import { ReactComponent as GroceryStoreThumbnailContrast } from './svg/GroceryStoreThumbnailContrast.svg';
+import { ReactComponent as GroceryStoreCart } from './svg/GroceryStoreCart.svg';
+import { ReactComponent as GroceryStoreCartGray } from './svg/GroceryStoreCartGray.svg';
+import { ReactComponent as GroceryStoreCartContrast } from './svg/GroceryStoreCartContrast.svg';
+
 // Haunted House
 import { ReactComponent as Haunted } from './svg/Haunted.svg';
 import { ReactComponent as HauntedGray } from './svg/Haunted-gray.svg';
@@ -110,6 +121,7 @@ export type WorldProperties = {|
 const worlds: {|
     'Camping': WorldProperties,
     'DeepOcean': WorldProperties,
+    'GroceryStore': WorldProperties,
     'Haunted': WorldProperties,
     'Landmarks': WorldProperties,
     'Marble': WorldProperties,
@@ -243,6 +255,71 @@ const worlds: {|
         character: Submarine,
         characterGray: SubmarineGray,
         characterContrast: SubmarineContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
+    },
+    'GroceryStore': {
+        background: GroceryStore,
+        backgroundGray: GroceryStoreGray,
+        backgroundContrast: GroceryStoreContrast,
+        backgroundInfo: {
+            A1: 'ceilingLight',
+            B1: 'ceilingLight',
+            C1: 'ceilingLight',
+            E1: 'refrigerator',
+            F1: 'refrigerator',
+            G1: 'refrigerator',
+            H1: 'refrigerator',
+            J1: 'jars',
+            K1: 'cans',
+            L1: 'cans',
+            E2: 'steak',
+            F2: 'groundBeef',
+            G2: 'chicken',
+            H2: 'fish',
+            J3: 'bottles',
+            K3: 'pasta',
+            L3: 'bagOfRice',
+            A4: 'bread',
+            B4: 'bread',
+            A5: 'onions',
+            B5: 'potatoes',
+            E5: 'pineapples',
+            F5: 'apples',
+            G5: 'pears',
+            H5: 'oranges',
+            J5: 'refrigerator',
+            K5: 'refrigerator',
+            L5: 'refrigerator',
+            A6: 'cucumbers',
+            B6: 'tomatoes',
+            C6: 'eggplants',
+            E6: 'watermelons',
+            F6: 'strawberries',
+            G6: 'bananas',
+            H6: 'grapes',
+            J6: 'milk',
+            K6: 'chocolateMilk',
+            L6: 'orangeJuice',
+            A7: 'carrots',
+            B7: 'greenVegetables',
+            C7: 'broccoli',
+            J7: 'eggs',
+            K7: 'bottles',
+            L7: 'cheese',
+            J8: 'yogurt',
+            K8: 'tofu',
+            L8: 'tofu'
+        },
+        thumbnail: GroceryStoreThumbnail,
+        thumbnailDark: GroceryStoreThumbnail,
+        thumbnailGray: GroceryStoreThumbnailGray,
+        thumbnailContrast: GroceryStoreThumbnailContrast,
+        character: GroceryStoreCart,
+        characterGray: GroceryStoreCartGray,
+        characterContrast: GroceryStoreCartContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East

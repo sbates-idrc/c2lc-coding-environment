@@ -186,6 +186,121 @@ body.contrast-theme {
     }
 }
 
+/* Grocery Store */
+
+.ProgramBlockEditor__character-column-character-container--GroceryStore {
+    background-color: #FFFFFF;
+}
+
+.Scene__grid-line--GroceryStore {
+    stroke: #B7804A;
+}
+
+.Scene__path-line--GroceryStore {
+    stroke: #FFFFFF;
+}
+
+.Scene__starting-grid-cell-point--GroceryStore {
+    fill: #FFFFFF;
+}
+
+.WorldSelector__option-image--GroceryStore:hover {
+    svg {
+        .thumbnail-background {
+            fill: #F5C58A;
+        }
+        .thumbnail-sack {
+            fill: #ED972C;
+        }
+        .thumbnail-watermelon {
+            fill: #4C9990;
+        }
+        .thumbnail-bananas {
+            fill: #FFE587;
+        }
+        .thumbnail-bottle {
+            fill: #4C9990;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--GroceryStore {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--GroceryStore {
+        stroke: #B9BEC6;
+    }
+
+    .Scene__path-line--GroceryStore {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__starting-grid-cell-point--GroceryStore {
+        fill: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--GroceryStore:hover {
+        svg {
+            .thumbnail-background {
+                fill: #9DA4AF;
+            }
+            .thumbnail-sack {
+                fill: #505862;
+            }
+            .thumbnail-watermelon {
+                fill: #67717E;
+            }
+            .thumbnail-bottle {
+                fill: #818A98;
+            }
+            .thumbnail-cart {
+                fill: #67717E;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--GroceryStore {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--GroceryStore {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--GroceryStore {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--GroceryStore {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--GroceryStore:hover {
+        svg {
+            .thumbnail-background {
+                fill: #1E1E1E;
+            }
+            .thumbnail-foreground {
+                fill: #FFFFFF;
+            }
+            .thumbnail-contrast-detail {
+                fill: #1E1E1E;
+            }
+            .thumbnail-watermelon-flesh {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-watermelon-seed {
+                stroke: #FFFFFF;
+            }
+        }
+    }
+}
+
 /* Haunted House */
 
 .ProgramBlockEditor__character-column-character-container--Haunted {
