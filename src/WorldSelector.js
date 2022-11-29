@@ -44,7 +44,8 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
             'Landmarks',
             'Marble',
             'Savannah',
-            'Space'
+            'Space',
+            'AmusementPark'
         ];
     }
 
