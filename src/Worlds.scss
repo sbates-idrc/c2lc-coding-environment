@@ -912,3 +912,57 @@ body.contrast-theme {
         }
     }
 }
+
+/* Sports */
+
+.ProgramBlockEditor__character-column-character-container--Sports {
+    background-color: #22343C;
+}
+
+.Scene__grid-line--Sports {
+    stroke: #B0B988;
+}
+
+.Scene__path-line--Sports {
+    stroke: #FFC86F;
+}
+
+.Scene__starting-grid-cell-point--Sports {
+    fill: #FFC86F;
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Sports {
+        background-color: #505862;
+    }
+
+    .Scene__grid-line--Sports {
+        stroke: #B9BEC6;
+    }
+
+    .Scene__path-line--Sports {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__starting-grid-cell-point--Sports {
+        fill: #FFFFFF;
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Sports {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Sports {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Sports {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--Sports {
+        fill: #FF0000;
+    }
+}

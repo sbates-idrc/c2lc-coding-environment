@@ -66,11 +66,11 @@ function getDoneButton(wrapper) {
 
 describe('When rendering selector options', () => {
     test('All worlds should be displayed as options and only one is checked', () => {
-        expect.assertions(19);
+        expect.assertions(21);
         const { wrapper } = createMountWorldSelector();
         const selectorOptions = getWorldSelectorRadioButton(wrapper);
 
-        expect(selectorOptions.length).toBe(9);
+        expect(selectorOptions.length).toBe(10);
 
         expect(selectorOptions.get(0).props.value).toBe('Sketchpad');
         expect(selectorOptions.get(1).props.value).toBe('Camping');
@@ -81,6 +81,7 @@ describe('When rendering selector options', () => {
         expect(selectorOptions.get(6).props.value).toBe('Marble');
         expect(selectorOptions.get(7).props.value).toBe('Savannah');
         expect(selectorOptions.get(8).props.value).toBe('Space');
+        expect(selectorOptions.get(9).props.value).toBe('Sports');
 
         expect(selectorOptions.get(0).props.checked).toBe(true);
         for (let i = 1; i < selectorOptions.length; i++) {

@@ -100,6 +100,17 @@ import { ReactComponent as SpaceShip } from './svg/SpaceShip.svg';
 import { ReactComponent as SpaceShipGray } from './svg/SpaceShip-gray.svg';
 import { ReactComponent as SpaceShipContrast } from './svg/SpaceShip-contrast.svg';
 
+// Sports
+import { ReactComponent as Sports } from './svg/Sports.svg';
+import { ReactComponent as SportsGray } from './svg/SportsGray.svg';
+import { ReactComponent as SportsContrast } from './svg/SportsContrast.svg';
+import { ReactComponent as SportsThumbnail } from './svg/SportsThumbnail.svg';
+import { ReactComponent as SportsThumbnailGray } from './svg/SportsThumbnailGray.svg';
+import { ReactComponent as SportsThumbnailContrast } from './svg/SportsThumbnailContrast.svg';
+import { ReactComponent as SportsTrophy } from './svg/SportsTrophy.svg';
+import { ReactComponent as SportsTrophyGray } from './svg/SportsTrophyGray.svg';
+import { ReactComponent as SportsTrophyContrast } from './svg/SportsTrophyContrast.svg';
+
 export type WorldProperties = {|
     background: ?React.ComponentType<{}>,
     backgroundGray: ?React.ComponentType<{}>,
@@ -127,7 +138,8 @@ const worlds: {|
     'Marble': WorldProperties,
     'Savannah': WorldProperties,
     'Sketchpad': WorldProperties,
-    'Space': WorldProperties
+    'Space': WorldProperties,
+    'Sports': WorldProperties
 |} = {
     'Camping': {
         background: Camping,
@@ -625,6 +637,62 @@ const worlds: {|
         character: SpaceShip,
         characterGray: SpaceShipGray,
         characterContrast: SpaceShipContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
+    },
+    'Sports': {
+        background: Sports,
+        backgroundGray: SportsGray,
+        backgroundContrast: SportsContrast,
+        backgroundInfo: {
+            A1: 'badmintonShuttlecock',
+            C1: 'basketball',
+            F1: 'runningShoes',
+            H1: 'curlingStone',
+            J1: 'golfBall',
+            L1: 'martialArtsUniform',
+            E2: 'skisAndSkiPoles',
+            I2: 'volleyballBall',
+            L2: 'martialArtsUniform',
+            C3: 'cricketBatAndBall',
+            E3: 'skisAndSkiPoles',
+            G3: 'football',
+            K3: 'bowlingBallAndPins',
+            A4: 'hockeyStickAndPuck',
+            C4: 'cricketBatAndBall',
+            H4: 'boxingGloves',
+            J4: 'tennisRacketAndBall',
+            L4: 'iceSkates',
+            A5: 'hockeyStickAndPuck',
+            E5: 'baseballGloveAndBall',
+            G5: 'singlet',
+            J5: 'tennisRacketAndBall',
+            B6: 'soccerBall',
+            G6: 'singlet',
+            L6: 'rowingBoat',
+            D7: 'bicycle',
+            E7: 'bicycle',
+            F7: 'bicycle',
+            J7: 'fieldHockeyStickAndBall',
+            L7: 'rowingBoat',
+            A8: 'swimmingGoggles',
+            B8: 'swimmingGoggles',
+            D8: 'bicycle',
+            E8: 'bicycle',
+            F8: 'bicycle',
+            H8: 'tableTennisRacket',
+            J8: 'fieldHockeyStickAndBall',
+            L8: 'rowingBoat'
+        },
+        thumbnail: SportsThumbnail,
+        thumbnailDark: SportsThumbnail,
+        thumbnailGray: SportsThumbnailGray,
+        thumbnailContrast: SportsThumbnailContrast,
+        character: SportsTrophy,
+        characterGray: SportsTrophyGray,
+        characterContrast: SportsTrophyContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
