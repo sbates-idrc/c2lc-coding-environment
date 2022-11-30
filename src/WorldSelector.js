@@ -40,6 +40,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
             'Sketchpad',
             'Camping',
             'DeepOcean',
+            'GroceryStore',
             'Haunted',
             'Landmarks',
             'Marble',

@@ -66,28 +66,26 @@ function getDoneButton(wrapper) {
 
 describe('When rendering selector options', () => {
     test('All worlds should be displayed as options and only one is checked', () => {
-        expect.assertions(17);
+        expect.assertions(19);
         const { wrapper } = createMountWorldSelector();
         const selectorOptions = getWorldSelectorRadioButton(wrapper);
 
-        expect(selectorOptions.length).toBe(8);
+        expect(selectorOptions.length).toBe(9);
 
         expect(selectorOptions.get(0).props.value).toBe('Sketchpad');
-        expect(selectorOptions.get(0).props.checked).toBe(true);
         expect(selectorOptions.get(1).props.value).toBe('Camping');
-        expect(selectorOptions.get(1).props.checked).toBe(false);
         expect(selectorOptions.get(2).props.value).toBe('DeepOcean');
-        expect(selectorOptions.get(2).props.checked).toBe(false);
-        expect(selectorOptions.get(3).props.value).toBe('Haunted');
-        expect(selectorOptions.get(3).props.checked).toBe(false);
-        expect(selectorOptions.get(4).props.value).toBe('Landmarks');
-        expect(selectorOptions.get(4).props.checked).toBe(false);
-        expect(selectorOptions.get(5).props.value).toBe('Marble');
-        expect(selectorOptions.get(5).props.checked).toBe(false);
-        expect(selectorOptions.get(6).props.value).toBe('Savannah');
-        expect(selectorOptions.get(6).props.checked).toBe(false);
-        expect(selectorOptions.get(7).props.value).toBe('Space');
-        expect(selectorOptions.get(7).props.checked).toBe(false);
+        expect(selectorOptions.get(3).props.value).toBe('GroceryStore');
+        expect(selectorOptions.get(4).props.value).toBe('Haunted');
+        expect(selectorOptions.get(5).props.value).toBe('Landmarks');
+        expect(selectorOptions.get(6).props.value).toBe('Marble');
+        expect(selectorOptions.get(7).props.value).toBe('Savannah');
+        expect(selectorOptions.get(8).props.value).toBe('Space');
+
+        expect(selectorOptions.get(0).props.checked).toBe(true);
+        for (let i = 1; i < selectorOptions.length; i++) {
+            expect(selectorOptions.get(i).props.checked).toBe(false);
+        }
     });
     test('Thumbnail icons get rendered with the selector options', () => {
         const { wrapper } = createMountWorldSelector();
