@@ -66,21 +66,22 @@ function getDoneButton(wrapper) {
 
 describe('When rendering selector options', () => {
     test('All worlds should be displayed as options and only one is checked', () => {
-        expect.assertions(19);
+        expect.assertions(21);
         const { wrapper } = createMountWorldSelector();
         const selectorOptions = getWorldSelectorRadioButton(wrapper);
 
-        expect(selectorOptions.length).toBe(9);
+        expect(selectorOptions.length).toBe(10);
 
         expect(selectorOptions.get(0).props.value).toBe('Sketchpad');
-        expect(selectorOptions.get(1).props.value).toBe('Camping');
-        expect(selectorOptions.get(2).props.value).toBe('DeepOcean');
-        expect(selectorOptions.get(3).props.value).toBe('GroceryStore');
-        expect(selectorOptions.get(4).props.value).toBe('Haunted');
-        expect(selectorOptions.get(5).props.value).toBe('Landmarks');
-        expect(selectorOptions.get(6).props.value).toBe('Marble');
-        expect(selectorOptions.get(7).props.value).toBe('Savannah');
-        expect(selectorOptions.get(8).props.value).toBe('Space');
+        expect(selectorOptions.get(1).props.value).toBe('AmusementPark');
+        expect(selectorOptions.get(2).props.value).toBe('Camping');
+        expect(selectorOptions.get(3).props.value).toBe('DeepOcean');
+        expect(selectorOptions.get(4).props.value).toBe('GroceryStore');
+        expect(selectorOptions.get(5).props.value).toBe('Haunted');
+        expect(selectorOptions.get(6).props.value).toBe('Landmarks');
+        expect(selectorOptions.get(7).props.value).toBe('Marble');
+        expect(selectorOptions.get(8).props.value).toBe('Savannah');
+        expect(selectorOptions.get(9).props.value).toBe('Space');
 
         expect(selectorOptions.get(0).props.checked).toBe(true);
         for (let i = 1; i < selectorOptions.length; i++) {
@@ -92,19 +93,19 @@ describe('When rendering selector options', () => {
 
         let selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
         expect(selectorThumbnails.get(0).props.children.type.render().props.children).toBe('SketchpadThumbnail.svg');
-        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('CampingThumbnail.svg');
+        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('AmusementParkThumbnail.svg');
 
         // Grayscale theme
         wrapper.setProps({theme: 'gray'});
         selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
         expect(selectorThumbnails.get(0).props.children.type.render().props.children).toBe('SketchpadThumbnail-gray.svg');
-        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('CampingThumbnail-gray.svg');
+        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('AmusementParkThumbnailGray.svg');
 
         // High contrast theme
         wrapper.setProps({theme: 'contrast'});
         selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
         expect(selectorThumbnails.get(0).props.children.type.render().props.children).toBe('SketchpadThumbnail-contrast.svg');
-        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('CampingThumbnail-contrast.svg');
+        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('AmusementParkThumbnailContrast.svg');
     });
 });
 
@@ -114,18 +115,18 @@ describe('When selecting a world', () => {
         const { wrapper, mockOnSelect } = createMountWorldSelector();
         const selectorOptions = getWorldSelectorRadioButton(wrapper);
 
-        const sketchpadWorldSelector = selectorOptions.at(0);
-        const campingWorldSelector = selectorOptions.at(1);
+        const firstWorldSelector = selectorOptions.at(0);
+        const secondWorldSelector = selectorOptions.at(1);
 
-        // Sketchpad World
-        sketchpadWorldSelector.simulate('change');
+        // First World
+        firstWorldSelector.simulate('change');
         expect(mockOnSelect.mock.calls.length).toBe(1);
         expect(mockOnSelect.mock.calls[0][0]).toBe('Sketchpad');
 
-        // Camping Trip World
-        campingWorldSelector.simulate('change');
+        // Second World
+        secondWorldSelector.simulate('change');
         expect(mockOnSelect.mock.calls.length).toBe(2);
-        expect(mockOnSelect.mock.calls[1][0]).toBe('Camping');
+        expect(mockOnSelect.mock.calls[1][0]).toBe('AmusementPark');
     });
 });
 
@@ -144,12 +145,12 @@ describe('When the cancel button is clicked', () => {
 describe('When the done button is clicked', () => {
     test('The world changed to the selected world', () => {
         expect.assertions(2);
-        const { wrapper, mockOnChange } = createMountWorldSelector({currentWorld: 'Sketchpad'});
+        const { wrapper, mockOnChange } = createMountWorldSelector({currentWorld: 'Space'});
         const doneButton = getDoneButton(wrapper).at(0);
-        wrapper.setProps({currentWorld: 'Space'});
+        wrapper.setProps({currentWorld: 'Savannah'});
         doneButton.simulate('click');
         expect(mockOnChange.mock.calls.length).toBe(1);
-        expect(mockOnChange.mock.calls[0][0]).toBe('Space');
+        expect(mockOnChange.mock.calls[0][0]).toBe('Savannah');
     })
 });
 
@@ -158,11 +159,11 @@ test('When one of the thumbnail images is clicked, onSelect prop gets called', (
     const { wrapper, mockOnSelect } = createMountWorldSelector();
     const selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
 
-    const sketchPadThumbnailImage = selectorThumbnails.at(0);
-    const campingThumbnailImage = selectorThumbnails.at(1);
+    const firstThumbnailImage = selectorThumbnails.at(0);
+    const secondThumbnailImage = selectorThumbnails.at(1);
 
-    sketchPadThumbnailImage.simulate('click');
+    firstThumbnailImage.simulate('click');
     expect(mockOnSelect.mock.calls[0][0]).toBe('Sketchpad');
-    campingThumbnailImage.simulate('click');
-    expect(mockOnSelect.mock.calls[1][0]).toBe('Camping');
+    secondThumbnailImage.simulate('click');
+    expect(mockOnSelect.mock.calls[1][0]).toBe('AmusementPark');
 });
