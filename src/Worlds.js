@@ -3,6 +3,17 @@
 import * as React from 'react';
 import type { ThemeName } from './types';
 
+// Amusement Park
+import { ReactComponent as AmusementPark } from './svg/AmusementPark.svg';
+import { ReactComponent as AmusementParkGray } from './svg/AmusementParkGray.svg';
+import { ReactComponent as AmusementParkContrast } from './svg/AmusementParkContrast.svg';
+import { ReactComponent as AmusementParkThumbnail } from './svg/AmusementParkThumbnail.svg';
+import { ReactComponent as AmusementParkThumbnailGray } from './svg/AmusementParkThumbnailGray.svg';
+import { ReactComponent as AmusementParkThumbnailContrast } from './svg/AmusementParkThumbnailContrast.svg';
+import { ReactComponent as AmusementParkTicket } from './svg/AmusementParkTicket.svg';
+import { ReactComponent as AmusementParkTicketGray } from './svg/AmusementParkTicketGray.svg';
+import { ReactComponent as AmusementParkTicketContrast } from './svg/AmusementParkTicketContrast.svg';
+
 // Camping
 import { ReactComponent as Camping } from './svg/Camping.svg';
 import { ReactComponent as CampingGray } from './svg/Camping-gray.svg';
@@ -130,6 +141,7 @@ export type WorldProperties = {|
 |};
 
 const worlds: {|
+    'AmusementPark': WorldProperties,
     'Camping': WorldProperties,
     'DeepOcean': WorldProperties,
     'GroceryStore': WorldProperties,
@@ -141,6 +153,83 @@ const worlds: {|
     'Space': WorldProperties,
     'Sports': WorldProperties
 |} = {
+    'AmusementPark': {
+        background: AmusementPark,
+        backgroundGray: AmusementParkGray,
+        backgroundContrast: AmusementParkContrast,
+        backgroundInfo: {
+            A1: 'entrance',
+            C1: 'gameBooth',
+            D1: 'gameBooth',
+            G1: 'pirateShip',
+            H1: 'pirateShip',
+            J1: 'swingRide',
+            K1: 'swingRide',
+            L1: 'swingRide',
+            A2: 'entrance',
+            C2: 'gameBooth',
+            D2: 'gameBooth',
+            G2: 'pirateShip',
+            H2: 'pirateShip',
+            J2: 'swingRide',
+            K2: 'swingRide',
+            L2: 'swingRide',
+            A3: 'merryGoRound',
+            B3: 'merryGoRound',
+            G3: 'pirateShip',
+            H3: 'pirateShip',
+            A4: 'merryGoRound',
+            B4: 'merryGoRound',
+            E4: 'waterSlide',
+            F4: 'waterSlide',
+            J4: 'goKarts',
+            K4: 'goKarts',
+            L4: 'goKarts',
+            E5: 'waterSlide',
+            F5: 'waterSlide',
+            G5: 'ferrisWheel',
+            H5: 'ferrisWheel',
+            I5: 'ferrisWheel',
+            J5: 'goKarts',
+            K5: 'goKarts',
+            L5: 'goKarts',
+            A6: 'rollerCoaster',
+            B6: 'rollerCoaster',
+            D6: 'waterPark',
+            E6: 'waterPark',
+            F6: 'whaleFountain',
+            G6: 'ferrisWheel',
+            H6: 'ferrisWheel',
+            I6: 'ferrisWheel',
+            J6: 'goKarts',
+            K6: 'goKarts',
+            A7: 'rollerCoaster',
+            B7: 'rollerCoaster',
+            C7: 'rollerCoaster',
+            G7: 'ferrisWheel',
+            H7: 'ferrisWheel',
+            I7: 'ferrisWheel',
+            K7: 'snackStand',
+            L7: 'snackStand',
+            A8: 'rollerCoaster',
+            B8: 'rollerCoaster',
+            C8: 'rollerCoaster',
+            D8: 'rollerCoaster',
+            K8: 'snackStand',
+            L8: 'snackStand'
+        },
+        thumbnail: AmusementParkThumbnail,
+        thumbnailDark: AmusementParkThumbnail,
+        thumbnailGray: AmusementParkThumbnailGray,
+        thumbnailContrast: AmusementParkThumbnailContrast,
+        character: AmusementParkTicket,
+        characterGray: AmusementParkTicketGray,
+        characterContrast: AmusementParkTicketContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: false
+    },
     'Camping': {
         background: Camping,
         backgroundGray: CampingGray,

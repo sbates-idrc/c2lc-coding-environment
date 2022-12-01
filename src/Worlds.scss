@@ -1,3 +1,123 @@
+/* Amusement Park */
+
+.ProgramBlockEditor__character-column-character-container--AmusementPark {
+    background-color: #FFFFFF;
+}
+
+.Scene__grid-line--AmusementPark {
+    stroke: #88C3BC;
+}
+
+.Scene__path-line--AmusementPark {
+    stroke: #FFFFFF;
+}
+
+.Scene__starting-grid-cell-point--AmusementPark {
+    fill: #FFFFFF;
+}
+
+.WorldSelector__option-image--AmusementPark:hover {
+    svg {
+        .thumbnail-background {
+            fill: #70862E;
+        }
+        .thumbnail-entrance-door {
+            fill: #F5C58A;
+        }
+        .thumbnail-entrance-door-shadow {
+            fill: #ED972C;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--AmusementPark {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--AmusementPark {
+        stroke: #B9BEC6;
+    }
+
+    .Scene__path-line--AmusementPark {
+        stroke: #505862;
+    }
+
+    .Scene__starting-grid-cell-point--AmusementPark {
+        fill: #505862;
+    }
+
+    .WorldSelector__option-image--AmusementPark:hover {
+        svg {
+            .thumbnail-background {
+                fill: #D5D8DD;
+            }
+            .thumbnail-entrance-door-shadow {
+                fill: #3A3F46;
+            }
+            .thumbnail-dark-grey {
+                fill: #67717E;
+            }
+            .thumbnail-light-grey {
+                fill: #818A98;
+            }
+            .thumbnail-ticket {
+                fill: #B9BEC6;
+            }
+            .thumbnial-ticket-outline {
+                fill: #3A3F46;
+                stroke: #3A3F46;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--AmusementPark {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--AmusementPark {
+        stroke:#0078FF;
+    }
+
+    .Scene__path-line--AmusementPark {
+        stroke:#FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--AmusementPark {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--AmusementPark:hover {
+        svg {
+            .thumbnail-background {
+                fill: #000000;
+            }
+            .thumbnail-entrance-door {
+                fill: #000000;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-entrance-door-shadow {
+                fill: #000000;
+            }
+            .thumbnail-entrance-roof {
+                fill: #FFFFFF;
+                stroke: #000000;
+            }
+            .thumbnail-ticket {
+                fill: #FFFFFF;
+            }
+            .thumbnail-ticket-design {
+                fill: #000000;
+            }
+            .thumbnail-ticket-outline {
+                stroke: #000000;
+            }
+        }
+    }
+}
+
 /* Camping */
 
 .ProgramBlockEditor__character-column-character-container--Camping {
