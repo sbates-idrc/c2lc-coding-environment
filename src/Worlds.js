@@ -36,6 +36,11 @@ import { ReactComponent as Submarine } from './svg/Submarine.svg';
 import { ReactComponent as SubmarineGray } from './svg/Submarine-gray.svg';
 import { ReactComponent as SubmarineContrast } from './svg/Submarine-contrast.svg';
 
+// Europe Trip
+import { ReactComponent as EuropeTrip } from './svg/EuropeTrip.svg';
+import { ReactComponent as EuropeTripThumbnail } from './svg/EuropeTripThumbnail.svg';
+import { ReactComponent as EuropeTripPlane } from './svg/EuropeTripPlane.svg';
+
 // Grocery Store
 import { ReactComponent as GroceryStore } from './svg/GroceryStore.svg';
 import { ReactComponent as GroceryStoreGray } from './svg/GroceryStoreGray.svg';
@@ -144,6 +149,7 @@ const worlds: {|
     'AmusementPark': WorldProperties,
     'Camping': WorldProperties,
     'DeepOcean': WorldProperties,
+    'EuropeTrip': WorldProperties,
     'GroceryStore': WorldProperties,
     'Haunted': WorldProperties,
     'Landmarks': WorldProperties,
@@ -356,6 +362,24 @@ const worlds: {|
         character: Submarine,
         characterGray: SubmarineGray,
         characterContrast: SubmarineContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
+    },
+    'EuropeTrip': {
+        background: EuropeTrip,
+        backgroundGray: EuropeTrip,
+        backgroundContrast: EuropeTrip,
+        backgroundInfo: {
+        },
+        thumbnail: EuropeTripThumbnail,
+        thumbnailDark: EuropeTripThumbnail,
+        thumbnailGray: EuropeTripThumbnail,
+        thumbnailContrast: EuropeTripThumbnail,
+        character: EuropeTripPlane,
+        characterGray: EuropeTripPlane,
+        characterContrast: EuropeTripPlane,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East

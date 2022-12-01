@@ -306,6 +306,50 @@ body.contrast-theme {
     }
 }
 
+/* Europe Trip */
+
+.ProgramBlockEditor__character-column-character-container--EuropeTrip {
+    background-color: #FFFFFF;
+}
+
+.Scene__grid-line--EuropeTrip {
+    stroke: #EBFAF8;
+}
+
+.Scene__path-line--EuropeTrip {
+    stroke: #FFFFFF;
+}
+
+.Scene__starting-grid-cell-point--EuropeTrip {
+    fill: #FFFFFF;
+}
+
+.WorldSelector__option-image--EuropeTrip:hover {
+    svg {
+        .thumbnail-background {
+            fill: #73A9B0;
+        }
+        .thumbnail-land {
+            fill: #537672;
+        }
+        .thumbnail-plane-fuselage {
+            fill: #FFBA27;
+        }
+        .thumbnail-plane-fuselage-shadow {
+            fill: #D37D12;
+        }
+        .thumbnail-plane-front {
+            fill: #C13925;
+        }
+        .thumbnail-plane-tail {
+            fill: #C13925;
+        }
+        .thumbnail-plane-wings {
+            fill: #30444E;
+        }
+    }
+}
+
 /* Grocery Store */
 
 .ProgramBlockEditor__character-column-character-container--GroceryStore {
