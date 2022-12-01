@@ -1051,6 +1051,35 @@ body.contrast-theme {
     fill: #FFC86F;
 }
 
+.WorldSelector__option-image--Sports:hover {
+    svg {
+        .thumbnail-background {
+            fill: #165C61;
+        }
+        .thumbnail-trophy {
+            fill: #FAB74B;
+        }
+        .thumbnail-trophy-shadow {
+            fill: #ED972C;
+        }
+        .thumbnail-medal-ribbon {
+            fill: #C13925;
+        }
+        .thumbnail-medal-ribbon-stripe {
+            fill: #D5D8DD;
+        }
+        .thumbnail-medal {
+            fill: #22343C;
+        }
+        .thumbnail-podium {
+            fill: #0F2328;
+        }
+        .thumbnail-podium-circles {
+            fill: #ED972C;
+        }
+    }
+}
+
 body.gray-theme {
     .ProgramBlockEditor__character-column-character-container--Sports {
         background-color: #505862;
@@ -1066,6 +1095,35 @@ body.gray-theme {
 
     .Scene__starting-grid-cell-point--Sports {
         fill: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--Sports:hover {
+        svg {
+            .thumbnail-background {
+                fill: #9DA4AF;
+            }
+            .thumbnail-trophy {
+                fill: #67717E;
+            }
+            .thumbnail-trophy-shadow {
+                fill: #505862;
+            }
+            .thumbnail-medal-ribbon {
+                fill: #B9BEC6;
+            }
+            .thumbnail-medal-ribbon-stripe {
+                fill: #67717E;
+            }
+            .thumbnail-medal {
+                fill: #F1F2F4;
+            }
+            .thumbnail-podium {
+                fill: #3A3F46;
+            }
+            .thumbnail-podium-circles {
+                fill: #9DA4AF;
+            }
+        }
     }
 }
 
@@ -1084,5 +1142,33 @@ body.contrast-theme {
 
     .Scene__starting-grid-cell-point--Sports {
         fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--Sports:hover {
+        svg {
+            .thumbnail-background {
+                fill: #1E1E1E;
+            }
+            .thumbnail-trophy {
+                fill: #FFFFFF;
+            }
+            .thumbnail-medal-ribbon {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-medal-ribbon-stripe {
+                fill: #1E1E1E;
+            }
+            .thumbnail-medal {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-podium {
+                fill: #FFFFFF;
+            }
+            .thumbnail-podium-circles {
+                fill: #1E1E1E;
+            }
+        }
     }
 }
