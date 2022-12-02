@@ -38,8 +38,14 @@ import { ReactComponent as SubmarineContrast } from './svg/Submarine-contrast.sv
 
 // Europe Trip
 import { ReactComponent as EuropeTrip } from './svg/EuropeTrip.svg';
+import { ReactComponent as EuropeTripGray } from './svg/EuropeTripGray.svg';
+import { ReactComponent as EuropeTripContrast } from './svg/EuropeTripContrast.svg';
 import { ReactComponent as EuropeTripThumbnail } from './svg/EuropeTripThumbnail.svg';
+import { ReactComponent as EuropeTripThumbnailGray } from './svg/EuropeTripThumbnailGray.svg';
+import { ReactComponent as EuropeTripThumbnailContrast } from './svg/EuropeTripThumbnailContrast.svg';
 import { ReactComponent as EuropeTripPlane } from './svg/EuropeTripPlane.svg';
+import { ReactComponent as EuropeTripPlaneGray } from './svg/EuropeTripPlaneGray.svg';
+import { ReactComponent as EuropeTripPlaneContrast } from './svg/EuropeTripPlaneContrast.svg';
 
 // Grocery Store
 import { ReactComponent as GroceryStore } from './svg/GroceryStore.svg';
@@ -369,17 +375,17 @@ const worlds: {|
     },
     'EuropeTrip': {
         background: EuropeTrip,
-        backgroundGray: EuropeTrip,
-        backgroundContrast: EuropeTrip,
+        backgroundGray: EuropeTripGray,
+        backgroundContrast: EuropeTripContrast,
         backgroundInfo: {
         },
         thumbnail: EuropeTripThumbnail,
         thumbnailDark: EuropeTripThumbnail,
-        thumbnailGray: EuropeTripThumbnail,
-        thumbnailContrast: EuropeTripThumbnail,
+        thumbnailGray: EuropeTripThumbnailGray,
+        thumbnailContrast: EuropeTripThumbnailContrast,
         character: EuropeTripPlane,
-        characterGray: EuropeTripPlane,
-        characterContrast: EuropeTripPlane,
+        characterGray: EuropeTripPlaneGray,
+        characterContrast: EuropeTripPlaneContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East

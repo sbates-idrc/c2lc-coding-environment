@@ -350,6 +350,42 @@ body.contrast-theme {
     }
 }
 
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--EuropeTrip {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--EuropeTrip {
+        stroke: #818A98;
+    }
+
+    .Scene__path-line--EuropeTrip {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__starting-grid-cell-point--EuropeTrip {
+        fill: #FFFFFF;
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--EuropeTrip {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--EuropeTrip {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--EuropeTrip {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--EuropeTrip {
+        fill: #FF0000;
+    }
+}
+
 /* Grocery Store */
 
 .ProgramBlockEditor__character-column-character-container--GroceryStore {
