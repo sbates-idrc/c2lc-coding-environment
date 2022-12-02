@@ -37,15 +37,18 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
             focusedWorld: null
         }
         this.availableWorldOptions = [
-            'AtlanticCanada',
             'Sketchpad',
+            'AmusementPark',
+            'AtlanticCanada',
             'Camping',
             'DeepOcean',
+            'GroceryStore',
             'Haunted',
             'Landmarks',
             'Marble',
             'Savannah',
-            'Space'
+            'Space',
+            'Sports'
         ];
     }
 
