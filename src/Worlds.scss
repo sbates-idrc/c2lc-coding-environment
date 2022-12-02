@@ -1,3 +1,109 @@
+/* Atlantic Canada */
+
+.ProgramBlockEditor__character-column-character-container--AtlanticCanada {
+    background-color: #2D849F;
+}
+
+.Scene__grid-line--AtlanticCanada {
+    stroke: #567F88;
+}
+
+.Scene__path-line--AtlanticCanada {
+    stroke: #E5AF5E;
+}
+
+.Scene__starting-grid-cell-point--AtlanticCanada {
+    fill: #E5AF5E;
+}
+
+.WorldSelector__option-image--AtlanticCanada:hover {
+    svg {
+        .thumbnail-background {
+            fill: #2D3D53;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--AtlanticCanada {
+        background-color: #B9BEC6;
+    }
+
+    .Scene__grid-line--AtlanticCanada {
+        stroke: #B9BEC6;
+    }
+
+    .Scene__path-line--AtlanticCanada {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__starting-grid-cell-point--AtlanticCanada {
+        fill: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--AtlanticCanada:hover {
+        svg {
+            .thumbnail-background {
+                fill: #818A98;
+            }
+            .thumbnail-boat-top {
+                fill: #505862;
+            }
+            .thumbnail-stop-color {
+                stop-color: #D1D1D1;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--AtlanticCanada {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--AtlanticCanada {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--AtlanticCanada {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--AtlanticCanada {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--AtlanticCanada:hover {
+        svg {
+            .thumbnail-background {
+                fill: #000000;
+            }
+            .thumbnail-boat-black {
+                fill: #FFFFFF;
+            }
+            .thumbnail-boat-deck {
+                fill: #000000;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-boat-white {
+                fill: #000000;
+            }
+            .thumbnail-iceberg {
+                fill: #000000;
+            }
+            .thumbnail-stop-color {
+                stop-color: #FFFFFF;
+            }
+            .thumbnail-stroke-white {
+                stroke: #000000;
+            }
+            .thumbnail-stroke-black {
+                stroke: #FFFFFF;
+            }
+        }
+    }
+}
+
 /* Camping */
 
 .ProgramBlockEditor__character-column-character-container--Camping {
