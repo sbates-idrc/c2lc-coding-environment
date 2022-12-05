@@ -262,7 +262,7 @@ const worlds: {|
             A2: 'water',
             B2: 'water',
             C2: 'shore',
-            D2: 'fishProcessingPlant',
+            D2: 'lighthouse',
             E2: 'water',
             F2: 'water',
             G2: 'storms',
