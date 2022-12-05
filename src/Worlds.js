@@ -14,6 +14,17 @@ import { ReactComponent as AmusementParkTicket } from './svg/AmusementParkTicket
 import { ReactComponent as AmusementParkTicketGray } from './svg/AmusementParkTicketGray.svg';
 import { ReactComponent as AmusementParkTicketContrast } from './svg/AmusementParkTicketContrast.svg';
 
+// Atlantic Canada
+import { ReactComponent as AtlanticCanada } from './svg/AtlanticCanada.svg';
+import { ReactComponent as AtlanticCanadaGray } from './svg/AtlanticCanadaGray.svg';
+import { ReactComponent as AtlanticCanadaContrast } from './svg/AtlanticCanadaContrast.svg';
+import { ReactComponent as AtlanticCanadaThumbnail } from './svg/AtlanticCanadaThumbnail.svg';
+import { ReactComponent as AtlanticCanadaThumbnailGray } from './svg/AtlanticCanadaThumbnailGray.svg';
+import { ReactComponent as AtlanticCanadaThumbnailContrast } from './svg/AtlanticCanadaThumbnailContrast.svg';
+import { ReactComponent as AtlanticCanadaCapeIslander } from './svg/AtlanticCanadaCapeIslander.svg';
+import { ReactComponent as AtlanticCanadaCapeIslanderGray } from './svg/AtlanticCanadaCapeIslanderGray.svg';
+import { ReactComponent as AtlanticCanadaCapeIslanderContrast } from './svg/AtlanticCanadaCapeIslanderContrast.svg';
+
 // Camping
 import { ReactComponent as Camping } from './svg/Camping.svg';
 import { ReactComponent as CampingGray } from './svg/Camping-gray.svg';
@@ -142,6 +153,7 @@ export type WorldProperties = {|
 
 const worlds: {|
     'AmusementPark': WorldProperties,
+    'AtlanticCanada': WorldProperties,
     'Camping': WorldProperties,
     'DeepOcean': WorldProperties,
     'GroceryStore': WorldProperties,
@@ -229,6 +241,120 @@ const worlds: {|
         startingY: 2,
         startingDirection: 2, // East
         enableFlipCharacter: false
+    },
+    'AtlanticCanada': {
+        background: AtlanticCanada,
+        backgroundGray: AtlanticCanadaGray,
+        backgroundContrast: AtlanticCanadaContrast,
+        backgroundInfo: {
+            A1: 'water',
+            B1: 'water',
+            C1: 'shore',
+            D1: 'lighthouse',
+            E1: 'shore',
+            F1: 'shore',
+            G1: 'water',
+            H1: 'water',
+            I1: 'water',
+            J1: 'shore',
+            K1: 'fishProcessingPlant',
+            L1: 'fishProcessingPlant',
+            A2: 'water',
+            B2: 'water',
+            C2: 'shore',
+            D2: 'lighthouse',
+            E2: 'water',
+            F2: 'water',
+            G2: 'storms',
+            H2: 'storms',
+            I2: 'storms',
+            J2: 'water',
+            K2: 'water',
+            L2: 'fishProcessingPlant',
+            A3: 'water',
+            B3: 'water',
+            C3: 'water',
+            D3: 'water',
+            E3: 'water',
+            F3: 'water',
+            G3: 'storms',
+            H3: 'storms',
+            I3: 'storms',
+            J3: 'shoal',
+            K3: 'shoal',
+            L3: 'water',
+            A4: 'shore',
+            B4: 'water',
+            C4: 'water',
+            D4: 'iceberg',
+            E4: 'water',
+            F4: 'whale',
+            G4: 'whale',
+            H4: 'water',
+            I4: 'water',
+            J4: 'shoal',
+            K4: 'shoal',
+            L4: 'water',
+            A5: 'house',
+            B5: 'water',
+            C5: 'water',
+            D5: 'water',
+            E5: 'whale',
+            F5: 'whale',
+            G5: 'iceberg',
+            H5: 'water',
+            I5: 'water',
+            J5: 'water',
+            K5: 'sailboat',
+            L5: 'sailboat',
+            A6: 'house',
+            B6: 'rowingBoatOnTheShore',
+            C6: 'water',
+            D6: 'water',
+            E6: 'iceberg',
+            F6: 'water',
+            G6: 'water',
+            H6: 'water',
+            I6: 'water',
+            J6: 'water',
+            K6: 'sailboat',
+            L6: 'sailboat',
+            A7: 'land',
+            B7: 'land',
+            C7: 'rowingBoatOnTheShore',
+            D7: 'water',
+            E7: 'water',
+            F7: 'water',
+            G7: 'water',
+            H7: 'water',
+            I7: 'fogBank',
+            J7: 'fogBank',
+            K7: 'fogBank',
+            L7: 'fogBank',
+            A8: 'trees',
+            B8: 'house',
+            C8: 'house',
+            D8: 'house',
+            E8: 'trees',
+            F8: 'water',
+            G8: 'water',
+            H8: 'fogBank',
+            I8: 'fogBank',
+            J8: 'fogBank',
+            K8: 'fogBank',
+            L8: 'fogBank'
+        },
+        thumbnail: AtlanticCanadaThumbnail,
+        thumbnailDark: AtlanticCanadaThumbnail,
+        thumbnailGray: AtlanticCanadaThumbnailGray,
+        thumbnailContrast: AtlanticCanadaThumbnailContrast,
+        character: AtlanticCanadaCapeIslander,
+        characterGray: AtlanticCanadaCapeIslanderGray,
+        characterContrast: AtlanticCanadaCapeIslanderContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
     },
     'Camping': {
         background: Camping,

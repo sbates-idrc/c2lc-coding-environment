@@ -66,23 +66,24 @@ function getDoneButton(wrapper) {
 
 describe('When rendering selector options', () => {
     test('All worlds should be displayed as options and only one is checked', () => {
-        expect.assertions(23);
+        expect.assertions(25);
         const { wrapper } = createMountWorldSelector();
         const selectorOptions = getWorldSelectorRadioButton(wrapper);
 
-        expect(selectorOptions.length).toBe(11);
+        expect(selectorOptions.length).toBe(12);
 
         expect(selectorOptions.get(0).props.value).toBe('Sketchpad');
         expect(selectorOptions.get(1).props.value).toBe('AmusementPark');
-        expect(selectorOptions.get(2).props.value).toBe('Camping');
-        expect(selectorOptions.get(3).props.value).toBe('DeepOcean');
-        expect(selectorOptions.get(4).props.value).toBe('GroceryStore');
-        expect(selectorOptions.get(5).props.value).toBe('Haunted');
-        expect(selectorOptions.get(6).props.value).toBe('Landmarks');
-        expect(selectorOptions.get(7).props.value).toBe('Marble');
-        expect(selectorOptions.get(8).props.value).toBe('Savannah');
-        expect(selectorOptions.get(9).props.value).toBe('Space');
-        expect(selectorOptions.get(10).props.value).toBe('Sports');
+        expect(selectorOptions.get(2).props.value).toBe('AtlanticCanada');
+        expect(selectorOptions.get(3).props.value).toBe('Camping');
+        expect(selectorOptions.get(4).props.value).toBe('DeepOcean');
+        expect(selectorOptions.get(5).props.value).toBe('GroceryStore');
+        expect(selectorOptions.get(6).props.value).toBe('Haunted');
+        expect(selectorOptions.get(7).props.value).toBe('Landmarks');
+        expect(selectorOptions.get(8).props.value).toBe('Marble');
+        expect(selectorOptions.get(9).props.value).toBe('Savannah');
+        expect(selectorOptions.get(10).props.value).toBe('Space');
+        expect(selectorOptions.get(11).props.value).toBe('Sports');
 
         expect(selectorOptions.get(0).props.checked).toBe(true);
         for (let i = 1; i < selectorOptions.length; i++) {
