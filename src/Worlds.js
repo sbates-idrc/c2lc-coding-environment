@@ -409,6 +409,7 @@ const worlds: {|
             C5: 'spain',
             D5: 'france',
             E5: 'eiffelTowerFrance',
+            G5: 'violinAustriaAndBledSoveniaAndCzechRepublicAndGermany',
         },
         thumbnail: EuropeTripThumbnail,
         thumbnailDark: EuropeTripThumbnail,
