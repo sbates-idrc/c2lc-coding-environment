@@ -472,6 +472,35 @@ body.gray-theme {
     .Scene__starting-grid-cell-point--EuropeTrip {
         fill: #3A3F46;
     }
+
+    .WorldSelector__option-image--EuropeTrip:hover {
+        svg {
+            .thumbnail-background {
+                fill: #B9BEC6;
+            }
+            .thumbnail-land {
+                fill: #9DA4AF;
+            }
+            .thumbnail-plane-fuselage {
+                fill: #818A98;
+            }
+            .thumbnail-plane-fuselage-shadow {
+                fill: #67717E;
+            }
+            .thumbnail-plane-front {
+                fill: #505862;
+            }
+            .thumbnail-plane-tail {
+                fill: #505862;
+            }
+            .thumbnail-plane-wings {
+                fill: #3A3F46;
+            }
+            .thumbnail-plane-windows {
+                fill: #3A3F46;
+            }
+        }
+    }
 }
 
 body.contrast-theme {
