@@ -519,6 +519,32 @@ body.contrast-theme {
     .Scene__starting-grid-cell-point--EuropeTrip {
         fill: #FF0000;
     }
+
+    .WorldSelector__option-image--EuropeTrip:hover {
+        svg {
+            .thumbnail-background {
+                fill: #1E1E1E;
+            }
+            .thumbnail-land {
+                fill: inherit;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-plane-outline {
+                fill: #FFFFFF;
+                stroke: #1E1E1E;
+            }
+            .thumbnail-plane-fill {
+                fill: #FFFFFF;
+            }
+            .thumbnail-plane-front-window {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-plane-side-windows {
+                fill: #1E1E1E;
+            }
+        }
+    }
 }
 
 /* Grocery Store */
