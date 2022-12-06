@@ -176,12 +176,11 @@
         "Direction.5": "lower left",
         "Direction.6": "left",
         "Direction.7": "upper left",
-
-
         "EuropeTrip.belarusAndPolandAndUkraine": "Belarus and Poland and Ukraine",
         "EuropeTrip.belarusAndUkraine": "Belarus and Ukraine",
         "EuropeTrip.belemTowerPortugal": "Belem Tower on Portugal",
         "EuropeTrip.bulgariaAndRomania": "Bulgaria and Romania",
+        "EuropeTrip.character": "the airplane",
         "EuropeTrip.chocolateBelgiumAndFranceAndUk": "chocolate on Belgium; also in this square France and the United Kingdom",
         "EuropeTrip.churchOfSaintSavaSerbiaAndBulgariaAndRomania": "Church of Saint Sava on Serbia; also in this square Bulgaria and Romania",
         "EuropeTrip.coffeeTurkey": "coffee on Turkey",
@@ -204,8 +203,10 @@
         "EuropeTrip.irelandAndUk": "Ireland and the United Kingdom",
         "EuropeTrip.italy": "Italy",
         "EuropeTrip.kielbasaPoland": "Kielbasa on Poland",
+        "EuropeTrip.label": "A Europe trip scene containing a map of Europe with tourist attractions. Iceland is located near the top left of the scene. Cyprus is located at the bottom right of the scene. Tourist attractions are located on the country known for the attraction, such as the violin on Austria near the centre of the scene. Your character in this scene is an airplane.",
         "EuropeTrip.longshipNorway": "a longship on Norway",
         "EuropeTrip.millColonnadeCzechRepublicAndGermanyAndPoland": "Mill Colonnade on Czech Republic; also in this square Germany and Poland",
+        "EuropeTrip.name": "Europe Trip",
         "EuropeTrip.nationalLibraryBelarus": "National Library on Belarus",
         "EuropeTrip.norway": "Norway",
         "EuropeTrip.norwayAndSweden": "Norway and Sweden",
@@ -233,11 +234,6 @@
         "EuropeTrip.watchSwitzerlandAndFranceAndGermany": "a watch on Switzerland; also in this square France and Germany",
         "EuropeTrip.whaleIceland": "a whale on Iceland",
         "EuropeTrip.windmillNetherlands": "a windmill on the Netherlands",
-
-
-        "EuropeTrip.character": "the airplane",
-        "EuropeTrip.label": "A Europe Trip scene. You character in this scene is an airplane.",
-        "EuropeTrip.name": "Europe Trip",
         "GroceryStore.apples": "apples",
         "GroceryStore.bagOfRice": "bag of rice",
         "GroceryStore.bananas": "bananas",
