@@ -396,10 +396,10 @@ class Scene extends React.Component<SceneProps, {}> {
                                 />
                                 {this.props.theme === 'contrast' &&
                                     <circle
+                                        className='Scene__characterOutline'
                                         cx={this.props.characterState.xPos}
                                         cy={this.props.characterState.yPos}
                                         r={0.51}
-                                        fill='red'
                                     />
                                 }
                                 <Character
