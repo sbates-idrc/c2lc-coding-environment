@@ -14,7 +14,7 @@ configure({ adapter: new Adapter() });
 
 const defaultSceneProps = {
     dimensions: new SceneDimensions(1, 1, 1, 1),
-    characterState: new CharacterState(0, 0, 2, [], new SceneDimensions(1, 1, 1, 1)),
+    characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 1, 1, 1)),
     theme: 'default',
     world: 'Sketchpad',
     startingX: 1,
@@ -84,7 +84,11 @@ function findStartingPositionGridCellPoint(sceneWrapper) {
     return sceneWrapper.find('.Scene__starting-grid-cell-point');
 }
 
-// TODO: This function is reproducing logic from Scene (the 0.8) and
+function findCharacterOutline(sceneWrapper) {
+    return sceneWrapper.find('.Scene__characterOutline');
+}
+
+// TODO: This function is reproducing logic from Scene (the 0.9) and
 //       Character (everything else) and it will be easily
 //       broken. Is there a better approach here that tests that the
 //       character is rendered as expected, but it less brittle?
@@ -240,7 +244,33 @@ describe('When the Scene renders', () => {
 
         expect(startingPositionGridCellPoint.get(0).props.x).toBe(expectedStartingPositionGridCellPointX);
         expect(startingPositionGridCellPoint.get(0).props.y).toBe(expectedStartingPositionGridCellPointY);
-    })
+    });
+    test.each([
+        ['default', false],
+        ['light', false],
+        ['dark', false],
+        ['gray', false],
+        ['contrast', true]
+    ])('Should add an outline to the character in high contrast only', (theme, expectedCharacterOutlineExists) => {
+        const sceneDimensions = new SceneDimensions(1, 10, 1, 10);
+        const characterX = 2;
+        const characterY = 3;
+        const sceneWrapper = createMountScene({
+            dimensions: sceneDimensions,
+            characterState: new CharacterState(characterX, characterY, 2, [], sceneDimensions),
+            theme: theme
+        });
+
+        const characterOutline = findCharacterOutline(sceneWrapper);
+
+        expect(characterOutline.exists()).toBe(expectedCharacterOutlineExists);
+
+        if (expectedCharacterOutlineExists) {
+            expect(characterOutline.length).toBe(1);
+            expect(characterOutline.get(0).props.cx).toBe(characterX);
+            expect(characterOutline.get(0).props.cy).toBe(characterY);
+        }
+    });
 });
 
 describe('When the character renders, transform should apply', (sceneDimensions = new SceneDimensions(1, 100, 1, 100)) => {
