@@ -70,4 +70,11 @@ Right motor:
 ## Additional programs
 
 - `motor_control`: a program to control the motor voltage using the 2 buttons
-  on the Circuit Playround; this program does not connect to Weavly
+  on the Circuit Playground; this program does not connect to Weavly
+- `move_forward`
+  - Move the robot forward when the right hand button on the Circuit Playground
+    is pressed
+  - This program was created to test how the robot moves on different surfaces
+  - Contains some code to dynamically adjust the motor voltages
+    based on observed encoder counts
+  - Does not connect to Weavly
