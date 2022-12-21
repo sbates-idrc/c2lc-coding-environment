@@ -47,6 +47,17 @@ import { ReactComponent as Submarine } from './svg/Submarine.svg';
 import { ReactComponent as SubmarineGray } from './svg/Submarine-gray.svg';
 import { ReactComponent as SubmarineContrast } from './svg/Submarine-contrast.svg';
 
+// Europe Trip
+import { ReactComponent as EuropeTrip } from './svg/EuropeTrip.svg';
+import { ReactComponent as EuropeTripGray } from './svg/EuropeTripGray.svg';
+import { ReactComponent as EuropeTripContrast } from './svg/EuropeTripContrast.svg';
+import { ReactComponent as EuropeTripThumbnail } from './svg/EuropeTripThumbnail.svg';
+import { ReactComponent as EuropeTripThumbnailGray } from './svg/EuropeTripThumbnailGray.svg';
+import { ReactComponent as EuropeTripThumbnailContrast } from './svg/EuropeTripThumbnailContrast.svg';
+import { ReactComponent as EuropeTripPlane } from './svg/EuropeTripPlane.svg';
+import { ReactComponent as EuropeTripPlaneGray } from './svg/EuropeTripPlaneGray.svg';
+import { ReactComponent as EuropeTripPlaneContrast } from './svg/EuropeTripPlaneContrast.svg';
+
 // Grocery Store
 import { ReactComponent as GroceryStore } from './svg/GroceryStore.svg';
 import { ReactComponent as GroceryStoreGray } from './svg/GroceryStoreGray.svg';
@@ -156,6 +167,7 @@ const worlds: {|
     'AtlanticCanada': WorldProperties,
     'Camping': WorldProperties,
     'DeepOcean': WorldProperties,
+    'EuropeTrip': WorldProperties,
     'GroceryStore': WorldProperties,
     'Haunted': WorldProperties,
     'Landmarks': WorldProperties,
@@ -482,6 +494,92 @@ const worlds: {|
         character: Submarine,
         characterGray: SubmarineGray,
         characterContrast: SubmarineContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
+    },
+    'EuropeTrip': {
+        background: EuropeTrip,
+        backgroundGray: EuropeTripGray,
+        backgroundContrast: EuropeTripContrast,
+        backgroundInfo: {
+            C1: 'C1',
+            E1: 'E1',
+            F1: 'F1',
+            G1: 'G1',
+            H1: 'H1',
+            I1: 'I1',
+            J1: 'J1',
+            C2: 'C2',
+            D2: 'D2',
+            E2: 'E2',
+            F2: 'F2',
+            G2: 'G2',
+            H2: 'H2',
+            I2: 'I2',
+            C3: 'C3',
+            D3: 'D3',
+            E3: 'E3',
+            F3: 'F3',
+            G3: 'G3',
+            H3: 'H3',
+            I3: 'I3',
+            J3: 'J3',
+            D4: 'D4',
+            E4: 'E4',
+            F4: 'F4',
+            G4: 'G4',
+            H4: 'H4',
+            I4: 'I4',
+            J4: 'J4',
+            K4: 'K4',
+            L4: 'L4',
+            C5: 'C5',
+            D5: 'D5',
+            E5: 'E5',
+            F5: 'F5',
+            G5: 'G5',
+            H5: 'H5',
+            I5: 'I5',
+            J5: 'J5',
+            K5: 'K5',
+            L5: 'L5',
+            B6: 'B6',
+            C6: 'C6',
+            D6: 'D6',
+            E6: 'E6',
+            F6: 'F6',
+            G6: 'G6',
+            H6: 'H6',
+            I6: 'I6',
+            J6: 'J6',
+            K6: 'K6',
+            B7: 'B7',
+            C7: 'C7',
+            D7: 'D7',
+            E7: 'E7',
+            F7: 'F7',
+            G7: 'G7',
+            H7: 'H7',
+            I7: 'I7',
+            J7: 'J7',
+            K7: 'K7',
+            L7: 'L7',
+            G8: 'G8',
+            H8: 'H8',
+            I8: 'I8',
+            J8: 'J8',
+            K8: 'K8',
+            L8: 'L8',
+        },
+        thumbnail: EuropeTripThumbnail,
+        thumbnailDark: EuropeTripThumbnail,
+        thumbnailGray: EuropeTripThumbnailGray,
+        thumbnailContrast: EuropeTripThumbnailContrast,
+        character: EuropeTripPlane,
+        characterGray: EuropeTripPlaneGray,
+        characterContrast: EuropeTripPlaneContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East

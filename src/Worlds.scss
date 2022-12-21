@@ -412,6 +412,141 @@ body.contrast-theme {
     }
 }
 
+/* Europe Trip */
+
+.ProgramBlockEditor__character-column-character-container--EuropeTrip {
+    background-color: #FFFFFF;
+}
+
+.Scene__grid-line--EuropeTrip {
+    stroke: #EBFAF8;
+}
+
+.Scene__path-line--EuropeTrip {
+    stroke: #FFFFFF;
+}
+
+.Scene__starting-grid-cell-point--EuropeTrip {
+    fill: #FFFFFF;
+}
+
+.WorldSelector__option-image--EuropeTrip:hover {
+    svg {
+        .thumbnail-background {
+            fill: #73A9B0;
+        }
+        .thumbnail-land {
+            fill: #537672;
+        }
+        .thumbnail-plane-fuselage {
+            fill: #FFBA27;
+        }
+        .thumbnail-plane-fuselage-shadow {
+            fill: #D37D12;
+        }
+        .thumbnail-plane-front {
+            fill: #C13925;
+        }
+        .thumbnail-plane-tail {
+            fill: #C13925;
+        }
+        .thumbnail-plane-wings {
+            fill: #30444E;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--EuropeTrip {
+        background-color: #3A3F46;
+    }
+
+    .Scene__grid-line--EuropeTrip {
+        stroke: #818A98;
+    }
+
+    .Scene__path-line--EuropeTrip {
+        stroke: #3A3F46;
+    }
+
+    .Scene__starting-grid-cell-point--EuropeTrip {
+        fill: #3A3F46;
+    }
+
+    .WorldSelector__option-image--EuropeTrip:hover {
+        svg {
+            .thumbnail-background {
+                fill: #B9BEC6;
+            }
+            .thumbnail-land {
+                fill: #9DA4AF;
+            }
+            .thumbnail-plane-fuselage {
+                fill: #818A98;
+            }
+            .thumbnail-plane-fuselage-shadow {
+                fill: #67717E;
+            }
+            .thumbnail-plane-front {
+                fill: #505862;
+            }
+            .thumbnail-plane-tail {
+                fill: #505862;
+            }
+            .thumbnail-plane-wings {
+                fill: #3A3F46;
+            }
+            .thumbnail-plane-windows {
+                fill: #3A3F46;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--EuropeTrip {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--EuropeTrip {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--EuropeTrip {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--EuropeTrip {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--EuropeTrip:hover {
+        svg {
+            .thumbnail-background {
+                fill: #1E1E1E;
+            }
+            .thumbnail-land {
+                fill: inherit;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-plane-outline {
+                fill: #FFFFFF;
+                stroke: #1E1E1E;
+            }
+            .thumbnail-plane-fill {
+                fill: #FFFFFF;
+            }
+            .thumbnail-plane-front-window {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-plane-side-windows {
+                fill: #1E1E1E;
+            }
+        }
+    }
+}
+
 /* Grocery Store */
 
 .ProgramBlockEditor__character-column-character-container--GroceryStore {
