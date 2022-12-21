@@ -4,9 +4,6 @@ import * as React from 'react';
 import type { ThemeName } from './types';
 
 // Amusement Park
-import { ReactComponent as AmusementPark } from './svg/AmusementPark.svg';
-import { ReactComponent as AmusementParkGray } from './svg/AmusementParkGray.svg';
-import { ReactComponent as AmusementParkContrast } from './svg/AmusementParkContrast.svg';
 import { ReactComponent as AmusementParkThumbnail } from './svg/AmusementParkThumbnail.svg';
 import { ReactComponent as AmusementParkThumbnailGray } from './svg/AmusementParkThumbnailGray.svg';
 import { ReactComponent as AmusementParkThumbnailContrast } from './svg/AmusementParkThumbnailContrast.svg';
@@ -15,9 +12,6 @@ import { ReactComponent as AmusementParkTicketGray } from './svg/AmusementParkTi
 import { ReactComponent as AmusementParkTicketContrast } from './svg/AmusementParkTicketContrast.svg';
 
 // Atlantic Canada
-import { ReactComponent as AtlanticCanada } from './svg/AtlanticCanada.svg';
-import { ReactComponent as AtlanticCanadaGray } from './svg/AtlanticCanadaGray.svg';
-import { ReactComponent as AtlanticCanadaContrast } from './svg/AtlanticCanadaContrast.svg';
 import { ReactComponent as AtlanticCanadaThumbnail } from './svg/AtlanticCanadaThumbnail.svg';
 import { ReactComponent as AtlanticCanadaThumbnailGray } from './svg/AtlanticCanadaThumbnailGray.svg';
 import { ReactComponent as AtlanticCanadaThumbnailContrast } from './svg/AtlanticCanadaThumbnailContrast.svg';
@@ -26,9 +20,6 @@ import { ReactComponent as AtlanticCanadaCapeIslanderGray } from './svg/Atlantic
 import { ReactComponent as AtlanticCanadaCapeIslanderContrast } from './svg/AtlanticCanadaCapeIslanderContrast.svg';
 
 // Camping
-import { ReactComponent as Camping } from './svg/Camping.svg';
-import { ReactComponent as CampingGray } from './svg/Camping-gray.svg';
-import { ReactComponent as CampingContrast } from './svg/Camping-contrast.svg';
 import { ReactComponent as CampingThumbnail } from './svg/CampingThumbnail.svg';
 import { ReactComponent as CampingThumbnailGray } from './svg/CampingThumbnail-gray.svg';
 import { ReactComponent as CampingThumbnailContrast } from './svg/CampingThumbnail-contrast.svg';
@@ -37,9 +28,6 @@ import { ReactComponent as SquirrelGray } from './svg/Squirrel-gray.svg';
 import { ReactComponent as SquirrelContrast } from './svg/Squirrel-contrast.svg';
 
 // DeepOcean
-import { ReactComponent as DeepOcean } from './svg/DeepOcean.svg';
-import { ReactComponent as DeepOceanGray } from './svg/DeepOcean-gray.svg';
-import { ReactComponent as DeepOceanContrast } from './svg/DeepOcean-contrast.svg';
 import { ReactComponent as DeepOceanThumbnail } from './svg/DeepOceanThumbnail.svg';
 import { ReactComponent as DeepOceanThumbnailGray } from './svg/DeepOceanThumbnail-gray.svg';
 import { ReactComponent as DeepOceanThumbnailContrast } from './svg/DeepOceanThumbnail-contrast.svg';
@@ -48,9 +36,6 @@ import { ReactComponent as SubmarineGray } from './svg/Submarine-gray.svg';
 import { ReactComponent as SubmarineContrast } from './svg/Submarine-contrast.svg';
 
 // Europe Trip
-import { ReactComponent as EuropeTrip } from './svg/EuropeTrip.svg';
-import { ReactComponent as EuropeTripGray } from './svg/EuropeTripGray.svg';
-import { ReactComponent as EuropeTripContrast } from './svg/EuropeTripContrast.svg';
 import { ReactComponent as EuropeTripThumbnail } from './svg/EuropeTripThumbnail.svg';
 import { ReactComponent as EuropeTripThumbnailGray } from './svg/EuropeTripThumbnailGray.svg';
 import { ReactComponent as EuropeTripThumbnailContrast } from './svg/EuropeTripThumbnailContrast.svg';
@@ -59,9 +44,6 @@ import { ReactComponent as EuropeTripPlaneGray } from './svg/EuropeTripPlaneGray
 import { ReactComponent as EuropeTripPlaneContrast } from './svg/EuropeTripPlaneContrast.svg';
 
 // Grocery Store
-import { ReactComponent as GroceryStore } from './svg/GroceryStore.svg';
-import { ReactComponent as GroceryStoreGray } from './svg/GroceryStoreGray.svg';
-import { ReactComponent as GroceryStoreContrast } from './svg/GroceryStoreContrast.svg';
 import { ReactComponent as GroceryStoreThumbnail } from './svg/GroceryStoreThumbnail.svg';
 import { ReactComponent as GroceryStoreThumbnailGray } from './svg/GroceryStoreThumbnailGray.svg';
 import { ReactComponent as GroceryStoreThumbnailContrast } from './svg/GroceryStoreThumbnailContrast.svg';
@@ -70,9 +52,6 @@ import { ReactComponent as GroceryStoreCartGray } from './svg/GroceryStoreCartGr
 import { ReactComponent as GroceryStoreCartContrast } from './svg/GroceryStoreCartContrast.svg';
 
 // Haunted House
-import { ReactComponent as Haunted } from './svg/Haunted.svg';
-import { ReactComponent as HauntedGray } from './svg/Haunted-gray.svg';
-import { ReactComponent as HauntedContrast } from './svg/Haunted-contrast.svg';
 import { ReactComponent as HauntedThumbnail } from './svg/HauntedThumbnail.svg';
 import { ReactComponent as HauntedThumbnailGray } from './svg/HauntedThumbnail-gray.svg';
 import { ReactComponent as HauntedThumbnailContrast } from './svg/HauntedThumbnail-contrast.svg';
@@ -81,9 +60,6 @@ import { ReactComponent as CandleGray } from './svg/Candle-gray.svg';
 import { ReactComponent as CandleContrast } from './svg/Candle-contrast.svg';
 
 // Landmarks
-import { ReactComponent as LandmarksWorld } from './svg/LandmarksWorld.svg';
-import { ReactComponent as LandmarksWorldGray } from './svg/LandmarksWorldGray.svg';
-import { ReactComponent as LandmarksWorldContrast } from './svg/LandmarksWorldContrast.svg';
 import { ReactComponent as LandmarksThumbnail } from './svg/LandmarksThumbnail.svg';
 import { ReactComponent as LandmarksThumbnailGray } from './svg/LandmarksThumbnailGray.svg';
 import { ReactComponent as LandmarksThumbnailContrast } from './svg/LandmarksThumbnailContrast.svg';
@@ -92,9 +68,6 @@ import { ReactComponent as BotGray } from './svg/BotGray.svg';
 import { ReactComponent as BotContrast } from './svg/BotContrast.svg';
 
 // Marble
-import { ReactComponent as MarbleWorld } from './svg/MarbleWorld.svg';
-import { ReactComponent as MarbleWorldGray } from './svg/MarbleWorldGray.svg';
-import { ReactComponent as MarbleWorldContrast } from './svg/MarbleWorldContrast.svg';
 import { ReactComponent as MarbleThumbnail } from './svg/MarbleThumbnail.svg';
 import { ReactComponent as MarbleThumbnailGray } from './svg/MarbleThumbnailGray.svg';
 import { ReactComponent as MarbleThumbnailContrast } from './svg/MarbleThumbnailContrast.svg';
@@ -103,9 +76,6 @@ import { ReactComponent as MarbleGray } from './svg/MarbleGray.svg';
 import { ReactComponent as MarbleContrast } from './svg/MarbleContrast.svg';
 
 // Savannah
-import { ReactComponent as Savannah } from './svg/Savannah.svg';
-import { ReactComponent as SavannahGray } from './svg/Savannah-gray.svg';
-import { ReactComponent as SavannahContrast } from './svg/Savannah-contrast.svg';
 import { ReactComponent as SavannahThumbnail } from './svg/SavannahThumbnail.svg';
 import { ReactComponent as SavannahThumbnailGray } from './svg/SavannahThumbnail-gray.svg';
 import { ReactComponent as SavannahThumbnailContrast } from './svg/SavannahThumbnail-contrast.svg';
@@ -123,9 +93,6 @@ import { ReactComponent as RobotGray } from './svg/RobotGray.svg';
 import { ReactComponent as RobotContrast } from './svg/RobotContrast.svg';
 
 // Space
-import { ReactComponent as Space } from './svg/Space.svg';
-import { ReactComponent as SpaceGray } from './svg/Space-gray.svg';
-import { ReactComponent as SpaceContrast } from './svg/Space-contrast.svg';
 import { ReactComponent as SpaceThumbnail } from './svg/SpaceThumbnail.svg';
 import { ReactComponent as SpaceThumbnailGray } from './svg/SpaceThumbnail-gray.svg';
 import { ReactComponent as SpaceThumbnailContrast } from './svg/SpaceThumbnail-contrast.svg';
@@ -134,9 +101,6 @@ import { ReactComponent as SpaceShipGray } from './svg/SpaceShip-gray.svg';
 import { ReactComponent as SpaceShipContrast } from './svg/SpaceShip-contrast.svg';
 
 // Sports
-import { ReactComponent as Sports } from './svg/Sports.svg';
-import { ReactComponent as SportsGray } from './svg/SportsGray.svg';
-import { ReactComponent as SportsContrast } from './svg/SportsContrast.svg';
 import { ReactComponent as SportsThumbnail } from './svg/SportsThumbnail.svg';
 import { ReactComponent as SportsThumbnailGray } from './svg/SportsThumbnailGray.svg';
 import { ReactComponent as SportsThumbnailContrast } from './svg/SportsThumbnailContrast.svg';
@@ -145,9 +109,6 @@ import { ReactComponent as SportsTrophyGray } from './svg/SportsTrophyGray.svg';
 import { ReactComponent as SportsTrophyContrast } from './svg/SportsTrophyContrast.svg';
 
 export type WorldProperties = {|
-    background: ?React.ComponentType<{}>,
-    backgroundGray: ?React.ComponentType<{}>,
-    backgroundContrast: ?React.ComponentType<{}>,
     backgroundInfo: ?{ [string]: string },
     thumbnail: React.ComponentType<{}>,
     thumbnailDark: React.ComponentType<{}>,
@@ -178,9 +139,6 @@ const worlds: {|
     'Sports': WorldProperties
 |} = {
     'AmusementPark': {
-        background: AmusementPark,
-        backgroundGray: AmusementParkGray,
-        backgroundContrast: AmusementParkContrast,
         backgroundInfo: {
             A1: 'entrance',
             C1: 'gameBooth',
@@ -255,9 +213,6 @@ const worlds: {|
         enableFlipCharacter: false
     },
     'AtlanticCanada': {
-        background: AtlanticCanada,
-        backgroundGray: AtlanticCanadaGray,
-        backgroundContrast: AtlanticCanadaContrast,
         backgroundInfo: {
             A1: 'water',
             B1: 'water',
@@ -369,9 +324,6 @@ const worlds: {|
         enableFlipCharacter: true
     },
     'Camping': {
-        background: Camping,
-        backgroundGray: CampingGray,
-        backgroundContrast: CampingContrast,
         backgroundInfo: {
             A1: 'trunk',
             B1: 'trunk',
@@ -448,9 +400,6 @@ const worlds: {|
         enableFlipCharacter: true
     },
     'DeepOcean': {
-        background: DeepOcean,
-        backgroundGray: DeepOceanGray,
-        backgroundContrast: DeepOceanContrast,
         backgroundInfo: {
             J2: 'fishGroup',
             K2: 'fishGroup',
@@ -500,9 +449,6 @@ const worlds: {|
         enableFlipCharacter: true
     },
     'EuropeTrip': {
-        background: EuropeTrip,
-        backgroundGray: EuropeTripGray,
-        backgroundContrast: EuropeTripContrast,
         backgroundInfo: {
             C1: 'C1',
             E1: 'E1',
@@ -586,9 +532,6 @@ const worlds: {|
         enableFlipCharacter: true
     },
     'GroceryStore': {
-        background: GroceryStore,
-        backgroundGray: GroceryStoreGray,
-        backgroundContrast: GroceryStoreContrast,
         backgroundInfo: {
             A1: 'ceilingLight',
             B1: 'ceilingLight',
@@ -651,9 +594,6 @@ const worlds: {|
         enableFlipCharacter: true
     },
     'Haunted': {
-        background: Haunted,
-        backgroundGray: HauntedGray,
-        backgroundContrast: HauntedContrast,
         backgroundInfo: {
             C1: 'painting',
             D1: 'painting',
@@ -737,9 +677,6 @@ const worlds: {|
         enableFlipCharacter: true
     },
     'Landmarks': {
-        background: LandmarksWorld,
-        backgroundGray: LandmarksWorldGray,
-        backgroundContrast: LandmarksWorldContrast,
         backgroundInfo : {
             A1: 'plane',
             A4: 'easterIsland',
@@ -780,9 +717,6 @@ const worlds: {|
         enableFlipCharacter: false
     },
     'Marble': {
-        background: MarbleWorld,
-        backgroundGray: MarbleWorldGray,
-        backgroundContrast: MarbleWorldContrast,
         backgroundInfo : {
             A1: 'bricks',
             B1: 'bricks',
@@ -847,9 +781,6 @@ const worlds: {|
         enableFlipCharacter: false
     },
     'Savannah': {
-        background: Savannah,
-        backgroundGray: SavannahGray,
-        backgroundContrast: SavannahContrast,
         backgroundInfo: {
             G1: 'giraffe',
             J1: 'lion',
@@ -897,9 +828,6 @@ const worlds: {|
         enableFlipCharacter: true
     },
     'Sketchpad': {
-        background: null,
-        backgroundGray: null,
-        backgroundContrast: null,
         backgroundInfo: null,
         thumbnail: SketchpadThumbnail,
         thumbnailDark: SketchpadThumbnailDark,
@@ -914,9 +842,6 @@ const worlds: {|
         enableFlipCharacter: true
     },
     'Space': {
-        background: Space,
-        backgroundGray: SpaceGray,
-        backgroundContrast: SpaceContrast,
         backgroundInfo: {
             A1: 'earth',
             C1: 'moon',
@@ -956,9 +881,6 @@ const worlds: {|
         enableFlipCharacter: true
     },
     'Sports': {
-        background: Sports,
-        backgroundGray: SportsGray,
-        backgroundContrast: SportsContrast,
         backgroundInfo: {
             A1: 'badmintonShuttlecock',
             C1: 'basketball',
@@ -1021,6 +943,111 @@ export function isWorldName(str: ?string): boolean {
 
 export function getWorldProperties(world: WorldName): WorldProperties {
     return worlds[world];
+}
+
+function unwrapModule(importPromise: Promise<any>): Promise<?React.ComponentType<{}>> {
+    return new Promise((resolve) => {
+        importPromise.then((module) => {
+            resolve(module.ReactComponent);
+        });
+    });
+}
+
+export function getWorldBackground(theme: ThemeName, world: WorldName): Promise<?React.ComponentType<{}>> {
+    if (theme === 'gray') {
+        switch (world) {
+            case 'AmusementPark':
+                return unwrapModule(import('./svg/AmusementParkGray.svg'));
+            case 'AtlanticCanada':
+                return unwrapModule(import('./svg/AtlanticCanadaGray.svg'));
+            case 'Camping':
+                return unwrapModule(import('./svg/Camping-gray.svg'));
+            case 'DeepOcean':
+                return unwrapModule(import('./svg/DeepOcean-gray.svg'));
+            case 'EuropeTrip':
+                return unwrapModule(import('./svg/EuropeTripGray.svg'));
+            case 'GroceryStore':
+                return unwrapModule(import('./svg/GroceryStoreGray.svg'));
+            case 'Haunted':
+                return unwrapModule(import('./svg/Haunted-gray.svg'));
+            case 'Landmarks':
+                return unwrapModule(import('./svg/LandmarksWorldGray.svg'));
+            case 'Marble':
+                return unwrapModule(import('./svg/MarbleWorldGray.svg'));
+            case 'Savannah':
+                return unwrapModule(import('./svg/Savannah-gray.svg'));
+            case 'Sketchpad':
+                return Promise.resolve(null);
+            case 'Space':
+                return unwrapModule(import('./svg/Space-gray.svg'));
+            case 'Sports':
+                return unwrapModule(import('./svg/SportsGray.svg'));
+            default:
+                return Promise.resolve(null);
+        }
+    } else if (theme === 'contrast') {
+        switch (world) {
+            case 'AmusementPark':
+                return unwrapModule(import('./svg/AmusementParkContrast.svg'));
+            case 'AtlanticCanada':
+                return unwrapModule(import('./svg/AtlanticCanadaContrast.svg'));
+            case 'Camping':
+                return unwrapModule(import('./svg/Camping-contrast.svg'));
+            case 'DeepOcean':
+                return unwrapModule(import('./svg/DeepOcean-contrast.svg'));
+            case 'EuropeTrip':
+                return unwrapModule(import('./svg/EuropeTripContrast.svg'));
+            case 'GroceryStore':
+                return unwrapModule(import('./svg/GroceryStoreContrast.svg'));
+            case 'Haunted':
+                return unwrapModule(import('./svg/Haunted-contrast.svg'));
+            case 'Landmarks':
+                return unwrapModule(import('./svg/LandmarksWorldContrast.svg'));
+            case 'Marble':
+                return unwrapModule(import('./svg/MarbleWorldContrast.svg'));
+            case 'Savannah':
+                return unwrapModule(import('./svg/Savannah-contrast.svg'));
+            case 'Sketchpad':
+                return Promise.resolve(null);
+            case 'Space':
+                return unwrapModule(import('./svg/Space-contrast.svg'));
+            case 'Sports':
+                return unwrapModule(import('./svg/SportsContrast.svg'));
+            default:
+                return Promise.resolve(null);
+        }
+    } else {
+        switch (world) {
+            case 'AmusementPark':
+                return unwrapModule(import('./svg/AmusementPark.svg'));
+            case 'AtlanticCanada':
+                return unwrapModule(import('./svg/AtlanticCanada.svg'));
+            case 'Camping':
+                return unwrapModule(import('./svg/Camping.svg'));
+            case 'DeepOcean':
+                return unwrapModule(import('./svg/DeepOcean.svg'));
+            case 'EuropeTrip':
+                return unwrapModule(import('./svg/EuropeTrip.svg'));
+            case 'GroceryStore':
+                return unwrapModule(import('./svg/GroceryStore.svg'));
+            case 'Haunted':
+                return unwrapModule(import('./svg/Haunted.svg'));
+            case 'Landmarks':
+                return unwrapModule(import('./svg/LandmarksWorld.svg'));
+            case 'Marble':
+                return unwrapModule(import('./svg/MarbleWorld.svg'));
+            case 'Savannah':
+                return unwrapModule(import('./svg/Savannah.svg'));
+            case 'Sketchpad':
+                return Promise.resolve(null);
+            case 'Space':
+                return unwrapModule(import('./svg/Space.svg'));
+            case 'Sports':
+                return unwrapModule(import('./svg/Sports.svg'));
+            default:
+                return Promise.resolve(null);
+        }
+    }
 }
 
 export function getBackgroundInfo(world: WorldName, columnLabel: string, rowLabel: string): ?string {

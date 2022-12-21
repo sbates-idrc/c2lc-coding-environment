@@ -1,10 +1,10 @@
 // @flow
 
-import React from 'react';
+import * as React from 'react';
 import CharacterState from './CharacterState';
 import Character from './Character';
 import SceneDimensions from './SceneDimensions';
-import { getBackgroundInfo, getWorldProperties } from './Worlds';
+import { getWorldBackground, getBackgroundInfo, getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import './Scene.scss';
@@ -25,12 +25,21 @@ export type SceneProps = {
     intl: IntlShape
 };
 
-class Scene extends React.Component<SceneProps, {}> {
+type SceneState = {
+    background: ?React.ComponentType<{}>
+};
+
+class Scene extends React.Component<SceneProps, SceneState> {
     sceneRef: { current: null | HTMLDivElement };
     sceneSvgRef: { current: null | Element };
 
     constructor (props: SceneProps) {
         super(props);
+
+        this.state = {
+            background: null
+        };
+
         this.sceneRef = React.createRef();
         this.sceneSvgRef = React.createRef();
     }
@@ -147,46 +156,17 @@ class Scene extends React.Component<SceneProps, {}> {
     }
 
     getBackground(x: number, y: number, width: number, height: number) {
-        const worldProperties = getWorldProperties(this.props.world);
-        if (this.props.theme === 'gray') {
-            if (worldProperties.backgroundGray) {
-                return React.createElement(worldProperties.backgroundGray, {
-                    className: 'Scene__background',
-                    x: x,
-                    y: y,
-                    width: width,
-                    height: height,
-                    preserveAspectRatio: 'none'
-                });
-            } else {
-                return <></>;
-            }
-        } else if (this.props.theme === 'contrast') {
-            if (worldProperties.backgroundContrast) {
-                return React.createElement(worldProperties.backgroundContrast, {
-                    className: 'Scene__background',
-                    x: x,
-                    y: y,
-                    width: width,
-                    height: height,
-                    preserveAspectRatio: 'none'
-                });
-            } else {
-                return <></>;
-            }
+        if (this.state.background) {
+            return React.createElement(this.state.background, {
+                className: 'Scene__background',
+                x: x,
+                y: y,
+                width: width,
+                height: height,
+                preserveAspectRatio: 'none'
+            });
         } else {
-            if (worldProperties.background) {
-                return React.createElement(worldProperties.background, {
-                    className: 'Scene__background',
-                    x: x,
-                    y: y,
-                    width: width,
-                    height: height,
-                    preserveAspectRatio: 'none'
-                });
-            } else {
-                return <></>;
-            }
+            return <></>;
         }
     }
 
@@ -424,6 +404,14 @@ class Scene extends React.Component<SceneProps, {}> {
         if (prevProps.runningState !== this.props.runningState
                 && this.props.runningState === 'running') {
             this.scrollCharacterIntoView();
+        }
+        if (prevProps.theme !== this.props.theme
+                || prevProps.world !== this.props.world) {
+            getWorldBackground(this.props.theme, this.props.world).then((background) => {
+                this.setState({
+                    background: background
+                });
+            });
         }
     }
 }
