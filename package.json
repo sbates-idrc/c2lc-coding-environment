@@ -1,6 +1,6 @@
 {
     "name": "c2lc-coding-environment",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "private": true,
     "dependencies": {
         "bootstrap": "4.6.1",
@@ -19,7 +19,7 @@
     "devDependencies": {
         "flow-bin": "0.142.0",
         "markdownlint-cli2": "0.4.0",
-        "serve": "14.0.1"
+        "serve": "14.1.2"
     },
     "scripts": {
         "start": "react-scripts start",
