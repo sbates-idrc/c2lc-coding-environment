@@ -4,7 +4,7 @@ import * as React from 'react';
 import CharacterState from './CharacterState';
 import Character from './Character';
 import SceneDimensions from './SceneDimensions';
-import { getWorldBackground, getBackgroundInfo, getWorldProperties } from './Worlds';
+import { getBackgroundInfo, getWorldBackground, getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import './Scene.scss';
@@ -26,7 +26,10 @@ export type SceneProps = {
 };
 
 type SceneState = {
-    background: ?React.ComponentType<{}>
+    // The Scene background is loaded dynamically in componentDidMount()
+    // and componentDidUpdate()
+    background: ?React.ComponentType<{}>,
+    highestReceivedBackgroundRequestNumber: number
 };
 
 class Scene extends React.Component<SceneProps, SceneState> {
@@ -37,7 +40,8 @@ class Scene extends React.Component<SceneProps, SceneState> {
         super(props);
 
         this.state = {
-            background: null
+            background: null,
+            highestReceivedBackgroundRequestNumber: 0
         };
 
         this.sceneRef = React.createRef();
@@ -396,6 +400,30 @@ class Scene extends React.Component<SceneProps, SceneState> {
         );
     }
 
+    // Retrieve the world background for the current theme and world and
+    // store it in the 'background' state property. This will trigger a
+    // component update with the new background.
+    updateWorldBackground() {
+        getWorldBackground(this.props.theme, this.props.world).then((response) => {
+            this.setState((state) => {
+                if (response.requestNumber > state.highestReceivedBackgroundRequestNumber) {
+                    return {
+                        background: response.background,
+                        highestReceivedBackgroundRequestNumber: response.requestNumber
+                    };
+                } else {
+                    // Ignore out of order responses
+                    return {};
+                }
+            });
+        });
+    }
+
+    componentDidMount() {
+        // Ensure that we get the background at the initial render
+        this.updateWorldBackground();
+    }
+
     componentDidUpdate(prevProps) {
         if (prevProps.characterState.xPos !== this.props.characterState.xPos
                 || prevProps.characterState.yPos !== this.props.characterState.yPos) {
@@ -405,13 +433,10 @@ class Scene extends React.Component<SceneProps, SceneState> {
                 && this.props.runningState === 'running') {
             this.scrollCharacterIntoView();
         }
+        // If the theme or world changes, update to the new background
         if (prevProps.theme !== this.props.theme
                 || prevProps.world !== this.props.world) {
-            getWorldBackground(this.props.theme, this.props.world).then((background) => {
-                this.setState({
-                    background: background
-                });
-            });
+            this.updateWorldBackground();
         }
     }
 }

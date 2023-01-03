@@ -123,6 +123,11 @@ export type WorldProperties = {|
     enableFlipCharacter: boolean
 |};
 
+export type WorldBackgroundResponse = {|
+    background: ?React.ComponentType<{}>,
+    requestNumber: number
+|};
+
 const worlds: {|
     'AmusementPark': WorldProperties,
     'AtlanticCanada': WorldProperties,
@@ -945,107 +950,125 @@ export function getWorldProperties(world: WorldName): WorldProperties {
     return worlds[world];
 }
 
-function unwrapModule(importPromise: Promise<any>): Promise<?React.ComponentType<{}>> {
+function unwrapModule(importPromise: Promise<any>, requestNumber: number): Promise<WorldBackgroundResponse> {
     return new Promise((resolve) => {
         importPromise.then((module) => {
-            resolve(module.ReactComponent);
+            resolve({
+                background: module.ReactComponent,
+                requestNumber: requestNumber
+            });
         });
     });
 }
 
-export function getWorldBackground(theme: ThemeName, world: WorldName): Promise<?React.ComponentType<{}>> {
+function buildNullWorldBackgroundResponse(requestNumber: number): Promise<WorldBackgroundResponse> {
+    return Promise.resolve({
+        background: null,
+        requestNumber: requestNumber
+    });
+}
+
+// We keep a count of the number of requests to get a world background
+// so that we can add a requestNumber to the response from
+// getWorldBackground(). We do this to protect against out of order
+// responses, where an earlier request takes longer than a later one,
+// and arrives later.
+let worldBackgroundRequestCount = 0;
+
+export function getWorldBackground(theme: ThemeName, world: WorldName): Promise<WorldBackgroundResponse> {
+    worldBackgroundRequestCount += 1;
     if (theme === 'gray') {
         switch (world) {
             case 'AmusementPark':
-                return unwrapModule(import('./svg/AmusementParkGray.svg'));
+                return unwrapModule(import('./svg/AmusementParkGray.svg'), worldBackgroundRequestCount);
             case 'AtlanticCanada':
-                return unwrapModule(import('./svg/AtlanticCanadaGray.svg'));
+                return unwrapModule(import('./svg/AtlanticCanadaGray.svg'), worldBackgroundRequestCount);
             case 'Camping':
-                return unwrapModule(import('./svg/Camping-gray.svg'));
+                return unwrapModule(import('./svg/Camping-gray.svg'), worldBackgroundRequestCount);
             case 'DeepOcean':
-                return unwrapModule(import('./svg/DeepOcean-gray.svg'));
+                return unwrapModule(import('./svg/DeepOcean-gray.svg'), worldBackgroundRequestCount);
             case 'EuropeTrip':
-                return unwrapModule(import('./svg/EuropeTripGray.svg'));
+                return unwrapModule(import('./svg/EuropeTripGray.svg'), worldBackgroundRequestCount);
             case 'GroceryStore':
-                return unwrapModule(import('./svg/GroceryStoreGray.svg'));
+                return unwrapModule(import('./svg/GroceryStoreGray.svg'), worldBackgroundRequestCount);
             case 'Haunted':
-                return unwrapModule(import('./svg/Haunted-gray.svg'));
+                return unwrapModule(import('./svg/Haunted-gray.svg'), worldBackgroundRequestCount);
             case 'Landmarks':
-                return unwrapModule(import('./svg/LandmarksWorldGray.svg'));
+                return unwrapModule(import('./svg/LandmarksWorldGray.svg'), worldBackgroundRequestCount);
             case 'Marble':
-                return unwrapModule(import('./svg/MarbleWorldGray.svg'));
+                return unwrapModule(import('./svg/MarbleWorldGray.svg'), worldBackgroundRequestCount);
             case 'Savannah':
-                return unwrapModule(import('./svg/Savannah-gray.svg'));
+                return unwrapModule(import('./svg/Savannah-gray.svg'), worldBackgroundRequestCount);
             case 'Sketchpad':
-                return Promise.resolve(null);
+                return buildNullWorldBackgroundResponse(worldBackgroundRequestCount);
             case 'Space':
-                return unwrapModule(import('./svg/Space-gray.svg'));
+                return unwrapModule(import('./svg/Space-gray.svg'), worldBackgroundRequestCount);
             case 'Sports':
-                return unwrapModule(import('./svg/SportsGray.svg'));
+                return unwrapModule(import('./svg/SportsGray.svg'), worldBackgroundRequestCount);
             default:
-                return Promise.resolve(null);
+                return buildNullWorldBackgroundResponse(worldBackgroundRequestCount);
         }
     } else if (theme === 'contrast') {
         switch (world) {
             case 'AmusementPark':
-                return unwrapModule(import('./svg/AmusementParkContrast.svg'));
+                return unwrapModule(import('./svg/AmusementParkContrast.svg'), worldBackgroundRequestCount);
             case 'AtlanticCanada':
-                return unwrapModule(import('./svg/AtlanticCanadaContrast.svg'));
+                return unwrapModule(import('./svg/AtlanticCanadaContrast.svg'), worldBackgroundRequestCount);
             case 'Camping':
-                return unwrapModule(import('./svg/Camping-contrast.svg'));
+                return unwrapModule(import('./svg/Camping-contrast.svg'), worldBackgroundRequestCount);
             case 'DeepOcean':
-                return unwrapModule(import('./svg/DeepOcean-contrast.svg'));
+                return unwrapModule(import('./svg/DeepOcean-contrast.svg'), worldBackgroundRequestCount);
             case 'EuropeTrip':
-                return unwrapModule(import('./svg/EuropeTripContrast.svg'));
+                return unwrapModule(import('./svg/EuropeTripContrast.svg'), worldBackgroundRequestCount);
             case 'GroceryStore':
-                return unwrapModule(import('./svg/GroceryStoreContrast.svg'));
+                return unwrapModule(import('./svg/GroceryStoreContrast.svg'), worldBackgroundRequestCount);
             case 'Haunted':
-                return unwrapModule(import('./svg/Haunted-contrast.svg'));
+                return unwrapModule(import('./svg/Haunted-contrast.svg'), worldBackgroundRequestCount);
             case 'Landmarks':
-                return unwrapModule(import('./svg/LandmarksWorldContrast.svg'));
+                return unwrapModule(import('./svg/LandmarksWorldContrast.svg'), worldBackgroundRequestCount);
             case 'Marble':
-                return unwrapModule(import('./svg/MarbleWorldContrast.svg'));
+                return unwrapModule(import('./svg/MarbleWorldContrast.svg'), worldBackgroundRequestCount);
             case 'Savannah':
-                return unwrapModule(import('./svg/Savannah-contrast.svg'));
+                return unwrapModule(import('./svg/Savannah-contrast.svg'), worldBackgroundRequestCount);
             case 'Sketchpad':
-                return Promise.resolve(null);
+                return buildNullWorldBackgroundResponse(worldBackgroundRequestCount);
             case 'Space':
-                return unwrapModule(import('./svg/Space-contrast.svg'));
+                return unwrapModule(import('./svg/Space-contrast.svg'), worldBackgroundRequestCount);
             case 'Sports':
-                return unwrapModule(import('./svg/SportsContrast.svg'));
+                return unwrapModule(import('./svg/SportsContrast.svg'), worldBackgroundRequestCount);
             default:
-                return Promise.resolve(null);
+                return buildNullWorldBackgroundResponse(worldBackgroundRequestCount);
         }
     } else {
         switch (world) {
             case 'AmusementPark':
-                return unwrapModule(import('./svg/AmusementPark.svg'));
+                return unwrapModule(import('./svg/AmusementPark.svg'), worldBackgroundRequestCount);
             case 'AtlanticCanada':
-                return unwrapModule(import('./svg/AtlanticCanada.svg'));
+                return unwrapModule(import('./svg/AtlanticCanada.svg'), worldBackgroundRequestCount);
             case 'Camping':
-                return unwrapModule(import('./svg/Camping.svg'));
+                return unwrapModule(import('./svg/Camping.svg'), worldBackgroundRequestCount);
             case 'DeepOcean':
-                return unwrapModule(import('./svg/DeepOcean.svg'));
+                return unwrapModule(import('./svg/DeepOcean.svg'), worldBackgroundRequestCount);
             case 'EuropeTrip':
-                return unwrapModule(import('./svg/EuropeTrip.svg'));
+                return unwrapModule(import('./svg/EuropeTrip.svg'), worldBackgroundRequestCount);
             case 'GroceryStore':
-                return unwrapModule(import('./svg/GroceryStore.svg'));
+                return unwrapModule(import('./svg/GroceryStore.svg'), worldBackgroundRequestCount);
             case 'Haunted':
-                return unwrapModule(import('./svg/Haunted.svg'));
+                return unwrapModule(import('./svg/Haunted.svg'), worldBackgroundRequestCount);
             case 'Landmarks':
-                return unwrapModule(import('./svg/LandmarksWorld.svg'));
+                return unwrapModule(import('./svg/LandmarksWorld.svg'), worldBackgroundRequestCount);
             case 'Marble':
-                return unwrapModule(import('./svg/MarbleWorld.svg'));
+                return unwrapModule(import('./svg/MarbleWorld.svg'), worldBackgroundRequestCount);
             case 'Savannah':
-                return unwrapModule(import('./svg/Savannah.svg'));
+                return unwrapModule(import('./svg/Savannah.svg'), worldBackgroundRequestCount);
             case 'Sketchpad':
-                return Promise.resolve(null);
+                return buildNullWorldBackgroundResponse(worldBackgroundRequestCount);
             case 'Space':
-                return unwrapModule(import('./svg/Space.svg'));
+                return unwrapModule(import('./svg/Space.svg'), worldBackgroundRequestCount);
             case 'Sports':
-                return unwrapModule(import('./svg/Sports.svg'));
+                return unwrapModule(import('./svg/Sports.svg'), worldBackgroundRequestCount);
             default:
-                return Promise.resolve(null);
+                return buildNullWorldBackgroundResponse(worldBackgroundRequestCount);
         }
     }
 }
