@@ -4,6 +4,10 @@
     background-color: #FFFFFF;
 }
 
+.Scene--AmusementPark {
+    background-color: #8FA65F;
+}
+
 .Scene__grid-line--AmusementPark {
     stroke: #88C3BC;
 }
@@ -33,6 +37,10 @@
 body.gray-theme {
     .ProgramBlockEditor__character-column-character-container--AmusementPark {
         background-color: #FFFFFF;
+    }
+
+    .Scene--AmusementPark {
+        background-color: #E4E4E4;
     }
 
     .Scene__grid-line--AmusementPark {
@@ -75,6 +83,10 @@ body.gray-theme {
 body.contrast-theme {
     .ProgramBlockEditor__character-column-character-container--AmusementPark {
         background-color: #FFFFFF;
+    }
+
+    .Scene--AmusementPark {
+        background-color: #1E1E1E;
     }
 
     .Scene__grid-line--AmusementPark {
@@ -124,6 +136,10 @@ body.contrast-theme {
     background-color: #2D849F;
 }
 
+.Scene--AtlanticCanada {
+    background-color: #052D3E;
+}
+
 .Scene__grid-line--AtlanticCanada {
     stroke: #567F88;
 }
@@ -147,6 +163,10 @@ body.contrast-theme {
 body.gray-theme {
     .ProgramBlockEditor__character-column-character-container--AtlanticCanada {
         background-color: #B9BEC6;
+    }
+
+    .Scene--AtlanticCanada {
+        background-color: #596069;
     }
 
     .Scene__grid-line--AtlanticCanada {
@@ -179,6 +199,10 @@ body.gray-theme {
 body.contrast-theme {
     .ProgramBlockEditor__character-column-character-container--AtlanticCanada {
         background-color: #FFFFFF;
+    }
+
+    .Scene--AtlanticCanada {
+        background-color: #1E1E1E;
     }
 
     .Scene__grid-line--AtlanticCanada {
@@ -230,6 +254,10 @@ body.contrast-theme {
     background-color: #A3BA8B;
 }
 
+.Scene--Camping {
+    background-color: #7A925F;
+}
+
 .Scene__grid-line--Camping {
     stroke: #8F8F8F;
 }
@@ -259,6 +287,10 @@ body.contrast-theme {
 body.gray-theme {
     .ProgramBlockEditor__character-column-character-container--Camping {
         background-color: #D3D3D3;
+    }
+
+    .Scene--Camping {
+        background-color: #898989;
     }
 
     .Scene__grid-line--Camping {
@@ -291,6 +323,10 @@ body.gray-theme {
 body.contrast-theme {
     .ProgramBlockEditor__character-column-character-container--Camping {
         background-color: #FFFFFF;
+    }
+
+    .Scene--Camping {
+        background-color: #000000;
     }
 
     .Scene__grid-line--Camping {
@@ -327,6 +363,10 @@ body.contrast-theme {
     background-color: #1B2432;
 }
 
+.Scene--DeepOcean {
+    background-color: #005C7B;
+}
+
 .Scene__grid-line--DeepOcean {
     stroke: #8BA2C0;
 }
@@ -350,6 +390,10 @@ body.contrast-theme {
 body.gray-theme {
     .ProgramBlockEditor__character-column-character-container--DeepOcean {
         background-color: #67717E;
+    }
+
+    .Scene--DeepOcean {
+        background-color: #D5D8DD;
     }
 
     .Scene__grid-line--DeepOcean {
@@ -376,6 +420,10 @@ body.gray-theme {
 body.contrast-theme {
     .ProgramBlockEditor__character-column-character-container--DeepOcean {
         background-color: #FFFFFF;
+    }
+
+    .Scene--DeepOcean {
+        background-color: #1E1E1E;
     }
 
     .Scene__grid-line--DeepOcean {
@@ -416,6 +464,10 @@ body.contrast-theme {
 
 .ProgramBlockEditor__character-column-character-container--EuropeTrip {
     background-color: #FFFFFF;
+}
+
+.Scene--EuropeTrip {
+    background-color: #B8DBE0;
 }
 
 .Scene__grid-line--EuropeTrip {
@@ -459,6 +511,10 @@ body.contrast-theme {
 body.gray-theme {
     .ProgramBlockEditor__character-column-character-container--EuropeTrip {
         background-color: #3A3F46;
+    }
+
+    .Scene--EuropeTrip {
+        background-color: #F3F3F3;
     }
 
     .Scene__grid-line--EuropeTrip {
@@ -508,6 +564,10 @@ body.contrast-theme {
         background-color: #FFFFFF;
     }
 
+    .Scene--EuropeTrip {
+        background-color: #1E1E1E;
+    }
+
     .Scene__grid-line--EuropeTrip {
         stroke: #0078FF;
     }
@@ -553,6 +613,10 @@ body.contrast-theme {
     background-color: #FFFFFF;
 }
 
+.Scene--GroceryStore {
+    background-color: #D2A27A;
+}
+
 .Scene__grid-line--GroceryStore {
     stroke: #B7804A;
 }
@@ -588,6 +652,10 @@ body.contrast-theme {
 body.gray-theme {
     .ProgramBlockEditor__character-column-character-container--GroceryStore {
         background-color: #FFFFFF;
+    }
+
+    .Scene--GroceryStore {
+        background-color: #E7E7E7;
     }
 
     .Scene__grid-line--GroceryStore {
@@ -626,6 +694,10 @@ body.gray-theme {
 body.contrast-theme {
     .ProgramBlockEditor__character-column-character-container--GroceryStore {
         background-color: #FFFFFF;
+    }
+
+    .Scene--GroceryStore {
+        background-color: #1E1E1E;
     }
 
     .Scene__grid-line--GroceryStore {
@@ -668,6 +740,10 @@ body.contrast-theme {
     background-color: #454675;
 }
 
+.Scene--Haunted {
+    background-color: #0B0F21;
+}
+
 .Scene__grid-line--Haunted {
     stroke: #5F607B;
 }
@@ -697,6 +773,10 @@ body.contrast-theme {
 body.gray-theme {
     .ProgramBlockEditor__character-column-character-container--Haunted {
         background-color: #D3D3D3;
+    }
+
+    .Scene--Haunted {
+        background-color: #1B1B1B;
     }
 
     .Scene__grid-line--Haunted {
@@ -737,6 +817,10 @@ body.contrast-theme {
         background-color: #FFFFFF;
     }
 
+    .Scene--Haunted {
+        background-color: #000000;
+    }
+
     .Scene__grid-line--Haunted {
         stroke: #0078FF;
     }
@@ -774,6 +858,10 @@ body.contrast-theme {
     background-color: #FFE5B4;
 }
 
+.Scene--Landmarks {
+    background-color: #E6D4B3;
+}
+
 .Scene__grid-line--Landmarks {
     stroke: #F9F2EC;
 }
@@ -803,6 +891,10 @@ body.contrast-theme {
 body.gray-theme {
     .ProgramBlockEditor__character-column-character-container--Landmarks {
         background-color: #FFFFFF;
+    }
+
+    .Scene--Landmarks {
+        background-color: #D5D8DD;
     }
 
     .Scene__grid-line--Landmarks {
@@ -835,6 +927,10 @@ body.gray-theme {
 body.contrast-theme {
     .ProgramBlockEditor__character-column-character-container--Landmarks {
         background-color: #FFFFFF;
+    }
+
+    .Scene--Landmarks {
+        background-color: #1E1E1E;
     }
 
     .Scene__grid-line--Landmarks {
@@ -886,6 +982,10 @@ body.contrast-theme {
     background-color: #EBFAF8;
 }
 
+.Scene--Marble {
+    background-color: #BCDACF;
+}
+
 .Scene__grid-line--Marble {
     stroke: #F9F2EC;
 }
@@ -917,6 +1017,10 @@ body.gray-theme {
         background-color: #67717E;
     }
 
+    .Scene--Marble {
+        background-color: #D5D8DD;
+    }
+
     .Scene__grid-line--Marble {
         stroke: #FFFFFF;
     }
@@ -944,6 +1048,10 @@ body.gray-theme {
 body.contrast-theme {
     .ProgramBlockEditor__character-column-character-container--Marble {
         background-color: #FFFFFF;
+    }
+
+    .Scene--Marble {
+        background-color: #1E1E1E;
     }
 
     .Scene__grid-line--Marble {
@@ -976,6 +1084,10 @@ body.contrast-theme {
     background-color: #4C9990;
 }
 
+.Scene--Sketchpad {
+    background-color: #FFFFFF;
+}
+
 .Scene__grid-line--Sketchpad {
     stroke: #F1F2F4;
 }
@@ -1000,6 +1112,10 @@ body.contrast-theme {
 }
 
 body.dark-theme {
+    .Scene--Sketchpad {
+        background-color: #22343C;
+    }
+
     .Scene__grid-line--Sketchpad {
         stroke: #30444E;
     }
@@ -1052,6 +1168,10 @@ body.contrast-theme {
         background-color: #FFFFFF;
     }
 
+    .Scene--Sketchpad {
+        background-color: #000000;
+    }
+
     .Scene__grid-line--Sketchpad {
         stroke: #0078FF;
     }
@@ -1088,6 +1208,10 @@ body.contrast-theme {
     background-color: #FFE5B4;
 }
 
+.Scene--Savannah {
+    background-color: #ECD3A5;
+}
+
 .Scene__grid-line--Savannah {
     stroke: #F9F2EC;
 }
@@ -1111,6 +1235,10 @@ body.contrast-theme {
 body.gray-theme {
     .ProgramBlockEditor__character-column-character-container--Savannah {
         background-color: #505862;
+    }
+
+    .Scene--Savannah {
+        background-color: #D5D8DD;
     }
 
     .Scene__grid-line--Savannah {
@@ -1137,6 +1265,10 @@ body.gray-theme {
 body.contrast-theme {
     .ProgramBlockEditor__character-column-character-container--Savannah {
         background-color: #FFFFFF;
+    }
+
+    .Scene--Savannah {
+        background-color: #1E1E1E;
     }
 
     .Scene__grid-line--Savannah {
@@ -1189,6 +1321,10 @@ body.contrast-theme {
     background-color: #1B2432;
 }
 
+.Scene--Space {
+    background-color: #233247;
+}
+
 .Scene__grid-line--Space {
     stroke: #8BA2C0;
 }
@@ -1211,6 +1347,10 @@ body.contrast-theme {
 
 body.gray-theme {
     .ProgramBlockEditor__character-column-character-container--Space {
+        background-color: #505862;
+    }
+
+    .Scene--Space {
         background-color: #505862;
     }
 
@@ -1238,6 +1378,10 @@ body.gray-theme {
 body.contrast-theme {
     .ProgramBlockEditor__character-column-character-container--Space {
         background-color: #FFFFFF;
+    }
+
+    .Scene--Space {
+        background-color: #1E1E1E;
     }
 
     .Scene__grid-line--Space {
@@ -1278,6 +1422,10 @@ body.contrast-theme {
 
 .ProgramBlockEditor__character-column-character-container--Sports {
     background-color: #22343C;
+}
+
+.Scene--Sports {
+    background-color: #4C9990;
 }
 
 .Scene__grid-line--Sports {
@@ -1326,6 +1474,10 @@ body.gray-theme {
         background-color: #505862;
     }
 
+    .Scene--Sports {
+        background-color: #9DA4AF;
+    }
+
     .Scene__grid-line--Sports {
         stroke: #B9BEC6;
     }
@@ -1371,6 +1523,10 @@ body.gray-theme {
 body.contrast-theme {
     .ProgramBlockEditor__character-column-character-container--Sports {
         background-color: #FFFFFF;
+    }
+
+    .Scene--Sports {
+        background-color: #1E1E1E;
     }
 
     .Scene__grid-line--Sports {

@@ -252,10 +252,6 @@ body.light-theme {
         @include updatedProgramAnimation(#952A1B, 'right', 'light');
     }
 
-    .Scene {
-        background-color: white;
-    }
-
     .ProgramBlockEditor__container {
         border: 2px solid #CCE6E2;
         background-color: #CCE6E2;
@@ -626,10 +622,6 @@ body.dark-theme {
     .Scene__container {
         background-color: #30444E;
         border: $c2lc-scene-border-width solid #33717F;
-    }
-
-    .Scene {
-        background-color: #22343C;
     }
 
     .Scene__header-corner {
@@ -2259,10 +2251,6 @@ body.contrast-theme {
     .Scene__container {
         background-color: white;
         border: $c2lc-scene-border-width solid white;
-    }
-
-    .Scene {
-        background-color: black;
     }
 
     .Scene__header-corner {

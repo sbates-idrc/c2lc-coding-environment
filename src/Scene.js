@@ -347,7 +347,7 @@ class Scene extends React.Component<SceneProps, SceneState> {
                     </div>
                     <div
                         id='scene'
-                        className='Scene'
+                        className={`Scene Scene--${this.props.world}`}
                         role='img'
                         aria-label={this.generateAriaLabel()}
                         onScroll={this.handleScrollScene}
