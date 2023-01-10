@@ -9,8 +9,21 @@ import Scene from './Scene';
 import type {SceneProps} from './Scene';
 import SceneDimensions from './SceneDimensions';
 import CharacterState from './CharacterState';
+import { getWorldBackground } from './Worlds';
+import { ReactComponent as DeepOceanBackground } from './svg/DeepOcean.svg';
+import { ReactComponent as DeepOceanGrayBackground } from './svg/DeepOcean-gray.svg';
 
 configure({ adapter: new Adapter() });
+
+jest.mock('./Worlds', () => {
+    const originalModule = jest.requireActual('./Worlds');
+    return {
+        getBackgroundInfo: originalModule.getBackgroundInfo,
+        getWorldBackground: jest.fn(),
+        getWorldCharacter: originalModule.getWorldCharacter,
+        getWorldProperties: originalModule.getWorldProperties
+    };
+});
 
 const defaultSceneProps = {
     dimensions: new SceneDimensions(1, 1, 1, 1),
@@ -101,9 +114,17 @@ function calculateCharacterDimensions() {
     return { x, y, width, height };
 }
 
+beforeEach(() => {
+    // $FlowFixMe: Jest mock API
+    getWorldBackground.mockResolvedValue({
+        background: null,
+        requestNumber: 0
+    });
+});
+
 describe('When the Scene renders', () => {
     test('With width = 1, height = 1', () => {
-        expect.assertions(7);
+        expect.assertions(9);
         const dimensions = new SceneDimensions(1, 1, 1, 1);
         const sceneWrapper = createMountScene({
             dimensions: dimensions
@@ -131,6 +152,13 @@ describe('When the Scene renders', () => {
         // Grid lines
 
         expect(findGridLines(sceneWrapper).length).toBe(0);
+
+        // Request to get the background
+
+        // $FlowFixMe: Jest mock API
+        expect(getWorldBackground.mock.calls.length).toBe(1);
+        // $FlowFixMe: Jest mock API
+        expect(getWorldBackground.mock.calls[0]).toEqual(['default', 'Sketchpad']);
     });
 
     test('With width = 3, height = 2', () => {
@@ -462,20 +490,73 @@ describe('When Scene gets scrolled', () => {
     });
 });
 
-describe.skip('Scene background changes when world and theme change', () => {
-    test('world property changes to DeepOcean', () => {
+describe('Scene background retrieval and rendering', () => {
+    test('When the Scene is rendered, then the background should be retrieved and rendered', (done) => {
         expect.assertions(3);
+
+        // $FlowFixMe: Jest mock API
+        getWorldBackground.mockResolvedValue({
+            background: DeepOceanBackground,
+            requestNumber: 1
+        });
+
         const sceneWrapper = createMountScene({world: 'DeepOcean'});
-        let sceneBackground = findSceneBackground(sceneWrapper);
-        expect(sceneBackground.get(0).type.render().props.children).toBe('DeepOcean.svg');
-        sceneWrapper.setProps({theme: 'gray'});
-        sceneBackground = findSceneBackground(sceneWrapper);
-        expect(sceneBackground.get(0).type.render().props.children).toBe('DeepOcean-gray.svg');
-        sceneWrapper.setProps({theme: 'contrast'});
-        sceneBackground = findSceneBackground(sceneWrapper);
-        expect(sceneBackground.get(0).type.render().props.children).toBe('DeepOcean-contrast.svg');
+
+        // Use setTimeout() to ensure that the background request Promise
+        // has been processed
+        setTimeout(() => {
+            // $FlowFixMe: Jest mock API
+            expect(getWorldBackground.mock.calls.length).toBe(1);
+            // $FlowFixMe: Jest mock API
+            expect(getWorldBackground.mock.calls[0]).toEqual(['default', 'DeepOcean']);
+            sceneWrapper.update();
+            expect(findSceneBackground(sceneWrapper).get(0).type.render().props.children).toBe('DeepOcean.svg');
+            done();
+        }, 0);
     });
-    test('world property changes to Savannah', () => {
+    test('When the theme is changed, then the new background should be retrieved and rendered', (done) => {
+        expect.assertions(6);
+
+        // $FlowFixMe: Jest mock API
+        getWorldBackground.mockResolvedValue({
+            background: DeepOceanBackground,
+            requestNumber: 1
+        });
+
+        const sceneWrapper = createMountScene({world: 'DeepOcean'});
+
+        // Use setTimeout() to ensure that the background request Promise
+        // has been processed
+        setTimeout(() => {
+            // Initial render
+            // $FlowFixMe: Jest mock API
+            expect(getWorldBackground.mock.calls.length).toBe(1);
+            // $FlowFixMe: Jest mock API
+            expect(getWorldBackground.mock.calls[0]).toEqual(['default', 'DeepOcean']);
+            sceneWrapper.update();
+            expect(findSceneBackground(sceneWrapper).get(0).type.render().props.children).toBe('DeepOcean.svg');
+
+            // Mock next call to get the background
+            // $FlowFixMe: Jest mock API
+            getWorldBackground.mockResolvedValue({
+                background: DeepOceanGrayBackground,
+                requestNumber: 2
+            });
+
+            // Change the theme
+            sceneWrapper.setProps({theme: 'gray'});
+            setTimeout(() => {
+                // $FlowFixMe: Jest mock API
+                expect(getWorldBackground.mock.calls.length).toBe(2);
+                // $FlowFixMe: Jest mock API
+                expect(getWorldBackground.mock.calls[1]).toEqual(['gray', 'DeepOcean']);
+                sceneWrapper.update();
+                expect(findSceneBackground(sceneWrapper).get(0).type.render().props.children).toBe('DeepOcean-gray.svg');
+                done();
+            }, 0);
+        }, 0);
+    });
+    test.skip('world property changes to Savannah', () => {
         expect.assertions(3);
         const sceneWrapper = createMountScene({world: 'Savannah'});
         let sceneBackground = findSceneBackground(sceneWrapper);
@@ -487,7 +568,7 @@ describe.skip('Scene background changes when world and theme change', () => {
         sceneBackground = findSceneBackground(sceneWrapper);
         expect(sceneBackground.get(0).type.render().props.children).toBe('Savannah-contrast.svg');
     });
-    test('world property changes to Sketchpad(default)', () => {
+    test.skip('world property changes to Sketchpad(default)', () => {
         expect.assertions(3);
         const sceneWrapper = createMountScene();
         const sceneBackground = findSceneBackground(sceneWrapper);
@@ -498,7 +579,7 @@ describe.skip('Scene background changes when world and theme change', () => {
         sceneWrapper.setProps({theme: 'contrast'});
         expect(sceneBackground.get(0)).toBe(undefined);
     });
-    test('world property changes to Space', () => {
+    test.skip('world property changes to Space', () => {
         expect.assertions(3);
         const sceneWrapper = createMountScene({world: 'Space'});
         let sceneBackground = findSceneBackground(sceneWrapper);
