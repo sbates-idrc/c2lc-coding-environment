@@ -96,40 +96,41 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
 
     renderWorldOptions = () => {
         const worldOptions = [];
-        const numberOfWorlds = this.availableWorldOptions.length;
-
-        for (let i = 0; i < numberOfWorlds; i++) {
-            const world = this.availableWorldOptions[i];
-            const classes = classNames(
+        for (const world of this.availableWorldOptions) {
+            const imageClasses = classNames(
                 'WorldSelector__option-image',
                 `WorldSelector__option-image--${world}`,
-                this.state.focusedWorld === world && 'WorldSelector__option--selected'
+                this.state.focusedWorld === world && 'WorldSelector__option-image--selected'
             );
             const ariaLabel = this.props.intl.formatMessage({ id: world + ".label"});
-            const worldOption = <div
-                className='WorldSelector__option-container'
-                key={`WorldSelector__option-${world}`}>
-                <div className={classes} data-world={world} onClick={this.handleOnClickThumbnail}>
-                    {this.renderWorldThumbnail(world)}
+            worldOptions.push(
+                <div
+                    className='WorldSelector__option-container'
+                    key={`WorldSelector__option-${world}`}>
+                    <div className={imageClasses} data-world={world} onClick={this.handleOnClickThumbnail}>
+                        {this.renderWorldThumbnail(world)}
+                    </div>
+                    <div className='WorldSelector__option-row'>
+                        <div>
+                            <input
+                                className='WorldSelector__option-radio'
+                                type='radio'
+                                id={`WorldSelector__input-world-${world}`}
+                                name='world-option'
+                                value={world}
+                                aria-label={ariaLabel}
+                                checked={this.props.currentWorld === world}
+                                onChange={this.handleOnSelect}
+                                onFocus={this.onFocusWorld}
+                                onBlur={this.onBlurWorld}/>
+                            &nbsp;
+                        </div>
+                        <label htmlFor={`WorldSelector__input-world-${world}`}>
+                            <FormattedMessage id={`${world}.name`} />
+                        </label>
+                    </div>
                 </div>
-                <div className='WorldSelector__option-row'>
-                    <input
-                        className='WorldSelector__option-radio'
-                        type='radio'
-                        id={`WorldSelector__input-world-${world}`}
-                        name='world-option'
-                        value={world}
-                        aria-label={ariaLabel}
-                        checked={this.props.currentWorld === world}
-                        onChange={this.handleOnSelect}
-                        onFocus={this.onFocusWorld}
-                        onBlur={this.onBlurWorld}/>
-                    <label htmlFor={`WorldSelector__input-world-${world}`}>
-                        <FormattedMessage id={`${world}.name`} />
-                    </label>
-                </div>
-            </div>
-            worldOptions.push(worldOption);
+            );
         }
 
         return (
