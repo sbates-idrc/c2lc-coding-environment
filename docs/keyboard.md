@@ -58,7 +58,7 @@ Those key bindings are as follows.
  | Move focus to the pen toggle | Ctrl + Alt + x, f, s | ![Focus pen toggle icon](board-imgs/FocusPenToggle.png) |
  | Move focus to the play button | Ctrl + Alt + x, f, p | ![Focus play button icon](board-imgs/FocusPlay.png) |
  | Move focus to the previous program block | Ctrl + Alt + x, f, [ | Not available |
- | Move focus to the world selector | Ctrl + Alt + x, f, w | ![Focus world selector icon](board-imgs/FocusWorldSelector.png) |
+ | Move focus to the scene background selector | Ctrl + Alt + x, f, w | ![Focus scene background selector icon](board-imgs/FocusWorldSelector.png) |
  | Move the character down | Ctrl + Alt + x, p, m, d | ![Move character down icon](board-imgs/MoveCharacterDown.png) |
  | Move the character left | Ctrl + Alt + x, p, m, l | ![Move character left icon](board-imgs/MoveCharacterLeft.png) |
  | Move the character right | Ctrl + Alt + x, p, m, r | ![Move character right icon](board-imgs/MoveCharacterRight.png) |
@@ -115,7 +115,7 @@ Those key bindings are as follows:
  | Move focus to the pen toggle | Alt + x, f, s | ![Focus pen toggle icon](board-imgs/FocusPenToggle.png) |
  | Move focus to the play button | Alt + x, f, p | ![Focus play button icon](board-imgs/FocusPlay.png) |
  | Move focus to the previous program block | Alt + x, f, [ | Not available |
- | Move focus to the world selector | Alt + x, f, w | ![Focus world selector icon](board-imgs/FocusWorldSelector.png) |
+ | Move focus to the scene background selector | Alt + x, f, w | ![Focus scene background selector icon](board-imgs/FocusWorldSelector.png) |
  | Move the character down | Alt + x, p, m, d | ![Move character down icon](board-imgs/MoveCharacterDown.png) |
  | Move the character left | Alt + x, p, m, l | ![Move character left icon](board-imgs/MoveCharacterLeft.png) |
  | Move the character right | Alt + x, p, m, r | ![Move character right icon](board-imgs/MoveCharacterRight.png) |
