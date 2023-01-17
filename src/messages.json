@@ -484,10 +484,10 @@
         "Sports.tableTennisRacket": "table tennis racket",
         "Sports.tennisRacketAndBall": "tennis racket and ball",
         "Sports.volleyballBall": "volleyball ball",
-        "WorldSelector": "World Selector",
+        "WorldSelectorButton.heading": "Scene Background selector",
+        "WorldSelectorButton.label": "Scene Background selector",
         "WorldSelector.Cancel": "Cancel",
         "WorldSelector.Save": "Save",
-        "WorldSelector.heading": "World Selector",
         "WorldSelector.Prompt": "Select a background for your scene.",
         "WorldSelector.Title": "Scene Background"
     },

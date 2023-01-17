@@ -189,9 +189,9 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
             worldSelector: {
                 keyDef: { code: "KeyW", key: "w" },
                 actionName: "focusWorldSelector",
-                description: "Move focus to the world selector",
+                description: "Move focus to the scene background selector",
                 icon: "FocusWorldSelector.png",
-                altText: "Focus world selector icon"
+                altText: "Focus scene background selector icon"
             }
         },
 
