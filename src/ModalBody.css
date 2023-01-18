@@ -3,3 +3,7 @@
     max-height: calc(100vh - 15rem);
     overflow-y: auto;
 }
+
+.ModalBody.ModalBody--alwaysShowVerticalScrollbar {
+    overflow-y: scroll;
+}

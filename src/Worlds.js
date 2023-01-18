@@ -3,6 +3,28 @@
 import * as React from 'react';
 import type { ThemeName } from './types';
 
+// Amusement Park
+import { ReactComponent as AmusementPark } from './svg/AmusementPark.svg';
+import { ReactComponent as AmusementParkGray } from './svg/AmusementParkGray.svg';
+import { ReactComponent as AmusementParkContrast } from './svg/AmusementParkContrast.svg';
+import { ReactComponent as AmusementParkThumbnail } from './svg/AmusementParkThumbnail.svg';
+import { ReactComponent as AmusementParkThumbnailGray } from './svg/AmusementParkThumbnailGray.svg';
+import { ReactComponent as AmusementParkThumbnailContrast } from './svg/AmusementParkThumbnailContrast.svg';
+import { ReactComponent as AmusementParkTicket } from './svg/AmusementParkTicket.svg';
+import { ReactComponent as AmusementParkTicketGray } from './svg/AmusementParkTicketGray.svg';
+import { ReactComponent as AmusementParkTicketContrast } from './svg/AmusementParkTicketContrast.svg';
+
+// Atlantic Canada
+import { ReactComponent as AtlanticCanada } from './svg/AtlanticCanada.svg';
+import { ReactComponent as AtlanticCanadaGray } from './svg/AtlanticCanadaGray.svg';
+import { ReactComponent as AtlanticCanadaContrast } from './svg/AtlanticCanadaContrast.svg';
+import { ReactComponent as AtlanticCanadaThumbnail } from './svg/AtlanticCanadaThumbnail.svg';
+import { ReactComponent as AtlanticCanadaThumbnailGray } from './svg/AtlanticCanadaThumbnailGray.svg';
+import { ReactComponent as AtlanticCanadaThumbnailContrast } from './svg/AtlanticCanadaThumbnailContrast.svg';
+import { ReactComponent as AtlanticCanadaCapeIslander } from './svg/AtlanticCanadaCapeIslander.svg';
+import { ReactComponent as AtlanticCanadaCapeIslanderGray } from './svg/AtlanticCanadaCapeIslanderGray.svg';
+import { ReactComponent as AtlanticCanadaCapeIslanderContrast } from './svg/AtlanticCanadaCapeIslanderContrast.svg';
+
 // Camping
 import { ReactComponent as Camping } from './svg/Camping.svg';
 import { ReactComponent as CampingGray } from './svg/Camping-gray.svg';
@@ -24,6 +46,28 @@ import { ReactComponent as DeepOceanThumbnailContrast } from './svg/DeepOceanThu
 import { ReactComponent as Submarine } from './svg/Submarine.svg';
 import { ReactComponent as SubmarineGray } from './svg/Submarine-gray.svg';
 import { ReactComponent as SubmarineContrast } from './svg/Submarine-contrast.svg';
+
+// Europe Trip
+import { ReactComponent as EuropeTrip } from './svg/EuropeTrip.svg';
+import { ReactComponent as EuropeTripGray } from './svg/EuropeTripGray.svg';
+import { ReactComponent as EuropeTripContrast } from './svg/EuropeTripContrast.svg';
+import { ReactComponent as EuropeTripThumbnail } from './svg/EuropeTripThumbnail.svg';
+import { ReactComponent as EuropeTripThumbnailGray } from './svg/EuropeTripThumbnailGray.svg';
+import { ReactComponent as EuropeTripThumbnailContrast } from './svg/EuropeTripThumbnailContrast.svg';
+import { ReactComponent as EuropeTripPlane } from './svg/EuropeTripPlane.svg';
+import { ReactComponent as EuropeTripPlaneGray } from './svg/EuropeTripPlaneGray.svg';
+import { ReactComponent as EuropeTripPlaneContrast } from './svg/EuropeTripPlaneContrast.svg';
+
+// Grocery Store
+import { ReactComponent as GroceryStore } from './svg/GroceryStore.svg';
+import { ReactComponent as GroceryStoreGray } from './svg/GroceryStoreGray.svg';
+import { ReactComponent as GroceryStoreContrast } from './svg/GroceryStoreContrast.svg';
+import { ReactComponent as GroceryStoreThumbnail } from './svg/GroceryStoreThumbnail.svg';
+import { ReactComponent as GroceryStoreThumbnailGray } from './svg/GroceryStoreThumbnailGray.svg';
+import { ReactComponent as GroceryStoreThumbnailContrast } from './svg/GroceryStoreThumbnailContrast.svg';
+import { ReactComponent as GroceryStoreCart } from './svg/GroceryStoreCart.svg';
+import { ReactComponent as GroceryStoreCartGray } from './svg/GroceryStoreCartGray.svg';
+import { ReactComponent as GroceryStoreCartContrast } from './svg/GroceryStoreCartContrast.svg';
 
 // Haunted House
 import { ReactComponent as Haunted } from './svg/Haunted.svg';
@@ -89,6 +133,17 @@ import { ReactComponent as SpaceShip } from './svg/SpaceShip.svg';
 import { ReactComponent as SpaceShipGray } from './svg/SpaceShip-gray.svg';
 import { ReactComponent as SpaceShipContrast } from './svg/SpaceShip-contrast.svg';
 
+// Sports
+import { ReactComponent as Sports } from './svg/Sports.svg';
+import { ReactComponent as SportsGray } from './svg/SportsGray.svg';
+import { ReactComponent as SportsContrast } from './svg/SportsContrast.svg';
+import { ReactComponent as SportsThumbnail } from './svg/SportsThumbnail.svg';
+import { ReactComponent as SportsThumbnailGray } from './svg/SportsThumbnailGray.svg';
+import { ReactComponent as SportsThumbnailContrast } from './svg/SportsThumbnailContrast.svg';
+import { ReactComponent as SportsTrophy } from './svg/SportsTrophy.svg';
+import { ReactComponent as SportsTrophyGray } from './svg/SportsTrophyGray.svg';
+import { ReactComponent as SportsTrophyContrast } from './svg/SportsTrophyContrast.svg';
+
 export type WorldProperties = {|
     background: ?React.ComponentType<{}>,
     backgroundGray: ?React.ComponentType<{}>,
@@ -108,15 +163,211 @@ export type WorldProperties = {|
 |};
 
 const worlds: {|
+    'AmusementPark': WorldProperties,
+    'AtlanticCanada': WorldProperties,
     'Camping': WorldProperties,
     'DeepOcean': WorldProperties,
+    'EuropeTrip': WorldProperties,
+    'GroceryStore': WorldProperties,
     'Haunted': WorldProperties,
     'Landmarks': WorldProperties,
     'Marble': WorldProperties,
     'Savannah': WorldProperties,
     'Sketchpad': WorldProperties,
-    'Space': WorldProperties
+    'Space': WorldProperties,
+    'Sports': WorldProperties
 |} = {
+    'AmusementPark': {
+        background: AmusementPark,
+        backgroundGray: AmusementParkGray,
+        backgroundContrast: AmusementParkContrast,
+        backgroundInfo: {
+            A1: 'entrance',
+            C1: 'gameBooth',
+            D1: 'gameBooth',
+            G1: 'pirateShip',
+            H1: 'pirateShip',
+            J1: 'swingRide',
+            K1: 'swingRide',
+            L1: 'swingRide',
+            A2: 'entrance',
+            C2: 'gameBooth',
+            D2: 'gameBooth',
+            G2: 'pirateShip',
+            H2: 'pirateShip',
+            J2: 'swingRide',
+            K2: 'swingRide',
+            L2: 'swingRide',
+            A3: 'merryGoRound',
+            B3: 'merryGoRound',
+            G3: 'pirateShip',
+            H3: 'pirateShip',
+            A4: 'merryGoRound',
+            B4: 'merryGoRound',
+            E4: 'waterSlide',
+            F4: 'waterSlide',
+            J4: 'goKarts',
+            K4: 'goKarts',
+            L4: 'goKarts',
+            E5: 'waterSlide',
+            F5: 'waterSlide',
+            G5: 'ferrisWheel',
+            H5: 'ferrisWheel',
+            I5: 'ferrisWheel',
+            J5: 'goKarts',
+            K5: 'goKarts',
+            L5: 'goKarts',
+            A6: 'rollerCoaster',
+            B6: 'rollerCoaster',
+            D6: 'waterPark',
+            E6: 'waterPark',
+            F6: 'whaleFountain',
+            G6: 'ferrisWheel',
+            H6: 'ferrisWheel',
+            I6: 'ferrisWheel',
+            J6: 'goKarts',
+            K6: 'goKarts',
+            A7: 'rollerCoaster',
+            B7: 'rollerCoaster',
+            C7: 'rollerCoaster',
+            G7: 'ferrisWheel',
+            H7: 'ferrisWheel',
+            I7: 'ferrisWheel',
+            K7: 'snackStand',
+            L7: 'snackStand',
+            A8: 'rollerCoaster',
+            B8: 'rollerCoaster',
+            C8: 'rollerCoaster',
+            D8: 'rollerCoaster',
+            K8: 'snackStand',
+            L8: 'snackStand'
+        },
+        thumbnail: AmusementParkThumbnail,
+        thumbnailDark: AmusementParkThumbnail,
+        thumbnailGray: AmusementParkThumbnailGray,
+        thumbnailContrast: AmusementParkThumbnailContrast,
+        character: AmusementParkTicket,
+        characterGray: AmusementParkTicketGray,
+        characterContrast: AmusementParkTicketContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: false
+    },
+    'AtlanticCanada': {
+        background: AtlanticCanada,
+        backgroundGray: AtlanticCanadaGray,
+        backgroundContrast: AtlanticCanadaContrast,
+        backgroundInfo: {
+            A1: 'water',
+            B1: 'water',
+            C1: 'shore',
+            D1: 'lighthouse',
+            E1: 'shore',
+            F1: 'shore',
+            G1: 'water',
+            H1: 'water',
+            I1: 'water',
+            J1: 'shore',
+            K1: 'fishProcessingPlant',
+            L1: 'fishProcessingPlant',
+            A2: 'water',
+            B2: 'water',
+            C2: 'shore',
+            D2: 'lighthouse',
+            E2: 'water',
+            F2: 'water',
+            G2: 'storms',
+            H2: 'storms',
+            I2: 'storms',
+            J2: 'water',
+            K2: 'water',
+            L2: 'fishProcessingPlant',
+            A3: 'water',
+            B3: 'water',
+            C3: 'water',
+            D3: 'water',
+            E3: 'water',
+            F3: 'water',
+            G3: 'storms',
+            H3: 'storms',
+            I3: 'storms',
+            J3: 'shoal',
+            K3: 'shoal',
+            L3: 'water',
+            A4: 'shore',
+            B4: 'water',
+            C4: 'water',
+            D4: 'iceberg',
+            E4: 'water',
+            F4: 'whale',
+            G4: 'whale',
+            H4: 'water',
+            I4: 'water',
+            J4: 'shoal',
+            K4: 'shoal',
+            L4: 'water',
+            A5: 'house',
+            B5: 'water',
+            C5: 'water',
+            D5: 'water',
+            E5: 'whale',
+            F5: 'whale',
+            G5: 'iceberg',
+            H5: 'water',
+            I5: 'water',
+            J5: 'water',
+            K5: 'sailboat',
+            L5: 'sailboat',
+            A6: 'house',
+            B6: 'rowingBoatOnTheShore',
+            C6: 'water',
+            D6: 'water',
+            E6: 'iceberg',
+            F6: 'water',
+            G6: 'water',
+            H6: 'water',
+            I6: 'water',
+            J6: 'water',
+            K6: 'sailboat',
+            L6: 'sailboat',
+            A7: 'land',
+            B7: 'land',
+            C7: 'rowingBoatOnTheShore',
+            D7: 'water',
+            E7: 'water',
+            F7: 'water',
+            G7: 'water',
+            H7: 'water',
+            I7: 'fogBank',
+            J7: 'fogBank',
+            K7: 'fogBank',
+            L7: 'fogBank',
+            A8: 'trees',
+            B8: 'house',
+            C8: 'house',
+            D8: 'house',
+            E8: 'trees',
+            F8: 'water',
+            G8: 'water',
+            H8: 'fogBank',
+            I8: 'fogBank',
+            J8: 'fogBank',
+            K8: 'fogBank',
+            L8: 'fogBank'
+        },
+        thumbnail: AtlanticCanadaThumbnail,
+        thumbnailDark: AtlanticCanadaThumbnail,
+        thumbnailGray: AtlanticCanadaThumbnailGray,
+        thumbnailContrast: AtlanticCanadaThumbnailContrast,
+        character: AtlanticCanadaCapeIslander,
+        characterGray: AtlanticCanadaCapeIslanderGray,
+        characterContrast: AtlanticCanadaCapeIslanderContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
+    },
     'Camping': {
         background: Camping,
         backgroundGray: CampingGray,
@@ -243,6 +494,157 @@ const worlds: {|
         character: Submarine,
         characterGray: SubmarineGray,
         characterContrast: SubmarineContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
+    },
+    'EuropeTrip': {
+        background: EuropeTrip,
+        backgroundGray: EuropeTripGray,
+        backgroundContrast: EuropeTripContrast,
+        backgroundInfo: {
+            C1: 'C1',
+            E1: 'E1',
+            F1: 'F1',
+            G1: 'G1',
+            H1: 'H1',
+            I1: 'I1',
+            J1: 'J1',
+            C2: 'C2',
+            D2: 'D2',
+            E2: 'E2',
+            F2: 'F2',
+            G2: 'G2',
+            H2: 'H2',
+            I2: 'I2',
+            C3: 'C3',
+            D3: 'D3',
+            E3: 'E3',
+            F3: 'F3',
+            G3: 'G3',
+            H3: 'H3',
+            I3: 'I3',
+            J3: 'J3',
+            D4: 'D4',
+            E4: 'E4',
+            F4: 'F4',
+            G4: 'G4',
+            H4: 'H4',
+            I4: 'I4',
+            J4: 'J4',
+            K4: 'K4',
+            L4: 'L4',
+            C5: 'C5',
+            D5: 'D5',
+            E5: 'E5',
+            F5: 'F5',
+            G5: 'G5',
+            H5: 'H5',
+            I5: 'I5',
+            J5: 'J5',
+            K5: 'K5',
+            L5: 'L5',
+            B6: 'B6',
+            C6: 'C6',
+            D6: 'D6',
+            E6: 'E6',
+            F6: 'F6',
+            G6: 'G6',
+            H6: 'H6',
+            I6: 'I6',
+            J6: 'J6',
+            K6: 'K6',
+            B7: 'B7',
+            C7: 'C7',
+            D7: 'D7',
+            E7: 'E7',
+            F7: 'F7',
+            G7: 'G7',
+            H7: 'H7',
+            I7: 'I7',
+            J7: 'J7',
+            K7: 'K7',
+            L7: 'L7',
+            G8: 'G8',
+            H8: 'H8',
+            I8: 'I8',
+            J8: 'J8',
+            K8: 'K8',
+            L8: 'L8',
+        },
+        thumbnail: EuropeTripThumbnail,
+        thumbnailDark: EuropeTripThumbnail,
+        thumbnailGray: EuropeTripThumbnailGray,
+        thumbnailContrast: EuropeTripThumbnailContrast,
+        character: EuropeTripPlane,
+        characterGray: EuropeTripPlaneGray,
+        characterContrast: EuropeTripPlaneContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
+    },
+    'GroceryStore': {
+        background: GroceryStore,
+        backgroundGray: GroceryStoreGray,
+        backgroundContrast: GroceryStoreContrast,
+        backgroundInfo: {
+            A1: 'ceilingLight',
+            B1: 'ceilingLight',
+            C1: 'ceilingLight',
+            E1: 'refrigerator',
+            F1: 'refrigerator',
+            G1: 'refrigerator',
+            H1: 'refrigerator',
+            J1: 'jars',
+            K1: 'cans',
+            L1: 'cans',
+            E2: 'steak',
+            F2: 'groundBeef',
+            G2: 'chicken',
+            H2: 'fish',
+            J3: 'bottles',
+            K3: 'pasta',
+            L3: 'bagOfRice',
+            A4: 'bread',
+            B4: 'bread',
+            A5: 'onions',
+            B5: 'potatoes',
+            E5: 'pineapples',
+            F5: 'apples',
+            G5: 'pears',
+            H5: 'oranges',
+            J5: 'refrigerator',
+            K5: 'refrigerator',
+            L5: 'refrigerator',
+            A6: 'cucumbers',
+            B6: 'tomatoes',
+            C6: 'eggplants',
+            E6: 'watermelons',
+            F6: 'strawberries',
+            G6: 'bananas',
+            H6: 'grapes',
+            J6: 'milk',
+            K6: 'chocolateMilk',
+            L6: 'orangeJuice',
+            A7: 'carrots',
+            B7: 'greenVegetables',
+            C7: 'broccoli',
+            J7: 'eggs',
+            K7: 'bottles',
+            L7: 'cheese',
+            J8: 'yogurt',
+            K8: 'tofu',
+            L8: 'tofu'
+        },
+        thumbnail: GroceryStoreThumbnail,
+        thumbnailDark: GroceryStoreThumbnail,
+        thumbnailGray: GroceryStoreThumbnailGray,
+        thumbnailContrast: GroceryStoreThumbnailContrast,
+        character: GroceryStoreCart,
+        characterGray: GroceryStoreCartGray,
+        characterContrast: GroceryStoreCartContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
@@ -548,6 +950,62 @@ const worlds: {|
         character: SpaceShip,
         characterGray: SpaceShipGray,
         characterContrast: SpaceShipContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
+    },
+    'Sports': {
+        background: Sports,
+        backgroundGray: SportsGray,
+        backgroundContrast: SportsContrast,
+        backgroundInfo: {
+            A1: 'badmintonShuttlecock',
+            C1: 'basketball',
+            F1: 'runningShoes',
+            H1: 'curlingStone',
+            J1: 'golfBall',
+            L1: 'martialArtsUniform',
+            E2: 'skisAndSkiPoles',
+            I2: 'volleyballBall',
+            L2: 'martialArtsUniform',
+            C3: 'cricketBatAndBall',
+            E3: 'skisAndSkiPoles',
+            G3: 'football',
+            K3: 'bowlingBallAndPins',
+            A4: 'hockeyStickAndPuck',
+            C4: 'cricketBatAndBall',
+            H4: 'boxingGloves',
+            J4: 'tennisRacketAndBall',
+            L4: 'iceSkates',
+            A5: 'hockeyStickAndPuck',
+            E5: 'baseballGloveAndBall',
+            G5: 'singlet',
+            J5: 'tennisRacketAndBall',
+            B6: 'soccerBall',
+            G6: 'singlet',
+            L6: 'rowingBoat',
+            D7: 'bicycle',
+            E7: 'bicycle',
+            F7: 'bicycle',
+            J7: 'fieldHockeyStickAndBall',
+            L7: 'rowingBoat',
+            A8: 'swimmingGoggles',
+            B8: 'swimmingGoggles',
+            D8: 'bicycle',
+            E8: 'bicycle',
+            F8: 'bicycle',
+            H8: 'tableTennisRacket',
+            J8: 'fieldHockeyStickAndBall',
+            L8: 'rowingBoat'
+        },
+        thumbnail: SportsThumbnail,
+        thumbnailDark: SportsThumbnail,
+        thumbnailGray: SportsThumbnailGray,
+        thumbnailContrast: SportsThumbnailContrast,
+        character: SportsTrophy,
+        characterGray: SportsTrophyGray,
+        characterContrast: SportsTrophyContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East

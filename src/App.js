@@ -149,7 +149,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '1.6.2';
+        this.version = '1.7';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -1488,12 +1488,12 @@ export class App extends React.Component<AppProps, AppState> {
                     </div>
                     <div className="App__world-container">
                         <h2 className='sr-only' >
-                            <FormattedMessage id='WorldSelector.heading' />
+                            <FormattedMessage id='WorldSelectorButton.heading' />
                         </h2>
                         <div className="App__world-selector">
                             <IconButton
                                 className='keyboard-shortcut-focus__world-selector'
-                                ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelector' })}
+                                ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelectorButton.label' })}
                                 onClick={this.handleClickWorldIcon}
                             >
                                 <WorldIcon className='App__world-selector-icon'/>
