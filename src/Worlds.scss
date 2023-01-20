@@ -1,3 +1,229 @@
+/* Amusement Park */
+
+.ProgramBlockEditor__character-column-character-container--AmusementPark {
+    background-color: #FFFFFF;
+}
+
+.Scene__grid-line--AmusementPark {
+    stroke: #88C3BC;
+}
+
+.Scene__path-line--AmusementPark {
+    stroke: #FFFFFF;
+}
+
+.Scene__starting-grid-cell-point--AmusementPark {
+    fill: #FFFFFF;
+}
+
+.WorldSelector__option-image--AmusementPark:hover {
+    svg {
+        .thumbnail-background {
+            fill: #70862E;
+        }
+        .thumbnail-entrance-door {
+            fill: #F5C58A;
+        }
+        .thumbnail-entrance-door-shadow {
+            fill: #ED972C;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--AmusementPark {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--AmusementPark {
+        stroke: #B9BEC6;
+    }
+
+    .Scene__path-line--AmusementPark {
+        stroke: #505862;
+    }
+
+    .Scene__starting-grid-cell-point--AmusementPark {
+        fill: #505862;
+    }
+
+    .WorldSelector__option-image--AmusementPark:hover {
+        svg {
+            .thumbnail-background {
+                fill: #D5D8DD;
+            }
+            .thumbnail-entrance-door-shadow {
+                fill: #3A3F46;
+            }
+            .thumbnail-dark-grey {
+                fill: #67717E;
+            }
+            .thumbnail-light-grey {
+                fill: #818A98;
+            }
+            .thumbnail-ticket {
+                fill: #B9BEC6;
+            }
+            .thumbnial-ticket-outline {
+                fill: #3A3F46;
+                stroke: #3A3F46;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--AmusementPark {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--AmusementPark {
+        stroke:#0078FF;
+    }
+
+    .Scene__path-line--AmusementPark {
+        stroke:#FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--AmusementPark {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--AmusementPark:hover {
+        svg {
+            .thumbnail-background {
+                fill: #000000;
+            }
+            .thumbnail-entrance-door {
+                fill: #000000;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-entrance-door-shadow {
+                fill: #000000;
+            }
+            .thumbnail-entrance-roof {
+                fill: #FFFFFF;
+                stroke: #000000;
+            }
+            .thumbnail-ticket {
+                fill: #FFFFFF;
+            }
+            .thumbnail-ticket-design {
+                fill: #000000;
+            }
+            .thumbnail-ticket-outline {
+                stroke: #000000;
+            }
+        }
+    }
+}
+
+/* Atlantic Canada */
+
+.ProgramBlockEditor__character-column-character-container--AtlanticCanada {
+    background-color: #2D849F;
+}
+
+.Scene__grid-line--AtlanticCanada {
+    stroke: #567F88;
+}
+
+.Scene__path-line--AtlanticCanada {
+    stroke: #E5AF5E;
+}
+
+.Scene__starting-grid-cell-point--AtlanticCanada {
+    fill: #E5AF5E;
+}
+
+.WorldSelector__option-image--AtlanticCanada:hover {
+    svg {
+        .thumbnail-background {
+            fill: #2D3D53;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--AtlanticCanada {
+        background-color: #B9BEC6;
+    }
+
+    .Scene__grid-line--AtlanticCanada {
+        stroke: #B9BEC6;
+    }
+
+    .Scene__path-line--AtlanticCanada {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__starting-grid-cell-point--AtlanticCanada {
+        fill: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--AtlanticCanada:hover {
+        svg {
+            .thumbnail-background {
+                fill: #818A98;
+            }
+            .thumbnail-boat-top {
+                fill: #505862;
+            }
+            .thumbnail-stop-color {
+                stop-color: #D1D1D1;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--AtlanticCanada {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--AtlanticCanada {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--AtlanticCanada {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--AtlanticCanada {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--AtlanticCanada:hover {
+        svg {
+            .thumbnail-background {
+                fill: #000000;
+            }
+            .thumbnail-boat-black {
+                fill: #FFFFFF;
+            }
+            .thumbnail-boat-deck {
+                fill: #000000;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-boat-white {
+                fill: #000000;
+            }
+            .thumbnail-iceberg {
+                fill: #000000;
+            }
+            .thumbnail-stop-color {
+                stop-color: #FFFFFF;
+            }
+            .thumbnail-stroke-white {
+                stroke: #000000;
+            }
+            .thumbnail-stroke-black {
+                stroke: #FFFFFF;
+            }
+        }
+    }
+}
+
 /* Camping */
 
 .ProgramBlockEditor__character-column-character-container--Camping {
@@ -181,6 +407,256 @@ body.contrast-theme {
 
             .thumbnail-character-innerline-black {
                 fill: #FFFFFF;
+            }
+        }
+    }
+}
+
+/* Europe Trip */
+
+.ProgramBlockEditor__character-column-character-container--EuropeTrip {
+    background-color: #FFFFFF;
+}
+
+.Scene__grid-line--EuropeTrip {
+    stroke: #EBFAF8;
+}
+
+.Scene__path-line--EuropeTrip {
+    stroke: #FFFFFF;
+}
+
+.Scene__starting-grid-cell-point--EuropeTrip {
+    fill: #FFFFFF;
+}
+
+.WorldSelector__option-image--EuropeTrip:hover {
+    svg {
+        .thumbnail-background {
+            fill: #73A9B0;
+        }
+        .thumbnail-land {
+            fill: #537672;
+        }
+        .thumbnail-plane-fuselage {
+            fill: #FFBA27;
+        }
+        .thumbnail-plane-fuselage-shadow {
+            fill: #D37D12;
+        }
+        .thumbnail-plane-front {
+            fill: #C13925;
+        }
+        .thumbnail-plane-tail {
+            fill: #C13925;
+        }
+        .thumbnail-plane-wings {
+            fill: #30444E;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--EuropeTrip {
+        background-color: #3A3F46;
+    }
+
+    .Scene__grid-line--EuropeTrip {
+        stroke: #818A98;
+    }
+
+    .Scene__path-line--EuropeTrip {
+        stroke: #3A3F46;
+    }
+
+    .Scene__starting-grid-cell-point--EuropeTrip {
+        fill: #3A3F46;
+    }
+
+    .WorldSelector__option-image--EuropeTrip:hover {
+        svg {
+            .thumbnail-background {
+                fill: #B9BEC6;
+            }
+            .thumbnail-land {
+                fill: #9DA4AF;
+            }
+            .thumbnail-plane-fuselage {
+                fill: #818A98;
+            }
+            .thumbnail-plane-fuselage-shadow {
+                fill: #67717E;
+            }
+            .thumbnail-plane-front {
+                fill: #505862;
+            }
+            .thumbnail-plane-tail {
+                fill: #505862;
+            }
+            .thumbnail-plane-wings {
+                fill: #3A3F46;
+            }
+            .thumbnail-plane-windows {
+                fill: #3A3F46;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--EuropeTrip {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--EuropeTrip {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--EuropeTrip {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--EuropeTrip {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--EuropeTrip:hover {
+        svg {
+            .thumbnail-background {
+                fill: #1E1E1E;
+            }
+            .thumbnail-land {
+                fill: inherit;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-plane-outline {
+                fill: #FFFFFF;
+                stroke: #1E1E1E;
+            }
+            .thumbnail-plane-fill {
+                fill: #FFFFFF;
+            }
+            .thumbnail-plane-front-window {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-plane-side-windows {
+                fill: #1E1E1E;
+            }
+        }
+    }
+}
+
+/* Grocery Store */
+
+.ProgramBlockEditor__character-column-character-container--GroceryStore {
+    background-color: #FFFFFF;
+}
+
+.Scene__grid-line--GroceryStore {
+    stroke: #B7804A;
+}
+
+.Scene__path-line--GroceryStore {
+    stroke: #FFFFFF;
+}
+
+.Scene__starting-grid-cell-point--GroceryStore {
+    fill: #FFFFFF;
+}
+
+.WorldSelector__option-image--GroceryStore:hover {
+    svg {
+        .thumbnail-background {
+            fill: #F5C58A;
+        }
+        .thumbnail-sack {
+            fill: #ED972C;
+        }
+        .thumbnail-watermelon {
+            fill: #4C9990;
+        }
+        .thumbnail-bananas {
+            fill: #FFE587;
+        }
+        .thumbnail-bottle {
+            fill: #4C9990;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--GroceryStore {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--GroceryStore {
+        stroke: #B9BEC6;
+    }
+
+    .Scene__path-line--GroceryStore {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__starting-grid-cell-point--GroceryStore {
+        fill: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--GroceryStore:hover {
+        svg {
+            .thumbnail-background {
+                fill: #9DA4AF;
+            }
+            .thumbnail-sack {
+                fill: #505862;
+            }
+            .thumbnail-watermelon {
+                fill: #67717E;
+            }
+            .thumbnail-bottle {
+                fill: #818A98;
+            }
+            .thumbnail-cart {
+                fill: #67717E;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--GroceryStore {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--GroceryStore {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--GroceryStore {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--GroceryStore {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--GroceryStore:hover {
+        svg {
+            .thumbnail-background {
+                fill: #1E1E1E;
+            }
+            .thumbnail-foreground {
+                fill: #FFFFFF;
+            }
+            .thumbnail-contrast-detail {
+                fill: #1E1E1E;
+            }
+            .thumbnail-watermelon-flesh {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-watermelon-seed {
+                stroke: #FFFFFF;
             }
         }
     }
@@ -792,6 +1268,146 @@ body.contrast-theme {
             }
 
             .thumbnail-character-innerline {
+                fill: #1E1E1E;
+            }
+        }
+    }
+}
+
+/* Sports */
+
+.ProgramBlockEditor__character-column-character-container--Sports {
+    background-color: #22343C;
+}
+
+.Scene__grid-line--Sports {
+    stroke: #B0B988;
+}
+
+.Scene__path-line--Sports {
+    stroke: #FFC86F;
+}
+
+.Scene__starting-grid-cell-point--Sports {
+    fill: #FFC86F;
+}
+
+.WorldSelector__option-image--Sports:hover {
+    svg {
+        .thumbnail-background {
+            fill: #165C61;
+        }
+        .thumbnail-trophy {
+            fill: #FAB74B;
+        }
+        .thumbnail-trophy-shadow {
+            fill: #ED972C;
+        }
+        .thumbnail-medal-ribbon {
+            fill: #C13925;
+        }
+        .thumbnail-medal-ribbon-stripe {
+            fill: #D5D8DD;
+        }
+        .thumbnail-medal {
+            fill: #22343C;
+        }
+        .thumbnail-podium {
+            fill: #0F2328;
+        }
+        .thumbnail-podium-circles {
+            fill: #ED972C;
+        }
+    }
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--Sports {
+        background-color: #505862;
+    }
+
+    .Scene__grid-line--Sports {
+        stroke: #B9BEC6;
+    }
+
+    .Scene__path-line--Sports {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__starting-grid-cell-point--Sports {
+        fill: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--Sports:hover {
+        svg {
+            .thumbnail-background {
+                fill: #9DA4AF;
+            }
+            .thumbnail-trophy {
+                fill: #67717E;
+            }
+            .thumbnail-trophy-shadow {
+                fill: #505862;
+            }
+            .thumbnail-medal-ribbon {
+                fill: #B9BEC6;
+            }
+            .thumbnail-medal-ribbon-stripe {
+                fill: #67717E;
+            }
+            .thumbnail-medal {
+                fill: #F1F2F4;
+            }
+            .thumbnail-podium {
+                fill: #3A3F46;
+            }
+            .thumbnail-podium-circles {
+                fill: #9DA4AF;
+            }
+        }
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--Sports {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--Sports {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--Sports {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--Sports {
+        fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--Sports:hover {
+        svg {
+            .thumbnail-background {
+                fill: #1E1E1E;
+            }
+            .thumbnail-trophy {
+                fill: #FFFFFF;
+            }
+            .thumbnail-medal-ribbon {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-medal-ribbon-stripe {
+                fill: #1E1E1E;
+            }
+            .thumbnail-medal {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-podium {
+                fill: #FFFFFF;
+            }
+            .thumbnail-podium-circles {
                 fill: #1E1E1E;
             }
         }

@@ -11,6 +11,7 @@ import CharacterState from './CharacterState';
 import CharacterStateSerializer from './CharacterStateSerializer';
 import CharacterPositionController from './CharacterPositionController';
 import CommandPaletteCommand from './CommandPaletteCommand';
+import CookieNotification from './CookieNotification';
 import C2lcURLParams from './C2lcURLParams';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
 import DashDriver from './DashDriver';
@@ -111,6 +112,7 @@ export type AppState = {
     disallowedActions: ActionToggleRegister,
     keyBindingsEnabled: boolean,
     keyboardInputSchemeName: KeyboardInputSchemeName,
+    showCookieNotification: boolean,
     showKeyboardModal: boolean,
     showSoundOptionsModal: boolean,
     showThemeSelectorModal: boolean,
@@ -118,6 +120,7 @@ export type AppState = {
     showShareModal: boolean,
     showActionsSimplificationMenu: boolean,
     showPrivacyModal: boolean,
+    focusOnClosePrivacyModalSelector: string,
     startingX: number,
     startingY: number,
     startingDirection: number
@@ -146,7 +149,7 @@ export class App extends React.Component<AppProps, AppState> {
     constructor(props: any) {
         super(props);
 
-        this.version = '1.5';
+        this.version = '1.8';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -406,6 +409,9 @@ export class App extends React.Component<AppProps, AppState> {
             }
         );
 
+        // Cookie Notification
+        const showCookieNotification = !(window.localStorage.getItem('c2lc-hasDismissedCookieNotification'));
+
         // Initialize startingX, startingY, and startingDirection to the world starting position
         const startingX = getWorldProperties(this.defaultWorld).startingX;
         const startingY = getWorldProperties(this.defaultWorld).startingY;
@@ -434,6 +440,7 @@ export class App extends React.Component<AppProps, AppState> {
             runningState: 'stopped',
             disallowedActions: {},
             keyBindingsEnabled: false,
+            showCookieNotification: showCookieNotification,
             showKeyboardModal: false,
             showSoundOptionsModal: false,
             showThemeSelectorModal: false,
@@ -441,6 +448,7 @@ export class App extends React.Component<AppProps, AppState> {
             showShareModal: false,
             showActionsSimplificationMenu: false,
             showPrivacyModal: false,
+            focusOnClosePrivacyModalSelector: '',
             startingX: startingX,
             startingY: startingY,
             startingDirection: startingDirection,
@@ -528,6 +536,20 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     // Handlers
+
+    handleCookieNotificationDismiss = () => {
+        window.localStorage.setItem('c2lc-hasDismissedCookieNotification', true);
+        this.setState({
+            showCookieNotification: false
+        });
+    };
+
+    handleCookieNotificationLearnMore = () => {
+        this.setState({
+            showPrivacyModal: true,
+            focusOnClosePrivacyModalSelector: '.CookieNotification__learnMoreButton'
+        });
+    };
 
     handleProgramSequenceChange = (programSequence: ProgramSequence) => {
         this.setState({
@@ -1349,7 +1371,10 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleClickPrivacyButton = () => {
-        this.setState({ showPrivacyModal: true });
+        this.setState({
+            showPrivacyModal: true,
+            focusOnClosePrivacyModalSelector: '.App__PrivacyModal__toggle-button'
+        });
     }
 
     handleClosePrivacyModal = () => {
@@ -1365,6 +1390,14 @@ export class App extends React.Component<AppProps, AppState> {
                     role='main'
                     onClick={this.handleRootClick}
                     onKeyDown={this.handleRootKeyDown}>
+                    <div className='App__notificationArea'>
+                        {this.state.showCookieNotification &&
+                            <CookieNotification
+                                onDismiss={this.handleCookieNotificationDismiss}
+                                onLearnMore={this.handleCookieNotificationLearnMore}
+                            />
+                        }
+                    </div>
                     <header className='App__header'>
                         <div className='App__header-row'>
                             <h1 className='App__logo-container'>
@@ -1455,12 +1488,12 @@ export class App extends React.Component<AppProps, AppState> {
                     </div>
                     <div className="App__world-container">
                         <h2 className='sr-only' >
-                            <FormattedMessage id='WorldSelector.heading' />
+                            <FormattedMessage id='WorldSelectorButton.heading' />
                         </h2>
                         <div className="App__world-selector">
                             <IconButton
                                 className='keyboard-shortcut-focus__world-selector'
-                                ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelector' })}
+                                ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelectorButton.label' })}
                                 onClick={this.handleClickWorldIcon}
                             >
                                 <WorldIcon className='App__world-selector-icon'/>
@@ -1657,6 +1690,7 @@ export class App extends React.Component<AppProps, AppState> {
                 />
                 <PrivacyModal
                     show={this.state.showPrivacyModal}
+                    focusOnCloseSelector={this.state.focusOnClosePrivacyModalSelector}
                     onClose={this.handleClosePrivacyModal}
                 />
             </React.Fragment>

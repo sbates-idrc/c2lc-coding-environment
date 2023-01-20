@@ -1,6 +1,6 @@
 // @flow
 
-import { decodeCoordinate, decodeDirection, encodeCoordinate, encodeDirection, extend, isLoopBlock, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, focusFirstInNodeList, focusLastInNodeList, generateLoopLabel, parseLoopLabel } from './Utils.js';
+import { decodeCoordinate, decodeDirection, encodeCoordinate, encodeDirection, extend, isLoopBlock, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, focusFirstInNodeList, focusLastInNodeList, generateLoopLabel, parseLoopLabel, selectSpeechSynthesisVoice } from './Utils.js';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { mount, configure } from 'enzyme';
@@ -223,4 +223,217 @@ test('Test isLoopBlock', () => {
     expect(isLoopBlock('startLoop')).toEqual(true);
     expect(isLoopBlock('endLoop')).toEqual(true);
     expect(isLoopBlock('forward1')).toEqual(false);
+});
+
+describe('selectSpeechSynthesisVoice', () => {
+    describe('Check parameters', () => {
+        const voices = (([
+            {
+                default: true,
+                lang: 'en-US',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            }
+        ]: any): Array<SpeechSynthesisVoice>);
+
+        test('When utteranceLangTag or userLangTag is bad, return null', () => {
+            expect(selectSpeechSynthesisVoice(null, 'en', voices)).toBeNull();
+            expect(selectSpeechSynthesisVoice('',   'en', voices)).toBeNull();
+            expect(selectSpeechSynthesisVoice('a',  'en', voices)).toBeNull();
+            expect(selectSpeechSynthesisVoice('en', null, voices)).toBeNull();
+            expect(selectSpeechSynthesisVoice('en', '',   voices)).toBeNull();
+            expect(selectSpeechSynthesisVoice('en', 'a',  voices)).toBeNull();
+        });
+
+        test('When there are no voices, return null', () => {
+            expect(selectSpeechSynthesisVoice('en', 'en', [])).toBeNull();
+            expect(selectSpeechSynthesisVoice('en', 'en', null)).toBeNull();
+        });
+    });
+
+    describe('Selection by language', () => {
+        const voices = (([
+            {
+                default: true,
+                lang: 'en-CA',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'en-US',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'fr-CA',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'fr-FR',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            }
+        ]: any): Array<SpeechSynthesisVoice>);
+
+        test('When available, match the user language', () => {
+            expect(selectSpeechSynthesisVoice('en', 'en-CA', voices)).toBe(voices[0]);
+            expect(selectSpeechSynthesisVoice('en', 'en-US', voices)).toBe(voices[1]);
+            expect(selectSpeechSynthesisVoice('fr', 'fr-CA', voices)).toBe(voices[2]);
+            expect(selectSpeechSynthesisVoice('fr', 'fr-FR', voices)).toBe(voices[3]);
+        });
+
+        test('When utterance is English and user language is English, but we have no matching voice, find en-US', () => {
+            expect(selectSpeechSynthesisVoice('en', 'en-GB', voices)).toBe(voices[1]);
+        });
+
+        test('When utterance is English and user language is not, find en-US', () => {
+            expect(selectSpeechSynthesisVoice('en', 'fr-FR', voices)).toBe(voices[1]);
+        });
+
+        test('When utterance is English, user language is not, and there is no en-US, find the first English', () => {
+            const noEnUSvoices = (([
+                {
+                    default: true,
+                    lang: 'fr-CA',
+                    localService: true,
+                    name: 'Voice',
+                    voiceURI: 'Voice'
+                },
+                {
+                    default: true,
+                    lang: 'fr-FR',
+                    localService: true,
+                    name: 'Voice',
+                    voiceURI: 'Voice'
+                },
+                {
+                    default: true,
+                    lang: 'en-CA',
+                    localService: true,
+                    name: 'Voice',
+                    voiceURI: 'Voice'
+                },
+                {
+                    default: true,
+                    lang: 'en-GB',
+                    localService: true,
+                    name: 'Voice',
+                    voiceURI: 'Voice'
+                }
+            ]: any): Array<SpeechSynthesisVoice>);
+
+            expect(selectSpeechSynthesisVoice('en', 'fr-FR', noEnUSvoices)).toBe(noEnUSvoices[2]);
+        });
+
+        test('When utterance is not English, and user language is the same, but we have no matching voice, find the first voice for the utterance language', () => {
+            expect(selectSpeechSynthesisVoice('fr', 'fr-CH', voices)).toBe(voices[2]);
+        });
+
+        test('When utterance is not English, and user language is not the same, find the first voice for the utterance language', () => {
+            expect(selectSpeechSynthesisVoice('fr', 'en-US', voices)).toBe(voices[2]);
+        });
+
+        test('When there is no match, return null', () => {
+            const noEnVoices = (([
+                {
+                    default: true,
+                    lang: 'fr-CA',
+                    localService: true,
+                    name: 'Voice',
+                    voiceURI: 'Voice'
+                },
+                {
+                    default: true,
+                    lang: 'fr-FR',
+                    localService: true,
+                    name: 'Voice',
+                    voiceURI: 'Voice'
+                }
+            ]: any): Array<SpeechSynthesisVoice>);
+
+            expect(selectSpeechSynthesisVoice('en', 'fr-FR', noEnVoices)).toBeNull();
+        });
+    });
+
+    test('Prefer voices with default: true, then localService: true', () => {
+        const voices = (([
+            {
+                default: false,
+                lang: 'fr-CA',
+                localService: false,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: false,
+                lang: 'fr-FR',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: false,
+                lang: 'en-CA',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'en-CA',
+                localService: false,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'en-US',
+                localService: false,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'en-US',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            }
+        ]: any): Array<SpeechSynthesisVoice>);
+
+        expect(selectSpeechSynthesisVoice('fr', 'fr-CA', voices)).toBe(voices[0]);
+        expect(selectSpeechSynthesisVoice('fr', 'en-US', voices)).toBe(voices[1]);
+        expect(selectSpeechSynthesisVoice('en', 'en-CA', voices)).toBe(voices[3]);
+        expect(selectSpeechSynthesisVoice('en', 'en-US', voices)).toBe(voices[5]);
+    });
+
+    test('When there are multiple matches, pick the first', () => {
+        const voices = (([
+            {
+                default: true,
+                lang: 'en-US',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            },
+            {
+                default: true,
+                lang: 'en-US',
+                localService: true,
+                name: 'Voice',
+                voiceURI: 'Voice'
+            }
+        ]: any): Array<SpeechSynthesisVoice>);
+
+        expect(selectSpeechSynthesisVoice('en', 'en-US', voices)).toBe(voices[0]);
+    });
 });

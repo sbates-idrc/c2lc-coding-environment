@@ -394,6 +394,14 @@ class Scene extends React.Component<SceneProps, {}> {
                                     height={startingGridCellPointSize}
                                     width={startingGridCellPointSize}
                                 />
+                                {this.props.theme === 'contrast' &&
+                                    <circle
+                                        className='Scene__characterOutline'
+                                        cx={this.props.characterState.xPos}
+                                        cy={this.props.characterState.yPos}
+                                        r={0.51}
+                                    />
+                                }
                                 <Character
                                     world={this.props.world}
                                     theme={this.props.theme}

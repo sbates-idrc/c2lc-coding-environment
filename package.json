@@ -1,6 +1,6 @@
 {
     "name": "c2lc-coding-environment",
-    "version": "1.5.0",
+    "version": "1.8.0",
     "private": true,
     "dependencies": {
         "bootstrap": "4.6.1",
@@ -18,13 +18,17 @@
     },
     "devDependencies": {
         "flow-bin": "0.142.0",
-        "markdownlint-cli2": "0.4.0"
+        "markdownlint-cli2": "0.4.0",
+        "serve": "14.1.2"
     },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
+        "eslint": "eslint .",
+        "flow": "flow",
+        "serve": "serve build",
         "prenetlify-build": "npm rebuild",
         "netlify-build": "react-scripts build",
         "markdownlint": "markdownlint-cli2 \"./**/*.md\" \"#node_modules\" \"#src/vendor\" \"#build\""
@@ -32,10 +36,11 @@
     "eslintConfig": {
         "extends": "react-app",
         "ignorePatterns": [
+            "build/",
+            "extras/log_headers.js",
             "flow-typed/npm",
             "node_modules/",
-            "src/vendor/",
-            "build/"
+            "src/vendor/"
         ],
         "rules": {
             "indent": [
