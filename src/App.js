@@ -1292,23 +1292,23 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    handleChangeCharacterXPosition = (columnLabel: string) => {
-        const updatedCharacterState = this.state.characterState.changeXPosition(columnLabel);
+    handleChangeCharacterXPosition = (x: number) => {
+        const updatedCharacterState = this.state.characterState.changeXPosition(x);
         this.setState({
             characterState: updatedCharacterState,
             startingX: updatedCharacterState.xPos,
             startingY: updatedCharacterState.yPos,
-            startingDirection: updatedCharacterState.direction,
+            startingDirection: updatedCharacterState.direction
         });
     }
 
-    handleChangeCharacterYPosition = (rowLabel: string) => {
-        const updatedCharacterState = this.state.characterState.changeYPosition(parseInt(rowLabel, 10));
+    handleChangeCharacterYPosition = (y: number) => {
+        const updatedCharacterState = this.state.characterState.changeYPosition(y);
         this.setState({
             characterState: updatedCharacterState,
             startingX: updatedCharacterState.xPos,
             startingY: updatedCharacterState.yPos,
-            startingDirection: updatedCharacterState.direction,
+            startingDirection: updatedCharacterState.direction
         });
     }
 

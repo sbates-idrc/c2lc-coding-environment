@@ -61,4 +61,38 @@ export default class SceneDimensions {
         }
         return 'inBounds';
     }
+
+    // Returns the X coordinate value for a column label.
+    // Columns are labelled from 'A' at minX and may be uppercase or lowercase.
+    // Returns null if the parameter is not a valid column label.
+    getXFromColumnLabel(columnLabel: string): ?number {
+        if (columnLabel.length !== 1) {
+            return null;
+        }
+        const columnCharCode = columnLabel.toUpperCase().charCodeAt(0);
+        const x = columnCharCode - 'A'.charCodeAt(0) + this.#minX;
+        if (x >= this.#minX && x <= this.#maxX) {
+            return x;
+        }
+        return null;
+    }
+
+    // Returns the Y coordinate value for a row label.
+    // Rows labels are numbered directly as the Y coordinate value.
+    // Returns null if the parameter is not a valid row label.
+    getYFromRowLabel(rowLabel: string): ?number {
+        const y = parseInt(rowLabel, 10);
+        if (!Number.isNaN(y) && y >= this.#minY && y <= this.#maxY) {
+            return y;
+        }
+        return null;
+    }
+
+    getColumnLabel(x: number): string {
+        return String.fromCharCode('A'.charCodeAt(0) + x - this.#minX);
+    }
+
+    getRowLabel(y: number): string {
+        return y.toString();
+    }
 };

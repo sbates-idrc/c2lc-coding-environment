@@ -29,3 +29,41 @@ test('SceneDimensions.getBoundsStateY()', () => {
     expect(dimensions.getBoundsStateY(4)).toBe('outOfBoundsAbove');
     expect(dimensions.getBoundsStateY(-1.51)).toBe('outOfBoundsBelow');
 });
+
+test('SceneDimensions.getXFromColumnLabel()', () => {
+    const dimensions = new SceneDimensions(1, 5, 1, 3);
+    (expect(dimensions.getXFromColumnLabel('A')): any).toBe(1);
+    (expect(dimensions.getXFromColumnLabel('a')): any).toBe(1);
+    (expect(dimensions.getXFromColumnLabel('E')): any).toBe(5);
+    (expect(dimensions.getXFromColumnLabel('e')): any).toBe(5);
+    (expect(dimensions.getXFromColumnLabel('F')): any).toBeNull();
+    (expect(dimensions.getXFromColumnLabel('1')): any).toBeNull();
+    (expect(dimensions.getXFromColumnLabel('@')): any).toBeNull();
+    (expect(dimensions.getXFromColumnLabel('')): any).toBeNull();
+    (expect(dimensions.getXFromColumnLabel(' ')): any).toBeNull();
+    (expect(dimensions.getXFromColumnLabel('AA')): any).toBeNull();
+});
+
+test('SceneDimensions.getYFromRowLabel()', () => {
+    const dimensions = new SceneDimensions(1, 5, 1, 3);
+    (expect(dimensions.getYFromRowLabel('1')): any).toBe(1);
+    (expect(dimensions.getYFromRowLabel('2')): any).toBe(2);
+    (expect(dimensions.getYFromRowLabel('3')): any).toBe(3);
+    (expect(dimensions.getYFromRowLabel('4')): any).toBeNull();
+    (expect(dimensions.getYFromRowLabel('0')): any).toBeNull();
+    (expect(dimensions.getYFromRowLabel('')): any).toBeNull();
+    (expect(dimensions.getYFromRowLabel(' ')): any).toBeNull();
+    (expect(dimensions.getYFromRowLabel('A')): any).toBeNull();
+});
+
+test('SceneDimensions.getColumnLabel()', () => {
+    const dimensions = new SceneDimensions(1, 5, 1, 3);
+    expect(dimensions.getColumnLabel(1)).toBe('A');
+    expect(dimensions.getColumnLabel(5)).toBe('E');
+});
+
+test('SceneDimensions.getRowLabel()', () => {
+    const dimensions = new SceneDimensions(1, 5, 1, 3);
+    expect(dimensions.getRowLabel(1)).toBe('1');
+    expect(dimensions.getRowLabel(3)).toBe('3');
+});

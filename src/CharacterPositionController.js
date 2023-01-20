@@ -23,15 +23,16 @@ type CharacterPositionControllerProps = {
     theme: ThemeName,
     world: WorldName,
     onChangeCharacterPosition: (direction: ?string) => void,
-    onChangeCharacterXPosition: (columnLabel: string) => void,
-    onChangeCharacterYPosition: (rowLabel: string) => void
+    onChangeCharacterXPosition: (x: number) => void,
+    onChangeCharacterYPosition: (y: number) => void
 };
 
 type CharacterPositionControllerState = {
     prevPropsCharacterState: CharacterState,
     characterColumnLabel: string,
+    userHasChangedColumnLabel: boolean,
     characterRowLabel: string,
-    userHasChangedCharacterPosition: boolean
+    userHasChangedRowLabel: boolean
 };
 
 class CharacterPositionController extends React.Component<CharacterPositionControllerProps, CharacterPositionControllerState> {
@@ -40,8 +41,9 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         this.state = {
             prevPropsCharacterState: this.props.characterState,
             characterColumnLabel: this.props.characterState.getColumnLabel(),
+            userHasChangedColumnLabel: false,
             characterRowLabel: this.props.characterState.getRowLabel(),
-            userHasChangedCharacterPosition: false
+            userHasChangedRowLabel: false
         }
     }
 
@@ -51,8 +53,9 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
             return {
                 prevPropsCharacterState: currentCharacterState,
                 characterColumnLabel: currentCharacterState.getColumnLabel(),
+                userHasChangedColumnLabel: false,
                 characterRowLabel: currentCharacterState.getRowLabel(),
-                userHasChangedCharacterPosition: false
+                userHasChangedRowLabel: false
             };
         } else {
             return null;
@@ -70,43 +73,70 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         }
     }
 
-    handleChangeCharacterPositionLabel = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        if (e.currentTarget.name === 'xPosition') {
-            this.setState({
-                characterColumnLabel: e.currentTarget.value,
-                userHasChangedCharacterPosition: this.props.characterState.isValidXPosition(e.currentTarget.value)
-            });
-        } else if (e.currentTarget.name === 'yPosition'){
-            this.setState({
-                characterRowLabel: e.currentTarget.value,
-                userHasChangedCharacterPosition: this.props.characterState.isValidYPosition(parseInt(e.currentTarget.value, 10))
-            });
-        }
+    handleChangeColumnLabel = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+        this.setState({
+            characterColumnLabel: e.currentTarget.value,
+            userHasChangedColumnLabel: true
+        });
     }
 
-    handleBlurCharacterPositionLabel = (e: SyntheticEvent<HTMLInputElement>) => {
-        if (this.state.userHasChangedCharacterPosition) {
-            if (e.currentTarget.name === 'xPosition') {
-                this.props.onChangeCharacterXPosition(this.state.characterColumnLabel);
-            } else if (e.currentTarget.name === 'yPosition'){
-                this.props.onChangeCharacterYPosition(this.state.characterRowLabel);
-            }
+    handleChangeRowLabel = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+        this.setState({
+            characterRowLabel: e.currentTarget.value,
+            userHasChangedRowLabel: true
+        });
+    }
+
+    handleBlurColumnLabel = () => {
+        const x = this.props.characterState.getXFromColumnLabel(this.state.characterColumnLabel);
+        if (this.state.userHasChangedColumnLabel && x != null) {
+            this.props.onChangeCharacterXPosition(x);
         } else {
             this.setState({
                 characterColumnLabel: this.props.characterState.getColumnLabel(),
-                characterRowLabel: this.props.characterState.getRowLabel(),
+                userHasChangedColumnLabel: false
             });
         }
     }
 
-    handleKeyDownCharacterPositionLabel = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        const enterKey = 'Enter';
-        if (e.key === enterKey) {
+    handleBlurRowLabel = () => {
+        const y = this.props.characterState.getYFromRowLabel(this.state.characterRowLabel);
+        if (this.state.userHasChangedRowLabel && y != null) {
+            this.props.onChangeCharacterYPosition(y);
+        } else {
+            this.setState({
+                characterRowLabel: this.props.characterState.getRowLabel(),
+                userHasChangedRowLabel: false
+            });
+        }
+    }
+
+    handleKeyDownColumnLabel = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
             e.preventDefault();
-            if (e.currentTarget.name === 'xPosition') {
-                this.props.onChangeCharacterXPosition(this.state.characterColumnLabel);
-            } else if (e.currentTarget.name === 'yPosition'){
-                this.props.onChangeCharacterYPosition(this.state.characterRowLabel);
+            const x = this.props.characterState.getXFromColumnLabel(this.state.characterColumnLabel);
+            if (x != null) {
+                this.props.onChangeCharacterXPosition(x);
+            } else {
+                this.setState({
+                    characterColumnLabel: this.props.characterState.getColumnLabel(),
+                    userHasChangedColumnLabel: false
+                });
+            }
+        }
+    }
+
+    handleKeyDownRowLabel = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const y = this.props.characterState.getYFromRowLabel(this.state.characterRowLabel);
+            if (y != null) {
+                this.props.onChangeCharacterYPosition(y);
+            } else {
+                this.setState({
+                    characterRowLabel: this.props.characterState.getRowLabel(),
+                    userHasChangedRowLabel: false
+                });
             }
         }
     }
@@ -232,9 +262,9 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         size='2'
                         type='text'
                         value={this.state.characterColumnLabel}
-                        onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : () => {}}
-                        onKeyDown={this.handleKeyDownCharacterPositionLabel}
-                        onBlur={this.handleBlurCharacterPositionLabel} />
+                        onChange={!this.props.editingDisabled ? this.handleChangeColumnLabel : () => {}}
+                        onKeyDown={this.handleKeyDownColumnLabel}
+                        onBlur={this.handleBlurColumnLabel} />
                     <input
                         name='yPosition'
                         className={characterPositionRowTextInputClassName}
@@ -244,9 +274,9 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         size='2'
                         type='text'
                         value={this.state.characterRowLabel}
-                        onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : () => {}}
-                        onKeyDown={this.handleKeyDownCharacterPositionLabel}
-                        onBlur={this.handleBlurCharacterPositionLabel} />
+                        onChange={!this.props.editingDisabled ? this.handleChangeRowLabel : () => {}}
+                        onKeyDown={this.handleKeyDownRowLabel}
+                        onBlur={this.handleBlurRowLabel} />
                 </div>
             </div>
         )

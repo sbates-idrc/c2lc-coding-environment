@@ -453,51 +453,33 @@ test('MoveLeftPosition moves the character Left one unit within the scene', () =
         .toHaveCharacterState(1, 1, 2, []);
 });
 
-test('getColumnValueFromLabel returns the column value or null for column value over the scene dimentions', () => {
+test('getXFromColumnLabel returns the X value or null for column label outside the scene dimensions', () => {
     const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
-    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).getColumnValueFromLabel('A')): any).toBe(1);
-    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).getColumnValueFromLabel('L')): any).toBe(12);
-    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).getColumnValueFromLabel('Z')): any).toBeNull();
+    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).getXFromColumnLabel('A')): any).toBe(1);
+    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).getXFromColumnLabel('L')): any).toBe(12);
+    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).getXFromColumnLabel('Z')): any).toBeNull();
 });
 
-test('getRowValueFromLabel returns the row value or null for row value over the scene dimentions', () => {
+test('getYFromRowLabel returns the Y value or null for row label outside the scene dimensions', () => {
     const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
-    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).getRowValueFromLabel(3)): any).toBe(3);
-    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).getRowValueFromLabel(2)): any).toBe(2);
-    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).getRowValueFromLabel(24)): any).toBeNull();
+    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).getYFromRowLabel('3')): any).toBe(3);
+    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).getYFromRowLabel('2')): any).toBe(2);
+    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).getYFromRowLabel('24')): any).toBeNull();
 });
 
-test('isValidXPosition checks if given x value has returned a value from getColumnValueFromLabel', () => {
-    const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
-    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).isValidXPosition('A')): any).toBe(true);
-    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).isValidXPosition('L')): any).toBe(true);
-    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).isValidXPosition('Z')): any).toBe(false);
-});
-
-test('isValidYPosition checks if given y value has returned a value from getRowValueFromLabel', () => {
-    const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
-    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).isValidYPosition(3)): any).toBe(true);
-    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).isValidYPosition(2)): any).toBe(true);
-    (expect(new CharacterState(3, 2, 2, [], sceneDimensions).isValidYPosition(24)): any).toBe(false);
-});
-
-test('ChangeXPosition gets column label and updates xPosition', () => {
+test('changeXPosition updates xPosition, if it is within the bounds of the scene', () => {
     const sceneDimensions = new SceneDimensions(1, 26, 1, 16);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeXPosition('Z')): any)
+    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeXPosition(26)): any)
         .toHaveCharacterState(26, 3, 2, []);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeXPosition('z')): any)
-        .toHaveCharacterState(26, 3, 2, []);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeXPosition('A')): any)
+    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeXPosition(1)): any)
         .toHaveCharacterState(1, 3, 2, []);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeXPosition('a')): any)
-        .toHaveCharacterState(1, 3, 2, []);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeXPosition('3')): any)
+    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeXPosition(0)): any)
         .toHaveCharacterState(2, 3, 2, []);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeXPosition('Zz')): any)
+    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeXPosition(27)): any)
         .toHaveCharacterState(2, 3, 2, []);
 });
 
-test('ChangeYPosition gets row label and updates yPosition', () => {
+test('changeYPosition updates yPosition, if it is within the bounds of the scene', () => {
     const sceneDimensions = new SceneDimensions(1, 26, 1, 16);
     (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeYPosition(16)): any)
         .toHaveCharacterState(2, 16, 2, []);

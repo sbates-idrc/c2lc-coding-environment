@@ -165,24 +165,10 @@ export default class CharacterState {
         );
     }
 
-    getColumnValueFromLabel(columnLabel: string): ?number {
-        if (columnLabel <= String.fromCharCode(64 + this.sceneDimensions.getWidth()) && columnLabel >='A') {
-            return columnLabel.charCodeAt(0) - 64;
-        } else if (columnLabel <= String.fromCharCode(96 + this.sceneDimensions.getWidth()) && columnLabel >='a') {
-            return columnLabel.charCodeAt(0) - 96;
-        }
-        return null;
-    }
-
-    isValidXPosition(columnLabel:string): boolean {
-        return this.getColumnValueFromLabel(columnLabel) != null;
-    }
-
-    changeXPosition(columnLabel: string): CharacterState {
+    changeXPosition(x: number): CharacterState {
         let newXPos = this.xPos;
-        const columnValue = this.getColumnValueFromLabel(columnLabel);
-        if (columnValue != null) {
-            newXPos = columnValue;
+        if (x >= this.sceneDimensions.getMinX() && x <= this.sceneDimensions.getMaxX()) {
+            newXPos = x;
         }
         return new CharacterState(
             newXPos,
@@ -193,22 +179,10 @@ export default class CharacterState {
         );
     }
 
-    getRowValueFromLabel(rowLabel: number): ?number {
-        if (rowLabel <= this.sceneDimensions.getHeight() && rowLabel >= 1) {
-            return rowLabel;
-        }
-        return null;
-    }
-
-    isValidYPosition(rowLabel: number): boolean {
-        return this.getRowValueFromLabel(rowLabel) != null;
-    }
-
-    changeYPosition(rowLabel: number): CharacterState {
+    changeYPosition(y: number): CharacterState {
         let newYPos = this.yPos;
-        const rowValue = this.getRowValueFromLabel(rowLabel);
-        if (rowValue != null) {
-            newYPos = rowValue;
+        if (y >= this.sceneDimensions.getMinY() && y <= this.sceneDimensions.getMaxY()) {
+            newYPos = y;
         }
         return new CharacterState(
             this.xPos,
@@ -219,13 +193,20 @@ export default class CharacterState {
         );
     }
 
+    getXFromColumnLabel(columnLabel: string): ?number {
+        return this.sceneDimensions.getXFromColumnLabel(columnLabel);
+    }
 
-    getRowLabel(): string {
-        return `${this.yPos}`;
+    getYFromRowLabel(rowLabel: string): ?number {
+        return this.sceneDimensions.getYFromRowLabel(rowLabel);
     }
 
     getColumnLabel(): string {
-        return String.fromCharCode(64 + this.xPos);
+        return this.sceneDimensions.getColumnLabel(this.xPos);
+    }
+
+    getRowLabel(): string {
+        return this.sceneDimensions.getRowLabel(this.yPos);
     }
 
     // Internal implementation methods

@@ -158,7 +158,7 @@ describe('Using change character position by column/row labels', () => {
         characterXPositionCoordinateBox.simulate('blur',
             TestUtils.makeBlurEvent(currentTarget(sampleXPosition)));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(1);
-        expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(sampleXPosition);
+        expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(24); // Column 'X' is number 24
 
         characterXPositionCoordinateBox.simulate('change',
             TestUtils.makeChangeEvent(currentTarget(secondSampleXPosition)));
@@ -168,7 +168,7 @@ describe('Using change character position by column/row labels', () => {
         characterXPositionCoordinateBox.simulate('keyDown',
             TestUtils.makeKeyDownEvent(currentTarget(secondSampleXPosition), 'Enter'));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(2);
-        expect(mockChangeCharacterXPosition.mock.calls[1][0]).toBe(secondSampleXPosition);
+        expect(mockChangeCharacterXPosition.mock.calls[1][0]).toBe(1); // Column 'A' is number 1
     });
     test('Changing y position', () => {
         expect.assertions(6);
@@ -189,7 +189,7 @@ describe('Using change character position by column/row labels', () => {
         characterYPositionCoordinateBox.simulate('blur',
             TestUtils.makeBlurEvent(currentTarget(sampleYPosition)));
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(1);
-        expect(mockChangeCharacterYPosition.mock.calls[0][0]).toBe(sampleYPosition);
+        expect(mockChangeCharacterYPosition.mock.calls[0][0]).toBe(2);
 
         characterYPositionCoordinateBox.simulate('change',
             TestUtils.makeChangeEvent(currentTarget(secondSampleYPosition)));
@@ -199,7 +199,7 @@ describe('Using change character position by column/row labels', () => {
         characterYPositionCoordinateBox.simulate('keyDown',
             TestUtils.makeKeyDownEvent(currentTarget(secondSampleYPosition), 'Enter'));
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(2);
-        expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(secondSampleYPosition);
+        expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(8);
     });
     test('Changing world changes the character icon', () => {
         expect.assertions(9);
@@ -354,7 +354,7 @@ describe('Character position row/column input Blur event', () => {
         characterXPositionCoordinateBox.simulate('blur',
             TestUtils.makeBlurEvent(currentTarget(sampleXPosition)));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(1);
-        expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(sampleXPosition);
+        expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(24); // Column 'X' is number 24
     });
     test('When the changed row/column value is invalid, blur event updates position values back to what it was', () => {
         const { wrapper, mockChangeCharacterXPosition } = createShallowCharacterPositionController();
