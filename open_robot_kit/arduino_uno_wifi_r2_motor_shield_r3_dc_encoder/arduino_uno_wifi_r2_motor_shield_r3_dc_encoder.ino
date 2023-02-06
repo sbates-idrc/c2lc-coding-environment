@@ -1,6 +1,6 @@
 #include <ArduinoBLE.h>
 
-#define WEAVLY_ROBOT_DEBUG
+// #define WEAVLY_ROBOT_DEBUG
 
 #ifdef WEAVLY_ROBOT_DEBUG
     #define WEAVLY_ROBOT_PRINT(x) Serial.print(x);
@@ -12,19 +12,23 @@
 
 // Pins
 
-int channelA_directionPin = 12;
-int channelA_pwmPin = 3;
-int channelA_brakePin = 9;
+const int channelA_directionPin = 12;
+const int channelA_pwmPin = 3;
+const int channelA_brakePin = 9;
 
-int channelB_directionPin = 13;
+const int channelB_directionPin = 13;
 // The shield expects PWM on pin D11 but on the Arduino UNO WiFi Rev 2
 // D11 does not support PWM. We use pin D10 instead and wire them together.
-int channelB_pwmPin = 10;
-int channelB_pwmPin_shield = 11;
-int channelB_brakePin = 8;
+const int channelB_pwmPin = 10;
+const int channelB_pwmPin_shield = 11;
+const int channelB_brakePin = 8;
 
-int leftEncoderPin = 4;
-int rightEncoderPin = 5;
+const int leftEncoderPin = 4;
+const int rightEncoderPin = 5;
+
+// Pause time at end of movement
+
+const unsigned long pauseTimeMs = 600;
 
 // Classes
 
@@ -32,6 +36,7 @@ namespace Weavly::Robot {
 
 enum class State {
     waiting,
+    pauseAtEndOfMovement,
     forward,
     left,
     right
@@ -128,6 +133,7 @@ Weavly::Robot::Motor leftMotor;
 Weavly::Robot::Motor rightMotor;
 
 Weavly::Robot::State state = Weavly::Robot::State::waiting;
+unsigned long endOfPauseTime = 0;
 
 void setup()
 {
@@ -195,15 +201,11 @@ void setup()
 void handleLeftEncoderInterrupt()
 {
     leftMotor.incrementEncoderCount();
-    // WEAVLY_ROBOT_PRINT("Left: ");
-    // WEAVLY_ROBOT_PRINTLN(leftMotor.getEncoderCount());
 }
 
 void handleRightEncoderInterrupt()
 {
     rightMotor.incrementEncoderCount();
-    // WEAVLY_ROBOT_PRINT("Right: ");
-    // WEAVLY_ROBOT_PRINTLN(rightMotor.getEncoderCount());
 }
 
 void loop()
@@ -221,68 +223,52 @@ void loop()
                     case commandForward:
                         WEAVLY_ROBOT_PRINTLN("Forward");
                         state = Weavly::Robot::State::forward;
-                        leftMotor.setEncoderCount(0);
-                        rightMotor.setEncoderCount(0);
-                        leftMotor.setDirection(Weavly::Robot::Direction::forward);
-                        rightMotor.setDirection(Weavly::Robot::Direction::forward);
-                        leftMotor.run(96);
-                        rightMotor.run(96);
+                        startMotors(Weavly::Robot::Direction::forward, 96,
+                            Weavly::Robot::Direction::forward, 96);
                         break;
                     case commandLeft:
                         WEAVLY_ROBOT_PRINTLN("Left");
                         state = Weavly::Robot::State::left;
-                        leftMotor.setEncoderCount(0);
-                        rightMotor.setEncoderCount(0);
-                        rightMotor.setDirection(Weavly::Robot::Direction::forward);
-                        rightMotor.run(96);
+                        startMotors(Weavly::Robot::Direction::backward, 96,
+                            Weavly::Robot::Direction::forward, 96);
                         break;
                     case commandRight:
                         WEAVLY_ROBOT_PRINTLN("Right");
                         state = Weavly::Robot::State::right;
-                        leftMotor.setEncoderCount(0);
-                        rightMotor.setEncoderCount(0);
-                        leftMotor.setDirection(Weavly::Robot::Direction::forward);
-                        leftMotor.run(96);
+                        startMotors(Weavly::Robot::Direction::forward, 96,
+                            Weavly::Robot::Direction::backward, 96);
                         break;
                     }
                 }
                 break;
+            case Weavly::Robot::State::pauseAtEndOfMovement:
+                if (millis() > endOfPauseTime) {
+                    state = Weavly::Robot::State::waiting;
+                    notificationCharacteristic.writeValue(notificationCommandFinished);
+                }
+                break;
             case Weavly::Robot::State::forward:
-                {
-                    bool leftDone = false;
-                    bool rightDone = false;
-                    if (leftMotor.getEncoderCount() >= 200) {
-                        leftDone = true;
-                        leftMotor.brake();
-                    }
-                    if (rightMotor.getEncoderCount() >= 200) {
-                        rightDone = true;
-                        rightMotor.brake();
-                    }
-                    if (leftDone && rightDone) {
-                        WEAVLY_ROBOT_PRINTLN("Forward done");
-                        printEncoderCounts();
-                        notificationCharacteristic.writeValue(notificationCommandFinished);
-                        state = Weavly::Robot::State::waiting;
-                    }
+                if (checkMotors(1000, 1000)) {
+                    WEAVLY_ROBOT_PRINTLN("Forward done");
+                    printEncoderCounts();
+                    state = Weavly::Robot::State::pauseAtEndOfMovement;
+                    endOfPauseTime = millis() + pauseTimeMs;
                 }
                 break;
             case Weavly::Robot::State::left:
-                if (rightMotor.getEncoderCount() >= 200) {
-                    rightMotor.brake();
+                if (checkMotors(550, 550)) {
                     WEAVLY_ROBOT_PRINTLN("Left done");
                     printEncoderCounts();
-                    notificationCharacteristic.writeValue(notificationCommandFinished);
-                    state = Weavly::Robot::State::waiting;
+                    state = Weavly::Robot::State::pauseAtEndOfMovement;
+                    endOfPauseTime = millis() + pauseTimeMs;
                 }
                 break;
             case Weavly::Robot::State::right:
-                if (leftMotor.getEncoderCount() >= 200) {
-                    leftMotor.brake();
+                if (checkMotors(550, 550)) {
                     WEAVLY_ROBOT_PRINTLN("Right done");
                     printEncoderCounts();
-                    notificationCharacteristic.writeValue(notificationCommandFinished);
-                    state = Weavly::Robot::State::waiting;
+                    state = Weavly::Robot::State::pauseAtEndOfMovement;
+                    endOfPauseTime = millis() + pauseTimeMs;
                 }
                 break;
             }
@@ -292,11 +278,36 @@ void loop()
     }
 }
 
+void startMotors(Weavly::Robot::Direction leftDirection, int leftValue,
+    Weavly::Robot::Direction rightDirection, int rightValue)
+{
+    leftMotor.setEncoderCount(0);
+    rightMotor.setEncoderCount(0);
+    leftMotor.setDirection(leftDirection);
+    rightMotor.setDirection(rightDirection);
+    leftMotor.run(leftValue);
+    rightMotor.run(rightValue);
+}
+
+bool checkMotors(int leftEncoderGoal, int rightEncoderGoal)
+{
+    bool leftDone = false;
+    bool rightDone = false;
+    if (leftMotor.getEncoderCount() >= leftEncoderGoal) {
+        leftDone = true;
+        leftMotor.brake();
+    }
+    if (rightMotor.getEncoderCount() >= rightEncoderGoal) {
+        rightDone = true;
+        rightMotor.brake();
+    }
+    return leftDone && rightDone;
+}
+
 void printEncoderCounts()
 {
     WEAVLY_ROBOT_PRINT("Left: ");
     WEAVLY_ROBOT_PRINTLN(leftMotor.getEncoderCount());
     WEAVLY_ROBOT_PRINT("Right: ");
     WEAVLY_ROBOT_PRINTLN(rightMotor.getEncoderCount());
-
 }
