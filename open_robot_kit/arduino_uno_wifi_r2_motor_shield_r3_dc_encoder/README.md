@@ -36,7 +36,28 @@
 
 ## Notes
 
-- I needed to cut away part of the chassis plastic in front of each motor so
-  that the motors would fit (I used a coping saw)
-- I needed to shorten the axle of the wheel so that I could tighten it to
-  the motor without it touching the chassis (I used a coping saw)
+- The DFRobot motors don't fit on the octagon chassis as is and part of the
+  plastic in front of each motor needed to be cut away from the chassis
+  (I used a coping saw)
+- The motors mount on the inside of the chassis which means that the length of
+  the motor axle is effectively shortened by the thickness of the plastic
+  (4 mm) and I needed to shorten the axle mount on the wheel so that it did not
+  touch the chassis (I used a coping saw)
+- There is a small incompatibility between the Arduino UNO WiFi Rev2 and the
+  Motor Shield Rev3: the shield expects PWM on pin D11 but on the Arduino UNO
+  WiFi Rev 2, D11 does not support PWM; I used the D10 pin instead on the
+  Arduino UNO WiFi Rev2 and wired pins D10 and D11 together (this is why I
+  needed the jumper wire connecting pins D10 and D11 that is visible in the
+  photos above)
+
+## Additional Programs
+
+- `single_motor`: a program to control a single motor via the serial monitor
+  - Send 'on' to turn the motor on and any other message to turn the motor off
+  - Does not connect to Weavly
+- `two_motors`: a program to control two motors via the serial monitor
+  - Send 'left' to turn on the left motor
+  - Send 'right' to turn on the right motor
+  - Send 'both' to turn on both motors
+  - Any other message will turn the motor(s) off
+  - Does not connect to Weavly
