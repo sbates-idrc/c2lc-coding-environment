@@ -3,6 +3,7 @@ import CharacterState from './CharacterState';
 import type {IntlShape} from 'react-intl';
 import SceneDimensions from './SceneDimensions';
 
+export type AvailableLanguages = 'en' | 'fr';
 export type DisplayedCommandName =
     'forward1' | 'backward1' |
     'left45' | 'left90' |
