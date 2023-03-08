@@ -31,7 +31,8 @@
         "serve": "serve build",
         "prenetlify-build": "npm rebuild",
         "netlify-build": "react-scripts build",
-        "markdownlint": "markdownlint-cli2 \"./**/*.md\" \"#node_modules\" \"#src/vendor\" \"#build\""
+        "markdownlint": "markdownlint-cli2 \"./**/*.md\" \"#node_modules\" \"#src/vendor\" \"#build\"",
+        "check-messages": "node tools/check_messages.js src/messages.json"
     },
     "eslintConfig": {
         "extends": "react-app",
