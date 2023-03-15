@@ -2,7 +2,7 @@
 // Crickit and Circuit Playground Bluefruit.
 //
 // Wiring (order right to left, when the word "Motor" on the Crickit is
-// reading horizontally; what is: Motor 1, GND, Motor 2):
+// reading horizontally; that is: Motor 1, GND, Motor 2):
 //
 // - Orange
 // - Pink
