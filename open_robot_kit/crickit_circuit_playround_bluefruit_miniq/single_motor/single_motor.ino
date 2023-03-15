@@ -100,10 +100,14 @@ void setup()
         Serial.println("Crickit started");
     }
 
+    // Set PWM frequencies for the motor pins
+    crickit.setPWMFreq(CRICKIT_MOTOR_A1, 30);
+    crickit.setPWMFreq(CRICKIT_MOTOR_A2, 30);
+
     // Attach the motor
     motor.attachMotor(CRICKIT_MOTOR_A1, CRICKIT_MOTOR_A2);
 
-    Serial.println("Ready");
+    Serial.println("Robot ready");
 }
 
 void loop()
@@ -114,7 +118,7 @@ void loop()
         if (!running && input == "on") {
             Serial.println("ON");
             running = true;
-            motor.throttle(1);
+            motor.throttle(0.1);
         } else {
             Serial.println("OFF");
             motor.throttle(0);
