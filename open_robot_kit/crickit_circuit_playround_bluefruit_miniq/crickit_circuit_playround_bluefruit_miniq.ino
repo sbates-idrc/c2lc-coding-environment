@@ -13,16 +13,30 @@
     #define WEAVLY_ROBOT_PRINTLN(x) ;
 #endif
 
-#define LEFT_ENCODER_PIN A2
-#define RIGHT_ENCODER_PIN A3
+// Pins
+
+const int leftEncoderPin = A2;
+const int rightEncoderPin = A3;
+
+// Pause time at end of movement
+
+const unsigned long pauseTimeMs = 600;
 
 // Classes
 
 namespace Weavly::Robot {
 
-class MotorWithEncoder {
+enum class State {
+    waiting,
+    pauseAtEndOfMovement,
+    forward,
+    left,
+    right
+};
+
+class Motor {
 public:
-    MotorWithEncoder(Adafruit_Crickit& crickit)
+    Motor(Adafruit_Crickit& crickit)
         : m_crickit(crickit),
         m_motorPinA(-1),
         m_motorPinB(-1),
@@ -30,7 +44,7 @@ public:
     {
     }
 
-    void attachMotor(int pinA, int pinB)
+    void attach(int pinA, int pinB)
     {
         m_motorPinA = pinA;
         m_motorPinB = pinB;
@@ -103,8 +117,11 @@ BLECharacteristic notificationCharacteristic(notificationCharacteristicUuid);
 
 Adafruit_Crickit crickit;
 
-Weavly::Robot::MotorWithEncoder leftMotor(crickit);
-Weavly::Robot::MotorWithEncoder rightMotor(crickit);
+Weavly::Robot::Motor leftMotor(crickit);
+Weavly::Robot::Motor rightMotor(crickit);
+
+Weavly::Robot::State state = Weavly::Robot::State::waiting;
+unsigned long endOfPauseTime = 0;
 
 void setup()
 {
@@ -134,10 +151,10 @@ void setup()
     }
 
     // Set up pins to read the motor encoders
-    pinMode(LEFT_ENCODER_PIN, INPUT_PULLUP);
-    pinMode(RIGHT_ENCODER_PIN, INPUT_PULLUP);
-    attachInterrupt(LEFT_ENCODER_PIN, handleLeftEncoderInterrupt, FALLING);
-    attachInterrupt(RIGHT_ENCODER_PIN, handleRightEncoderInterrupt, FALLING);
+    pinMode(leftEncoderPin, INPUT_PULLUP);
+    pinMode(rightEncoderPin, INPUT_PULLUP);
+    attachInterrupt(leftEncoderPin, handleLeftEncoderInterrupt, FALLING);
+    attachInterrupt(rightEncoderPin, handleRightEncoderInterrupt, FALLING);
 
     // Set PWM frequencies for the motor pins
     crickit.setPWMFreq(CRICKIT_MOTOR_A1, 50);
@@ -146,10 +163,12 @@ void setup()
     crickit.setPWMFreq(CRICKIT_MOTOR_B2, 50);
 
     // Attach the motors
-    leftMotor.attachMotor(CRICKIT_MOTOR_A1, CRICKIT_MOTOR_A2);
-    rightMotor.attachMotor(CRICKIT_MOTOR_B1, CRICKIT_MOTOR_B2);
+    leftMotor.attach(CRICKIT_MOTOR_A1, CRICKIT_MOTOR_A2);
+    rightMotor.attach(CRICKIT_MOTOR_B1, CRICKIT_MOTOR_B2);
 
     setupBluetooth();
+
+    WEAVLY_ROBOT_PRINTLN("Robot ready");
 }
 
 void handleLeftEncoderInterrupt()
@@ -219,8 +238,6 @@ void setupBluetooth()
     }
 
     startAdvertising();
-
-    WEAVLY_ROBOT_PRINTLN("Ready");
 }
 
 void startAdvertising()
@@ -245,49 +262,88 @@ void commandCallback(uint16_t conn_hdl, BLECharacteristic* chr, uint8_t* data, u
 {
     WEAVLY_ROBOT_PRINTLN("Command received");
 
-    if (len == 1) {
-        if (data[0] == commandForward) {
-            runMotors(1, 1, 3000, 3000);
-            notificationCharacteristic.notify8(notificationCommandFinished);
-        } else if (data[0] == commandLeft) {
-            runMotors(-0.8, 0.8, 1300, 1300);
-            notificationCharacteristic.notify8(notificationCommandFinished);
-        } else if (data[0] == commandRight) {
-            runMotors(0.8, -0.8, 1300, 1300);
-            notificationCharacteristic.notify8(notificationCommandFinished);
+    if (state == Weavly::Robot::State::waiting && len == 1) {
+        switch(data[0]) {
+        case commandForward:
+            WEAVLY_ROBOT_PRINTLN("Forward");
+            state = Weavly::Robot::State::forward;
+            startMotors(1, 1);
+            break;
+        case commandLeft:
+            WEAVLY_ROBOT_PRINTLN("Left");
+            state = Weavly::Robot::State::left;
+            startMotors(-0.8, 0.8);
+            break;
+        case commandRight:
+            WEAVLY_ROBOT_PRINTLN("Right");
+            state = Weavly::Robot::State::right;
+            startMotors(0.8, -0.8);
+            break;
         }
     }
-
-    WEAVLY_ROBOT_PRINTLN("Command completed");
-}
-
-void runMotors(float leftThrottle, float rightThrottle, int leftCount, int rightCount)
-{
-    leftMotor.setEncoderCount(0);
-    rightMotor.setEncoderCount(0);
-    bool leftDone = false;
-    bool rightDone = false;
-    leftMotor.throttle(leftThrottle);
-    rightMotor.throttle(rightThrottle);
-    while (!leftDone || !rightDone) {
-        if (!leftDone && leftMotor.getEncoderCount() > leftCount) {
-            leftMotor.throttle(0);
-            leftDone = true;
-        }
-        if (!rightDone && rightMotor.getEncoderCount() > rightCount) {
-            rightMotor.throttle(0);
-            rightDone = true;
-        }
-        yield();
-    }
-
-    delay(500);
-    WEAVLY_ROBOT_PRINT("Left encoder count: ");
-    WEAVLY_ROBOT_PRINTLN(leftMotor.getEncoderCount());
-    WEAVLY_ROBOT_PRINT("Right encoder count: ");
-    WEAVLY_ROBOT_PRINTLN(rightMotor.getEncoderCount());
 }
 
 void loop()
 {
+    switch(state) {
+    case Weavly::Robot::State::pauseAtEndOfMovement:
+        if (millis() > endOfPauseTime) {
+            printEncoderCounts();
+            state = Weavly::Robot::State::waiting;
+            notificationCharacteristic.notify8(notificationCommandFinished);
+        }
+        break;
+    case Weavly::Robot::State::forward:
+        if (checkMotors(3000, 3000)) {
+            WEAVLY_ROBOT_PRINTLN("Forward done");
+            state = Weavly::Robot::State::pauseAtEndOfMovement;
+            endOfPauseTime = millis() + pauseTimeMs;
+        }
+        break;
+    case Weavly::Robot::State::left:
+        if (checkMotors(1300, 1300)) {
+            WEAVLY_ROBOT_PRINTLN("Left done");
+            state = Weavly::Robot::State::pauseAtEndOfMovement;
+            endOfPauseTime = millis() + pauseTimeMs;
+        }
+        break;
+    case Weavly::Robot::State::right:
+        if (checkMotors(1300, 1300)) {
+            WEAVLY_ROBOT_PRINTLN("Right done");
+            state = Weavly::Robot::State::pauseAtEndOfMovement;
+            endOfPauseTime = millis() + pauseTimeMs;
+        }
+        break;
+    }
+}
+
+void startMotors(float leftThrottle, float rightThrottle)
+{
+    leftMotor.setEncoderCount(0);
+    rightMotor.setEncoderCount(0);
+    leftMotor.throttle(leftThrottle);
+    rightMotor.throttle(rightThrottle);
+}
+
+bool checkMotors(int leftEncoderGoal, int rightEncoderGoal)
+{
+    bool leftDone = false;
+    bool rightDone = false;
+    if (leftMotor.getEncoderCount() >= leftEncoderGoal) {
+        leftDone = true;
+        leftMotor.throttle(0);
+    }
+    if (rightMotor.getEncoderCount() >= rightEncoderGoal) {
+        rightDone = true;
+        rightMotor.throttle(0);
+    }
+    return leftDone && rightDone;
+}
+
+void printEncoderCounts()
+{
+    WEAVLY_ROBOT_PRINT("Left: ");
+    WEAVLY_ROBOT_PRINTLN(leftMotor.getEncoderCount());
+    WEAVLY_ROBOT_PRINT("Right: ");
+    WEAVLY_ROBOT_PRINTLN(rightMotor.getEncoderCount());
 }

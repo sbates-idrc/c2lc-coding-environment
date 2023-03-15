@@ -1,3 +1,5 @@
+# Adafruit CRICKIT with Circuit Playround Bluefruit and DFRobot miniQ chassis
+
 ## Parts
 
 - DFRobot 2WD miniQ chassis ROB0049
