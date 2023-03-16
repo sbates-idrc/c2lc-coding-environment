@@ -300,21 +300,21 @@ void loop()
         }
         break;
     case Weavly::Robot::State::forward:
-        if (runMotors(500, 1, 1, 2500, 2500, 3000, 3000, 0.25, 0.25)) {
+        if (runMotors(400, 1, 1, 3600, 3600, 4000, 4000, 0.25, 0.25)) {
             WEAVLY_ROBOT_PRINTLN("Forward done");
             state = Weavly::Robot::State::pauseAtEndOfMovement;
             endOfPauseTime = millis() + pauseTimeMs;
         }
         break;
     case Weavly::Robot::State::left:
-        if (runMotors(500, -1, 1, 1000, 1000, 1300, 1300, -0.25, 0.25)) {
+        if (runMotors(400, -1, 1, 1100, 1100, 1340, 1340, -0.25, 0.25)) {
             WEAVLY_ROBOT_PRINTLN("Left done");
             state = Weavly::Robot::State::pauseAtEndOfMovement;
             endOfPauseTime = millis() + pauseTimeMs;
         }
         break;
     case Weavly::Robot::State::right:
-        if (runMotors(500, 1, -1, 1000, 1000, 1300, 1300, 0.25, -0.25)) {
+        if (runMotors(400, 1, -1, 1100, 1100, 1340, 1340, 0.25, -0.25)) {
             WEAVLY_ROBOT_PRINTLN("Right done");
             state = Weavly::Robot::State::pauseAtEndOfMovement;
             endOfPauseTime = millis() + pauseTimeMs;
