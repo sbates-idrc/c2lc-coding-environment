@@ -24,3 +24,6 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+
+# Vagrant (used for unit testing robot code)
+.vagrant/

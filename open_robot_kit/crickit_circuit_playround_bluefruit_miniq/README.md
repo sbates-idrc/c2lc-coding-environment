@@ -19,3 +19,15 @@
 - Phillips-head screwdriver size PH00, for the DC motor terminals on the
   CRICKIT
 - 26 AWG Wire strippers
+
+## Running the tests
+
+```text
+vagrant up
+vagrant ssh
+mkdir build
+cd build
+cmake -G Ninja /vagrant
+ninja
+./tests
+```
