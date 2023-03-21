@@ -14,6 +14,11 @@ FetchContent_MakeAvailable(Catch2)
 
 add_executable(tests
     ../robot/motor.cpp
-    motor_test.cpp)
+    ../robot/weavly_math.cpp
+    mock_Adafruit_Crickit.cpp
+    motor_test.cpp
+    weavly_math_test.cpp)
+
+target_compile_definitions(tests PRIVATE WEAVLY_ROBOT_TEST_BUILD)
 
 target_link_libraries(tests Catch2::Catch2WithMain)
