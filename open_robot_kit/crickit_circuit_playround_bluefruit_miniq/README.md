@@ -23,11 +23,12 @@
 ## Running the tests
 
 ```text
+cd tests
 vagrant up
 vagrant ssh
 mkdir build
 cd build
-cmake -G Ninja /vagrant
+cmake -G Ninja /open_robot_kit/tests
 ninja
 ./tests
 ```

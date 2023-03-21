@@ -13,7 +13,7 @@ FetchContent_Declare(Catch2
 FetchContent_MakeAvailable(Catch2)
 
 add_executable(tests
-    robot/motor.cpp
-    tests/motor_test.cpp)
+    ../robot/motor.cpp
+    motor_test.cpp)
 
 target_link_libraries(tests Catch2::Catch2WithMain)
