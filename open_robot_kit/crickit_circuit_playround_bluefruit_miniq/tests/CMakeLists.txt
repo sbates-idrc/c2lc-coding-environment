@@ -13,10 +13,12 @@ FetchContent_Declare(Catch2
 FetchContent_MakeAvailable(Catch2)
 
 add_executable(tests
-    ../robot/motor.cpp
+    ../robot/Motor.cpp
+    ../robot/MotorMovement.cpp
     ../robot/weavly_math.cpp
     mock_Adafruit_Crickit.cpp
-    motor_test.cpp
+    Motor_test.cpp
+    MotorMovement_test.cpp
     weavly_math_test.cpp)
 
 target_compile_definitions(tests PRIVATE WEAVLY_ROBOT_TEST_BUILD)

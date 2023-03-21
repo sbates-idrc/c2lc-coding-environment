@@ -1,3 +1,4 @@
+#include "RobotMotors.h"
 #include <bluefruit.h>
 #include <Adafruit_Circuit_Playground.h>
 #include <Adafruit_Crickit.h>
@@ -22,79 +23,6 @@ const int rightEncoderPin = A3;
 
 const unsigned long pauseTimeMs = 600;
 
-// Classes
-
-namespace Weavly::Robot {
-
-enum class State {
-    waiting,
-    pauseAtEndOfMovement,
-    forward,
-    left,
-    right
-};
-
-class Motor {
-public:
-    Motor(Adafruit_Crickit& crickit)
-        : m_crickit(crickit),
-        m_motorPinA(-1),
-        m_motorPinB(-1),
-        m_encoderCount(0)
-    {
-    }
-
-    void attach(int pinA, int pinB)
-    {
-        m_motorPinA = pinA;
-        m_motorPinB = pinB;
-    }
-
-    void throttle(float value)
-    {
-        if (m_motorPinA < 0 || m_motorPinB < 0) {
-            return;
-        }
-
-        value = constrain(value, -1.0, 1.0);
-
-        // Operate the motor in 'slow decay mode'
-
-        uint16_t absolute = fabs(value) * 0xFFFF;
-
-        if (value < 0) {
-            m_crickit.analogWrite(m_motorPinA, 0xFFFF);
-            m_crickit.analogWrite(m_motorPinB, 0xFFFF - absolute);
-        } else {
-            m_crickit.analogWrite(m_motorPinA, 0xFFFF - absolute);
-            m_crickit.analogWrite(m_motorPinB, 0xFFFF);
-        }
-    }
-
-    int getEncoderCount()
-    {
-        return m_encoderCount;
-    }
-
-    void setEncoderCount(int count)
-    {
-        m_encoderCount = count;
-    }
-
-    void incrementEncoderCount()
-    {
-        ++m_encoderCount;
-    }
-
-private:
-    Adafruit_Crickit& m_crickit;
-    int m_motorPinA;
-    int m_motorPinB;
-    int m_encoderCount;
-};
-
-}
-
 // Weavly robot protocol
 
 const char robotServiceUuid[] = "19B10000-E8F2-537E-4F6C-D104768A1214";
@@ -117,12 +45,7 @@ BLECharacteristic notificationCharacteristic(notificationCharacteristicUuid);
 
 Adafruit_Crickit crickit;
 
-Weavly::Robot::Motor leftMotor(crickit);
-Weavly::Robot::Motor rightMotor(crickit);
-
-Weavly::Robot::State state = Weavly::Robot::State::waiting;
-unsigned long startOfMovementTime = 0;
-unsigned long endOfPauseTime = 0;
+Weavly::Robot::RobotMotors motors(crickit, pauseTimeMs);
 
 void setup()
 {
@@ -164,8 +87,10 @@ void setup()
     crickit.setPWMFreq(CRICKIT_MOTOR_B2, 30);
 
     // Attach the motors
-    leftMotor.attach(CRICKIT_MOTOR_A1, CRICKIT_MOTOR_A2);
-    rightMotor.attach(CRICKIT_MOTOR_B1, CRICKIT_MOTOR_B2);
+    motors.attachLeftMotor(CRICKIT_MOTOR_A1, CRICKIT_MOTOR_A2);
+    motors.attachRightMotor(CRICKIT_MOTOR_B1, CRICKIT_MOTOR_B2);
+
+    motors.onMovementFinished(handleMovementFinished);
 
     setupBluetooth();
 
@@ -174,12 +99,12 @@ void setup()
 
 void handleLeftEncoderInterrupt()
 {
-    leftMotor.incrementEncoderCount();
+    motors.incrementLeftEncoderCount();
 }
 
 void handleRightEncoderInterrupt()
 {
-    rightMotor.incrementEncoderCount();
+    motors.incrementRightEncoderCount();
 }
 
 void setupBluetooth()
@@ -263,129 +188,39 @@ void commandCallback(uint16_t conn_hdl, BLECharacteristic* chr, uint8_t* data, u
 {
     WEAVLY_ROBOT_PRINTLN("Command received");
 
-    if (state == Weavly::Robot::State::waiting && len == 1) {
+    if (motors.isWaiting() && len == 1) {
         switch(data[0]) {
         case commandForward:
             WEAVLY_ROBOT_PRINTLN("Forward");
-            beginMovement(Weavly::Robot::State::forward);
+            motors.startMotors(400, 1, 1, 3600, 4000, 0.25, 0.25);
             break;
         case commandLeft:
             WEAVLY_ROBOT_PRINTLN("Left");
-            beginMovement(Weavly::Robot::State::left);
+            motors.startMotors(400, -1, 1, 1100, 1340, -0.25, 0.25);
             break;
         case commandRight:
             WEAVLY_ROBOT_PRINTLN("Right");
-            beginMovement(Weavly::Robot::State::right);
+            motors.startMotors(400, 1, -1, 1100, 1340, 0.25, -0.25);
             break;
         }
     }
 }
 
-void beginMovement(Weavly::Robot::State newState)
+void handleMovementFinished()
 {
-    state = newState;
-    startOfMovementTime = millis();
-    leftMotor.setEncoderCount(0);
-    rightMotor.setEncoderCount(0);
-}
-
-void loop()
-{
-    switch(state) {
-    case Weavly::Robot::State::pauseAtEndOfMovement:
-        if (millis() > endOfPauseTime) {
-            state = Weavly::Robot::State::waiting;
-            printEncoderCounts();
-            notificationCharacteristic.notify8(notificationCommandFinished);
-        }
-        break;
-    case Weavly::Robot::State::forward:
-        if (runMotors(400, 1, 1, 3600, 3600, 4000, 4000, 0.25, 0.25)) {
-            WEAVLY_ROBOT_PRINTLN("Forward done");
-            state = Weavly::Robot::State::pauseAtEndOfMovement;
-            endOfPauseTime = millis() + pauseTimeMs;
-        }
-        break;
-    case Weavly::Robot::State::left:
-        if (runMotors(400, -1, 1, 1100, 1100, 1340, 1340, -0.25, 0.25)) {
-            WEAVLY_ROBOT_PRINTLN("Left done");
-            state = Weavly::Robot::State::pauseAtEndOfMovement;
-            endOfPauseTime = millis() + pauseTimeMs;
-        }
-        break;
-    case Weavly::Robot::State::right:
-        if (runMotors(400, 1, -1, 1100, 1100, 1340, 1340, 0.25, -0.25)) {
-            WEAVLY_ROBOT_PRINTLN("Right done");
-            state = Weavly::Robot::State::pauseAtEndOfMovement;
-            endOfPauseTime = millis() + pauseTimeMs;
-        }
-        break;
-    }
-}
-
-bool runMotors(unsigned long rampUpTimeMs,
-        float leftThrottle,
-        float rightThrottle,
-        int leftRampDownEncoder,
-        int rightRampDownEncoder,
-        int leftEncoderGoal,
-        int rightEncoderGoal,
-        float leftEndThrottle,
-        float rightEndThrottle)
-{
-    bool leftDone = runMotor(
-        leftMotor,
-        rampUpTimeMs,
-        leftThrottle,
-        leftRampDownEncoder,
-        leftEncoderGoal,
-        leftEndThrottle);
-    bool rightDone = runMotor(
-        rightMotor,
-        rampUpTimeMs,
-        rightThrottle,
-        rightRampDownEncoder,
-        rightEncoderGoal,
-        rightEndThrottle);
-    return leftDone && rightDone;
-}
-
-bool runMotor(Weavly::Robot::Motor& motor,
-        unsigned long rampUpTimeMs,
-        float throttle,
-        int rampDownEncoder,
-        int encoderGoal,
-        float endThrottle)
-{
-    bool done = false;
-
-    if (motor.getEncoderCount() >= encoderGoal) {
-        // We have reached the encoder goal, turn the motor off
-        done = true;
-        motor.throttle(0);
-    } else {
-        unsigned long now = millis();
-        if (now > startOfMovementTime && now < startOfMovementTime + rampUpTimeMs) {
-            // We are in the ramp up phase
-            motor.throttle((throttle * (now - startOfMovementTime)) / rampUpTimeMs);
-        } else if (motor.getEncoderCount() > rampDownEncoder) {
-            // We are in the ramp down phase
-            motor.throttle(
-                throttle +
-                ((endThrottle - throttle) * (motor.getEncoderCount() - rampDownEncoder)) /
-                (encoderGoal - rampDownEncoder));
-        } else {
-            motor.throttle(throttle);
-        }
-    }
-
-    return done;
+    printEncoderCounts();
+    notificationCharacteristic.notify8(notificationCommandFinished);
 }
 
 void printEncoderCounts()
 {
     WEAVLY_ROBOT_PRINT("Left: ");
-    WEAVLY_ROBOT_PRINTLN(leftMotor.getEncoderCount());
+    WEAVLY_ROBOT_PRINTLN(motors.getLeftEncoderCount());
     WEAVLY_ROBOT_PRINT("Right: ");
-    WEAVLY_ROBOT_PRINTLN(rightMotor.getEncoderCount());
+    WEAVLY_ROBOT_PRINTLN(motors.getRightEncoderCount());
+}
+
+void loop()
+{
+    motors.updateMotors();
 }
