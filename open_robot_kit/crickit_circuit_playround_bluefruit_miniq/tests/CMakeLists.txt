@@ -8,7 +8,8 @@ Include(FetchContent)
 
 FetchContent_Declare(Catch2
     GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-    GIT_TAG v3.3.2)
+    GIT_TAG 3f0283de7a9c43200033da996ff9093be3ac84dc # v3.3.2
+)
 
 FetchContent_MakeAvailable(Catch2)
 
@@ -19,7 +20,8 @@ add_executable(tests
     mock_Adafruit_Crickit.cpp
     Motor_test.cpp
     MotorMovement_test.cpp
-    weavly_math_test.cpp)
+    weavly_math_test.cpp
+)
 
 target_compile_definitions(tests PRIVATE WEAVLY_ROBOT_TEST_BUILD)
 
