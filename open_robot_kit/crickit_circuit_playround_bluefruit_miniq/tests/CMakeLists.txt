@@ -18,11 +18,17 @@ add_executable(tests
     ../robot/MotorMovement.cpp
     ../robot/weavly_math.cpp
     mock_Adafruit_Crickit.cpp
+    mock_arduino.cpp
     Motor_test.cpp
     MotorMovement_test.cpp
     weavly_math_test.cpp
 )
 
 target_compile_definitions(tests PRIVATE WEAVLY_ROBOT_TEST_BUILD)
+
+target_compile_options(tests
+    PRIVATE
+    -Wall -Wextra -Wpedantic -Werror
+)
 
 target_link_libraries(tests Catch2::Catch2WithMain)

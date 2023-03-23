@@ -14,9 +14,9 @@ enum class RobotMotorsState {
 
 class RobotMotors {
 public:
-    RobotMotors(Adafruit_Crickit& crickit, unsigned long pauseTimeMs)
-        : m_leftMotor(crickit),
-        m_rightMotor(crickit),
+    RobotMotors(Adafruit_Crickit& crickit, unsigned long pauseTimeMs, unsigned long speedSamplePeriodMs)
+        : m_leftMotor(crickit, speedSamplePeriodMs),
+        m_rightMotor(crickit, speedSamplePeriodMs),
         m_state(RobotMotorsState::waiting),
         m_pauseTimeMs(pauseTimeMs),
         m_endOfPauseTime(0),

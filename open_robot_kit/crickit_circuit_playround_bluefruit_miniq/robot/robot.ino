@@ -19,9 +19,10 @@
 const int leftEncoderPin = A2;
 const int rightEncoderPin = A3;
 
-// Pause time at end of movement
+// Constants
 
 const unsigned long pauseTimeMs = 600;
+const unsigned long speedSamplePeriodMs = 100;
 
 // Weavly robot protocol
 
@@ -45,7 +46,7 @@ BLECharacteristic notificationCharacteristic(notificationCharacteristicUuid);
 
 Adafruit_Crickit crickit;
 
-Weavly::Robot::RobotMotors motors(crickit, pauseTimeMs);
+Weavly::Robot::RobotMotors motors(crickit, pauseTimeMs, speedSamplePeriodMs);
 
 void setup()
 {

@@ -11,11 +11,15 @@ namespace Weavly::Robot {
 
 class Motor {
 public:
-    Motor(Adafruit_Crickit& crickit)
+    Motor(Adafruit_Crickit& crickit, unsigned long speedSamplePeriodMs)
         : m_crickit(crickit),
         m_motorPinA(-1),
         m_motorPinB(-1),
-        m_encoderCount(0)
+        m_encoderCount(0),
+        m_speedSamplePeriodMs(speedSamplePeriodMs),
+        m_startOfSpeedSampleTimeMs(0),
+        m_speedEncoderCount(0),
+        m_encoderCountsPerSecond(0)
     {
     }
 
@@ -40,13 +44,20 @@ public:
     void incrementEncoderCount()
     {
         ++m_encoderCount;
+        ++m_speedEncoderCount;
     }
+
+    float measureSpeed();
 
 private:
     Adafruit_Crickit& m_crickit;
     int m_motorPinA;
     int m_motorPinB;
     int m_encoderCount;
+    unsigned long m_speedSamplePeriodMs;
+    unsigned long m_startOfSpeedSampleTimeMs;
+    int m_speedEncoderCount;
+    float m_encoderCountsPerSecond;
 };
 
 }
