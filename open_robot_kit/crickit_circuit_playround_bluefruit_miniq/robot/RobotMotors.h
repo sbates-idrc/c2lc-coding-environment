@@ -14,12 +14,15 @@ enum class RobotMotorsState {
 
 class RobotMotors {
 public:
-    RobotMotors(Adafruit_Crickit& crickit, unsigned long pauseTimeMs, unsigned long speedSamplePeriodMs)
-        : m_leftMotor(crickit, speedSamplePeriodMs),
-        m_rightMotor(crickit, speedSamplePeriodMs),
+    RobotMotors(Adafruit_Crickit& crickit, float minThrottle, unsigned long pauseTimeMs, unsigned long speedSamplePeriodMs)
+        : m_leftMotor(crickit, 1.0, minThrottle),
+        m_rightMotor(crickit, 1.0, minThrottle),
         m_state(RobotMotorsState::waiting),
         m_pauseTimeMs(pauseTimeMs),
+        m_speedSamplePeriodMs(speedSamplePeriodMs),
+        m_startOfSpeedSampleTimeMs(0),
         m_endOfPauseTime(0),
+        m_startedMeasuringSpeeds(false),
         m_movementFinishedCallback(nullptr)
         { }
     void attachLeftMotor(int pinA, int pinB);
@@ -43,10 +46,14 @@ private:
     Motor m_rightMotor;
     RobotMotorsState m_state;
     unsigned long m_pauseTimeMs;
+    unsigned long m_speedSamplePeriodMs;
+    unsigned long m_startOfSpeedSampleTimeMs;
     unsigned long m_endOfPauseTime;
+    bool m_startedMeasuringSpeeds;
     MotorMovement m_leftMotorMovement;
     MotorMovement m_rightMotorMovement;
     void (*m_movementFinishedCallback)();
+    void adjustMotorThrottleFactors(Motor& fasterMotor, Motor& slowerMotor);
 };
 
 }

@@ -14,33 +14,27 @@ void Motor::throttle(float value)
         return;
     }
 
+    value = value * m_throttleFactor;
+
     value = clamp(value, -1.0, 1.0);
 
     // Operate the motor in 'slow decay mode'
 
-    uint16_t absolute = fabs(value) * 0xFFFF;
+    float absolute = fabs(value);
+
+    if (absolute > 0 && absolute < m_minThrottle) {
+        absolute = m_minThrottle;
+    }
+
+    uint16_t absolute16 = absolute * 0xFFFF;
 
     if (value < 0) {
         m_crickit.analogWrite(m_motorPinA, 0xFFFF);
-        m_crickit.analogWrite(m_motorPinB, 0xFFFF - absolute);
+        m_crickit.analogWrite(m_motorPinB, 0xFFFF - absolute16);
     } else {
-        m_crickit.analogWrite(m_motorPinA, 0xFFFF - absolute);
+        m_crickit.analogWrite(m_motorPinA, 0xFFFF - absolute16);
         m_crickit.analogWrite(m_motorPinB, 0xFFFF);
     }
-}
-
-float Motor::measureSpeed()
-{
-    unsigned long now = millis();
-
-    if (now >= m_startOfSpeedSampleTimeMs + m_speedSamplePeriodMs) {
-        m_encoderCountsPerSecond = 1000.0f * m_speedEncoderCount /
-                (now - m_startOfSpeedSampleTimeMs);
-        m_startOfSpeedSampleTimeMs = now;
-        m_speedEncoderCount = 0;
-    }
-
-    return m_encoderCountsPerSecond;
 }
 
 }

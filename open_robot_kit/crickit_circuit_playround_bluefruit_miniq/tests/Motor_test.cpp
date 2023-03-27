@@ -6,7 +6,7 @@
 TEST_CASE("Motor::throttle")
 {
     Adafruit_Crickit crickit;
-    Weavly::Robot::Motor motor(crickit, 100);
+    Weavly::Robot::Motor motor(crickit, 1.0, 0.25);
 
     motor.attach(0, 1);
 
@@ -18,21 +18,21 @@ TEST_CASE("Motor::throttle")
     REQUIRE(crickit.lastPin0Val == 0xFFFF);
     REQUIRE(crickit.lastPin1Val == 0xFFFF);
 
+    motor.throttle(1);
+    REQUIRE(crickit.lastPin0Val == 0);
+    REQUIRE(crickit.lastPin1Val == 0xFFFF);
+
     motor.throttle(-1);
     REQUIRE(crickit.lastPin0Val == 0xFFFF);
     REQUIRE(crickit.lastPin1Val == 0);
-
-    motor.throttle(-0.25);
-    REQUIRE(crickit.lastPin0Val == 0xFFFF);
-    REQUIRE(crickit.lastPin1Val == 0xC000);
 
     motor.throttle(0.25);
     REQUIRE(crickit.lastPin0Val == 0xC000);
     REQUIRE(crickit.lastPin1Val == 0xFFFF);
 
-    motor.throttle(1);
-    REQUIRE(crickit.lastPin0Val == 0);
-    REQUIRE(crickit.lastPin1Val == 0xFFFF);
+    motor.throttle(-0.25);
+    REQUIRE(crickit.lastPin0Val == 0xFFFF);
+    REQUIRE(crickit.lastPin1Val == 0xC000);
 
     // Out of range protection
 
@@ -43,37 +43,50 @@ TEST_CASE("Motor::throttle")
     motor.throttle(2.1);
     REQUIRE(crickit.lastPin0Val == 0);
     REQUIRE(crickit.lastPin1Val == 0xFFFF);
-}
 
-TEST_CASE("Motor::measureSpeed")
-{
-    Adafruit_Crickit crickit;
-    Weavly::Robot::Motor motor(crickit, 100);
+    // Minimum throttle
 
-    // Set our starting millis value
-    Weavly::Robot::Test::setNextMillis(2000);
+    motor.throttle(0.1);
+    REQUIRE(crickit.lastPin0Val == 0xC000);
+    REQUIRE(crickit.lastPin1Val == 0xFFFF);
 
-    // Initial speed should be 0
-    REQUIRE(motor.measureSpeed() == 0);
+    motor.throttle(-0.1);
+    REQUIRE(crickit.lastPin0Val == 0xFFFF);
+    REQUIRE(crickit.lastPin1Val == 0xC000);
 
-    // Increment the encoder and call measureSpeed before the sample period
-    // has ended
-    motor.incrementEncoderCount();
-    Weavly::Robot::Test::setNextMillis(2050);
-    REQUIRE(motor.measureSpeed() == 0);
+    // Set throttleFactor to 0.75
 
-    // Increment again and measure right at the end of the sample period
-    motor.incrementEncoderCount();
-    Weavly::Robot::Test::setNextMillis(2100);
-    REQUIRE(motor.measureSpeed() == 20);
+    motor.setThrottleFactor(0.75);
 
-    // Check when measureSpeed is called after the sample period has ended
-    motor.incrementEncoderCount();
-    Weavly::Robot::Test::setNextMillis(2350);
-    REQUIRE(motor.measureSpeed() == 4);
+    // Now the throttle value should be multiplied by this factor
 
-    // Check when the speed is below 1 per second
-    motor.incrementEncoderCount();
-    Weavly::Robot::Test::setNextMillis(6350);
-    REQUIRE(motor.measureSpeed() == 0.25);
+    motor.throttle(0);
+    REQUIRE(crickit.lastPin0Val == 0xFFFF);
+    REQUIRE(crickit.lastPin1Val == 0xFFFF);
+
+    motor.throttle(1);
+    REQUIRE(crickit.lastPin0Val == 0x4000);
+    REQUIRE(crickit.lastPin1Val == 0xFFFF);
+
+    motor.throttle(-1);
+    REQUIRE(crickit.lastPin0Val == 0xFFFF);
+    REQUIRE(crickit.lastPin1Val == 0x4000);
+
+    // And the minimum is not affected by the throttleFactor
+
+    motor.throttle(0.25);
+    REQUIRE(crickit.lastPin0Val == 0xC000);
+    REQUIRE(crickit.lastPin1Val == 0xFFFF);
+
+    motor.throttle(-0.25);
+    REQUIRE(crickit.lastPin0Val == 0xFFFF);
+    REQUIRE(crickit.lastPin1Val == 0xC000);
+
+    motor.throttle(0.1);
+    REQUIRE(crickit.lastPin0Val == 0xC000);
+    REQUIRE(crickit.lastPin1Val == 0xFFFF);
+
+    motor.throttle(-0.1);
+    REQUIRE(crickit.lastPin0Val == 0xFFFF);
+    REQUIRE(crickit.lastPin1Val == 0xC000);
 }

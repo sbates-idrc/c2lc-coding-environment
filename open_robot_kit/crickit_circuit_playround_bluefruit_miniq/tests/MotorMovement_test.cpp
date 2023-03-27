@@ -30,3 +30,31 @@ TEST_CASE("MotorMovement::getThrottle")
     // After the encoder count goal has been reached
     REQUIRE(movement.getThrottle(601, 1501) == 0);
 }
+
+TEST_CASE("MotorMovement::atFullThrottle")
+{
+    Weavly::Robot::MotorMovement movement;
+    movement.startTimeMs = 100;
+    movement.rampUpTimeMs = 500;
+    movement.throttle = 0.75;
+    movement.rampDownEncoderCount = 1100;
+    movement.encoderCountGoal = 1500;
+    movement.endThrottle = 0.25;
+
+    // Before the motor starts
+    REQUIRE_FALSE(movement.atFullThrottle(0, 0));
+
+    // Ramp up phase
+    REQUIRE_FALSE(movement.atFullThrottle(100, 0));
+    REQUIRE_FALSE(movement.atFullThrottle(600, 0));
+
+    // Full throttle phase
+    REQUIRE(movement.atFullThrottle(601, 0));
+    REQUIRE(movement.atFullThrottle(601, 1099));
+
+    // Ramp down phase
+    REQUIRE_FALSE(movement.atFullThrottle(601, 1100));
+
+    // After the encoder count goal has been reached
+    REQUIRE_FALSE(movement.atFullThrottle(601, 1501));
+}

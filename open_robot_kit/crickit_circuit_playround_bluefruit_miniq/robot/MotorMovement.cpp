@@ -24,4 +24,10 @@ float MotorMovement::getThrottle(unsigned long timeMs, int encoderCount)
     return 0;
 }
 
+bool MotorMovement::atFullThrottle(unsigned long timeMs, int encoderCount)
+{
+    return (timeMs > startTimeMs + rampUpTimeMs)
+        && (encoderCount < rampDownEncoderCount);
+}
+
 }

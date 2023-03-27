@@ -1,4 +1,5 @@
 #include "RobotMotors.h"
+#include "weavly_debug_print.h"
 
 namespace Weavly::Robot {
 
@@ -49,6 +50,8 @@ void RobotMotors::startMotors(unsigned long rampUpTimeMs,
 
     m_state = RobotMotorsState::moving;
 
+    m_startedMeasuringSpeeds = false;
+
     m_leftMotor.setEncoderCount(0);
     m_rightMotor.setEncoderCount(0);
 
@@ -73,6 +76,42 @@ void RobotMotors::updateMotors()
         unsigned long now = millis();
         bool leftDone = false;
         bool rightDone = false;
+
+        bool bothMotorsFullThrottle =
+            m_leftMotorMovement.atFullThrottle(now, m_leftMotor.getEncoderCount())
+            && m_rightMotorMovement.atFullThrottle(now, m_rightMotor.getEncoderCount());
+
+        if (!m_startedMeasuringSpeeds && bothMotorsFullThrottle) {
+            // We have ramped up the motors, start measuring their speeds
+            m_startedMeasuringSpeeds = true;
+            m_startOfSpeedSampleTimeMs = now;
+            m_leftMotor.resetSpeedEncoderCount();
+            m_rightMotor.resetSpeedEncoderCount();
+        }
+
+        if (m_startedMeasuringSpeeds
+                && bothMotorsFullThrottle
+                && now >= m_startOfSpeedSampleTimeMs + m_speedSamplePeriodMs) {
+            WEAVLY_ROBOT_PRINT("Left throttleFactor: ");
+            WEAVLY_ROBOT_PRINTLN(m_leftMotor.getThrottleFactor());
+            WEAVLY_ROBOT_PRINT("Right throttleFactor: ");
+            WEAVLY_ROBOT_PRINTLN(m_rightMotor.getThrottleFactor());
+            WEAVLY_ROBOT_PRINT("Left speed: ");
+            WEAVLY_ROBOT_PRINTLN(m_leftMotor.getSpeedEncoderCount());
+            WEAVLY_ROBOT_PRINT("Right speed: ");
+            WEAVLY_ROBOT_PRINTLN(m_rightMotor.getSpeedEncoderCount());
+
+            if (m_leftMotor.getSpeedEncoderCount() > m_rightMotor.getSpeedEncoderCount()) {
+                this->adjustMotorThrottleFactors(m_leftMotor, m_rightMotor);
+            } else {
+                this->adjustMotorThrottleFactors(m_rightMotor, m_leftMotor);
+            }
+
+            // Start a new sample perod
+            m_startOfSpeedSampleTimeMs = now;
+            m_leftMotor.resetSpeedEncoderCount();
+            m_rightMotor.resetSpeedEncoderCount();
+        }
 
         if (m_leftMotor.getEncoderCount() >= m_leftMotorMovement.encoderCountGoal) {
             leftDone = true;
@@ -103,6 +142,16 @@ void RobotMotors::updateMotors()
 bool RobotMotors::isWaiting()
 {
     return m_state == RobotMotorsState::waiting;
+}
+
+void RobotMotors::adjustMotorThrottleFactors(Motor& fasterMotor, Motor& slowerMotor)
+{
+    // Super simple initial balancing algorithm
+    if (slowerMotor.getThrottleFactor() < 1.0) {
+        slowerMotor.setThrottleFactor(slowerMotor.getThrottleFactor() + 0.01);
+    } else {
+        fasterMotor.setThrottleFactor(fasterMotor.getThrottleFactor() - 0.01);
+    }
 }
 
 }

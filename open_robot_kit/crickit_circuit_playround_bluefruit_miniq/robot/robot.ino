@@ -1,18 +1,9 @@
+#include "weavly_debug_print.h"
 #include "RobotMotors.h"
 #include <bluefruit.h>
 #include <Adafruit_Circuit_Playground.h>
 #include <Adafruit_Crickit.h>
 #include <seesaw_motor.h>
-
-//#define WEAVLY_ROBOT_DEBUG
-
-#ifdef WEAVLY_ROBOT_DEBUG
-    #define WEAVLY_ROBOT_PRINT(x) Serial.print(x);
-    #define WEAVLY_ROBOT_PRINTLN(x) Serial.println(x);
-#else
-    #define WEAVLY_ROBOT_PRINT(x) ;
-    #define WEAVLY_ROBOT_PRINTLN(x) ;
-#endif
 
 // Pins
 
@@ -21,8 +12,9 @@ const int rightEncoderPin = A3;
 
 // Constants
 
+const float minThrottle = 0.25;
 const unsigned long pauseTimeMs = 600;
-const unsigned long speedSamplePeriodMs = 100;
+const unsigned long speedSamplePeriodMs = 50;
 
 // Weavly robot protocol
 
@@ -46,7 +38,9 @@ BLECharacteristic notificationCharacteristic(notificationCharacteristicUuid);
 
 Adafruit_Crickit crickit;
 
-Weavly::Robot::RobotMotors motors(crickit, pauseTimeMs, speedSamplePeriodMs);
+Weavly::Robot::RobotMotors motors(crickit, minThrottle, pauseTimeMs, speedSamplePeriodMs);
+
+unsigned long startOfMovementTimeMs = 0;
 
 void setup()
 {
@@ -193,14 +187,17 @@ void commandCallback(uint16_t conn_hdl, BLECharacteristic* chr, uint8_t* data, u
         switch(data[0]) {
         case commandForward:
             WEAVLY_ROBOT_PRINTLN("Forward");
+            startOfMovementTimeMs = millis();
             motors.startMotors(400, 1, 1, 3600, 4000, 0.25, 0.25);
             break;
         case commandLeft:
             WEAVLY_ROBOT_PRINTLN("Left");
+            startOfMovementTimeMs = millis();
             motors.startMotors(400, -1, 1, 1100, 1340, -0.25, 0.25);
             break;
         case commandRight:
             WEAVLY_ROBOT_PRINTLN("Right");
+            startOfMovementTimeMs = millis();
             motors.startMotors(400, 1, -1, 1100, 1340, 0.25, -0.25);
             break;
         }
@@ -209,6 +206,9 @@ void commandCallback(uint16_t conn_hdl, BLECharacteristic* chr, uint8_t* data, u
 
 void handleMovementFinished()
 {
+    WEAVLY_ROBOT_PRINT("Movement took: ");
+    WEAVLY_ROBOT_PRINT(millis() - startOfMovementTimeMs);
+    WEAVLY_ROBOT_PRINTLN(" ms");
     printEncoderCounts();
     notificationCharacteristic.notify8(notificationCommandFinished);
 }

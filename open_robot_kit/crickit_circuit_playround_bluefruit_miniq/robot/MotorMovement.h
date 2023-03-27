@@ -11,6 +11,7 @@ struct MotorMovement {
     int encoderCountGoal;
     float endThrottle;
     float getThrottle(unsigned long timeMs, int encoderCount);
+    bool atFullThrottle(unsigned long timeMs, int encoderCount);
 };
 
 }

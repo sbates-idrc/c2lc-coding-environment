@@ -11,15 +11,14 @@ namespace Weavly::Robot {
 
 class Motor {
 public:
-    Motor(Adafruit_Crickit& crickit, unsigned long speedSamplePeriodMs)
+    Motor(Adafruit_Crickit& crickit, float throttleFactor, float minThrottle)
         : m_crickit(crickit),
+        m_throttleFactor(throttleFactor),
+        m_minThrottle(minThrottle),
         m_motorPinA(-1),
         m_motorPinB(-1),
         m_encoderCount(0),
-        m_speedSamplePeriodMs(speedSamplePeriodMs),
-        m_startOfSpeedSampleTimeMs(0),
-        m_speedEncoderCount(0),
-        m_encoderCountsPerSecond(0)
+        m_speedEncoderCount(0)
     {
     }
 
@@ -27,6 +26,16 @@ public:
     {
         m_motorPinA = pinA;
         m_motorPinB = pinB;
+    }
+
+    void setThrottleFactor(float throttleFactor)
+    {
+        m_throttleFactor = throttleFactor;
+    }
+
+    float getThrottleFactor()
+    {
+        return m_throttleFactor;
     }
 
     void throttle(float value);
@@ -47,17 +56,24 @@ public:
         ++m_speedEncoderCount;
     }
 
-    float measureSpeed();
+    int getSpeedEncoderCount()
+    {
+        return m_speedEncoderCount;
+    }
+
+    void resetSpeedEncoderCount()
+    {
+        m_speedEncoderCount = 0;
+    }
 
 private:
     Adafruit_Crickit& m_crickit;
+    float m_throttleFactor;
+    float m_minThrottle;
     int m_motorPinA;
     int m_motorPinB;
     int m_encoderCount;
-    unsigned long m_speedSamplePeriodMs;
-    unsigned long m_startOfSpeedSampleTimeMs;
     int m_speedEncoderCount;
-    float m_encoderCountsPerSecond;
 };
 
 }
