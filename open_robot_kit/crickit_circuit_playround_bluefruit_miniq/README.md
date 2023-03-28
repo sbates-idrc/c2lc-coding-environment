@@ -36,6 +36,24 @@
 - 26 AWG Wire strippers
 - Tools to tighten the M3 nuts and bolts
 
+## Wiring
+
+Left motor:
+
+- Motor + (red) and motor - (white) to the CRICKIT DC motor 1
+  terminals
+- Encoder +ve (black) to Circuit Playground 3.3V
+- Encoder A Phase (yellow) to Circuit Playground A2
+- Encoder GND (blue) to Circuit Playground GND
+
+Right motor:
+
+- Motor + (red) and motor - (white) to the CRICKIT DC motor 2
+  terminals
+- Encoder +ve (black) to Circuit Playground 3.3V
+- Encoder A Phase (yellow) to Circuit Playground A3
+- Encoder GND (blue) to Circuit Playground GND
+
 ## Notes
 
 - Connecting the motor encoder wires to the Circuit Playground board was
