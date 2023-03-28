@@ -14,9 +14,10 @@
   - $18.62 CAD each at DigiKey <https://www.digikey.ca/en/products/detail/dfrobot/FIT0487/7087164>
 - Power source supplying 4V to 5.5VDC
 - Nylon M3 standoffs, for attaching the CRICKIT to the chassis
-  - 3 x 30 mm standoffs
+  - 3 x 30 mm standoffs (I used two 15 mm standoffs connected together to
+    make 30 mm, so 6 x 15 mm standoffs will also work)
   - 6 x washers
-  - 3 x bolts
+  - 3 x nuts
   - 3 x screws
 - 4 x 10mm M3 bolts and nuts, for attaching the encoder wires to the Circuit Playground
 
@@ -27,6 +28,7 @@
 - Phillips-head screwdriver size PH00, for the DC motor terminals on the
   CRICKIT
 - 26 AWG Wire strippers
+- Tools to tighten the M3 nuts and bolts
 
 ## Notes
 
@@ -50,7 +52,7 @@
 - There isn't a great place for a battery pack
   - It could go on another level, above the controller board, but would
     need another chassis board, like the miniQ upper deck
-  - Or we could make a larger chassis that would fit a battery pack
+  - Or we could make a larger custom chassis that would fit a battery pack
 
 ## Additional programs
 
