@@ -1,5 +1,5 @@
 // A program to control the motor voltage using the 2 buttons on the
-// Circuit Playround. This program does not connect to Weavly.
+// Circuit Playground. This program does not connect to Weavly.
 
 #include <Adafruit_Circuit_Playground.h>
 #include <Adafruit_Crickit.h>

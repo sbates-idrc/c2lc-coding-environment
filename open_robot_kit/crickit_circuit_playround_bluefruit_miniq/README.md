@@ -1,4 +1,4 @@
-# Adafruit CRICKIT with Circuit Playround Bluefruit and DFRobot miniQ chassis
+# Adafruit CRICKIT with Circuit Playground Bluefruit and DFRobot miniQ chassis
 
 ## Parts
 
@@ -18,7 +18,7 @@
   - 6 x washers
   - 3 x bolts
   - 3 x screws
-- 4 x 10mm M3 bolts and nuts, for attaching the encoder wires to the Circuit Playround
+- 4 x 10mm M3 bolts and nuts, for attaching the encoder wires to the Circuit Playground
 
 ## Tools
 

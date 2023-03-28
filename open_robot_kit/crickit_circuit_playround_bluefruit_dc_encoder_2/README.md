@@ -1,4 +1,4 @@
-# Adafruit CRICKIT with Circuit Playround Bluefruit and DC motors with encoders connected to Circuit Playround
+# Adafruit CRICKIT with Circuit Playground Bluefruit and DC motors with encoders connected to Circuit Playground
 
 ![Robot from above](IMG_0051.jpg)
 
@@ -22,7 +22,7 @@
 - M3 nuts and bolts
   - 4 x 30mm, for attaching the motors to the chassis
   - 2 x 10mm, for attaching the metal castor bearing wheel to the chassis
-  - 4 x 10mm, for attaching the encoder pins to the Circuit Playround
+  - 4 x 10mm, for attaching the encoder pins to the Circuit Playground
 - Standoffs for attaching the CRICKIT to the chassis, with some separation
   so that the components on the bottom of the CRICKIT do not touch the metal
   chassis
@@ -44,22 +44,22 @@ Left motor:
 
 - Motor pin 1 (blue) and motor pin 2 (green) to the CRICKIT DC motor 1
   terminals
-- Encoder +ve (yellow) to Circuit Playround 3.3V
-- Encoder A (orange) to Circuit Playround A2
-- Encoder -v (brown) to Circuit Playround GND
+- Encoder +ve (yellow) to Circuit Playground 3.3V
+- Encoder A (orange) to Circuit Playground A2
+- Encoder -v (brown) to Circuit Playground GND
 
 Right motor:
 
 - Motor pin 1 (blue) and motor pin 2 (green) to the CRICKIT DC motor 2
   terminals
-- Encoder +ve (yellow) to Circuit Playround 3.3V
-- Encoder A (orange) to Circuit Playround A3
-- Encoder -v (brown) to Circuit Playround GND
+- Encoder +ve (yellow) to Circuit Playground 3.3V
+- Encoder A (orange) to Circuit Playground A3
+- Encoder -v (brown) to Circuit Playground GND
 
 ## Notes
 
 - Compared to `crickit_circuit_playround_bluefruit_dc_encoder`, the encoders
-  are now connected directly to the Circuit Playround board, rather than to
+  are now connected directly to the Circuit Playground board, rather than to
   the CRICKIT, this lets us use interrupts to read the encoder signals rather
   than needing to poll
 - The lowest PWM rate that works smoothly for these motors in 26 HZ;

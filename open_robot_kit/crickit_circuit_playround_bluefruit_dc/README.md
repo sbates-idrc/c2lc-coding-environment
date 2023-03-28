@@ -1,4 +1,4 @@
-# Adafruit CRICKIT with Circuit Playround Bluefruit and DC motors
+# Adafruit CRICKIT with Circuit Playground Bluefruit and DC motors
 
 ![Robot from above](IMG_0040.jpg)
 
