@@ -4,7 +4,7 @@ declare module "./messages.json" {
     //       https://github.com/facebook/flow/issues/4654
 
     declare type SingleLanguageBundle = {
-        [MessageKey]: string
+        [MessageKey: string]: string
     };
 
     // TODO: Figure out a better way to handle this, this is the only way I can

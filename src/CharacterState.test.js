@@ -22,6 +22,7 @@ expect.extend({
                         + `    yPos: ${yPos}\n`
                         + `    direction: ${direction}\n`
                         + `    path: ${JSON.stringify(path)}\n`
+                        // $FlowFixMe[object-this-reference]
                         + `Received: ${this.utils.printReceived(received)}`;
                 },
                 pass: true
@@ -34,6 +35,7 @@ expect.extend({
                         + `    yPos: ${yPos}\n`
                         + `    direction: ${direction}\n`
                         + `    path: ${JSON.stringify(path)}\n`
+                        // $FlowFixMe[object-this-reference]
                         + `Received: ${this.utils.printReceived(received)}`;
                 },
                 pass: false

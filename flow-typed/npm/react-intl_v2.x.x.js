@@ -154,7 +154,7 @@ declare module "react-intl" {
     options?: InjectIntlOptions,
   ): React$ComponentType<
     $Diff<React$ElementConfig<Component>, InjectIntlVoidProps>
-  > & { WrappedComponent: typeof WrappedComponent };
+  > & { WrappedComponent: Component };
 
   declare function createIntl($npm$ReactIntl$IntlProviderConfig): $npm$ReactIntl$IntlShape;
 

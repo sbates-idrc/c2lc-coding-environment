@@ -20,7 +20,7 @@ function degrees2radians(degrees: number): number {
     return degrees * Math.PI / 180;
 }
 
-function distance(x1: number, y1: number, x2: number, y2: number) {
+function distance(x1: number, y1: number, x2: number, y2: number): number {
     return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 }
 

@@ -156,11 +156,11 @@ function decodeDirection(character: string): number {
  * @returns {Object} - The merged object.
  *
  */
-function extend(...toMerge:Object) {
-    const merged = {};
+function extend(...toMerge: Array<{...}>): {...} {
+    const merged: {...} = {};
     for (const singleEntryToMerge of toMerge) {
         for (const [key, value] of Object.entries(singleEntryToMerge)) {
-            if (typeof value === "object" && !Array.isArray(value) && (typeof merged[key] === "object" && !Array.isArray(merged[key]) && merged[key] !== null)) {
+            if (value !== null && typeof value === "object" && !Array.isArray(value) && (typeof merged[key] === "object" && !Array.isArray(merged[key]) && merged[key] !== null)) {
                 merged[key] = extend(merged[key], value);
             }
             else {
@@ -173,6 +173,7 @@ function extend(...toMerge:Object) {
 
 function focusByQuerySelector(selectors: string) {
     const element = document.querySelector(selectors);
+    // $FlowFixMe[method-unbinding]
     if (element && element.focus) {
         element.focus();
     }
@@ -181,6 +182,7 @@ function focusByQuerySelector(selectors: string) {
 function focusFirstInNodeList(elements: NodeList<HTMLElement>) {
     if (elements.length > 0) {
         const firstElem = elements[0];
+        // $FlowFixMe[method-unbinding]
         if (firstElem && firstElem.focus) {
             firstElem.focus();
         }
@@ -190,6 +192,7 @@ function focusFirstInNodeList(elements: NodeList<HTMLElement>) {
 function focusLastInNodeList(elements: NodeList<HTMLElement>) {
     if (elements.length > 0) {
         const lastElem = elements[elements.length - 1];
+        // $FlowFixMe[method-unbinding]
         if (lastElem && lastElem.focus) {
             lastElem.focus();
         }
@@ -248,7 +251,7 @@ function selectSpeechSynthesisVoice(utteranceLangTag: ?string,
 
     // Stage 1: filter by language
 
-    let stage1 = [];
+    let stage1: Array<SpeechSynthesisVoice> = [];
 
     // If the user's language tag has the same language as the utterance,
     // look for voices that match the user's language tag. So that users

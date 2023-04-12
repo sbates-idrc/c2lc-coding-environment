@@ -39,11 +39,11 @@ export default class CharacterState {
         this.maxPathLength = characterStateMaxPathLength;
     }
 
-    getDirectionDegrees() {
+    getDirectionDegrees(): number {
         return this.direction * 45;
     }
 
-    pathEquals(otherPath: Array<PathSegment>, epsilon: number) {
+    pathEquals(otherPath: Array<PathSegment>, epsilon: number): boolean {
         if (this.path.length !== otherPath.length) {
             return false;
         }
@@ -209,7 +209,7 @@ export default class CharacterState {
     // Calculates the movement for the specified distance in the specified direction.
     // Returns the final position and any generated path segments.
     calculateMove(distance: number, direction: number, drawingEnabled: boolean): MovementResult {
-        const pathSegments = [];
+        const pathSegments: Array<PathSegment> = [];
         let x = this.xPos;
         let y = this.yPos;
 
@@ -218,6 +218,7 @@ export default class CharacterState {
             x = movementResult.x;
             y = movementResult.y;
             if (drawingEnabled) {
+                // $FlowFixMe[method-unbinding]
                 Array.prototype.push.apply(pathSegments, movementResult.pathSegments);
             }
         }

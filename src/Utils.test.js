@@ -166,8 +166,8 @@ test ('Test focusFirstInNodeList', () => {
     focusFirstInNodeList((([]: any): NodeList<HTMLElement>));
 
     // When called on a list with 2 elements, it focuses the first one
-    const firstFocus = jest.fn();
-    const secondFocus = jest.fn();
+    const firstFocus: Function = jest.fn();
+    const secondFocus: Function = jest.fn();
     focusFirstInNodeList((([
         {
             focus: firstFocus
@@ -185,8 +185,8 @@ test ('Test focusLastInNodeList', () => {
     focusLastInNodeList((([]: any): NodeList<HTMLElement>));
 
     // When called on a list with 2 elements, it focuses the second one
-    const firstFocus = jest.fn();
-    const secondFocus = jest.fn();
+    const firstFocus: Function = jest.fn();
+    const secondFocus: Function = jest.fn();
     focusLastInNodeList((([
         {
             focus: firstFocus

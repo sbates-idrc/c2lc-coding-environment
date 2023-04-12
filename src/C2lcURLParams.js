@@ -7,31 +7,31 @@ export default class C2lcURLParams {
         this.urlSearchParams = new URLSearchParams(query);
     }
 
-    getVersion() {
+    getVersion(): string | null {
         return this.urlSearchParams.get('v');
     }
 
-    getProgram() {
+    getProgram(): string | null {
         return this.urlSearchParams.get('p');
     }
 
-    getCharacterState() {
+    getCharacterState(): string | null {
         return this.urlSearchParams.get('c');
     }
 
-    getTheme() {
+    getTheme(): string | null {
         return this.urlSearchParams.get('t');
     }
 
-    getDisallowedActions() {
+    getDisallowedActions(): string | null {
         return this.urlSearchParams.get('d');
     }
 
-    getWorld() {
+    getWorld(): string | null {
         return this.urlSearchParams.get('w');
     }
 
-    getStartingPosition() {
+    getStartingPosition(): string | null {
         return this.urlSearchParams.get('s');
     }
 }
