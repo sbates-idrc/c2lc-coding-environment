@@ -1,6 +1,5 @@
 #include "../robot/Motor.h"
 #include "mock_Adafruit_Crickit.h"
-#include "mock_arduino.h"
 #include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("Motor::throttle")
