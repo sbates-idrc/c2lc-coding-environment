@@ -13,7 +13,7 @@ bool Button::isPressed()
 
     if (value == 1 && m_lastValue == 0) {
         unsigned long now = millis();
-        if (now - m_lastPressTime > 200) {
+        if (now - m_lastPressTime > m_debouncePeriodMs) {
             isPressed = true;
             m_lastPressTime = now;
         }

@@ -4,7 +4,7 @@
 
 TEST_CASE("isPressed() returns true when the pin value changes from 0 to 1")
 {
-    Weavly::Robot::Button b(0);
+    Weavly::Robot::Button b(0, 200);
     Weavly::Robot::Test::setNextMillis(1000);
     Weavly::Robot::Test::setNextDigitalRead(0);
     REQUIRE_FALSE(b.isPressed());
@@ -15,7 +15,7 @@ TEST_CASE("isPressed() returns true when the pin value changes from 0 to 1")
 
 TEST_CASE("isPressed() returns false when the pin stays at 1")
 {
-    Weavly::Robot::Button b(0);
+    Weavly::Robot::Button b(0, 200);
     Weavly::Robot::Test::setNextMillis(1000);
     Weavly::Robot::Test::setNextDigitalRead(0);
     REQUIRE_FALSE(b.isPressed());
@@ -29,7 +29,7 @@ TEST_CASE("isPressed() returns false when the pin stays at 1")
 
 TEST_CASE("isPressed() returns false within the debounce period")
 {
-    Weavly::Robot::Button b(0);
+    Weavly::Robot::Button b(0, 200);
     Weavly::Robot::Test::setNextMillis(1000);
     Weavly::Robot::Test::setNextDigitalRead(0);
     REQUIRE_FALSE(b.isPressed());
@@ -46,7 +46,7 @@ TEST_CASE("isPressed() returns false within the debounce period")
 
 TEST_CASE("isPressed() returns true when the pin value changes from 0 to 1 after the debounce period")
 {
-    Weavly::Robot::Button b(0);
+    Weavly::Robot::Button b(0, 200);
     Weavly::Robot::Test::setNextMillis(1000);
     Weavly::Robot::Test::setNextDigitalRead(0);
     REQUIRE_FALSE(b.isPressed());
