@@ -2,10 +2,6 @@
 #include "weavly_math.h"
 #include <cmath>
 
-#ifdef WEAVLY_ROBOT_TEST_BUILD
-    #include "../tests/mock_arduino.h"
-#endif
-
 namespace Weavly::Robot {
 
 void Motor::throttle(float value)

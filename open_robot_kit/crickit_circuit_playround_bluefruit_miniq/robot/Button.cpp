@@ -2,6 +2,8 @@
 
 #ifdef WEAVLY_ROBOT_TEST_BUILD
     #include "../tests/mock_arduino.h"
+#else
+    #include "Arduino.h"
 #endif
 
 namespace Weavly::Robot {
