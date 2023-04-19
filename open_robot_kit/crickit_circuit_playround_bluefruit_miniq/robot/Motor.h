@@ -45,9 +45,9 @@ public:
         return m_encoderCount;
     }
 
-    void setEncoderCount(int count)
+    void resetEncoderCount()
     {
-        m_encoderCount = count;
+        m_encoderCount = 0;
     }
 
     void incrementEncoderCount()

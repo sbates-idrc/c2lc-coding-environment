@@ -52,8 +52,8 @@ void RobotMotors::startMotors(unsigned long rampUpTimeMs,
 
     m_startedMeasuringSpeeds = false;
 
-    m_leftMotor.setEncoderCount(0);
-    m_rightMotor.setEncoderCount(0);
+    m_leftMotor.resetEncoderCount();
+    m_rightMotor.resetEncoderCount();
 
     m_leftMotorMovement.startTimeMs = now;
     m_leftMotorMovement.rampUpTimeMs = rampUpTimeMs;
