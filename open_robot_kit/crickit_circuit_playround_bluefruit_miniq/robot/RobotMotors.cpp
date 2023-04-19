@@ -13,14 +13,14 @@ void RobotMotors::attachRightMotor(int pinA, int pinB)
     m_rightMotor.attach(pinA, pinB);
 }
 
-int RobotMotors::getLeftEncoderCount()
+float RobotMotors::getScaledLeftEncoderCount()
 {
-    return m_leftMotor.getEncoderCount();
+    return m_leftMotor.getScaledEncoderCount();
 }
 
-int RobotMotors::getRightEncoderCount()
+float RobotMotors::getScaledRightEncoderCount()
 {
-    return m_rightMotor.getEncoderCount();
+    return m_rightMotor.getScaledEncoderCount();
 }
 
 void RobotMotors::incrementLeftEncoderCount()
@@ -78,8 +78,8 @@ void RobotMotors::updateMotors()
         bool rightDone = false;
 
         bool bothMotorsFullThrottle =
-            m_leftMotorMovement.atFullThrottle(now, m_leftMotor.getEncoderCount())
-            && m_rightMotorMovement.atFullThrottle(now, m_rightMotor.getEncoderCount());
+            m_leftMotorMovement.atFullThrottle(now, m_leftMotor.getScaledEncoderCount())
+            && m_rightMotorMovement.atFullThrottle(now, m_rightMotor.getScaledEncoderCount());
 
         if (!m_startedMeasuringSpeeds && bothMotorsFullThrottle) {
             // We have ramped up the motors, start measuring their speeds
@@ -97,11 +97,11 @@ void RobotMotors::updateMotors()
             WEAVLY_ROBOT_PRINT("Right throttleFactor: ");
             WEAVLY_ROBOT_PRINTLN(m_rightMotor.getThrottleFactor());
             WEAVLY_ROBOT_PRINT("Left speed: ");
-            WEAVLY_ROBOT_PRINTLN(m_leftMotor.getSpeedEncoderCount());
+            WEAVLY_ROBOT_PRINTLN(m_leftMotor.getScaledSpeedEncoderCount());
             WEAVLY_ROBOT_PRINT("Right speed: ");
-            WEAVLY_ROBOT_PRINTLN(m_rightMotor.getSpeedEncoderCount());
+            WEAVLY_ROBOT_PRINTLN(m_rightMotor.getScaledSpeedEncoderCount());
 
-            if (m_leftMotor.getSpeedEncoderCount() > m_rightMotor.getSpeedEncoderCount()) {
+            if (m_leftMotor.getScaledSpeedEncoderCount() > m_rightMotor.getScaledSpeedEncoderCount()) {
                 this->adjustMotorThrottleFactors(m_leftMotor, m_rightMotor);
             } else {
                 this->adjustMotorThrottleFactors(m_rightMotor, m_leftMotor);
@@ -113,18 +113,18 @@ void RobotMotors::updateMotors()
             m_rightMotor.resetSpeedEncoderCount();
         }
 
-        if (m_leftMotor.getEncoderCount() >= m_leftMotorMovement.encoderCountGoal) {
+        if (m_leftMotor.getScaledEncoderCount() >= m_leftMotorMovement.encoderCountGoal) {
             leftDone = true;
             m_leftMotor.throttle(0);
         } else {
-            m_leftMotor.throttle(m_leftMotorMovement.getThrottle(now, m_leftMotor.getEncoderCount()));
+            m_leftMotor.throttle(m_leftMotorMovement.getThrottle(now, m_leftMotor.getScaledEncoderCount()));
         }
 
-        if (m_rightMotor.getEncoderCount() >= m_rightMotorMovement.encoderCountGoal) {
+        if (m_rightMotor.getScaledEncoderCount() >= m_rightMotorMovement.encoderCountGoal) {
             rightDone = true;
             m_rightMotor.throttle(0);
         } else {
-            m_rightMotor.throttle(m_rightMotorMovement.getThrottle(now, m_rightMotor.getEncoderCount()));
+            m_rightMotor.throttle(m_rightMotorMovement.getThrottle(now, m_rightMotor.getScaledEncoderCount()));
         }
 
         if (leftDone && rightDone) {

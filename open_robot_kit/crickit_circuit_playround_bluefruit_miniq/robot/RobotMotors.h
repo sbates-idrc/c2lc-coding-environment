@@ -15,8 +15,8 @@ enum class RobotMotorsState {
 class RobotMotors {
 public:
     RobotMotors(Adafruit_Crickit& crickit, float minThrottle, unsigned long pauseTimeMs, unsigned long speedSamplePeriodMs)
-        : m_leftMotor(crickit, 1.0, minThrottle),
-        m_rightMotor(crickit, 1.0, minThrottle),
+        : m_leftMotor(crickit, 1.0, 1.0, minThrottle),
+        m_rightMotor(crickit, 1.0, 1.0, minThrottle),
         m_state(RobotMotorsState::waiting),
         m_pauseTimeMs(pauseTimeMs),
         m_speedSamplePeriodMs(speedSamplePeriodMs),
@@ -27,8 +27,8 @@ public:
         { }
     void attachLeftMotor(int pinA, int pinB);
     void attachRightMotor(int pinA, int pinB);
-    int getLeftEncoderCount();
-    int getRightEncoderCount();
+    float getScaledLeftEncoderCount();
+    float getScaledRightEncoderCount();
     void incrementLeftEncoderCount();
     void incrementRightEncoderCount();
     void onMovementFinished(void (*callback)());

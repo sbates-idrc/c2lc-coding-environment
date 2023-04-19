@@ -11,8 +11,9 @@ namespace Weavly::Robot {
 
 class Motor {
 public:
-    Motor(Adafruit_Crickit& crickit, float throttleFactor, float minThrottle)
+    Motor(Adafruit_Crickit& crickit, float encoderFactor, float throttleFactor, float minThrottle)
         : m_crickit(crickit),
+        m_encoderFactor(encoderFactor),
         m_throttleFactor(throttleFactor),
         m_minThrottle(minThrottle),
         m_motorPinA(-1),
@@ -28,6 +29,11 @@ public:
         m_motorPinB = pinB;
     }
 
+    void setEncoderFactor(float encoderFactor)
+    {
+        m_encoderFactor = encoderFactor;
+    }
+
     void setThrottleFactor(float throttleFactor)
     {
         m_throttleFactor = throttleFactor;
@@ -40,9 +46,9 @@ public:
 
     void throttle(float value);
 
-    int getEncoderCount()
+    float getScaledEncoderCount()
     {
-        return m_encoderCount;
+        return m_encoderFactor * m_encoderCount;
     }
 
     void resetEncoderCount()
@@ -56,9 +62,9 @@ public:
         ++m_speedEncoderCount;
     }
 
-    int getSpeedEncoderCount()
+    float getScaledSpeedEncoderCount()
     {
-        return m_speedEncoderCount;
+        return m_encoderFactor * m_speedEncoderCount;
     }
 
     void resetSpeedEncoderCount()
@@ -68,6 +74,7 @@ public:
 
 private:
     Adafruit_Crickit& m_crickit;
+    float m_encoderFactor;
     float m_throttleFactor;
     float m_minThrottle;
     int m_motorPinA;

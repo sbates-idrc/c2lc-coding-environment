@@ -2,7 +2,7 @@
 
 namespace Weavly::Robot {
 
-float MotorMovement::getThrottle(unsigned long timeMs, int encoderCount)
+float MotorMovement::getThrottle(unsigned long timeMs, float encoderCount)
 {
     if (timeMs >= startTimeMs) {
         if (timeMs <= startTimeMs + rampUpTimeMs) {
@@ -24,7 +24,7 @@ float MotorMovement::getThrottle(unsigned long timeMs, int encoderCount)
     return 0;
 }
 
-bool MotorMovement::atFullThrottle(unsigned long timeMs, int encoderCount)
+bool MotorMovement::atFullThrottle(unsigned long timeMs, float encoderCount)
 {
     return (timeMs > startTimeMs + rampUpTimeMs)
         && (encoderCount < rampDownEncoderCount);
