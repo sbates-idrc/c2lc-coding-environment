@@ -1868,6 +1868,20 @@ export class App extends React.Component<AppProps, AppState> {
         }
 
         document.addEventListener('keydown', this.handleDocumentKeyDown);
+
+        window.addEventListener( 'message', event => {
+            if ( event.data.type === 'paper-playground-weavly-message' ) {
+                /* eslint-disable no-console */
+                console.log( event.data.message );
+
+                window.parent && window.parent.postMessage( {
+                    type: 'paper-playground-weavly-message',
+                    message: 'Hello Paper Land!'
+                }, '*' );
+                /* eslint-enable no-console */
+            }
+
+        } );
     }
 
     componentDidUpdate(prevProps: {}, prevState: AppState) {
