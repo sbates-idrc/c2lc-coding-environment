@@ -1,64 +1,65 @@
 // @flow
 import React from 'react';
-import type { IntlShape } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'react-intl';
-import ActionsSimplificationModal from './ActionsSimplificationModal';
+import { FormattedMessage } from 'react-intl';
+import { injectIntl } from 'react-intl';
+import type {IntlShape} from 'react-intl';
+import DisallowedActionsSerializer from './DisallowedActionsSerializer';
 import AnnouncementBuilder from './AnnouncementBuilder';
-import './App.scss';
 import AudioManagerImpl from './AudioManagerImpl';
-import C2lcURLParams from './C2lcURLParams';
 import CharacterAriaLive from './CharacterAriaLive';
-import CharacterPositionController from './CharacterPositionController';
 import CharacterState from './CharacterState';
 import CharacterStateSerializer from './CharacterStateSerializer';
+import CharacterPositionController from './CharacterPositionController';
 import CommandPaletteCommand from './CommandPaletteCommand';
 import CookieNotification from './CookieNotification';
+import C2lcURLParams from './C2lcURLParams';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
 import DashDriver from './DashDriver';
-import DisallowedActionsSerializer from './DisallowedActionsSerializer';
-import FakeAudioManager from './FakeAudioManager';
 import * as FeatureDetection from './FeatureDetection';
+import FakeAudioManager from './FakeAudioManager';
 import FocusTrapManager from './FocusTrapManager';
 import IconButton from './IconButton';
 import Interpreter from './Interpreter';
-import KeyboardInputModal from './KeyboardInputModal';
-
-import type { ActionName, KeyboardInputSchemeName } from './KeyboardInputSchemes';
-import { findKeyboardEventSequenceMatches, isKeyboardInputSchemeName, isRepeatedEvent } from './KeyboardInputSchemes';
-import PenDownToggleSwitch from './PenDownToggleSwitch';
 import PlayButton from './PlayButton';
-import PrivacyModal from './PrivacyModal';
 import ProgramBlockEditor from './ProgramBlockEditor';
-import ProgramChangeController from './ProgramChangeController';
-import ProgramSequence from './ProgramSequence';
-import ProgramSerializer from './ProgramSerializer';
-import ProgramSpeedController from './ProgramSpeedController';
 import RefreshButton from './RefreshButton';
 import Scene from './Scene';
 import SceneDimensions from './SceneDimensions';
-import ShareModal from './ShareModal';
 import SoundOptionsModal from './SoundOptionsModal';
 import StopButton from './StopButton';
-import { ReactComponent as AudioIcon } from './svg/Audio.svg';
-import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
-import { ReactComponent as KeyboardModalToggleIcon } from './svg/Keyboard.svg';
-
-import { ReactComponent as LogoContrast } from './svg/LogoContrast.svg';
-import { ReactComponent as LogoDark } from './svg/LogoDark.svg';
-import { ReactComponent as LogoGrayscale } from './svg/LogoGrayscale.svg';
-import { ReactComponent as LogoMixedAndLight } from './svg/LogoMixedAndLight.svg';
-import { ReactComponent as ShareIcon } from './svg/Share.svg';
-import { ReactComponent as ActionsMenuToggleIcon } from './svg/Simplification.svg'
-import { ReactComponent as ThemeIcon } from './svg/Theme.svg';
-import { ReactComponent as WorldIcon } from './svg/World.svg';
-import './Themes.scss';
-import ThemeSelector from './ThemeSelector';
+import PenDownToggleSwitch from './PenDownToggleSwitch';
+import ProgramSequence from './ProgramSequence';
+import ProgramSpeedController from './ProgramSpeedController';
+import ProgramSerializer from './ProgramSerializer';
+import ActionsSimplificationModal from './ActionsSimplificationModal';
 import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
-import * as Utils from './Utils';
-import './vendor/dragdroptouch/DragDropTouch.js';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
+import * as Utils from './Utils';
+import './App.scss';
+import './Themes.scss';
+import './vendor/dragdroptouch/DragDropTouch.js';
+import ThemeSelector from './ThemeSelector';
+import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
+import KeyboardInputModal from './KeyboardInputModal';
+import ShareModal from './ShareModal';
+import { ReactComponent as ShareIcon} from './svg/Share.svg';
+
+import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
+import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
+import { ReactComponent as AudioIcon } from './svg/Audio.svg';
+import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
+import { ReactComponent as ThemeIcon } from './svg/Theme.svg';
+import { ReactComponent as WorldIcon } from './svg/World.svg';
+import { ReactComponent as ActionsMenuToggleIcon } from './svg/Simplification.svg'
+import ProgramChangeController from './ProgramChangeController';
+import PrivacyModal from './PrivacyModal';
+
+import { ReactComponent as LogoContrast} from './svg/LogoContrast.svg';
+import { ReactComponent as LogoGrayscale} from './svg/LogoGrayscale.svg';
+import { ReactComponent as LogoDark} from './svg/LogoDark.svg';
+import { ReactComponent as LogoMixedAndLight} from './svg/LogoMixedAndLight.svg';
 
 function getThemeLogo (theme: ThemeName) {
     if (theme === "contrast") { return LogoContrast; }
@@ -1867,20 +1868,6 @@ export class App extends React.Component<AppProps, AppState> {
         }
 
         document.addEventListener('keydown', this.handleDocumentKeyDown);
-
-        window.addEventListener( 'message', event => {
-            if ( event.data.type === 'paper-playground-weavly-message' ) {
-                /* eslint-disable no-console */
-                console.log( event.data.message );
-
-                window.parent && window.parent.postMessage( {
-                    type: 'paper-playground-weavly-message',
-                    message: 'Hello Paper Land!'
-                }, '*' );
-                /* eslint-enable no-console */
-            }
-
-        } );
     }
 
     componentDidUpdate(prevProps: {}, prevState: AppState) {
