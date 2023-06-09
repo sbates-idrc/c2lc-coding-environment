@@ -1869,16 +1869,20 @@ export class App extends React.Component<AppProps, AppState> {
 
         document.addEventListener('keydown', this.handleDocumentKeyDown);
 
-        window.addEventListener( 'message', event => {
-            if ( event.data.type === 'paper-playground-weavly-message' ) {
+        window.addEventListener('message', event => {
+            if (event.data.type === 'paper-playground-weavly-message') {
                 /* eslint-disable no-console */
-                console.log( event.data.message );
-
-                window.parent && window.parent.postMessage( {
-                    type: 'paper-playground-weavly-message',
-                    message: 'Hello Paper Land!'
-                }, '*' );
+                console.log(event.data.message);
                 /* eslint-enable no-console */
+
+                this.setState({
+                    programSequence: new ProgramSequence(event.data.message.program, 0, 0, new Map())
+                });
+
+                // window.parent && window.parent.postMessage( {
+                //     type: 'paper-playground-weavly-message',
+                //     message: 'Hello Paper Land!'
+                // }, '*' );
             }
 
         } );
