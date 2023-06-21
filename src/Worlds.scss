@@ -970,6 +970,60 @@ body.contrast-theme {
     }
 }
 
+/* Music Band */
+
+.ProgramBlockEditor__character-column-character-container--MusicBand {
+    background-color: #FBE6CD;
+}
+
+.Scene__grid-line--MusicBand {
+    stroke: #567F88;
+}
+
+.Scene__path-line--MusicBand {
+    stroke: #E5AF5E;
+}
+
+.Scene__starting-grid-cell-point--MusicBand {
+    fill: #E5AF5E;
+}
+
+body.gray-theme {
+    .ProgramBlockEditor__character-column-character-container--MusicBand {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--MusicBand {
+        stroke: #7F8898;
+    }
+
+    .Scene__path-line--MusicBand {
+        stroke: #FFFFFF;
+    }
+
+    .Scene__starting-grid-cell-point--MusicBand {
+        fill: #FFFFFF;
+    }
+}
+
+body.contrast-theme {
+    .ProgramBlockEditor__character-column-character-container--MusicBand {
+        background-color: #FFFFFF;
+    }
+
+    .Scene__grid-line--MusicBand {
+        stroke: #0078FF;
+    }
+
+    .Scene__path-line--MusicBand {
+        stroke: #FF0000;
+    }
+
+    .Scene__starting-grid-cell-point--MusicBand {
+        fill: #FF0000;
+    }
+}
+
 /* Sketchpad */
 
 .ProgramBlockEditor__character-column-character-container--Sketchpad {

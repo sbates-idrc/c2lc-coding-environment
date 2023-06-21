@@ -47,6 +47,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
             'Haunted',
             'Landmarks',
             'Marble',
+            "MusicBand",
             'Savannah',
             'Space',
             'Sports'
