@@ -988,6 +988,32 @@ body.contrast-theme {
     fill: #E5AF5E;
 }
 
+.WorldSelector__option-image--MusicBand:hover {
+    svg {
+        .thumbnail-background {
+            fill: #73A9B0;
+        }
+        .thumbnail-purple {
+            fill: #AA6F9C;
+        }
+        .thumbnail-red {
+            fill: #EA7362;
+        }
+        .thumbnail-yellow {
+            fill: #F1AE5B;
+        }
+        .thumbnail-green {
+            fill: #4C9990;
+        }
+        .thumbnail-blue {
+            fill: #516D95;
+        }
+        .thumbnail-note {
+            fill: #0B0F14;
+        }
+    }
+}
+
 body.gray-theme {
     .ProgramBlockEditor__character-column-character-container--MusicBand {
         background-color: #FFFFFF;
@@ -1003,6 +1029,32 @@ body.gray-theme {
 
     .Scene__starting-grid-cell-point--MusicBand {
         fill: #FFFFFF;
+    }
+
+    .WorldSelector__option-image--MusicBand:hover {
+        svg {
+            .thumbnail-background {
+                fill: #B9BEC6;
+            }
+            .thumbnail-purple {
+                fill: #67717E;
+            }
+            .thumbnail-red {
+                fill: #818A98;
+            }
+            .thumbnail-yellow {
+                fill: #9DA4AF;
+            }
+            .thumbnail-green {
+                fill: #B9BEC6;
+            }
+            .thumbnail-blue {
+                fill: #D5D8DD;
+            }
+            .thumbnail-note {
+                fill: #22262A;
+            }
+        }
     }
 }
 
@@ -1021,6 +1073,21 @@ body.contrast-theme {
 
     .Scene__starting-grid-cell-point--MusicBand {
         fill: #FF0000;
+    }
+
+    .WorldSelector__option-image--MusicBand:hover {
+        svg {
+            .thumbnail-background {
+                fill: #1E1E1E;
+            }
+            .thumbnail-stripe {
+                fill: #1E1E1E;
+                stroke: #FFFFFF;
+            }
+            .thumbnail-note {
+                fill: #FFFFFF;
+            }
+        }
     }
 }
 
