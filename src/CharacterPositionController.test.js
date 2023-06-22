@@ -107,6 +107,20 @@ function getCharacterIcon(characterPositionControllerWrapper: ReactWrapper<HTMLE
     return characterPositionControllerWrapper.find('.CharacterPositionController__character-column-character');
 }
 
+function makeColumnLabelCurrentTarget(value: string) {
+    return {
+        name: 'xPosition',
+        value
+    };
+}
+
+function makeRowLabelCurrentTarget(value: string) {
+    return {
+        name: 'yPosition',
+        value
+    };
+}
+
 describe('Character position buttons', () => {
     test.each([
         'turnLeft', 'turnRight', 'up', 'right', 'down', 'left'
@@ -145,28 +159,24 @@ describe('Column label input', () => {
         const characterXPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(0);
         const sampleXPosition = 'X';
         const secondSampleXPosition = 'A';
-        const currentTarget = (value: string) => ({
-            name: 'xPosition',
-            value
-        });
 
         characterXPositionCoordinateBox.simulate('change',
-            TestUtils.makeChangeEvent(currentTarget(sampleXPosition)));
+            TestUtils.makeChangeEvent(makeColumnLabelCurrentTarget(sampleXPosition)));
         wrapper.update();
         expect(wrapper.instance().state.characterColumnLabel).toBe(sampleXPosition);
 
         characterXPositionCoordinateBox.simulate('blur',
-            TestUtils.makeBlurEvent(currentTarget(sampleXPosition)));
+            TestUtils.makeBlurEvent(makeColumnLabelCurrentTarget(sampleXPosition)));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(1);
         expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(24); // Column 'X' is number 24
 
         characterXPositionCoordinateBox.simulate('change',
-            TestUtils.makeChangeEvent(currentTarget(secondSampleXPosition)));
+            TestUtils.makeChangeEvent(makeColumnLabelCurrentTarget(secondSampleXPosition)));
         wrapper.update();
         expect(wrapper.instance().state.characterColumnLabel).toBe(secondSampleXPosition);
 
         characterXPositionCoordinateBox.simulate('keyDown',
-            TestUtils.makeKeyDownEvent(currentTarget(secondSampleXPosition), 'Enter'));
+            TestUtils.makeKeyDownEvent(makeColumnLabelCurrentTarget(secondSampleXPosition), 'Enter'));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(2);
         expect(mockChangeCharacterXPosition.mock.calls[1][0]).toBe(1); // Column 'A' is number 1
     });
@@ -178,28 +188,24 @@ describe('Row label input', () => {
         const characterYPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(1);
         const sampleYPosition = '2';
         const secondSampleYPosition = '8';
-        const currentTarget = (value: string) => ({
-            name: 'yPosition',
-            value
-        });
 
         characterYPositionCoordinateBox.simulate('change',
-            TestUtils.makeChangeEvent(currentTarget(sampleYPosition)));
+            TestUtils.makeChangeEvent(makeRowLabelCurrentTarget(sampleYPosition)));
         wrapper.update();
         expect(wrapper.instance().state.characterRowLabel).toBe(sampleYPosition);
 
         characterYPositionCoordinateBox.simulate('blur',
-            TestUtils.makeBlurEvent(currentTarget(sampleYPosition)));
+            TestUtils.makeBlurEvent(makeRowLabelCurrentTarget(sampleYPosition)));
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(1);
         expect(mockChangeCharacterYPosition.mock.calls[0][0]).toBe(2);
 
         characterYPositionCoordinateBox.simulate('change',
-            TestUtils.makeChangeEvent(currentTarget(secondSampleYPosition)));
+            TestUtils.makeChangeEvent(makeRowLabelCurrentTarget(secondSampleYPosition)));
         wrapper.update();
         expect(wrapper.instance().state.characterRowLabel).toBe(secondSampleYPosition);
 
         characterYPositionCoordinateBox.simulate('keyDown',
-            TestUtils.makeKeyDownEvent(currentTarget(secondSampleYPosition), 'Enter'));
+            TestUtils.makeKeyDownEvent(makeRowLabelCurrentTarget(secondSampleYPosition), 'Enter'));
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(2);
         expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(8);
     });
@@ -346,18 +352,14 @@ describe('Character position row/column input Blur event', () => {
         const { wrapper, mockChangeCharacterXPosition } = createShallowCharacterPositionController();
         const characterXPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(0);
         const sampleXPosition = 'X';
-        const currentTarget = (value: string) => ({
-            name: 'xPosition',
-            value
-        });
 
         characterXPositionCoordinateBox.simulate('change',
-            TestUtils.makeChangeEvent(currentTarget(sampleXPosition)));
+            TestUtils.makeChangeEvent(makeColumnLabelCurrentTarget(sampleXPosition)));
         wrapper.update();
         expect(wrapper.instance().state.characterColumnLabel).toBe(sampleXPosition);
 
         characterXPositionCoordinateBox.simulate('blur',
-            TestUtils.makeBlurEvent(currentTarget(sampleXPosition)));
+            TestUtils.makeBlurEvent(makeColumnLabelCurrentTarget(sampleXPosition)));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(1);
         expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(24); // Column 'X' is number 24
     });
@@ -374,18 +376,14 @@ describe('Character position row/column input Blur event', () => {
         });
 
         const sampleXPosition = '3';
-        const currentTarget = (value: string) => ({
-            name: 'xPosition',
-            value
-        });
 
         characterXPositionCoordinateBox.simulate('change',
-            TestUtils.makeChangeEvent(currentTarget(sampleXPosition)));
+            TestUtils.makeChangeEvent(makeColumnLabelCurrentTarget(sampleXPosition)));
         wrapper.update();
         expect(wrapper.instance().state.characterColumnLabel).toBe(sampleXPosition);
 
         characterXPositionCoordinateBox.simulate('blur',
-            TestUtils.makeBlurEvent(currentTarget(sampleXPosition)));
+            TestUtils.makeBlurEvent(makeColumnLabelCurrentTarget(sampleXPosition)));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(0);
         expect(wrapper.instance().state.characterColumnLabel).toBe(initialColumnValue);
     });
