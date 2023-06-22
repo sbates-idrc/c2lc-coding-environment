@@ -107,7 +107,7 @@ function getCharacterIcon(characterPositionControllerWrapper: ReactWrapper<HTMLE
     return characterPositionControllerWrapper.find('.CharacterPositionController__character-column-character');
 }
 
-describe('Using change character position buttons', () => {
+describe('Character position buttons', () => {
     test.each([
         'turnLeft', 'turnRight', 'up', 'right', 'down', 'left'
     ])('Click/Press %s button ', (directionName) => {
@@ -138,7 +138,7 @@ describe('Using change character position buttons', () => {
     });
 });
 
-describe('Using change character position by column/row labels', () => {
+describe('Column label input', () => {
     test('Changing x position', () => {
         expect.assertions(6);
         const { wrapper, mockChangeCharacterXPosition } = createShallowCharacterPositionController();
@@ -170,6 +170,8 @@ describe('Using change character position by column/row labels', () => {
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(2);
         expect(mockChangeCharacterXPosition.mock.calls[1][0]).toBe(1); // Column 'A' is number 1
     });
+});
+describe('Row label input', () => {
     test('Changing y position', () => {
         expect.assertions(6);
         const { wrapper, mockChangeCharacterYPosition } = createShallowCharacterPositionController();
@@ -201,129 +203,132 @@ describe('Using change character position by column/row labels', () => {
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(2);
         expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(8);
     });
-    test('Changing world changes the character icon', () => {
-        expect.assertions(9);
-        const { wrapper } = createShallowCharacterPositionController();
-        // DeepOcean World
-        wrapper.setProps({world: 'DeepOcean', theme: 'light'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine.svg');
-        wrapper.setProps({theme: 'gray'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine-gray.svg');
-        wrapper.setProps({theme: 'contrast'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine-contrast.svg');
-        // Savannah World
-        wrapper.setProps({world: 'Savannah', theme: 'light'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SavannahJeep.svg');
-        wrapper.setProps({theme: 'gray'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SavannahJeep-gray.svg');
-        wrapper.setProps({theme: 'contrast'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SavannahJeep-contrast.svg');
-        // Space World
-        wrapper.setProps({world: 'Space', theme: 'light'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip.svg');
-        wrapper.setProps({theme: 'gray'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip-gray.svg');
-        wrapper.setProps({theme: 'contrast'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip-contrast.svg');
+});
+
+test('Changing world changes the character icon', () => {
+    expect.assertions(9);
+    const { wrapper } = createShallowCharacterPositionController();
+    // DeepOcean World
+    wrapper.setProps({world: 'DeepOcean', theme: 'light'});
+    expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine.svg');
+    wrapper.setProps({theme: 'gray'});
+    expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine-gray.svg');
+    wrapper.setProps({theme: 'contrast'});
+    expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine-contrast.svg');
+    // Savannah World
+    wrapper.setProps({world: 'Savannah', theme: 'light'});
+    expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SavannahJeep.svg');
+    wrapper.setProps({theme: 'gray'});
+    expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SavannahJeep-gray.svg');
+    wrapper.setProps({theme: 'contrast'});
+    expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SavannahJeep-contrast.svg');
+    // Space World
+    wrapper.setProps({world: 'Space', theme: 'light'});
+    expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip.svg');
+    wrapper.setProps({theme: 'gray'});
+    expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip-gray.svg');
+    wrapper.setProps({theme: 'contrast'});
+    expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip-contrast.svg');
+});
+
+test('When a world has enableFlipCharacter=true, character icon gets class names to rotate and enable flip', () => {
+    expect.assertions(18);
+    const { wrapper } = createShallowCharacterPositionController();
+
+    // With default character facing right, i.e. East
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+
+    // Set characterState prop to make the character face Southeast
+    wrapper.setProps({characterState: new CharacterState(1, 1, 3, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle3')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+
+    // Set characterState prop to make the character face South
+    wrapper.setProps({characterState: new CharacterState(1, 1, 4, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle4')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+
+    // Set characterState prop to make the character face Southwest
+    wrapper.setProps({characterState: new CharacterState(1, 1, 5, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle5')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+
+    // Set characterState prop to make the character face West
+    wrapper.setProps({characterState: new CharacterState(1, 1, 6, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle6')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+
+    // Set characterState prop to make the character face Northwest
+    wrapper.setProps({characterState: new CharacterState(1, 1, 7, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle7')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+
+    // Set characterState prop to make the character face North
+    wrapper.setProps({characterState: new CharacterState(1, 1, 0, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle0')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+
+    // Set characterState prop to make the character face Northeast
+    wrapper.setProps({characterState: new CharacterState(1, 1, 1, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle1')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+
+    // Set characterState prop to make the character face East again
+    wrapper.setProps({characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 2, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+});
+
+test('When a world has enableFlipCharacter=false, character icon gets class name to rotate only', () => {
+    expect.assertions(18);
+    const { wrapper } = createShallowCharacterPositionController({
+        world: 'Landmarks'
     });
-    test('When a world has enableFlipCharacter=true, character icon gets class names to rotate and enable flip', () => {
-        expect.assertions(18);
-        const { wrapper } = createShallowCharacterPositionController();
 
-        // With default character facing right, i.e. East
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+    // With default character facing right, i.e. East
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
 
-        // Set characterState prop to make the character face Southeast
-        wrapper.setProps({characterState: new CharacterState(1, 1, 3, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle3')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+    // Set characterState prop to make the character face Southeast
+    wrapper.setProps({characterState: new CharacterState(1, 1, 3, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle3')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
 
-        // Set characterState prop to make the character face South
-        wrapper.setProps({characterState: new CharacterState(1, 1, 4, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle4')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+    // Set characterState prop to make the character face South
+    wrapper.setProps({characterState: new CharacterState(1, 1, 4, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle4')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
 
-        // Set characterState prop to make the character face Southwest
-        wrapper.setProps({characterState: new CharacterState(1, 1, 5, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle5')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+    // Set characterState prop to make the character face Southwest
+    wrapper.setProps({characterState: new CharacterState(1, 1, 5, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle5')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
 
-        // Set characterState prop to make the character face West
-        wrapper.setProps({characterState: new CharacterState(1, 1, 6, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle6')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+    // Set characterState prop to make the character face West
+    wrapper.setProps({characterState: new CharacterState(1, 1, 6, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle6')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
 
-        // Set characterState prop to make the character face Northwest
-        wrapper.setProps({characterState: new CharacterState(1, 1, 7, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle7')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+    // Set characterState prop to make the character face Northwest
+    wrapper.setProps({characterState: new CharacterState(1, 1, 7, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle7')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
 
-        // Set characterState prop to make the character face North
-        wrapper.setProps({characterState: new CharacterState(1, 1, 0, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle0')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+    // Set characterState prop to make the character face North
+    wrapper.setProps({characterState: new CharacterState(1, 1, 0, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle0')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
 
-        // Set characterState prop to make the character face Northeast
-        wrapper.setProps({characterState: new CharacterState(1, 1, 1, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle1')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+    // Set characterState prop to make the character face Northeast
+    wrapper.setProps({characterState: new CharacterState(1, 1, 1, [], new SceneDimensions(1, 100, 1, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle1')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
 
-        // Set characterState prop to make the character face East again
-        wrapper.setProps({characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 2, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
-    });
-    test('When a world has enableFlipCharacter=false, character icon gets class name to rotate only', () => {
-        expect.assertions(18);
-        const { wrapper } = createShallowCharacterPositionController({
-            world: 'Landmarks'
-        });
-
-        // With default character facing right, i.e. East
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face Southeast
-        wrapper.setProps({characterState: new CharacterState(1, 1, 3, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle3')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face South
-        wrapper.setProps({characterState: new CharacterState(1, 1, 4, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle4')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face Southwest
-        wrapper.setProps({characterState: new CharacterState(1, 1, 5, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle5')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face West
-        wrapper.setProps({characterState: new CharacterState(1, 1, 6, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle6')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face Northwest
-        wrapper.setProps({characterState: new CharacterState(1, 1, 7, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle7')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face North
-        wrapper.setProps({characterState: new CharacterState(1, 1, 0, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle0')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face Northeast
-        wrapper.setProps({characterState: new CharacterState(1, 1, 1, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle1')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face East again
-        wrapper.setProps({characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 2, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-    });
+    // Set characterState prop to make the character face East again
+    wrapper.setProps({characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 2, 100))});
+    expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
+    expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
 });
 
 describe('Character position row/column input Blur event', () => {
