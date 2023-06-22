@@ -152,62 +152,131 @@ describe('Character position buttons', () => {
     });
 });
 
-describe('Column label input', () => {
-    test('Changing x position', () => {
-        expect.assertions(6);
-        const { wrapper, mockChangeCharacterXPosition } = createShallowCharacterPositionController();
-        const characterXPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(0);
-        const sampleXPosition = 'X';
-        const secondSampleXPosition = 'A';
+describe('Column label input (X)', () => {
+    let wrapper
+    let mockChangeCharacterXPosition;
+    let characterXPositionCoordinateBox;
+
+    beforeEach(() => {
+        ({ wrapper, mockChangeCharacterXPosition } = createShallowCharacterPositionController());
+        characterXPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(0);
+    });
+
+    test('When there is a change to the column label value, and it is valid, the blur event calls the provided X position change handler', () => {
+        expect.assertions(3);
+        const newColumnLabel = 'X';
 
         characterXPositionCoordinateBox.simulate('change',
-            TestUtils.makeChangeEvent(makeColumnLabelCurrentTarget(sampleXPosition)));
+            TestUtils.makeChangeEvent(makeColumnLabelCurrentTarget(newColumnLabel)));
         wrapper.update();
-        expect(wrapper.instance().state.characterColumnLabel).toBe(sampleXPosition);
+        expect(wrapper.instance().state.characterColumnLabel).toBe(newColumnLabel);
 
         characterXPositionCoordinateBox.simulate('blur',
-            TestUtils.makeBlurEvent(makeColumnLabelCurrentTarget(sampleXPosition)));
+            TestUtils.makeBlurEvent(makeColumnLabelCurrentTarget(newColumnLabel)));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(1);
         expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(24); // Column 'X' is number 24
+    });
+
+    test('When there is no change to the column label value, the blur event does not call the provided X position change handler', () => {
+        expect.assertions(2);
+        expect(wrapper.instance().state.characterColumnLabel).toBe('A');
+        characterXPositionCoordinateBox.simulate('blur',
+            TestUtils.makeBlurEvent(makeColumnLabelCurrentTarget('A')));
+        expect(mockChangeCharacterXPosition.mock.calls.length).toBe(0);
+    });
+
+    test('When the changed column label value is invalid, the blur event resets the label back to what it was', () => {
+        expect.assertions(3);
+        const newColumnLabel = '3';
 
         characterXPositionCoordinateBox.simulate('change',
-            TestUtils.makeChangeEvent(makeColumnLabelCurrentTarget(secondSampleXPosition)));
+            TestUtils.makeChangeEvent(makeColumnLabelCurrentTarget(newColumnLabel)));
         wrapper.update();
-        expect(wrapper.instance().state.characterColumnLabel).toBe(secondSampleXPosition);
+        expect(wrapper.instance().state.characterColumnLabel).toBe(newColumnLabel);
+
+        characterXPositionCoordinateBox.simulate('blur',
+            TestUtils.makeBlurEvent(makeColumnLabelCurrentTarget(newColumnLabel)));
+        expect(mockChangeCharacterXPosition.mock.calls.length).toBe(0);
+        expect(wrapper.instance().state.characterColumnLabel).toBe('A');
+    });
+
+    test('When there is a change to the column label value, and it is valid, pressing Enter calls the provided X position change handler', () => {
+        expect.assertions(3);
+        const newColumnLabel = 'X';
+
+        characterXPositionCoordinateBox.simulate('change',
+            TestUtils.makeChangeEvent(makeColumnLabelCurrentTarget(newColumnLabel)));
+        wrapper.update();
+        expect(wrapper.instance().state.characterColumnLabel).toBe(newColumnLabel);
 
         characterXPositionCoordinateBox.simulate('keyDown',
-            TestUtils.makeKeyDownEvent(makeColumnLabelCurrentTarget(secondSampleXPosition), 'Enter'));
-        expect(mockChangeCharacterXPosition.mock.calls.length).toBe(2);
-        expect(mockChangeCharacterXPosition.mock.calls[1][0]).toBe(1); // Column 'A' is number 1
+            TestUtils.makeKeyDownEvent(makeColumnLabelCurrentTarget(newColumnLabel), 'Enter'));
+        expect(mockChangeCharacterXPosition.mock.calls.length).toBe(1);
+        expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(24); // Column 'X' is number 24
     });
 });
-describe('Row label input', () => {
-    test('Changing y position', () => {
-        expect.assertions(6);
-        const { wrapper, mockChangeCharacterYPosition } = createShallowCharacterPositionController();
-        const characterYPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(1);
-        const sampleYPosition = '2';
-        const secondSampleYPosition = '8';
+
+describe('Row label input (Y)', () => {
+    let wrapper
+    let mockChangeCharacterYPosition;
+    let characterYPositionCoordinateBox;
+
+    beforeEach(() => {
+        ({ wrapper, mockChangeCharacterYPosition } = createShallowCharacterPositionController());
+        characterYPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(1);
+    });
+
+    test('When there is a change to the row label value, and it is valid, the blur event calls the provided Y position change handler', () => {
+        expect.assertions(3);
+        const newRowLabel = '2';
 
         characterYPositionCoordinateBox.simulate('change',
-            TestUtils.makeChangeEvent(makeRowLabelCurrentTarget(sampleYPosition)));
+            TestUtils.makeChangeEvent(makeRowLabelCurrentTarget(newRowLabel)));
         wrapper.update();
-        expect(wrapper.instance().state.characterRowLabel).toBe(sampleYPosition);
+        expect(wrapper.instance().state.characterRowLabel).toBe(newRowLabel);
 
         characterYPositionCoordinateBox.simulate('blur',
-            TestUtils.makeBlurEvent(makeRowLabelCurrentTarget(sampleYPosition)));
+            TestUtils.makeBlurEvent(makeRowLabelCurrentTarget(newRowLabel)));
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(1);
         expect(mockChangeCharacterYPosition.mock.calls[0][0]).toBe(2);
+    });
+
+    test('When there is no change to the row label value, the blur event does not call the provided Y position change handler', () => {
+        expect.assertions(2);
+        expect(wrapper.instance().state.characterRowLabel).toBe('1');
+        characterYPositionCoordinateBox.simulate('blur',
+            TestUtils.makeBlurEvent(makeRowLabelCurrentTarget('1')));
+        expect(mockChangeCharacterYPosition.mock.calls.length).toBe(0);
+    });
+
+    test('When the changed row label value is invalid, the blur event resets the label back to what it was', () => {
+        expect.assertions(3);
+        const newRowLabel = 'A';
 
         characterYPositionCoordinateBox.simulate('change',
-            TestUtils.makeChangeEvent(makeRowLabelCurrentTarget(secondSampleYPosition)));
+            TestUtils.makeChangeEvent(makeRowLabelCurrentTarget(newRowLabel)));
         wrapper.update();
-        expect(wrapper.instance().state.characterRowLabel).toBe(secondSampleYPosition);
+        expect(wrapper.instance().state.characterRowLabel).toBe(newRowLabel);
+
+        characterYPositionCoordinateBox.simulate('blur',
+            TestUtils.makeBlurEvent(makeRowLabelCurrentTarget(newRowLabel)));
+        expect(mockChangeCharacterYPosition.mock.calls.length).toBe(0);
+        expect(wrapper.instance().state.characterRowLabel).toBe('1');
+    });
+
+    test('When there is a change to the row label value, and it is valid, pressing Enter calls the provided Y position change handler', () => {
+        expect.assertions(3);
+        const newRowLabel = '2';
+
+        characterYPositionCoordinateBox.simulate('change',
+            TestUtils.makeChangeEvent(makeRowLabelCurrentTarget(newRowLabel)));
+        wrapper.update();
+        expect(wrapper.instance().state.characterRowLabel).toBe(newRowLabel);
 
         characterYPositionCoordinateBox.simulate('keyDown',
-            TestUtils.makeKeyDownEvent(makeRowLabelCurrentTarget(secondSampleYPosition), 'Enter'));
-        expect(mockChangeCharacterYPosition.mock.calls.length).toBe(2);
-        expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(8);
+            TestUtils.makeKeyDownEvent(makeRowLabelCurrentTarget(newRowLabel), 'Enter'));
+        expect(mockChangeCharacterYPosition.mock.calls.length).toBe(1);
+        expect(mockChangeCharacterYPosition.mock.calls[0][0]).toBe(2);
     });
 });
 
@@ -335,56 +404,4 @@ test('When a world has enableFlipCharacter=false, character icon gets class name
     wrapper.setProps({characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 2, 100))});
     expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
     expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-});
-
-describe('Character position row/column input Blur event', () => {
-    test('When there is no changes in row/column value, blur event does not update', () => {
-        expect.assertions(2);
-        const { wrapper, mockChangeCharacterYPosition, mockChangeCharacterXPosition } = createShallowCharacterPositionController();
-        const characterXPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(0);
-        const characterYPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(1);
-        characterYPositionCoordinateBox.simulate('blur');
-        expect(mockChangeCharacterYPosition.mock.calls.length).toBe(0);
-        characterXPositionCoordinateBox.simulate('blur');
-        expect(mockChangeCharacterXPosition.mock.calls.length).toBe(0);
-    });
-    test('When there is changes in row/column value, blue event does update', () => {
-        const { wrapper, mockChangeCharacterXPosition } = createShallowCharacterPositionController();
-        const characterXPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(0);
-        const sampleXPosition = 'X';
-
-        characterXPositionCoordinateBox.simulate('change',
-            TestUtils.makeChangeEvent(makeColumnLabelCurrentTarget(sampleXPosition)));
-        wrapper.update();
-        expect(wrapper.instance().state.characterColumnLabel).toBe(sampleXPosition);
-
-        characterXPositionCoordinateBox.simulate('blur',
-            TestUtils.makeBlurEvent(makeColumnLabelCurrentTarget(sampleXPosition)));
-        expect(mockChangeCharacterXPosition.mock.calls.length).toBe(1);
-        expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(24); // Column 'X' is number 24
-    });
-    test('When the changed row/column value is invalid, blur event updates position values back to what it was', () => {
-        const { wrapper, mockChangeCharacterXPosition } = createShallowCharacterPositionController();
-        const characterXPositionCoordinateBox = getCharacterPositionCoordinateBoxes(wrapper).at(0);
-
-        const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
-        const initialColumnValue = 'B';
-        const initialCharacterState = new CharacterState(initialColumnValue.charCodeAt(0) - 64, 6, 3, [], sceneDimensions);
-
-        wrapper.setProps({
-            characterState: initialCharacterState
-        });
-
-        const sampleXPosition = '3';
-
-        characterXPositionCoordinateBox.simulate('change',
-            TestUtils.makeChangeEvent(makeColumnLabelCurrentTarget(sampleXPosition)));
-        wrapper.update();
-        expect(wrapper.instance().state.characterColumnLabel).toBe(sampleXPosition);
-
-        characterXPositionCoordinateBox.simulate('blur',
-            TestUtils.makeBlurEvent(makeColumnLabelCurrentTarget(sampleXPosition)));
-        expect(mockChangeCharacterXPosition.mock.calls.length).toBe(0);
-        expect(wrapper.instance().state.characterColumnLabel).toBe(initialColumnValue);
-    });
 });
