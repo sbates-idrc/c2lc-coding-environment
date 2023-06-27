@@ -102,6 +102,18 @@ import { ReactComponent as Marble } from './svg/Marble.svg';
 import { ReactComponent as MarbleGray } from './svg/MarbleGray.svg';
 import { ReactComponent as MarbleContrast } from './svg/MarbleContrast.svg';
 
+// Music Band
+
+import { ReactComponent as MusicBand } from './svg/MusicBand.svg';
+import { ReactComponent as MusicBandGray } from './svg/MusicBandGray.svg';
+import { ReactComponent as MusicBandContrast } from './svg/MusicBandContrast.svg';
+import { ReactComponent as MusicBandThumbnail } from './svg/MusicBandThumbnail.svg';
+import { ReactComponent as MusicBandThumbnailGray } from './svg/MusicBandThumbnailGray.svg';
+import { ReactComponent as MusicBandThumbnailContrast } from './svg/MusicBandThumbnailContrast.svg';
+import { ReactComponent as MusicBandBaton } from './svg/MusicBandBaton.svg';
+import { ReactComponent as MusicBandBatonGray } from './svg/MusicBandBatonGray.svg';
+import { ReactComponent as MusicBandBatonContrast } from './svg/MusicBandBatonContrast.svg';
+
 // Savannah
 import { ReactComponent as Savannah } from './svg/Savannah.svg';
 import { ReactComponent as SavannahGray } from './svg/Savannah-gray.svg';
@@ -172,6 +184,7 @@ const worlds: {|
     'Haunted': WorldProperties,
     'Landmarks': WorldProperties,
     'Marble': WorldProperties,
+    'MusicBand': WorldProperties,
     'Savannah': WorldProperties,
     'Sketchpad': WorldProperties,
     'Space': WorldProperties,
@@ -845,6 +858,63 @@ const worlds: {|
         startingY: 2,
         startingDirection: 2, // East
         enableFlipCharacter: false
+    },
+    'MusicBand': {
+        background: MusicBand,
+        backgroundGray: MusicBandGray,
+        backgroundContrast: MusicBandContrast,
+        backgroundInfo : {
+            B1: 'spotlight',
+            E1: 'spotlight',
+            H1: 'spotlight',
+            K1: 'spotlight',
+            H2: 'drumKit',
+            J2: 'saxophone',
+            K2: 'saxophone',
+            B3: 'guitar',
+            C3: 'guitar',
+            F3: 'drumKit',
+            G3: 'drumKit',
+            H3: 'drumKit',
+            J3: 'saxophone',
+            K3: 'saxophone',
+            B4: 'guitar',
+            C4: 'guitar',
+            F4: 'drumKit',
+            G4: 'drumKit',
+            H4: 'drumKit',
+            F5: 'drumKit',
+            G5: 'drumKit',
+            H5: 'drumKit',
+            A6: 'tambourine',
+            F6: 'microphone',
+            H6: 'synthesizer',
+            I6: 'synthesizer',
+            J6: 'synthesizer',
+            K6: 'synthesizer',
+            A7: 'loudspeaker',
+            C7: 'xylophone',
+            D7: 'xylophone',
+            F7: 'microphone',
+            H7: 'synthesizer',
+            I7: 'synthesizer',
+            J7: 'synthesizer',
+            L7: 'loudspeaker',
+            A8: 'loudspeaker',
+            F8: 'microphone',
+            L8: 'loudspeaker'
+        },
+        thumbnail: MusicBandThumbnail,
+        thumbnailDark: MusicBandThumbnail,
+        thumbnailGray: MusicBandThumbnailGray,
+        thumbnailContrast: MusicBandThumbnailContrast,
+        character: MusicBandBaton,
+        characterGray: MusicBandBatonGray,
+        characterContrast: MusicBandBatonContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
     },
     'Savannah': {
         background: Savannah,
