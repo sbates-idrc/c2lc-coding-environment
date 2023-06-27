@@ -902,7 +902,6 @@ const worlds: {|
             L7: 'loudspeaker',
             A8: 'loudspeaker',
             F8: 'microphone',
-            I8: 'synthesizer',
             L8: 'loudspeaker'
         },
         thumbnail: MusicBandThumbnail,
