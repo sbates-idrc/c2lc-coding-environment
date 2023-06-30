@@ -1875,9 +1875,40 @@ export class App extends React.Component<AppProps, AppState> {
                 console.log(event.data.message);
                 /* eslint-enable no-console */
 
-                this.setState({
-                    programSequence: new ProgramSequence(event.data.message.program, 0, 0, new Map())
-                });
+                const command = event.data.message.command;
+                if ( command === 'setProgram' ) {
+                    this.setState({
+                        programSequence: new ProgramSequence(event.data.message.program, 0, 0, new Map())
+                    });
+                }
+                else if ( command === 'start' ) {
+                    switch (this.state.runningState) {
+                        case 'pauseRequested': // Fall through
+                        case 'paused':
+                            this.setState({
+                                runningState: 'running',
+                                actionPanelStepIndex: null
+                            });
+                            break;
+                        case 'stopRequested': // Fall through
+                        case 'stopped':
+                            this.setState((state) => {
+                                return {
+                                    programSequence: state.programSequence.initiateProgramRun(),
+                                    runningState: 'running',
+                                    actionPanelStepIndex: null
+                                };
+                            });
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if ( command === 'stop' ) {
+                    if (this.state.runningState !== 'stopped' && this.state.runningState !== 'stopRequested') {
+                        this.setRunningState('stopRequested');
+                    }
+                }
 
                 // window.parent && window.parent.postMessage( {
                 //     type: 'paper-playground-weavly-message',
