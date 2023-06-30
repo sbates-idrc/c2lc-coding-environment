@@ -1026,6 +1026,49 @@ export class App extends React.Component<AppProps, AppState> {
         }
     };
 
+    handleMessage = ( e: MessageEvent ) => {
+        if ( e.data.type === 'paper-playground-weavly-message') {
+            /* eslint-disable no-console */
+            console.log(e.data.message);
+            /* eslint-enable no-console */
+
+            const command = e.data.message.command;
+            if ( command === 'setProgram' ) {
+                this.setState({
+                    programSequence: new ProgramSequence(e.data.message.program, 0, 0, new Map())
+                });
+            }
+            else if ( command === 'start' ) {
+                switch (this.state.runningState) {
+                    case 'pauseRequested': // Fall through
+                    case 'paused':
+                        this.setState({
+                            runningState: 'running',
+                            actionPanelStepIndex: null
+                        });
+                        break;
+                    case 'stopRequested': // Fall through
+                    case 'stopped':
+                        this.setState((state) => {
+                            return {
+                                programSequence: state.programSequence.initiateProgramRun(),
+                                runningState: 'running',
+                                actionPanelStepIndex: null
+                            };
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if ( command === 'stop' ) {
+                if (this.state.runningState !== 'stopped' && this.state.runningState !== 'stopRequested') {
+                    this.setRunningState('stopRequested');
+                }
+            }
+        }
+    }
+
     focusPreviousProgramBlock() {
         const programBlocks = document.querySelectorAll('.ProgramBlockEditor__program-block');
         if (programBlocks.length > 0) {
@@ -1868,55 +1911,7 @@ export class App extends React.Component<AppProps, AppState> {
         }
 
         document.addEventListener('keydown', this.handleDocumentKeyDown);
-
-        window.addEventListener('message', event => {
-            if (event.data.type === 'paper-playground-weavly-message') {
-                /* eslint-disable no-console */
-                console.log(event.data.message);
-                /* eslint-enable no-console */
-
-                const command = event.data.message.command;
-                if ( command === 'setProgram' ) {
-                    this.setState({
-                        programSequence: new ProgramSequence(event.data.message.program, 0, 0, new Map())
-                    });
-                }
-                else if ( command === 'start' ) {
-                    switch (this.state.runningState) {
-                        case 'pauseRequested': // Fall through
-                        case 'paused':
-                            this.setState({
-                                runningState: 'running',
-                                actionPanelStepIndex: null
-                            });
-                            break;
-                        case 'stopRequested': // Fall through
-                        case 'stopped':
-                            this.setState((state) => {
-                                return {
-                                    programSequence: state.programSequence.initiateProgramRun(),
-                                    runningState: 'running',
-                                    actionPanelStepIndex: null
-                                };
-                            });
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                else if ( command === 'stop' ) {
-                    if (this.state.runningState !== 'stopped' && this.state.runningState !== 'stopRequested') {
-                        this.setRunningState('stopRequested');
-                    }
-                }
-
-                // window.parent && window.parent.postMessage( {
-                //     type: 'paper-playground-weavly-message',
-                //     message: 'Hello Paper Land!'
-                // }, '*' );
-            }
-
-        } );
+        window.addEventListener('message', this.handleMessage );
     }
 
     componentDidUpdate(prevProps: {}, prevState: AppState) {
@@ -2030,6 +2025,7 @@ export class App extends React.Component<AppProps, AppState> {
 
     componentWillUnmount() {
         document.removeEventListener('keydown', this.handleDocumentKeyDown);
+        window.removeEventListener( 'message', this.handleMessage);
     }
 }
 
