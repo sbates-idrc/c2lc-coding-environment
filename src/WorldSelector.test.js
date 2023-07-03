@@ -66,26 +66,27 @@ function getDoneButton(wrapper) {
 
 describe('When rendering selector options', () => {
     test('All worlds should be displayed as options and only one is checked', () => {
-        expect.assertions(29);
+        expect.assertions(31);
         const { wrapper } = createMountWorldSelector();
         const selectorOptions = getWorldSelectorRadioButton(wrapper);
 
-        expect(selectorOptions.length).toBe(14);
+        expect(selectorOptions.length).toBe(15);
 
         expect(selectorOptions.get(0).props.value).toBe('Sketchpad');
-        expect(selectorOptions.get(1).props.value).toBe('AmusementPark');
-        expect(selectorOptions.get(2).props.value).toBe('AtlanticCanada');
-        expect(selectorOptions.get(3).props.value).toBe('Camping');
-        expect(selectorOptions.get(4).props.value).toBe('DeepOcean');
-        expect(selectorOptions.get(5).props.value).toBe('EuropeTrip');
-        expect(selectorOptions.get(6).props.value).toBe('GroceryStore');
-        expect(selectorOptions.get(7).props.value).toBe('Haunted');
-        expect(selectorOptions.get(8).props.value).toBe('Landmarks');
-        expect(selectorOptions.get(9).props.value).toBe('Marble');
-        expect(selectorOptions.get(10).props.value).toBe('MusicBand');
-        expect(selectorOptions.get(11).props.value).toBe('Savannah');
-        expect(selectorOptions.get(12).props.value).toBe('Space');
-        expect(selectorOptions.get(13).props.value).toBe('Sports');
+        expect(selectorOptions.get(1).props.value).toBe('Custom');
+        expect(selectorOptions.get(2).props.value).toBe('AmusementPark');
+        expect(selectorOptions.get(3).props.value).toBe('AtlanticCanada');
+        expect(selectorOptions.get(4).props.value).toBe('Camping');
+        expect(selectorOptions.get(5).props.value).toBe('DeepOcean');
+        expect(selectorOptions.get(6).props.value).toBe('EuropeTrip');
+        expect(selectorOptions.get(7).props.value).toBe('GroceryStore');
+        expect(selectorOptions.get(8).props.value).toBe('Haunted');
+        expect(selectorOptions.get(9).props.value).toBe('Landmarks');
+        expect(selectorOptions.get(10).props.value).toBe('Marble');
+        expect(selectorOptions.get(11).props.value).toBe('MusicBand');
+        expect(selectorOptions.get(12).props.value).toBe('Savannah');
+        expect(selectorOptions.get(13).props.value).toBe('Space');
+        expect(selectorOptions.get(14).props.value).toBe('Sports');
 
         expect(selectorOptions.get(0).props.checked).toBe(true);
         for (let i = 1; i < selectorOptions.length; i++) {
@@ -97,19 +98,19 @@ describe('When rendering selector options', () => {
 
         let selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
         expect(selectorThumbnails.get(0).props.children.type.render().props.children).toBe('SketchpadThumbnail.svg');
-        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('AmusementParkThumbnail.svg');
+        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('AmusementParkThumbnail.svg');
 
         // Grayscale theme
         wrapper.setProps({theme: 'gray'});
         selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
         expect(selectorThumbnails.get(0).props.children.type.render().props.children).toBe('SketchpadThumbnail-gray.svg');
-        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('AmusementParkThumbnailGray.svg');
+        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('AmusementParkThumbnailGray.svg');
 
         // High contrast theme
         wrapper.setProps({theme: 'contrast'});
         selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
         expect(selectorThumbnails.get(0).props.children.type.render().props.children).toBe('SketchpadThumbnail-contrast.svg');
-        expect(selectorThumbnails.get(1).props.children.type.render().props.children).toBe('AmusementParkThumbnailContrast.svg');
+        expect(selectorThumbnails.get(2).props.children.type.render().props.children).toBe('AmusementParkThumbnailContrast.svg');
     });
 });
 
@@ -120,15 +121,15 @@ describe('When selecting a world', () => {
         const selectorOptions = getWorldSelectorRadioButton(wrapper);
 
         const firstWorldSelector = selectorOptions.at(0);
-        const secondWorldSelector = selectorOptions.at(1);
+        const thirdWorldSelector = selectorOptions.at(2);
 
         // First World
         firstWorldSelector.simulate('change');
         expect(mockOnSelect.mock.calls.length).toBe(1);
         expect(mockOnSelect.mock.calls[0][0]).toBe('Sketchpad');
 
-        // Second World
-        secondWorldSelector.simulate('change');
+        // Third World
+        thirdWorldSelector.simulate('change');
         expect(mockOnSelect.mock.calls.length).toBe(2);
         expect(mockOnSelect.mock.calls[1][0]).toBe('AmusementPark');
     });
@@ -164,10 +165,10 @@ test('When one of the thumbnail images is clicked, onSelect prop gets called', (
     const selectorThumbnails = getWorldSelectorThumbnailIcon(wrapper);
 
     const firstThumbnailImage = selectorThumbnails.at(0);
-    const secondThumbnailImage = selectorThumbnails.at(1);
+    const thirdThumbnailImage = selectorThumbnails.at(2);
 
     firstThumbnailImage.simulate('click');
     expect(mockOnSelect.mock.calls[0][0]).toBe('Sketchpad');
-    secondThumbnailImage.simulate('click');
+    thirdThumbnailImage.simulate('click');
     expect(mockOnSelect.mock.calls[1][0]).toBe('AmusementPark');
 });

@@ -178,6 +178,7 @@ const worlds: {|
     'AmusementPark': WorldProperties,
     'AtlanticCanada': WorldProperties,
     'Camping': WorldProperties,
+    'Custom': WorldProperties,
     'DeepOcean': WorldProperties,
     'EuropeTrip': WorldProperties,
     'GroceryStore': WorldProperties,
@@ -455,6 +456,23 @@ const worlds: {|
         character: Squirrel,
         characterGray: SquirrelGray,
         characterContrast: SquirrelContrast,
+        startingX: 1,
+        startingY: 2,
+        startingDirection: 2, // East
+        enableFlipCharacter: true
+    },
+    'Custom': {
+        background: null,
+        backgroundGray: null,
+        backgroundContrast: null,
+        backgroundInfo: null,
+        thumbnail: SketchpadThumbnail,
+        thumbnailDark: SketchpadThumbnail,
+        thumbnailGray: SketchpadThumbnail,
+        thumbnailContrast: SketchpadThumbnail,
+        character: Robot,
+        characterGray: Robot,
+        characterContrast: Robot,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East

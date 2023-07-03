@@ -321,6 +321,90 @@ body.contrast-theme {
     }
 }
 
+/* Custom */
+
+.ProgramBlockEditor__character-column-character-container--Custom {
+    background-color: #4C9990;
+}
+
+.Scene__grid-line--Custom {
+    stroke: #F1F2F4;
+}
+
+.Scene__path-line--Custom {
+    stroke: #505862;
+}
+
+.Scene__starting-grid-cell-point--Custom {
+    fill: #505862;
+}
+
+.WorldSelector__option-image--Custom:hover {
+    svg {
+        .thumbnail-background {
+            fill: #F1AE5B;
+        }
+        .thumbnail-line {
+            stroke: #546D79;
+        }
+    }
+}
+
+/* White */
+.Scene__custom0 {
+    background-color: #FFFFFF;
+}
+
+/* Grey */
+.Scene__custom1 {
+    background-color: #B9BEC6;
+}
+
+/* Black */
+.Scene__custom2 {
+    background-color: #1E1E1E;
+}
+
+/* Green */
+.Scene__custom3 {
+    background-color: #52BDA4;
+}
+
+/* Light blue */
+.Scene__custom4 {
+    background-color: #5CBCD1;
+}
+
+/* Dark blue */
+.Scene__custom5 {
+    background-color: #33717F;
+}
+
+/* Yellow */
+.Scene__custom6 {
+    background-color: #F1AE5B;
+}
+
+/* Orange */
+.Scene__custom7 {
+    background-color: #F97953;
+}
+
+/* Red */
+.Scene__custom8 {
+    background-color: #EA462F;
+}
+
+/* Pink */
+.Scene__custom9 {
+    background-color: #EB73D0;
+}
+
+/* Purple */
+.Scene__customA {
+    background-color: #AA6F9C;
+}
+
 /* DeepOcean */
 
 .ProgramBlockEditor__character-column-character-container--DeepOcean {
