@@ -13,7 +13,8 @@ import CharacterPositionController from './CharacterPositionController';
 import CommandPaletteCommand from './CommandPaletteCommand';
 import CookieNotification from './CookieNotification';
 import C2lcURLParams from './C2lcURLParams';
-import CustomBackground from './CustomBackground';
+import { CustomBackground } from './CustomBackground';
+import CustomBackgroundSerializer from './CustomBackgroundSerializer';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
 import DashDriver from './DashDriver';
 import * as FeatureDetection from './FeatureDetection';
@@ -139,6 +140,7 @@ export class App extends React.Component<AppProps, AppState> {
     programSerializer: ProgramSerializer;
     characterStateSerializer: CharacterStateSerializer;
     disallowedActionsSerializer: DisallowedActionsSerializer;
+    customBackgroundSerializer: CustomBackgroundSerializer;
     speedLookUp: Array<number>;
     pushStateTimeoutID: ?TimeoutID;
     speedControlRef: { current: null | HTMLElement };
@@ -168,6 +170,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.characterStateSerializer = new CharacterStateSerializer(this.sceneDimensions);
 
         this.disallowedActionsSerializer = new DisallowedActionsSerializer();
+
+        this.customBackgroundSerializer = new CustomBackgroundSerializer(this.sceneDimensions);
 
         this.pushStateTimeoutID = null;
 
@@ -1715,6 +1719,7 @@ export class App extends React.Component<AppProps, AppState> {
             const disallowedActionsQuery = params.getDisallowedActions();
             const worldQuery = params.getWorld();
             const startingPositionQuery = params.getStartingPosition();
+            const customBackgroundQuery = params.getCustomBackground();
 
             if (programQuery != null) {
                 try {
@@ -1774,7 +1779,8 @@ export class App extends React.Component<AppProps, AppState> {
 
             this.setStateSettings({
                 theme: Utils.getThemeFromString(themeQuery, 'default'),
-                world: world
+                world: world,
+                customBackground: this.customBackgroundSerializer.deserialize(customBackgroundQuery)
             });
         } else {
             const localProgram = window.localStorage.getItem('c2lc-program');

@@ -9,7 +9,7 @@ import Scene from './Scene';
 import type {SceneProps} from './Scene';
 import SceneDimensions from './SceneDimensions';
 import CharacterState from './CharacterState';
-import CustomBackground from './CustomBackground';
+import { CustomBackground } from './CustomBackground';
 
 configure({ adapter: new Adapter() });
 

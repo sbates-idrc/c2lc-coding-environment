@@ -34,4 +34,8 @@ export default class C2lcURLParams {
     getStartingPosition() {
         return this.urlSearchParams.get('s');
     }
+
+    getCustomBackground() {
+        return this.urlSearchParams.get('b');
+    }
 }

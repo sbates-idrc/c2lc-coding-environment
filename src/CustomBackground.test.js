@@ -1,6 +1,6 @@
 // @flow
 
-import CustomBackground from './CustomBackground';
+import { CustomBackground } from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
 
 test('All tiles are set to the value provided at construction', () => {

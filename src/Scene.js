@@ -3,7 +3,7 @@
 import React from 'react';
 import CharacterState from './CharacterState';
 import Character from './Character';
-import CustomBackground from './CustomBackground';
+import { CustomBackground } from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
 import { getBackgroundInfo, getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
