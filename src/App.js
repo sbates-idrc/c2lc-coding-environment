@@ -13,6 +13,7 @@ import CharacterPositionController from './CharacterPositionController';
 import CommandPaletteCommand from './CommandPaletteCommand';
 import CookieNotification from './CookieNotification';
 import C2lcURLParams from './C2lcURLParams';
+import CustomBackground from './CustomBackground';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
 import DashDriver from './DashDriver';
 import * as FeatureDetection from './FeatureDetection';
@@ -85,7 +86,8 @@ type AppSettings = {
     language: string,
     addNodeExpandedMode: boolean,
     theme: ThemeName,
-    world: WorldName
+    world: WorldName,
+    customBackground: CustomBackground
 };
 
 type AppProps = {
@@ -424,7 +426,8 @@ export class App extends React.Component<AppProps, AppState> {
                 language: 'en',
                 addNodeExpandedMode: true,
                 theme: 'default',
-                world: this.defaultWorld
+                world: this.defaultWorld,
+                customBackground: new CustomBackground(this.sceneDimensions, '0')
             },
             dashConnectionStatus: 'notConnected',
             showDashConnectionError: false,
@@ -1481,6 +1484,7 @@ export class App extends React.Component<AppProps, AppState> {
                             characterState={this.state.characterState}
                             theme={this.state.settings.theme}
                             world={this.state.settings.world}
+                            customBackground={this.state.settings.customBackground}
                             startingX={this.state.startingX}
                             startingY={this.state.startingY}
                             runningState={this.state.runningState}
