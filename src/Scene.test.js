@@ -20,7 +20,7 @@ const defaultSceneProps = {
     characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 1, 1, 1)),
     theme: 'default',
     world: 'Sketchpad',
-    customBackground: new CustomBackground(defaultDimensions, '0'),
+    customBackground: new CustomBackground(defaultDimensions),
     startingX: 1,
     startingY: 2
 };

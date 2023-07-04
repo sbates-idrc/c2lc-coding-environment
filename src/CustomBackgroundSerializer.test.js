@@ -7,16 +7,10 @@ import SceneDimensions from './SceneDimensions';
 test('Serialize', () => {
     const dimensions = new SceneDimensions(1, 3, 1, 2);
     const serializer = new CustomBackgroundSerializer(dimensions);
-
-    const customBackground = new CustomBackground(dimensions, '0');
-    expect(serializer.serialize(customBackground)).toBe('000000');
-
-    customBackground.setTile(1, 1, '0');
-    customBackground.setTile(2, 1, '1');
-    customBackground.setTile(3, 1, '2');
-    customBackground.setTile(1, 2, '3');
-    customBackground.setTile(2, 2, '4');
-    customBackground.setTile(3, 2, '5');
+    const customBackground  = new CustomBackground(
+        dimensions,
+        ['0', '1', '2', '3', '4', '5']
+    );
     expect(serializer.serialize(customBackground)).toBe('012345');
 });
 

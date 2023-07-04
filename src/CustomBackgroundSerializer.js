@@ -16,18 +16,19 @@ export default class CustomBackgroundSerializer {
     }
 
     deserialize(text: ?string): CustomBackground {
-        const customBackground = new CustomBackground(this.sceneDimensions, '0');
+        const numTiles = this.sceneDimensions.getWidth() * this.sceneDimensions.getHeight();
+        const tiles = new Array(numTiles);
+        tiles.fill('0');
 
         if (text) {
-            const numTiles = this.sceneDimensions.getWidth() * this.sceneDimensions.getHeight();
             for (let i = 0; (i < text.length) && (i < numTiles); i++) {
                 const tile = text.charAt(i);
                 if (isTile(tile)) {
-                    customBackground.setTileByIndex(i, ((tile: any): Tile));
+                    tiles[i] = ((tile: any): Tile);
                 }
             }
         }
 
-        return customBackground;
+        return new CustomBackground(this.sceneDimensions, tiles);
     }
 }

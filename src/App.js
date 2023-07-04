@@ -13,7 +13,8 @@ import CharacterPositionController from './CharacterPositionController';
 import CommandPaletteCommand from './CommandPaletteCommand';
 import CookieNotification from './CookieNotification';
 import C2lcURLParams from './C2lcURLParams';
-import { CustomBackground } from './CustomBackground';
+import { CustomBackground, isTile } from './CustomBackground';
+import type { Tile } from './CustomBackground';
 import CustomBackgroundSerializer from './CustomBackgroundSerializer';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
 import DashDriver from './DashDriver';
@@ -87,8 +88,7 @@ type AppSettings = {
     language: string,
     addNodeExpandedMode: boolean,
     theme: ThemeName,
-    world: WorldName,
-    customBackground: CustomBackground
+    world: WorldName
 };
 
 type AppProps = {
@@ -126,7 +126,8 @@ export type AppState = {
     focusOnClosePrivacyModalSelector: string,
     startingX: number,
     startingY: number,
-    startingDirection: number
+    startingDirection: number,
+    customBackground: CustomBackground
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -430,8 +431,7 @@ export class App extends React.Component<AppProps, AppState> {
                 language: 'en',
                 addNodeExpandedMode: true,
                 theme: 'default',
-                world: this.defaultWorld,
-                customBackground: new CustomBackground(this.sceneDimensions, '0')
+                world: this.defaultWorld
             },
             dashConnectionStatus: 'notConnected',
             showDashConnectionError: false,
@@ -459,6 +459,7 @@ export class App extends React.Component<AppProps, AppState> {
             startingX: startingX,
             startingY: startingY,
             startingDirection: startingDirection,
+            customBackground: new CustomBackground(this.sceneDimensions),
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -725,6 +726,61 @@ export class App extends React.Component<AppProps, AppState> {
     // Global shortcut handling.
     // TODO: Convert to use keyboardEventMatchesKeyDef for each command in turn.
     handleDocumentKeyDown = (e: KeyboardEvent) => {
+        switch(e.key) {
+            case 'ArrowUp':
+                e.preventDefault();
+                this.setState((state) => ({
+                    characterState: state.characterState.moveUpPosition()
+                }));
+                return;
+            case 'ArrowDown':
+                e.preventDefault();
+                this.setState((state) => ({
+                    characterState: state.characterState.moveDownPosition()
+                }));
+                return;
+            case 'ArrowLeft':
+                e.preventDefault();
+                this.setState((state) => ({
+                    characterState: state.characterState.moveLeftPosition()
+                }));
+                return;
+            case 'ArrowRight':
+                e.preventDefault();
+                this.setState((state) => ({
+                    characterState: state.characterState.moveRightPosition()
+                }));
+                return;
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+            case 'A':
+            case 'a':
+            case 'B':
+            case 'b':
+                e.preventDefault();
+                const tile = e.key.toUpperCase();
+                if (isTile(tile)) {
+                    this.setState((state) => ({
+                        customBackground: state.customBackground.setTile(
+                            state.characterState.xPos,
+                            state.characterState.yPos,
+                            ((tile: any): Tile)
+                        )
+                    }));
+                }
+                return;
+            default:
+                // Do nothing
+        }
+
         if (this.state.keyBindingsEnabled) {
             if (e.key === 'Escape') {
                 this.sequenceInProgress = [];
@@ -1488,7 +1544,7 @@ export class App extends React.Component<AppProps, AppState> {
                             characterState={this.state.characterState}
                             theme={this.state.settings.theme}
                             world={this.state.settings.world}
-                            customBackground={this.state.settings.customBackground}
+                            customBackground={this.state.customBackground}
                             startingX={this.state.startingX}
                             startingY={this.state.startingY}
                             runningState={this.state.runningState}
@@ -1777,10 +1833,13 @@ export class App extends React.Component<AppProps, AppState> {
                 startingDirection: startingPosition.direction
             });
 
+            this.setState({
+                customBackground: this.customBackgroundSerializer.deserialize(customBackgroundQuery)
+            });
+
             this.setStateSettings({
                 theme: Utils.getThemeFromString(themeQuery, 'default'),
-                world: world,
-                customBackground: this.customBackgroundSerializer.deserialize(customBackgroundQuery)
+                world: world
             });
         } else {
             const localProgram = window.localStorage.getItem('c2lc-program');
@@ -1889,12 +1948,12 @@ export class App extends React.Component<AppProps, AppState> {
             || this.state.startingY !== prevState.startingY
             || this.state.startingDirection !== prevState.startingDirection
             || this.state.settings.world !== prevState.settings.world
-            || this.state.settings.customBackground !== prevState.settings.customBackground) {
+            || this.state.customBackground !== prevState.customBackground) {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedDisallowedActions = this.disallowedActionsSerializer.serialize(this.state.disallowedActions);
             const serializedStartingPosition = `${Utils.encodeCoordinate(this.state.startingX)}${Utils.encodeCoordinate(this.state.startingY)}${Utils.encodeDirection(this.state.startingDirection)}`;
-            const serializedCustomBackground = this.customBackgroundSerializer.serialize(this.state.settings.customBackground);
+            const serializedCustomBackground = this.customBackgroundSerializer.serialize(this.state.customBackground);
 
             // Use setTimeout() to limit how often we call history.pushState().
             // Safari will throw an error if calls to history.pushState() are

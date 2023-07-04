@@ -33,10 +33,21 @@ export class CustomBackground {
     sceneDimensions: SceneDimensions;
     tiles: Array<Tile>;
 
-    constructor(sceneDimensions: SceneDimensions, tile: Tile) {
+    constructor(sceneDimensions: SceneDimensions, tiles: ?Array<Tile>) {
         this.sceneDimensions = sceneDimensions;
-        this.tiles = new Array(sceneDimensions.getWidth() * sceneDimensions.getHeight());
-        this.tiles.fill(tile);
+        const numTiles = sceneDimensions.getWidth() * sceneDimensions.getHeight();
+        if (tiles != null) {
+            if (tiles.length === numTiles) {
+                this.tiles = tiles;
+            } else {
+                this.tiles = tiles.slice(0, numTiles);
+                this.tiles.length = numTiles;
+                this.tiles.fill('0', tiles.length, numTiles);
+            }
+        } else {
+            this.tiles = new Array(numTiles);
+            this.tiles.fill('0');
+        }
     }
 
     calculateIndex(x: number, y: number): number {
@@ -44,15 +55,13 @@ export class CustomBackground {
             + (x - this.sceneDimensions.getMinX());
     }
 
-    setTile(x: number, y: number, tile: Tile): void {
-        this.tiles[this.calculateIndex(x, y)] = tile;
-    }
-
     getTile(x: number, y: number): Tile {
         return this.tiles[this.calculateIndex(x, y)];
     }
 
-    setTileByIndex(index: number, tile: Tile): void {
-        this.tiles[index] = tile;
+    setTile(x: number, y: number, tile: Tile): CustomBackground {
+        const tiles = this.tiles.slice();
+        tiles[this.calculateIndex(x, y)] = tile;
+        return new CustomBackground(this.sceneDimensions, tiles);
     }
 }
