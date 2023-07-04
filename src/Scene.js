@@ -3,7 +3,7 @@
 import React from 'react';
 import CharacterState from './CharacterState';
 import Character from './Character';
-import { CustomBackground } from './CustomBackground';
+import { CustomBackground, getTileClassName } from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
 import { getBackgroundInfo, getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
@@ -112,10 +112,11 @@ class Scene extends React.Component<SceneProps, {}> {
         for (let y = this.props.dimensions.getMinY(); y < this.props.dimensions.getMaxY() + 1; y++) {
             for (let x = this.props.dimensions.getMinX(); x < this.props.dimensions.getMaxX() + 1; x++) {
                 const tile = this.props.customBackground.getTile(x, y);
+                const tileClassName = getTileClassName(tile);
                 if (tile !== '0') {
                     tiles.push(
                         <rect
-                            className={`Scene__custom${tile}`}
+                            className={tileClassName}
                             key={`custom-background-tile-${x}-${y}`}
                             x={x - 0.5}
                             y={y - 0.5}

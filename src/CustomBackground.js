@@ -5,24 +5,28 @@ import SceneDimensions from './SceneDimensions';
 // TODO: Decide what to do if x or y or index is out of range
 
 const tiles = {
-    '0': true,
-    '1': true,
-    '2': true,
-    '3': true,
-    '4': true,
-    '5': true,
-    '6': true,
-    '7': true,
-    '8': true,
-    '9': true,
-    'A': true,
-    'B': true
+    '0': null,                       // Transparent
+    '1': 'Scene__custom-white',      // White
+    '2': 'Scene__custom-grey',       // Grey
+    '3': 'Scene__custom-black',      // Black
+    '4': 'Scene__custom-green',      // Green
+    '5': 'Scene__custom-light-blue', // Light blue
+    '6': 'Scene__custom-dark-blue',  // Dark blue
+    '7': 'Scene__custom-yellow',     // Yellow
+    '8': 'Scene__custom-orange',     // Orange
+    '9': 'Scene__custom-red',        // Red
+    'A': 'Scene__custom-pink',       // Pink
+    'B': 'Scene__custom-purple'      // Purple
 };
 
 export type Tile = $Keys<typeof tiles>;
 
 export function isTile(str: ?string): boolean {
     return tiles.hasOwnProperty(str);
+}
+
+export function getTileClassName(tile: Tile): ?string {
+    return tiles[tile];
 }
 
 export class CustomBackground {
