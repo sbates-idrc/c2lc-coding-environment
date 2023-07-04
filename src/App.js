@@ -1888,11 +1888,13 @@ export class App extends React.Component<AppProps, AppState> {
             || this.state.startingX !== prevState.startingX
             || this.state.startingY !== prevState.startingY
             || this.state.startingDirection !== prevState.startingDirection
-            || this.state.settings.world !== prevState.settings.world) {
+            || this.state.settings.world !== prevState.settings.world
+            || this.state.settings.customBackground !== prevState.settings.customBackground) {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedDisallowedActions = this.disallowedActionsSerializer.serialize(this.state.disallowedActions);
             const serializedStartingPosition = `${Utils.encodeCoordinate(this.state.startingX)}${Utils.encodeCoordinate(this.state.startingY)}${Utils.encodeDirection(this.state.startingDirection)}`;
+            const serializedCustomBackground = this.customBackgroundSerializer.serialize(this.state.settings.customBackground);
 
             // Use setTimeout() to limit how often we call history.pushState().
             // Safari will throw an error if calls to history.pushState() are
@@ -1908,10 +1910,11 @@ export class App extends React.Component<AppProps, AppState> {
                         t: this.state.settings.theme,
                         d: serializedDisallowedActions,
                         w: this.state.settings.world,
-                        s: serializedStartingPosition
+                        s: serializedStartingPosition,
+                        b: serializedCustomBackground
                     },
                     '',
-                    Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedDisallowedActions, serializedStartingPosition),
+                    Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedDisallowedActions, serializedStartingPosition, serializedCustomBackground),
                     '',
                 );
             }, pushStateDelayMs);

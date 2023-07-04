@@ -11,6 +11,10 @@ export default class CustomBackgroundSerializer {
         this.sceneDimensions = sceneDimensions;
     }
 
+    serialize(customBackground: CustomBackground): string {
+        return customBackground.tiles.join('');
+    }
+
     deserialize(text: ?string): CustomBackground {
         const customBackground = new CustomBackground(this.sceneDimensions, '0');
 

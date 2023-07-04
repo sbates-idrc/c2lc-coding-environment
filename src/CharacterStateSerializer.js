@@ -10,6 +10,7 @@ export default class CharacterStateSerializer {
     constructor(sceneDimensions: SceneDimensions) {
         this.sceneDimensions = sceneDimensions;
     }
+
     serialize(characterState: CharacterState): string {
         let pathParam = '' +
             encodeCoordinate(characterState.xPos) +
