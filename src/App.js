@@ -730,25 +730,25 @@ export class App extends React.Component<AppProps, AppState> {
             case 'ArrowUp':
                 e.preventDefault();
                 this.setState((state) => ({
-                    characterState: state.characterState.moveUpPosition()
+                    characterState: state.characterState.moveUpPosition(state.customBackground)
                 }));
                 return;
             case 'ArrowDown':
                 e.preventDefault();
                 this.setState((state) => ({
-                    characterState: state.characterState.moveDownPosition()
+                    characterState: state.characterState.moveDownPosition(state.customBackground)
                 }));
                 return;
             case 'ArrowLeft':
                 e.preventDefault();
                 this.setState((state) => ({
-                    characterState: state.characterState.moveLeftPosition()
+                    characterState: state.characterState.moveLeftPosition(state.customBackground)
                 }));
                 return;
             case 'ArrowRight':
                 e.preventDefault();
                 this.setState((state) => ({
-                    characterState: state.characterState.moveRightPosition()
+                    characterState: state.characterState.moveRightPosition(state.customBackground)
                 }));
                 return;
             case '0':
@@ -1308,7 +1308,7 @@ export class App extends React.Component<AppProps, AppState> {
                 break;
             case 'up':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveUpPosition();
+                    const updatedCharacterState = state.characterState.moveUpPosition(state.customBackground);
                     return {
                         characterState: updatedCharacterState,
                         startingX: updatedCharacterState.xPos,
@@ -1319,7 +1319,7 @@ export class App extends React.Component<AppProps, AppState> {
                 break;
             case 'right':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveRightPosition();
+                    const updatedCharacterState = state.characterState.moveRightPosition(state.customBackground);
                     return {
                         characterState: updatedCharacterState,
                         startingX: updatedCharacterState.xPos,
@@ -1330,7 +1330,7 @@ export class App extends React.Component<AppProps, AppState> {
                 break;
             case 'down':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveDownPosition();
+                    const updatedCharacterState = state.characterState.moveDownPosition(state.customBackground);
                     return {
                         characterState: updatedCharacterState,
                         startingX: updatedCharacterState.xPos,
@@ -1341,7 +1341,7 @@ export class App extends React.Component<AppProps, AppState> {
                 break;
             case 'left':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveLeftPosition();
+                    const updatedCharacterState = state.characterState.moveLeftPosition(state.customBackground);
                     return {
                         characterState: updatedCharacterState,
                         startingX: updatedCharacterState.xPos,

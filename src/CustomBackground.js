@@ -64,4 +64,9 @@ export class CustomBackground {
         tiles[this.calculateIndex(x, y)] = tile;
         return new CustomBackground(this.sceneDimensions, tiles);
     }
+
+    canMoveTo(x: number, y: number): boolean {
+        // Treat grey tiles as wall
+        return this.tiles[this.calculateIndex(x, y)] !== '2';
+    }
 }
