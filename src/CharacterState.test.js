@@ -5,6 +5,8 @@ import * as C2lcMath from './C2lcMath';
 import { CustomBackground } from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
 
+// TODO: Test forward() and backward() with CustomBackground behaviour
+
 // TODO: Figure out a better mechanism for using Jest expect.extend()
 //       with Flow than casting the expect() result to 'any'.
 
@@ -104,45 +106,46 @@ test('CharacterState.getDirectionDegrees() should return the direction in degree
 
 test('The character can move in 8 directions (N, NE, E, SE, S, SW, W, NW)', () => {
     const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
+    const customBackground = new CustomBackground(sceneDimensions);
     // N
-    (expect(new CharacterState(2, 2, 0, [], sceneDimensions).forward(1, true)): any)
+    (expect(new CharacterState(2, 2, 0, [], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 1, 0, [{x1: 2, y1: 2, x2: 2, y2: 1}]);
-    (expect(new CharacterState(2, 2, 4, [], sceneDimensions).backward(1, true)): any)
+    (expect(new CharacterState(2, 2, 4, [], sceneDimensions).backward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 1, 4, [{x1: 2, y1: 2, x2: 2, y2: 1}]);
     // NE
-    (expect(new CharacterState(1, 2, 1, [], sceneDimensions).forward(1, true)): any)
+    (expect(new CharacterState(1, 2, 1, [], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 1, 1, [{x1: 1, y1: 2, x2: 2, y2: 1}]);
-    (expect(new CharacterState(1, 2, 5, [], sceneDimensions).backward(1, true)): any)
+    (expect(new CharacterState(1, 2, 5, [], sceneDimensions).backward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 1, 5, [{x1: 1, y1: 2, x2: 2, y2: 1}]);
     // E
-    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true)): any)
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 1, 2, [{x1: 1, y1: 1, x2: 2, y2: 1}]);
-    (expect(new CharacterState(1, 1, 6, [], sceneDimensions).backward(1, true)): any)
+    (expect(new CharacterState(1, 1, 6, [], sceneDimensions).backward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 1, 6, [{x1: 1, y1: 1, x2: 2, y2: 1}]);
     // SE
-    (expect(new CharacterState(1, 1, 3, [], sceneDimensions).forward(1, true)): any)
+    (expect(new CharacterState(1, 1, 3, [], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 2, 3, [{x1: 1, y1: 1, x2: 2, y2: 2}]);
-    (expect(new CharacterState(1, 1, 7, [], sceneDimensions).backward(1, true)): any)
+    (expect(new CharacterState(1, 1, 7, [], sceneDimensions).backward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 2, 7, [{x1: 1, y1: 1, x2: 2, y2: 2}]);
     // S
-    (expect(new CharacterState(1, 1, 4, [], sceneDimensions).forward(1, true)): any)
+    (expect(new CharacterState(1, 1, 4, [], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(1, 2, 4, [{x1: 1, y1: 1, x2: 1, y2: 2}]);
-    (expect(new CharacterState(1, 1, 0, [], sceneDimensions).backward(1, true)): any)
+    (expect(new CharacterState(1, 1, 0, [], sceneDimensions).backward(1, true, customBackground)): any)
         .toHaveCharacterState(1, 2, 0, [{x1: 1, y1: 1, x2: 1, y2: 2}]);
     // SW
-    (expect(new CharacterState(2, 1, 5, [], sceneDimensions).forward(1, true)): any)
+    (expect(new CharacterState(2, 1, 5, [], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(1, 2, 5, [{x1: 2, y1: 1, x2: 1, y2: 2}]);
-    (expect(new CharacterState(2, 1, 1, [], sceneDimensions).backward(1, true)): any)
+    (expect(new CharacterState(2, 1, 1, [], sceneDimensions).backward(1, true, customBackground)): any)
         .toHaveCharacterState(1, 2, 1, [{x1: 2, y1: 1, x2: 1, y2: 2}]);
     // W
-    (expect(new CharacterState(2, 1, 6, [], sceneDimensions).forward(1, true)): any)
+    (expect(new CharacterState(2, 1, 6, [], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(1, 1, 6, [{x1: 2, y1: 1, x2: 1, y2: 1}]);
-    (expect(new CharacterState(2, 1, 2, [], sceneDimensions).backward(1, true)): any)
+    (expect(new CharacterState(2, 1, 2, [], sceneDimensions).backward(1, true, customBackground)): any)
         .toHaveCharacterState(1, 1, 2, [{x1: 2, y1: 1, x2: 1, y2: 1}]);
     // NW
-    (expect(new CharacterState(2, 2, 7, [], sceneDimensions).forward(1, true)): any)
+    (expect(new CharacterState(2, 2, 7, [], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(1, 1, 7, [{x1: 2, y1: 2, x2: 1, y2: 1}]);
-    (expect(new CharacterState(2, 2, 3, [], sceneDimensions).backward(1, true)): any)
+    (expect(new CharacterState(2, 2, 3, [], sceneDimensions).backward(1, true, customBackground)): any)
         .toHaveCharacterState(1, 1, 3, [{x1: 2, y1: 2, x2: 1, y2: 1}]);
 });
 
@@ -168,7 +171,8 @@ test('Turn Right moves clockwise and wraps at N', () => {
 
 test('Given an empty path, then moving Forward should add a new path segment', () => {
     const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
-    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true)): any)
+    const customBackground = new CustomBackground(sceneDimensions);
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 1, 2, [
             {x1: 1, y1: 1, x2: 2, y2: 1}
         ]);
@@ -176,7 +180,8 @@ test('Given an empty path, then moving Forward should add a new path segment', (
 
 test('When moving Forward in the same direction, the path segment should be extended', () => {
     const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
-    (expect(new CharacterState(2, 1, 2, [{x1: 1, y1: 1, x2: 2, y2: 1}], sceneDimensions).forward(1, true)): any)
+    const customBackground = new CustomBackground(sceneDimensions);
+    (expect(new CharacterState(2, 1, 2, [{x1: 1, y1: 1, x2: 2, y2: 1}], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(3, 1, 2, [
             {x1: 1, y1: 1, x2: 3, y2: 1}
         ]);
@@ -184,12 +189,13 @@ test('When moving Forward in the same direction, the path segment should be exte
 
 test('When moving Forward in a different direction, a new path segment should be added', () => {
     const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
-    (expect(new CharacterState(1, 2, 2, [], sceneDimensions).forward(1, true).turnLeft(2).forward(1, true)): any)
+    const customBackground = new CustomBackground(sceneDimensions);
+    (expect(new CharacterState(1, 2, 2, [], sceneDimensions).forward(1, true, customBackground).turnLeft(2).forward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 1, 0, [
             {x1: 1, y1: 2, x2: 2, y2: 2},
             {x1: 2, y1: 2, x2: 2, y2: 1}
         ]);
-    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true).turnRight(2).forward(1, true)): any)
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true, customBackground).turnRight(2).forward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 2, 4, [
             {x1: 1, y1: 1, x2: 2, y2: 1},
             {x1: 2, y1: 1, x2: 2, y2: 2}
@@ -198,7 +204,8 @@ test('When moving Forward in a different direction, a new path segment should be
 
 test('When Forward is retracing the last path segment, no path segment should be added', () => {
     const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
-    (expect(new CharacterState(1, 1, 2, [{x1: 2, y1: 1, x2: 1, y2: 1}], sceneDimensions).forward(1, true)): any)
+    const customBackground = new CustomBackground(sceneDimensions);
+    (expect(new CharacterState(1, 1, 2, [{x1: 2, y1: 1, x2: 1, y2: 1}], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 1, 2, [
             {x1: 2, y1: 1, x2: 1, y2: 1}
         ]);
@@ -206,7 +213,8 @@ test('When Forward is retracing the last path segment, no path segment should be
 
 test('Given an empty path, then moving Backward should add a new path segment', () => {
     const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
-    (expect(new CharacterState(1, 1, 6, [], sceneDimensions).backward(1, true)): any)
+    const customBackground = new CustomBackground(sceneDimensions);
+    (expect(new CharacterState(1, 1, 6, [], sceneDimensions).backward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 1, 6, [
             {x1: 1, y1: 1, x2: 2, y2: 1}
         ]);
@@ -214,7 +222,8 @@ test('Given an empty path, then moving Backward should add a new path segment', 
 
 test('When moving Backward in the same direction, the path segment should be extended', () => {
     const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
-    (expect(new CharacterState(2, 1, 6, [{x1: 1, y1: 1, x2: 2, y2: 1}], sceneDimensions).backward(1, true)): any)
+    const customBackground = new CustomBackground(sceneDimensions);
+    (expect(new CharacterState(2, 1, 6, [{x1: 1, y1: 1, x2: 2, y2: 1}], sceneDimensions).backward(1, true, customBackground)): any)
         .toHaveCharacterState(3, 1, 6, [
             {x1: 1, y1: 1, x2: 3, y2: 1}
         ]);
@@ -222,12 +231,13 @@ test('When moving Backward in the same direction, the path segment should be ext
 
 test('When moving Backward in a different direction, a new path segment should be added', () => {
     const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
-    (expect(new CharacterState(1, 2, 6, [], sceneDimensions).backward(1, true).turnLeft(2).backward(1, true)): any)
+    const customBackground = new CustomBackground(sceneDimensions);
+    (expect(new CharacterState(1, 2, 6, [], sceneDimensions).backward(1, true, customBackground).turnLeft(2).backward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 1, 4, [
             {x1: 1, y1: 2, x2: 2, y2: 2},
             {x1: 2, y1: 2, x2: 2, y2: 1}
         ]);
-    (expect(new CharacterState(1, 1, 6, [], sceneDimensions).backward(1, true).turnRight(2).backward(1, true)): any)
+    (expect(new CharacterState(1, 1, 6, [], sceneDimensions).backward(1, true, customBackground).turnRight(2).backward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 2, 0, [
             {x1: 1, y1: 1, x2: 2, y2: 1},
             {x1: 2, y1: 1, x2: 2, y2: 2}
@@ -236,7 +246,8 @@ test('When moving Backward in a different direction, a new path segment should b
 
 test('When Backward is retracing the last path segment, no path segment should be added', () => {
     const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
-    (expect(new CharacterState(2, 1, 2, [{x1: 1, y1: 1, x2: 2, y2: 1}], sceneDimensions).backward(1, true)): any)
+    const customBackground = new CustomBackground(sceneDimensions);
+    (expect(new CharacterState(2, 1, 2, [{x1: 1, y1: 1, x2: 2, y2: 1}], sceneDimensions).backward(1, true, customBackground)): any)
         .toHaveCharacterState(1, 1, 2, [
             {x1: 1, y1: 1, x2: 2, y2: 1}
         ]);
@@ -244,130 +255,135 @@ test('When Backward is retracing the last path segment, no path segment should b
 
 test('Forward move should not create a path segment, when drawingEnabled is false', () => {
     const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
-    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, false)): any)
+    const customBackground = new CustomBackground(sceneDimensions);
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, false, customBackground)): any)
         .toHaveCharacterState(2, 1, 2, []);
-    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, false).forward(2, true)): any)
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, false, customBackground).forward(2, true, customBackground)): any)
         .toHaveCharacterState(4, 1, 2, [
             {x1: 2, y1: 1, x2: 4, y2: 1}
         ]);
-    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true).forward(2, false)): any)
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, true, customBackground).forward(2, false, customBackground)): any)
         .toHaveCharacterState(4, 1, 2, [
             {x1: 1, y1: 1, x2: 2, y2: 1}
         ]);
-    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, false).forward(2, false)): any)
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).forward(1, false, customBackground).forward(2, false, customBackground)): any)
         .toHaveCharacterState(4, 1, 2, []);
 });
 
 test('Backward move should not create a path segment, when drawingEnabled is false', () => {
     const sceneDimensions = new SceneDimensions(1, 5, 1, 5);
-    (expect(new CharacterState(2, 1, 2, [], sceneDimensions).backward(1, false)): any)
+    const customBackground = new CustomBackground(sceneDimensions);
+    (expect(new CharacterState(2, 1, 2, [], sceneDimensions).backward(1, false, customBackground)): any)
         .toHaveCharacterState(1, 1, 2, []);
-    (expect(new CharacterState(4, 1, 2, [], sceneDimensions).backward(1, false).backward(2, true)): any)
+    (expect(new CharacterState(4, 1, 2, [], sceneDimensions).backward(1, false, customBackground).backward(2, true, customBackground)): any)
         .toHaveCharacterState(1, 1, 2, [
             {x1: 3, y1: 1, x2: 1, y2: 1}
         ]);
-    (expect(new CharacterState(4, 1, 2, [], sceneDimensions).backward(1, true).backward(2, false)): any)
+    (expect(new CharacterState(4, 1, 2, [], sceneDimensions).backward(1, true, customBackground).backward(2, false, customBackground)): any)
         .toHaveCharacterState(1, 1, 2, [
             {x1: 4, y1: 1, x2: 3, y2: 1}
         ]);
-    (expect(new CharacterState(4, 1, 2, [], sceneDimensions).backward(1, false).backward(2, false)): any)
+    (expect(new CharacterState(4, 1, 2, [], sceneDimensions).backward(1, false, customBackground).backward(2, false, customBackground)): any)
         .toHaveCharacterState(1, 1, 2, []);
 });
 
 test('Forward move is limited to the sceneDimensions', () => {
     const sceneDimensions = new SceneDimensions(1, 10, 1, 10);
-    (expect(new CharacterState(1, 1, 0, [], sceneDimensions).forward(2, false)): any)
+    const customBackground = new CustomBackground(sceneDimensions);
+    (expect(new CharacterState(1, 1, 0, [], sceneDimensions).forward(2, false, customBackground)): any)
         .toHaveCharacterState(1, 1, 0, []);
-    (expect(new CharacterState(9, 3, 1, [], sceneDimensions).forward(3, false)): any)
+    (expect(new CharacterState(9, 3, 1, [], sceneDimensions).forward(3, false, customBackground)): any)
         .toHaveCharacterState(10, 1, 1, []);
-    (expect(new CharacterState(10, 1, 2, [], sceneDimensions).forward(2, false)): any)
+    (expect(new CharacterState(10, 1, 2, [], sceneDimensions).forward(2, false, customBackground)): any)
         .toHaveCharacterState(10, 1, 2, []);
-    (expect(new CharacterState(9, 8, 3, [], sceneDimensions).forward(3, false)): any)
+    (expect(new CharacterState(9, 8, 3, [], sceneDimensions).forward(3, false, customBackground)): any)
         .toHaveCharacterState(10, 10, 3, []);
-    (expect(new CharacterState(1, 10, 4, [], sceneDimensions).forward(2, false)): any)
+    (expect(new CharacterState(1, 10, 4, [], sceneDimensions).forward(2, false, customBackground)): any)
         .toHaveCharacterState(1, 10, 4, []);
-    (expect(new CharacterState(2, 8, 5, [], sceneDimensions).forward(3, false)): any)
+    (expect(new CharacterState(2, 8, 5, [], sceneDimensions).forward(3, false, customBackground)): any)
         .toHaveCharacterState(1, 10, 5, []);
-    (expect(new CharacterState(1, 1, 6, [], sceneDimensions).forward(2, false)): any)
+    (expect(new CharacterState(1, 1, 6, [], sceneDimensions).forward(2, false, customBackground)): any)
         .toHaveCharacterState(1, 1, 6, []);
-    (expect(new CharacterState(2, 3, 7, [], sceneDimensions).forward(3, false)): any)
+    (expect(new CharacterState(2, 3, 7, [], sceneDimensions).forward(3, false, customBackground)): any)
         .toHaveCharacterState(1, 1, 7, []);
 });
 
 test('Backward move is limited to the sceneDimensions', () => {
     const sceneDimensions = new SceneDimensions(1, 10, 1, 10);
-    (expect(new CharacterState(1, 10, 0, [], sceneDimensions).backward(2, false)): any)
+    const customBackground = new CustomBackground(sceneDimensions);
+    (expect(new CharacterState(1, 10, 0, [], sceneDimensions).backward(2, false, customBackground)): any)
         .toHaveCharacterState(1, 10, 0, []);
-    (expect(new CharacterState(2, 8, 1, [], sceneDimensions).backward(3, false)): any)
+    (expect(new CharacterState(2, 8, 1, [], sceneDimensions).backward(3, false, customBackground)): any)
         .toHaveCharacterState(1, 10, 1, []);
-    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).backward(2, false)): any)
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).backward(2, false, customBackground)): any)
         .toHaveCharacterState(1, 1, 2, []);
-    (expect(new CharacterState(2, 3, 3, [], sceneDimensions).backward(3, false)): any)
+    (expect(new CharacterState(2, 3, 3, [], sceneDimensions).backward(3, false, customBackground)): any)
         .toHaveCharacterState(1, 1, 3, []);
-    (expect(new CharacterState(1, 1, 4, [], sceneDimensions).backward(2, false)): any)
+    (expect(new CharacterState(1, 1, 4, [], sceneDimensions).backward(2, false, customBackground)): any)
         .toHaveCharacterState(1, 1, 4, []);
-    (expect(new CharacterState(9, 3, 5, [], sceneDimensions).backward(3, false)): any)
+    (expect(new CharacterState(9, 3, 5, [], sceneDimensions).backward(3, false, customBackground)): any)
         .toHaveCharacterState(10, 1, 5, []);
-    (expect(new CharacterState(10, 1, 6, [], sceneDimensions).backward(2, false)): any)
+    (expect(new CharacterState(10, 1, 6, [], sceneDimensions).backward(2, false, customBackground)): any)
         .toHaveCharacterState(10, 1, 6, []);
-    (expect(new CharacterState(9, 8, 7, [], sceneDimensions).backward(3, false)): any)
+    (expect(new CharacterState(9, 8, 7, [], sceneDimensions).backward(3, false, customBackground)): any)
         .toHaveCharacterState(10, 10, 7, []);
 });
 
 test('Moving diagonally out of the scene will only move parallel to the edges of the scene', () => {
     const sceneDimensions = new SceneDimensions(1, 10, 1, 10);
-    (expect(new CharacterState(2, 1, 1, [], sceneDimensions).forward(1, true)): any)
+    const customBackground = new CustomBackground(sceneDimensions);
+    (expect(new CharacterState(2, 1, 1, [], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(3, 1, 1, [
             {x1: 2, y1: 1, x2: 3, y2: 1}
         ]);
-    (expect(new CharacterState(9, 3, 1, [], sceneDimensions).forward(2, true)): any)
+    (expect(new CharacterState(9, 3, 1, [], sceneDimensions).forward(2, true, customBackground)): any)
         .toHaveCharacterState(10, 1, 1, [
             {x1: 9, y1: 3, x2: 10, y2: 2},
             {x1: 10, y1: 2, x2: 10, y2: 1}
         ]);
-    (expect(new CharacterState(2, 2, 1, [], sceneDimensions).backward(2, true)): any)
+    (expect(new CharacterState(2, 2, 1, [], sceneDimensions).backward(2, true, customBackground)): any)
         .toHaveCharacterState(1, 4, 1, [
             {x1: 2, y1: 2, x2: 1, y2: 3},
             {x1: 1, y1: 3, x2: 1, y2: 4}
         ]);
-    (expect(new CharacterState(10, 2, 3, [], sceneDimensions).forward(1, true)): any)
+    (expect(new CharacterState(10, 2, 3, [], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(10, 3, 3, [
             {x1: 10, y1: 2, x2: 10, y2: 3}
         ]);
-    (expect(new CharacterState(9, 3, 3, [], sceneDimensions).forward(2, true)): any)
+    (expect(new CharacterState(9, 3, 3, [], sceneDimensions).forward(2, true, customBackground)): any)
         .toHaveCharacterState(10, 5, 3, [
             {x1: 9, y1: 3, x2: 10, y2: 4},
             {x1: 10, y1: 4, x2: 10, y2: 5}
         ]);
-    (expect(new CharacterState(3, 2, 3, [], sceneDimensions).backward(2, true)): any)
+    (expect(new CharacterState(3, 2, 3, [], sceneDimensions).backward(2, true, customBackground)): any)
         .toHaveCharacterState(1, 1, 3, [
             {x1: 3, y1: 2, x2: 2, y2: 1},
             {x1: 2, y1: 1, x2: 1, y2: 1}
         ]);
-    (expect(new CharacterState(2, 10, 5, [], sceneDimensions).forward(1, true)): any)
+    (expect(new CharacterState(2, 10, 5, [], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(1, 10, 5, [
             {x1: 2, y1: 10, x2: 1, y2: 10}
         ]);
-    (expect(new CharacterState(2, 2, 5, [], sceneDimensions).forward(2, true)): any)
+    (expect(new CharacterState(2, 2, 5, [], sceneDimensions).forward(2, true, customBackground)): any)
         .toHaveCharacterState(1, 4, 5, [
             {x1: 2, y1: 2, x2: 1, y2: 3},
             {x1: 1, y1: 3, x2: 1, y2: 4}
         ]);
-    (expect(new CharacterState(2, 2, 5, [], sceneDimensions).backward(2, true)): any)
+    (expect(new CharacterState(2, 2, 5, [], sceneDimensions).backward(2, true, customBackground)): any)
         .toHaveCharacterState(4, 1, 5, [
             {x1: 2, y1: 2, x2: 3, y2: 1},
             {x1: 3, y1: 1, x2: 4, y2: 1}
         ]);
-    (expect(new CharacterState(1, 2, 7, [], sceneDimensions).forward(1, true)): any)
+    (expect(new CharacterState(1, 2, 7, [], sceneDimensions).forward(1, true, customBackground)): any)
         .toHaveCharacterState(1, 1, 7, [
             {x1: 1, y1: 2, x2: 1, y2: 1}
         ]);
-    (expect(new CharacterState(3, 2, 7, [], sceneDimensions).forward(2, true)): any)
+    (expect(new CharacterState(3, 2, 7, [], sceneDimensions).forward(2, true, customBackground)): any)
         .toHaveCharacterState(1, 1, 7, [
             {x1: 3, y1: 2, x2: 2, y2: 1},
             {x1: 2, y1: 1, x2: 1, y2: 1}
         ]);
-    (expect(new CharacterState(9, 3, 7, [], sceneDimensions).backward(2, true)): any)
+    (expect(new CharacterState(9, 3, 7, [], sceneDimensions).backward(2, true, customBackground)): any)
         .toHaveCharacterState(10, 5, 7, [
             {x1: 9, y1: 3, x2: 10, y2: 4},
             {x1: 10, y1: 4, x2: 10, y2: 5}
@@ -378,34 +394,36 @@ test('Moving diagonally out of the scene will only move parallel to the edges of
 test('When direction is not an integer in range 0-7, forward() and backward() should throw an Error', () => {
     expect.assertions(6);
     const sceneDimensions = new SceneDimensions(1, 200, 1, 200);
+    const customBackground = new CustomBackground(sceneDimensions);
 
     expect(() => {
-        (new CharacterState(1, 1, -1, [], sceneDimensions)).forward(1, false);
+        (new CharacterState(1, 1, -1, [], sceneDimensions)).forward(1, false, customBackground);
     }).toThrowError(/^CharacterState direction must be an integer in range 0-7 inclusive$/);
 
     expect(() => {
-        (new CharacterState(1, 1, 8, [], sceneDimensions)).forward(1, false);
+        (new CharacterState(1, 1, 8, [], sceneDimensions)).forward(1, false, customBackground);
     }).toThrowError(/^CharacterState direction must be an integer in range 0-7 inclusive$/);
 
     expect(() => {
-        (new CharacterState(1, 1, 0.5, [], sceneDimensions)).forward(1, false);
+        (new CharacterState(1, 1, 0.5, [], sceneDimensions)).forward(1, false, customBackground);
     }).toThrowError(/^CharacterState direction must be an integer in range 0-7 inclusive$/);
 
     expect(() => {
-        (new CharacterState(0, 0, 8.5, [], sceneDimensions)).backward(1, false);
+        (new CharacterState(0, 0, 8.5, [], sceneDimensions)).backward(1, false, customBackground);
     }).toThrowError(/^CharacterState direction must be an integer in range 0-7 inclusive$/);
 
     expect(() => {
-        (new CharacterState(0, 0, 3.5, [], sceneDimensions)).backward(1, false);
+        (new CharacterState(0, 0, 3.5, [], sceneDimensions)).backward(1, false, customBackground);
     }).toThrowError(/^CharacterState direction must be an integer in range 0-7 inclusive$/);
 
     expect(() => {
-        (new CharacterState(0, 0, 0.5, [], sceneDimensions)).backward(1, false);
+        (new CharacterState(0, 0, 0.5, [], sceneDimensions)).backward(1, false, customBackground);
     }).toThrowError(/^CharacterState direction must be an integer in range 0-7 inclusive$/);
 });
 
 test('The number of path segments should be limited to maxPathLength', () => {
     const sceneDimensions = new SceneDimensions(1, 10, 1, 10);
+    const customBackground = new CustomBackground(sceneDimensions);
     const characterState = new CharacterState(1, 4, 2, [
         {x1: 1, y1: 1, x2: 2, y2: 1},
         {x1: 1, y1: 2, x2: 2, y2: 2},
@@ -414,7 +432,7 @@ test('The number of path segments should be limited to maxPathLength', () => {
 
     characterState.maxPathLength = 3;
 
-    (expect(characterState.forward(1, true)): any)
+    (expect(characterState.forward(1, true, customBackground)): any)
         .toHaveCharacterState(2, 4, 2, [
             {x1: 1, y1: 2, x2: 2, y2: 2},
             {x1: 1, y1: 3, x2: 2, y2: 3},

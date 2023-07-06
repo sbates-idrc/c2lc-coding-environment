@@ -59,8 +59,8 @@ export default class CharacterState {
         return true;
     }
 
-    forward(distance: number, drawingEnabled: boolean): CharacterState {
-        const movementResult = this.calculateMove(distance, this.direction, drawingEnabled);
+    forward(distance: number, drawingEnabled: boolean, customBackground: CustomBackground): CharacterState {
+        const movementResult = this.calculateMove(distance, this.direction, drawingEnabled, customBackground);
         return new CharacterState(
             movementResult.x,
             movementResult.y,
@@ -70,9 +70,9 @@ export default class CharacterState {
         );
     }
 
-    backward(distance: number, drawingEnabled: boolean): CharacterState {
+    backward(distance: number, drawingEnabled: boolean, customBackground: CustomBackground): CharacterState {
         const movementResult = this.calculateMove(distance,
-                C2lcMath.wrap(0, 8, this.direction + 4), drawingEnabled);
+                C2lcMath.wrap(0, 8, this.direction + 4), drawingEnabled, customBackground);
         return new CharacterState(
             movementResult.x,
             movementResult.y,
@@ -221,13 +221,13 @@ export default class CharacterState {
 
     // Calculates the movement for the specified distance in the specified direction.
     // Returns the final position and any generated path segments.
-    calculateMove(distance: number, direction: number, drawingEnabled: boolean): MovementResult {
+    calculateMove(distance: number, direction: number, drawingEnabled: boolean, customBackground: CustomBackground): MovementResult {
         const pathSegments = [];
         let x = this.xPos;
         let y = this.yPos;
 
         for (let i = 0; i < distance; i++) {
-            const movementResult = this.calculateMoveOneGridUnit(x, y, direction);
+            const movementResult = this.calculateMoveOneGridUnit(x, y, direction, customBackground);
             x = movementResult.x;
             y = movementResult.y;
             if (drawingEnabled) {
@@ -244,7 +244,7 @@ export default class CharacterState {
 
     // Calculates the movement for one grid unit in the specified direction.
     // Returns the new position and, if movement was possible, a path segment.
-    calculateMoveOneGridUnit(x: number, y: number, direction: number): MovementResult {
+    calculateMoveOneGridUnit(x: number, y: number, direction: number, customBackground: CustomBackground): MovementResult {
         let newX;
         let newY;
 
@@ -287,6 +287,11 @@ export default class CharacterState {
 
         newX = C2lcMath.clamp(1, this.sceneDimensions.getWidth(), newX);
         newY = C2lcMath.clamp(1, this.sceneDimensions.getHeight(), newY);
+
+        if (!customBackground.canMoveTo(newX, newY)) {
+            newX = x;
+            newY = y;
+        }
 
         if (newX === x && newY === y) {
             // We didn't move, don't return a path segment

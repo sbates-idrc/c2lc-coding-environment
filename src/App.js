@@ -187,7 +187,7 @@ export class App extends React.Component<AppProps, AppState> {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('forward1', this.props.intl);
                 this.setState((state) => {
-                    const newCharacterState = state.characterState.forward(1, state.drawingEnabled);
+                    const newCharacterState = state.characterState.forward(1, state.drawingEnabled, state.customBackground);
 
                     // We have to start the sound here because this is where we know the new character state.
                     this.audioManager.playSoundForCharacterState("forward1", stepTimeMs, newCharacterState, this.sceneDimensions);
@@ -207,7 +207,7 @@ export class App extends React.Component<AppProps, AppState> {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('forward2', this.props.intl);
                 this.setState((state) => {
-                    const newCharacterState = state.characterState.forward(2, state.drawingEnabled);
+                    const newCharacterState = state.characterState.forward(2, state.drawingEnabled, state.customBackground);
 
                     // We have to start the sound here because this is where we know the new character state.
                     this.audioManager.playSoundForCharacterState("forward2", stepTimeMs, newCharacterState, this.sceneDimensions);
@@ -227,7 +227,7 @@ export class App extends React.Component<AppProps, AppState> {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('forward3', this.props.intl);
                 this.setState((state) => {
-                    const newCharacterState = state.characterState.forward(3, state.drawingEnabled);
+                    const newCharacterState = state.characterState.forward(3, state.drawingEnabled, state.customBackground);
 
                     // We have to start the sound here because this is where we know the new character state.
                     this.audioManager.playSoundForCharacterState("forward3", stepTimeMs, newCharacterState, this.sceneDimensions);
@@ -246,7 +246,7 @@ export class App extends React.Component<AppProps, AppState> {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('backward1');
                 this.setState((state) => {
-                    const newCharacterState = state.characterState.backward(1, state.drawingEnabled);
+                    const newCharacterState = state.characterState.backward(1, state.drawingEnabled, state.customBackground);
 
                     // We have to start the sound here because this is where we know the new character state.
                     this.audioManager.playSoundForCharacterState("backward1", stepTimeMs, newCharacterState, this.sceneDimensions);
@@ -265,7 +265,7 @@ export class App extends React.Component<AppProps, AppState> {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('backward2');
                 this.setState((state) => {
-                    const newCharacterState = state.characterState.backward(2, state.drawingEnabled);
+                    const newCharacterState = state.characterState.backward(2, state.drawingEnabled, state.customBackground);
 
                     // We have to start the sound here because this is where we know the new character state.
                     this.audioManager.playSoundForCharacterState("backward2", stepTimeMs, newCharacterState, this.sceneDimensions);
@@ -284,7 +284,7 @@ export class App extends React.Component<AppProps, AppState> {
                 // TODO: Enable announcements again.
                 // this.audioManager.playAnnouncement('backward3');
                 this.setState((state) => {
-                    const newCharacterState = state.characterState.backward(3, state.drawingEnabled);
+                    const newCharacterState = state.characterState.backward(3, state.drawingEnabled, state.customBackground);
 
                     // We have to start the sound here because this is where we know the new character state.
                     this.audioManager.playSoundForCharacterState("backward3", stepTimeMs, newCharacterState, this.sceneDimensions);
