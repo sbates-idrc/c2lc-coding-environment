@@ -444,9 +444,9 @@ test('MoveUpPosition moves the character up one unit within the scene', () => {
     // TODO: Test CustomBackground behaviour
     const sceneDimensions = new SceneDimensions(1, 10, 1, 10);
     const customBackground = new CustomBackground(sceneDimensions);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).moveUpPosition(customBackground)): any)
+    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).moveUpPosition(false, customBackground)): any)
         .toHaveCharacterState(2, 2, 2, []);
-    (expect(new CharacterState(2, 1, 2, [], sceneDimensions).moveUpPosition(customBackground)): any)
+    (expect(new CharacterState(2, 1, 2, [], sceneDimensions).moveUpPosition(false, customBackground)): any)
         .toHaveCharacterState(2, 1, 2, []);
 });
 
@@ -454,9 +454,9 @@ test('MoveRightPosition moves the character right one unit within the scene', ()
     // TODO: Test CustomBackground behaviour
     const sceneDimensions = new SceneDimensions(1, 10, 1, 10);
     const customBackground = new CustomBackground(sceneDimensions);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).moveRightPosition(customBackground)): any)
+    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).moveRightPosition(false, customBackground)): any)
         .toHaveCharacterState(3, 3, 2, []);
-    (expect(new CharacterState(10, 1, 2, [], sceneDimensions).moveRightPosition(customBackground)): any)
+    (expect(new CharacterState(10, 1, 2, [], sceneDimensions).moveRightPosition(false, customBackground)): any)
         .toHaveCharacterState(10, 1, 2, []);
 });
 
@@ -464,9 +464,9 @@ test('MoveDownPosition moves the character down one unit within the scene', () =
     // TODO: Test CustomBackground behaviour
     const sceneDimensions = new SceneDimensions(1, 10, 1, 10);
     const customBackground = new CustomBackground(sceneDimensions);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).moveDownPosition(customBackground)): any)
+    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).moveDownPosition(false, customBackground)): any)
         .toHaveCharacterState(2, 4, 2, []);
-    (expect(new CharacterState(2, 10, 2, [], sceneDimensions).moveDownPosition(customBackground)): any)
+    (expect(new CharacterState(2, 10, 2, [], sceneDimensions).moveDownPosition(false, customBackground)): any)
         .toHaveCharacterState(2, 10, 2, []);
 });
 
@@ -474,9 +474,9 @@ test('MoveLeftPosition moves the character Left one unit within the scene', () =
     // TODO: Test CustomBackground behaviour
     const sceneDimensions = new SceneDimensions(1, 10, 1, 10);
     const customBackground = new CustomBackground(sceneDimensions);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).moveLeftPosition(customBackground)): any)
+    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).moveLeftPosition(false, customBackground)): any)
         .toHaveCharacterState(1, 3, 2, []);
-    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).moveLeftPosition(customBackground)): any)
+    (expect(new CharacterState(1, 1, 2, [], sceneDimensions).moveLeftPosition(false, customBackground)): any)
         .toHaveCharacterState(1, 1, 2, []);
 });
 

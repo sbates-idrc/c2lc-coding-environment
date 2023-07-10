@@ -10,6 +10,7 @@ import CharacterAriaLive from './CharacterAriaLive';
 import CharacterState from './CharacterState';
 import CharacterStateSerializer from './CharacterStateSerializer';
 import CharacterPositionController from './CharacterPositionController';
+import classNames from 'classnames';
 import CommandPaletteCommand from './CommandPaletteCommand';
 import CookieNotification from './CookieNotification';
 import C2lcURLParams from './C2lcURLParams';
@@ -127,7 +128,8 @@ export type AppState = {
     startingX: number,
     startingY: number,
     startingDirection: number,
-    customBackground: CustomBackground
+    customBackground: CustomBackground,
+    customBackgroundEditMode: boolean
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -460,6 +462,7 @@ export class App extends React.Component<AppProps, AppState> {
             startingY: startingY,
             startingDirection: startingDirection,
             customBackground: new CustomBackground(this.sceneDimensions),
+            customBackgroundEditMode: false,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -727,28 +730,36 @@ export class App extends React.Component<AppProps, AppState> {
     // TODO: Convert to use keyboardEventMatchesKeyDef for each command in turn.
     handleDocumentKeyDown = (e: KeyboardEvent) => {
         switch(e.key) {
+            case 'e':
+            case 'E':
+                // Toggle custom background edit mode
+                e.preventDefault();
+                this.setState((state) => ({
+                    customBackgroundEditMode: !(state.customBackgroundEditMode)
+                }));
+                return;
             case 'ArrowUp':
                 e.preventDefault();
                 this.setState((state) => ({
-                    characterState: state.characterState.moveUpPosition(state.customBackground)
+                    characterState: state.characterState.moveUpPosition(!(state.customBackgroundEditMode), state.customBackground)
                 }));
                 return;
             case 'ArrowDown':
                 e.preventDefault();
                 this.setState((state) => ({
-                    characterState: state.characterState.moveDownPosition(state.customBackground)
+                    characterState: state.characterState.moveDownPosition(!(state.customBackgroundEditMode), state.customBackground)
                 }));
                 return;
             case 'ArrowLeft':
                 e.preventDefault();
                 this.setState((state) => ({
-                    characterState: state.characterState.moveLeftPosition(state.customBackground)
+                    characterState: state.characterState.moveLeftPosition(!(state.customBackgroundEditMode), state.customBackground)
                 }));
                 return;
             case 'ArrowRight':
                 e.preventDefault();
                 this.setState((state) => ({
-                    characterState: state.characterState.moveRightPosition(state.customBackground)
+                    characterState: state.characterState.moveRightPosition(!(state.customBackgroundEditMode), state.customBackground)
                 }));
                 return;
             case '0':
@@ -766,15 +777,17 @@ export class App extends React.Component<AppProps, AppState> {
             case 'B':
             case 'b':
                 e.preventDefault();
-                const tile = e.key.toUpperCase();
-                if (isTile(tile)) {
-                    this.setState((state) => ({
-                        customBackground: state.customBackground.setTile(
-                            state.characterState.xPos,
-                            state.characterState.yPos,
-                            ((tile: any): Tile)
-                        )
-                    }));
+                if (this.state.customBackgroundEditMode) {
+                    const tile = e.key.toUpperCase();
+                    if (isTile(tile)) {
+                        this.setState((state) => ({
+                            customBackground: state.customBackground.setTile(
+                                state.characterState.xPos,
+                                state.characterState.yPos,
+                                ((tile: any): Tile)
+                            )
+                        }));
+                    }
                 }
                 return;
             default:
@@ -1308,7 +1321,7 @@ export class App extends React.Component<AppProps, AppState> {
                 break;
             case 'up':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveUpPosition(state.customBackground);
+                    const updatedCharacterState = state.characterState.moveUpPosition(!(state.customBackgroundEditMode), state.customBackground);
                     return {
                         characterState: updatedCharacterState,
                         startingX: updatedCharacterState.xPos,
@@ -1319,7 +1332,7 @@ export class App extends React.Component<AppProps, AppState> {
                 break;
             case 'right':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveRightPosition(state.customBackground);
+                    const updatedCharacterState = state.characterState.moveRightPosition(!(state.customBackgroundEditMode), state.customBackground);
                     return {
                         characterState: updatedCharacterState,
                         startingX: updatedCharacterState.xPos,
@@ -1330,7 +1343,7 @@ export class App extends React.Component<AppProps, AppState> {
                 break;
             case 'down':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveDownPosition(state.customBackground);
+                    const updatedCharacterState = state.characterState.moveDownPosition(!(state.customBackgroundEditMode), state.customBackground);
                     return {
                         characterState: updatedCharacterState,
                         startingX: updatedCharacterState.xPos,
@@ -1341,7 +1354,7 @@ export class App extends React.Component<AppProps, AppState> {
                 break;
             case 'left':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveLeftPosition(state.customBackground);
+                    const updatedCharacterState = state.characterState.moveLeftPosition(!(state.customBackgroundEditMode), state.customBackground);
                     return {
                         characterState: updatedCharacterState,
                         startingX: updatedCharacterState.xPos,
@@ -1449,7 +1462,7 @@ export class App extends React.Component<AppProps, AppState> {
         return (
             <React.Fragment>
                 <div
-                    className='App__container'
+                    className={classNames('App__container', this.state.customBackgroundEditMode && 'App__container--customBackgroundEditMode')}
                     role='main'
                     onClick={this.handleRootClick}
                     onKeyDown={this.handleRootKeyDown}>
