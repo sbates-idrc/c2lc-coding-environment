@@ -1457,10 +1457,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showPrivacyModal: false });
     }
 
-    render() {
-        const Logo = getThemeLogo(this.state.settings.theme);
-
-        const notificationArea = (
+    renderNotificationArea() {
+        return (
             <div className='App__notificationArea'>
                 {this.state.showCookieNotification &&
                     <CookieNotification
@@ -1470,8 +1468,12 @@ export class App extends React.Component<AppProps, AppState> {
                 }
             </div>
         );
+    }
 
-        const header = (
+    renderHeader() {
+        const Logo = getThemeLogo(this.state.settings.theme);
+
+        return (
             <header className='App__header'>
                 <div className='App__header-row'>
                     <h1 className='App__logo-container'>
@@ -1527,8 +1529,10 @@ export class App extends React.Component<AppProps, AppState> {
                 </div>
             </header>
         );
+    }
 
-        const sceneContainer = (
+    renderSceneContainer() {
+        return (
             <div className='App__scene-container'>
                 <h2 className='sr-only' >
                     <FormattedMessage id='Scene.heading' />
@@ -1545,8 +1549,10 @@ export class App extends React.Component<AppProps, AppState> {
                 />
             </div>
         );
+    }
 
-        const worldContainer = (
+    renderWorldContainer() {
+        return (
             <div className="App__world-container">
                 <h2 className='sr-only' >
                     <FormattedMessage id='WorldSelectorButton.heading' />
@@ -1576,8 +1582,10 @@ export class App extends React.Component<AppProps, AppState> {
                     onChangeCharacterYPosition={this.handleChangeCharacterYPosition} />
             </div>
         );
+    }
 
-        const commandPalette = (
+    renderCommandPalette() {
+        return (
             <div className='App__command-palette'>
                 <div className='App__ActionsMenu__header'>
                     <h2 className='App__ActionsMenu__header-heading'>
@@ -1628,8 +1636,10 @@ export class App extends React.Component<AppProps, AppState> {
                 </div>
             </div>
         );
+    }
 
-        const programBlockEditor = (
+    renderProgramBlockEditor() {
+        return (
             <div className='App__program-block-editor'>
                 <ProgramBlockEditor
                     ref={this.programBlockEditorRef}
@@ -1661,8 +1671,10 @@ export class App extends React.Component<AppProps, AppState> {
                 />
             </div>
         );
+    }
 
-        const playAndShareContainer = (
+    renderPlayAndShareContainer() {
+        return (
             <div className='App__playAndShare-container'>
                 <h2 className='sr-only' >
                     <FormattedMessage id='PlayControls.heading' />
@@ -1707,8 +1719,10 @@ export class App extends React.Component<AppProps, AppState> {
                 </div>
             </div>
         );
+    }
 
-        const characterAriaLive = (
+    renderCharacterAriaLive() {
+        return (
             <CharacterAriaLive
                 ariaLiveRegionId='character-position'
                 ariaHidden={this.state.showWorldSelector}
@@ -1717,8 +1731,10 @@ export class App extends React.Component<AppProps, AppState> {
                 world={this.state.settings.world}
             />
         );
+    }
 
-        const modals = (
+    renderModals() {
+        return (
             <React.Fragment>
                 <DashConnectionErrorModal
                     show={this.state.showDashConnectionError}
@@ -1769,7 +1785,9 @@ export class App extends React.Component<AppProps, AppState> {
                 />
             </React.Fragment>
         );
+    }
 
+    render() {
         return (
             <React.Fragment>
                 <div
@@ -1784,12 +1802,12 @@ export class App extends React.Component<AppProps, AppState> {
                     onClick={this.handleRootClick}
                     onKeyDown={this.handleRootKeyDown}
                 >
-                    {notificationArea}
+                    {this.renderNotificationArea()}
                     {this.state.customBackgroundEditMode ?
                         <React.Fragment>
-                            {header}
-                            {sceneContainer}
-                            {worldContainer}
+                            {this.renderHeader()}
+                            {this.renderSceneContainer()}
+                            {this.renderWorldContainer()}
                             <div className='App__command-palette'/>
                             <div className='App__program-block-editor'/>
                             <div className='App__playAndShare-background'/>
@@ -1797,18 +1815,18 @@ export class App extends React.Component<AppProps, AppState> {
                         </React.Fragment>
                         :
                         <React.Fragment>
-                            {header}
-                            {sceneContainer}
-                            {worldContainer}
-                            {commandPalette}
-                            {programBlockEditor}
+                            {this.renderHeader()}
+                            {this.renderSceneContainer()}
+                            {this.renderWorldContainer()}
+                            {this.renderCommandPalette()}
+                            {this.renderProgramBlockEditor()}
                             <div className='App__playAndShare-background'/>
-                            {playAndShareContainer}
+                            {this.renderPlayAndShareContainer()}
                         </React.Fragment>
                     }
                 </div>
-                {characterAriaLive}
-                {modals}
+                {this.renderCharacterAriaLive()}
+                {this.renderModals()}
             </React.Fragment>
         );
     }
