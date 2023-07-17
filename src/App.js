@@ -1460,6 +1460,17 @@ export class App extends React.Component<AppProps, AppState> {
     render() {
         const Logo = getThemeLogo(this.state.settings.theme);
 
+        const notificationArea = (
+            <div className='App__notificationArea'>
+                {this.state.showCookieNotification &&
+                    <CookieNotification
+                        onDismiss={this.handleCookieNotificationDismiss}
+                        onLearnMore={this.handleCookieNotificationLearnMore}
+                    />
+                }
+            </div>
+        );
+
         const header = (
             <header className='App__header'>
                 <div className='App__header-row'>
@@ -1762,25 +1773,39 @@ export class App extends React.Component<AppProps, AppState> {
         return (
             <React.Fragment>
                 <div
-                    className={classNames('App__container', this.state.customBackgroundEditMode && 'App__container--customBackgroundEditMode')}
+                    className={
+                        classNames(
+                            'App__container',
+                            this.state.customBackgroundEditMode
+                                && 'App__container--customBackgroundEditMode'
+                        )
+                    }
                     role='main'
                     onClick={this.handleRootClick}
-                    onKeyDown={this.handleRootKeyDown}>
-                    <div className='App__notificationArea'>
-                        {this.state.showCookieNotification &&
-                            <CookieNotification
-                                onDismiss={this.handleCookieNotificationDismiss}
-                                onLearnMore={this.handleCookieNotificationLearnMore}
-                            />
-                        }
-                    </div>
-                    {header}
-                    {sceneContainer}
-                    {worldContainer}
-                    {commandPalette}
-                    {programBlockEditor}
-                    <div className='App__playAndShare-background' />
-                    {playAndShareContainer}
+                    onKeyDown={this.handleRootKeyDown}
+                >
+                    {notificationArea}
+                    {this.state.customBackgroundEditMode ?
+                        <React.Fragment>
+                            {header}
+                            {sceneContainer}
+                            {worldContainer}
+                            <div className='App__command-palette'/>
+                            <div className='App__program-block-editor'/>
+                            <div className='App__playAndShare-background'/>
+                            <div className='App__playAndShare-container'/>
+                        </React.Fragment>
+                        :
+                        <React.Fragment>
+                            {header}
+                            {sceneContainer}
+                            {worldContainer}
+                            {commandPalette}
+                            {programBlockEditor}
+                            <div className='App__playAndShare-background'/>
+                            {playAndShareContainer}
+                        </React.Fragment>
+                    }
                 </div>
                 {characterAriaLive}
                 {modals}
