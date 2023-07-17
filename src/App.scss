@@ -23,6 +23,10 @@ body {
     max-height: -webkit-fill-available;
 }
 
+.App__container--customBackgroundEditMode {
+    grid-template-rows: auto auto auto 1fr;
+}
+
 .App__notificationArea {
     grid-column-start: 1;
     grid-column-end: 6;

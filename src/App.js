@@ -1470,70 +1470,68 @@ export class App extends React.Component<AppProps, AppState> {
         );
     }
 
-    renderHeader() {
+    renderHeaderContents() {
         const Logo = getThemeLogo(this.state.settings.theme);
 
         return (
-            <header className='App__header'>
-                <div className='App__header-row'>
-                    <h1 className='App__logo-container'>
-                        <a
-                            className='keyboard-shortcut-focus__app-header'
-                            href='https://weavly.org/learn/resources/facilitating-a-weavly-coding-workshop-beginners/'
-                            aria-label={this.props.intl.formatMessage({id: 'App.appHeading.link'})}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        >
-                            <Logo alt={this.props.intl.formatMessage({id: 'App.appHeading.link'})}/>
-                        </a>
-                    </h1>
-                    <div className='App__PrivacyButtonContainer'>
-                        <button
-                            aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
-                            className="App__PrivacyModal__toggle-button"
-                            onClick={this.handleClickPrivacyButton}
-                        >
-                            <FormattedMessage id='App.privacyModalToggle'/>
-                        </button>
-                    </div>
-                    <div className='App__header-menu'>
-                        <IconButton
-                            className="App__header-soundOptions"
-                            ariaLabel={this.props.intl.formatMessage({ id: 'SoundOptionsModal.title' })}
-                            onClick={this.handleClickSoundIcon}
-                        >
-                            <AudioIcon className='App__header-soundOptions-icon'/>
-                        </IconButton>
-                        <IconButton
-                            className="App__header-themeSelectorIcon"
-                            ariaLabel={this.props.intl.formatMessage({ id: 'ThemeSelector.iconButton' })}
-                            onClick={this.handleClickThemeSelectorIcon}
-                        >
-                            <ThemeIcon className='App__header-theme-icon'/>
-                        </IconButton>
-                        <IconButton
-                            className="App__header-keyboardMenuIcon"
-                            ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
-                            onClick={this.handleClickKeyboardIcon}
-                        >
-                            <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
-                        </IconButton>
-                        <IconButton className="App__ActionsMenu__toggle-button"
-                            ariaLabel={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
-                            disabled={this.editingIsDisabled()}
-                            onClick={this.handleClickActionsSimplificationIcon}
-                        >
-                            <ActionsMenuToggleIcon className='App__header-actionsMenu-icon'/>
-                        </IconButton>
-                    </div>
+            <div className='App__header-row'>
+                <h1 className='App__logo-container'>
+                    <a
+                        className='keyboard-shortcut-focus__app-header'
+                        href='https://weavly.org/learn/resources/facilitating-a-weavly-coding-workshop-beginners/'
+                        aria-label={this.props.intl.formatMessage({id: 'App.appHeading.link'})}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
+                        <Logo alt={this.props.intl.formatMessage({id: 'App.appHeading.link'})}/>
+                    </a>
+                </h1>
+                <div className='App__PrivacyButtonContainer'>
+                    <button
+                        aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
+                        className="App__PrivacyModal__toggle-button"
+                        onClick={this.handleClickPrivacyButton}
+                    >
+                        <FormattedMessage id='App.privacyModalToggle'/>
+                    </button>
                 </div>
-            </header>
+                <div className='App__header-menu'>
+                    <IconButton
+                        className="App__header-soundOptions"
+                        ariaLabel={this.props.intl.formatMessage({ id: 'SoundOptionsModal.title' })}
+                        onClick={this.handleClickSoundIcon}
+                    >
+                        <AudioIcon className='App__header-soundOptions-icon'/>
+                    </IconButton>
+                    <IconButton
+                        className="App__header-themeSelectorIcon"
+                        ariaLabel={this.props.intl.formatMessage({ id: 'ThemeSelector.iconButton' })}
+                        onClick={this.handleClickThemeSelectorIcon}
+                    >
+                        <ThemeIcon className='App__header-theme-icon'/>
+                    </IconButton>
+                    <IconButton
+                        className="App__header-keyboardMenuIcon"
+                        ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                        onClick={this.handleClickKeyboardIcon}
+                    >
+                        <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
+                    </IconButton>
+                    <IconButton className="App__ActionsMenu__toggle-button"
+                        ariaLabel={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
+                        disabled={this.editingIsDisabled()}
+                        onClick={this.handleClickActionsSimplificationIcon}
+                    >
+                        <ActionsMenuToggleIcon className='App__header-actionsMenu-icon'/>
+                    </IconButton>
+                </div>
+            </div>
         );
     }
 
-    renderSceneContainer() {
+    renderSceneWithHeading() {
         return (
-            <div className='App__scene-container'>
+            <React.Fragment>
                 <h2 className='sr-only' >
                     <FormattedMessage id='Scene.heading' />
                 </h2>
@@ -1547,13 +1545,13 @@ export class App extends React.Component<AppProps, AppState> {
                     startingY={this.state.startingY}
                     runningState={this.state.runningState}
                 />
-            </div>
+            </React.Fragment>
         );
     }
 
-    renderWorldContainer() {
+    renderWorldSelectorWithHeading() {
         return (
-            <div className="App__world-container">
+            <React.Fragment>
                 <h2 className='sr-only' >
                     <FormattedMessage id='WorldSelectorButton.heading' />
                 </h2>
@@ -1566,27 +1564,38 @@ export class App extends React.Component<AppProps, AppState> {
                         <WorldIcon className='App__world-selector-icon'/>
                     </IconButton>
                 </div>
-                <div className='App__PenDownToggleSwitch-container'>
-                    <PenDownToggleSwitch
-                        className='App__penDown-toggle-switch'
-                        value={this.state.drawingEnabled}
-                        onChange={this.handleTogglePenDown}/>
-                </div>
-                <CharacterPositionController
-                    characterState={this.state.characterState}
-                    editingDisabled={this.editingIsDisabled()}
-                    theme={this.state.settings.theme}
-                    world={this.state.settings.world}
-                    onChangeCharacterPosition={this.handleChangeCharacterPosition}
-                    onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
-                    onChangeCharacterYPosition={this.handleChangeCharacterYPosition} />
+            </React.Fragment>
+        );
+    }
+
+    renderPenDownToggleSwitch() {
+        return (
+            <div className='App__PenDownToggleSwitch-container'>
+                <PenDownToggleSwitch
+                    className='App__penDown-toggle-switch'
+                    value={this.state.drawingEnabled}
+                    onChange={this.handleTogglePenDown}/>
             </div>
         );
     }
 
-    renderCommandPalette() {
+    renderCharacterPositionController() {
         return (
-            <div className='App__command-palette'>
+            <CharacterPositionController
+                characterState={this.state.characterState}
+                editingDisabled={this.editingIsDisabled()}
+                theme={this.state.settings.theme}
+                world={this.state.settings.world}
+                onChangeCharacterPosition={this.handleChangeCharacterPosition}
+                onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
+                onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
+            />
+        );
+    }
+
+    renderCommandPaletteContents() {
+        return (
+            <React.Fragment>
                 <div className='App__ActionsMenu__header'>
                     <h2 className='App__ActionsMenu__header-heading'>
                         <FormattedMessage id='ActionsMenu.title' />
@@ -1634,48 +1643,46 @@ export class App extends React.Component<AppProps, AppState> {
                         </div>
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 
     renderProgramBlockEditor() {
         return (
-            <div className='App__program-block-editor'>
-                <ProgramBlockEditor
-                    ref={this.programBlockEditorRef}
-                    actionPanelStepIndex={this.state.actionPanelStepIndex}
-                    actionPanelFocusedOptionName={this.state.actionPanelFocusedOptionName}
-                    characterState={this.state.characterState}
-                    editingDisabled={this.editingIsDisabled()}
-                    programSequence={this.state.programSequence}
-                    runningState={this.state.runningState}
-                    keyboardInputSchemeName={this.state.keyboardInputSchemeName}
-                    selectedAction={this.state.selectedAction}
-                    isDraggingCommand={this.state.isDraggingCommand}
-                    audioManager={this.audioManager}
-                    focusTrapManager={this.focusTrapManager}
-                    addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
-                    theme={this.state.settings.theme}
-                    world={this.state.settings.world}
-                    scrollRightPaddingPx={256}
-                    scrollLeftPaddingPx={128}
-                    scrollTimeThresholdMs={400}
-                    onChangeProgramSequence={this.handleProgramSequenceChange}
-                    onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
-                    onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
-                    onReplaceProgramStep={this.handleProgramBlockEditorReplaceStep}
-                    onMoveProgramStepNext={this.handleProgramBlockEditorMoveStepNext}
-                    onMoveProgramStepPrevious={this.handleProgramBlockEditorMoveStepPrevious}
-                    onChangeActionPanelStepIndexAndOption={this.handleChangeActionPanelStepIndexAndOption}
-                    onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
-                />
-            </div>
+            <ProgramBlockEditor
+                ref={this.programBlockEditorRef}
+                actionPanelStepIndex={this.state.actionPanelStepIndex}
+                actionPanelFocusedOptionName={this.state.actionPanelFocusedOptionName}
+                characterState={this.state.characterState}
+                editingDisabled={this.editingIsDisabled()}
+                programSequence={this.state.programSequence}
+                runningState={this.state.runningState}
+                keyboardInputSchemeName={this.state.keyboardInputSchemeName}
+                selectedAction={this.state.selectedAction}
+                isDraggingCommand={this.state.isDraggingCommand}
+                audioManager={this.audioManager}
+                focusTrapManager={this.focusTrapManager}
+                addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
+                theme={this.state.settings.theme}
+                world={this.state.settings.world}
+                scrollRightPaddingPx={256}
+                scrollLeftPaddingPx={128}
+                scrollTimeThresholdMs={400}
+                onChangeProgramSequence={this.handleProgramSequenceChange}
+                onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
+                onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
+                onReplaceProgramStep={this.handleProgramBlockEditorReplaceStep}
+                onMoveProgramStepNext={this.handleProgramBlockEditorMoveStepNext}
+                onMoveProgramStepPrevious={this.handleProgramBlockEditorMoveStepPrevious}
+                onChangeActionPanelStepIndexAndOption={this.handleChangeActionPanelStepIndexAndOption}
+                onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
+            />
         );
     }
 
-    renderPlayAndShareContainer() {
+    renderPlayAndShareContents() {
         return (
-            <div className='App__playAndShare-container'>
+            <React.Fragment>
                 <h2 className='sr-only' >
                     <FormattedMessage id='PlayControls.heading' />
                 </h2>
@@ -1717,7 +1724,7 @@ export class App extends React.Component<AppProps, AppState> {
                         </div>
                     </button>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 
@@ -1805,23 +1812,41 @@ export class App extends React.Component<AppProps, AppState> {
                     {this.renderNotificationArea()}
                     {this.state.customBackgroundEditMode ?
                         <React.Fragment>
-                            {this.renderHeader()}
-                            {this.renderSceneContainer()}
-                            {this.renderWorldContainer()}
-                            <div className='App__command-palette'/>
-                            <div className='App__program-block-editor'/>
-                            <div className='App__playAndShare-background'/>
-                            <div className='App__playAndShare-container'/>
+                            <header className='App__header'>
+                                {this.renderHeaderContents()}
+                            </header>
+                            <div className='App__scene-container'>
+                                {this.renderSceneWithHeading()}
+                            </div>
+                            <div className="App__world-container">
+                                {this.renderWorldSelectorWithHeading()}
+                                {this.renderPenDownToggleSwitch()}
+                                {this.renderCharacterPositionController()}
+                            </div>
                         </React.Fragment>
                         :
                         <React.Fragment>
-                            {this.renderHeader()}
-                            {this.renderSceneContainer()}
-                            {this.renderWorldContainer()}
-                            {this.renderCommandPalette()}
-                            {this.renderProgramBlockEditor()}
+                            <header className='App__header'>
+                                {this.renderHeaderContents()}
+                            </header>
+                            <div className='App__scene-container'>
+                                {this.renderSceneWithHeading()}
+                            </div>
+                            <div className="App__world-container">
+                                {this.renderWorldSelectorWithHeading()}
+                                {this.renderPenDownToggleSwitch()}
+                                {this.renderCharacterPositionController()}
+                            </div>
+                            <div className='App__command-palette'>
+                                {this.renderCommandPaletteContents()}
+                            </div>
+                            <div className='App__program-block-editor'>
+                                {this.renderProgramBlockEditor()}
+                            </div>
                             <div className='App__playAndShare-background'/>
-                            {this.renderPlayAndShareContainer()}
+                            <div className='App__playAndShare-container'>
+                                {this.renderPlayAndShareContents()}
+                            </div>
                         </React.Fragment>
                     }
                 </div>
