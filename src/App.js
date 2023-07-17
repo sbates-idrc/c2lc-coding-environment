@@ -1459,270 +1459,256 @@ export class App extends React.Component<AppProps, AppState> {
 
     render() {
         const Logo = getThemeLogo(this.state.settings.theme);
-        return (
-            <React.Fragment>
-                <div
-                    className={classNames('App__container', this.state.customBackgroundEditMode && 'App__container--customBackgroundEditMode')}
-                    role='main'
-                    onClick={this.handleRootClick}
-                    onKeyDown={this.handleRootKeyDown}>
-                    <div className='App__notificationArea'>
-                        {this.state.showCookieNotification &&
-                            <CookieNotification
-                                onDismiss={this.handleCookieNotificationDismiss}
-                                onLearnMore={this.handleCookieNotificationLearnMore}
-                            />
-                        }
+
+        const header = (
+            <header className='App__header'>
+                <div className='App__header-row'>
+                    <h1 className='App__logo-container'>
+                        <a
+                            className='keyboard-shortcut-focus__app-header'
+                            href='https://weavly.org/learn/resources/facilitating-a-weavly-coding-workshop-beginners/'
+                            aria-label={this.props.intl.formatMessage({id: 'App.appHeading.link'})}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                        >
+                            <Logo alt={this.props.intl.formatMessage({id: 'App.appHeading.link'})}/>
+                        </a>
+                    </h1>
+                    <div className='App__PrivacyButtonContainer'>
+                        <button
+                            aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
+                            className="App__PrivacyModal__toggle-button"
+                            onClick={this.handleClickPrivacyButton}
+                        >
+                            <FormattedMessage id='App.privacyModalToggle'/>
+                        </button>
                     </div>
-                    <header className='App__header'>
-                        <div className='App__header-row'>
-                            <h1 className='App__logo-container'>
-                                <a
-                                    className='keyboard-shortcut-focus__app-header'
-                                    href='https://weavly.org/learn/resources/facilitating-a-weavly-coding-workshop-beginners/'
-                                    aria-label={this.props.intl.formatMessage({id: 'App.appHeading.link'})}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                >
-                                    <Logo alt={this.props.intl.formatMessage({id: 'App.appHeading.link'})}/>
-                                </a>
-                            </h1>
-                            <div className='App__PrivacyButtonContainer'>
-                                <button
-                                    aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
-                                    className="App__PrivacyModal__toggle-button"
-                                    onClick={this.handleClickPrivacyButton}
-                                >
-                                    <FormattedMessage id='App.privacyModalToggle'/>
-                                </button>
-                            </div>
-                            <div className='App__header-menu'>
-                                <IconButton
-                                    className="App__header-soundOptions"
-                                    ariaLabel={this.props.intl.formatMessage({ id: 'SoundOptionsModal.title' })}
-                                    onClick={this.handleClickSoundIcon}
-                                >
-                                    <AudioIcon className='App__header-soundOptions-icon'/>
-                                </IconButton>
-                                <IconButton
-                                    className="App__header-themeSelectorIcon"
-                                    ariaLabel={this.props.intl.formatMessage({ id: 'ThemeSelector.iconButton' })}
-                                    onClick={this.handleClickThemeSelectorIcon}
-                                >
-                                    <ThemeIcon className='App__header-theme-icon'/>
-                                </IconButton>
-                                <IconButton
-                                    className="App__header-keyboardMenuIcon"
-                                    ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
-                                    onClick={this.handleClickKeyboardIcon}
-                                >
-                                    <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
-                                </IconButton>
-
-                                <IconButton className="App__ActionsMenu__toggle-button"
-                                    ariaLabel={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
-                                    disabled={this.editingIsDisabled()}
-                                    onClick={this.handleClickActionsSimplificationIcon}
-                                >
-                                    <ActionsMenuToggleIcon className='App__header-actionsMenu-icon'/>
-                                </IconButton>
-                            </div>
-                            {/* Dash connection removed for version 0.5
-                            <DeviceConnectControl
-                                disabled={
-                                    !this.appContext.bluetoothApiIsAvailable ||
-                                    this.state.dashConnectionStatus === 'connected' }
-                                connectionStatus={this.state.dashConnectionStatus}
-                                onClickConnect={this.handleClickConnectDash}>
-                                <FormattedMessage id='App.connectToDash' />
-                            </DeviceConnectControl>
-                            */}
-                        </div>
-                    </header>
-                    {/* Dash connection removed for version 0.5
-                    {!this.appContext.bluetoothApiIsAvailable &&
-                        <Row className='App__bluetooth-api-warning-section'>
-                            <Col>
-                                <BluetoothApiWarning/>
-                            </Col>
-                        </Row>
-                    }
-                    */}
-                    <div className='App__scene-container'>
-                        <h2 className='sr-only' >
-                            <FormattedMessage id='Scene.heading' />
-                        </h2>
-                        <Scene
-                            dimensions={this.state.sceneDimensions}
-                            characterState={this.state.characterState}
-                            theme={this.state.settings.theme}
-                            world={this.state.settings.world}
-                            customBackground={this.state.customBackground}
-                            startingX={this.state.startingX}
-                            startingY={this.state.startingY}
-                            runningState={this.state.runningState}
-                        />
+                    <div className='App__header-menu'>
+                        <IconButton
+                            className="App__header-soundOptions"
+                            ariaLabel={this.props.intl.formatMessage({ id: 'SoundOptionsModal.title' })}
+                            onClick={this.handleClickSoundIcon}
+                        >
+                            <AudioIcon className='App__header-soundOptions-icon'/>
+                        </IconButton>
+                        <IconButton
+                            className="App__header-themeSelectorIcon"
+                            ariaLabel={this.props.intl.formatMessage({ id: 'ThemeSelector.iconButton' })}
+                            onClick={this.handleClickThemeSelectorIcon}
+                        >
+                            <ThemeIcon className='App__header-theme-icon'/>
+                        </IconButton>
+                        <IconButton
+                            className="App__header-keyboardMenuIcon"
+                            ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                            onClick={this.handleClickKeyboardIcon}
+                        >
+                            <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
+                        </IconButton>
+                        <IconButton className="App__ActionsMenu__toggle-button"
+                            ariaLabel={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
+                            disabled={this.editingIsDisabled()}
+                            onClick={this.handleClickActionsSimplificationIcon}
+                        >
+                            <ActionsMenuToggleIcon className='App__header-actionsMenu-icon'/>
+                        </IconButton>
                     </div>
-                    <div className="App__world-container">
-                        <h2 className='sr-only' >
-                            <FormattedMessage id='WorldSelectorButton.heading' />
-                        </h2>
-                        <div className="App__world-selector">
-                            <IconButton
-                                className='keyboard-shortcut-focus__world-selector'
-                                ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelectorButton.label' })}
-                                onClick={this.handleClickWorldIcon}
-                            >
-                                <WorldIcon className='App__world-selector-icon'/>
-                            </IconButton>
-                        </div>
+                </div>
+            </header>
+        );
 
-                        <div className='App__PenDownToggleSwitch-container'>
-                            <PenDownToggleSwitch
-                                className='App__penDown-toggle-switch'
-                                value={this.state.drawingEnabled}
-                                onChange={this.handleTogglePenDown}/>
-                        </div>
+        const sceneContainer = (
+            <div className='App__scene-container'>
+                <h2 className='sr-only' >
+                    <FormattedMessage id='Scene.heading' />
+                </h2>
+                <Scene
+                    dimensions={this.state.sceneDimensions}
+                    characterState={this.state.characterState}
+                    theme={this.state.settings.theme}
+                    world={this.state.settings.world}
+                    customBackground={this.state.customBackground}
+                    startingX={this.state.startingX}
+                    startingY={this.state.startingY}
+                    runningState={this.state.runningState}
+                />
+            </div>
+        );
 
-                        <CharacterPositionController
-                            characterState={this.state.characterState}
-                            editingDisabled={this.editingIsDisabled()}
-                            theme={this.state.settings.theme}
-                            world={this.state.settings.world}
-                            onChangeCharacterPosition={this.handleChangeCharacterPosition}
-                            onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
-                            onChangeCharacterYPosition={this.handleChangeCharacterYPosition} />
-                    </div>
-                    <div className='App__command-palette'>
-                        <div className='App__ActionsMenu__header'>
-                            <h2 className='App__ActionsMenu__header-heading'>
-                                <FormattedMessage id='ActionsMenu.title' />
-                            </h2>
+        const worldContainer = (
+            <div className="App__world-container">
+                <h2 className='sr-only' >
+                    <FormattedMessage id='WorldSelectorButton.heading' />
+                </h2>
+                <div className="App__world-selector">
+                    <IconButton
+                        className='keyboard-shortcut-focus__world-selector'
+                        ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelectorButton.label' })}
+                        onClick={this.handleClickWorldIcon}
+                    >
+                        <WorldIcon className='App__world-selector-icon'/>
+                    </IconButton>
+                </div>
+                <div className='App__PenDownToggleSwitch-container'>
+                    <PenDownToggleSwitch
+                        className='App__penDown-toggle-switch'
+                        value={this.state.drawingEnabled}
+                        onChange={this.handleTogglePenDown}/>
+                </div>
+                <CharacterPositionController
+                    characterState={this.state.characterState}
+                    editingDisabled={this.editingIsDisabled()}
+                    theme={this.state.settings.theme}
+                    world={this.state.settings.world}
+                    onChangeCharacterPosition={this.handleChangeCharacterPosition}
+                    onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
+                    onChangeCharacterYPosition={this.handleChangeCharacterYPosition} />
+            </div>
+        );
+
+        const commandPalette = (
+            <div className='App__command-palette'>
+                <div className='App__ActionsMenu__header'>
+                    <h2 className='App__ActionsMenu__header-heading'>
+                        <FormattedMessage id='ActionsMenu.title' />
+                    </h2>
+                </div>
+                <div className='App__command-palette-command-container'>
+                    <div className='App__command-palette-section'>
+                        <div className='App__command-palette-section-heading-container'>
+                            <h3 className='App__command-palette-section-heading'>
+                                <FormattedMessage id='CommandPalette.movementsTitle'/>
+                            </h3>
                         </div>
-                        <div className='App__command-palette-command-container'>
-                            <div className='App__command-palette-section'>
-                                <div className='App__command-palette-section-heading-container'>
-                                    <h3 className='App__command-palette-section-heading'>
-                                        <FormattedMessage id='CommandPalette.movementsTitle'/>
-                                    </h3>
-                                </div>
-                                <div className='App__command-palette-section-body'>
-                                    <div className='App__command-palette-commands'>
-                                        {this.renderCommandBlocks(['forward1'])}
-                                    </div>
-                                    <div className='App__command-palette-commands'>
-                                        {this.renderCommandBlocks(['backward1'])}
-                                    </div>
-                                    <div className='App__command-palette-commands'>
-                                        {this.renderCommandBlocks([
-                                            'left45', 'left90'
-                                        ])}
-                                    </div>
-                                    <div className='App__command-palette-commands'>
-                                        {this.renderCommandBlocks([
-                                            'right45', 'right90'
-                                        ])}
-                                    </div>
-                                </div>
+                        <div className='App__command-palette-section-body'>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks(['forward1'])}
                             </div>
-
-                            <div className='App__command-palette-section'>
-                                <div className='App__command-palette-section-heading-container'>
-                                    <h3 className='App__command-palette-section-heading'>
-                                        <FormattedMessage id='CommandPalette.controlsTitle'/>
-                                    </h3>
-                                </div>
-
-                                <div className='App__command-palette-section-body'>
-                                    <div className='App__command-palette-controls'>
-                                        {this.renderCommandBlocks([
-                                            'loop'
-                                        ])}
-                                    </div>
-                                </div>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks(['backward1'])}
+                            </div>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks([
+                                    'left45', 'left90'
+                                ])}
+                            </div>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks([
+                                    'right45', 'right90'
+                                ])}
                             </div>
                         </div>
                     </div>
-                    <div className='App__program-block-editor'>
-                        <ProgramBlockEditor
-                            ref={this.programBlockEditorRef}
-                            actionPanelStepIndex={this.state.actionPanelStepIndex}
-                            actionPanelFocusedOptionName={this.state.actionPanelFocusedOptionName}
-                            characterState={this.state.characterState}
-                            editingDisabled={this.editingIsDisabled()}
-                            programSequence={this.state.programSequence}
-                            runningState={this.state.runningState}
-                            keyboardInputSchemeName={this.state.keyboardInputSchemeName}
-                            selectedAction={this.state.selectedAction}
-                            isDraggingCommand={this.state.isDraggingCommand}
-                            audioManager={this.audioManager}
-                            focusTrapManager={this.focusTrapManager}
-                            addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
-                            theme={this.state.settings.theme}
-                            world={this.state.settings.world}
-                            scrollRightPaddingPx={256}
-                            scrollLeftPaddingPx={128}
-                            scrollTimeThresholdMs={400}
-                            onChangeProgramSequence={this.handleProgramSequenceChange}
-                            onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
-                            onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
-                            onReplaceProgramStep={this.handleProgramBlockEditorReplaceStep}
-                            onMoveProgramStepNext={this.handleProgramBlockEditorMoveStepNext}
-                            onMoveProgramStepPrevious={this.handleProgramBlockEditorMoveStepPrevious}
-                            onChangeActionPanelStepIndexAndOption={this.handleChangeActionPanelStepIndexAndOption}
-                            onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
-                        />
-                    </div>
-                    <div className='App__playAndShare-background' />
-                    <div className='App__playAndShare-container'>
-                        <h2 className='sr-only' >
-                            <FormattedMessage id='PlayControls.heading' />
-                        </h2>
-                        <div className='App__playControl-container'>
-                            <div className='App__playButton-container'>
-                                <RefreshButton
-                                    className='App__playControlButton'
-                                    disabled={this.refreshIsDisabled()}
-                                    onClick={this.handleRefresh}
-                                />
-                                <PlayButton
-                                    className='App__playControlButton'
-                                    interpreterIsRunning={this.state.runningState === 'running'}
-                                    disabled={this.state.programSequence.getProgramLength() === 0}
-                                    onClick={this.handlePlay}
-                                />
-                                <StopButton
-                                    className='App__playControlButton'
-                                    disabled={
-                                        this.state.runningState === 'stopped'
-                                        || this.state.runningState === 'stopRequested'}
-                                    onClick={this.handleStop}/>
-                                <ProgramSpeedController
-                                    rangeControlRef={this.speedControlRef}
-                                    values={this.speedLookUp}
-                                    onChange={this.handleChangeProgramSpeed}
-                                />
-                            </div>
+                    <div className='App__command-palette-section'>
+                        <div className='App__command-palette-section-heading-container'>
+                            <h3 className='App__command-palette-section-heading'>
+                                <FormattedMessage id='CommandPalette.controlsTitle'/>
+                            </h3>
                         </div>
-                        <div className='App__shareButton-container'>
-                            <button
-                                className='App__ShareButton'
-                                onClick={this.handleShareButtonClick}
-                            >
-                                <ShareIcon className='App__ShareButton__icon'/>
-                                <div className='App__ShareButton__label'>
-                                    {this.props.intl.formatMessage({id:'ShareButton'})}
-                                </div>
-                            </button>
+
+                        <div className='App__command-palette-section-body'>
+                            <div className='App__command-palette-controls'>
+                                {this.renderCommandBlocks([
+                                    'loop'
+                                ])}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <CharacterAriaLive
-                    ariaLiveRegionId='character-position'
-                    ariaHidden={this.state.showWorldSelector}
+            </div>
+        );
+
+        const programBlockEditor = (
+            <div className='App__program-block-editor'>
+                <ProgramBlockEditor
+                    ref={this.programBlockEditorRef}
+                    actionPanelStepIndex={this.state.actionPanelStepIndex}
+                    actionPanelFocusedOptionName={this.state.actionPanelFocusedOptionName}
                     characterState={this.state.characterState}
+                    editingDisabled={this.editingIsDisabled()}
+                    programSequence={this.state.programSequence}
                     runningState={this.state.runningState}
-                    world={this.state.settings.world}/>
+                    keyboardInputSchemeName={this.state.keyboardInputSchemeName}
+                    selectedAction={this.state.selectedAction}
+                    isDraggingCommand={this.state.isDraggingCommand}
+                    audioManager={this.audioManager}
+                    focusTrapManager={this.focusTrapManager}
+                    addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
+                    theme={this.state.settings.theme}
+                    world={this.state.settings.world}
+                    scrollRightPaddingPx={256}
+                    scrollLeftPaddingPx={128}
+                    scrollTimeThresholdMs={400}
+                    onChangeProgramSequence={this.handleProgramSequenceChange}
+                    onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
+                    onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
+                    onReplaceProgramStep={this.handleProgramBlockEditorReplaceStep}
+                    onMoveProgramStepNext={this.handleProgramBlockEditorMoveStepNext}
+                    onMoveProgramStepPrevious={this.handleProgramBlockEditorMoveStepPrevious}
+                    onChangeActionPanelStepIndexAndOption={this.handleChangeActionPanelStepIndexAndOption}
+                    onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
+                />
+            </div>
+        );
+
+        const playAndShareContainer = (
+            <div className='App__playAndShare-container'>
+                <h2 className='sr-only' >
+                    <FormattedMessage id='PlayControls.heading' />
+                </h2>
+                <div className='App__playControl-container'>
+                    <div className='App__playButton-container'>
+                        <RefreshButton
+                            className='App__playControlButton'
+                            disabled={this.refreshIsDisabled()}
+                            onClick={this.handleRefresh}
+                        />
+                        <PlayButton
+                            className='App__playControlButton'
+                            interpreterIsRunning={this.state.runningState === 'running'}
+                            disabled={this.state.programSequence.getProgramLength() === 0}
+                            onClick={this.handlePlay}
+                        />
+                        <StopButton
+                            className='App__playControlButton'
+                            disabled={
+                                this.state.runningState === 'stopped'
+                                || this.state.runningState === 'stopRequested'}
+                            onClick={this.handleStop}
+                        />
+                        <ProgramSpeedController
+                            rangeControlRef={this.speedControlRef}
+                            values={this.speedLookUp}
+                            onChange={this.handleChangeProgramSpeed}
+                        />
+                    </div>
+                </div>
+                <div className='App__shareButton-container'>
+                    <button
+                        className='App__ShareButton'
+                        onClick={this.handleShareButtonClick}
+                    >
+                        <ShareIcon className='App__ShareButton__icon'/>
+                        <div className='App__ShareButton__label'>
+                            {this.props.intl.formatMessage({id:'ShareButton'})}
+                        </div>
+                    </button>
+                </div>
+            </div>
+        );
+
+        const characterAriaLive = (
+            <CharacterAriaLive
+                ariaLiveRegionId='character-position'
+                ariaHidden={this.state.showWorldSelector}
+                characterState={this.state.characterState}
+                runningState={this.state.runningState}
+                world={this.state.settings.world}
+            />
+        );
+
+        const modals = (
+            <React.Fragment>
                 <DashConnectionErrorModal
                     show={this.state.showDashConnectionError}
                     onCancel={this.handleCancelDashConnection}
@@ -1770,6 +1756,34 @@ export class App extends React.Component<AppProps, AppState> {
                     focusOnCloseSelector={this.state.focusOnClosePrivacyModalSelector}
                     onClose={this.handleClosePrivacyModal}
                 />
+            </React.Fragment>
+        );
+
+        return (
+            <React.Fragment>
+                <div
+                    className={classNames('App__container', this.state.customBackgroundEditMode && 'App__container--customBackgroundEditMode')}
+                    role='main'
+                    onClick={this.handleRootClick}
+                    onKeyDown={this.handleRootKeyDown}>
+                    <div className='App__notificationArea'>
+                        {this.state.showCookieNotification &&
+                            <CookieNotification
+                                onDismiss={this.handleCookieNotificationDismiss}
+                                onLearnMore={this.handleCookieNotificationLearnMore}
+                            />
+                        }
+                    </div>
+                    {header}
+                    {sceneContainer}
+                    {worldContainer}
+                    {commandPalette}
+                    {programBlockEditor}
+                    <div className='App__playAndShare-background' />
+                    {playAndShareContainer}
+                </div>
+                {characterAriaLive}
+                {modals}
             </React.Fragment>
         );
     }
