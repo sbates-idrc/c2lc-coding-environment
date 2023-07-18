@@ -4,19 +4,112 @@ import SceneDimensions from './SceneDimensions';
 
 // TODO: Decide what to do if x or y or index is out of range
 
-const tiles = {
-    '0': null,                       // Transparent
-    '1': 'Scene__custom-white',      // White
-    '2': 'Scene__custom-grey',       // Grey
-    '3': 'Scene__custom-black',      // Black
-    '4': 'Scene__custom-green',      // Green
-    '5': 'Scene__custom-light-blue', // Light blue
-    '6': 'Scene__custom-dark-blue',  // Dark blue
-    '7': 'Scene__custom-yellow',     // Yellow
-    '8': 'Scene__custom-orange',     // Orange
-    '9': 'Scene__custom-red',        // Red
-    'A': 'Scene__custom-pink',       // Pink
-    'B': 'Scene__custom-purple'      // Purple
+type TileProperties = {|
+    className: ?string,
+    isTransparent: boolean,
+    isWall: boolean
+|};
+
+const tiles: {|
+    '0': TileProperties,
+    '1': TileProperties,
+    '2': TileProperties,
+    '3': TileProperties,
+    '4': TileProperties,
+    '5': TileProperties,
+    '6': TileProperties,
+    '7': TileProperties,
+    '8': TileProperties,
+    '9': TileProperties,
+    'A': TileProperties,
+    'B': TileProperties,
+    'C': TileProperties,
+    'D': TileProperties,
+|} = {
+    '0': {
+        // Transparent
+        className: null,
+        isTransparent: true,
+        isWall: false
+    },
+    '1': {
+        // Wall
+        className: 'Scene__custom-wall',
+        isTransparent: false,
+        isWall: true
+    },
+    '2': {
+        // White
+        className: 'Scene__custom-white',
+        isTransparent: false,
+        isWall: false
+    },
+    '3': {
+        // Black
+        className: 'Scene__custom-black',
+        isTransparent: false,
+        isWall: false
+    },
+    '4': {
+        // Grey
+        className: 'Scene__custom-grey',
+        isTransparent: false,
+        isWall: false
+    },
+    '5': {
+        // Dark blue
+        className: 'Scene__custom-dark-blue',
+        isTransparent: false,
+        isWall: false
+    },
+    '6': {
+        // Light blue
+        className: 'Scene__custom-light-blue',
+        isTransparent: false,
+        isWall: false
+    },
+    '7': {
+        // Green
+        className: 'Scene__custom-green',
+        isTransparent: false,
+        isWall: false
+    },
+    '8': {
+        // Yellow
+        className: 'Scene__custom-yellow',
+        isTransparent: false,
+        isWall: false
+    },
+    '9': {
+        // Orange
+        className: 'Scene__custom-orange',
+        isTransparent: false,
+        isWall: false
+    },
+    'A': {
+        // Red
+        className: 'Scene__custom-red',
+        isTransparent: false,
+        isWall: false
+    },
+    'B': {
+        // Pink
+        className: 'Scene__custom-pink',
+        isTransparent: false,
+        isWall: false
+    },
+    'C': {
+        // Purple
+        className: 'Scene__custom-purple',
+        isTransparent: false,
+        isWall: false
+    },
+    'D': {
+        // Brown
+        className: 'Scene__custom-brown',
+        isTransparent: false,
+        isWall: false
+    }
 };
 
 export type Tile = $Keys<typeof tiles>;
@@ -26,7 +119,11 @@ export function isTile(str: ?string): boolean {
 }
 
 export function getTileClassName(tile: Tile): ?string {
-    return tiles[tile];
+    return tiles[tile].className;
+}
+
+export function isTransparent(tile: Tile): boolean {
+    return tiles[tile].isTransparent;
 }
 
 export class CustomBackground {
@@ -66,7 +163,6 @@ export class CustomBackground {
     }
 
     canMoveTo(x: number, y: number): boolean {
-        // Treat grey tiles as wall
-        return this.tiles[this.calculateIndex(x, y)] !== '2';
+        return !(tiles[this.tiles[this.calculateIndex(x, y)]].isWall);
     }
 }

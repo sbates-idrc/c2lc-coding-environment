@@ -776,6 +776,10 @@ export class App extends React.Component<AppProps, AppState> {
             case 'a':
             case 'B':
             case 'b':
+            case 'C':
+            case 'c':
+            case 'D':
+            case 'd':
                 e.preventDefault();
                 if (this.state.customBackgroundEditMode) {
                     const tile = e.key.toUpperCase();

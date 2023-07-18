@@ -110,7 +110,8 @@ describe('When the Scene renders', () => {
         expect.assertions(7);
         const dimensions = new SceneDimensions(1, 1, 1, 1);
         const sceneWrapper = createMountScene({
-            dimensions: dimensions
+            dimensions: dimensions,
+            customBackground: new CustomBackground(dimensions)
         });
 
         // Scene viewbox
@@ -141,7 +142,8 @@ describe('When the Scene renders', () => {
         expect.assertions(25);
         const dimensions = new SceneDimensions(1, 3, 1, 2);
         const sceneWrapper = createMountScene({
-            dimensions: dimensions
+            dimensions: dimensions,
+            customBackground: new CustomBackground(dimensions)
         });
 
         // Scene viewbox
@@ -207,7 +209,8 @@ describe('The ARIA label should tell there is a character with its position', ()
         const sceneDimensions = new SceneDimensions(1, 17, 1, 9);
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
-            characterState: new CharacterState(x, y, direction, [], sceneDimensions)
+            characterState: new CharacterState(x, y, direction, [], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
         expect(findScene(sceneWrapper).get(0).props['aria-label']).toBe(expectedLabel);
     });
@@ -216,8 +219,10 @@ describe('The ARIA label should tell there is a character with its position', ()
 describe('When the Scene renders', () => {
     test('Should render the character component', () => {
         expect.assertions(5);
+        const sceneDimensions = new SceneDimensions(1, 1, 1, 1);
         const sceneWrapper = createMountScene({
-            dimensions: new SceneDimensions(1, 1, 1, 1)
+            dimensions: sceneDimensions,
+            customBackground: new CustomBackground(sceneDimensions)
         });
         const expectedCharacterDimensions = calculateCharacterDimensions();
         expect(findCharacterIcon(sceneWrapper).hostNodes().length).toBe(1);
@@ -231,10 +236,12 @@ describe('When the Scene renders', () => {
             .toBeCloseTo(expectedCharacterDimensions.height, 5);
     });
     test('Should mark starting position cell', () => {
+        const sceneDimensions = new SceneDimensions(1, 8, 1, 9);
         const startingX = 3;
         const startingY = 3;
         const sceneWrapper = createMountScene({
-            dimensions: new SceneDimensions(1, 8, 1, 9),
+            dimensions: sceneDimensions,
+            customBackground: new CustomBackground(sceneDimensions),
             startingX,
             startingY
         });
@@ -262,7 +269,8 @@ describe('When the Scene renders', () => {
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
             characterState: new CharacterState(characterX, characterY, 2, [], sceneDimensions),
-            theme: theme
+            theme: theme,
+            customBackground: new CustomBackground(sceneDimensions)
         });
 
         const characterOutline = findCharacterOutline(sceneWrapper);
@@ -282,7 +290,8 @@ describe('When the character renders, transform should apply', (sceneDimensions 
         expect.assertions(1);
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
-            characterState: new CharacterState(1, 1, 2, [], sceneDimensions)
+            characterState: new CharacterState(1, 1, 2, [], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
@@ -292,7 +301,8 @@ describe('When the character renders, transform should apply', (sceneDimensions 
         expect.assertions(1);
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
-            characterState: new CharacterState(10, 8, 4, [], sceneDimensions)
+            characterState: new CharacterState(10, 8, 4, [], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
         const character = findCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
@@ -303,7 +313,8 @@ describe('When the character renders, transform should apply', (sceneDimensions 
 
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
-            characterState: new CharacterState(1, 1, 2, [], sceneDimensions)
+            characterState: new CharacterState(1, 1, 2, [], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
 
         const character = findCharacter(sceneWrapper);
@@ -334,7 +345,8 @@ describe('When the character renders, transform should apply', (sceneDimensions 
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
             characterState: new CharacterState(1, 1, 2, [], sceneDimensions),
-            world: 'Landmarks'
+            world: 'Landmarks',
+            customBackground: new CustomBackground(sceneDimensions)
         });
 
         const character = findCharacter(sceneWrapper);
