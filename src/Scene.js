@@ -24,6 +24,7 @@ export type SceneProps = {
     startingX: number,
     startingY: number,
     runningState: RunningState,
+    onClickScene: (x: number, y: number) => void,
     intl: IntlShape
 };
 
@@ -344,6 +345,16 @@ class Scene extends React.Component<SceneProps, {}> {
         return getWorldProperties(this.props.world).enableFlipCharacter;
     }
 
+    handleClickSceneSvg = (e: any) => {
+        // $FlowFixMe: DOMPoint
+        const clientPoint = new DOMPoint(e.clientX, e.clientY);
+        const svgElem = e.currentTarget;
+        const svgPoint =  clientPoint.matrixTransform(svgElem.getScreenCTM().inverse());
+        const x = Math.floor(svgPoint.x + 0.5);
+        const y = Math.floor(svgPoint.y + 0.5);
+        this.props.onClickScene(x, y);
+    }
+
     render() {
         const minX = this.props.dimensions.getMinX() - 0.5;
         const minY = this.props.dimensions.getMinY() - 0.5;
@@ -367,10 +378,12 @@ class Scene extends React.Component<SceneProps, {}> {
                         tabIndex='-1'
                         aria-hidden='true'
                         id='scene-row-header'
-                        className='Scene__row-header'>
+                        className='Scene__row-header'
+                    >
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
-                            viewBox={`-2 0 3 ${height * 10}`}>
+                            viewBox={`-2 0 3 ${height * 10}`}
+                        >
                             {rowLabels}
                         </svg>
                     </div>
@@ -378,10 +391,12 @@ class Scene extends React.Component<SceneProps, {}> {
                         tabIndex='-1'
                         aria-hidden='true'
                         id='scene-column-header'
-                        className='Scene__column-header'>
+                        className='Scene__column-header'
+                    >
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
-                            viewBox={`0 -2 ${width * 10} 3`}>
+                            viewBox={`0 -2 ${width * 10} 3`}
+                        >
                             {columnLabels}
                         </svg>
                     </div>
@@ -391,11 +406,14 @@ class Scene extends React.Component<SceneProps, {}> {
                         role='img'
                         aria-label={this.generateAriaLabel()}
                         onScroll={this.handleScrollScene}
-                        ref={this.sceneRef}>
+                        ref={this.sceneRef}
+                    >
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             viewBox={`${minX} ${minY} ${width} ${height}`}
-                            ref={this.sceneSvgRef}>
+                            ref={this.sceneSvgRef}
+                            onClick={this.handleClickSceneSvg}
+                        >
                             <defs>
                                 <clipPath id='Scene-clippath'>
                                     <rect x={minX} y={minY} width={width} height={height} />

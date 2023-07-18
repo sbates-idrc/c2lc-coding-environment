@@ -1461,6 +1461,11 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showPrivacyModal: false });
     }
 
+    handleClickScene = (x: number, y: number) => {
+        /* eslint-disable no-console */
+        console.log(`(${x}, ${y})`);
+    }
+
     renderNotificationArea() {
         return (
             <div className='App__notificationArea'>
@@ -1548,6 +1553,7 @@ export class App extends React.Component<AppProps, AppState> {
                     startingX={this.state.startingX}
                     startingY={this.state.startingY}
                     runningState={this.state.runningState}
+                    onClickScene={this.handleClickScene}
                 />
             </React.Fragment>
         );
