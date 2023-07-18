@@ -129,7 +129,8 @@ export type AppState = {
     startingY: number,
     startingDirection: number,
     customBackground: CustomBackground,
-    customBackgroundEditMode: boolean
+    customBackgroundEditMode: boolean,
+    selectedCustomBackgroundTile: ?Tile
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -463,6 +464,7 @@ export class App extends React.Component<AppProps, AppState> {
             startingDirection: startingDirection,
             customBackground: new CustomBackground(this.sceneDimensions),
             customBackgroundEditMode: false,
+            selectedCustomBackgroundTile: null,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -784,13 +786,9 @@ export class App extends React.Component<AppProps, AppState> {
                 if (this.state.customBackgroundEditMode) {
                     const tile = e.key.toUpperCase();
                     if (isTile(tile)) {
-                        this.setState((state) => ({
-                            customBackground: state.customBackground.setTile(
-                                state.characterState.xPos,
-                                state.characterState.yPos,
-                                ((tile: any): Tile)
-                            )
-                        }));
+                        this.setState({
+                            selectedCustomBackgroundTile: ((tile: any): Tile)
+                        });
                     }
                 }
                 return;
@@ -1461,9 +1459,18 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showPrivacyModal: false });
     }
 
+    // TODO: Support 'painting' of the scene by mouse down, drag, mouse up,
+    //       rather than discrete clicks
     handleClickScene = (x: number, y: number) => {
-        /* eslint-disable no-console */
-        console.log(`(${x}, ${y})`);
+        if (this.state.customBackgroundEditMode && this.state.selectedCustomBackgroundTile != null) {
+            this.setState({
+                customBackground: this.state.customBackground.setTile(
+                    x,
+                    y,
+                    this.state.selectedCustomBackgroundTile
+                )
+            });
+        }
     }
 
     renderNotificationArea() {
