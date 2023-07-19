@@ -1461,22 +1461,16 @@ export class App extends React.Component<AppProps, AppState> {
 
     handleClickScene = (x: number, y: number) => {
         this.setState((state) => {
-            const newCharacterState = state.characterState.setPosition(x, y);
+            const stateUpdate: $Shape<AppState> = {};
 
-            const stateUpdate: $Shape<AppState> = {
-                characterState: newCharacterState
-            };
+            if (state.customBackgroundEditMode) {
+                stateUpdate.characterState = state.characterState.setPosition(x, y);
 
-            if (state.customBackgroundEditMode && state.selectedCustomBackgroundTile != null) {
-                stateUpdate.customBackground = state.customBackground.setTile(
-                    x, y, state.selectedCustomBackgroundTile
-                );
-            }
-
-            if (!(state.customBackgroundEditMode)) {
-                stateUpdate.startingX = newCharacterState.xPos;
-                stateUpdate.startingY = newCharacterState.yPos;
-                stateUpdate.startingDirection = newCharacterState.direction;
+                if (state.selectedCustomBackgroundTile != null) {
+                    stateUpdate.customBackground = state.customBackground.setTile(
+                        x, y, state.selectedCustomBackgroundTile
+                    );
+                }
             }
 
             return stateUpdate;
