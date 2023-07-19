@@ -1459,18 +1459,28 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showPrivacyModal: false });
     }
 
-    // TODO: Support 'painting' of the scene by mouse down, drag, mouse up,
-    //       rather than discrete clicks
     handleClickScene = (x: number, y: number) => {
-        if (this.state.customBackgroundEditMode && this.state.selectedCustomBackgroundTile != null) {
-            this.setState({
-                customBackground: this.state.customBackground.setTile(
-                    x,
-                    y,
-                    this.state.selectedCustomBackgroundTile
-                )
-            });
-        }
+        this.setState((state) => {
+            const newCharacterState = state.characterState.setPosition(x, y);
+
+            const stateUpdate: $Shape<AppState> = {
+                characterState: newCharacterState
+            };
+
+            if (state.customBackgroundEditMode && state.selectedCustomBackgroundTile != null) {
+                stateUpdate.customBackground = state.customBackground.setTile(
+                    x, y, state.selectedCustomBackgroundTile
+                );
+            }
+
+            if (!(state.customBackgroundEditMode)) {
+                stateUpdate.startingX = newCharacterState.xPos;
+                stateUpdate.startingY = newCharacterState.yPos;
+                stateUpdate.startingDirection = newCharacterState.direction;
+            }
+
+            return stateUpdate;
+        });
     }
 
     renderNotificationArea() {

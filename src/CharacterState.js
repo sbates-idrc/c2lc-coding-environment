@@ -59,6 +59,16 @@ export default class CharacterState {
         return true;
     }
 
+    setPosition(x: number, y: number): CharacterState {
+        return new CharacterState(
+            x,
+            y,
+            this.direction,
+            this.path,
+            this.sceneDimensions
+        );
+    }
+
     forward(distance: number, drawingEnabled: boolean, customBackground: CustomBackground): CharacterState {
         const movementResult = this.calculateMove(distance, this.direction, drawingEnabled, customBackground);
         return new CharacterState(
@@ -207,7 +217,6 @@ export default class CharacterState {
             this.sceneDimensions
         );
     }
-
 
     getRowLabel(): string {
         return `${this.yPos}`;
