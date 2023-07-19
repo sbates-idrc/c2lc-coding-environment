@@ -15,6 +15,11 @@ import type { WorldName } from './Worlds';
 
 const startingGridCellPointSize = 0.25;
 
+type MousePosition = {
+    x: number,
+    y: number
+};
+
 export type SceneProps = {
     dimensions: SceneDimensions,
     characterState: CharacterState,
@@ -24,18 +29,22 @@ export type SceneProps = {
     startingX: number,
     startingY: number,
     runningState: RunningState,
-    onClickScene: (x: number, y: number) => void,
+    onPaintScene: (x: number, y: number) => void,
     intl: IntlShape
 };
 
 class Scene extends React.Component<SceneProps, {}> {
     sceneRef: { current: null | HTMLDivElement };
     sceneSvgRef: { current: null | Element };
+    lastPaintX: ?number;
+    lastPaintY: ?number;
 
     constructor (props: SceneProps) {
         super(props);
         this.sceneRef = React.createRef();
         this.sceneSvgRef = React.createRef();
+        this.lastPaintX = null;
+        this.lastPaintY = null;
     }
 
     drawGrid(): any {
@@ -345,14 +354,34 @@ class Scene extends React.Component<SceneProps, {}> {
         return getWorldProperties(this.props.world).enableFlipCharacter;
     }
 
-    handleClickSceneSvg = (e: any) => {
+    getPositionFromSceneSvgMouseEvent(e: any): MousePosition {
         // $FlowFixMe: DOMPoint
         const clientPoint = new DOMPoint(e.clientX, e.clientY);
         const svgElem = e.currentTarget;
         const svgPoint =  clientPoint.matrixTransform(svgElem.getScreenCTM().inverse());
-        const x = Math.floor(svgPoint.x + 0.5);
-        const y = Math.floor(svgPoint.y + 0.5);
-        this.props.onClickScene(x, y);
+        return {
+            x: Math.floor(svgPoint.x + 0.5),
+            y: Math.floor(svgPoint.y + 0.5)
+        };
+    }
+
+    handleMouseDownSceneSvg = (e: any) => {
+        const pos: MousePosition = this.getPositionFromSceneSvgMouseEvent(e);
+        this.lastPaintX = pos.x;
+        this.lastPaintY = pos.y;
+        this.props.onPaintScene(pos.x, pos.y);
+    }
+
+    handleMouseMoveSceneSvg = (e: any) => {
+        const primaryButtonPressed = ((e.buttons % 2) === 1);
+        if (primaryButtonPressed) {
+            const pos: MousePosition = this.getPositionFromSceneSvgMouseEvent(e);
+            if (pos.x !== this.lastPaintX || pos.y !== this.lastPaintY) {
+                this.lastPaintX = pos.x;
+                this.lastPaintY = pos.y;
+                this.props.onPaintScene(pos.x, pos.y);
+            }
+        }
     }
 
     render() {
@@ -412,7 +441,8 @@ class Scene extends React.Component<SceneProps, {}> {
                             xmlns='http://www.w3.org/2000/svg'
                             viewBox={`${minX} ${minY} ${width} ${height}`}
                             ref={this.sceneSvgRef}
-                            onClick={this.handleClickSceneSvg}
+                            onMouseDown={this.handleMouseDownSceneSvg}
+                            onMouseMove={this.handleMouseMoveSceneSvg}
                         >
                             <defs>
                                 <clipPath id='Scene-clippath'>

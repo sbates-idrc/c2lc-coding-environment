@@ -1459,7 +1459,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showPrivacyModal: false });
     }
 
-    handleClickScene = (x: number, y: number) => {
+    handlePaintScene = (x: number, y: number) => {
         this.setState((state) => {
             const stateUpdate: $Shape<AppState> = {};
 
@@ -1564,7 +1564,7 @@ export class App extends React.Component<AppProps, AppState> {
                     startingX={this.state.startingX}
                     startingY={this.state.startingY}
                     runningState={this.state.runningState}
-                    onClickScene={this.handleClickScene}
+                    onPaintScene={this.handlePaintScene}
                 />
             </React.Fragment>
         );
