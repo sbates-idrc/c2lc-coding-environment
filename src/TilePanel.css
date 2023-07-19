@@ -1,0 +1,8 @@
+.TilePanel {
+    display: flex;
+}
+
+.TilePanel__tile > svg {
+    width: 45px;
+    height: 45px;
+}

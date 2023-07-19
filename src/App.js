@@ -45,6 +45,7 @@ import './App.scss';
 import './Themes.scss';
 import './vendor/dragdroptouch/DragDropTouch.js';
 import ThemeSelector from './ThemeSelector';
+import TilePanel from './TilePanel';
 import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
 import KeyboardInputModal from './KeyboardInputModal';
 import ShareModal from './ShareModal';
@@ -1459,6 +1460,10 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showPrivacyModal: false });
     }
 
+    handleSelectTile = (tile: Tile) => {
+        this.setState({ selectedCustomBackgroundTile: tile });
+    }
+
     handlePaintScene = (x: number, y: number) => {
         this.setState((state) => {
             const stateUpdate: $Shape<AppState> = {};
@@ -1567,6 +1572,14 @@ export class App extends React.Component<AppProps, AppState> {
                     onPaintScene={this.handlePaintScene}
                 />
             </React.Fragment>
+        );
+    }
+
+    renderTilePanel() {
+        return (
+            <TilePanel
+                onSelectTile={this.handleSelectTile}
+            />
         );
     }
 
@@ -1838,6 +1851,7 @@ export class App extends React.Component<AppProps, AppState> {
                             </header>
                             <div className='App__scene-container'>
                                 {this.renderSceneWithHeading()}
+                                {this.renderTilePanel()}
                             </div>
                             <div className="App__world-container">
                                 {this.renderWorldSelectorWithHeading()}
