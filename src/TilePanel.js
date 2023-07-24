@@ -1,16 +1,16 @@
 // @flow
 
-import { getTileClassName, isTile } from './CustomBackground';
-import type { Tile } from './CustomBackground';
 import React from 'react';
+import { getTileClassName, isTileName } from './TileData';
+import type { TileName } from './TileData';
 import './TilePanel.css';
 
 type TilePanelProps = {
-    onSelectTile: (tile: Tile) => void
+    onSelectTile: (tileName: TileName) => void
 };
 
 export default class TilePanel extends React.Component<TilePanelProps, {}> {
-    tiles: Array<Tile>;
+    tiles: Array<TileName>;
 
     constructor(props: TilePanelProps) {
         super(props);
@@ -33,19 +33,19 @@ export default class TilePanel extends React.Component<TilePanelProps, {}> {
     }
 
     handleClickTile = (e: any) => {
-        const tile = e.currentTarget.dataset.tile;
-        if (isTile(tile)) {
-            this.props.onSelectTile(((tile: any): Tile));
+        const tileName = e.currentTarget.dataset.tilename;
+        if (isTileName(tileName)) {
+            this.props.onSelectTile(((tileName: any): TileName));
         }
     };
 
     render() {
         return (
             <div className='TilePanel'>
-                {this.tiles.map(tile => (
+                {this.tiles.map(tileName => (
                     <div
                         className='TilePanel__tile'
-                        data-tile={tile}
+                        data-tilename={tileName}
                         onClick={this.handleClickTile}
                     >
                         <svg
@@ -53,7 +53,7 @@ export default class TilePanel extends React.Component<TilePanelProps, {}> {
                             viewBox='0 0 1 1'
                         >
                             <rect
-                                className={getTileClassName(tile)}
+                                className={getTileClassName(tileName)}
                                 x={0}
                                 y={0}
                                 width={1}

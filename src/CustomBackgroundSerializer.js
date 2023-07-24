@@ -1,8 +1,9 @@
 // @flow
 
-import { CustomBackground, isTile } from './CustomBackground';
-import type { Tile } from './CustomBackground';
+import { CustomBackground } from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
+import { isTileName } from './TileData';
+import type { TileName } from './TileData';
 
 export default class CustomBackgroundSerializer {
     sceneDimensions: SceneDimensions;
@@ -22,9 +23,9 @@ export default class CustomBackgroundSerializer {
 
         if (text) {
             for (let i = 0; (i < text.length) && (i < numTiles); i++) {
-                const tile = text.charAt(i);
-                if (isTile(tile)) {
-                    tiles[i] = ((tile: any): Tile);
+                const tileName = text.charAt(i);
+                if (isTileName(tileName)) {
+                    tiles[i] = ((tileName: any): TileName);
                 }
             }
         }

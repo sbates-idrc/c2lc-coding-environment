@@ -14,8 +14,7 @@ import classNames from 'classnames';
 import CommandPaletteCommand from './CommandPaletteCommand';
 import CookieNotification from './CookieNotification';
 import C2lcURLParams from './C2lcURLParams';
-import { CustomBackground, isTile } from './CustomBackground';
-import type { Tile } from './CustomBackground';
+import { CustomBackground } from './CustomBackground';
 import CustomBackgroundSerializer from './CustomBackgroundSerializer';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
 import DashDriver from './DashDriver';
@@ -36,6 +35,8 @@ import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
+import { isTileName } from './TileData';
+import type { TileName } from './TileData';
 import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
@@ -131,7 +132,7 @@ export type AppState = {
     startingDirection: number,
     customBackground: CustomBackground,
     customBackgroundEditMode: boolean,
-    selectedCustomBackgroundTile: ?Tile
+    selectedCustomBackgroundTile: ?TileName
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -785,10 +786,10 @@ export class App extends React.Component<AppProps, AppState> {
             case 'd':
                 e.preventDefault();
                 if (this.state.customBackgroundEditMode) {
-                    const tile = e.key.toUpperCase();
-                    if (isTile(tile)) {
+                    const tileName = e.key.toUpperCase();
+                    if (isTileName(tileName)) {
                         this.setState({
-                            selectedCustomBackgroundTile: ((tile: any): Tile)
+                            selectedCustomBackgroundTile: ((tileName: any): TileName)
                         });
                     }
                 }
@@ -1460,8 +1461,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showPrivacyModal: false });
     }
 
-    handleSelectTile = (tile: Tile) => {
-        this.setState({ selectedCustomBackgroundTile: tile });
+    handleSelectTile = (tileName: TileName) => {
+        this.setState({ selectedCustomBackgroundTile: tileName });
     }
 
     handlePaintScene = (x: number, y: number) => {

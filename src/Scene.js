@@ -3,8 +3,9 @@
 import React from 'react';
 import CharacterState from './CharacterState';
 import Character from './Character';
-import { CustomBackground, getTileClassName, isTransparent } from './CustomBackground';
+import { CustomBackground } from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
+import { getTileClassName, isTransparent } from './TileData';
 import { getBackgroundInfo, getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
@@ -121,11 +122,11 @@ class Scene extends React.Component<SceneProps, {}> {
         const tiles = [];
         for (let y = this.props.dimensions.getMinY(); y < this.props.dimensions.getMaxY() + 1; y++) {
             for (let x = this.props.dimensions.getMinX(); x < this.props.dimensions.getMaxX() + 1; x++) {
-                const tile = this.props.customBackground.getTile(x, y);
-                if (!isTransparent(tile)) {
+                const tileName = this.props.customBackground.getTile(x, y);
+                if (!isTransparent(tileName)) {
                     tiles.push(
                         <rect
-                            className={getTileClassName(tile)}
+                            className={getTileClassName(tileName)}
                             key={`custom-background-tile-${x}-${y}`}
                             x={x - 0.5}
                             y={y - 0.5}
