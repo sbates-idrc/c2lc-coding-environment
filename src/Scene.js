@@ -5,7 +5,7 @@ import CharacterState from './CharacterState';
 import Character from './Character';
 import { CustomBackground } from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
-import { getTileClassName, isTransparent } from './TileData';
+import { getTileClassName, getTileImage, isTransparent } from './TileData';
 import { getBackgroundInfo, getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
@@ -124,16 +124,29 @@ class Scene extends React.Component<SceneProps, {}> {
             for (let x = this.props.dimensions.getMinX(); x < this.props.dimensions.getMaxX() + 1; x++) {
                 const tileName = this.props.customBackground.getTile(x, y);
                 if (!isTransparent(tileName)) {
-                    tiles.push(
-                        <rect
-                            className={getTileClassName(tileName)}
-                            key={`custom-background-tile-${x}-${y}`}
-                            x={x - 0.5}
-                            y={y - 0.5}
-                            width={1}
-                            height={1}
-                        />
-                    );
+                    const tileImage = getTileImage(tileName);
+                    if (tileImage == null) {
+                        tiles.push(
+                            <rect
+                                className={getTileClassName(tileName)}
+                                key={`custom-background-tile-${x}-${y}`}
+                                x={x - 0.5}
+                                y={y - 0.5}
+                                width={1}
+                                height={1}
+                            />
+                        );
+                    } else {
+                        tiles.push(React.createElement(tileImage,
+                            {
+                                key: `custom-background-tile-${x}-${y}`,
+                                x: x - 0.5,
+                                y: y - 0.5,
+                                width: 1,
+                                height: 1
+                            }
+                        ));
+                    }
                 }
             }
         }

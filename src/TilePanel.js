@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { getTileClassName, isTileName } from './TileData';
+import { getTileClassName, getTileImage, isTileName } from './TileData';
 import type { TileName } from './TileData';
 import './TilePanel.css';
 
@@ -10,11 +10,11 @@ type TilePanelProps = {
 };
 
 export default class TilePanel extends React.Component<TilePanelProps, {}> {
-    tiles: Array<TileName>;
+    tileNames: Array<TileName>;
 
     constructor(props: TilePanelProps) {
         super(props);
-        this.tiles = [
+        this.tileNames = [
             '0',
             '1',
             '2',
@@ -40,15 +40,19 @@ export default class TilePanel extends React.Component<TilePanelProps, {}> {
     };
 
     render() {
-        return (
-            <div className='TilePanel'>
-                {this.tiles.map(tileName => (
-                    <div
-                        className='TilePanel__tile'
-                        data-tilename={tileName}
-                        key={tileName}
-                        onClick={this.handleClickTile}
-                    >
+        const tiles = [];
+
+        for (const tileName of this.tileNames) {
+            const tileImage = getTileImage(tileName);
+
+            tiles.push(
+                <div
+                    className='TilePanel__tile'
+                    data-tilename={tileName}
+                    key={tileName}
+                    onClick={this.handleClickTile}
+                >
+                    {tileImage == null ?
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
                             viewBox='0 0 1 1'
@@ -61,8 +65,16 @@ export default class TilePanel extends React.Component<TilePanelProps, {}> {
                                 height={1}
                             />
                         </svg>
-                    </div>
-                ))}
+                        :
+                        React.createElement(tileImage)
+                    }
+                </div>
+            );
+        }
+
+        return (
+            <div className='TilePanel'>
+                {tiles}
             </div>
         );
     }
