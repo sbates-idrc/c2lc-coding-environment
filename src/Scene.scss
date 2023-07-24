@@ -12,10 +12,6 @@
     border-radius: 3px;
 }
 
-.App__container--customBackgroundEditMode .Scene__container {
-    background-color: #ECC;
-}
-
 .Scene {
     grid-row-start: 2;
     grid-row-end: 3;
@@ -34,6 +30,7 @@
 
 .Scene__row-header {
     overflow: scroll;
+    fill: #CCE6E2;
     grid-row-start: 2;
     grid-row-end: 3;
     grid-column-start: 1;
@@ -53,6 +50,7 @@
 }
 
 .Scene__column-header {
+    fill: #CCE6E2;
     grid-row-start: 1;
     grid-row-end: 2;
     grid-column-start: 2;
