@@ -35,7 +35,6 @@ import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
-import { isTileName } from './TileData';
 import type { TileName } from './TileData';
 import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
@@ -765,34 +764,6 @@ export class App extends React.Component<AppProps, AppState> {
                 this.setState((state) => ({
                     characterState: state.characterState.moveRightPosition(!(state.customBackgroundEditMode), state.customBackground)
                 }));
-                return;
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-            case 'A':
-            case 'a':
-            case 'B':
-            case 'b':
-            case 'C':
-            case 'c':
-            case 'D':
-            case 'd':
-                e.preventDefault();
-                if (this.state.customBackgroundEditMode) {
-                    const tileName = e.key.toUpperCase();
-                    if (isTileName(tileName)) {
-                        this.setState({
-                            selectedCustomBackgroundTile: ((tileName: any): TileName)
-                        });
-                    }
-                }
                 return;
             default:
                 // Do nothing
