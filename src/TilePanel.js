@@ -46,6 +46,7 @@ export default class TilePanel extends React.Component<TilePanelProps, {}> {
                     <div
                         className='TilePanel__tile'
                         data-tilename={tileName}
+                        key={tileName}
                         onClick={this.handleClickTile}
                     >
                         <svg
