@@ -733,43 +733,6 @@ export class App extends React.Component<AppProps, AppState> {
     // Global shortcut handling.
     // TODO: Convert to use keyboardEventMatchesKeyDef for each command in turn.
     handleDocumentKeyDown = (e: KeyboardEvent) => {
-        switch(e.key) {
-            case 'e':
-            case 'E':
-                // Toggle custom background edit mode
-                e.preventDefault();
-                this.setState((state) => ({
-                    customBackgroundEditMode: !(state.customBackgroundEditMode)
-                }));
-                return;
-            case 'ArrowUp':
-                e.preventDefault();
-                this.setState((state) => ({
-                    characterState: state.characterState.moveUpPosition(!(state.customBackgroundEditMode), state.customBackground)
-                }));
-                return;
-            case 'ArrowDown':
-                e.preventDefault();
-                this.setState((state) => ({
-                    characterState: state.characterState.moveDownPosition(!(state.customBackgroundEditMode), state.customBackground)
-                }));
-                return;
-            case 'ArrowLeft':
-                e.preventDefault();
-                this.setState((state) => ({
-                    characterState: state.characterState.moveLeftPosition(!(state.customBackgroundEditMode), state.customBackground)
-                }));
-                return;
-            case 'ArrowRight':
-                e.preventDefault();
-                this.setState((state) => ({
-                    characterState: state.characterState.moveRightPosition(!(state.customBackgroundEditMode), state.customBackground)
-                }));
-                return;
-            default:
-                // Do nothing
-        }
-
         if (this.state.keyBindingsEnabled) {
             if (e.key === 'Escape') {
                 this.sequenceInProgress = [];
