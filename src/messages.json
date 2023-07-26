@@ -152,6 +152,7 @@
         "Custom.character": "the robot",
         "Custom.label": "Custom",
         "Custom.name": "Custom",
+        "CustomBackgroundEditModeToggleSwitch.customBackgroundEditMode": "custom background edit mode",
         "DashConnectionErrorModal.cancelButton": "Cancel connection",
         "DashConnectionErrorModal.error": "Connection Error",
         "DashConnectionErrorModal.firstMessage": "Make sure your device's bluetooth is turned on",

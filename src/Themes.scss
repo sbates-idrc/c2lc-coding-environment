@@ -644,6 +644,10 @@ body.dark-theme {
         fill: white;
     }
 
+    .CustomBackgroundEditModeToggleSwitch:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+    }
+
     .PenDownToggleSwitch:focus {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
@@ -1221,6 +1225,30 @@ body.gray-theme {
 
     .Scene__column-header, .Scene__row-header {
         fill: #D5D8DD;
+    }
+
+    .CustomBackgroundEditModeToggleSwitch.ToggleSwitch {
+        background-color: #B9BEC6;
+
+        .ToggleSwitch__switch-inner-circle {
+            background-color: white;
+        }
+
+
+        &:focus {
+            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
+        }
+
+        &:hover {
+            background-color: #505862;
+            .ToggleSwitch__switch-inner-circle {
+                background-color: #B9BEC6;
+            }
+        }
+    }
+
+    .CustomBackgroundEditModeToggleSwitch.ToggleSwitch--checked {
+        background-color: #818A98;
     }
 
     .PenDownToggleSwitch.ToggleSwitch {
@@ -2271,6 +2299,28 @@ body.contrast-theme {
 
     .Scene__column-header, .Scene__row-header {
         fill: white;
+    }
+
+    .CustomBackgroundEditModeToggleSwitch, .CustomBackgroundEditModeToggleSwitch.ToggleSwitch--checked:hover {
+        background-color: white;
+        border: 1px solid black;
+        .ToggleSwitch__switch-inner-circle {
+            background-color: black;
+        }
+    }
+
+    .CustomBackgroundEditModeToggleSwitch:focus {
+        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
+        border: none;
+    }
+
+    .CustomBackgroundEditModeToggleSwitch:hover, .CustomBackgroundEditModeToggleSwitch.ToggleSwitch--checked {
+        background-color: black;
+        border: 2px solid white;
+        padding: 0.2rem;
+        .ToggleSwitch__switch-inner-circle {
+            background-color: white;
+        }
     }
 
     .PenDownToggleSwitch, .PenDownToggleSwitch.ToggleSwitch--checked:hover {

@@ -15,6 +15,7 @@ import CommandPaletteCommand from './CommandPaletteCommand';
 import CookieNotification from './CookieNotification';
 import C2lcURLParams from './C2lcURLParams';
 import { CustomBackground } from './CustomBackground';
+import CustomBackgroundEditModeToggleSwitch from './CustomBackgroundEditModeToggleSwitch';
 import CustomBackgroundSerializer from './CustomBackgroundSerializer';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
 import DashDriver from './DashDriver';
@@ -1189,6 +1190,12 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
+    handleToggleCustomBackgroundEditMode = (customBackgroundEditMode: boolean) => {
+        this.setState({
+            customBackgroundEditMode: customBackgroundEditMode
+        });
+    }
+
     changeProgramSpeedIndex = (newSpeedIndex: number) => {
         if (newSpeedIndex >= 0 && newSpeedIndex <= (this.speedLookUp.length - 1)) {
             this.interpreter.setStepTime(this.speedLookUp[newSpeedIndex]);
@@ -1574,13 +1581,24 @@ export class App extends React.Component<AppProps, AppState> {
         );
     }
 
+    renderCustomBackgroundEditModeToggleSwitch() {
+        return (
+            <div className='App__CustomBackgroundEditModeToggleSwitch-container'>
+                <CustomBackgroundEditModeToggleSwitch
+                    value={this.state.customBackgroundEditMode}
+                    onChange={this.handleToggleCustomBackgroundEditMode}
+                />
+            </div>
+        );
+    }
+
     renderPenDownToggleSwitch() {
         return (
             <div className='App__PenDownToggleSwitch-container'>
                 <PenDownToggleSwitch
-                    className='App__penDown-toggle-switch'
                     value={this.state.drawingEnabled}
-                    onChange={this.handleTogglePenDown}/>
+                    onChange={this.handleTogglePenDown}
+                />
             </div>
         );
     }
@@ -1827,6 +1845,7 @@ export class App extends React.Component<AppProps, AppState> {
                             </div>
                             <div className="App__world-container">
                                 {this.renderWorldSelectorWithHeading()}
+                                {this.renderCustomBackgroundEditModeToggleSwitch()}
                                 {this.renderPenDownToggleSwitch()}
                                 {this.renderCharacterPositionController()}
                             </div>
@@ -1841,6 +1860,7 @@ export class App extends React.Component<AppProps, AppState> {
                             </div>
                             <div className="App__world-container">
                                 {this.renderWorldSelectorWithHeading()}
+                                {this.renderCustomBackgroundEditModeToggleSwitch()}
                                 {this.renderPenDownToggleSwitch()}
                                 {this.renderCharacterPositionController()}
                             </div>
