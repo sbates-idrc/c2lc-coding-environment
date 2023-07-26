@@ -1809,7 +1809,6 @@ export class App extends React.Component<AppProps, AppState> {
                             <div className="App__world-container">
                                 {this.renderWorldSelectorWithHeading()}
                                 {this.renderCustomBackgroundEditModeToggleSwitch()}
-                                {this.renderPenDownToggleSwitch()}
                                 {this.renderCharacterPositionController()}
                             </div>
                         </React.Fragment>
