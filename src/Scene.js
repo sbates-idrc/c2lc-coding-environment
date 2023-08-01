@@ -4,8 +4,8 @@ import React from 'react';
 import CharacterState from './CharacterState';
 import Character from './Character';
 import { CustomBackground } from './CustomBackground';
+import CustomBackgroundSceneLayer from './CustomBackgroundSceneLayer';
 import SceneDimensions from './SceneDimensions';
-import { getTileClassName, getTileImage, isTransparent } from './TileData';
 import { getBackgroundInfo, getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
@@ -116,41 +116,6 @@ class Scene extends React.Component<SceneProps, {}> {
                 x2={pathSegment.x2}
                 y2={pathSegment.y2} />
         });
-    }
-
-    drawCustomBackground(): any {
-        const tiles = [];
-        for (let y = this.props.dimensions.getMinY(); y < this.props.dimensions.getMaxY() + 1; y++) {
-            for (let x = this.props.dimensions.getMinX(); x < this.props.dimensions.getMaxX() + 1; x++) {
-                const tileName = this.props.customBackground.getTile(x, y);
-                if (!isTransparent(tileName)) {
-                    const tileImage = getTileImage(tileName);
-                    if (tileImage == null) {
-                        tiles.push(
-                            <rect
-                                className={getTileClassName(tileName)}
-                                key={`custom-background-tile-${x}-${y}`}
-                                x={x - 0.5}
-                                y={y - 0.5}
-                                width={1}
-                                height={1}
-                            />
-                        );
-                    } else {
-                        tiles.push(React.createElement(tileImage,
-                            {
-                                key: `custom-background-tile-${x}-${y}`,
-                                x: x - 0.5,
-                                y: y - 0.5,
-                                width: 1,
-                                height: 1
-                            }
-                        ));
-                    }
-                }
-            }
-        }
-        return tiles;
     }
 
     getDirectionWords(direction: number): string {
@@ -464,7 +429,9 @@ class Scene extends React.Component<SceneProps, {}> {
                                 </clipPath>
                             </defs>
                             {this.getBackground(minX, minY, width, height)}
-                            {this.drawCustomBackground()}
+                            <CustomBackgroundSceneLayer
+                                customBackground={this.props.customBackground}
+                            />
                             {grid}
                             <g clipPath='url(#Scene-clippath)'>
                                 {this.drawCharacterPath()}
