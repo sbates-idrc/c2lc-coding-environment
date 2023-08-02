@@ -9,11 +9,7 @@ type CustomBackgroundSceneLayerProps = {
     customBackground: CustomBackground
 };
 
-export default class CustomBackgroundSceneLayer extends React.Component<CustomBackgroundSceneLayerProps, {}> {
-    shouldComponentUpdate(nextProps: CustomBackgroundSceneLayerProps) {
-        return (this.props.customBackground !== nextProps.customBackground);
-    }
-
+export default class CustomBackgroundSceneLayer extends React.PureComponent<CustomBackgroundSceneLayerProps, {}> {
     render() {
         const tiles = [];
 
