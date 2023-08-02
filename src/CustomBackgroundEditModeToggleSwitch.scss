@@ -9,8 +9,21 @@
         }
     }
 
+    .CustomBackgroundEditModeToggleSwitchIcon__squares {
+        fill: #6e6e6e;
+    }
+    .CustomBackgroundEditModeToggleSwitchIcon__brush {
+        stroke: #6e6e6e;
+    }
+
     &.ToggleSwitch--checked {
         background-color: #4C9990;
+        .CustomBackgroundEditModeToggleSwitchIcon__squares {
+            fill: #1e1e1e;
+        }
+        .CustomBackgroundEditModeToggleSwitchIcon__brush {
+            stroke: #1e1e1e;
+        }
     }
 
     &.ToggleSwitch:active {

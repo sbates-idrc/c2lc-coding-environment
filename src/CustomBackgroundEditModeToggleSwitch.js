@@ -4,7 +4,7 @@ import * as React from 'react';
 import { injectIntl } from 'react-intl';
 import type { IntlShape } from 'react-intl';
 import ToggleSwitch from './ToggleSwitch';
-import { ReactComponent as CustomBackgroundEditModeIcon } from './svg/CustomBackgroundEditMode.svg';
+import { ReactComponent as Icon } from './svg/CustomBackgroundEditModeToggleSwitchIcon.svg';
 import './CustomBackgroundEditModeToggleSwitch.scss';
 
 type CustomBackgroundEditModeToggleSwitchProps = {
@@ -20,8 +20,8 @@ class CustomBackgroundEditModeToggleSwitch extends React.Component<CustomBackgro
                 className='CustomBackgroundEditModeToggleSwitch'
                 ariaLabel={this.props.intl.formatMessage({id: 'CustomBackgroundEditModeToggleSwitch.customBackgroundEditMode'})}
                 value={this.props.value}
-                contentsTrue={<CustomBackgroundEditModeIcon />}
-                contentsFalse={<CustomBackgroundEditModeIcon />}
+                contentsTrue={<Icon />}
+                contentsFalse={<Icon />}
                 onChange={this.props.onChange}
             />
         );

@@ -1234,6 +1234,12 @@ body.gray-theme {
             background-color: white;
         }
 
+        .CustomBackgroundEditModeToggleSwitchIcon__squares {
+            fill: #818A98;
+        }
+        .CustomBackgroundEditModeToggleSwitchIcon__brush {
+            stroke: #818A98;
+        }
 
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
@@ -1262,7 +1268,6 @@ body.gray-theme {
                 }
             }
         }
-
 
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
@@ -2307,6 +2312,12 @@ body.contrast-theme {
         .ToggleSwitch__switch-inner-circle {
             background-color: black;
         }
+        .CustomBackgroundEditModeToggleSwitchIcon__squares {
+            fill: white;
+        }
+        .CustomBackgroundEditModeToggleSwitchIcon__brush {
+            stroke: white;
+        }
     }
 
     .CustomBackgroundEditModeToggleSwitch:focus {
@@ -2320,6 +2331,12 @@ body.contrast-theme {
         padding: 0.2rem;
         .ToggleSwitch__switch-inner-circle {
             background-color: white;
+        }
+        .CustomBackgroundEditModeToggleSwitchIcon__squares {
+            fill: black;
+        }
+        .CustomBackgroundEditModeToggleSwitchIcon__brush {
+            stroke: black;
         }
     }
 
