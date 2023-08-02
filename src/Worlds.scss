@@ -321,35 +321,6 @@ body.contrast-theme {
     }
 }
 
-/* Custom */
-
-.ProgramBlockEditor__character-column-character-container--Custom {
-    background-color: #4C9990;
-}
-
-.Scene__grid-line--Custom {
-    stroke: #F1F2F4;
-}
-
-.Scene__path-line--Custom {
-    stroke: #505862;
-}
-
-.Scene__starting-grid-cell-point--Custom {
-    fill: #505862;
-}
-
-.WorldSelector__option-image--Custom:hover {
-    svg {
-        .thumbnail-background {
-            fill: #F1AE5B;
-        }
-        .thumbnail-line {
-            stroke: #546D79;
-        }
-    }
-}
-
 /* DeepOcean */
 
 .ProgramBlockEditor__character-column-character-container--DeepOcean {
