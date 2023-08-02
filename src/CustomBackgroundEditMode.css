@@ -1,0 +1,9 @@
+.App__container--customBackgroundEditMode {
+    grid-template-rows: auto auto auto;
+    height: inherit;
+    max-height: 100vh;
+}
+
+.App__container--customBackgroundEditMode .Scene__container {
+    height: inherit;
+}

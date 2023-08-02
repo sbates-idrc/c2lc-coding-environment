@@ -9,7 +9,7 @@ type TilePanelProps = {
     onSelectTile: (tileName: TileName) => void
 };
 
-export default class TilePanel extends React.Component<TilePanelProps, {}> {
+export default class TilePanel extends React.PureComponent<TilePanelProps, {}> {
     tileNames: Array<TileName>;
 
     constructor(props: TilePanelProps) {

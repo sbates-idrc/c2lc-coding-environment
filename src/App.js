@@ -43,6 +43,7 @@ import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
 import * as Utils from './Utils';
 import './App.scss';
+import './CustomBackgroundEditMode.css';
 import './Themes.scss';
 import './vendor/dragdroptouch/DragDropTouch.js';
 import ThemeSelector from './ThemeSelector';
