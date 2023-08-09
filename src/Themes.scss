@@ -792,6 +792,10 @@ body.dark-theme {
                 0 0 0 $c2lc-focus-indicator-width white;
         }
     }
+
+    .TilePanel__tile--selected {
+        border-color: white;
+    }
 }
 
 /* Grayscale Theme */
@@ -2967,5 +2971,9 @@ body.contrast-theme {
         &:hover:focus {
             box-shadow: 0 0 0 0.2rem black;
         }
+    }
+
+    .TilePanel__tile--selected {
+        border-color: white;
     }
 }

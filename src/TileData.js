@@ -5,7 +5,7 @@ import { ReactComponent as WallTile } from './svg/WallTile.svg';
 import * as React from 'react';
 
 type TileProperties = {|
-    className: ?string,
+    color: string,
     isTransparent: boolean,
     isWall: boolean,
     image: ?React.ComponentType<{}>
@@ -29,98 +29,98 @@ const tiles: {|
 |} = {
     '0': {
         // Transparent
-        className: null,
+        color: 'transparent',
         isTransparent: true,
         isWall: false,
         image: BlankTile
     },
     '1': {
         // Wall
-        className: 'Scene__custom-wall',
+        color: '#F5C58A',
         isTransparent: false,
         isWall: true,
         image: WallTile
     },
     '2': {
         // White
-        className: 'Scene__custom-white',
+        color: '#FFFFFF',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '3': {
         // Black
-        className: 'Scene__custom-black',
+        color: '#1E1E1E',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '4': {
         // Grey
-        className: 'Scene__custom-grey',
+        color: '#C4C4C4',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '5': {
         // Dark blue
-        className: 'Scene__custom-dark-blue',
+        color: '#416CA7',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '6': {
         // Light blue
-        className: 'Scene__custom-light-blue',
+        color: '#5CBCD1',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '7': {
         // Green
-        className: 'Scene__custom-green',
+        color: '#52BD76',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '8': {
         // Yellow
-        className: 'Scene__custom-yellow',
+        color: '#F1D05B',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '9': {
         // Orange
-        className: 'Scene__custom-orange',
+        color: '#FF9900',
         isTransparent: false,
         isWall: false,
         image: null
     },
     'A': {
         // Red
-        className: 'Scene__custom-red',
+        color: '#F75322',
         isTransparent: false,
         isWall: false,
         image: null
     },
     'B': {
         // Pink
-        className: 'Scene__custom-pink',
+        color: '#F387C8',
         isTransparent: false,
         isWall: false,
         image: null
     },
     'C': {
         // Purple
-        className: 'Scene__custom-purple',
+        color: '#AA70C7',
         isTransparent: false,
         isWall: false,
         image: null
     },
     'D': {
         // Brown
-        className: 'Scene__custom-brown',
+        color: '#775034',
         isTransparent: false,
         isWall: false,
         image: null
@@ -133,8 +133,8 @@ export function isTileName(str: ?string): boolean {
     return tiles.hasOwnProperty(str);
 }
 
-export function getTileClassName(tileName: TileName): ?string {
-    return tiles[tileName].className;
+export function getTileColor(tileName: TileName): string {
+    return tiles[tileName].color;
 }
 
 export function isTransparent(tileName: TileName): boolean {

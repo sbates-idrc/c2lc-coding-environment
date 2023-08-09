@@ -1,11 +1,13 @@
 // @flow
 
+import classNames from 'classnames';
 import React from 'react';
-import { getTileClassName, getTileImage, isTileName } from './TileData';
+import { getTileColor, getTileImage, isTileName } from './TileData';
 import type { TileName } from './TileData';
 import './TilePanel.css';
 
 type TilePanelProps = {
+    selectedTile: ?TileName,
     onSelectTile: (tileName: TileName) => void
 };
 
@@ -43,31 +45,29 @@ export default class TilePanel extends React.PureComponent<TilePanelProps, {}> {
         const tiles = [];
 
         for (const tileName of this.tileNames) {
+            const tileClassName = classNames(
+                'TilePanel__tile',
+                (tileName === this.props.selectedTile)
+                    && 'TilePanel__tile--selected'
+            );
+
             const tileImage = getTileImage(tileName);
 
             tiles.push(
                 <div
-                    className='TilePanel__tile'
+                    className={tileClassName}
                     data-tilename={tileName}
                     key={tileName}
                     onClick={this.handleClickTile}
                 >
-                    {tileImage == null ?
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            viewBox='0 0 1 1'
-                        >
-                            <rect
-                                className={getTileClassName(tileName)}
-                                x={0}
-                                y={0}
-                                width={1}
-                                height={1}
-                            />
-                        </svg>
-                        :
-                        React.createElement(tileImage)
-                    }
+                    <div
+                        className='TilePanel__tileInner'
+                        style={{backgroundColor: getTileColor(tileName)}}
+                    >
+                        {tileImage != null &&
+                            React.createElement(tileImage)
+                        }
+                    </div>
                 </div>
             );
         }

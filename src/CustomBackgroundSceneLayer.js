@@ -2,8 +2,7 @@
 
 import { CustomBackground } from './CustomBackground';
 import React from 'react';
-import { getTileClassName, getTileImage, isTransparent } from './TileData';
-import './CustomBackgroundSceneLayer.css';
+import { getTileColor, getTileImage, isTransparent } from './TileData';
 
 type CustomBackgroundSceneLayerProps = {
     customBackground: CustomBackground
@@ -21,12 +20,12 @@ export default class CustomBackgroundSceneLayer extends React.PureComponent<Cust
                     if (tileImage == null) {
                         tiles.push(
                             <rect
-                                className={getTileClassName(tileName)}
                                 key={`custom-background-tile-${x}-${y}`}
                                 x={x - 0.5}
                                 y={y - 0.5}
                                 width={1}
                                 height={1}
+                                style={{fill: getTileColor(tileName)}}
                             />
                         );
                     } else {

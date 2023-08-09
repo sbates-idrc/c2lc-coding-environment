@@ -1521,6 +1521,7 @@ export class App extends React.Component<AppProps, AppState> {
     renderTilePanel() {
         return (
             <TilePanel
+                selectedTile={this.state.selectedCustomBackgroundTile}
                 onSelectTile={this.handleSelectTile}
             />
         );
