@@ -19,7 +19,8 @@ const defaultCharacterPositionControllerProps = {
     characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
     editingDisabled: false,
     theme: 'light',
-    world: 'Sketchpad'
+    world: 'Sketchpad',
+    customBackgroundEditMode: false
 };
 
 function createShallowCharacterPositionController(props) {

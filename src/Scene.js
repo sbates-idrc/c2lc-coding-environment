@@ -2,9 +2,9 @@
 
 import React from 'react';
 import CharacterState from './CharacterState';
-import Character from './Character';
 import { CustomBackground } from './CustomBackground';
 import CustomBackgroundSceneLayer from './CustomBackgroundSceneLayer';
+import SceneCharacter from './SceneCharacter';
 import SceneDimensions from './SceneDimensions';
 import { getBackgroundInfo, getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
@@ -27,6 +27,7 @@ export type SceneProps = {
     theme: ThemeName,
     world: WorldName,
     customBackground: CustomBackground,
+    customBackgroundEditMode: boolean,
     startingX: number,
     startingY: number,
     runningState: RunningState,
@@ -374,9 +375,12 @@ class Scene extends React.Component<SceneProps, {}> {
 
         // Subtract 90 degrees from the character bearing as the character
         // image is drawn upright when it is facing East
-        let characterTransform = `translate(${this.props.characterState.xPos} ${this.props.characterState.yPos}) rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
-        if (this.getWorldEnableFlipCharacter() && this.props.characterState.direction > 3) {
-            characterTransform += ` scale(1 -1)`
+        let characterTransform = `translate(${this.props.characterState.xPos} ${this.props.characterState.yPos})`;
+        if (!(this.props.customBackgroundEditMode)) {
+            characterTransform += ` rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
+            if (this.getWorldEnableFlipCharacter() && this.props.characterState.direction > 3) {
+                characterTransform += ` scale(1 -1)`
+            }
         }
 
         return (
@@ -456,9 +460,10 @@ class Scene extends React.Component<SceneProps, {}> {
                                         r={0.51}
                                     />
                                 }
-                                <Character
+                                <SceneCharacter
                                     world={this.props.world}
                                     theme={this.props.theme}
+                                    customBackgroundEditMode={this.props.customBackgroundEditMode}
                                     transform={characterTransform}
                                     width={0.9}
                                 />

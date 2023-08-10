@@ -1509,6 +1509,7 @@ export class App extends React.Component<AppProps, AppState> {
                     theme={this.state.settings.theme}
                     world={this.state.settings.world}
                     customBackground={this.state.customBackground}
+                    customBackgroundEditMode={this.state.customBackgroundEditMode}
                     startingX={this.state.startingX}
                     startingY={this.state.startingY}
                     runningState={this.state.runningState}
@@ -1575,6 +1576,7 @@ export class App extends React.Component<AppProps, AppState> {
                 editingDisabled={this.editingIsDisabled()}
                 theme={this.state.settings.theme}
                 world={this.state.settings.world}
+                customBackgroundEditMode={this.state.customBackgroundEditMode}
                 onChangeCharacterPosition={this.handleChangeCharacterPosition}
                 onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
                 onChangeCharacterYPosition={this.handleChangeCharacterYPosition}

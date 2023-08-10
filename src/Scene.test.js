@@ -60,12 +60,12 @@ function findGridLabels(sceneWrapper) {
     return sceneWrapper.find('.Scene__grid-label');
 }
 
-function findCharacter(sceneWrapper) {
-    return sceneWrapper.find('.Character');
+function findSceneCharacter(sceneWrapper) {
+    return sceneWrapper.find('.SceneCharacter');
 }
 
-function findCharacterIcon(sceneWrapper) {
-    return sceneWrapper.find('.Character__icon');
+function findSceneCharacterIcon(sceneWrapper) {
+    return sceneWrapper.find('.SceneCharacter__icon');
 }
 
 function findCharacterPath(sceneWrapper) {
@@ -225,14 +225,14 @@ describe('When the Scene renders', () => {
             customBackground: new CustomBackground(sceneDimensions)
         });
         const expectedCharacterDimensions = calculateCharacterDimensions();
-        expect(findCharacterIcon(sceneWrapper).hostNodes().length).toBe(1);
-        expect(findCharacterIcon(sceneWrapper).get(0).props.x)
+        expect(findSceneCharacterIcon(sceneWrapper).hostNodes().length).toBe(1);
+        expect(findSceneCharacterIcon(sceneWrapper).get(0).props.x)
             .toBeCloseTo(expectedCharacterDimensions.x, 5);
-        expect(findCharacterIcon(sceneWrapper).get(0).props.y)
+        expect(findSceneCharacterIcon(sceneWrapper).get(0).props.y)
             .toBeCloseTo(expectedCharacterDimensions.y, 5);
-        expect(findCharacterIcon(sceneWrapper).get(0).props.width)
+        expect(findSceneCharacterIcon(sceneWrapper).get(0).props.width)
             .toBeCloseTo(expectedCharacterDimensions.width, 5);
-        expect(findCharacterIcon(sceneWrapper).get(0).props.height)
+        expect(findSceneCharacterIcon(sceneWrapper).get(0).props.height)
             .toBeCloseTo(expectedCharacterDimensions.height, 5);
     });
     test('Should mark starting position cell', () => {
@@ -293,7 +293,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
             characterState: new CharacterState(1, 1, 2, [], sceneDimensions),
             customBackground: new CustomBackground(sceneDimensions)
         });
-        const character = findCharacter(sceneWrapper);
+        const character = findSceneCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
             .toBe('translate(1 1) rotate(0 0 0)');
     });
@@ -304,7 +304,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
             characterState: new CharacterState(10, 8, 4, [], sceneDimensions),
             customBackground: new CustomBackground(sceneDimensions)
         });
-        const character = findCharacter(sceneWrapper);
+        const character = findSceneCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
             .toBe('translate(10 8) rotate(90 0 0) scale(1 -1)');
     });
@@ -317,7 +317,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
             customBackground: new CustomBackground(sceneDimensions)
         });
 
-        const character = findCharacter(sceneWrapper);
+        const character = findSceneCharacter(sceneWrapper);
 
         expect(character.get(0).props.transform).toBe('translate(1 1) rotate(0 0 0)');
 
@@ -335,7 +335,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
 
         for (let direction = 0; direction <= 7; direction++) {
             sceneWrapper.setProps({characterState: new CharacterState(1, 1, direction, [], new SceneDimensions(1, 100, 1, 100))});
-            const rotatedCharacter = findCharacter(sceneWrapper);
+            const rotatedCharacter = findSceneCharacter(sceneWrapper);
             expect(rotatedCharacter.get(0).props.transform).toBe(expectedValues[direction]);
         }
     });
@@ -349,7 +349,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
             customBackground: new CustomBackground(sceneDimensions)
         });
 
-        const character = findCharacter(sceneWrapper);
+        const character = findSceneCharacter(sceneWrapper);
 
         expect(character.get(0).props.transform).toBe('translate(1 1) rotate(0 0 0)');
 
@@ -367,7 +367,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
 
         for (let direction = 0; direction <= 7; direction++) {
             sceneWrapper.setProps({characterState: new CharacterState(1, 1, direction, [], new SceneDimensions(1, 100, 1, 100))});
-            const rotatedCharacter = findCharacter(sceneWrapper);
+            const rotatedCharacter = findSceneCharacter(sceneWrapper);
             expect(rotatedCharacter.get(0).props.transform).toBe(expectedValues[direction]);
         }
     });
