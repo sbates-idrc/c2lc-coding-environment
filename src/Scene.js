@@ -4,11 +4,16 @@ import React from 'react';
 import CharacterState from './CharacterState';
 import { CustomBackground } from './CustomBackground';
 import CustomBackgroundSceneLayer from './CustomBackgroundSceneLayer';
+import SceneBackground from './SceneBackground';
 import SceneCharacter from './SceneCharacter';
+import SceneCharacterPath from './SceneCharacterPath';
+import SceneColumnLabels from './SceneColumnLabels';
 import SceneDimensions from './SceneDimensions';
+import SceneGrid from './SceneGrid';
+import SceneRowLabels from './SceneRowLabels';
 import { getBackgroundInfo, getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
-import type {IntlShape} from 'react-intl';
+import type { IntlShape } from 'react-intl';
 import './Scene.scss';
 import './Worlds.scss';
 import type { ThemeName, RunningState } from './types';
@@ -36,6 +41,8 @@ export type SceneProps = {
 };
 
 class Scene extends React.Component<SceneProps, {}> {
+    rowHeaderRef: { current: null | HTMLDivElement };
+    columnHeaderRef: { current: null | HTMLDivElement };
     sceneRef: { current: null | HTMLDivElement };
     sceneSvgRef: { current: null | Element };
     lastPaintX: ?number;
@@ -43,80 +50,12 @@ class Scene extends React.Component<SceneProps, {}> {
 
     constructor (props: SceneProps) {
         super(props);
+        this.rowHeaderRef = React.createRef();
+        this.columnHeaderRef = React.createRef();
         this.sceneRef = React.createRef();
         this.sceneSvgRef = React.createRef();
         this.lastPaintX = null;
         this.lastPaintY = null;
-    }
-
-    drawGrid(): any {
-        const grid = [];
-        const rowLabels = [];
-        const columnLabels = [];
-        let yOffset = this.props.dimensions.getMinY() - 0.5;
-        for (let i=1; i < this.props.dimensions.getHeight() + 1; i++) {
-            yOffset += 1;
-            if (i < this.props.dimensions.getHeight()) {
-                grid.push(<line
-                    className={`Scene__grid-line Scene__grid-line--${this.props.world}`}
-                    key={`grid-cell-row-${i}`}
-                    x1={this.props.dimensions.getMinX() - 0.5}
-                    y1={yOffset}
-                    x2={this.props.dimensions.getMaxX() + 0.5}
-                    y2={yOffset} />);
-            }
-            rowLabels.push(
-                <text
-                    className='Scene__grid-label'
-                    aria-hidden='true'
-                    textAnchor='middle'
-                    key={`grid-cell-label-${i}`}
-                    dominantBaseline='middle'
-                    x={-0.5}
-                    // Center the label with cell height of 10
-                    y={i*10 - 5}>
-                    {i}
-                </text>
-            )
-        }
-        let xOffset = this.props.dimensions.getMinX() - 0.5;
-        for (let i=1; i < this.props.dimensions.getWidth() + 1; i++) {
-            xOffset += 1;
-            if (i < this.props.dimensions.getWidth()) {
-                grid.push(<line
-                    className={`Scene__grid-line Scene__grid-line--${this.props.world}`}
-                    key={`grid-cell-column-${i}`}
-                    x1={xOffset}
-                    y1={this.props.dimensions.getMinY() - 0.5}
-                    x2={xOffset}
-                    y2={this.props.dimensions.getMaxY() + 0.5} />);
-            }
-            columnLabels.push(
-                <text
-                    className='Scene__grid-label'
-                    aria-hidden='true'
-                    key={`grid-cell-label-${String.fromCharCode(64+i)}`}
-                    textAnchor='middle'
-                    // Center the label with cell width of 10
-                    x={i*10 - 5}
-                    y={0.5}>
-                    {String.fromCharCode(64+i)}
-                </text>
-            )
-        }
-        return { grid, rowLabels, columnLabels };
-    }
-
-    drawCharacterPath() {
-        return this.props.characterState.path.map((pathSegment, i) => {
-            return <line
-                className={`Scene__path-line Scene__path-line--${this.props.world}`}
-                key={`path-${i}`}
-                x1={pathSegment.x1}
-                y1={pathSegment.y1}
-                x2={pathSegment.x2}
-                y2={pathSegment.y2} />
-        });
     }
 
     getDirectionWords(direction: number): string {
@@ -157,50 +96,6 @@ class Scene extends React.Component<SceneProps, {}> {
             return this.props.intl.formatMessage({id: 'RelativeDirection.7'});
         } else {
             throw new Error(`Unrecognized xPos: ${xPos} or yPos: ${yPos}`);
-        }
-    }
-
-    getBackground(x: number, y: number, width: number, height: number) {
-        const worldProperties = getWorldProperties(this.props.world);
-        if (this.props.theme === 'gray') {
-            if (worldProperties.backgroundGray) {
-                return React.createElement(worldProperties.backgroundGray, {
-                    className: 'Scene__background',
-                    x: x,
-                    y: y,
-                    width: width,
-                    height: height,
-                    preserveAspectRatio: 'none'
-                });
-            } else {
-                return <></>;
-            }
-        } else if (this.props.theme === 'contrast') {
-            if (worldProperties.backgroundContrast) {
-                return React.createElement(worldProperties.backgroundContrast, {
-                    className: 'Scene__background',
-                    x: x,
-                    y: y,
-                    width: width,
-                    height: height,
-                    preserveAspectRatio: 'none'
-                });
-            } else {
-                return <></>;
-            }
-        } else {
-            if (worldProperties.background) {
-                return React.createElement(worldProperties.background, {
-                    className: 'Scene__background',
-                    x: x,
-                    y: y,
-                    width: width,
-                    height: height,
-                    preserveAspectRatio: 'none'
-                });
-            } else {
-                return <></>;
-            }
         }
     }
 
@@ -265,18 +160,20 @@ class Scene extends React.Component<SceneProps, {}> {
     handleScrollScene = (e: SyntheticEvent<HTMLDivElement>) => {
         const sceneScrollTop = e.currentTarget.scrollTop;
         const sceneScrollLeft = e.currentTarget.scrollLeft;
-        const rowHeader = document.getElementById('scene-row-header');
-        const columnHeader = document.getElementById('scene-column-header');
-        if ((sceneScrollTop != null || sceneScrollLeft != null) && rowHeader && columnHeader) {
-            rowHeader.scrollTop = sceneScrollTop;
-            columnHeader.scrollLeft = sceneScrollLeft;
+
+        if (sceneScrollTop != null && this.rowHeaderRef.current != null) {
+            this.rowHeaderRef.current.scrollTop = sceneScrollTop;
+        }
+
+        if (sceneScrollLeft != null && this.columnHeaderRef.current != null) {
+            this.columnHeaderRef.current.scrollLeft = sceneScrollLeft;
         }
     }
 
     scrollCharacterIntoView() {
         // Required to avoid the lack of scrollIntoView on SVG elements in Safari.
         /* istanbul ignore next */
-        if (this.sceneRef.current !== null && this.sceneSvgRef.current !== null) {
+        if (this.sceneRef.current != null && this.sceneSvgRef.current != null) {
 
             const sceneElem = this.sceneRef.current;
             const sceneSvgElem = this.sceneSvgRef.current;
@@ -369,9 +266,6 @@ class Scene extends React.Component<SceneProps, {}> {
         const minY = this.props.dimensions.getMinY() - 0.5;
         const width = this.props.dimensions.getWidth();
         const height = this.props.dimensions.getHeight();
-        const grid = this.drawGrid().grid;
-        const rowLabels = this.drawGrid().rowLabels;
-        const columnLabels = this.drawGrid().columnLabels;
 
         // Subtract 90 degrees from the character bearing as the character
         // image is drawn upright when it is facing East
@@ -389,28 +283,18 @@ class Scene extends React.Component<SceneProps, {}> {
                     <div
                         tabIndex='-1'
                         aria-hidden='true'
-                        id='scene-row-header'
                         className='Scene__row-header'
+                        ref={this.rowHeaderRef}
                     >
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            viewBox={`-2 0 3 ${height * 10}`}
-                        >
-                            {rowLabels}
-                        </svg>
+                        <SceneRowLabels dimensions={this.props.dimensions}/>
                     </div>
                     <div
                         tabIndex='-1'
                         aria-hidden='true'
-                        id='scene-column-header'
                         className='Scene__column-header'
+                        ref={this.columnHeaderRef}
                     >
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            viewBox={`0 -2 ${width * 10} 3`}
-                        >
-                            {columnLabels}
-                        </svg>
+                        <SceneColumnLabels dimensions={this.props.dimensions}/>
                     </div>
                     <div
                         id='scene'
@@ -432,13 +316,23 @@ class Scene extends React.Component<SceneProps, {}> {
                                     <rect x={minX} y={minY} width={width} height={height} />
                                 </clipPath>
                             </defs>
-                            {this.getBackground(minX, minY, width, height)}
+                            <SceneBackground
+                                dimensions={this.props.dimensions}
+                                theme={this.props.theme}
+                                world={this.props.world}
+                            />
                             <CustomBackgroundSceneLayer
                                 customBackground={this.props.customBackground}
                             />
-                            {grid}
+                            <SceneGrid
+                                dimensions={this.props.dimensions}
+                                world={this.props.world}
+                            />
                             <g clipPath='url(#Scene-clippath)'>
-                                {this.drawCharacterPath()}
+                                <SceneCharacterPath
+                                    path={this.props.characterState.path}
+                                    world={this.props.world}
+                                />
                                 <rect
                                     // Starting position indicator
                                     className={`Scene__starting-grid-cell-point Scene__starting-grid-cell-point--${this.props.world}`}
