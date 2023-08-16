@@ -53,7 +53,7 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
             )
         } else {
             // $FlowFixMe: Flow doesn't know that elements have innerText.
-            ariaLiveRegion.innerText=this.props.intl.formatMessage(
+            ariaLiveRegion.innerText = this.props.intl.formatMessage(
                 {id:'CharacterAriaLive.positionAriaLabel'},
                 {
                     columnLabel,

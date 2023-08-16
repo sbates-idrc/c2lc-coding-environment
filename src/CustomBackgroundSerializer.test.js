@@ -26,4 +26,6 @@ test('Deserialize', () => {
     expect(serializer.deserialize('12345').tiles).toStrictEqual(['1', '2', '3', '4', '5', '0']);
     expect(serializer.deserialize('123456').tiles).toStrictEqual(['1', '2', '3', '4', '5', '6']);
     expect(serializer.deserialize('1234567').tiles).toStrictEqual(['1', '2', '3', '4', '5', '6']);
+    expect(serializer.deserialize('!').tiles).toStrictEqual(['0', '0', '0', '0', '0', '0']);
+    expect(serializer.deserialize('!!!!!!!').tiles).toStrictEqual(['0', '0', '0', '0', '0', '0']);
 });

@@ -1936,6 +1936,7 @@ export class App extends React.Component<AppProps, AppState> {
             const localDisallowedActions = window.localStorage.getItem('c2lc-disallowedActions');
             const localWorld = window.localStorage.getItem('c2lc-world');
             const localStartingPosition = window.localStorage.getItem('c2lc-startingPosition');
+            const localCustomBackground = window.localStorage.getItem('c2lc-customBackground');
 
             if (localProgram != null) {
                 try {
@@ -1992,6 +1993,10 @@ export class App extends React.Component<AppProps, AppState> {
                 startingX: startingPosition.x,
                 startingY: startingPosition.y,
                 startingDirection: startingPosition.direction
+            });
+
+            this.setState({
+                customBackground: this.customBackgroundSerializer.deserialize(localCustomBackground)
             });
 
             this.setStateSettings({
@@ -2073,6 +2078,7 @@ export class App extends React.Component<AppProps, AppState> {
             window.localStorage.setItem('c2lc-disallowedActions', serializedDisallowedActions);
             window.localStorage.setItem('c2lc-world', this.state.settings.world);
             window.localStorage.setItem('c2lc-startingPosition', serializedStartingPosition);
+            window.localStorage.setItem('c2lc-customBackground', serializedCustomBackground);
         }
 
         if (this.state.keyBindingsEnabled !== prevState.keyBindingsEnabled
