@@ -78,6 +78,13 @@
     height: 2.5rem;
 }
 
+.IconButton.CharacterPositionController__paintBrushButton {
+    font-size: inherit;
+    width: 2.5rem;
+    height: 2.5rem;
+    pointer-events: all;
+}
+
 .CharacterPositionController__character-turn-positions {
     display: flex;
     width: 100%;

@@ -33,6 +33,7 @@ function createShallowCharacterPositionController(props) {
     const mockChangeCharacterPosition = jest.fn();
     const mockChangeCharacterXPosition = jest.fn();
     const mockChangeCharacterYPosition = jest.fn();
+    const mockClickPaintBrushButton = jest.fn();
 
     const wrapper: $FlowIgnoreType = shallow(
         React.createElement(
@@ -44,7 +45,8 @@ function createShallowCharacterPositionController(props) {
                     intl: intl,
                     onChangeCharacterPosition: mockChangeCharacterPosition,
                     onChangeCharacterXPosition: mockChangeCharacterXPosition,
-                    onChangeCharacterYPosition: mockChangeCharacterYPosition
+                    onChangeCharacterYPosition: mockChangeCharacterYPosition,
+                    onClickPaintBrushButton: mockClickPaintBrushButton
                 },
                 props
             )
@@ -56,6 +58,7 @@ function createShallowCharacterPositionController(props) {
         mockChangeCharacterPosition,
         mockChangeCharacterXPosition,
         mockChangeCharacterYPosition,
+        mockClickPaintBrushButton
     };
 }
 
@@ -63,6 +66,7 @@ function createMountCharacterPositionController(props) {
     const mockChangeCharacterPosition = jest.fn();
     const mockChangeCharacterXPosition = jest.fn();
     const mockChangeCharacterYPosition = jest.fn();
+    const mockClickPaintBrushButton = jest.fn();
 
     const wrapper = mount(
         React.createElement(
@@ -73,7 +77,8 @@ function createMountCharacterPositionController(props) {
                 {
                     onChangeCharacterPosition: mockChangeCharacterPosition,
                     onChangeCharacterXPosition: mockChangeCharacterXPosition,
-                    onChangeCharacterYPosition: mockChangeCharacterYPosition
+                    onChangeCharacterYPosition: mockChangeCharacterYPosition,
+                    onClickPaintBrushButton: mockClickPaintBrushButton
                 },
                 props
             )
@@ -92,7 +97,8 @@ function createMountCharacterPositionController(props) {
         wrapper,
         mockChangeCharacterPosition,
         mockChangeCharacterXPosition,
-        mockChangeCharacterYPosition
+        mockChangeCharacterYPosition,
+        mockClickPaintBrushButton
     };
 }
 

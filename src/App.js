@@ -1425,6 +1425,22 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
+    handleClickPositionControllerPaintBrushButton = () => {
+        this.setState((state) => {
+            if (state.selectedCustomBackgroundTile != null) {
+                return {
+                    customBackground: state.customBackground.setTile(
+                        state.characterState.xPos,
+                        state.characterState.yPos,
+                        state.selectedCustomBackgroundTile
+                    )
+                };
+            } else {
+                return {};
+            }
+        });
+    }
+
     renderNotificationArea() {
         return (
             <div className='App__notificationArea'>
@@ -1580,6 +1596,7 @@ export class App extends React.Component<AppProps, AppState> {
                 onChangeCharacterPosition={this.handleChangeCharacterPosition}
                 onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
                 onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
+                onClickPaintBrushButton={this.handleClickPositionControllerPaintBrushButton}
             />
         );
     }
