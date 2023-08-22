@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { getTileColor, getTileImage, isTileName } from './TileData';
 import type { TileName } from './TileData';
-import './TilePanel.css';
+import './TilePanel.scss';
 
 type TilePanelProps = {
     selectedTile: ?TileName,
@@ -54,7 +54,7 @@ export default class TilePanel extends React.PureComponent<TilePanelProps, {}> {
             const tileImage = getTileImage(tileName);
 
             tiles.push(
-                <div
+                <button
                     className={tileClassName}
                     data-tilename={tileName}
                     key={tileName}
@@ -68,7 +68,7 @@ export default class TilePanel extends React.PureComponent<TilePanelProps, {}> {
                             React.createElement(tileImage)
                         }
                     </div>
-                </div>
+                </button>
             );
         }
 

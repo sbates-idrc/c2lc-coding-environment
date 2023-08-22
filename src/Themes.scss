@@ -793,6 +793,10 @@ body.dark-theme {
         }
     }
 
+    .TilePanel__tile:focus {
+        outline-color: white;
+    }
+
     .TilePanel__tile--selected {
         border-color: white;
     }
@@ -2971,6 +2975,10 @@ body.contrast-theme {
         &:hover:focus {
             box-shadow: 0 0 0 0.2rem black;
         }
+    }
+
+    .TilePanel__tile:focus {
+        outline-color: white;
     }
 
     .TilePanel__tile--selected {
