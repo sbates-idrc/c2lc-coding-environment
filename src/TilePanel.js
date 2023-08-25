@@ -2,21 +2,21 @@
 
 import classNames from 'classnames';
 import React from 'react';
-import { getTileColor, getTileImage, isTileName } from './TileData';
-import type { TileName } from './TileData';
+import { getTileColor, getTileImage, isTileCode } from './TileData';
+import type { TileCode } from './TileData';
 import './TilePanel.scss';
 
 type TilePanelProps = {
-    selectedTile: ?TileName,
-    onSelectTile: (tileName: TileName) => void
+    selectedTile: ?TileCode,
+    onSelectTile: (tileCode: TileCode) => void
 };
 
 export default class TilePanel extends React.PureComponent<TilePanelProps, {}> {
-    tileNames: Array<TileName>;
+    tileCodes: Array<TileCode>;
 
     constructor(props: TilePanelProps) {
         super(props);
-        this.tileNames = [
+        this.tileCodes = [
             '0',
             '1',
             '2',
@@ -35,34 +35,34 @@ export default class TilePanel extends React.PureComponent<TilePanelProps, {}> {
     }
 
     handleClickTile = (e: any) => {
-        const tileName = e.currentTarget.dataset.tilename;
-        if (isTileName(tileName)) {
-            this.props.onSelectTile(((tileName: any): TileName));
+        const tileCode = e.currentTarget.dataset.tilecode;
+        if (isTileCode(tileCode)) {
+            this.props.onSelectTile(((tileCode: any): TileCode));
         }
     };
 
     render() {
         const tiles = [];
 
-        for (const tileName of this.tileNames) {
+        for (const tileCode of this.tileCodes) {
             const tileClassName = classNames(
                 'TilePanel__tile',
-                (tileName === this.props.selectedTile)
+                (tileCode === this.props.selectedTile)
                     && 'TilePanel__tile--selected'
             );
 
-            const tileImage = getTileImage(tileName);
+            const tileImage = getTileImage(tileCode);
 
             tiles.push(
                 <button
                     className={tileClassName}
-                    data-tilename={tileName}
-                    key={tileName}
+                    data-tilecode={tileCode}
+                    key={tileCode}
                     onClick={this.handleClickTile}
                 >
                     <div
                         className='TilePanel__tileInner'
-                        style={{backgroundColor: getTileColor(tileName)}}
+                        style={{backgroundColor: getTileColor(tileCode)}}
                     >
                         {tileImage != null &&
                             React.createElement(tileImage)

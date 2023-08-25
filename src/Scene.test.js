@@ -9,7 +9,7 @@ import Scene from './Scene';
 import type {SceneProps} from './Scene';
 import SceneDimensions from './SceneDimensions';
 import CharacterState from './CharacterState';
-import { CustomBackground } from './CustomBackground';
+import CustomBackground from './CustomBackground';
 
 configure({ adapter: new Adapter() });
 
@@ -17,7 +17,7 @@ const defaultDimensions = new SceneDimensions(1, 1, 1, 1);
 
 const defaultSceneProps = {
     dimensions: defaultDimensions,
-    characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 1, 1, 1)),
+    characterState: new CharacterState(1, 1, 2, [], defaultDimensions),
     theme: 'default',
     world: 'Sketchpad',
     customBackground: new CustomBackground(defaultDimensions),

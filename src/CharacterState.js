@@ -1,7 +1,7 @@
 // @flow
 
 import * as C2lcMath from './C2lcMath';
-import { CustomBackground } from './CustomBackground';
+import CustomBackground from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
 import type { PathSegment } from './types';
 

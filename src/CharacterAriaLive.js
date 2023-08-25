@@ -2,6 +2,8 @@
 
 import React from 'react';
 import CharacterState from './CharacterState';
+import CustomBackground from './CustomBackground';
+import { getTileName, isTransparent } from './TileData';
 import { getBackgroundInfo } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
@@ -14,7 +16,8 @@ type CharacterAriaLiveProps = {
     ariaHidden: boolean,
     characterState: CharacterState,
     runningState: RunningState,
-    world: WorldName
+    world: WorldName,
+    customBackground: CustomBackground
 };
 
 class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
@@ -37,31 +40,58 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
         const characterLabel = this.props.intl.formatMessage({id: this.props.world + ".character"});
         const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
-        const backgroundInfo = getBackgroundInfo(this.props.world, columnLabel, rowLabel);
-        if (backgroundInfo) {
-            const itemOnGridCell = this.props.intl.formatMessage({ id: `${this.props.world}.${backgroundInfo}` });
-            // $FlowFixMe: Flow doesn't know that elements have innerText.
+
+        const customBackgroundTile = this.props.customBackground.getTile(characterState.xPos, characterState.yPos);
+        if (!isTransparent(customBackgroundTile)) {
+            const item = this.props.intl.formatMessage({
+                id: `TileDescription.${getTileName(customBackgroundTile)}`
+            });
+            // $FlowFixMe: innerText
             ariaLiveRegion.innerText = this.props.intl.formatMessage(
-                {id:'CharacterAriaLive.positionAriaLabelWithItem'},
+                {
+                    id:'CharacterAriaLive.positionAriaLabelWithItem'
+                },
                 {
                     columnLabel,
                     rowLabel,
                     direction,
-                    item: itemOnGridCell,
-                    character: characterLabel
-                }
-            )
-        } else {
-            // $FlowFixMe: Flow doesn't know that elements have innerText.
-            ariaLiveRegion.innerText = this.props.intl.formatMessage(
-                {id:'CharacterAriaLive.positionAriaLabel'},
-                {
-                    columnLabel,
-                    rowLabel,
-                    direction,
+                    item: item,
                     character: characterLabel
                 }
             );
+        } else {
+            const backgroundInfo = getBackgroundInfo(this.props.world, columnLabel, rowLabel);
+            if (backgroundInfo) {
+                const item = this.props.intl.formatMessage({
+                    id: `${this.props.world}.${backgroundInfo}`
+                });
+                // $FlowFixMe: innerText
+                ariaLiveRegion.innerText = this.props.intl.formatMessage(
+                    {
+                        id:'CharacterAriaLive.positionAriaLabelWithItem'
+                    },
+                    {
+                        columnLabel,
+                        rowLabel,
+                        direction,
+                        item: item,
+                        character: characterLabel
+                    }
+                );
+            } else {
+                // $FlowFixMe: innerText
+                ariaLiveRegion.innerText = this.props.intl.formatMessage(
+                    {
+                        id:'CharacterAriaLive.positionAriaLabel'
+                    },
+                    {
+                        columnLabel,
+                        rowLabel,
+                        direction,
+                        character: characterLabel
+                    }
+                );
+            }
         }
     }
 

@@ -2,7 +2,7 @@
 
 import CharacterState from './CharacterState';
 import * as C2lcMath from './C2lcMath';
-import { CustomBackground } from './CustomBackground';
+import CustomBackground from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
 
 // TODO: Test forward() and backward() with CustomBackground behaviour

@@ -1,6 +1,6 @@
 // @flow
 
-import { CustomBackground } from './CustomBackground';
+import CustomBackground from './CustomBackground';
 import CustomBackgroundSerializer from './CustomBackgroundSerializer';
 import SceneDimensions from './SceneDimensions';
 

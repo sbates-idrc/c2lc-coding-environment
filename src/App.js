@@ -14,7 +14,7 @@ import classNames from 'classnames';
 import CommandPaletteCommand from './CommandPaletteCommand';
 import CookieNotification from './CookieNotification';
 import C2lcURLParams from './C2lcURLParams';
-import { CustomBackground } from './CustomBackground';
+import CustomBackground from './CustomBackground';
 import CustomBackgroundEditModeToggleSwitch from './CustomBackgroundEditModeToggleSwitch';
 import CustomBackgroundSerializer from './CustomBackgroundSerializer';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
@@ -36,7 +36,7 @@ import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
-import type { TileName } from './TileData';
+import type { TileCode } from './TileData';
 import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
@@ -133,7 +133,7 @@ export type AppState = {
     startingDirection: number,
     customBackground: CustomBackground,
     customBackgroundEditMode: boolean,
-    selectedCustomBackgroundTile: ?TileName
+    selectedCustomBackgroundTile: ?TileCode
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -1403,8 +1403,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showPrivacyModal: false });
     }
 
-    handleSelectTile = (tileName: TileName) => {
-        this.setState({ selectedCustomBackgroundTile: tileName });
+    handleSelectTile = (tileCode: TileCode) => {
+        this.setState({ selectedCustomBackgroundTile: tileCode });
     }
 
     handlePaintScene = (x: number, y: number) => {
@@ -1744,6 +1744,7 @@ export class App extends React.Component<AppProps, AppState> {
                 characterState={this.state.characterState}
                 runningState={this.state.runningState}
                 world={this.state.settings.world}
+                customBackground={this.state.customBackground}
             />
         );
     }

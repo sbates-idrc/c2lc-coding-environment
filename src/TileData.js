@@ -5,6 +5,7 @@ import { ReactComponent as WallTile } from './svg/WallTile.svg';
 import * as React from 'react';
 
 type TileProperties = {|
+    name: string,
     color: string,
     isTransparent: boolean,
     isWall: boolean,
@@ -28,98 +29,98 @@ const tiles: {|
     'D': TileProperties,
 |} = {
     '0': {
-        // Transparent
+        name: 'transparent',
         color: 'transparent',
         isTransparent: true,
         isWall: false,
         image: BlankTile
     },
     '1': {
-        // Wall
+        name: 'wall',
         color: '#F5C58A',
         isTransparent: false,
         isWall: true,
         image: WallTile
     },
     '2': {
-        // White
+        name: 'white',
         color: '#FFFFFF',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '3': {
-        // Black
+        name: 'black',
         color: '#1E1E1E',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '4': {
-        // Grey
+        name: 'grey',
         color: '#C4C4C4',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '5': {
-        // Dark blue
+        name: 'darkBlue',
         color: '#416CA7',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '6': {
-        // Light blue
+        name: 'lightBlue',
         color: '#5CBCD1',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '7': {
-        // Green
+        name: 'green',
         color: '#52BD76',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '8': {
-        // Yellow
+        name: 'yellow',
         color: '#F1D05B',
         isTransparent: false,
         isWall: false,
         image: null
     },
     '9': {
-        // Orange
+        name: 'orange',
         color: '#FF9900',
         isTransparent: false,
         isWall: false,
         image: null
     },
     'A': {
-        // Red
+        name: 'red',
         color: '#F75322',
         isTransparent: false,
         isWall: false,
         image: null
     },
     'B': {
-        // Pink
+        name: 'pink',
         color: '#F387C8',
         isTransparent: false,
         isWall: false,
         image: null
     },
     'C': {
-        // Purple
+        name: 'purple',
         color: '#AA70C7',
         isTransparent: false,
         isWall: false,
         image: null
     },
     'D': {
-        // Brown
+        name: 'brown',
         color: '#775034',
         isTransparent: false,
         isWall: false,
@@ -127,24 +128,28 @@ const tiles: {|
     }
 };
 
-export type TileName = $Keys<typeof tiles>;
+export type TileCode = $Keys<typeof tiles>;
 
-export function isTileName(str: ?string): boolean {
+export function isTileCode(str: ?string): boolean {
     return tiles.hasOwnProperty(str);
 }
 
-export function getTileColor(tileName: TileName): string {
-    return tiles[tileName].color;
+export function getTileName(tileCode: TileCode): string {
+    return tiles[tileCode].name;
 }
 
-export function isTransparent(tileName: TileName): boolean {
-    return tiles[tileName].isTransparent;
+export function getTileColor(tileCode: TileCode): string {
+    return tiles[tileCode].color;
 }
 
-export function isWall(tileName: TileName): boolean {
-    return tiles[tileName].isWall;
+export function isTransparent(tileCode: TileCode): boolean {
+    return tiles[tileCode].isTransparent;
 }
 
-export function getTileImage(tileName: TileName): ?React.ComponentType<{}> {
-    return tiles[tileName].image;
+export function isWall(tileCode: TileCode): boolean {
+    return tiles[tileCode].isWall;
+}
+
+export function getTileImage(tileCode: TileCode): ?React.ComponentType<{}> {
+    return tiles[tileCode].image;
 }

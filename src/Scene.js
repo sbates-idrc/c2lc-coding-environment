@@ -2,7 +2,7 @@
 
 import React from 'react';
 import CharacterState from './CharacterState';
-import { CustomBackground } from './CustomBackground';
+import CustomBackground from './CustomBackground';
 import CustomBackgroundSceneLayer from './CustomBackgroundSceneLayer';
 import SceneBackground from './SceneBackground';
 import SceneCharacter from './SceneCharacter';

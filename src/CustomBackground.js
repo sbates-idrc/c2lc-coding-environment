@@ -2,15 +2,15 @@
 
 import SceneDimensions from './SceneDimensions';
 import { isWall } from './TileData';
-import type { TileName } from './TileData';
+import type { TileCode } from './TileData';
 
 // TODO: Decide what to do if x or y or index is out of range
 
-export class CustomBackground {
+export default class CustomBackground {
     sceneDimensions: SceneDimensions;
-    tiles: Array<TileName>;
+    tiles: Array<TileCode>;
 
-    constructor(sceneDimensions: SceneDimensions, tiles: ?Array<TileName>) {
+    constructor(sceneDimensions: SceneDimensions, tiles: ?Array<TileCode>) {
         this.sceneDimensions = sceneDimensions;
         const numTiles = sceneDimensions.getWidth() * sceneDimensions.getHeight();
         if (tiles != null) {
@@ -32,13 +32,13 @@ export class CustomBackground {
             + (x - this.sceneDimensions.getMinX());
     }
 
-    getTile(x: number, y: number): TileName {
+    getTile(x: number, y: number): TileCode {
         return this.tiles[this.calculateIndex(x, y)];
     }
 
-    setTile(x: number, y: number, tileName: TileName): CustomBackground {
+    setTile(x: number, y: number, tileCode: TileCode): CustomBackground {
         const tiles = this.tiles.slice();
-        tiles[this.calculateIndex(x, y)] = tileName;
+        tiles[this.calculateIndex(x, y)] = tileCode;
         return new CustomBackground(this.sceneDimensions, tiles);
     }
 

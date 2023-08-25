@@ -6,17 +6,21 @@ import { configure, mount } from 'enzyme';
 import { IntlProvider } from 'react-intl';
 import CharacterAriaLive from './CharacterAriaLive';
 import CharacterState from './CharacterState';
+import CustomBackground from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
 import messages from './messages.json';
 
 configure({ adapter: new Adapter()});
 
+const defaultDimensions = new SceneDimensions(1, 100, 1, 100);
+
 const defaultCharacterAriaLiveProps = {
     ariaLiveRegionId: 'someAriaLiveRegionId',
     ariaHidden: false,
-    characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
+    characterState: new CharacterState(1, 1, 2, [], defaultDimensions),
     runningState: 'stopped',
-    world: 'Sketchpad'
+    world: 'Sketchpad',
+    customBackground: new CustomBackground(defaultDimensions)
 };
 
 function createMountCharacterAriaLive(props) {
@@ -56,14 +60,14 @@ describe('Character position gets updated on character-position div', () => {
     test('When characterState prop is changed', () => {
         const wrapper = createMountCharacterAriaLive();
         wrapper.setProps({
-            characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100))
+            characterState: new CharacterState(1, 1, 2, [], defaultDimensions)
         });
         // $FlowFixMe: Flow doesn't know about character-position div
         expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('the robot is at column A, row 1 facing right');
-        wrapper.setProps({runningState: 'stopped', world: 'Savannah', characterState: new CharacterState(2, 1, 2, [], new SceneDimensions(1, 100, 1, 100))});
+        wrapper.setProps({runningState: 'stopped', world: 'Savannah', characterState: new CharacterState(2, 1, 2, [], defaultDimensions)});
         // $FlowFixMe: Flow doesn't know about character-position div
         expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('the jeep is at column B, row 1 facing right');
-        wrapper.setProps({runningState: 'stopped', world: 'Space', characterState: new CharacterState(3, 1, 2, [], new SceneDimensions(1, 100, 1, 100))});
+        wrapper.setProps({runningState: 'stopped', world: 'Space', characterState: new CharacterState(3, 1, 2, [], defaultDimensions)});
         // $FlowFixMe: Flow doesn't know about character-position div
         expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('the spaceship is at column C, row 1 facing right on the Moon');
     });

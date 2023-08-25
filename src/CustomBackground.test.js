@@ -1,6 +1,6 @@
 // @flow
 
-import { CustomBackground } from './CustomBackground';
+import CustomBackground from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
 
 test('When tiles are not provided to the constructor, default to 0', () => {
