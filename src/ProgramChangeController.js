@@ -2,7 +2,7 @@
 
 import type {AppState} from './App';
 import type {IntlShape} from 'react-intl';
-import type {AudioManager} from './types';
+import type {AudioManager, CommandName} from './types';
 import AnnouncementBuilder from './AnnouncementBuilder';
 import {App} from './App';
 import {ProgramBlockEditor} from './ProgramBlockEditor';
@@ -30,7 +30,7 @@ export default class ProgramChangeController {
     }
 
     insertSelectedActionIntoProgram(programBlockEditor: ?ProgramBlockEditor,
-        index: number, selectedAction: ?string) {
+        index: number, selectedAction: ?CommandName) {
 
         this.app.setState((state) => {
             if (selectedAction) {
@@ -47,7 +47,7 @@ export default class ProgramChangeController {
     }
 
     addSelectedActionToProgramEnd(programBlockEditor: ?ProgramBlockEditor,
-        selectedAction: ?string) {
+        selectedAction: ?CommandName) {
 
         this.app.setState((state) => {
             if (selectedAction) {
@@ -115,7 +115,7 @@ export default class ProgramChangeController {
     }
 
     replaceProgramStep(programBlockEditor: ?ProgramBlockEditor,
-        index: number, selectedAction: ?string) {
+        index: number, selectedAction: ?CommandName) {
 
         this.app.setState((state) => {
             const currentStep = state.programSequence.getProgramStepAt(index);

@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import DisallowedActionsSerializer from './DisallowedActionsSerializer';
+import ActionsHandler from './ActionsHandler';
 import AnnouncementBuilder from './AnnouncementBuilder';
 import AudioManagerImpl from './AudioManagerImpl';
 import CharacterAriaLive from './CharacterAriaLive';
@@ -37,7 +38,7 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
 import type { TileCode } from './TileData';
-import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -106,7 +107,7 @@ export type AppState = {
     settings: AppSettings,
     dashConnectionStatus: DeviceConnectionStatus,
     showDashConnectionError: boolean,
-    selectedAction: ?string,
+    selectedAction: ?CommandName,
     isDraggingCommand: boolean,
     audioEnabled: boolean,
     announcementsEnabled: boolean,
@@ -168,8 +169,6 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.sceneDimensions = new SceneDimensions(1, 12, 1, 8);
 
-        this.interpreter = new Interpreter(1000, this);
-
         this.speedLookUp = [2000, 1500, 1000, 500, 250];
 
         this.programSerializer = new ProgramSerializer();
@@ -185,242 +184,6 @@ export class App extends React.Component<AppProps, AppState> {
         this.sequenceInProgress = [];
 
         this.defaultWorld = 'Sketchpad';
-
-        this.interpreter.addCommandHandler(
-            'forward1',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('forward1', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.forward(1, state.drawingEnabled, state.customBackground);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward1", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'forward2',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('forward2', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.forward(2, state.drawingEnabled, state.customBackground);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward2", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'forward3',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('forward3', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.forward(3, state.drawingEnabled, state.customBackground);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward3", stepTimeMs, newCharacterState, this.sceneDimensions);
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'backward1',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('backward1');
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.backward(1, state.drawingEnabled, state.customBackground);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward1", stepTimeMs, newCharacterState, this.sceneDimensions);
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'backward2',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('backward2');
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.backward(2, state.drawingEnabled, state.customBackground);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward2", stepTimeMs, newCharacterState, this.sceneDimensions);
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'backward3',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('backward3');
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.backward(3, state.drawingEnabled, state.customBackground);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward3", stepTimeMs, newCharacterState, this.sceneDimensions);
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'left45',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('left45', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.turnLeft(1);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left45", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'left90',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('left90', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.turnLeft(2);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left90", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'left180',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('left180', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.turnLeft(4);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left180", stepTimeMs,  newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'right45',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('right45', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.turnRight(1);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right45", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'right90',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('right90', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.turnRight(2);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right90", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'right180',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('right180', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.turnRight(4);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right180", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
 
         // Cookie Notification
         const showCookieNotification = !(window.localStorage.getItem('c2lc-hasDismissedCookieNotification'));
@@ -494,6 +257,10 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.speedControlRef = React.createRef();
         this.programBlockEditorRef = React.createRef();
+
+        const actionsHandler = new ActionsHandler(this, this.audioManager,
+            this.sceneDimensions);
+        this.interpreter = new Interpreter(1000, this, actionsHandler);
     }
 
     setStateSettings(settings: $Shape<AppSettings>) {
@@ -573,7 +340,7 @@ export class App extends React.Component<AppProps, AppState> {
         });
     };
 
-    handleProgramBlockEditorInsertSelectedAction = (index: number, selectedAction: ?string) => {
+    handleProgramBlockEditorInsertSelectedAction = (index: number, selectedAction: ?CommandName) => {
         this.programChangeController.insertSelectedActionIntoProgram(
             this.programBlockEditorRef.current,
             index,
@@ -589,7 +356,7 @@ export class App extends React.Component<AppProps, AppState> {
         );
     };
 
-    handleProgramBlockEditorReplaceStep = (index: number, selectedAction: ?string) => {
+    handleProgramBlockEditorReplaceStep = (index: number, selectedAction: ?CommandName) => {
         this.programChangeController.replaceProgramStep(
             this.programBlockEditorRef.current,
             index,
@@ -683,13 +450,13 @@ export class App extends React.Component<AppProps, AppState> {
         });
     };
 
-    handleCommandFromCommandPalette = (command: string) => {
+    handleCommandFromCommandPalette = (command: CommandName) => {
         this.setState({
             selectedAction: command
         });
     };
 
-    handleDragStartCommand = (command: string) => {
+    handleDragStartCommand = (command: CommandName) => {
         this.setState({
             isDraggingCommand: true,
             selectedAction: command,

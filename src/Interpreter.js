@@ -1,31 +1,21 @@
 // @flow
 
-import {App} from './App';
+import { App } from './App';
+import ActionsHandler from './ActionsHandler';
 import ProgramSequence from './ProgramSequence';
 import type { ProgramBlock } from './types';
 
-export type CommandHandler = { (stepTimeMs: number): Promise<void> };
-
 export default class Interpreter {
-    commands: { [command: string]: { [namespace: string]: CommandHandler } };
     stepTimeMs: number;
     app: App;
+    actionsHandler: ActionsHandler;
     continueRunActive: boolean;
 
-    constructor(stepTimeMs: number, app: App) {
-        this.commands = {};
+    constructor(stepTimeMs: number, app: App, actionsHandler: ActionsHandler) {
         this.stepTimeMs = stepTimeMs;
         this.app = app;
+        this.actionsHandler = actionsHandler;
         this.continueRunActive = false;
-    }
-
-    addCommandHandler(command: string, namespace: string, handler: CommandHandler) {
-        let commandNamespaces = this.commands[command];
-        if (!commandNamespaces) {
-            commandNamespaces = {};
-            this.commands[command] = commandNamespaces;
-        }
-        commandNamespaces[namespace] = handler;
     }
 
     setStepTime(stepTimeMs: number) {
@@ -87,19 +77,19 @@ export default class Interpreter {
                 resolve();
             } else {
                 const currentProgramStep = programSequence.getCurrentProgramStep();
-                const command = currentProgramStep.block;
-                if (command === 'startLoop') {
+                const block = currentProgramStep.block;
+                if (block === 'startLoop') {
                     this.doStartLoop(programSequence).then(() => {
                         this.app.advanceProgramCounter(resolve);
                     });
-                } else if (command === 'endLoop') {
+                } else if (block === 'endLoop') {
                     // We don't intend for the programCounter to ever be on an
                     // 'endLoop' block, but we might have a bug that would
                     // cause that case to happen and we want to handle it
                     // gracefully
                     this.app.advanceProgramCounter(resolve);
                 } else {
-                    this.doCommand(currentProgramStep).then(() => {
+                    this.doAction(currentProgramStep).then(() => {
                         this.app.advanceProgramCounter(resolve);
                     }, (error: Error) => {
                         reject(error);
@@ -123,35 +113,7 @@ export default class Interpreter {
         }
     }
 
-    doCommand(programStep: ProgramBlock): Promise<any> {
-        const command = programStep.block;
-        const handlers = this.lookUpCommandHandlers(command);
-        if (handlers.length === 0) {
-            return Promise.reject(new Error(`Unknown command: ${command}`));
-        } else {
-            return this.callCommandHandlers(handlers);
-        }
-    }
-
-    callCommandHandlers(handlers: Array<CommandHandler>): Promise<any> {
-        const promises = [];
-        const stepTimeMs = this.stepTimeMs;
-        for (const handler of handlers) {
-            promises.push(handler(stepTimeMs));
-        }
-        return Promise.all(promises);
-    }
-
-    lookUpCommandHandlers(command: string): Array<CommandHandler> {
-        const commandNamespaces = this.commands[command];
-        if (commandNamespaces) {
-            const handlers = [];
-            for (const namespace in commandNamespaces) {
-                handlers.push(commandNamespaces[namespace]);
-            }
-            return handlers;
-        } else {
-            return [];
-        }
+    doAction(programStep: ProgramBlock): Promise<any> {
+        return this.actionsHandler.doAction(programStep.block, this.stepTimeMs);
     }
 }
