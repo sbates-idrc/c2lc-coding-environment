@@ -2,16 +2,19 @@
 
 import classNames from 'classnames';
 import React from 'react';
-import { getTileColor, getTileImage, isTileCode } from './TileData';
+import { injectIntl } from 'react-intl';
+import type { IntlShape } from 'react-intl';
+import { getTileColor, getTileImage, getTileName, isTileCode } from './TileData';
 import type { TileCode } from './TileData';
 import './TilePanel.scss';
 
 type TilePanelProps = {
+    intl: IntlShape,
     selectedTile: ?TileCode,
     onSelectTile: (tileCode: TileCode) => void
 };
 
-export default class TilePanel extends React.PureComponent<TilePanelProps, {}> {
+class TilePanel extends React.PureComponent<TilePanelProps, {}> {
     tileCodes: Array<TileCode>;
 
     constructor(props: TilePanelProps) {
@@ -45,19 +48,26 @@ export default class TilePanel extends React.PureComponent<TilePanelProps, {}> {
         const tiles = [];
 
         for (const tileCode of this.tileCodes) {
+            const isSelected = (tileCode === this.props.selectedTile);
+
             const tileClassName = classNames(
                 'TilePanel__tile',
-                (tileCode === this.props.selectedTile)
-                    && 'TilePanel__tile--selected'
+                isSelected && 'TilePanel__tile--selected'
             );
 
             const tileImage = getTileImage(tileCode);
+
+            const ariaLabel = this.props.intl.formatMessage({
+                id: `TileDescription.${getTileName(tileCode)}`
+            });
 
             tiles.push(
                 <button
                     className={tileClassName}
                     data-tilecode={tileCode}
                     key={tileCode}
+                    aria-label={ariaLabel}
+                    aria-pressed={isSelected}
                     onClick={this.handleClickTile}
                 >
                     <div
@@ -79,3 +89,5 @@ export default class TilePanel extends React.PureComponent<TilePanelProps, {}> {
         );
     }
 }
+
+export default injectIntl(TilePanel);

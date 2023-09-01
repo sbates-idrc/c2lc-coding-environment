@@ -7,6 +7,7 @@ import DisallowedActionsSerializer from './DisallowedActionsSerializer';
 import AnnouncementBuilder from './AnnouncementBuilder';
 import AudioManagerImpl from './AudioManagerImpl';
 import CharacterAriaLive from './CharacterAriaLive';
+import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CharacterStateSerializer from './CharacterStateSerializer';
 import CharacterPositionController from './CharacterPositionController';
@@ -154,6 +155,7 @@ export class App extends React.Component<AppProps, AppState> {
     programBlockEditorRef: { current: any };
     sequenceInProgress: Array<KeyboardEvent>;
     announcementBuilder: AnnouncementBuilder;
+    characterDescriptionBuilder: CharacterDescriptionBuilder;
     programChangeController: ProgramChangeController;
     defaultWorld: WorldName;
 
@@ -488,6 +490,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.focusTrapManager = new FocusTrapManager();
 
         this.announcementBuilder = new AnnouncementBuilder(this.props.intl);
+
+        this.characterDescriptionBuilder = new CharacterDescriptionBuilder(this.props.intl);
 
         this.programChangeController = new ProgramChangeController(this,
             this.props.intl, this.audioManager);
@@ -1745,6 +1749,7 @@ export class App extends React.Component<AppProps, AppState> {
                 runningState={this.state.runningState}
                 world={this.state.settings.world}
                 customBackground={this.state.customBackground}
+                characterDescriptionBuilder={this.characterDescriptionBuilder}
             />
         );
     }

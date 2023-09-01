@@ -3,32 +3,48 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount } from 'enzyme';
-import { IntlProvider } from 'react-intl';
+import { createIntl, IntlProvider } from 'react-intl';
 import CharacterAriaLive from './CharacterAriaLive';
+import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
+import type { RunningState } from './types';
 import messages from './messages.json';
 
 configure({ adapter: new Adapter()});
 
-const defaultDimensions = new SceneDimensions(1, 100, 1, 100);
+const intl = createIntl({
+    locale: 'en',
+    defaultLocale: 'en',
+    messages: messages.en
+});
+
+beforeEach(() => {
+    const liveRegionDiv = document.createElement('div');
+    liveRegionDiv.setAttribute('id', 'someAriaLiveRegionId');
+    ((document.body: any): HTMLBodyElement).appendChild(liveRegionDiv);
+});
+
+afterEach(() => {
+    const liveRegionDiv = ((document.getElementById('someAriaLiveRegionId'): any): HTMLElement);
+    ((liveRegionDiv.parentNode: any): Node).removeChild(liveRegionDiv);
+});
+
+const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
+const emptyCustomBackground = new CustomBackground(sceneDimensions);
 
 const defaultCharacterAriaLiveProps = {
     ariaLiveRegionId: 'someAriaLiveRegionId',
     ariaHidden: false,
-    characterState: new CharacterState(1, 1, 2, [], defaultDimensions),
+    characterState: new CharacterState(1, 1, 2, [], sceneDimensions),
     runningState: 'stopped',
     world: 'Sketchpad',
-    customBackground: new CustomBackground(defaultDimensions)
+    customBackground: emptyCustomBackground,
+    characterDescriptionBuilder: new CharacterDescriptionBuilder(intl)
 };
 
 function createMountCharacterAriaLive(props) {
-    const ariaLiveDiv = document.createElement('div');
-    ariaLiveDiv.setAttribute('id', 'someAriaLiveRegionId');
-    // $FlowFixMe: Flow doesn't know about document.body
-    document.body.appendChild(ariaLiveDiv);
-
     const wrapper = mount(
         React.createElement(
             CharacterAriaLive,
@@ -51,67 +67,103 @@ function createMountCharacterAriaLive(props) {
     return wrapper;
 }
 
-function getAriaHidden() {
-    // $FlowFixMe: getElementById might return null, no need to handle as the test will fail
-    return document.getElementById('someAriaLiveRegionId').getAttribute('aria-hidden');
+function getLiveRegionInnerText() {
+    return ((document.getElementById('someAriaLiveRegionId'): any): HTMLElement).innerText;
 }
 
-describe('Character position gets updated on character-position div', () => {
-    test('When characterState prop is changed', () => {
-        const wrapper = createMountCharacterAriaLive();
-        wrapper.setProps({
-            characterState: new CharacterState(1, 1, 2, [], defaultDimensions)
-        });
-        // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('the robot is at column A, row 1 facing right');
-        wrapper.setProps({runningState: 'stopped', world: 'Savannah', characterState: new CharacterState(2, 1, 2, [], defaultDimensions)});
-        // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('the jeep is at column B, row 1 facing right');
-        wrapper.setProps({runningState: 'stopped', world: 'Space', characterState: new CharacterState(3, 1, 2, [], defaultDimensions)});
-        // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('the spaceship is at column C, row 1 facing right on the Moon');
+function getLiveRegionAriaHidden() {
+    return ((document.getElementById('someAriaLiveRegionId'): any): HTMLElement).getAttribute('aria-hidden');
+}
+
+test('The live region is updated when the characterState prop is changed', () => {
+    const wrapper = createMountCharacterAriaLive();
+    expect(getLiveRegionInnerText()).toBeUndefined();
+    wrapper.setProps({
+        characterState: new CharacterState(1, 1, 2, [], sceneDimensions)
     });
-    test('When runningState prop is changed', () => {
-        const wrapper = createMountCharacterAriaLive();
-        wrapper.setProps({ runningState: 'pauseRequested', world: 'Savannah' });
-        // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('the jeep is at column A, row 1 facing right');
-        wrapper.setProps({ runningState: 'stopRequested', world: 'Space' });
-        // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('the spaceship is at column A, row 1 facing right on the Earth');
-        wrapper.setProps({ runningState: 'running', world: 'Sketchpad' });
-        // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('the robot is moving');
-        wrapper.setProps({ runningState: 'stopped' });
-        // $FlowFixMe: Flow doesn't know about character-position div
-        expect(document.getElementById('someAriaLiveRegionId').innerText).toBe('the robot is at column A, row 1 facing right');
-    })
+    expect(getLiveRegionInnerText()).toBe('the robot is at column A, row 1 facing right');
+    wrapper.setProps({
+        characterState: new CharacterState(1, 2, 2, [], sceneDimensions)
+    });
+    expect(getLiveRegionInnerText()).toBe('the robot is at column A, row 2 facing right');
 });
 
-test('Given ariaHidden is initially false, then the live region has aria-hidden false', () => {
+type RunningStateTestCase = {
+    runningStateBefore: RunningState,
+    runningStateAfter: RunningState,
+    expectedLiveRegion: string
+};
+
+test.each(([
+    {
+        runningStateBefore: 'running',
+        runningStateAfter: 'pauseRequested',
+        expectedLiveRegion: 'the robot is at column A, row 1 facing right'
+    },
+    {
+        runningStateBefore: 'running',
+        runningStateAfter: 'stopRequested',
+        expectedLiveRegion: 'the robot is at column A, row 1 facing right'
+    },
+    {
+        runningStateBefore: 'running',
+        runningStateAfter: 'stopped',
+        expectedLiveRegion: 'the robot is at column A, row 1 facing right'
+    },
+    {
+        runningStateBefore: 'stopped',
+        runningStateAfter: 'running',
+        expectedLiveRegion: 'the robot is moving'
+    }
+]: Array<RunningStateTestCase>))('The live region is updated when the runningState is changed', (testData: RunningStateTestCase) => {
+
+    const wrapper = createMountCharacterAriaLive({
+        runningState: testData.runningStateBefore
+    });
+    expect(getLiveRegionInnerText()).toBeUndefined();
+    wrapper.setProps({
+        runningState: testData.runningStateAfter
+    });
+    expect(getLiveRegionInnerText()).toBe(testData.expectedLiveRegion);
+});
+
+test('The live region is updated when the world prop is changed', () => {
+    const wrapper = createMountCharacterAriaLive();
+    expect(getLiveRegionInnerText()).toBeUndefined();
+    wrapper.setProps({
+        world: 'Savannah'
+    });
+    expect(getLiveRegionInnerText()).toBe('the jeep is at column A, row 1 facing right');
+    wrapper.setProps({
+        world: 'Space'
+    });
+    expect(getLiveRegionInnerText()).toBe('the spaceship is at column A, row 1 facing right on the Earth');
+});
+
+test('The live region has aria-hidden false when the ariaHidden prop is false', () => {
     expect.assertions(1);
     createMountCharacterAriaLive({
         ariaHidden: false
     });
-    expect(getAriaHidden()).toBe('false');
+    expect(getLiveRegionAriaHidden()).toBe('false');
 });
 
-test('Given ariaHidden is initially true, then the live region has aria-hidden true', () => {
+test('The live region has aria-hidden true when the ariaHidden prop is true', () => {
     expect.assertions(1);
     createMountCharacterAriaLive({
         ariaHidden: true
     });
-    expect(getAriaHidden()).toBe('true');
+    expect(getLiveRegionAriaHidden()).toBe('true');
 });
 
-test('When the ariaHidden property is changed, then the live region is updated', () => {
+test('The live region is updated when the ariaHidden prop is changed', () => {
     expect.assertions(3);
     const wrapper = createMountCharacterAriaLive({
         ariaHidden: false
     });
-    expect(getAriaHidden()).toBe('false');
+    expect(getLiveRegionAriaHidden()).toBe('false');
     wrapper.setProps({ ariaHidden: true });
-    expect(getAriaHidden()).toBe('true');
+    expect(getLiveRegionAriaHidden()).toBe('true');
     wrapper.setProps({ ariaHidden: false });
-    expect(getAriaHidden()).toBe('false');
+    expect(getLiveRegionAriaHidden()).toBe('false');
 });

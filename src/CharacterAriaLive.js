@@ -1,12 +1,11 @@
 // @flow
 
 import React from 'react';
+import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
-import { getTileName, isTransparent } from './TileData';
-import { getBackgroundInfo } from './Worlds';
 import { injectIntl } from 'react-intl';
-import type {IntlShape} from 'react-intl';
+import type { IntlShape } from 'react-intl';
 import type { RunningState } from './types';
 import type { WorldName } from './Worlds';
 
@@ -17,81 +16,30 @@ type CharacterAriaLiveProps = {
     characterState: CharacterState,
     runningState: RunningState,
     world: WorldName,
-    customBackground: CustomBackground
+    customBackground: CustomBackground,
+    characterDescriptionBuilder: CharacterDescriptionBuilder
 };
 
 class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
     setCharacterMovingAriaLive() {
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
-
-        const characterLabel = this.props.intl.formatMessage({id: this.props.world + ".character"});
-
-        // $FlowFixMe: Flow doesn't know that elements have innerText.
-        ariaLiveRegion.innerText=this.props.intl.formatMessage(
-            {id:'CharacterAriaLive.movementAriaLabel'},
-            {character: characterLabel}
-        );
+        if (ariaLiveRegion) {
+            const characterLabel = this.props.intl.formatMessage({id: `${this.props.world}.character`});
+            ariaLiveRegion.innerText = this.props.intl.formatMessage(
+                {id:'CharacterAriaLive.movementAriaLabel'},
+                {character: characterLabel}
+            );
+        }
     }
 
     updateCharacterPositionAriaLive() {
-        const characterState = this.props.characterState;
-        const columnLabel = characterState.getColumnLabel();
-        const rowLabel = characterState.getRowLabel();
-        const characterLabel = this.props.intl.formatMessage({id: this.props.world + ".character"});
-        const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
-
-        const customBackgroundTile = this.props.customBackground.getTile(characterState.xPos, characterState.yPos);
-        if (!isTransparent(customBackgroundTile)) {
-            const item = this.props.intl.formatMessage({
-                id: `TileDescription.${getTileName(customBackgroundTile)}`
-            });
-            // $FlowFixMe: innerText
-            ariaLiveRegion.innerText = this.props.intl.formatMessage(
-                {
-                    id:'CharacterAriaLive.positionAriaLabelWithItem'
-                },
-                {
-                    columnLabel,
-                    rowLabel,
-                    direction,
-                    item: item,
-                    character: characterLabel
-                }
+        if (ariaLiveRegion) {
+            ariaLiveRegion.innerText = this.props.characterDescriptionBuilder.buildCharacterDescription(
+                this.props.characterState,
+                this.props.world,
+                this.props.customBackground
             );
-        } else {
-            const backgroundInfo = getBackgroundInfo(this.props.world, columnLabel, rowLabel);
-            if (backgroundInfo) {
-                const item = this.props.intl.formatMessage({
-                    id: `${this.props.world}.${backgroundInfo}`
-                });
-                // $FlowFixMe: innerText
-                ariaLiveRegion.innerText = this.props.intl.formatMessage(
-                    {
-                        id:'CharacterAriaLive.positionAriaLabelWithItem'
-                    },
-                    {
-                        columnLabel,
-                        rowLabel,
-                        direction,
-                        item: item,
-                        character: characterLabel
-                    }
-                );
-            } else {
-                // $FlowFixMe: innerText
-                ariaLiveRegion.innerText = this.props.intl.formatMessage(
-                    {
-                        id:'CharacterAriaLive.positionAriaLabel'
-                    },
-                    {
-                        columnLabel,
-                        rowLabel,
-                        direction,
-                        character: characterLabel
-                    }
-                );
-            }
         }
     }
 
