@@ -41,6 +41,7 @@ const defaultCharacterAriaLiveProps = {
     runningState: 'stopped',
     world: 'Sketchpad',
     customBackground: emptyCustomBackground,
+    customBackgroundEditMode: false,
     characterDescriptionBuilder: new CharacterDescriptionBuilder(intl)
 };
 
@@ -83,9 +84,9 @@ test('The live region is updated when the characterState prop is changed', () =>
     });
     expect(getLiveRegionInnerText()).toBe('the robot is at column A, row 1 facing right');
     wrapper.setProps({
-        characterState: new CharacterState(1, 2, 2, [], sceneDimensions)
+        characterState: new CharacterState(3, 1, 2, [], sceneDimensions)
     });
-    expect(getLiveRegionInnerText()).toBe('the robot is at column A, row 2 facing right');
+    expect(getLiveRegionInnerText()).toBe('the robot is at column C, row 1 facing right');
 });
 
 type RunningStateTestCase = {
@@ -138,6 +139,16 @@ test('The live region is updated when the world prop is changed', () => {
         world: 'Space'
     });
     expect(getLiveRegionInnerText()).toBe('the spaceship is at column A, row 1 facing right on the Earth');
+});
+
+test('The live region uses "paint brush" when in custom background edit mode', () => {
+    const wrapper = createMountCharacterAriaLive({
+        customBackgroundEditMode: true
+    });
+    wrapper.setProps({
+        characterState: new CharacterState(3, 1, 2, [], sceneDimensions)
+    });
+    expect(getLiveRegionInnerText()).toBe('the paint brush is at column C, row 1');
 });
 
 test('The live region has aria-hidden false when the ariaHidden prop is false', () => {

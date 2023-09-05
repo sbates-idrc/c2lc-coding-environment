@@ -1749,6 +1749,7 @@ export class App extends React.Component<AppProps, AppState> {
                 runningState={this.state.runningState}
                 world={this.state.settings.world}
                 customBackground={this.state.customBackground}
+                customBackgroundEditMode={this.state.customBackgroundEditMode}
                 characterDescriptionBuilder={this.characterDescriptionBuilder}
             />
         );

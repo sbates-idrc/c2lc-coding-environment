@@ -22,62 +22,71 @@ test('All 8 directions', () => {
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 0, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground
+        emptyCustomBackground,
+        false
     )).toBe('the robot is at column A, row 1 facing up');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 1, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground
+        emptyCustomBackground,
+        false
     )).toBe('the robot is at column A, row 1 facing upper right');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 2, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground
+        emptyCustomBackground,
+        false
     )).toBe('the robot is at column A, row 1 facing right');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 3, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground
+        emptyCustomBackground,
+        false
     )).toBe('the robot is at column A, row 1 facing lower right');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 4, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground
+        emptyCustomBackground,
+        false
     )).toBe('the robot is at column A, row 1 facing down');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 5, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground
+        emptyCustomBackground,
+        false
     )).toBe('the robot is at column A, row 1 facing lower left');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 6, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground
+        emptyCustomBackground,
+        false
     )).toBe('the robot is at column A, row 1 facing left');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 7, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground
+        emptyCustomBackground,
+        false
     )).toBe('the robot is at column A, row 1 facing upper left');
 });
 
-test('Space, background description: no, custom background tile: no', () => {
+test('Space, edit mode: no, background description: no, custom background tile: no', () => {
     const builder = new CharacterDescriptionBuilder(intl);
     expect(builder.buildCharacterDescription(
         new CharacterState(3, 2, 2, [], sceneDimensions),
         'Space',
-        emptyCustomBackground
+        emptyCustomBackground,
+        false
     )).toBe('the spaceship is at column C, row 2 facing right');
 });
 
-test('Space, background description: no, custom background tile: yes', () => {
+test('Space, edit mode: no, background description: no, custom background tile: yes', () => {
     const builder = new CharacterDescriptionBuilder(intl);
     expect(builder.buildCharacterDescription(
         new CharacterState(3, 2, 2, [], sceneDimensions),
@@ -85,26 +94,74 @@ test('Space, background description: no, custom background tile: yes', () => {
         new CustomBackground(sceneDimensions, [
             '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
             '0', '0', '1'
-        ])
-    )).toBe('the spaceship is at column C, row 2 facing right on wall');
+        ]),
+        false
+    )).toBe('the spaceship is at column C, row 2 facing right on a wall');
 });
 
-test('Space, background description: yes, custom background tile: no', () => {
+test('Space, edit mode: no, background description: yes, custom background tile: no', () => {
     const builder = new CharacterDescriptionBuilder(intl);
     expect(builder.buildCharacterDescription(
         new CharacterState(3, 1, 2, [], sceneDimensions),
         'Space',
-        emptyCustomBackground
+        emptyCustomBackground,
+        false
     )).toBe('the spaceship is at column C, row 1 facing right on the Moon');
 });
 
-test('Space, background description: yes, custom background tile: yes', () => {
+test('Space, edit mode: no, background description: yes, custom background tile: yes', () => {
     const builder = new CharacterDescriptionBuilder(intl);
     expect(builder.buildCharacterDescription(
         new CharacterState(3, 1, 2, [], sceneDimensions),
         'Space',
         new CustomBackground(sceneDimensions, [
             '0', '0', '1'
-        ])
-    )).toBe('the spaceship is at column C, row 1 facing right on wall');
+        ]),
+        false
+    )).toBe('the spaceship is at column C, row 1 facing right on a wall');
+});
+
+test('Space, edit mode: yes, background description: no, custom background tile: no', () => {
+    const builder = new CharacterDescriptionBuilder(intl);
+    expect(builder.buildCharacterDescription(
+        new CharacterState(3, 2, 2, [], sceneDimensions),
+        'Space',
+        emptyCustomBackground,
+        true
+    )).toBe('the paint brush is at column C, row 2');
+});
+
+test('Space, edit mode: yes, background description: no, custom background tile: yes', () => {
+    const builder = new CharacterDescriptionBuilder(intl);
+    expect(builder.buildCharacterDescription(
+        new CharacterState(3, 2, 2, [], sceneDimensions),
+        'Space',
+        new CustomBackground(sceneDimensions, [
+            '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
+            '0', '0', '1'
+        ]),
+        true
+    )).toBe('the paint brush is at column C, row 2 on a wall');
+});
+
+test('Space, edit mode: yes, background description: yes, custom background tile: no', () => {
+    const builder = new CharacterDescriptionBuilder(intl);
+    expect(builder.buildCharacterDescription(
+        new CharacterState(3, 1, 2, [], sceneDimensions),
+        'Space',
+        emptyCustomBackground,
+        true
+    )).toBe('the paint brush is at column C, row 1 on the Moon');
+});
+
+test('Space, edit mode: yes, background description: yes, custom background tile: yes', () => {
+    const builder = new CharacterDescriptionBuilder(intl);
+    expect(builder.buildCharacterDescription(
+        new CharacterState(3, 1, 2, [], sceneDimensions),
+        'Space',
+        new CustomBackground(sceneDimensions, [
+            '0', '0', '1'
+        ]),
+        true
+    )).toBe('the paint brush is at column C, row 1 on a wall');
 });

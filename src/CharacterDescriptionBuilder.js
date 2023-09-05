@@ -14,41 +14,69 @@ export default class CharacterDescriptionBuilder {
         this.intl = intl;
     }
 
-    buildCharacterDescription(characterState: CharacterState,
-        world: WorldName, customBackground: CustomBackground) {
-
-        const characterLabel = this.intl.formatMessage({id: `${world}.character`});
-        const columnLabel = characterState.getColumnLabel();
-        const rowLabel = characterState.getRowLabel();
-        const directionLabel = this.intl.formatMessage({id: `Direction.${characterState.direction}`});
+    getItemLabel(characterState: CharacterState,
+        columnLabel: string, rowLabel: string,
+        world: WorldName, customBackground: CustomBackground): ?string {
 
         const customBackgroundTile = customBackground.getTile(characterState.xPos, characterState.yPos);
 
         if (!isTransparent(customBackgroundTile)) {
-            const itemLabel = this.intl.formatMessage({
+            return this.intl.formatMessage({
                 id: `TileDescription.${getTileName(customBackgroundTile)}`
             });
-            return this.intl.formatMessage(
-                {
-                    id:'CharacterDescriptionBuilder.positionAriaLabelWithItem'
-                },
-                {
-                    character: characterLabel,
-                    columnLabel: columnLabel,
-                    rowLabel: rowLabel,
-                    direction: directionLabel,
-                    item: itemLabel
-                }
-            );
         } else {
             const backgroundInfo = getBackgroundInfo(world, columnLabel, rowLabel);
             if (backgroundInfo) {
-                const itemLabel = this.intl.formatMessage({
+                return this.intl.formatMessage({
                     id: `${world}.${backgroundInfo}`
                 });
+            } else {
+                return null;
+            }
+        }
+    }
+
+    buildCharacterDescription(characterState: CharacterState,
+        world: WorldName, customBackground: CustomBackground,
+        customBackgroundEditMode: boolean): string {
+
+        const columnLabel = characterState.getColumnLabel();
+        const rowLabel = characterState.getRowLabel();
+
+        const itemLabel = this.getItemLabel(characterState, columnLabel,
+            rowLabel, world, customBackground);
+
+        if (customBackgroundEditMode) {
+            if (itemLabel) {
                 return this.intl.formatMessage(
                     {
-                        id:'CharacterDescriptionBuilder.positionAriaLabelWithItem'
+                        id:'CharacterDescriptionBuilder.customEditModePositionAndItem'
+                    },
+                    {
+                        columnLabel: columnLabel,
+                        rowLabel: rowLabel,
+                        item: itemLabel
+                    }
+                );
+            } else {
+                return this.intl.formatMessage(
+                    {
+                        id:'CharacterDescriptionBuilder.customEditModePosition'
+                    },
+                    {
+                        columnLabel: columnLabel,
+                        rowLabel: rowLabel,
+                    }
+                );
+            }
+        } else {
+            const characterLabel = this.intl.formatMessage({id: `${world}.character`});
+            const directionLabel = this.intl.formatMessage({id: `Direction.${characterState.direction}`});
+
+            if (itemLabel) {
+                return this.intl.formatMessage(
+                    {
+                        id:'CharacterDescriptionBuilder.positionAndDirectionAndItem'
                     },
                     {
                         character: characterLabel,
@@ -61,7 +89,7 @@ export default class CharacterDescriptionBuilder {
             } else {
                 return this.intl.formatMessage(
                     {
-                        id:'CharacterDescriptionBuilder.positionAriaLabel'
+                        id:'CharacterDescriptionBuilder.positionAndDirection'
                     },
                     {
                         character: characterLabel,
