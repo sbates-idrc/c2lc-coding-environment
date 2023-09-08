@@ -16,6 +16,13 @@ export type CommandName =
     'right45' | 'right90' | 'right180' |
     'loop';
 
+export type BlockName =
+    'forward1' | 'forward2' | 'forward3' |
+    'backward1' | 'backward2' | 'backward3' |
+    'left45' | 'left90' | 'left180' |
+    'right45' | 'right90' | 'right180' |
+    'startLoop' | 'endLoop';
+
 export type DeviceConnectionStatus = 'notConnected' | 'connecting' | 'connected';
 
 export type EditorMode = 'text' | 'block';
@@ -36,7 +43,7 @@ export type ThemeName = 'default' | 'light' | 'dark' | 'gray' | 'contrast';
 export type ProgramBlockCache = Map<string, number | string>;
 
 export type ProgramBlock = {
-    block: string,
+    block: BlockName,
     iterations?: number,
     label?: string,
     cache?: ProgramBlockCache;

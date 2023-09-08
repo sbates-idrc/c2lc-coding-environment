@@ -276,7 +276,7 @@ export default class ProgramSequence {
         );
     }
 
-    overwriteStep(index: number, command: string): ProgramSequence {
+    overwriteStep(index: number, command: CommandName): ProgramSequence {
         const program = this.program.slice();
         let programCounter = this.programCounter;
         let loopCounter = this.loopCounter;
@@ -316,7 +316,7 @@ export default class ProgramSequence {
         );
     }
 
-    insertStep(index: number, command: string): ProgramSequence {
+    insertStep(index: number, command: CommandName): ProgramSequence {
         const program = this.program.slice();
         let programCounter = this.programCounter;
         let loopCounter = this.loopCounter;
