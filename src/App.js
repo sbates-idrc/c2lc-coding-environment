@@ -1012,72 +1012,65 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
+    incStartingPosUnlessCustomBackgroundEditMode(state: AppState,
+        characterState: CharacterState) {
+
+        if (state.customBackgroundEditMode) {
+            return {
+                characterState: characterState
+            };
+        } else {
+            return {
+                characterState: characterState,
+                startingX: characterState.xPos,
+                startingY: characterState.yPos,
+                startingDirection: characterState.direction
+            };
+        }
+    }
+
     handleChangeCharacterPosition = (positionName: ?string) => {
         switch(positionName) {
             case 'turnLeft':
                 this.setState((state) => {
                     const updatedCharacterState = state.characterState.turnLeft(1);
-                    return {
-                        characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos,
-                        startingDirection: updatedCharacterState.direction,
-                    }
+                    return this.incStartingPosUnlessCustomBackgroundEditMode(state,
+                        updatedCharacterState);
                 });
                 break;
             case 'turnRight':
                 this.setState((state) => {
                     const updatedCharacterState = state.characterState.turnRight(1);
-                    return {
-                        characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos,
-                        startingDirection: updatedCharacterState.direction,
-                    }
+                    return this.incStartingPosUnlessCustomBackgroundEditMode(state,
+                        updatedCharacterState);
                 });
                 break;
             case 'up':
                 this.setState((state) => {
                     const updatedCharacterState = state.characterState.moveUpPosition(!(state.customBackgroundEditMode), state.customBackground);
-                    return {
-                        characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos,
-                        startingDirection: updatedCharacterState.direction,
-                    }
+                    return this.incStartingPosUnlessCustomBackgroundEditMode(state,
+                        updatedCharacterState);
                 });
                 break;
             case 'right':
                 this.setState((state) => {
                     const updatedCharacterState = state.characterState.moveRightPosition(!(state.customBackgroundEditMode), state.customBackground);
-                    return {
-                        characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos,
-                        startingDirection: updatedCharacterState.direction,
-                    }
+                    return this.incStartingPosUnlessCustomBackgroundEditMode(state,
+                        updatedCharacterState);
                 });
                 break;
             case 'down':
                 this.setState((state) => {
                     const updatedCharacterState = state.characterState.moveDownPosition(!(state.customBackgroundEditMode), state.customBackground);
-                    return {
-                        characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos,
-                        startingDirection: updatedCharacterState.direction,
-                    }
+                    return this.incStartingPosUnlessCustomBackgroundEditMode(state,
+                        updatedCharacterState);
                 });
                 break;
             case 'left':
                 this.setState((state) => {
                     const updatedCharacterState = state.characterState.moveLeftPosition(!(state.customBackgroundEditMode), state.customBackground);
-                    return {
-                        characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos,
-                        startingDirection: updatedCharacterState.direction,
-                    }
+                    return this.incStartingPosUnlessCustomBackgroundEditMode(state,
+                        updatedCharacterState);
                 });
                 break;
             default:
@@ -1086,22 +1079,18 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleChangeCharacterXPosition = (columnLabel: string) => {
-        const updatedCharacterState = this.state.characterState.changeXPosition(columnLabel);
-        this.setState({
-            characterState: updatedCharacterState,
-            startingX: updatedCharacterState.xPos,
-            startingY: updatedCharacterState.yPos,
-            startingDirection: updatedCharacterState.direction,
+        this.setState((state) => {
+            const updatedCharacterState = state.characterState.changeXPosition(columnLabel);
+            return this.incStartingPosUnlessCustomBackgroundEditMode(state,
+                updatedCharacterState);
         });
     }
 
     handleChangeCharacterYPosition = (rowLabel: string) => {
-        const updatedCharacterState = this.state.characterState.changeYPosition(parseInt(rowLabel, 10));
-        this.setState({
-            characterState: updatedCharacterState,
-            startingX: updatedCharacterState.xPos,
-            startingY: updatedCharacterState.yPos,
-            startingDirection: updatedCharacterState.direction,
+        this.setState((state) => {
+            const updatedCharacterState = state.characterState.changeYPosition(parseInt(rowLabel, 10));
+            return this.incStartingPosUnlessCustomBackgroundEditMode(state,
+                updatedCharacterState);
         });
     }
 
