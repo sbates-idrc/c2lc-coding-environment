@@ -2,7 +2,7 @@
 
 import classNames from 'classnames';
 import React from 'react';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import type { IntlShape } from 'react-intl';
 import { getTileColor, getTileImage, getTileName, isTileCode } from './TileData';
 import type { TileCode } from './TileData';
@@ -84,6 +84,9 @@ class TilePanel extends React.PureComponent<TilePanelProps, {}> {
 
         return (
             <div className='TilePanel'>
+                <h2 className='sr-only'>
+                    <FormattedMessage id='TilePanel.heading' />
+                </h2>
                 {tiles}
             </div>
         );
