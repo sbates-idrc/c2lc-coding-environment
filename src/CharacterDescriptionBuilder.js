@@ -3,7 +3,7 @@
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
 import type { IntlShape } from 'react-intl';
-import { getTileName, isTransparent } from './TileData';
+import { getTileName, isNone } from './TileData';
 import { getBackgroundInfo } from './Worlds';
 import type { WorldName } from './Worlds';
 
@@ -20,7 +20,7 @@ export default class CharacterDescriptionBuilder {
 
         const customBackgroundTile = customBackground.getTile(characterState.xPos, characterState.yPos);
 
-        if (!isTransparent(customBackgroundTile)) {
+        if (!isNone(customBackgroundTile)) {
             return this.intl.formatMessage({
                 id: `TileDescription.${getTileName(customBackgroundTile)}`
             });
