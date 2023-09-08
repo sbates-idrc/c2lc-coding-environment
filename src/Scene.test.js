@@ -3,15 +3,22 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount } from 'enzyme';
-import { IntlProvider } from 'react-intl';
+import { createIntl, IntlProvider } from 'react-intl';
 import messages from './messages.json';
 import Scene from './Scene';
 import type {SceneProps} from './Scene';
 import SceneDimensions from './SceneDimensions';
+import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
 
 configure({ adapter: new Adapter() });
+
+const intl = createIntl({
+    locale: 'en',
+    defaultLocale: 'en',
+    messages: messages.en
+});
 
 const defaultDimensions = new SceneDimensions(1, 1, 1, 1);
 
@@ -22,7 +29,8 @@ const defaultSceneProps = {
     world: 'Sketchpad',
     customBackground: new CustomBackground(defaultDimensions),
     startingX: 1,
-    startingY: 2
+    startingY: 2,
+    characterDescriptionBuilder: new CharacterDescriptionBuilder(intl)
 };
 
 function createMountScene(props) {
@@ -197,14 +205,14 @@ describe('When the Scene renders', () => {
 
 describe('The ARIA label should tell there is a character with its position', () => {
     test.each([
-        [1, 2, 0, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing up'],
-        [2, 3, 1, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column B, row 3 facing upper right'],
-        [1, 2, 2, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing right'],
-        [1, 2, 3, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing lower right'],
-        [1, 2, 4, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing down'],
-        [1, 2, 5, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing lower left'],
-        [1, 2, 6, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing left'],
-        [1, 2, 7, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing upper left']
+        [1, 2, 0, 'Scene, in Sketchpad, 17 by 9 grid. the robot is at column A, row 2 facing up'],
+        [2, 3, 1, 'Scene, in Sketchpad, 17 by 9 grid. the robot is at column B, row 3 facing upper right'],
+        [1, 2, 2, 'Scene, in Sketchpad, 17 by 9 grid. the robot is at column A, row 2 facing right'],
+        [1, 2, 3, 'Scene, in Sketchpad, 17 by 9 grid. the robot is at column A, row 2 facing lower right'],
+        [1, 2, 4, 'Scene, in Sketchpad, 17 by 9 grid. the robot is at column A, row 2 facing down'],
+        [1, 2, 5, 'Scene, in Sketchpad, 17 by 9 grid. the robot is at column A, row 2 facing lower left'],
+        [1, 2, 6, 'Scene, in Sketchpad, 17 by 9 grid. the robot is at column A, row 2 facing left'],
+        [1, 2, 7, 'Scene, in Sketchpad, 17 by 9 grid. the robot is at column A, row 2 facing upper left']
     ])('x=%f, y=%f, direction=%i', (x, y, direction, expectedLabel) => {
         const sceneDimensions = new SceneDimensions(1, 17, 1, 9);
         const sceneWrapper = createMountScene({
@@ -378,7 +386,9 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
         expect.assertions(1);
         const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
         const sceneWrapper = createMountScene({
-            characterState: new CharacterState(0, 0, 2, [], sceneDimensions)
+            dimensions: sceneDimensions,
+            characterState: new CharacterState(1, 1, 2, [], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
         const characterPath = findCharacterPath(sceneWrapper);
         expect(characterPath.length).toBe(0);
@@ -388,7 +398,9 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
         expect.assertions(5);
         const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000)
         const sceneWrapper = createMountScene({
-            characterState: new CharacterState(0, 0, 2, [{x1: 100, y1: 200, x2: 300, y2: 400}], sceneDimensions)
+            dimensions: sceneDimensions,
+            characterState: new CharacterState(1, 1, 2, [{x1: 100, y1: 200, x2: 300, y2: 400}], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
         const characterPath = findCharacterPath(sceneWrapper);
         expect(characterPath.length).toBe(1);
@@ -402,11 +414,13 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
         expect.assertions(9);
         const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
         const sceneWrapper = createMountScene({
+            dimensions: sceneDimensions,
             characterState:
-                new CharacterState(0, 0, 2, [
+                new CharacterState(1, 1, 2, [
                     {x1: 100, y1: 200, x2: 300, y2: 400},
                     {x1: 500, y1: 600, x2: 700, y2: 800}
-                ], sceneDimensions)
+                ], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
         const characterPath = findCharacterPath(sceneWrapper);
         expect(characterPath.length).toBe(2);

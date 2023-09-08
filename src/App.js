@@ -1300,6 +1300,7 @@ export class App extends React.Component<AppProps, AppState> {
                     startingX={this.state.startingX}
                     startingY={this.state.startingY}
                     runningState={this.state.runningState}
+                    characterDescriptionBuilder={this.characterDescriptionBuilder}
                     onPaintScene={this.handlePaintScene}
                 />
             </React.Fragment>

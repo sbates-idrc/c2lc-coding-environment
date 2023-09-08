@@ -1,6 +1,7 @@
 // @flow
 
 import React from 'react';
+import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
 import CustomBackgroundSceneLayer from './CustomBackgroundSceneLayer';
@@ -11,7 +12,7 @@ import SceneColumnLabels from './SceneColumnLabels';
 import SceneDimensions from './SceneDimensions';
 import SceneGrid from './SceneGrid';
 import SceneRowLabels from './SceneRowLabels';
-import { getBackgroundInfo, getWorldProperties } from './Worlds';
+import { getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type { IntlShape } from 'react-intl';
 import './Scene.scss';
@@ -36,6 +37,7 @@ export type SceneProps = {
     startingX: number,
     startingY: number,
     runningState: RunningState,
+    characterDescriptionBuilder: CharacterDescriptionBuilder,
     onPaintScene: (x: number, y: number) => void,
     intl: IntlShape
 };
@@ -100,61 +102,26 @@ class Scene extends React.Component<SceneProps, {}> {
     }
 
     generateAriaLabel() {
-        const { xPos, yPos } = this.props.characterState;
-        const characterState = this.props.characterState;
-        const columnLabel = characterState.getColumnLabel();
-        const rowLabel = characterState.getRowLabel();
+        const worldLabel = this.props.intl.formatMessage({id: this.props.world + '.name'});
         const numColumns = this.props.dimensions.getWidth();
         const numRows = this.props.dimensions.getHeight();
-        const direction = this.getDirectionWords(characterState.direction);
 
-        const characterLabel = this.props.intl.formatMessage({id: this.props.world + '.character'});
-        const worldLabel = this.props.intl.formatMessage({id: this.props.world + '.name'});
+        const characterDescription = this.props.characterDescriptionBuilder.buildCharacterDescription(
+            this.props.characterState,
+            this.props.world,
+            this.props.customBackground,
+            this.props.customBackgroundEditMode
+        );
 
-        if (this.props.dimensions.getBoundsStateX(xPos) !== 'inBounds'
-            || this.props.dimensions.getBoundsStateY(yPos) !== 'inBounds') {
-            return this.props.intl.formatMessage(
-                { id: 'Scene.outOfBounds' },
-                {
-                    numColumns,
-                    numRows,
-                    direction,
-                    relativeDirection: this.getRelativeDirection(xPos, yPos),
-                    world: worldLabel,
-                    character: characterLabel
-                }
-            )
-        } else {
-            const backgroundInfo = getBackgroundInfo(this.props.world, columnLabel, rowLabel);
-            if (backgroundInfo) {
-                const itemOnGridCell = this.props.intl.formatMessage({ id: `${this.props.world}.${backgroundInfo}` });
-                return this.props.intl.formatMessage(
-                    { id: 'Scene.inBoundsOnItem' },
-                    {
-                        numColumns: this.props.dimensions.getWidth(),
-                        numRows: this.props.dimensions.getHeight(),
-                        xPos: columnLabel,
-                        yPos: rowLabel,
-                        direction,
-                        item: itemOnGridCell,
-                        world: worldLabel,
-                        character: characterLabel
-                    }
-                )
+        return this.props.intl.formatMessage(
+            { id: 'Scene.description' },
+            {
+                world: worldLabel,
+                numColumns: numColumns,
+                numRows: numRows,
+                characterDescription: characterDescription
             }
-            return this.props.intl.formatMessage(
-                { id: 'Scene.inBounds' },
-                {
-                    numColumns: this.props.dimensions.getWidth(),
-                    numRows: this.props.dimensions.getHeight(),
-                    xPos: columnLabel,
-                    yPos: rowLabel,
-                    direction,
-                    world: worldLabel,
-                    character: characterLabel
-                }
-            )
-        }
+        );
     }
 
     handleScrollScene = (e: SyntheticEvent<HTMLDivElement>) => {
