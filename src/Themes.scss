@@ -1755,6 +1755,10 @@ body.gray-theme {
                 0 0 0 0.25rem #505862;
         }
     }
+
+    .TilePanel__tileInner {
+        border-color: #67717E;
+    }
 }
 
 /* High Contrast "Mono" Theme */
@@ -2983,5 +2987,9 @@ body.contrast-theme {
 
     .TilePanel__tile--selected {
         border-color: white;
+    }
+
+    .TilePanel__tileInner {
+        border-color: #FFFFFF;
     }
 }

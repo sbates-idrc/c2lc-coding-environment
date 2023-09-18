@@ -1,12 +1,16 @@
 // @flow
 
+import * as React from 'react';
+import type { ThemeName } from './types';
+
 import { ReactComponent as BlankTile } from './svg/BlankTile.svg';
 import { ReactComponent as WallTile } from './svg/WallTile.svg';
-import * as React from 'react';
 
 type TileProperties = {|
     name: string,
-    color: string,
+    colorDefault: string,
+    colorGray: string,
+    colorContrast: string,
     isNone: boolean,
     isWall: boolean,
     image: ?React.ComponentType<{}>
@@ -30,98 +34,126 @@ const tiles: {|
 |} = {
     '0': {
         name: 'none',
-        color: 'transparent',
+        colorDefault: 'transparent',
+        colorGray: 'transparent',
+        colorContrast: 'transparent',
         isNone: true,
         isWall: false,
         image: BlankTile
     },
     '1': {
         name: 'wall',
-        color: '#F5C58A',
+        colorDefault: '#F5C58A',
+        colorGray: 'transparent', // TODO
+        colorContrast: 'transparent', // TODO
         isNone: false,
         isWall: true,
         image: WallTile
     },
     '2': {
         name: 'white',
-        color: '#FFFFFF',
+        colorDefault: '#FFFFFF',
+        colorGray: '#FFFFFF',
+        colorContrast: '#FFFFFF',
         isNone: false,
         isWall: false,
         image: null
     },
     '3': {
         name: 'black',
-        color: '#1E1E1E',
+        colorDefault: '#1E1E1E',
+        colorGray: '#505862',
+        colorContrast: '#1E1E1E',
         isNone: false,
         isWall: false,
         image: null
     },
     '4': {
         name: 'grey',
-        color: '#C4C4C4',
+        colorDefault: '#9DA4AF',
+        colorGray: '#B9BEC6',
+        colorContrast: '#B4B4B4',
         isNone: false,
         isWall: false,
         image: null
     },
     '5': {
         name: 'darkBlue',
-        color: '#416CA7',
+        colorDefault: '#416CA7',
+        colorGray: '#7B93B5',
+        colorContrast: '#0000FF',
         isNone: false,
         isWall: false,
         image: null
     },
     '6': {
         name: 'lightBlue',
-        color: '#5CBCD1',
+        colorDefault: '#5CBCD1',
+        colorGray: '#B1D2DA',
+        colorContrast: '#00F0FF',
         isNone: false,
         isWall: false,
         image: null
     },
     '7': {
         name: 'green',
-        color: '#52BD76',
+        colorDefault: '#52BD76',
+        colorGray: '#A0C2AC',
+        colorContrast: '#00FF57',
         isNone: false,
         isWall: false,
         image: null
     },
     '8': {
         name: 'yellow',
-        color: '#F1D05B',
+        colorDefault: '#F1D05B',
+        colorGray: '#E9DDB5',
+        colorContrast: '#FFF500',
         isNone: false,
         isWall: false,
         image: null
     },
     '9': {
         name: 'orange',
-        color: '#FF9900',
+        colorDefault: '#ED972C',
+        colorGray: '#DCC09D',
+        colorContrast: '#FFA500',
         isNone: false,
         isWall: false,
         image: null
     },
     'A': {
         name: 'red',
-        color: '#F75322',
+        colorDefault: '#F75322',
+        colorGray: '#E6B09F',
+        colorContrast: '#FF3A00',
         isNone: false,
         isWall: false,
         image: null
     },
     'B': {
         name: 'pink',
-        color: '#F387C8',
+        colorDefault: '#DF86CB',
+        colorGray: '#DCC6D7',
+        colorContrast: '#FF00C5',
         isNone: false,
         isWall: false,
         image: null
     },
     'C': {
         name: 'purple',
-        color: '#AA70C7',
+        colorDefault: '#A46BB8',
+        colorGray: '#AB93B4',
+        colorContrast: '#AD00FF',
         isNone: false,
         isWall: false,
         image: null
     },
     'D': {
         name: 'brown',
-        color: '#775034',
+        colorDefault: '#775034',
+        colorGray: '#A48E7F',
+        colorContrast: '#B5651D',
         isNone: false,
         isWall: false,
         image: null
@@ -138,8 +170,14 @@ export function getTileName(tileCode: TileCode): string {
     return tiles[tileCode].name;
 }
 
-export function getTileColor(tileCode: TileCode): string {
-    return tiles[tileCode].color;
+export function getTileColor(tileCode: TileCode, theme: ThemeName): string {
+    if (theme === 'gray') {
+        return tiles[tileCode].colorGray;
+    } else if (theme === 'contrast') {
+        return tiles[tileCode].colorContrast;
+    } else {
+        return tiles[tileCode].colorDefault;
+    }
 }
 
 export function isNone(tileCode: TileCode): boolean {

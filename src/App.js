@@ -1300,6 +1300,7 @@ export class App extends React.Component<AppProps, AppState> {
         return (
             <TilePanel
                 selectedTile={this.state.selectedCustomBackgroundTile}
+                theme={this.state.settings.theme}
                 onSelectTile={this.handleSelectTile}
             />
         );

@@ -290,6 +290,7 @@ class Scene extends React.Component<SceneProps, {}> {
                             />
                             <CustomBackgroundSceneLayer
                                 customBackground={this.props.customBackground}
+                                theme={this.props.theme}
                             />
                             <SceneGrid
                                 dimensions={this.props.dimensions}

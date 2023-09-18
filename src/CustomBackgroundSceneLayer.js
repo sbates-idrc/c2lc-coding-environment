@@ -3,9 +3,11 @@
 import CustomBackground from './CustomBackground';
 import React from 'react';
 import { getTileColor, getTileImage, isNone } from './TileData';
+import type { ThemeName } from './types';
 
 type CustomBackgroundSceneLayerProps = {
-    customBackground: CustomBackground
+    customBackground: CustomBackground,
+    theme: ThemeName
 };
 
 export default class CustomBackgroundSceneLayer extends React.PureComponent<CustomBackgroundSceneLayerProps, {}> {
@@ -25,7 +27,7 @@ export default class CustomBackgroundSceneLayer extends React.PureComponent<Cust
                                 y={y - 0.5}
                                 width={1}
                                 height={1}
-                                style={{fill: getTileColor(tileCode)}}
+                                style={{fill: getTileColor(tileCode, this.props.theme)}}
                             />
                         );
                     } else {

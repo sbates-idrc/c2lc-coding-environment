@@ -6,11 +6,13 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import type { IntlShape } from 'react-intl';
 import { getTileColor, getTileImage, getTileName, isTileCode } from './TileData';
 import type { TileCode } from './TileData';
+import type { ThemeName } from './types';
 import './TilePanel.scss';
 
 type TilePanelProps = {
     intl: IntlShape,
     selectedTile: ?TileCode,
+    theme: ThemeName,
     onSelectTile: (tileCode: TileCode) => void
 };
 
@@ -72,7 +74,7 @@ class TilePanel extends React.PureComponent<TilePanelProps, {}> {
                 >
                     <div
                         className='TilePanel__tileInner'
-                        style={{backgroundColor: getTileColor(tileCode)}}
+                        style={{backgroundColor: getTileColor(tileCode, this.props.theme)}}
                     >
                         {tileImage != null &&
                             React.createElement(tileImage)
