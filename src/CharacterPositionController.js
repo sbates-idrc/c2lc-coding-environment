@@ -7,8 +7,6 @@ import CharacterState from './CharacterState';
 import classNames from 'classnames';
 import IconButton from './IconButton';
 import { getWorldCharacter, getWorldProperties } from './Worlds';
-import { ReactComponent as BrushIcon } from './svg/Brush.svg';
-import { ReactComponent as BrushContrastIcon } from './svg/BrushContrast.svg';
 import { ReactComponent as MovePositionUp } from './svg/MovePositionUp.svg';
 import { ReactComponent as MovePositionRight } from './svg/MovePositionRight.svg';
 import { ReactComponent as MovePositionDown } from './svg/MovePositionDown.svg';
@@ -16,6 +14,7 @@ import { ReactComponent as MovePositionLeft } from './svg/MovePositionLeft.svg';
 import { ReactComponent as TurnPositionRight } from './svg/TurnPositionRight.svg';
 import { ReactComponent as TurnPositionLeft } from './svg/TurnPositionLeft.svg';
 import type { ThemeName } from './types';
+import { getBrushIconForTheme } from './Utils';
 import type { WorldName } from './Worlds';
 import './CharacterPositionController.scss';
 
@@ -202,15 +201,11 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                             })}
                             onClick={this.props.onClickPaintBrushButton}
                         >
-                            {this.props.theme === 'contrast' ?
-                                <BrushContrastIcon
-                                    className='CharacterPositionController__character-column-character'
-                                />
-                                :
-                                <BrushIcon
-                                    className='CharacterPositionController__character-column-character'
-                                />
-                            }
+                            {React.createElement(getBrushIconForTheme(this.props.theme),
+                                {
+                                    className: 'CharacterPositionController__character-column-character'
+                                }
+                            )}
                         </IconButton>
                         :
                         <div

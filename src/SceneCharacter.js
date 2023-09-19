@@ -1,11 +1,10 @@
 // @flow
 
 import React from 'react';
-import { getWorldCharacter } from './Worlds';
 import type { ThemeName } from './types';
+import { getBrushIconForTheme } from './Utils';
+import { getWorldCharacter } from './Worlds';
 import type { WorldName } from './Worlds';
-import { ReactComponent as BrushIcon } from './svg/Brush.svg';
-import { ReactComponent as BrushContrastIcon } from './svg/BrushContrast.svg';
 
 type SceneCharacterProps = {
     world: WorldName,
@@ -15,12 +14,12 @@ type SceneCharacterProps = {
     width: number,
 };
 
-export default class SceneCharacter extends React.Component<SceneCharacterProps, {}> {
+export default class SceneCharacter extends React.PureComponent<SceneCharacterProps, {}> {
     render() {
         const characterIcon = this.props.customBackgroundEditMode ?
-            (this.props.theme === 'contrast' ? BrushContrastIcon : BrushIcon)
-            :
-            getWorldCharacter(this.props.theme, this.props.world);
+            getBrushIconForTheme(this.props.theme)
+            : getWorldCharacter(this.props.theme, this.props.world);
+
         return (
             <g
                 className='SceneCharacter'
