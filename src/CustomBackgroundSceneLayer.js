@@ -18,7 +18,7 @@ export default class CustomBackgroundSceneLayer extends React.PureComponent<Cust
             for (let x = this.props.customBackground.sceneDimensions.getMinX(); x < this.props.customBackground.sceneDimensions.getMaxX() + 1; x++) {
                 const tileCode = this.props.customBackground.getTile(x, y);
                 if (!isNone(tileCode)) {
-                    const tileImage = getTileImage(tileCode);
+                    const tileImage = getTileImage(tileCode, this.props.theme);
                     if (tileImage == null) {
                         tiles.push(
                             <rect

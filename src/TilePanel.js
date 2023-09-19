@@ -57,7 +57,7 @@ class TilePanel extends React.PureComponent<TilePanelProps, {}> {
                 isSelected && 'TilePanel__tile--selected'
             );
 
-            const tileImage = getTileImage(tileCode);
+            const tileImage = getTileImage(tileCode, this.props.theme);
 
             const ariaLabel = this.props.intl.formatMessage({
                 id: `TileDescription.${getTileName(tileCode)}`
