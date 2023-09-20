@@ -151,7 +151,7 @@
         "CharacterPositionController.editPosition.moveLeft": "Move the character left",
         "CharacterPositionController.editPosition.columnPosition": "Character column position",
         "CharacterPositionController.editPosition.rowPosition": "Character row position",
-        "CharacterPositionController.paintBrushButton": "set the custom background cell",
+        "CharacterPositionController.paintBrushButton": "set the custom background square",
         "CustomBackgroundEditModeToggleSwitch.customBackgroundEditMode": "custom background edit mode",
         "DashConnectionErrorModal.cancelButton": "Cancel connection",
         "DashConnectionErrorModal.error": "Connection Error",
