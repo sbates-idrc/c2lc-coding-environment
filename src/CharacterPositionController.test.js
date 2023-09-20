@@ -14,6 +14,8 @@ configure({ adapter: new Adapter()});
 
 const characterEnableFlipClassName = 'CharacterPositionController__character-column-character--enable-flip';
 
+type ButtonName = 'turnLeft' | 'turnRight' | 'up' | 'right' | 'down' | 'left';
+
 const defaultCharacterPositionControllerProps = {
     interpreterIsRunning: false,
     characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
@@ -102,40 +104,45 @@ function createMountCharacterPositionController(props) {
     };
 }
 
-function getCharacterPositionButton(characterPositionControllerWrapper: ReactWrapper<HTMLElement>, directionName: string): ReactWrapper<HTMLElement> {
-    return characterPositionControllerWrapper.find('.CharacterPositionController__character-position-button').filter({value: directionName}).at(0);
+function getCharacterPositionButton(wrapper: ReactWrapper<HTMLElement>,
+    buttonName: ButtonName): ReactWrapper<HTMLElement> {
+
+    return wrapper
+        .find('.CharacterPositionController__character-position-button')
+        .filter({value: buttonName})
+        .at(0);
 }
 
-function getCharacterPositionCoordinateBoxes(characterPositionControllerWrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
-    return characterPositionControllerWrapper.find('.ProgramBlock__character-position-coordinate-box');
+function getCharacterPositionCoordinateBoxes(wrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
+    return wrapper.find('.ProgramBlock__character-position-coordinate-box');
 }
 
-function getCharacterIcon(characterPositionControllerWrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
-    return characterPositionControllerWrapper.find('.CharacterPositionController__character-column-character');
+function getCharacterIcon(wrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
+    return wrapper.find('.CharacterPositionController__character-column-character');
 }
 
 describe('Using change character position buttons', () => {
     test.each([
         'turnLeft', 'turnRight', 'up', 'right', 'down', 'left'
-    ])('Click/Press %s button ', (directionName) => {
+    ])('Click/Press %s button ', (buttonName) => {
         expect.assertions(4);
         const { wrapper, mockChangeCharacterPosition } = createMountCharacterPositionController();
-        const characterPositionButton = getCharacterPositionButton(wrapper, directionName);
+        const characterPositionButton = getCharacterPositionButton(wrapper, buttonName);
 
         characterPositionButton.simulate('click');
         expect(mockChangeCharacterPosition.mock.calls.length).toBe(1);
-        expect(mockChangeCharacterPosition.mock.calls[0][0]).toBe(directionName);
+        expect(mockChangeCharacterPosition.mock.calls[0][0]).toBe(buttonName);
 
         characterPositionButton.simulate('keydown', { key: ' ' });
         expect(mockChangeCharacterPosition.mock.calls.length).toBe(2);
-        expect(mockChangeCharacterPosition.mock.calls[1][0]).toBe(directionName);
+        expect(mockChangeCharacterPosition.mock.calls[1][0]).toBe(buttonName);
     });
     test.each([
         'turnLeft', 'turnRight', 'up', 'right', 'down', 'left'
-    ])('Click/Press %s button when editingDisabled Prop is true', (directionName) => {
+    ])('Click/Press %s button when editingDisabled Prop is true', (buttonName) => {
         expect.assertions(3);
         const { wrapper, mockChangeCharacterPosition } = createMountCharacterPositionController({editingDisabled: true});
-        const characterPositionButton = getCharacterPositionButton(wrapper, directionName);
+        const characterPositionButton = getCharacterPositionButton(wrapper, buttonName);
         expect(characterPositionButton.get(0).props.className.includes('--disabled')).toBe(true);
 
         characterPositionButton.simulate('click');
@@ -334,4 +341,19 @@ test('When a world has enableFlipCharacter=false, character icon gets class name
     wrapper.setProps({characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 2, 100))});
     expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
     expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
+});
+
+test('When in custom background edit mode, show the paint brush button and hide the turn buttons', () => {
+    const { wrapper } = createShallowCharacterPositionController({
+        customBackgroundEditMode: true
+    });
+
+    expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Brush.svg');
+
+    expect(getCharacterPositionButton(wrapper, 'turnLeft').exists()).toBe(false);
+    expect(getCharacterPositionButton(wrapper, 'turnRight').exists()).toBe(false);
+    expect(getCharacterPositionButton(wrapper, 'up').exists()).toBe(true);
+    expect(getCharacterPositionButton(wrapper, 'right').exists()).toBe(true);
+    expect(getCharacterPositionButton(wrapper, 'down').exists()).toBe(true);
+    expect(getCharacterPositionButton(wrapper, 'left').exists()).toBe(true);
 });

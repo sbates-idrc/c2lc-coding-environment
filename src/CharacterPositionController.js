@@ -125,6 +125,14 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         });
     }
 
+    getBrushIcon() {
+        return React.createElement(getBrushIconForTheme(this.props.theme),
+            {
+                className: 'CharacterPositionController__character-column-character'
+            }
+        );
+    }
+
     render() {
         const characterPositionButtonClassName = classNames(
             'CharacterPositionController__character-position-button',
@@ -201,18 +209,15 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                             })}
                             onClick={this.props.onClickPaintBrushButton}
                         >
-                            {React.createElement(getBrushIconForTheme(this.props.theme),
-                                {
-                                    className: 'CharacterPositionController__character-column-character'
-                                }
-                            )}
+                            {this.getBrushIcon()}
                         </IconButton>
                         :
                         <div
                             aria-hidden='true'
                             className={`CharacterPositionController__character-column-character-container
                                 CharacterPositionController__character-column-character-container--${this.props.world}`}
-                            role='img'>
+                            role='img'
+                        >
                             {this.getCharacterIcon()}
                         </div>
                     }
