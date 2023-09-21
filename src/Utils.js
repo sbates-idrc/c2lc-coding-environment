@@ -1,13 +1,8 @@
 // @flow
 
-import * as React from 'react';
 import type { ThemeName } from './types';
 import { isWorldName } from './Worlds';
 import type { WorldName } from './Worlds';
-
-import { ReactComponent as BrushIcon } from './svg/Brush.svg';
-import { ReactComponent as BrushGrayIcon } from './svg/BrushGray.svg';
-import { ReactComponent as BrushContrastIcon } from './svg/BrushContrast.svg';
 
 let idCounter: number = 0;
 
@@ -295,16 +290,6 @@ function selectSpeechSynthesisVoice(utteranceLangTag: ?string,
     }
 }
 
-function getBrushIconForTheme(theme: ThemeName): React.ComponentType<{}> {
-    if (theme === 'gray') {
-        return BrushGrayIcon;
-    } else if (theme === 'contrast') {
-        return BrushContrastIcon;
-    } else {
-        return BrushIcon;
-    }
-}
-
 export {
     decodeCoordinate,
     decodeDirection,
@@ -317,7 +302,6 @@ export {
     generateEncodedProgramURL,
     generateId,
     generateLoopLabel,
-    getBrushIconForTheme,
     getThemeFromString,
     getWorldFromString,
     getStartingPositionFromString,

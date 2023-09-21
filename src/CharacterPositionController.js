@@ -13,10 +13,11 @@ import { ReactComponent as MovePositionDown } from './svg/MovePositionDown.svg';
 import { ReactComponent as MovePositionLeft } from './svg/MovePositionLeft.svg';
 import { ReactComponent as TurnPositionRight } from './svg/TurnPositionRight.svg';
 import { ReactComponent as TurnPositionLeft } from './svg/TurnPositionLeft.svg';
+import { ReactComponent as PaintbrushIcon } from './svg/Paintbrush.svg';
 import type { ThemeName } from './types';
-import { getBrushIconForTheme } from './Utils';
 import type { WorldName } from './Worlds';
 import './CharacterPositionController.scss';
+import './Paintbrush.css';
 
 type CharacterPositionControllerProps = {
     intl: IntlShape,
@@ -125,14 +126,6 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         });
     }
 
-    getBrushIcon() {
-        return React.createElement(getBrushIconForTheme(this.props.theme),
-            {
-                className: 'CharacterPositionController__character-column-character'
-            }
-        );
-    }
-
     render() {
         const characterPositionButtonClassName = classNames(
             'CharacterPositionController__character-position-button',
@@ -209,7 +202,9 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                             })}
                             onClick={this.props.onClickPaintBrushButton}
                         >
-                            {this.getBrushIcon()}
+                            <PaintbrushIcon
+                                className='CharacterPositionController__character-column-character'
+                            />
                         </IconButton>
                         :
                         <div

@@ -1759,6 +1759,14 @@ body.gray-theme {
     .TilePanel__tileInner {
         border-color: #67717E;
     }
+
+    .paintbrush-background {
+        fill: #818A98;
+    }
+
+    .paintbrush-foreground {
+        stroke: #FFFFFF;
+    }
 }
 
 /* High Contrast "Mono" Theme */
@@ -2991,5 +2999,13 @@ body.contrast-theme {
 
     .TilePanel__tileInner {
         border-color: #FFFFFF;
+    }
+
+    .paintbrush-background {
+        fill: #FFFFFF;
+    }
+
+    .IconButton:hover .paintbrush-foreground {
+        stroke: #FFFFFF;
     }
 }

@@ -1,0 +1,14 @@
+.paintbrush-background {
+    fill: #4C9990;
+}
+
+.paintbrush-foreground {
+    stroke: #1E1E1E;
+}
+
+/*
+ * Hide the paintbrush background when used on an IconButton
+ */
+.IconButton .paintbrush-background {
+    fill: none !important;
+}

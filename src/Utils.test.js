@@ -1,14 +1,10 @@
 // @flow
 
-import { decodeCoordinate, decodeDirection, encodeCoordinate, encodeDirection, extend, isLoopBlock, generateEncodedProgramURL, getBrushIconForTheme, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, focusFirstInNodeList, focusLastInNodeList, generateLoopLabel, parseLoopLabel, selectSpeechSynthesisVoice } from './Utils.js';
+import { decodeCoordinate, decodeDirection, encodeCoordinate, encodeDirection, extend, isLoopBlock, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, focusFirstInNodeList, focusLastInNodeList, generateLoopLabel, parseLoopLabel, selectSpeechSynthesisVoice } from './Utils.js';
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { mount, configure } from 'enzyme';
 import { makeTestDiv } from './TestUtils';
-
-import { ReactComponent as BrushIcon } from './svg/Brush.svg';
-import { ReactComponent as BrushGrayIcon } from './svg/BrushGray.svg';
-import { ReactComponent as BrushContrastIcon } from './svg/BrushContrast.svg';
 
 configure({ adapter: new Adapter()});
 
@@ -440,12 +436,4 @@ describe('selectSpeechSynthesisVoice', () => {
 
         expect(selectSpeechSynthesisVoice('en', 'en-US', voices)).toBe(voices[0]);
     });
-});
-
-test('Test getBrushIconForTheme', () => {
-    expect(getBrushIconForTheme('default')).toBe(BrushIcon);
-    expect(getBrushIconForTheme('light')).toBe(BrushIcon);
-    expect(getBrushIconForTheme('dark')).toBe(BrushIcon);
-    expect(getBrushIconForTheme('gray')).toBe(BrushGrayIcon);
-    expect(getBrushIconForTheme('contrast')).toBe(BrushContrastIcon);
 });

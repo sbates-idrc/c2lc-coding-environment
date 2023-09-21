@@ -348,7 +348,7 @@ test('When in custom background edit mode, show the paint brush button and hide 
         customBackgroundEditMode: true
     });
 
-    expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Brush.svg');
+    expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Paintbrush.svg');
 
     expect(getCharacterPositionButton(wrapper, 'turnLeft').exists()).toBe(false);
     expect(getCharacterPositionButton(wrapper, 'turnRight').exists()).toBe(false);

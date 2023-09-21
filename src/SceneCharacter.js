@@ -2,9 +2,12 @@
 
 import React from 'react';
 import type { ThemeName } from './types';
-import { getBrushIconForTheme } from './Utils';
 import { getWorldCharacter } from './Worlds';
 import type { WorldName } from './Worlds';
+
+import { ReactComponent as PaintbrushIcon } from './svg/Paintbrush.svg';
+
+import './Paintbrush.css';
 
 type SceneCharacterProps = {
     world: WorldName,
@@ -17,7 +20,7 @@ type SceneCharacterProps = {
 export default class SceneCharacter extends React.PureComponent<SceneCharacterProps, {}> {
     render() {
         const characterIcon = this.props.customBackgroundEditMode ?
-            getBrushIconForTheme(this.props.theme)
+            PaintbrushIcon
             : getWorldCharacter(this.props.theme, this.props.world);
 
         return (
