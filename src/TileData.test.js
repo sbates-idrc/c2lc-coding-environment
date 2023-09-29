@@ -7,7 +7,7 @@ import { ReactComponent as WallTileGray } from './svg/WallTileGray.svg';
 import { ReactComponent as WallTileContrast } from './svg/WallTileContrast.svg';
 
 test('isNone', () => {
-    expect.assertions(14);
+    expect.assertions(17);
     expect(isNone('0')).toBe(true);
     for (const tileCode of getTileCodes()) {
         if (tileCode !== '0') {
@@ -17,7 +17,7 @@ test('isNone', () => {
 });
 
 test('isWall', () => {
-    expect.assertions(14);
+    expect.assertions(17);
     expect(isWall('1')).toBe(true);
     for (const tileCode of getTileCodes()) {
         if (tileCode !== '1') {

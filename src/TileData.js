@@ -5,9 +5,18 @@ import type { ThemeName } from './types';
 
 import { ReactComponent as EraserTileBlack } from './svg/EraserTileBlack.svg';
 import { ReactComponent as EraserTileWhite } from './svg/EraserTileWhite.svg';
+import { ReactComponent as GemTileContrast } from './svg/GemTileContrast.svg';
+import { ReactComponent as GemTileDefault } from './svg/GemTileDefault.svg';
+import { ReactComponent as GemTileGray } from './svg/GemTileGray.svg';
+import { ReactComponent as GoldTileContrast } from './svg/GoldTileContrast.svg';
+import { ReactComponent as GoldTileDefault } from './svg/GoldTileDefault.svg';
+import { ReactComponent as GoldTileGray } from './svg/GoldTileGray.svg';
+import { ReactComponent as TreatsTileContrast } from './svg/TreatsTileContrast.svg';
+import { ReactComponent as TreatsTileDefault } from './svg/TreatsTileDefault.svg';
+import { ReactComponent as TreatsTileGray } from './svg/TreatsTileGray.svg';
+import { ReactComponent as WallTileContrast } from './svg/WallTileContrast.svg';
 import { ReactComponent as WallTileDefault } from './svg/WallTileDefault.svg';
 import { ReactComponent as WallTileGray } from './svg/WallTileGray.svg';
-import { ReactComponent as WallTileContrast } from './svg/WallTileContrast.svg';
 
 type TileProperties = {|
     name: string,
@@ -33,7 +42,10 @@ const tiles: {|
     'A': TileProperties,
     'B': TileProperties,
     'C': TileProperties,
-    'D': TileProperties
+    'D': TileProperties,
+    'E': TileProperties,
+    'F': TileProperties,
+    'G': TileProperties
 |} = {
     '0': {
         name: 'none',
@@ -160,6 +172,33 @@ const tiles: {|
         imageDefault: null,
         imageGray: null,
         imageContrast: null
+    },
+    'E': {
+        name: 'gem',
+        colorDefault: '#30444E',
+        colorGray: '#D5D8DD',
+        colorContrast: '#1E1E1E',
+        imageDefault: GemTileDefault,
+        imageGray: GemTileGray,
+        imageContrast: GemTileContrast
+    },
+    'F': {
+        name: 'gold',
+        colorDefault: '#30444E',
+        colorGray: '#D5D8DD',
+        colorContrast: '#1E1E1E',
+        imageDefault: GoldTileDefault,
+        imageGray: GoldTileGray,
+        imageContrast: GoldTileContrast
+    },
+    'G': {
+        name: 'treats',
+        colorDefault: '#30444E',
+        colorGray: '#D5D8DD',
+        colorContrast: '#1E1E1E',
+        imageDefault: TreatsTileDefault,
+        imageGray: TreatsTileGray,
+        imageContrast: TreatsTileContrast
     }
 };
 

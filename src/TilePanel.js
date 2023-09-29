@@ -24,6 +24,9 @@ class TilePanel extends React.PureComponent<TilePanelProps, {}> {
         this.tileCodes = [
             '0',
             '1',
+            'E',
+            'F',
+            'G',
             '2',
             '3',
             '4',

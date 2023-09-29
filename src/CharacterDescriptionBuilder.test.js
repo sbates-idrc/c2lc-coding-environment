@@ -96,7 +96,7 @@ test('Space, edit mode: no, background description: no, custom background tile: 
             '0', '0', '1'
         ]),
         false
-    )).toBe('the spaceship is at column C, row 2 facing right on a wall');
+    )).toBe('the spaceship is at column C, row 2 facing right on wall');
 });
 
 test('Space, edit mode: no, background description: yes, custom background tile: no', () => {
@@ -118,7 +118,7 @@ test('Space, edit mode: no, background description: yes, custom background tile:
             '0', '0', '1'
         ]),
         false
-    )).toBe('the spaceship is at column C, row 1 facing right on a wall');
+    )).toBe('the spaceship is at column C, row 1 facing right on wall');
 });
 
 test('Space, edit mode: yes, background description: no, custom background tile: no', () => {
@@ -141,7 +141,7 @@ test('Space, edit mode: yes, background description: no, custom background tile:
             '0', '0', '1'
         ]),
         true
-    )).toBe('the paintbrush is at column C, row 2 on a wall');
+    )).toBe('the paintbrush is at column C, row 2 on wall');
 });
 
 test('Space, edit mode: yes, background description: yes, custom background tile: no', () => {
@@ -163,5 +163,5 @@ test('Space, edit mode: yes, background description: yes, custom background tile
             '0', '0', '1'
         ]),
         true
-    )).toBe('the paintbrush is at column C, row 1 on a wall');
+    )).toBe('the paintbrush is at column C, row 1 on wall');
 });
