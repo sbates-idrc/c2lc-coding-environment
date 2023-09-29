@@ -29,7 +29,7 @@ type CharacterPositionControllerProps = {
     onChangeCharacterPosition: (direction: ?string) => void,
     onChangeCharacterXPosition: (columnLabel: string) => void,
     onChangeCharacterYPosition: (rowLabel: string) => void,
-    onClickPaintBrushButton: () => void
+    onClickPaintbrushButton: () => void
 };
 
 type CharacterPositionControllerState = {
@@ -196,11 +196,11 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                     />
                     {this.props.customBackgroundEditMode ?
                         <IconButton
-                            className='CharacterPositionController__paintBrushButton'
+                            className='CharacterPositionController__paintbrushButton'
                             ariaLabel={this.props.intl.formatMessage({
-                                id: 'CharacterPositionController.paintBrushButton'
+                                id: 'CharacterPositionController.paintbrushButton'
                             })}
-                            onClick={this.props.onClickPaintBrushButton}
+                            onClick={this.props.onClickPaintbrushButton}
                         >
                             <PaintbrushIcon
                                 className='CharacterPositionController__character-column-character'

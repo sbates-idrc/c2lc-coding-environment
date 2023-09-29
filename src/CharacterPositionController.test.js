@@ -35,7 +35,7 @@ function createShallowCharacterPositionController(props) {
     const mockChangeCharacterPosition = jest.fn();
     const mockChangeCharacterXPosition = jest.fn();
     const mockChangeCharacterYPosition = jest.fn();
-    const mockClickPaintBrushButton = jest.fn();
+    const mockClickPaintbrushButton = jest.fn();
 
     const wrapper: $FlowIgnoreType = shallow(
         React.createElement(
@@ -48,7 +48,7 @@ function createShallowCharacterPositionController(props) {
                     onChangeCharacterPosition: mockChangeCharacterPosition,
                     onChangeCharacterXPosition: mockChangeCharacterXPosition,
                     onChangeCharacterYPosition: mockChangeCharacterYPosition,
-                    onClickPaintBrushButton: mockClickPaintBrushButton
+                    onClickPaintbrushButton: mockClickPaintbrushButton
                 },
                 props
             )
@@ -60,7 +60,7 @@ function createShallowCharacterPositionController(props) {
         mockChangeCharacterPosition,
         mockChangeCharacterXPosition,
         mockChangeCharacterYPosition,
-        mockClickPaintBrushButton
+        mockClickPaintbrushButton
     };
 }
 
@@ -68,7 +68,7 @@ function createMountCharacterPositionController(props) {
     const mockChangeCharacterPosition = jest.fn();
     const mockChangeCharacterXPosition = jest.fn();
     const mockChangeCharacterYPosition = jest.fn();
-    const mockClickPaintBrushButton = jest.fn();
+    const mockClickPaintbrushButton = jest.fn();
 
     const wrapper = mount(
         React.createElement(
@@ -80,7 +80,7 @@ function createMountCharacterPositionController(props) {
                     onChangeCharacterPosition: mockChangeCharacterPosition,
                     onChangeCharacterXPosition: mockChangeCharacterXPosition,
                     onChangeCharacterYPosition: mockChangeCharacterYPosition,
-                    onClickPaintBrushButton: mockClickPaintBrushButton
+                    onClickPaintbrushButton: mockClickPaintbrushButton
                 },
                 props
             )
@@ -100,7 +100,7 @@ function createMountCharacterPositionController(props) {
         mockChangeCharacterPosition,
         mockChangeCharacterXPosition,
         mockChangeCharacterYPosition,
-        mockClickPaintBrushButton
+        mockClickPaintbrushButton
     };
 }
 
@@ -343,7 +343,7 @@ test('When a world has enableFlipCharacter=false, character icon gets class name
     expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
 });
 
-test('When in custom background edit mode, show the paint brush button and hide the turn buttons', () => {
+test('When in custom background edit mode, show the paintbrush button and hide the turn buttons', () => {
     const { wrapper } = createShallowCharacterPositionController({
         customBackgroundEditMode: true
     });

@@ -1185,7 +1185,7 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleClickPositionControllerPaintBrushButton = () => {
+    handleClickPositionControllerPaintbrushButton = () => {
         this.setState((state) => {
             if (state.selectedCustomBackgroundTile != null) {
                 return {
@@ -1358,7 +1358,7 @@ export class App extends React.Component<AppProps, AppState> {
                 onChangeCharacterPosition={this.handleChangeCharacterPosition}
                 onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
                 onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
-                onClickPaintBrushButton={this.handleClickPositionControllerPaintBrushButton}
+                onClickPaintbrushButton={this.handleClickPositionControllerPaintbrushButton}
             />
         );
     }

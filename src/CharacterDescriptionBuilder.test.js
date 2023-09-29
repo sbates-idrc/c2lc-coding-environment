@@ -128,7 +128,7 @@ test('Space, edit mode: yes, background description: no, custom background tile:
         'Space',
         emptyCustomBackground,
         true
-    )).toBe('the paint brush is at column C, row 2');
+    )).toBe('the paintbrush is at column C, row 2');
 });
 
 test('Space, edit mode: yes, background description: no, custom background tile: yes', () => {
@@ -141,7 +141,7 @@ test('Space, edit mode: yes, background description: no, custom background tile:
             '0', '0', '1'
         ]),
         true
-    )).toBe('the paint brush is at column C, row 2 on a wall');
+    )).toBe('the paintbrush is at column C, row 2 on a wall');
 });
 
 test('Space, edit mode: yes, background description: yes, custom background tile: no', () => {
@@ -151,7 +151,7 @@ test('Space, edit mode: yes, background description: yes, custom background tile
         'Space',
         emptyCustomBackground,
         true
-    )).toBe('the paint brush is at column C, row 1 on the Moon');
+    )).toBe('the paintbrush is at column C, row 1 on the Moon');
 });
 
 test('Space, edit mode: yes, background description: yes, custom background tile: yes', () => {
@@ -163,5 +163,5 @@ test('Space, edit mode: yes, background description: yes, custom background tile
             '0', '0', '1'
         ]),
         true
-    )).toBe('the paint brush is at column C, row 1 on a wall');
+    )).toBe('the paintbrush is at column C, row 1 on a wall');
 });

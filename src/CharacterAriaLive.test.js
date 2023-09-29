@@ -141,14 +141,14 @@ test('The live region is updated when the world prop is changed', () => {
     expect(getLiveRegionInnerText()).toBe('the spaceship is at column A, row 1 facing right on the Earth');
 });
 
-test('The live region uses "paint brush" when in custom background edit mode', () => {
+test('The live region uses "paintbrush" when in custom background edit mode', () => {
     const wrapper = createMountCharacterAriaLive({
         customBackgroundEditMode: true
     });
     wrapper.setProps({
         characterState: new CharacterState(3, 1, 2, [], sceneDimensions)
     });
-    expect(getLiveRegionInnerText()).toBe('the paint brush is at column C, row 1');
+    expect(getLiveRegionInnerText()).toBe('the paintbrush is at column C, row 1');
 });
 
 test('The live region has aria-hidden false when the ariaHidden prop is false', () => {
