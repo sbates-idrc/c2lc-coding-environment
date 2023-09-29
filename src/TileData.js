@@ -220,6 +220,10 @@ export function isNone(tileCode: TileCode): boolean {
     return tiles[tileCode].name === 'none';
 }
 
+export function isEraser(tileCode: TileCode): boolean {
+    return isNone(tileCode);
+}
+
 export function isWall(tileCode: TileCode): boolean {
     return tiles[tileCode].name === 'wall';
 }

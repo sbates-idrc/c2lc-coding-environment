@@ -1355,6 +1355,7 @@ export class App extends React.Component<AppProps, AppState> {
                 theme={this.state.settings.theme}
                 world={this.state.settings.world}
                 customBackgroundEditMode={this.state.customBackgroundEditMode}
+                selectedCustomBackgroundTile={this.state.selectedCustomBackgroundTile}
                 onChangeCharacterPosition={this.handleChangeCharacterPosition}
                 onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
                 onChangeCharacterYPosition={this.handleChangeCharacterYPosition}

@@ -14,6 +14,8 @@ import { ReactComponent as MovePositionLeft } from './svg/MovePositionLeft.svg';
 import { ReactComponent as TurnPositionRight } from './svg/TurnPositionRight.svg';
 import { ReactComponent as TurnPositionLeft } from './svg/TurnPositionLeft.svg';
 import { ReactComponent as PaintbrushIcon } from './svg/Paintbrush.svg';
+import { getTileName, isEraser } from './TileData';
+import type { TileCode } from './TileData';
 import type { ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import './CharacterPositionController.scss';
@@ -26,6 +28,7 @@ type CharacterPositionControllerProps = {
     theme: ThemeName,
     world: WorldName,
     customBackgroundEditMode: boolean,
+    selectedCustomBackgroundTile: ?TileCode,
     onChangeCharacterPosition: (direction: ?string) => void,
     onChangeCharacterXPosition: (columnLabel: string) => void,
     onChangeCharacterYPosition: (rowLabel: string) => void,
@@ -126,6 +129,33 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         });
     }
 
+    getPaintbrushButtonAriaLabel() {
+        if (this.props.selectedCustomBackgroundTile == null) {
+            return this.props.intl.formatMessage({
+                id: 'CharacterPositionController.paintbrushButtonNoSelection'
+            });
+        } else {
+            if (isEraser(this.props.selectedCustomBackgroundTile)) {
+                return this.props.intl.formatMessage({
+                    id: 'CharacterPositionController.paintbrushButtonEraserSelected'
+                });
+            } else {
+                const tileDescription = this.props.intl.formatMessage({
+                    id: `TileDescription.${getTileName(this.props.selectedCustomBackgroundTile)}`
+                });
+
+                return this.props.intl.formatMessage(
+                    {
+                        id: 'CharacterPositionController.paintbrushButtonTileSelected'
+                    },
+                    {
+                        tile: tileDescription
+                    }
+                );
+            }
+        }
+    }
+
     render() {
         const characterPositionButtonClassName = classNames(
             'CharacterPositionController__character-position-button',
@@ -197,9 +227,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                     {this.props.customBackgroundEditMode ?
                         <IconButton
                             className='CharacterPositionController__paintbrushButton'
-                            ariaLabel={this.props.intl.formatMessage({
-                                id: 'CharacterPositionController.paintbrushButton'
-                            })}
+                            disabled={this.props.selectedCustomBackgroundTile == null}
+                            ariaLabel={this.getPaintbrushButtonAriaLabel()}
                             onClick={this.props.onClickPaintbrushButton}
                         >
                             <PaintbrushIcon

@@ -22,7 +22,8 @@ const defaultCharacterPositionControllerProps = {
     editingDisabled: false,
     theme: 'light',
     world: 'Sketchpad',
-    customBackgroundEditMode: false
+    customBackgroundEditMode: false,
+    selectedCustomBackgroundTile: null
 };
 
 function createShallowCharacterPositionController(props) {
@@ -119,6 +120,10 @@ function getCharacterPositionCoordinateBoxes(wrapper: ReactWrapper<HTMLElement>)
 
 function getCharacterIcon(wrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
     return wrapper.find('.CharacterPositionController__character-column-character');
+}
+
+function getPaintbrushButton(wrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
+    return wrapper.find('.CharacterPositionController__paintbrushButton');
 }
 
 describe('Using change character position buttons', () => {
@@ -356,4 +361,34 @@ test('When in custom background edit mode, show the paintbrush button and hide t
     expect(getCharacterPositionButton(wrapper, 'right').exists()).toBe(true);
     expect(getCharacterPositionButton(wrapper, 'down').exists()).toBe(true);
     expect(getCharacterPositionButton(wrapper, 'left').exists()).toBe(true);
+});
+
+test('When no tile is selected, the paintbrush button is disabled', () => {
+    const { wrapper } = createShallowCharacterPositionController({
+        customBackgroundEditMode: true,
+        selectedCustomBackgroundTile: null
+    });
+
+    expect(getPaintbrushButton(wrapper).prop('disabled')).toBe(true);
+    expect(getPaintbrushButton(wrapper).prop('ariaLabel')).toBe('set the custom background square');
+});
+
+test('When a tile is selected, the paintbrush button is enbled and its aria-label includes information about the selected tile', () => {
+    const { wrapper } = createShallowCharacterPositionController({
+        customBackgroundEditMode: true,
+        selectedCustomBackgroundTile: '1'
+    });
+
+    expect(getPaintbrushButton(wrapper).prop('disabled')).toBe(false);
+    expect(getPaintbrushButton(wrapper).prop('ariaLabel')).toBe('set wall');
+});
+
+test('When the eraser is selected, the paintbrush button is enbled and its aria-label is "erase"', () => {
+    const { wrapper } = createShallowCharacterPositionController({
+        customBackgroundEditMode: true,
+        selectedCustomBackgroundTile: '0'
+    });
+
+    expect(getPaintbrushButton(wrapper).prop('disabled')).toBe(false);
+    expect(getPaintbrushButton(wrapper).prop('ariaLabel')).toBe('erase');
 });

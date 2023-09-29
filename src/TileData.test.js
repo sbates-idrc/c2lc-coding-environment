@@ -1,6 +1,6 @@
 // @flow
 
-import { getTileCodes, getTileColor, getTileImage, isNone, isWall } from './TileData';
+import { getTileCodes, getTileColor, getTileImage, isEraser, isNone, isWall } from './TileData';
 
 import { ReactComponent as WallTileDefault } from './svg/WallTileDefault.svg';
 import { ReactComponent as WallTileGray } from './svg/WallTileGray.svg';
@@ -12,6 +12,16 @@ test('isNone', () => {
     for (const tileCode of getTileCodes()) {
         if (tileCode !== '0') {
             expect(isNone(tileCode)).toBe(false);
+        }
+    }
+});
+
+test('isEraser', () => {
+    expect.assertions(17);
+    expect(isEraser('0')).toBe(true);
+    for (const tileCode of getTileCodes()) {
+        if (tileCode !== '0') {
+            expect(isEraser(tileCode)).toBe(false);
         }
     }
 });
