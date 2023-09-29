@@ -1756,6 +1756,14 @@ body.gray-theme {
         }
     }
 
+    .TilePanel__tile:focus {
+        outline-color: #505862;
+    }
+
+    .TilePanel__tile--selected {
+        border-color: #505862;
+    }
+
     .TilePanel__tileInner {
         border-color: #67717E;
     }
