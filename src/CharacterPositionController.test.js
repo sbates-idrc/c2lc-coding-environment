@@ -370,7 +370,7 @@ test('When no tile is selected, the paintbrush button is disabled', () => {
     });
 
     expect(getPaintbrushButton(wrapper).prop('disabled')).toBe(true);
-    expect(getPaintbrushButton(wrapper).prop('ariaLabel')).toBe('set the custom background square');
+    expect(getPaintbrushButton(wrapper).prop('ariaLabel')).toBe('paint background square');
 });
 
 test('When a tile is selected, the paintbrush button is enbled and its aria-label includes information about the selected tile', () => {
@@ -380,15 +380,15 @@ test('When a tile is selected, the paintbrush button is enbled and its aria-labe
     });
 
     expect(getPaintbrushButton(wrapper).prop('disabled')).toBe(false);
-    expect(getPaintbrushButton(wrapper).prop('ariaLabel')).toBe('set wall');
+    expect(getPaintbrushButton(wrapper).prop('ariaLabel')).toBe('paint wall');
 });
 
-test('When the eraser is selected, the paintbrush button is enbled and its aria-label is "erase"', () => {
+test('When the eraser is selected, the paintbrush button is enbled and its aria-label is "erase square"', () => {
     const { wrapper } = createShallowCharacterPositionController({
         customBackgroundEditMode: true,
         selectedCustomBackgroundTile: '0'
     });
 
     expect(getPaintbrushButton(wrapper).prop('disabled')).toBe(false);
-    expect(getPaintbrushButton(wrapper).prop('ariaLabel')).toBe('erase');
+    expect(getPaintbrushButton(wrapper).prop('ariaLabel')).toBe('erase square');
 });
