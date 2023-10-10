@@ -175,27 +175,27 @@ const tiles: {|
     },
     'E': {
         name: 'gem',
-        colorDefault: '#30444E',
-        colorGray: '#D5D8DD',
-        colorContrast: '#1E1E1E',
+        colorDefault: 'transparent',
+        colorGray: 'transparent',
+        colorContrast: 'transparent',
         imageDefault: GemTileDefault,
         imageGray: GemTileGray,
         imageContrast: GemTileContrast
     },
     'F': {
         name: 'gold',
-        colorDefault: '#30444E',
-        colorGray: '#D5D8DD',
-        colorContrast: '#1E1E1E',
+        colorDefault: 'transparent',
+        colorGray: 'transparent',
+        colorContrast: 'transparent',
         imageDefault: GoldTileDefault,
         imageGray: GoldTileGray,
         imageContrast: GoldTileContrast
     },
     'G': {
         name: 'treats',
-        colorDefault: '#30444E',
-        colorGray: '#D5D8DD',
-        colorContrast: '#1E1E1E',
+        colorDefault: 'transparent',
+        colorGray: 'transparent',
+        colorContrast: 'transparent',
         imageDefault: TreatsTileDefault,
         imageGray: TreatsTileGray,
         imageContrast: TreatsTileContrast
