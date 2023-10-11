@@ -70,7 +70,6 @@ export default class CharacterDescriptionBuilder {
                 );
             }
         } else {
-            const characterLabel = this.intl.formatMessage({id: `${world}.character`});
             const directionLabel = this.intl.formatMessage({id: `Direction.${characterState.direction}`});
 
             if (itemLabel) {
@@ -79,11 +78,10 @@ export default class CharacterDescriptionBuilder {
                         id:'CharacterDescriptionBuilder.positionAndDirectionAndItem'
                     },
                     {
-                        character: characterLabel,
                         columnLabel: columnLabel,
                         rowLabel: rowLabel,
-                        direction: directionLabel,
-                        item: itemLabel
+                        item: itemLabel,
+                        direction: directionLabel
                     }
                 );
             } else {
@@ -92,7 +90,6 @@ export default class CharacterDescriptionBuilder {
                         id:'CharacterDescriptionBuilder.positionAndDirection'
                     },
                     {
-                        character: characterLabel,
                         columnLabel: columnLabel,
                         rowLabel: rowLabel,
                         direction: directionLabel

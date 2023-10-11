@@ -24,56 +24,56 @@ test('All 8 directions', () => {
         'Sketchpad',
         emptyCustomBackground,
         false
-    )).toBe('the robot is at column A, row 1 facing up');
+    )).toBe('At A 1 facing up');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 1, [], sceneDimensions),
         'Sketchpad',
         emptyCustomBackground,
         false
-    )).toBe('the robot is at column A, row 1 facing upper right');
+    )).toBe('At A 1 facing upper right');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 2, [], sceneDimensions),
         'Sketchpad',
         emptyCustomBackground,
         false
-    )).toBe('the robot is at column A, row 1 facing right');
+    )).toBe('At A 1 facing right');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 3, [], sceneDimensions),
         'Sketchpad',
         emptyCustomBackground,
         false
-    )).toBe('the robot is at column A, row 1 facing lower right');
+    )).toBe('At A 1 facing lower right');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 4, [], sceneDimensions),
         'Sketchpad',
         emptyCustomBackground,
         false
-    )).toBe('the robot is at column A, row 1 facing down');
+    )).toBe('At A 1 facing down');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 5, [], sceneDimensions),
         'Sketchpad',
         emptyCustomBackground,
         false
-    )).toBe('the robot is at column A, row 1 facing lower left');
+    )).toBe('At A 1 facing lower left');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 6, [], sceneDimensions),
         'Sketchpad',
         emptyCustomBackground,
         false
-    )).toBe('the robot is at column A, row 1 facing left');
+    )).toBe('At A 1 facing left');
 
     expect(builder.buildCharacterDescription(
         new CharacterState(1, 1, 7, [], sceneDimensions),
         'Sketchpad',
         emptyCustomBackground,
         false
-    )).toBe('the robot is at column A, row 1 facing upper left');
+    )).toBe('At A 1 facing upper left');
 });
 
 test('Space, edit mode: no, background description: no, custom background tile: no', () => {
@@ -83,7 +83,7 @@ test('Space, edit mode: no, background description: no, custom background tile: 
         'Space',
         emptyCustomBackground,
         false
-    )).toBe('the spaceship is at column C, row 2 facing right');
+    )).toBe('At C 2 facing right');
 });
 
 test('Space, edit mode: no, background description: no, custom background tile: yes', () => {
@@ -96,7 +96,7 @@ test('Space, edit mode: no, background description: no, custom background tile: 
             '0', '0', '1'
         ]),
         false
-    )).toBe('the spaceship is at column C, row 2 facing right on wall');
+    )).toBe('At C 2 on wall facing right');
 });
 
 test('Space, edit mode: no, background description: yes, custom background tile: no', () => {
@@ -106,7 +106,7 @@ test('Space, edit mode: no, background description: yes, custom background tile:
         'Space',
         emptyCustomBackground,
         false
-    )).toBe('the spaceship is at column C, row 1 facing right on the Moon');
+    )).toBe('At C 1 on the Moon facing right');
 });
 
 test('Space, edit mode: no, background description: yes, custom background tile: yes', () => {
@@ -118,7 +118,7 @@ test('Space, edit mode: no, background description: yes, custom background tile:
             '0', '0', '1'
         ]),
         false
-    )).toBe('the spaceship is at column C, row 1 facing right on wall');
+    )).toBe('At C 1 on wall facing right');
 });
 
 test('Space, edit mode: yes, background description: no, custom background tile: no', () => {
@@ -128,7 +128,7 @@ test('Space, edit mode: yes, background description: no, custom background tile:
         'Space',
         emptyCustomBackground,
         true
-    )).toBe('the paintbrush is at column C, row 2');
+    )).toBe('At C 2');
 });
 
 test('Space, edit mode: yes, background description: no, custom background tile: yes', () => {
@@ -141,7 +141,7 @@ test('Space, edit mode: yes, background description: no, custom background tile:
             '0', '0', '1'
         ]),
         true
-    )).toBe('the paintbrush is at column C, row 2 on wall');
+    )).toBe('At C 2 on wall');
 });
 
 test('Space, edit mode: yes, background description: yes, custom background tile: no', () => {
@@ -151,7 +151,7 @@ test('Space, edit mode: yes, background description: yes, custom background tile
         'Space',
         emptyCustomBackground,
         true
-    )).toBe('the paintbrush is at column C, row 1 on the Moon');
+    )).toBe('At C 1 on the Moon');
 });
 
 test('Space, edit mode: yes, background description: yes, custom background tile: yes', () => {
@@ -163,5 +163,5 @@ test('Space, edit mode: yes, background description: yes, custom background tile
             '0', '0', '1'
         ]),
         true
-    )).toBe('the paintbrush is at column C, row 1 on wall');
+    )).toBe('At C 1 on wall');
 });

@@ -82,11 +82,11 @@ test('The live region is updated when the characterState prop is changed', () =>
     wrapper.setProps({
         characterState: new CharacterState(1, 1, 2, [], sceneDimensions)
     });
-    expect(getLiveRegionInnerText()).toBe('the robot is at column A, row 1 facing right');
+    expect(getLiveRegionInnerText()).toBe('At A 1 facing right');
     wrapper.setProps({
         characterState: new CharacterState(3, 1, 2, [], sceneDimensions)
     });
-    expect(getLiveRegionInnerText()).toBe('the robot is at column C, row 1 facing right');
+    expect(getLiveRegionInnerText()).toBe('At C 1 facing right');
 });
 
 type RunningStateTestCase = {
@@ -99,17 +99,17 @@ test.each(([
     {
         runningStateBefore: 'running',
         runningStateAfter: 'pauseRequested',
-        expectedLiveRegion: 'the robot is at column A, row 1 facing right'
+        expectedLiveRegion: 'At A 1 facing right'
     },
     {
         runningStateBefore: 'running',
         runningStateAfter: 'stopRequested',
-        expectedLiveRegion: 'the robot is at column A, row 1 facing right'
+        expectedLiveRegion: 'At A 1 facing right'
     },
     {
         runningStateBefore: 'running',
         runningStateAfter: 'stopped',
-        expectedLiveRegion: 'the robot is at column A, row 1 facing right'
+        expectedLiveRegion: 'At A 1 facing right'
     },
     {
         runningStateBefore: 'stopped',
@@ -134,21 +134,21 @@ test('The live region is updated when the world prop is changed', () => {
     wrapper.setProps({
         world: 'Savannah'
     });
-    expect(getLiveRegionInnerText()).toBe('the jeep is at column A, row 1 facing right');
+    expect(getLiveRegionInnerText()).toBe('At A 1 facing right');
     wrapper.setProps({
         world: 'Space'
     });
-    expect(getLiveRegionInnerText()).toBe('the spaceship is at column A, row 1 facing right on the Earth');
+    expect(getLiveRegionInnerText()).toBe('At A 1 on the Earth facing right');
 });
 
-test('The live region uses "paintbrush" when in custom background edit mode', () => {
+test('Custom background edit mode', () => {
     const wrapper = createMountCharacterAriaLive({
         customBackgroundEditMode: true
     });
     wrapper.setProps({
         characterState: new CharacterState(3, 1, 2, [], sceneDimensions)
     });
-    expect(getLiveRegionInnerText()).toBe('the paintbrush is at column C, row 1');
+    expect(getLiveRegionInnerText()).toBe('At C 1');
 });
 
 test('The live region has aria-hidden false when the ariaHidden prop is false', () => {
