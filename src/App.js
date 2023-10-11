@@ -1047,28 +1047,28 @@ export class App extends React.Component<AppProps, AppState> {
                 break;
             case 'up':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveUpPosition(!(state.customBackgroundEditMode), state.customBackground);
+                    const updatedCharacterState = state.characterState.moveUpPosition(false, state.customBackground);
                     return this.incStartingPosUnlessCustomBackgroundEditMode(state,
                         updatedCharacterState);
                 });
                 break;
             case 'right':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveRightPosition(!(state.customBackgroundEditMode), state.customBackground);
+                    const updatedCharacterState = state.characterState.moveRightPosition(false, state.customBackground);
                     return this.incStartingPosUnlessCustomBackgroundEditMode(state,
                         updatedCharacterState);
                 });
                 break;
             case 'down':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveDownPosition(!(state.customBackgroundEditMode), state.customBackground);
+                    const updatedCharacterState = state.characterState.moveDownPosition(false, state.customBackground);
                     return this.incStartingPosUnlessCustomBackgroundEditMode(state,
                         updatedCharacterState);
                 });
                 break;
             case 'left':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveLeftPosition(!(state.customBackgroundEditMode), state.customBackground);
+                    const updatedCharacterState = state.characterState.moveLeftPosition(false, state.customBackground);
                     return this.incStartingPosUnlessCustomBackgroundEditMode(state,
                         updatedCharacterState);
                 });
