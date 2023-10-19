@@ -1768,11 +1768,7 @@ body.gray-theme {
         border-color: #67717E;
     }
 
-    .paintbrush-background {
-        fill: #818A98;
-    }
-
-    .paintbrush-foreground {
+    .paintbrush-icon-foreground {
         stroke: #FFFFFF;
     }
 }
@@ -3009,11 +3005,11 @@ body.contrast-theme {
         border-color: #FFFFFF;
     }
 
-    .paintbrush-background {
-        fill: #FFFFFF;
+    .IconButton:hover .paintbrush-icon-foreground {
+        stroke: #FFFFFF;
     }
 
-    .IconButton:hover .paintbrush-foreground {
-        stroke: #FFFFFF;
+    .paintbrush-cursor-brush-outline {
+        stroke: #ff0000;
     }
 }

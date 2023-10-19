@@ -12,13 +12,14 @@ import SceneColumnLabels from './SceneColumnLabels';
 import SceneDimensions from './SceneDimensions';
 import SceneGrid from './SceneGrid';
 import SceneRowLabels from './SceneRowLabels';
-import { getWorldProperties } from './Worlds';
 import { injectIntl } from 'react-intl';
 import type { IntlShape } from 'react-intl';
+import './PaintbrushCursor.css';
 import './Scene.scss';
 import './Worlds.scss';
 import type { ThemeName, RunningState } from './types';
 import type { WorldName } from './Worlds';
+import { ReactComponent as PaintbrushCursor } from './svg/PaintbrushCursor.svg';
 
 const startingGridCellPointSize = 0.25;
 
@@ -62,43 +63,6 @@ class Scene extends React.Component<SceneProps, {}> {
 
     getDirectionWords(direction: number): string {
         return this.props.intl.formatMessage({id: `Direction.${direction}`});
-    }
-
-    getRelativeDirection(xPos: number, yPos: number): string {
-        if (this.props.dimensions.getBoundsStateY(yPos) === 'outOfBoundsBelow' &&
-            this.props.dimensions.getBoundsStateX(xPos) === 'inBounds') {
-            return this.props.intl.formatMessage({id: 'RelativeDirection.0'});
-        } else if (
-            this.props.dimensions.getBoundsStateY(yPos) === 'outOfBoundsBelow' &&
-            this.props.dimensions.getBoundsStateX(xPos) === 'outOfBoundsAbove') {
-            return this.props.intl.formatMessage({id: 'RelativeDirection.1'});
-        } else if (
-            this.props.dimensions.getBoundsStateY(yPos) === 'inBounds' &&
-            this.props.dimensions.getBoundsStateX(xPos) === 'outOfBoundsAbove') {
-            return this.props.intl.formatMessage({id: 'RelativeDirection.2'});
-        } else if (
-            this.props.dimensions.getBoundsStateY(yPos) === 'outOfBoundsAbove' &&
-            this.props.dimensions.getBoundsStateX(xPos) === 'outOfBoundsAbove') {
-            return this.props.intl.formatMessage({id: 'RelativeDirection.3'});
-        } else if (
-            this.props.dimensions.getBoundsStateY(yPos) === 'outOfBoundsAbove' &&
-            this.props.dimensions.getBoundsStateX(xPos) === 'inBounds') {
-            return this.props.intl.formatMessage({id: 'RelativeDirection.4'});
-        } else if (
-            this.props.dimensions.getBoundsStateY(yPos) === 'outOfBoundsAbove' &&
-            this.props.dimensions.getBoundsStateX(xPos) === 'outOfBoundsBelow') {
-            return this.props.intl.formatMessage({id: 'RelativeDirection.5'});
-        } else if (
-            this.props.dimensions.getBoundsStateY(yPos) === 'inBounds' &&
-            this.props.dimensions.getBoundsStateX(xPos) === 'outOfBoundsBelow') {
-            return this.props.intl.formatMessage({id: 'RelativeDirection.6'});
-        } else if (
-            this.props.dimensions.getBoundsStateY(yPos) === 'outOfBoundsBelow' &&
-            this.props.dimensions.getBoundsStateX(xPos) === 'outOfBoundsBelow') {
-            return this.props.intl.formatMessage({id: 'RelativeDirection.7'});
-        } else {
-            throw new Error(`Unrecognized xPos: ${xPos} or yPos: ${yPos}`);
-        }
     }
 
     generateAriaLabel() {
@@ -194,10 +158,6 @@ class Scene extends React.Component<SceneProps, {}> {
         }
     }
 
-    getWorldEnableFlipCharacter(): boolean {
-        return getWorldProperties(this.props.world).enableFlipCharacter;
-    }
-
     getPositionFromSceneSvgMouseEvent(e: any): MousePosition {
         // $FlowFixMe: DOMPoint
         const clientPoint = new DOMPoint(e.clientX, e.clientY);
@@ -233,16 +193,6 @@ class Scene extends React.Component<SceneProps, {}> {
         const minY = this.props.dimensions.getMinY() - 0.5;
         const width = this.props.dimensions.getWidth();
         const height = this.props.dimensions.getHeight();
-
-        // Subtract 90 degrees from the character bearing as the character
-        // image is drawn upright when it is facing East
-        let characterTransform = `translate(${this.props.characterState.xPos} ${this.props.characterState.yPos})`;
-        if (!(this.props.customBackgroundEditMode)) {
-            characterTransform += ` rotate(${this.props.characterState.getDirectionDegrees() - 90} 0 0)`;
-            if (this.getWorldEnableFlipCharacter() && this.props.characterState.direction > 3) {
-                characterTransform += ` scale(1 -1)`
-            }
-        }
 
         return (
             <React.Fragment>
@@ -314,7 +264,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                     height={startingGridCellPointSize}
                                     width={startingGridCellPointSize}
                                 />
-                                {this.props.theme === 'contrast' &&
+                                {(!this.props.customBackgroundEditMode && this.props.theme === 'contrast') &&
                                     <circle
                                         className='Scene__characterOutline'
                                         cx={this.props.characterState.xPos}
@@ -322,13 +272,20 @@ class Scene extends React.Component<SceneProps, {}> {
                                         r={0.51}
                                     />
                                 }
-                                <SceneCharacter
-                                    world={this.props.world}
-                                    theme={this.props.theme}
-                                    customBackgroundEditMode={this.props.customBackgroundEditMode}
-                                    transform={characterTransform}
-                                    width={0.9}
-                                />
+                                {this.props.customBackgroundEditMode ?
+                                    <PaintbrushCursor
+                                        x={this.props.characterState.xPos - 0.5}
+                                        y={this.props.characterState.yPos - 0.5}
+                                        width={1}
+                                        height={1}
+                                    />
+                                    :
+                                    <SceneCharacter
+                                        characterState={this.props.characterState}
+                                        theme={this.props.theme}
+                                        world={this.props.world}
+                                    />
+                                }
                             </g>
                         </svg>
                     </div>

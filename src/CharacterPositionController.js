@@ -13,13 +13,13 @@ import { ReactComponent as MovePositionDown } from './svg/MovePositionDown.svg';
 import { ReactComponent as MovePositionLeft } from './svg/MovePositionLeft.svg';
 import { ReactComponent as TurnPositionRight } from './svg/TurnPositionRight.svg';
 import { ReactComponent as TurnPositionLeft } from './svg/TurnPositionLeft.svg';
-import { ReactComponent as PaintbrushIcon } from './svg/Paintbrush.svg';
+import { ReactComponent as PaintbrushIcon } from './svg/PaintbrushIcon.svg';
 import { getTileName, isEraser } from './TileData';
 import type { TileCode } from './TileData';
 import type { ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import './CharacterPositionController.scss';
-import './Paintbrush.css';
+import './PaintbrushIcon.css';
 
 type CharacterPositionControllerProps = {
     intl: IntlShape,

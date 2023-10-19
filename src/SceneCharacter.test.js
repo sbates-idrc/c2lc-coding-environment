@@ -1,18 +1,21 @@
 // @flow
 
-import React from 'react';
-import Adapter from 'enzyme-adapter-react-16';
+import CharacterState from './CharacterState';
 import { configure, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import React from 'react';
 import SceneCharacter from './SceneCharacter';
+import SceneDimensions from './SceneDimensions';
 
 configure({ adapter: new Adapter() });
 
+const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
+const characterState = new CharacterState(1, 1, 2, [], sceneDimensions);
+
 const defaultSceneCharacterProps = {
-    world: 'Sketchpad',
+    characterState: characterState,
     theme: 'light',
-    customBackgroundEditMode: false,
-    transform: '',
-    width: 3
+    world: 'Sketchpad'
 };
 
 function createMountSceneCharacter(props) {
