@@ -112,15 +112,12 @@ export default class CharacterState {
         );
     }
 
-    moveUpPosition(useCustomBackgroundBehaviour: boolean, customBackground: CustomBackground): CharacterState {
+    moveUpPosition(): CharacterState {
         let yPos = this.yPos;
         if (this.sceneDimensions.getBoundsStateY(this.yPos - 1) === 'outOfBoundsBelow') {
             yPos = 1;
         } else {
-            const newY = this.yPos - 1;
-            if (!useCustomBackgroundBehaviour || customBackground.canMoveTo(this.xPos, newY)) {
-                yPos = newY;
-            }
+            yPos = this.yPos - 1;
         }
         return new CharacterState(
             this.xPos,
@@ -131,15 +128,12 @@ export default class CharacterState {
         );
     }
 
-    moveRightPosition(useCustomBackgroundBehaviour: boolean, customBackground: CustomBackground): CharacterState {
+    moveRightPosition(): CharacterState {
         let xPos = this.xPos;
         if (this.sceneDimensions.getBoundsStateX(this.xPos + 1) === 'outOfBoundsAbove') {
             xPos = this.sceneDimensions.getWidth();
         } else {
-            const newX = this.xPos + 1;
-            if (!useCustomBackgroundBehaviour || customBackground.canMoveTo(newX, this.yPos)) {
-                xPos = newX;
-            }
+            xPos = this.xPos + 1;
         }
         return new CharacterState(
             xPos,
@@ -150,15 +144,12 @@ export default class CharacterState {
         );
     }
 
-    moveDownPosition(useCustomBackgroundBehaviour: boolean, customBackground: CustomBackground): CharacterState {
+    moveDownPosition(): CharacterState {
         let yPos = this.yPos;
         if (this.sceneDimensions.getBoundsStateY(this.yPos + 1) === 'outOfBoundsAbove') {
             yPos = this.sceneDimensions.getHeight();
         } else {
-            const newY = this.yPos + 1;
-            if (!useCustomBackgroundBehaviour || customBackground.canMoveTo(this.xPos, newY)) {
-                yPos = newY;
-            }
+            yPos = this.yPos + 1;
         }
         return new CharacterState(
             this.xPos,
@@ -169,15 +160,12 @@ export default class CharacterState {
         );
     }
 
-    moveLeftPosition(useCustomBackgroundBehaviour: boolean, customBackground: CustomBackground): CharacterState {
+    moveLeftPosition(): CharacterState {
         let xPos = this.xPos;
         if (this.sceneDimensions.getBoundsStateY(this.xPos - 1) === 'outOfBoundsBelow') {
             xPos = 1;
         } else {
-            const newX = this.xPos - 1;
-            if (!useCustomBackgroundBehaviour || customBackground.canMoveTo(newX, this.yPos)) {
-                xPos = newX;
-            }
+            xPos = this.xPos - 1;
         }
         return new CharacterState(
             xPos,

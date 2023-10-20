@@ -6,7 +6,6 @@ import React from 'react';
 import CharacterState from './CharacterState';
 import classNames from 'classnames';
 import IconButton from './IconButton';
-import { getWorldCharacter, getWorldProperties } from './Worlds';
 import { ReactComponent as MovePositionUp } from './svg/MovePositionUp.svg';
 import { ReactComponent as MovePositionRight } from './svg/MovePositionRight.svg';
 import { ReactComponent as MovePositionDown } from './svg/MovePositionDown.svg';
@@ -14,24 +13,21 @@ import { ReactComponent as MovePositionLeft } from './svg/MovePositionLeft.svg';
 import { ReactComponent as TurnPositionRight } from './svg/TurnPositionRight.svg';
 import { ReactComponent as TurnPositionLeft } from './svg/TurnPositionLeft.svg';
 import { ReactComponent as PaintbrushIcon } from './svg/PaintbrushIcon.svg';
+import { ReactComponent as SetStartIcon } from './svg/SetStartIcon.svg';
 import { getTileName, isEraser } from './TileData';
 import type { TileCode } from './TileData';
-import type { ThemeName } from './types';
-import type { WorldName } from './Worlds';
 import './CharacterPositionController.scss';
-import './PaintbrushIcon.css';
 
 type CharacterPositionControllerProps = {
     intl: IntlShape,
     characterState: CharacterState,
     editingDisabled: boolean,
-    theme: ThemeName,
-    world: WorldName,
     customBackgroundEditMode: boolean,
     selectedCustomBackgroundTile: ?TileCode,
     onChangeCharacterPosition: (direction: ?string) => void,
     onChangeCharacterXPosition: (columnLabel: string) => void,
     onChangeCharacterYPosition: (rowLabel: string) => void,
+    onClickSetStartButton: () => void,
     onClickPaintbrushButton: () => void
 };
 
@@ -107,28 +103,6 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         }
     }
 
-    getWorldEnableFlipCharacter(): boolean {
-        return getWorldProperties(this.props.world).enableFlipCharacter;
-    }
-
-    getCharacterIcon() {
-        // We use a CSS approach because Safari doesn't support scale transforms whole svgs (and ignores the rotation
-        // if you include scaling in the transform).  See:
-        // https://stackoverflow.com/questions/48248512/svg-transform-rotate180-does-not-work-in-safari-11
-        const className = classNames(
-            'CharacterPositionController__character-column-character',
-            `CharacterPositionController__character-column-character--angle${this.props.characterState.direction}`,
-            this.getWorldEnableFlipCharacter() &&
-                'CharacterPositionController__character-column-character--enable-flip'
-        );
-
-        const characterIcon = getWorldCharacter(this.props.theme, this.props.world);
-        return React.createElement(characterIcon, {
-            className: className,
-            transform: ''
-        });
-    }
-
     getPaintbrushButtonAriaLabel() {
         if (this.props.selectedCustomBackgroundTile == null) {
             return this.props.intl.formatMessage({
@@ -176,7 +150,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         );
 
         return (
-            <div className='CharacterPositionController__character-column'>
+            <div className='CharacterPositionController'>
                 {!(this.props.customBackgroundEditMode) &&
                     <div className='CharacterPositionController__character-turn-positions'>
                         <TurnPositionLeft
@@ -232,18 +206,19 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                             onClick={this.props.onClickPaintbrushButton}
                         >
                             <PaintbrushIcon
-                                className='CharacterPositionController__character-column-character'
+                                className='CharacterPositionController__centerButtonIcon'
                             />
                         </IconButton>
                         :
-                        <div
-                            aria-hidden='true'
-                            className={`CharacterPositionController__character-column-character-container
-                                CharacterPositionController__character-column-character-container--${this.props.world}`}
-                            role='img'
+                        <IconButton
+                            className='CharacterPositionController__setStartButton'
+                            ariaLabel={this.props.intl.formatMessage({id:'CharacterPositionController.setStartButton'})}
+                            onClick={this.props.onClickSetStartButton}
                         >
-                            {this.getCharacterIcon()}
-                        </div>
+                            <SetStartIcon
+                                className='CharacterPositionController__centerButtonIcon'
+                            />
+                        </IconButton>
                     }
                     <MovePositionRight
                         className={characterPositionButtonClassName}

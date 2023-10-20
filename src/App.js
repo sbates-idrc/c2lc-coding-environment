@@ -1012,65 +1012,48 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    incStartingPosUnlessCustomBackgroundEditMode(state: AppState,
-        characterState: CharacterState) {
-
-        if (state.customBackgroundEditMode) {
-            return {
-                characterState: characterState
-            };
-        } else {
-            return {
-                characterState: characterState,
-                startingX: characterState.xPos,
-                startingY: characterState.yPos,
-                startingDirection: characterState.direction
-            };
-        }
-    }
-
     handleChangeCharacterPosition = (positionName: ?string) => {
         switch(positionName) {
             case 'turnLeft':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.turnLeft(1);
-                    return this.incStartingPosUnlessCustomBackgroundEditMode(state,
-                        updatedCharacterState);
+                    return {
+                        characterState: state.characterState.turnLeft(1)
+                    };
                 });
                 break;
             case 'turnRight':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.turnRight(1);
-                    return this.incStartingPosUnlessCustomBackgroundEditMode(state,
-                        updatedCharacterState);
+                    return {
+                        characterState: state.characterState.turnRight(1)
+                    };
                 });
                 break;
             case 'up':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveUpPosition(false, state.customBackground);
-                    return this.incStartingPosUnlessCustomBackgroundEditMode(state,
-                        updatedCharacterState);
+                    return {
+                        characterState: state.characterState.moveUpPosition()
+                    };
                 });
                 break;
             case 'right':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveRightPosition(false, state.customBackground);
-                    return this.incStartingPosUnlessCustomBackgroundEditMode(state,
-                        updatedCharacterState);
+                    return {
+                        characterState: state.characterState.moveRightPosition()
+                    };
                 });
                 break;
             case 'down':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveDownPosition(false, state.customBackground);
-                    return this.incStartingPosUnlessCustomBackgroundEditMode(state,
-                        updatedCharacterState);
+                    return {
+                        characterState: state.characterState.moveDownPosition()
+                    };
                 });
                 break;
             case 'left':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveLeftPosition(false, state.customBackground);
-                    return this.incStartingPosUnlessCustomBackgroundEditMode(state,
-                        updatedCharacterState);
+                    return {
+                        characterState: state.characterState.moveLeftPosition()
+                    };
                 });
                 break;
             default:
@@ -1080,17 +1063,17 @@ export class App extends React.Component<AppProps, AppState> {
 
     handleChangeCharacterXPosition = (columnLabel: string) => {
         this.setState((state) => {
-            const updatedCharacterState = state.characterState.changeXPosition(columnLabel);
-            return this.incStartingPosUnlessCustomBackgroundEditMode(state,
-                updatedCharacterState);
+            return {
+                characterState: state.characterState.changeXPosition(columnLabel)
+            };
         });
     }
 
     handleChangeCharacterYPosition = (rowLabel: string) => {
         this.setState((state) => {
-            const updatedCharacterState = state.characterState.changeYPosition(parseInt(rowLabel, 10));
-            return this.incStartingPosUnlessCustomBackgroundEditMode(state,
-                updatedCharacterState);
+            return {
+                characterState: state.characterState.changeYPosition(parseInt(rowLabel, 10))
+            };
         });
     }
 
@@ -1182,6 +1165,16 @@ export class App extends React.Component<AppProps, AppState> {
             }
 
             return stateUpdate;
+        });
+    }
+
+    handleClickPositionControllerSetStartButton = () => {
+        this.setState((state) => {
+            return {
+                startingX: state.characterState.xPos,
+                startingY: state.characterState.yPos,
+                startingDirection: state.characterState.direction
+            };
         });
     }
 
@@ -1352,13 +1345,12 @@ export class App extends React.Component<AppProps, AppState> {
             <CharacterPositionController
                 characterState={this.state.characterState}
                 editingDisabled={this.editingIsDisabled()}
-                theme={this.state.settings.theme}
-                world={this.state.settings.world}
                 customBackgroundEditMode={this.state.customBackgroundEditMode}
                 selectedCustomBackgroundTile={this.state.selectedCustomBackgroundTile}
                 onChangeCharacterPosition={this.handleChangeCharacterPosition}
                 onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
                 onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
+                onClickSetStartButton={this.handleClickPositionControllerSetStartButton}
                 onClickPaintbrushButton={this.handleClickPositionControllerPaintbrushButton}
             />
         );

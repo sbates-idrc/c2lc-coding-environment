@@ -652,7 +652,7 @@ body.dark-theme {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
 
-    .CharacterPositionController__character-column {
+    .CharacterPositionController {
         background-color: #30444E;
         border-top: 1px solid #33717F;
     }
@@ -1178,7 +1178,7 @@ body.gray-theme {
         fill: #818A98;
     }
 
-    .CharacterPositionController__character-column {
+    .CharacterPositionController {
         border-top: 1px solid #9DA4AF;
     }
 
@@ -1206,7 +1206,7 @@ body.gray-theme {
         }
     }
 
-    .CharacterPositionController__character-column{
+    .CharacterPositionController {
         background-color: #D5D8DD;
     }
 
@@ -1768,7 +1768,11 @@ body.gray-theme {
         border-color: #67717E;
     }
 
-    .paintbrush-icon-foreground {
+    .CharacterPositionController .set-start-icon-foreground {
+        fill: #FFFFFF;
+    }
+
+    .CharacterPositionController .paintbrush-icon-foreground {
         stroke: #FFFFFF;
     }
 }
@@ -2251,7 +2255,7 @@ body.contrast-theme {
         border: 2px solid white;
     }
 
-    .CharacterPositionController__character-column {
+    .CharacterPositionController {
         background-color: black;
         border-top: 1px solid white;
     }
@@ -3005,7 +3009,11 @@ body.contrast-theme {
         border-color: #FFFFFF;
     }
 
-    .IconButton:hover .paintbrush-icon-foreground {
+    .CharacterPositionController .IconButton:hover .set-start-icon-foreground {
+        fill: #FFFFFF;
+    }
+
+    .CharacterPositionController .IconButton:hover .paintbrush-icon-foreground {
         stroke: #FFFFFF;
     }
 
