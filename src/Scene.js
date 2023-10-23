@@ -20,8 +20,9 @@ import './Worlds.scss';
 import type { ThemeName, RunningState } from './types';
 import type { WorldName } from './Worlds';
 import { ReactComponent as PaintbrushCursor } from './svg/PaintbrushCursor.svg';
+import { ReactComponent as StartIndicator } from './svg/StartIndicator.svg';
 
-const startingGridCellPointSize = 0.25;
+const startIndicatorWidth = 0.45;
 
 type MousePosition = {
     x: number,
@@ -251,18 +252,16 @@ class Scene extends React.Component<SceneProps, {}> {
                                     path={this.props.characterState.path}
                                     world={this.props.world}
                                 />
-                                <rect
-                                    // Starting position indicator
-                                    className={`Scene__starting-grid-cell-point Scene__starting-grid-cell-point--${this.props.world}`}
-                                    // The centre of the starting cell is (startingX, startingY).
+                                <StartIndicator
+                                    className='Scene__startIndicator'
+                                    // The centre of the starting square is (startingX, startingY).
                                     // Calculate the top left corner of the indicator
-                                    // by subtracting half of the indicator size from
+                                    // by subtracting half of the indicator width from
                                     // each of the startingX and startingY.
-                                    x={this.props.startingX - (startingGridCellPointSize / 2)}
-                                    y={this.props.startingY - (startingGridCellPointSize / 2)}
-                                    rx={0.06}
-                                    height={startingGridCellPointSize}
-                                    width={startingGridCellPointSize}
+                                    x={this.props.startingX - (startIndicatorWidth / 2)}
+                                    y={this.props.startingY - (startIndicatorWidth / 2)}
+                                    width={startIndicatorWidth}
+                                    height={startIndicatorWidth}
                                 />
                                 {(!this.props.customBackgroundEditMode && this.props.theme === 'contrast') &&
                                     <circle

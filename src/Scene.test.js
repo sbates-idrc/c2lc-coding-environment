@@ -92,8 +92,8 @@ function findSceneBackground(sceneWrapper) {
     return sceneWrapper.find('.Scene__background');
 }
 
-function findStartingPositionGridCellPoint(sceneWrapper) {
-    return sceneWrapper.find('.Scene__starting-grid-cell-point');
+function findStartIndicator(sceneWrapper) {
+    return sceneWrapper.find('svg.Scene__startIndicator');
 }
 
 function findCharacterOutline(sceneWrapper) {
@@ -243,7 +243,7 @@ describe('When the Scene renders', () => {
         expect(findSceneCharacterIcon(sceneWrapper).get(0).props.height)
             .toBeCloseTo(expectedCharacterDimensions.height, 5);
     });
-    test('Should mark starting position cell', () => {
+    test('Should render the start indicator', () => {
         const sceneDimensions = new SceneDimensions(1, 8, 1, 9);
         const startingX = 3;
         const startingY = 3;
@@ -253,16 +253,15 @@ describe('When the Scene renders', () => {
             startingX,
             startingY
         });
-        const startingPositionGridCellPoint = findStartingPositionGridCellPoint(sceneWrapper);
 
-        // Check starting position indicator is rendered
-        expect(startingPositionGridCellPoint.length).toBe(1);
+        const startIndicator = findStartIndicator(sceneWrapper);
 
-        const expectedStartingPositionGridCellPointX = startingX - startingPositionGridCellPoint.get(0).props.width/2;
-        const expectedStartingPositionGridCellPointY = startingY - startingPositionGridCellPoint.get(0).props.height/2;
+        expect(startIndicator.length).toBe(1);
 
-        expect(startingPositionGridCellPoint.get(0).props.x).toBe(expectedStartingPositionGridCellPointX);
-        expect(startingPositionGridCellPoint.get(0).props.y).toBe(expectedStartingPositionGridCellPointY);
+        const expectedX = startingX - startIndicator.get(0).props.width/2;
+        const expectedY = startingY - startIndicator.get(0).props.height/2;
+        expect(startIndicator.get(0).props.x).toBe(expectedX);
+        expect(startIndicator.get(0).props.y).toBe(expectedY);
     });
     test.each([
         ['default', false],
