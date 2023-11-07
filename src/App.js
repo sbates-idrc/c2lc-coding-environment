@@ -17,7 +17,7 @@ import CommandPaletteCommand from './CommandPaletteCommand';
 import CookieNotification from './CookieNotification';
 import C2lcURLParams from './C2lcURLParams';
 import CustomBackground from './CustomBackground';
-import CustomBackgroundEditModeToggleSwitch from './CustomBackgroundEditModeToggleSwitch';
+import CustomBackgroundDesignModeButton from './CustomBackgroundDesignModeButton';
 import CustomBackgroundSerializer from './CustomBackgroundSerializer';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
 import DashDriver from './DashDriver';
@@ -1313,19 +1313,12 @@ export class App extends React.Component<AppProps, AppState> {
                     >
                         <WorldIcon className='App__world-selector-icon'/>
                     </IconButton>
+                    <CustomBackgroundDesignModeButton
+                        customBackgroundDesignMode={this.state.customBackgroundEditMode}
+                        onChange={this.handleToggleCustomBackgroundEditMode}
+                    />
                 </div>
             </React.Fragment>
-        );
-    }
-
-    renderCustomBackgroundEditModeToggleSwitch() {
-        return (
-            <div className='App__CustomBackgroundEditModeToggleSwitch-container'>
-                <CustomBackgroundEditModeToggleSwitch
-                    value={this.state.customBackgroundEditMode}
-                    onChange={this.handleToggleCustomBackgroundEditMode}
-                />
-            </div>
         );
     }
 
@@ -1587,7 +1580,6 @@ export class App extends React.Component<AppProps, AppState> {
                             </div>
                             <div className="App__world-container">
                                 {this.renderWorldSelectorWithHeading()}
-                                {this.renderCustomBackgroundEditModeToggleSwitch()}
                                 {this.renderCharacterPositionController()}
                             </div>
                         </React.Fragment>
@@ -1601,7 +1593,6 @@ export class App extends React.Component<AppProps, AppState> {
                             </div>
                             <div className="App__world-container">
                                 {this.renderWorldSelectorWithHeading()}
-                                {this.renderCustomBackgroundEditModeToggleSwitch()}
                                 {this.renderPenDownToggleSwitch()}
                                 {this.renderCharacterPositionController()}
                             </div>

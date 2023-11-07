@@ -10,6 +10,7 @@ type IconButtonProps = {
     disabled?: boolean,
     disabledClassName?: string,
     ariaLabel: string,
+    ariaPressed?: boolean,
     onClick: () => void
 };
 
@@ -29,15 +30,17 @@ class IconButton extends React.Component<IconButtonProps, {}> {
 
     render() {
         const classes = classNames(
+            this.props.className,
             "IconButton",
             this.props.disabled && "IconButton--disabled",
             this.props.disabled && this.props.disabledClassName,
-            this.props.className
+            this.props.ariaPressed && "IconButton--pressed"
         );
         return (
             <div
                 aria-disabled={this.props.disabled}
                 aria-label={this.props.ariaLabel}
+                aria-pressed={this.props.ariaPressed}
                 className={classes}
                 role='button'
                 tabIndex={0}

@@ -155,6 +155,7 @@
         "CharacterPositionController.paintbrushButtonNoSelection": "paint background square",
         "CharacterPositionController.paintbrushButtonTileSelected": "paint {tile}",
         "CharacterPositionController.setStartButton": "set the starting position",
+        "CustomBackgroundDesignModeButton.customBackgroundDesignMode": "custom background design mode",
         "CustomBackgroundEditModeToggleSwitch.customBackgroundEditMode": "custom background design mode",
         "DashConnectionErrorModal.cancelButton": "Cancel connection",
         "DashConnectionErrorModal.error": "Connection Error",
