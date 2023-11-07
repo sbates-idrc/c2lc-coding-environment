@@ -156,7 +156,6 @@
         "CharacterPositionController.paintbrushButtonTileSelected": "paint {tile}",
         "CharacterPositionController.setStartButton": "set the starting position",
         "CustomBackgroundDesignModeButton.customBackgroundDesignMode": "custom background design mode",
-        "CustomBackgroundEditModeToggleSwitch.customBackgroundEditMode": "custom background design mode",
         "DashConnectionErrorModal.cancelButton": "Cancel connection",
         "DashConnectionErrorModal.error": "Connection Error",
         "DashConnectionErrorModal.firstMessage": "Make sure your device's bluetooth is turned on",

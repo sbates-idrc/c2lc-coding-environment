@@ -644,10 +644,6 @@ body.dark-theme {
         fill: white;
     }
 
-    .CustomBackgroundEditModeToggleSwitch:focus {
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-    }
-
     .PenDownToggleSwitch:focus {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
@@ -1245,36 +1241,6 @@ body.gray-theme {
 
     .Scene__startIndicator .start-indicator-pin {
         fill: #FFFFFF;
-    }
-
-    .CustomBackgroundEditModeToggleSwitch.ToggleSwitch {
-        background-color: #B9BEC6;
-
-        .ToggleSwitch__switch-inner-circle {
-            background-color: white;
-        }
-
-        .CustomBackgroundEditModeToggleSwitchIcon__squares {
-            fill: #818A98;
-        }
-        .CustomBackgroundEditModeToggleSwitchIcon__brush {
-            stroke: #818A98;
-        }
-
-        &:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
-        }
-
-        &:hover {
-            background-color: #505862;
-            .ToggleSwitch__switch-inner-circle {
-                background-color: #B9BEC6;
-            }
-        }
-    }
-
-    .CustomBackgroundEditModeToggleSwitch.ToggleSwitch--checked {
-        background-color: #818A98;
     }
 
     .PenDownToggleSwitch.ToggleSwitch {
@@ -2372,40 +2338,6 @@ body.contrast-theme {
 
     .Scene__startIndicator .start-indicator-pin {
         fill: #1E1E1E;
-    }
-
-    .CustomBackgroundEditModeToggleSwitch, .CustomBackgroundEditModeToggleSwitch.ToggleSwitch--checked:hover {
-        background-color: white;
-        border: 1px solid black;
-        .ToggleSwitch__switch-inner-circle {
-            background-color: black;
-        }
-        .CustomBackgroundEditModeToggleSwitchIcon__squares {
-            fill: white;
-        }
-        .CustomBackgroundEditModeToggleSwitchIcon__brush {
-            stroke: white;
-        }
-    }
-
-    .CustomBackgroundEditModeToggleSwitch:focus {
-        box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
-        border: none;
-    }
-
-    .CustomBackgroundEditModeToggleSwitch:hover, .CustomBackgroundEditModeToggleSwitch.ToggleSwitch--checked {
-        background-color: black;
-        border: 2px solid white;
-        padding: 0.2rem;
-        .ToggleSwitch__switch-inner-circle {
-            background-color: white;
-        }
-        .CustomBackgroundEditModeToggleSwitchIcon__squares {
-            fill: black;
-        }
-        .CustomBackgroundEditModeToggleSwitchIcon__brush {
-            stroke: black;
-        }
     }
 
     .PenDownToggleSwitch, .PenDownToggleSwitch.ToggleSwitch--checked:hover {
