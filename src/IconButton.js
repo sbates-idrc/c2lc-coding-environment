@@ -4,7 +4,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import './IconButton.scss';
 
-type IconButtonProps = {
+export type IconButtonProps = {
     className?: string,
     children: any,
     disabled?: boolean,
