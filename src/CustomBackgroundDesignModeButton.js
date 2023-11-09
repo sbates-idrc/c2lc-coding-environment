@@ -8,7 +8,7 @@ import { ReactComponent as EnterDesignModeIcon } from './svg/EnterDesignMode.svg
 import { ReactComponent as ExitDesignModeIcon } from './svg/ExitDesignMode.svg';
 import './CustomBackgroundDesignModeButton.css';
 
-type CustomBackgroundDesignModeButtonProps = {
+export type CustomBackgroundDesignModeButtonProps = {
     customBackgroundDesignMode: boolean,
     intl: IntlShape,
     onChange: (value: boolean) => void
