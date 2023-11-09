@@ -41,7 +41,7 @@ const defaultCharacterAriaLiveProps = {
     runningState: 'stopped',
     world: 'Sketchpad',
     customBackground: emptyCustomBackground,
-    customBackgroundEditMode: false,
+    customBackgroundDesignMode: false,
     characterDescriptionBuilder: new CharacterDescriptionBuilder(intl)
 };
 
@@ -141,9 +141,9 @@ test('The live region is updated when the world prop is changed', () => {
     expect(getLiveRegionInnerText()).toBe('At A 1 on the Earth facing right');
 });
 
-test('Custom background edit mode', () => {
+test('Custom background design mode', () => {
     const wrapper = createMountCharacterAriaLive({
-        customBackgroundEditMode: true
+        customBackgroundDesignMode: true
     });
     wrapper.setProps({
         characterState: new CharacterState(3, 1, 2, [], sceneDimensions)

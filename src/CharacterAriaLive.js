@@ -17,7 +17,7 @@ type CharacterAriaLiveProps = {
     runningState: RunningState,
     world: WorldName,
     customBackground: CustomBackground,
-    customBackgroundEditMode: boolean,
+    customBackgroundDesignMode: boolean,
     characterDescriptionBuilder: CharacterDescriptionBuilder
 };
 
@@ -40,7 +40,7 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
                 this.props.characterState,
                 this.props.world,
                 this.props.customBackground,
-                this.props.customBackgroundEditMode
+                this.props.customBackgroundDesignMode
             );
         }
     }

@@ -45,7 +45,7 @@ import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
 import * as Utils from './Utils';
 import './App.scss';
-import './CustomBackgroundEditMode.css';
+import './AppCustomBackgroundDesignMode.css';
 import './Themes.scss';
 import './vendor/dragdroptouch/DragDropTouch.js';
 import ThemeSelector from './ThemeSelector';
@@ -134,7 +134,7 @@ export type AppState = {
     startingY: number,
     startingDirection: number,
     customBackground: CustomBackground,
-    customBackgroundEditMode: boolean,
+    customBackgroundDesignMode: boolean,
     selectedCustomBackgroundTile: ?TileCode
 };
 
@@ -231,7 +231,7 @@ export class App extends React.Component<AppProps, AppState> {
             startingY: startingY,
             startingDirection: startingDirection,
             customBackground: new CustomBackground(this.sceneDimensions),
-            customBackgroundEditMode: false,
+            customBackgroundDesignMode: false,
             selectedCustomBackgroundTile: null,
             keyboardInputSchemeName: "controlalt"
         };
@@ -925,9 +925,9 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleToggleCustomBackgroundEditMode = (customBackgroundEditMode: boolean) => {
+    handleChangeCustomBackgroundDesignMode = (customBackgroundDesignMode: boolean) => {
         this.setState({
-            customBackgroundEditMode: customBackgroundEditMode
+            customBackgroundDesignMode: customBackgroundDesignMode
         });
     }
 
@@ -1154,7 +1154,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState((state) => {
             const stateUpdate: $Shape<AppState> = {};
 
-            if (state.customBackgroundEditMode) {
+            if (state.customBackgroundDesignMode) {
                 stateUpdate.characterState = state.characterState.setPosition(x, y);
 
                 if (state.selectedCustomBackgroundTile != null) {
@@ -1278,7 +1278,7 @@ export class App extends React.Component<AppProps, AppState> {
                     theme={this.state.settings.theme}
                     world={this.state.settings.world}
                     customBackground={this.state.customBackground}
-                    customBackgroundEditMode={this.state.customBackgroundEditMode}
+                    customBackgroundDesignMode={this.state.customBackgroundDesignMode}
                     startingX={this.state.startingX}
                     startingY={this.state.startingY}
                     runningState={this.state.runningState}
@@ -1314,8 +1314,8 @@ export class App extends React.Component<AppProps, AppState> {
                         <WorldIcon className='App__world-selector-icon'/>
                     </IconButton>
                     <CustomBackgroundDesignModeButton
-                        customBackgroundDesignMode={this.state.customBackgroundEditMode}
-                        onChange={this.handleToggleCustomBackgroundEditMode}
+                        customBackgroundDesignMode={this.state.customBackgroundDesignMode}
+                        onChange={this.handleChangeCustomBackgroundDesignMode}
                     />
                 </div>
             </React.Fragment>
@@ -1338,7 +1338,7 @@ export class App extends React.Component<AppProps, AppState> {
             <CharacterPositionController
                 characterState={this.state.characterState}
                 editingDisabled={this.editingIsDisabled()}
-                customBackgroundEditMode={this.state.customBackgroundEditMode}
+                customBackgroundDesignMode={this.state.customBackgroundDesignMode}
                 selectedCustomBackgroundTile={this.state.selectedCustomBackgroundTile}
                 onChangeCharacterPosition={this.handleChangeCharacterPosition}
                 onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
@@ -1493,7 +1493,7 @@ export class App extends React.Component<AppProps, AppState> {
                 runningState={this.state.runningState}
                 world={this.state.settings.world}
                 customBackground={this.state.customBackground}
-                customBackgroundEditMode={this.state.customBackgroundEditMode}
+                customBackgroundDesignMode={this.state.customBackgroundDesignMode}
                 characterDescriptionBuilder={this.characterDescriptionBuilder}
             />
         );
@@ -1560,8 +1560,8 @@ export class App extends React.Component<AppProps, AppState> {
                     className={
                         classNames(
                             'App__container',
-                            this.state.customBackgroundEditMode
-                                && 'App__container--customBackgroundEditMode'
+                            this.state.customBackgroundDesignMode
+                                && 'App__container--customBackgroundDesignMode'
                         )
                     }
                     role='main'
@@ -1569,7 +1569,7 @@ export class App extends React.Component<AppProps, AppState> {
                     onKeyDown={this.handleRootKeyDown}
                 >
                     {this.renderNotificationArea()}
-                    {this.state.customBackgroundEditMode ?
+                    {this.state.customBackgroundDesignMode ?
                         <React.Fragment>
                             <header className='App__header'>
                                 {this.renderHeaderContents()}

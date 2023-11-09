@@ -22,7 +22,7 @@ type CharacterPositionControllerProps = {
     intl: IntlShape,
     characterState: CharacterState,
     editingDisabled: boolean,
-    customBackgroundEditMode: boolean,
+    customBackgroundDesignMode: boolean,
     selectedCustomBackgroundTile: ?TileCode,
     onChangeCharacterPosition: (direction: ?string) => void,
     onChangeCharacterXPosition: (columnLabel: string) => void,
@@ -151,7 +151,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
 
         return (
             <div className='CharacterPositionController'>
-                {!(this.props.customBackgroundEditMode) &&
+                {!(this.props.customBackgroundDesignMode) &&
                     <div className='CharacterPositionController__character-turn-positions'>
                         <TurnPositionLeft
                             className={characterPositionButtonClassName}
@@ -198,7 +198,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
                         onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined}
                     />
-                    {this.props.customBackgroundEditMode ?
+                    {this.props.customBackgroundDesignMode ?
                         <IconButton
                             className='CharacterPositionController__paintbrushButton'
                             disabled={this.props.selectedCustomBackgroundTile == null}

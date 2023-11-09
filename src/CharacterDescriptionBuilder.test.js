@@ -76,7 +76,7 @@ test('All 8 directions', () => {
     )).toBe('At A 1 facing upper left');
 });
 
-test('Space, edit mode: no, background description: no, custom background tile: no', () => {
+test('Space, design mode: no, background description: no, custom background tile: no', () => {
     const builder = new CharacterDescriptionBuilder(intl);
     expect(builder.buildCharacterDescription(
         new CharacterState(3, 2, 2, [], sceneDimensions),
@@ -86,7 +86,7 @@ test('Space, edit mode: no, background description: no, custom background tile: 
     )).toBe('At C 2 facing right');
 });
 
-test('Space, edit mode: no, background description: no, custom background tile: yes', () => {
+test('Space, design mode: no, background description: no, custom background tile: yes', () => {
     const builder = new CharacterDescriptionBuilder(intl);
     expect(builder.buildCharacterDescription(
         new CharacterState(3, 2, 2, [], sceneDimensions),
@@ -99,7 +99,7 @@ test('Space, edit mode: no, background description: no, custom background tile: 
     )).toBe('At C 2 on wall facing right');
 });
 
-test('Space, edit mode: no, background description: yes, custom background tile: no', () => {
+test('Space, design mode: no, background description: yes, custom background tile: no', () => {
     const builder = new CharacterDescriptionBuilder(intl);
     expect(builder.buildCharacterDescription(
         new CharacterState(3, 1, 2, [], sceneDimensions),
@@ -109,7 +109,7 @@ test('Space, edit mode: no, background description: yes, custom background tile:
     )).toBe('At C 1 on the Moon facing right');
 });
 
-test('Space, edit mode: no, background description: yes, custom background tile: yes', () => {
+test('Space, design mode: no, background description: yes, custom background tile: yes', () => {
     const builder = new CharacterDescriptionBuilder(intl);
     expect(builder.buildCharacterDescription(
         new CharacterState(3, 1, 2, [], sceneDimensions),
@@ -121,7 +121,7 @@ test('Space, edit mode: no, background description: yes, custom background tile:
     )).toBe('At C 1 on wall facing right');
 });
 
-test('Space, edit mode: yes, background description: no, custom background tile: no', () => {
+test('Space, design mode: yes, background description: no, custom background tile: no', () => {
     const builder = new CharacterDescriptionBuilder(intl);
     expect(builder.buildCharacterDescription(
         new CharacterState(3, 2, 2, [], sceneDimensions),
@@ -131,7 +131,7 @@ test('Space, edit mode: yes, background description: no, custom background tile:
     )).toBe('At C 2');
 });
 
-test('Space, edit mode: yes, background description: no, custom background tile: yes', () => {
+test('Space, design mode: yes, background description: no, custom background tile: yes', () => {
     const builder = new CharacterDescriptionBuilder(intl);
     expect(builder.buildCharacterDescription(
         new CharacterState(3, 2, 2, [], sceneDimensions),
@@ -144,7 +144,7 @@ test('Space, edit mode: yes, background description: no, custom background tile:
     )).toBe('At C 2 on wall');
 });
 
-test('Space, edit mode: yes, background description: yes, custom background tile: no', () => {
+test('Space, design mode: yes, background description: yes, custom background tile: no', () => {
     const builder = new CharacterDescriptionBuilder(intl);
     expect(builder.buildCharacterDescription(
         new CharacterState(3, 1, 2, [], sceneDimensions),
@@ -154,7 +154,7 @@ test('Space, edit mode: yes, background description: yes, custom background tile
     )).toBe('At C 1 on the Moon');
 });
 
-test('Space, edit mode: yes, background description: yes, custom background tile: yes', () => {
+test('Space, design mode: yes, background description: yes, custom background tile: yes', () => {
     const builder = new CharacterDescriptionBuilder(intl);
     expect(builder.buildCharacterDescription(
         new CharacterState(3, 1, 2, [], sceneDimensions),

@@ -18,7 +18,7 @@ const defaultCharacterPositionControllerProps = {
     interpreterIsRunning: false,
     characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
     editingDisabled: false,
-    customBackgroundEditMode: false,
+    customBackgroundDesignMode: false,
     selectedCustomBackgroundTile: null
 };
 
@@ -230,7 +230,7 @@ describe('Using change character position by column/row labels', () => {
 
 test('When in default mode, show the set start button and the turn buttons', () => {
     const { wrapper } = createShallowCharacterPositionController({
-        customBackgroundEditMode: false
+        customBackgroundDesignMode: false
     });
 
     expect(getCenterButtonIcon(wrapper).get(0).type.render().props.children).toBe('SetStartIcon.svg');
@@ -249,7 +249,7 @@ test('When the set start button is clicked, the provided callback is called', ()
         mockClickSetStartButton,
         mockClickPaintbrushButton
     } = createShallowCharacterPositionController({
-        customBackgroundEditMode: false
+        customBackgroundDesignMode: false
     });
 
     getSetStartButton(wrapper).simulate('click');
@@ -258,9 +258,9 @@ test('When the set start button is clicked, the provided callback is called', ()
     expect(mockClickPaintbrushButton.mock.calls.length).toBe(0);
 });
 
-test('When in custom background edit mode, show the paintbrush button and hide the turn buttons', () => {
+test('When in custom background design mode, show the paintbrush button and hide the turn buttons', () => {
     const { wrapper } = createShallowCharacterPositionController({
-        customBackgroundEditMode: true
+        customBackgroundDesignMode: true
     });
 
     expect(getCenterButtonIcon(wrapper).get(0).type.render().props.children).toBe('PaintbrushIcon.svg');
@@ -275,7 +275,7 @@ test('When in custom background edit mode, show the paintbrush button and hide t
 
 test('When no tile is selected, the paintbrush button is disabled', () => {
     const { wrapper } = createShallowCharacterPositionController({
-        customBackgroundEditMode: true,
+        customBackgroundDesignMode: true,
         selectedCustomBackgroundTile: null
     });
 
@@ -285,7 +285,7 @@ test('When no tile is selected, the paintbrush button is disabled', () => {
 
 test('When a tile is selected, the paintbrush button is enbled and its aria-label includes information about the selected tile', () => {
     const { wrapper } = createShallowCharacterPositionController({
-        customBackgroundEditMode: true,
+        customBackgroundDesignMode: true,
         selectedCustomBackgroundTile: '1'
     });
 
@@ -295,7 +295,7 @@ test('When a tile is selected, the paintbrush button is enbled and its aria-labe
 
 test('When the eraser is selected, the paintbrush button is enbled and its aria-label is "erase square"', () => {
     const { wrapper } = createShallowCharacterPositionController({
-        customBackgroundEditMode: true,
+        customBackgroundDesignMode: true,
         selectedCustomBackgroundTile: '0'
     });
 
@@ -309,7 +309,7 @@ test('When the pintbrush button is clicked, the provided callback is called', ()
         mockClickSetStartButton,
         mockClickPaintbrushButton
     } = createShallowCharacterPositionController({
-        customBackgroundEditMode: true
+        customBackgroundDesignMode: true
     });
 
     getPaintbrushButton(wrapper).simulate('click');

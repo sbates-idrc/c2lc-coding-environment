@@ -35,7 +35,7 @@ export type SceneProps = {
     theme: ThemeName,
     world: WorldName,
     customBackground: CustomBackground,
-    customBackgroundEditMode: boolean,
+    customBackgroundDesignMode: boolean,
     startingX: number,
     startingY: number,
     runningState: RunningState,
@@ -75,7 +75,7 @@ class Scene extends React.Component<SceneProps, {}> {
             this.props.characterState,
             this.props.world,
             this.props.customBackground,
-            this.props.customBackgroundEditMode
+            this.props.customBackgroundDesignMode
         );
 
         return this.props.intl.formatMessage(
@@ -263,7 +263,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                     width={startIndicatorWidth}
                                     height={startIndicatorWidth}
                                 />
-                                {(!this.props.customBackgroundEditMode && this.props.theme === 'contrast') &&
+                                {(!this.props.customBackgroundDesignMode && this.props.theme === 'contrast') &&
                                     <circle
                                         className='Scene__characterOutline'
                                         cx={this.props.characterState.xPos}
@@ -271,7 +271,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                         r={0.51}
                                     />
                                 }
-                                {this.props.customBackgroundEditMode ?
+                                {this.props.customBackgroundDesignMode ?
                                     <PaintbrushCursor
                                         x={this.props.characterState.xPos - 0.5}
                                         y={this.props.characterState.yPos - 0.5}

@@ -38,7 +38,7 @@ export default class CharacterDescriptionBuilder {
 
     buildCharacterDescription(characterState: CharacterState,
         world: WorldName, customBackground: CustomBackground,
-        customBackgroundEditMode: boolean): string {
+        customBackgroundDesignMode: boolean): string {
 
         const columnLabel = characterState.getColumnLabel();
         const rowLabel = characterState.getRowLabel();
@@ -46,7 +46,7 @@ export default class CharacterDescriptionBuilder {
         const itemLabel = this.getItemLabel(characterState, columnLabel,
             rowLabel, world, customBackground);
 
-        if (customBackgroundEditMode) {
+        if (customBackgroundDesignMode) {
             if (itemLabel) {
                 return this.intl.formatMessage(
                     {
