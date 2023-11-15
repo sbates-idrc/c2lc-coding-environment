@@ -177,41 +177,43 @@ export default class CharacterState {
     }
 
     changeXPosition(columnLabel: string): CharacterState {
-        let newXPos = this.xPos;
-        if (columnLabel <= String.fromCharCode(64 + this.sceneDimensions.getWidth()) && columnLabel >='A') {
-            newXPos = columnLabel.charCodeAt(0) - 64;
-        } else if (columnLabel <= String.fromCharCode(96 + this.sceneDimensions.getWidth()) && columnLabel >='a') {
-            newXPos = columnLabel.charCodeAt(0) - 96;
+        const xFromLabel = this.sceneDimensions.getXFromColumnLabel(columnLabel);
+        if (xFromLabel == null) {
+            return this;
+        } else {
+            return new CharacterState(
+                xFromLabel,
+                this.yPos,
+                this.direction,
+                this.path,
+                this.sceneDimensions
+            );
         }
-        return new CharacterState(
-            newXPos,
-            this.yPos,
-            this.direction,
-            this.path,
-            this.sceneDimensions
-        );
     }
 
-    changeYPosition(rowLabel: number): CharacterState {
-        let newYPos = this.yPos;
-        if (rowLabel <= this.sceneDimensions.getHeight() && rowLabel >= 1) {
-            newYPos = rowLabel;
+    changeYPosition(rowLabel: string): CharacterState {
+        const yFromLabel = this.sceneDimensions.getYFromRowLabel(rowLabel);
+        if (yFromLabel == null) {
+            return this;
+        } else {
+            return new CharacterState(
+                this.xPos,
+                yFromLabel,
+                this.direction,
+                this.path,
+                this.sceneDimensions
+            );
         }
-        return new CharacterState(
-            this.xPos,
-            newYPos,
-            this.direction,
-            this.path,
-            this.sceneDimensions
-        );
     }
 
     getRowLabel(): string {
-        return `${this.yPos}`;
+        const label = this.sceneDimensions.getRowLabel(this.yPos);
+        return (label == null ? '' : label);
     }
 
     getColumnLabel(): string {
-        return String.fromCharCode(64 + this.xPos);
+        const label = this.sceneDimensions.getColumnLabel(this.xPos);
+        return (label == null ? '' : label);
     }
 
     // Internal implementation methods

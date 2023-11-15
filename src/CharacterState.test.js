@@ -490,13 +490,13 @@ test('ChangeXPosition gets column label and updates xPosition', () => {
 
 test('ChangeYPosition gets row label and updates yPosition', () => {
     const sceneDimensions = new SceneDimensions(1, 26, 1, 16);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeYPosition(16)): any)
+    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeYPosition('16')): any)
         .toHaveCharacterState(2, 16, 2, []);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeYPosition(1)): any)
+    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeYPosition('1')): any)
         .toHaveCharacterState(2, 1, 2, []);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeYPosition(0)): any)
+    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeYPosition('0')): any)
         .toHaveCharacterState(2, 3, 2, []);
-    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeYPosition(17)): any)
+    (expect(new CharacterState(2, 3, 2, [], sceneDimensions).changeYPosition('17')): any)
         .toHaveCharacterState(2, 3, 2, []);
 });
 

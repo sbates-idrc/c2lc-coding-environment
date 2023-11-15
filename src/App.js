@@ -1072,7 +1072,7 @@ export class App extends React.Component<AppProps, AppState> {
     handleChangeCharacterYPosition = (rowLabel: string) => {
         this.setState((state) => {
             return {
-                characterState: state.characterState.changeYPosition(parseInt(rowLabel, 10))
+                characterState: state.characterState.changeYPosition(rowLabel)
             };
         });
     }
