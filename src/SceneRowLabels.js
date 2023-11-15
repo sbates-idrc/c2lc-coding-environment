@@ -12,6 +12,7 @@ export default class SceneRowLabels extends React.PureComponent<SceneRowLabelsPr
         const rowLabels = [];
 
         for (let i = 1; i < this.props.dimensions.getHeight() + 1; i++) {
+            const label = this.props.dimensions.getRowLabel(i);
             rowLabels.push(
                 <text
                     className='Scene__grid-label'
@@ -22,7 +23,7 @@ export default class SceneRowLabels extends React.PureComponent<SceneRowLabelsPr
                     x={-0.5}
                     // Center the label with cell height of 10
                     y={(i * 10) - 5}>
-                    {i}
+                    {label == null ? '' : label}
                 </text>
             )
         }

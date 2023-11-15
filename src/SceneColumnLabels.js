@@ -12,6 +12,7 @@ export default class SceneColumnLabels extends React.PureComponent<SceneColumnLa
         const columnLabels = [];
 
         for (let i = 1; i < this.props.dimensions.getWidth() + 1; i++) {
+            const label = this.props.dimensions.getColumnLabel(i);
             columnLabels.push(
                 <text
                     className='Scene__grid-label'
@@ -21,7 +22,7 @@ export default class SceneColumnLabels extends React.PureComponent<SceneColumnLa
                     // Center the label with cell width of 10
                     x={(i * 10) - 5}
                     y={0.5}>
-                    {String.fromCharCode(64 + i)}
+                    {label == null ? '' : label}
                 </text>
             )
         }
