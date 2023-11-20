@@ -1,6 +1,9 @@
 // @flow
 
 import { App } from './App';
+import type { AppState } from './App';
+import CharacterMessageBuilder from './CharacterMessageBuilder';
+import type { IntlShape } from 'react-intl';
 import SceneDimensions from './SceneDimensions';
 import type { AudioManager, BlockName } from './types';
 import * as Utils from './Utils';
@@ -13,11 +16,13 @@ export default class ActionsHandler {
     app: App;
     audioManager: AudioManager;
     sceneDimensions: SceneDimensions;
+    characterMessageBuilder: CharacterMessageBuilder;
 
-    constructor(app: App, audioManager: AudioManager, sceneDimensions: SceneDimensions) {
+    constructor(app: App, audioManager: AudioManager, sceneDimensions: SceneDimensions, intl: IntlShape) {
         this.app = app;
         this.audioManager = audioManager;
         this.sceneDimensions = sceneDimensions;
+        this.characterMessageBuilder = new CharacterMessageBuilder(sceneDimensions, intl);
     }
 
     doAction(action: BlockName, stepTimeMs: number): Promise<void> {
@@ -53,26 +58,40 @@ export default class ActionsHandler {
 
     forward(distance: number, action: string, stepTimeMs: number): Promise<void> {
         this.app.setState((state) => {
-            const newCharacterState = state.characterState.forward(distance,
+            const characterUpdate = state.characterState.forward(distance,
                 state.drawingEnabled, state.customBackground);
             this.audioManager.playSoundForCharacterState(action,
-                stepTimeMs, newCharacterState, this.sceneDimensions);
-            return {
-                characterState: newCharacterState
-            };
+                stepTimeMs, characterUpdate.characterState, this.sceneDimensions);
+            const stateUpdate = ({
+                characterState: characterUpdate.characterState
+            }: $Shape<AppState>);
+            if (characterUpdate.event != null) {
+                const message = this.characterMessageBuilder.buildMessage(characterUpdate.event);
+                if (message != null) {
+                    stateUpdate.message = message;
+                }
+            }
+            return stateUpdate;
         });
         return Utils.makeDelayedPromise(stepTimeMs);
     }
 
     backward(distance: number, action: string, stepTimeMs: number): Promise<void> {
         this.app.setState((state) => {
-            const newCharacterState = state.characterState.backward(distance,
+            const characterUpdate = state.characterState.backward(distance,
                 state.drawingEnabled, state.customBackground);
             this.audioManager.playSoundForCharacterState(action,
-                stepTimeMs, newCharacterState, this.sceneDimensions);
-            return {
-                characterState: newCharacterState
-            };
+                stepTimeMs, characterUpdate.characterState, this.sceneDimensions);
+            const stateUpdate = ({
+                characterState: characterUpdate.characterState
+            }: $Shape<AppState>);
+            if (characterUpdate.event != null) {
+                const message = this.characterMessageBuilder.buildMessage(characterUpdate.event);
+                if (message != null) {
+                    stateUpdate.message = message;
+                }
+            }
+            return stateUpdate;
         });
         return Utils.makeDelayedPromise(stepTimeMs);
     }

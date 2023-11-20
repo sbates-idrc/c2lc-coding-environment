@@ -42,7 +42,7 @@ export default class CustomBackground {
         return new CustomBackground(this.sceneDimensions, tiles);
     }
 
-    canMoveTo(x: number, y: number): boolean {
-        return !(isWall(this.tiles[this.calculateIndex(x, y)]));
+    isWall(x: number, y: number): boolean {
+        return isWall(this.tiles[this.calculateIndex(x, y)]);
     }
 }

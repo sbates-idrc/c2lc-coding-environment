@@ -1,8 +1,13 @@
 @import 'variables';
 
+$c2lc-scene-left-offset: 20px;
+$c2lc-scene-right-offset: 20px;
+$c2lc-scene-top-offset: 20px;
+
 // Grid for Scene-container is set in App.scss
 .Scene__container {
     position: relative;
+    z-index: 0;
     height: 100%;
     display: grid;
     grid-template-columns: $c2lc-scene-row-header-width auto;
@@ -10,6 +15,20 @@
     background-color: #CCE6E2;
     border: $c2lc-scene-border-width solid #CCE6E2;
     border-radius: 3px;
+}
+
+.Scene__SceneMessage {
+    position: absolute;
+    z-index: 1;
+    left: calc(#{$c2lc-scene-row-header-width} + #{$c2lc-scene-left-offset});
+    top: calc(#{$c2lc-scene-col-header-height} + #{$c2lc-scene-top-offset});
+    max-width: calc(
+        100%
+        - #{$c2lc-scene-row-header-width}
+        - #{$c2lc-scene-space-for-scrollbar}
+        - #{$c2lc-scene-left-offset}
+        - #{$c2lc-scene-right-offset}
+    );
 }
 
 .Scene {

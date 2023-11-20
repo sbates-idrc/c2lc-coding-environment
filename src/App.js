@@ -26,6 +26,7 @@ import FakeAudioManager from './FakeAudioManager';
 import FocusTrapManager from './FocusTrapManager';
 import IconButton from './IconButton';
 import Interpreter from './Interpreter';
+import Message from './Message';
 import PlayButton from './PlayButton';
 import ProgramBlockEditor from './ProgramBlockEditor';
 import RefreshButton from './RefreshButton';
@@ -135,7 +136,8 @@ export type AppState = {
     startingDirection: number,
     customBackground: CustomBackground,
     customBackgroundDesignMode: boolean,
-    selectedCustomBackgroundTile: ?TileCode
+    selectedCustomBackgroundTile: ?TileCode,
+    message: ?Message
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -233,6 +235,7 @@ export class App extends React.Component<AppProps, AppState> {
             customBackground: new CustomBackground(this.sceneDimensions),
             customBackgroundDesignMode: false,
             selectedCustomBackgroundTile: null,
+            message: null,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -263,7 +266,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.programBlockEditorRef = React.createRef();
 
         const actionsHandler = new ActionsHandler(this, this.audioManager,
-            this.sceneDimensions);
+            this.sceneDimensions, this.props.intl);
         this.interpreter = new Interpreter(1000, this, actionsHandler);
     }
 
@@ -407,7 +410,8 @@ export class App extends React.Component<AppProps, AppState> {
                     return {
                         programSequence: state.programSequence.initiateProgramRun(),
                         runningState: 'running',
-                        actionPanelStepIndex: null
+                        actionPanelStepIndex: null,
+                        message: null
                     };
                 });
                 break;
@@ -996,7 +1000,8 @@ export class App extends React.Component<AppProps, AppState> {
                     state.startingX,
                     state.startingY,
                     state.startingDirection
-                )
+                ),
+                message: null
             };
         });
     }
@@ -1150,6 +1155,18 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ selectedCustomBackgroundTile: tileCode });
     }
 
+    handleDismissMessage = () => {
+        this.setState((state) => {
+            if (state.message != null) {
+                return {
+                    message: state.message.dismiss()
+                }
+            } else {
+                return {};
+            }
+        });
+    }
+
     handlePaintScene = (x: number, y: number) => {
         this.setState((state) => {
             const stateUpdate: $Shape<AppState> = {};
@@ -1282,7 +1299,9 @@ export class App extends React.Component<AppProps, AppState> {
                     startingX={this.state.startingX}
                     startingY={this.state.startingY}
                     runningState={this.state.runningState}
+                    message={this.state.message}
                     characterDescriptionBuilder={this.characterDescriptionBuilder}
+                    onDismissMessage={this.handleDismissMessage}
                     onPaintScene={this.handlePaintScene}
                 />
             </React.Fragment>

@@ -17,10 +17,24 @@ import type { PathSegment } from './types';
 
 const characterStateMaxPathLength = 600;
 
+type CharacterEventType = 'hitWall';
+
+export type CharacterEvent = {
+    type: CharacterEventType,
+    x: number,
+    y: number
+};
+
+type CharacterUpdate = {
+    characterState: CharacterState,
+    event: ?CharacterEvent
+};
+
 type MovementResult = {
     x: number,
     y: number,
-    pathSegments: Array<PathSegment>
+    pathSegments: Array<PathSegment>,
+    event: ?CharacterEvent
 };
 
 export default class CharacterState {
@@ -69,27 +83,42 @@ export default class CharacterState {
         );
     }
 
-    forward(distance: number, drawingEnabled: boolean, customBackground: CustomBackground): CharacterState {
-        const movementResult = this.calculateMove(distance, this.direction, drawingEnabled, customBackground);
-        return new CharacterState(
-            movementResult.x,
-            movementResult.y,
+    forward(distance: number, drawingEnabled: boolean, customBackground: CustomBackground): CharacterUpdate {
+        const movementResult = this.calculateMove(
+            distance,
             this.direction,
-            this.mergePathSegments(this.path, movementResult.pathSegments),
-            this.sceneDimensions
+            drawingEnabled,
+            customBackground
         );
+        return {
+            characterState: new CharacterState(
+                movementResult.x,
+                movementResult.y,
+                this.direction,
+                this.mergePathSegments(this.path, movementResult.pathSegments),
+                this.sceneDimensions
+            ),
+            event: movementResult.event
+        };
     }
 
-    backward(distance: number, drawingEnabled: boolean, customBackground: CustomBackground): CharacterState {
-        const movementResult = this.calculateMove(distance,
-                C2lcMath.wrap(0, 8, this.direction + 4), drawingEnabled, customBackground);
-        return new CharacterState(
-            movementResult.x,
-            movementResult.y,
-            this.direction,
-            this.mergePathSegments(this.path, movementResult.pathSegments),
-            this.sceneDimensions
+    backward(distance: number, drawingEnabled: boolean, customBackground: CustomBackground): CharacterUpdate {
+        const movementResult = this.calculateMove(
+            distance,
+            C2lcMath.wrap(0, 8, this.direction + 4),
+            drawingEnabled,
+            customBackground
         );
+        return {
+            characterState: new CharacterState(
+                movementResult.x,
+                movementResult.y,
+                this.direction,
+                this.mergePathSegments(this.path, movementResult.pathSegments),
+                this.sceneDimensions
+            ),
+            event: movementResult.event
+        };
     }
 
     turnLeft(amountEighthsOfTurn: number): CharacterState {
@@ -224,6 +253,7 @@ export default class CharacterState {
         const pathSegments = [];
         let x = this.xPos;
         let y = this.yPos;
+        let event = null;
 
         for (let i = 0; i < distance; i++) {
             const movementResult = this.calculateMoveOneGridUnit(x, y, direction, customBackground);
@@ -232,12 +262,14 @@ export default class CharacterState {
             if (drawingEnabled) {
                 Array.prototype.push.apply(pathSegments, movementResult.pathSegments);
             }
+            event = movementResult.event;
         }
 
         return {
             x,
             y,
-            pathSegments
+            pathSegments,
+            event
         };
     }
 
@@ -246,6 +278,7 @@ export default class CharacterState {
     calculateMoveOneGridUnit(x: number, y: number, direction: number, customBackground: CustomBackground): MovementResult {
         let newX;
         let newY;
+        let event: ?CharacterEvent = null;
 
         switch(direction) {
             case 0:
@@ -287,7 +320,12 @@ export default class CharacterState {
         newX = C2lcMath.clamp(1, this.sceneDimensions.getWidth(), newX);
         newY = C2lcMath.clamp(1, this.sceneDimensions.getHeight(), newY);
 
-        if (!customBackground.canMoveTo(newX, newY)) {
+        if (customBackground.isWall(newX, newY)) {
+            event = {
+                type: 'hitWall',
+                x: newX,
+                y: newY
+            };
             newX = x;
             newY = y;
         }
@@ -297,7 +335,8 @@ export default class CharacterState {
             return {
                 x: newX,
                 y: newY,
-                pathSegments: []
+                pathSegments: [],
+                event: event
             };
         } else {
             // We did move, return a path segment
@@ -310,7 +349,8 @@ export default class CharacterState {
             return {
                 x: newX,
                 y: newY,
-                pathSegments: [pathSegment]
+                pathSegments: [pathSegment],
+                event: event
             };
         }
     }

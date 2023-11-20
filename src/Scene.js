@@ -5,12 +5,14 @@ import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
 import CustomBackgroundSceneLayer from './CustomBackgroundSceneLayer';
+import Message from './Message';
 import SceneBackground from './SceneBackground';
 import SceneCharacter from './SceneCharacter';
 import SceneCharacterPath from './SceneCharacterPath';
 import SceneColumnLabels from './SceneColumnLabels';
 import SceneDimensions from './SceneDimensions';
 import SceneGrid from './SceneGrid';
+import SceneMessage from './SceneMessage';
 import SceneRowLabels from './SceneRowLabels';
 import { injectIntl } from 'react-intl';
 import type { IntlShape } from 'react-intl';
@@ -39,7 +41,9 @@ export type SceneProps = {
     startingX: number,
     startingY: number,
     runningState: RunningState,
+    message: ?Message,
     characterDescriptionBuilder: CharacterDescriptionBuilder,
+    onDismissMessage: () => void,
     onPaintScene: (x: number, y: number) => void,
     intl: IntlShape
 };
@@ -198,6 +202,14 @@ class Scene extends React.Component<SceneProps, {}> {
         return (
             <React.Fragment>
                 <div className='Scene__container'>
+                    {(this.props.message != null && !(this.props.message.dismissed)) &&
+                        <div className='Scene__SceneMessage'>
+                            <SceneMessage
+                                message={this.props.message}
+                                onDismiss={this.props.onDismissMessage}
+                            />
+                        </div>
+                    }
                     <div
                         tabIndex='-1'
                         aria-hidden='true'
