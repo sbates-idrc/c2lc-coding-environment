@@ -2,6 +2,7 @@
 
 import { App } from './App';
 import ActionsHandler from './ActionsHandler';
+import type { ActionResult } from './ActionsHandler';
 import ProgramSequence from './ProgramSequence';
 import type { ProgramBlock } from './types';
 
@@ -42,8 +43,14 @@ export default class Interpreter {
                 this.continueRunActive = false;
                 resolve();
             } else {
-                this.step(programSequence).then(() => {
-                    this.continueRun(resolve, reject);
+                this.step(programSequence).then((result) => {
+                    if (result === 'movementBlocked') {
+                        this.app.setRunningState('paused');
+                        this.continueRunActive = false;
+                        resolve();
+                    } else {
+                        this.continueRun(resolve, reject);
+                    }
                 }, (error: Error) => {
                     // Reject the run Promise when the step Promise is rejected
                     this.app.setRunningState('stopped');
@@ -70,27 +77,38 @@ export default class Interpreter {
         return programSequence.getProgramCounter() >= programSequence.getProgramLength();
     }
 
-    step(programSequence: ProgramSequence): Promise<void> {
+    step(programSequence: ProgramSequence): Promise<ActionResult> {
         return new Promise((resolve, reject) => {
             if (this.atEnd(programSequence)) {
                 // We're at the end, nothing to do
-                resolve();
+                resolve('success');
             } else {
                 const currentProgramStep = programSequence.getCurrentProgramStep();
                 const block = currentProgramStep.block;
                 if (block === 'startLoop') {
                     this.doStartLoop(programSequence).then(() => {
-                        this.app.advanceProgramCounter(resolve);
+                        this.app.advanceProgramCounter(() => {
+                            resolve('success');
+                        });
                     });
                 } else if (block === 'endLoop') {
                     // We don't intend for the programCounter to ever be on an
                     // 'endLoop' block, but we might have a bug that would
                     // cause that case to happen and we want to handle it
                     // gracefully
-                    this.app.advanceProgramCounter(resolve);
+                    this.app.advanceProgramCounter(() => {
+                        resolve('success');
+                    });
                 } else {
-                    this.doAction(currentProgramStep).then(() => {
-                        this.app.advanceProgramCounter(resolve);
+                    this.doAction(currentProgramStep).then((result) => {
+                        if (result === 'movementBlocked') {
+                            // Don't advance the program counter
+                            resolve(result);
+                        } else {
+                            this.app.advanceProgramCounter(() => {
+                                resolve(result);
+                            });
+                        }
                     }, (error: Error) => {
                         reject(error);
                     });
@@ -99,7 +117,7 @@ export default class Interpreter {
         });
     }
 
-    doStartLoop(programSequence: ProgramSequence): Promise<any> {
+    doStartLoop(programSequence: ProgramSequence): Promise<void> {
         const programCounter = programSequence.getProgramCounter();
         if (programCounter < programSequence.getProgramLength() - 1
                 && programSequence.getProgramStepAt(programCounter + 1).block === 'endLoop') {
@@ -113,7 +131,7 @@ export default class Interpreter {
         }
     }
 
-    doAction(programStep: ProgramBlock): Promise<any> {
+    doAction(programStep: ProgramBlock): Promise<ActionResult> {
         return this.actionsHandler.doAction(programStep.block, this.stepTimeMs);
     }
 }

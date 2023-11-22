@@ -3,14 +3,16 @@
 import { App } from './App';
 import type { AppState } from './App';
 import CharacterMessageBuilder from './CharacterMessageBuilder';
+import type { CharacterUpdate } from './CharacterState';
 import type { IntlShape } from 'react-intl';
 import SceneDimensions from './SceneDimensions';
 import type { AudioManager, BlockName } from './types';
-import * as Utils from './Utils';
 
 // The ActionsHandler is called by the Interpreter for each program
 // step action as the program is running, and is responsible for
-// implementing the action behaviours.
+// implementing the action behaviours
+
+export type ActionResult = 'success' | 'movementBlocked';
 
 export default class ActionsHandler {
     app: App;
@@ -25,7 +27,7 @@ export default class ActionsHandler {
         this.characterMessageBuilder = new CharacterMessageBuilder(sceneDimensions, intl);
     }
 
-    doAction(action: BlockName, stepTimeMs: number): Promise<void> {
+    doAction(action: BlockName, stepTimeMs: number): Promise<ActionResult> {
         switch(action) {
             case 'forward1':
                 return this.forward(1, action, stepTimeMs);
@@ -56,67 +58,90 @@ export default class ActionsHandler {
         }
     }
 
-    forward(distance: number, action: string, stepTimeMs: number): Promise<void> {
-        this.app.setState((state) => {
-            const characterUpdate = state.characterState.forward(distance,
-                state.drawingEnabled, state.customBackground);
-            this.audioManager.playSoundForCharacterState(action,
-                stepTimeMs, characterUpdate.characterState, this.sceneDimensions);
-            const stateUpdate = ({
-                characterState: characterUpdate.characterState
-            }: $Shape<AppState>);
-            if (characterUpdate.event != null) {
-                const message = this.characterMessageBuilder.buildMessage(characterUpdate.event);
-                if (message != null) {
-                    stateUpdate.message = message;
-                }
+    forward(distance: number, action: string, stepTimeMs: number): Promise<ActionResult> {
+        return new Promise((resolve) => {
+            this.app.setState((state) => {
+                const characterUpdate = state.characterState.forward(distance,
+                    state.drawingEnabled, state.customBackground);
+                this.audioManager.playSoundForCharacterState(action,
+                    stepTimeMs, characterUpdate.characterState,
+                    this.sceneDimensions);
+                setTimeout(() => {
+                    resolve(this.getActionResult(characterUpdate));
+                }, stepTimeMs);
+                return this.buildStateUpdate(characterUpdate);
+            });
+        });
+    }
+
+    backward(distance: number, action: string, stepTimeMs: number): Promise<ActionResult> {
+        return new Promise((resolve) => {
+            this.app.setState((state) => {
+                const characterUpdate = state.characterState.backward(distance,
+                    state.drawingEnabled, state.customBackground);
+                this.audioManager.playSoundForCharacterState(action,
+                    stepTimeMs, characterUpdate.characterState,
+                    this.sceneDimensions);
+                setTimeout(() => {
+                    resolve(this.getActionResult(characterUpdate));
+                }, stepTimeMs);
+                return this.buildStateUpdate(characterUpdate);
+            });
+        });
+    }
+
+    turnLeft(amountEighthsOfTurn: number, action: string, stepTimeMs: number): Promise<ActionResult> {
+        return new Promise((resolve) => {
+            this.app.setState((state) => {
+                const newCharacterState = state.characterState.turnLeft(amountEighthsOfTurn);
+                this.audioManager.playSoundForCharacterState(action,
+                    stepTimeMs, newCharacterState, this.sceneDimensions);
+                setTimeout(() => { resolve('success'); }, stepTimeMs);
+                return {
+                    characterState: newCharacterState
+                };
+            });
+        });
+    }
+
+    turnRight(amountEighthsOfTurn: number, action: string, stepTimeMs: number): Promise<ActionResult> {
+        return new Promise((resolve) => {
+            this.app.setState((state) => {
+                const newCharacterState = state.characterState.turnRight(amountEighthsOfTurn);
+                this.audioManager.playSoundForCharacterState(action,
+                    stepTimeMs, newCharacterState, this.sceneDimensions);
+                setTimeout(() => { resolve('success'); }, stepTimeMs);
+                return {
+                    characterState: newCharacterState
+                };
+            });
+        });
+    }
+
+    getActionResult(characterUpdate: CharacterUpdate): ActionResult {
+        let result = 'success';
+
+        if (characterUpdate.event != null) {
+            if (characterUpdate.event.type === 'hitWall') {
+                result = 'movementBlocked';
             }
-            return stateUpdate;
-        });
-        return Utils.makeDelayedPromise(stepTimeMs);
+        }
+
+        return result;
     }
 
-    backward(distance: number, action: string, stepTimeMs: number): Promise<void> {
-        this.app.setState((state) => {
-            const characterUpdate = state.characterState.backward(distance,
-                state.drawingEnabled, state.customBackground);
-            this.audioManager.playSoundForCharacterState(action,
-                stepTimeMs, characterUpdate.characterState, this.sceneDimensions);
-            const stateUpdate = ({
-                characterState: characterUpdate.characterState
-            }: $Shape<AppState>);
-            if (characterUpdate.event != null) {
-                const message = this.characterMessageBuilder.buildMessage(characterUpdate.event);
-                if (message != null) {
-                    stateUpdate.message = message;
-                }
+    buildStateUpdate(characterUpdate: CharacterUpdate): $Shape<AppState> {
+        const stateUpdate: $Shape<AppState> = {
+            characterState: characterUpdate.characterState
+        };
+
+        if (characterUpdate.event != null) {
+            const message = this.characterMessageBuilder.buildMessage(characterUpdate.event);
+            if (message != null) {
+                stateUpdate.message = message;
             }
-            return stateUpdate;
-        });
-        return Utils.makeDelayedPromise(stepTimeMs);
-    }
+        }
 
-    turnLeft(amountEighthsOfTurn: number, action: string, stepTimeMs: number): Promise<void> {
-        this.app.setState((state) => {
-            const newCharacterState = state.characterState.turnLeft(amountEighthsOfTurn);
-            this.audioManager.playSoundForCharacterState(action,
-                stepTimeMs, newCharacterState, this.sceneDimensions);
-            return {
-                characterState: newCharacterState
-            };
-        });
-        return Utils.makeDelayedPromise(stepTimeMs);
-    }
-
-    turnRight(amountEighthsOfTurn: number, action: string, stepTimeMs: number): Promise<void> {
-        this.app.setState((state) => {
-            const newCharacterState = state.characterState.turnRight(amountEighthsOfTurn);
-            this.audioManager.playSoundForCharacterState(action,
-                stepTimeMs, newCharacterState, this.sceneDimensions);
-            return {
-                characterState: newCharacterState
-            };
-        });
-        return Utils.makeDelayedPromise(stepTimeMs);
+        return stateUpdate;
     }
 };

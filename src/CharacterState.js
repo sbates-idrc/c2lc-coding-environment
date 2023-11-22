@@ -25,7 +25,7 @@ export type CharacterEvent = {
     y: number
 };
 
-type CharacterUpdate = {
+export type CharacterUpdate = {
     characterState: CharacterState,
     event: ?CharacterEvent
 };

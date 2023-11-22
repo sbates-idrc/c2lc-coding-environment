@@ -13,15 +13,6 @@ function generateId(prefix: string): string {
     return id;
 }
 
-/* istanbul ignore next */
-function makeDelayedPromise(timeMs: number): Promise<void> {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve();
-        }, timeMs);
-    });
-}
-
 function generateEncodedProgramURL(versionString: string, themeString: string, worldString: string, programString: string, characterStateString: string, disallowedActionsString: string, startingPositionString: string, customBackgroundString: string): string {
     return `?v=${encodeURIComponent(versionString)}&t=${themeString}&w=${worldString}&p=${encodeURIComponent(programString)}&c=${encodeURIComponent(characterStateString)}&d=${encodeURIComponent(disallowedActionsString)}&s=${encodeURIComponent(startingPositionString)}&b=${encodeURIComponent(customBackgroundString)}`;
 }
@@ -306,7 +297,6 @@ export {
     getWorldFromString,
     getStartingPositionFromString,
     isLoopBlock,
-    makeDelayedPromise,
     parseLoopLabel,
     selectSpeechSynthesisVoice
 };

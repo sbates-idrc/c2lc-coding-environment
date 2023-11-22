@@ -31,11 +31,15 @@ function createInterpreter() {
     );
 
     actionsHandlerMock.doAction.mockImplementation((action: BlockName) => {
-        // To test error propagation, mock 'left180' as rejecting with an error
-        if (action === 'left180') {
-            return Promise.reject(new Error('error'));
-        } else {
-            return Promise.resolve();
+        // Mock ActionsHandler behaviour to test handling of different
+        // Promise results
+        switch(action) {
+            case 'left180':
+                return Promise.reject(new Error('error'));
+            case 'right180':
+                return Promise.resolve('movementBlocked');
+            default:
+                return Promise.resolve('success');
         }
     });
 
@@ -50,24 +54,27 @@ function createInterpreter() {
 
 test('Stepping an empty program leaves the program counter at 0', (done) => {
     const { interpreter, appMock } = createInterpreter();
-    interpreter.step(new ProgramSequence([], 0, 0, new Map())).then(() => {
+    interpreter.step(new ProgramSequence([], 0, 0, new Map())).then((result) => {
+        expect(result).toBe("success");
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(0);
         done();
     });
 });
 
-test('Step a program with one action', (done) => {
+test('Step a program with one successful action', (done) => {
     const { interpreter, appMock, actionsHandlerMock } = createInterpreter();
 
     const program = [{block: 'forward1'}];
 
-    interpreter.step(new ProgramSequence(program, 0, 0, new Map())).then(() => {
+    interpreter.step(new ProgramSequence(program, 0, 0, new Map())).then((result) => {
+        expect(result).toBe("success");
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
         expect(actionsHandlerMock.doAction.mock.calls.length).toBe(1);
         expect(actionsHandlerMock.doAction.mock.calls[0][0]).toBe('forward1');
         expect(actionsHandlerMock.doAction.mock.calls[0][1]).toBe(1000);
         // Test step at end of program
-        interpreter.step(new ProgramSequence(program, 1, 0, new Map())).then(() => {
+        interpreter.step(new ProgramSequence(program, 1, 0, new Map())).then((result) => {
+            expect(result).toBe("success");
             expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
             expect(actionsHandlerMock.doAction.mock.calls.length).toBe(1);
             done();
@@ -75,23 +82,26 @@ test('Step a program with one action', (done) => {
     });
 });
 
-test('Step a program with two actions', (done) => {
+test('Step a program with two successful actions', (done) => {
     const { interpreter, appMock, actionsHandlerMock } = createInterpreter();
 
     const program = [{block: 'forward1'}, {block: 'forward2'}];
 
-    interpreter.step(new ProgramSequence(program, 0, 0, new Map())).then(() => {
+    interpreter.step(new ProgramSequence(program, 0, 0, new Map())).then((result) => {
+        expect(result).toBe("success");
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
         expect(actionsHandlerMock.doAction.mock.calls.length).toBe(1);
         expect(actionsHandlerMock.doAction.mock.calls[0][0]).toBe('forward1');
         expect(actionsHandlerMock.doAction.mock.calls[0][1]).toBe(1000);
-        interpreter.step(new ProgramSequence(program, 1, 0, new Map())).then(() => {
+        interpreter.step(new ProgramSequence(program, 1, 0, new Map())).then((result) => {
+            expect(result).toBe("success");
             expect(appMock.advanceProgramCounter.mock.calls.length).toBe(2);
             expect(actionsHandlerMock.doAction.mock.calls.length).toBe(2);
             expect(actionsHandlerMock.doAction.mock.calls[1][0]).toBe('forward2');
             expect(actionsHandlerMock.doAction.mock.calls[1][1]).toBe(1000);
             // Test step at end of program
-            interpreter.step(new ProgramSequence(program, 2, 0, new Map())).then(() => {
+            interpreter.step(new ProgramSequence(program, 2, 0, new Map())).then((result) => {
+                expect(result).toBe("success");
                 expect(appMock.advanceProgramCounter.mock.calls.length).toBe(2);
                 expect(actionsHandlerMock.doAction.mock.calls.length).toBe(2);
                 done();
@@ -100,8 +110,23 @@ test('Step a program with two actions', (done) => {
     });
 });
 
+test('Stepping on a "movementBlocked" action does not advance the program counter', (done) => {
+    const { interpreter, appMock, actionsHandlerMock } = createInterpreter();
+
+    const program = [{block: 'right180'}];
+
+    interpreter.step(new ProgramSequence(program, 0, 0, new Map())).then((result) => {
+        expect(result).toBe("movementBlocked");
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(0);
+        expect(actionsHandlerMock.doAction.mock.calls.length).toBe(1);
+        expect(actionsHandlerMock.doAction.mock.calls[0][0]).toBe('right180');
+        expect(actionsHandlerMock.doAction.mock.calls[0][1]).toBe(1000);
+        done();
+    });
+});
+
 test('Step on a startLoop block of an empty loop', (done) => {
-    expect.assertions(1);
+    expect.assertions(2);
     const { interpreter, appMock } = createInterpreter();
 
     const program = [
@@ -109,14 +134,15 @@ test('Step on a startLoop block of an empty loop', (done) => {
         {block: 'endLoop', label: 'A'}
     ];
 
-    interpreter.step(new ProgramSequence(program, 0, 1, new Map([[ 'A', 2 ]]))).then(() => {
+    interpreter.step(new ProgramSequence(program, 0, 1, new Map([[ 'A', 2 ]]))).then((result) => {
+        expect(result).toBe("success");
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
         done();
     });
 });
 
 test('Step on a startLoop block of a non-empty loop', (done) => {
-    expect.assertions(1);
+    expect.assertions(2);
     const { interpreter, appMock } = createInterpreter();
 
     const program = [
@@ -125,14 +151,15 @@ test('Step on a startLoop block of a non-empty loop', (done) => {
         {block: 'endLoop', label: 'A'}
     ];
 
-    interpreter.step(new ProgramSequence(program, 0, 1, new Map([[ 'A', 2 ]]))).then(() => {
+    interpreter.step(new ProgramSequence(program, 0, 1, new Map([[ 'A', 2 ]]))).then((result) => {
+        expect(result).toBe("success");
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
         done();
     });
 });
 
 test('Step on an endLoop block', (done) => {
-    expect.assertions(1);
+    expect.assertions(2);
     const { interpreter, appMock } = createInterpreter();
 
     const program = [
@@ -140,7 +167,8 @@ test('Step on an endLoop block', (done) => {
         {block: 'endLoop', label: 'A'}
     ];
 
-    interpreter.step(new ProgramSequence(program, 1, 1, new Map([[ 'A', 2 ]]))).then(() => {
+    interpreter.step(new ProgramSequence(program, 1, 1, new Map([[ 'A', 2 ]]))).then((result) => {
+        expect(result).toBe("success");
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
         done();
     });
@@ -175,7 +203,8 @@ test('Do an action with a program', (done) => {
         expect(actionsHandlerMock.doAction.mock.calls[0][0]).toBe('forward1');
         expect(actionsHandlerMock.doAction.mock.calls[0][1]).toBe(1000);
         // Then step the program
-        interpreter.step(new ProgramSequence([{block: 'forward2'}], 0, 0, new Map())).then(() => {
+        interpreter.step(new ProgramSequence([{block: 'forward2'}], 0, 0, new Map())).then((result) => {
+            expect(result).toBe("success");
             expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
             expect(actionsHandlerMock.doAction.mock.calls.length).toBe(2);
             expect(actionsHandlerMock.doAction.mock.calls[1][0]).toBe('forward2');
@@ -284,6 +313,27 @@ test('Do not continue through program if runningState changes to stopped', (done
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
         expect(actionsHandlerMock.doAction.mock.calls.length).toBe(1);
         expect(actionsHandlerMock.doAction.mock.calls[0][0]).toBe('forward1');
+        expect(actionsHandlerMock.doAction.mock.calls[0][1]).toBe(1000);
+        done();
+    });
+});
+
+test('Run pauses on a "movementBlocked" action', (done) => {
+    const { interpreter, appMock, actionsHandlerMock } = createInterpreter();
+
+    const program = [{block: 'right180'}];
+
+    appMock.getRunningState.mockImplementation(() => {return 'running'});
+    appMock.getProgramSequence.mockImplementation(() => {
+        return new ProgramSequence(program, 0, 0, new Map())
+    });
+
+    interpreter.startRun().then(() => {
+        expect(appMock.advanceProgramCounter.mock.calls.length).toBe(0);
+        expect(appMock.setRunningState.mock.calls.length).toBe(1);
+        expect(appMock.setRunningState.mock.calls[0][0]).toBe('paused');
+        expect(actionsHandlerMock.doAction.mock.calls.length).toBe(1);
+        expect(actionsHandlerMock.doAction.mock.calls[0][0]).toBe('right180');
         expect(actionsHandlerMock.doAction.mock.calls[0][1]).toBe(1000);
         done();
     });
