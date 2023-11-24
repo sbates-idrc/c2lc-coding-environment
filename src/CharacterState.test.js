@@ -273,9 +273,9 @@ type MovementTestCase = {|
     expectedPath: Array<PathSegment>
 |};
 
-test.each(([
+const movementTestCases: Array<MovementTestCase> = [
     {
-        name: 'Given an empty path, drawing adds a new path segment',
+        name: 'Empty path, drawingEnabled=true, distance=1: adds a new path segment',
         x: 1,
         y: 1,
         direction: 2,
@@ -287,7 +287,19 @@ test.each(([
         expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}]
     },
     {
-        name: 'When drawing in the same direction, the path segment should be extended',
+        name: 'Empty path, drawingEnabled=true, distance=3: adds a new path segment',
+        x: 1,
+        y: 1,
+        direction: 2,
+        path: [],
+        distance: 3,
+        drawingEnabled: true,
+        expectedX: 4,
+        expectedY: 1,
+        expectedPath: [{x1: 1, y1: 1, x2: 4, y2: 1}]
+    },
+    {
+        name: 'Non-empty path, drawing in the same direction, distance=1: the path segment is extended',
         x: 2,
         y: 1,
         direction: 2,
@@ -299,34 +311,46 @@ test.each(([
         expectedPath: [{x1: 1, y1: 1, x2: 3, y2: 1}]
     },
     {
-        name: 'When drawing in a different direction, a new path segment should be added',
+        name: 'Non-empty path, drawing in the same direction, distance=3: the path segment is extended',
         x: 2,
-        y: 2,
-        direction: 0,
-        path: [{x1: 1, y1: 2, x2: 2, y2: 2}],
+        y: 1,
+        direction: 2,
+        path: [{x1: 1, y1: 1, x2: 2, y2: 1}],
+        distance: 3,
+        drawingEnabled: true,
+        expectedX: 5,
+        expectedY: 1,
+        expectedPath: [{x1: 1, y1: 1, x2: 5, y2: 1}]
+    },
+    {
+        name: 'Non-empty path, drawing in a different direction: a new path segment is added',
+        x: 2,
+        y: 1,
+        direction: 4,
+        path: [{x1: 1, y1: 1, x2: 2, y2: 1}],
         distance: 1,
         drawingEnabled: true,
         expectedX: 2,
-        expectedY: 1,
+        expectedY: 2,
         expectedPath: [
-            {x1: 1, y1: 2, x2: 2, y2: 2},
-            {x1: 2, y1: 2, x2: 2, y2: 1}
+            {x1: 1, y1: 1, x2: 2, y2: 1},
+            {x1: 2, y1: 1, x2: 2, y2: 2}
         ]
     },
     {
-        name: 'When drawing is retracing the last path segment, no path segment should be added',
-        x: 1,
+        name: 'When drawing is retracing the last path segment, no path segment is added',
+        x: 2,
         y: 1,
-        direction: 2,
-        path: [{x1: 2, y1: 1, x2: 1, y2: 1}],
+        direction: 6,
+        path: [{x1: 1, y1: 1, x2: 2, y2: 1}],
         distance: 1,
         drawingEnabled: true,
-        expectedX: 2,
+        expectedX: 1,
         expectedY: 1,
-        expectedPath: [{x1: 2, y1: 1, x2: 1, y2: 1}]
+        expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}]
     },
     {
-        name: 'When drawingEnabled is false, no path segment is added to an empty path',
+        name: 'Empty path, drawingEnabled=false, distance=1: no path segment is added',
         x: 1,
         y: 1,
         direction: 2,
@@ -338,20 +362,35 @@ test.each(([
         expectedPath: []
     },
     {
-        name: 'When drawingEnabled is false, no path segment is added to an existing path',
+        name: 'Empty path, drawingEnabled=false, distance=3: no path segment is added',
+        x: 1,
+        y: 1,
+        direction: 2,
+        path: [],
+        distance: 3,
+        drawingEnabled: false,
+        expectedX: 4,
+        expectedY: 1,
+        expectedPath: []
+    },
+    {
+        name: 'Non-empty path, drawingEnabled=false: no path segment is added',
         x: 2,
         y: 1,
         direction: 2,
         path: [{x1: 1, y1: 1, x2: 2, y2: 1}],
-        distance: 2,
+        distance: 1,
         drawingEnabled: false,
-        expectedX: 4,
+        expectedX: 3,
         expectedY: 1,
         expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}]
     }
-]: Array<MovementTestCase>))('Forward: $name', (testData: MovementTestCase) => {
+];
+
+test.each(movementTestCases)('Forward: $name', (testData: MovementTestCase) => {
     const dimensions = new SceneDimensions(1, 5, 1, 5);
     const customBackground = new CustomBackground(dimensions);
+
     (expect(
         new CharacterState(
             testData.x,
@@ -368,97 +407,26 @@ test.each(([
         null);
 });
 
-test.each(([
-    {
-        name: 'Given an empty path, drawing adds a new path segment',
-        x: 1,
-        y: 1,
-        direction: 6,
-        path: [],
-        distance: 1,
-        drawingEnabled: true,
-        expectedX: 2,
-        expectedY: 1,
-        expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}]
-    },
-    {
-        name: 'When drawing in the same direction, the path segment should be extended',
-        x: 2,
-        y: 1,
-        direction: 6,
-        path: [{x1: 1, y1: 1, x2: 2, y2: 1}],
-        distance: 1,
-        drawingEnabled: true,
-        expectedX: 3,
-        expectedY: 1,
-        expectedPath: [{x1: 1, y1: 1, x2: 3, y2: 1}]
-    },
-    {
-        name: 'When drawing in a different direction, a new path segment should be added',
-        x: 2,
-        y: 2,
-        direction: 4,
-        path: [{x1: 1, y1: 2, x2: 2, y2: 2}],
-        distance: 1,
-        drawingEnabled: true,
-        expectedX: 2,
-        expectedY: 1,
-        expectedPath: [
-            {x1: 1, y1: 2, x2: 2, y2: 2},
-            {x1: 2, y1: 2, x2: 2, y2: 1}
-        ]
-    },
-    {
-        name: 'When drawing is retracing the last path segment, no path segment should be added',
-        x: 2,
-        y: 1,
-        direction: 2,
-        path: [{x1: 1, y1: 1, x2: 2, y2: 1}],
-        distance: 1,
-        drawingEnabled: true,
-        expectedX: 1,
-        expectedY: 1,
-        expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}]
-    },
-    {
-        name: 'When drawingEnabled is false, no path segment is added to an empty path',
-        x: 2,
-        y: 1,
-        direction: 2,
-        path: [],
-        distance: 1,
-        drawingEnabled: false,
-        expectedX: 1,
-        expectedY: 1,
-        expectedPath: []
-    },
-    {
-        name: 'When drawingEnabled is false, no path segment is added to an existing path',
-        x: 3,
-        y: 1,
-        direction: 2,
-        path: [{x1: 4, y1: 1, x2: 3, y2: 1}],
-        distance: 2,
-        drawingEnabled: false,
-        expectedX: 1,
-        expectedY: 1,
-        expectedPath: [{x1: 4, y1: 1, x2: 3, y2: 1}]
-    }
-]: Array<MovementTestCase>))('Backward: $name', (testData: MovementTestCase) => {
+test.each(movementTestCases)('Backward: $name', (testData: MovementTestCase) => {
+    // Reuse the same test cases for moving backward, with the direction
+    // reversed
+    const direction = (testData.direction + 4) % 8;
+
     const dimensions = new SceneDimensions(1, 5, 1, 5);
     const customBackground = new CustomBackground(dimensions);
+
     (expect(
         new CharacterState(
             testData.x,
             testData.y,
-            testData.direction,
+            direction,
             testData.path,
             dimensions
         ).backward(testData.distance, testData.drawingEnabled, customBackground)
     ): any).toBeCharacterUpdate(
         testData.expectedX,
         testData.expectedY,
-        testData.direction,
+        direction,
         testData.expectedPath,
         null);
 });
