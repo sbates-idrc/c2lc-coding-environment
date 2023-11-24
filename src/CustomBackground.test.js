@@ -57,3 +57,14 @@ test('Set tiles', () => {
     expect(originalCustomBackground.tiles).toStrictEqual(['0', '0', '0', '0', '0', '0']);
     expect(updatedCustomBackground.tiles).toStrictEqual(['1', '2', '3', '4', '5', '6']);
 });
+
+test('isWall', () => {
+    const customBackground  = new CustomBackground(
+        new SceneDimensions(1, 2, 1, 2),
+        ['0', '1', '1', '2']
+    );
+    expect(customBackground.isWall(1, 1)).toBe(false);
+    expect(customBackground.isWall(1, 2)).toBe(true);
+    expect(customBackground.isWall(2, 1)).toBe(true);
+    expect(customBackground.isWall(2, 2)).toBe(false);
+});
