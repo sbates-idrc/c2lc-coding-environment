@@ -5,6 +5,7 @@ import type { CharacterEvent } from './CharacterState';
 import * as C2lcMath from './C2lcMath';
 import CustomBackground from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
+import type { PathSegment } from './types';
 
 // TODO: Test forward() and backward() with CustomBackground behaviour
 
@@ -258,138 +259,208 @@ test('Turn Right moves clockwise and wraps at N', () => {
     ): any).toBeCharacterState(1, 1, 1, []);
 });
 
-test('Given an empty path, then moving Forward should add a new path segment', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 5);
-    const customBackground = new CustomBackground(dimensions);
-    (expect(new CharacterState(1, 1, 2, [], dimensions)
-        .forward(1, true, customBackground)
-    ): any).toBeCharacterUpdate(2, 1, 2, [{x1: 1, y1: 1, x2: 2, y2: 1}], null);
-});
 
-test('When moving Forward in the same direction, the path segment should be extended', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 5);
-    const customBackground = new CustomBackground(dimensions);
-    (expect(
-        new CharacterState(2, 1, 2, [{x1: 1, y1: 1, x2: 2, y2: 1}], dimensions)
-            .forward(1, true, customBackground)
-    ): any).toBeCharacterUpdate(3, 1, 2, [{x1: 1, y1: 1, x2: 3, y2: 1}], null);
-});
+type MovementTestCase = {|
+    name: string,
+    x: number,
+    y: number,
+    direction: number,
+    path: Array<PathSegment>,
+    distance: number,
+    drawingEnabled: boolean,
+    expectedX: number,
+    expectedY: number,
+    expectedPath: Array<PathSegment>
+|};
 
-test('When moving Forward in a different direction, a new path segment should be added', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 5);
-    const customBackground = new CustomBackground(dimensions);
-
-    (expect(
-        new CharacterState(2, 2, 0, [{x1: 1, y1: 2, x2: 2, y2: 2}], dimensions)
-            .forward(1, true, customBackground)
-    ): any).toBeCharacterUpdate(
-        2, 1, 0,
-        [
+test.each(([
+    {
+        name: 'Given an empty path, drawing adds a new path segment',
+        x: 1,
+        y: 1,
+        direction: 2,
+        path: [],
+        distance: 1,
+        drawingEnabled: true,
+        expectedX: 2,
+        expectedY: 1,
+        expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}]
+    },
+    {
+        name: 'When drawing in the same direction, the path segment should be extended',
+        x: 2,
+        y: 1,
+        direction: 2,
+        path: [{x1: 1, y1: 1, x2: 2, y2: 1}],
+        distance: 1,
+        drawingEnabled: true,
+        expectedX: 3,
+        expectedY: 1,
+        expectedPath: [{x1: 1, y1: 1, x2: 3, y2: 1}]
+    },
+    {
+        name: 'When drawing in a different direction, a new path segment should be added',
+        x: 2,
+        y: 2,
+        direction: 0,
+        path: [{x1: 1, y1: 2, x2: 2, y2: 2}],
+        distance: 1,
+        drawingEnabled: true,
+        expectedX: 2,
+        expectedY: 1,
+        expectedPath: [
             {x1: 1, y1: 2, x2: 2, y2: 2},
             {x1: 2, y1: 2, x2: 2, y2: 1}
-        ],
-        null);
-
+        ]
+    },
+    {
+        name: 'When drawing is retracing the last path segment, no path segment should be added',
+        x: 1,
+        y: 1,
+        direction: 2,
+        path: [{x1: 2, y1: 1, x2: 1, y2: 1}],
+        distance: 1,
+        drawingEnabled: true,
+        expectedX: 2,
+        expectedY: 1,
+        expectedPath: [{x1: 2, y1: 1, x2: 1, y2: 1}]
+    },
+    {
+        name: 'When drawingEnabled is false, no path segment is added to an empty path',
+        x: 1,
+        y: 1,
+        direction: 2,
+        path: [],
+        distance: 1,
+        drawingEnabled: false,
+        expectedX: 2,
+        expectedY: 1,
+        expectedPath: []
+    },
+    {
+        name: 'When drawingEnabled is false, no path segment is added to an existing path',
+        x: 2,
+        y: 1,
+        direction: 2,
+        path: [{x1: 1, y1: 1, x2: 2, y2: 1}],
+        distance: 2,
+        drawingEnabled: false,
+        expectedX: 4,
+        expectedY: 1,
+        expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}]
+    }
+]: Array<MovementTestCase>))('Forward: $name', (testData: MovementTestCase) => {
+    const dimensions = new SceneDimensions(1, 5, 1, 5);
+    const customBackground = new CustomBackground(dimensions);
     (expect(
-        new CharacterState(2, 1, 4, [{x1: 1, y1: 1, x2: 2, y2: 1}], dimensions)
-            .forward(1, true, customBackground)
+        new CharacterState(
+            testData.x,
+            testData.y,
+            testData.direction,
+            testData.path,
+            dimensions
+        ).forward(testData.distance, testData.drawingEnabled, customBackground)
     ): any).toBeCharacterUpdate(
-        2, 2, 4,
-        [
-            {x1: 1, y1: 1, x2: 2, y2: 1},
-            {x1: 2, y1: 1, x2: 2, y2: 2}
-        ],
+        testData.expectedX,
+        testData.expectedY,
+        testData.direction,
+        testData.expectedPath,
         null);
 });
 
-test('When Forward is retracing the last path segment, no path segment should be added', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 5);
-    const customBackground = new CustomBackground(dimensions);
-    (expect(
-        new CharacterState(1, 1, 2, [{x1: 2, y1: 1, x2: 1, y2: 1}], dimensions)
-            .forward(1, true, customBackground)
-    ): any).toBeCharacterUpdate(2, 1, 2, [{x1: 2, y1: 1, x2: 1, y2: 1}], null);
-});
-
-test('Given an empty path, then moving Backward should add a new path segment', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 5);
-    const customBackground = new CustomBackground(dimensions);
-    (expect(new CharacterState(1, 1, 6, [], dimensions)
-        .backward(1, true, customBackground)
-    ): any).toBeCharacterUpdate(2, 1, 6, [{x1: 1, y1: 1, x2: 2, y2: 1}], null);
-});
-
-test('When moving Backward in the same direction, the path segment should be extended', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 5);
-    const customBackground = new CustomBackground(dimensions);
-    (expect(
-        new CharacterState(2, 1, 6, [{x1: 1, y1: 1, x2: 2, y2: 1}], dimensions)
-            .backward(1, true, customBackground)
-    ): any).toBeCharacterUpdate(3, 1, 6, [{x1: 1, y1: 1, x2: 3, y2: 1}], null);
-});
-
-test('When moving Backward in a different direction, a new path segment should be added', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 5);
-    const customBackground = new CustomBackground(dimensions);
-
-    (expect(
-        new CharacterState(2, 2, 4, [{x1: 1, y1: 2, x2: 2, y2: 2}], dimensions)
-            .backward(1, true, customBackground)
-    ): any).toBeCharacterUpdate(
-        2, 1, 4,
-        [
+test.each(([
+    {
+        name: 'Given an empty path, drawing adds a new path segment',
+        x: 1,
+        y: 1,
+        direction: 6,
+        path: [],
+        distance: 1,
+        drawingEnabled: true,
+        expectedX: 2,
+        expectedY: 1,
+        expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}]
+    },
+    {
+        name: 'When drawing in the same direction, the path segment should be extended',
+        x: 2,
+        y: 1,
+        direction: 6,
+        path: [{x1: 1, y1: 1, x2: 2, y2: 1}],
+        distance: 1,
+        drawingEnabled: true,
+        expectedX: 3,
+        expectedY: 1,
+        expectedPath: [{x1: 1, y1: 1, x2: 3, y2: 1}]
+    },
+    {
+        name: 'When drawing in a different direction, a new path segment should be added',
+        x: 2,
+        y: 2,
+        direction: 4,
+        path: [{x1: 1, y1: 2, x2: 2, y2: 2}],
+        distance: 1,
+        drawingEnabled: true,
+        expectedX: 2,
+        expectedY: 1,
+        expectedPath: [
             {x1: 1, y1: 2, x2: 2, y2: 2},
             {x1: 2, y1: 2, x2: 2, y2: 1}
-        ],
-        null);
-
+        ]
+    },
+    {
+        name: 'When drawing is retracing the last path segment, no path segment should be added',
+        x: 2,
+        y: 1,
+        direction: 2,
+        path: [{x1: 1, y1: 1, x2: 2, y2: 1}],
+        distance: 1,
+        drawingEnabled: true,
+        expectedX: 1,
+        expectedY: 1,
+        expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}]
+    },
+    {
+        name: 'When drawingEnabled is false, no path segment is added to an empty path',
+        x: 2,
+        y: 1,
+        direction: 2,
+        path: [],
+        distance: 1,
+        drawingEnabled: false,
+        expectedX: 1,
+        expectedY: 1,
+        expectedPath: []
+    },
+    {
+        name: 'When drawingEnabled is false, no path segment is added to an existing path',
+        x: 3,
+        y: 1,
+        direction: 2,
+        path: [{x1: 4, y1: 1, x2: 3, y2: 1}],
+        distance: 2,
+        drawingEnabled: false,
+        expectedX: 1,
+        expectedY: 1,
+        expectedPath: [{x1: 4, y1: 1, x2: 3, y2: 1}]
+    }
+]: Array<MovementTestCase>))('Backward: $name', (testData: MovementTestCase) => {
+    const dimensions = new SceneDimensions(1, 5, 1, 5);
+    const customBackground = new CustomBackground(dimensions);
     (expect(
-        new CharacterState(2, 1, 0, [{x1: 1, y1: 1, x2: 2, y2: 1}], dimensions)
-            .backward(1, true, customBackground)
+        new CharacterState(
+            testData.x,
+            testData.y,
+            testData.direction,
+            testData.path,
+            dimensions
+        ).backward(testData.distance, testData.drawingEnabled, customBackground)
     ): any).toBeCharacterUpdate(
-        2, 2, 0,
-        [
-            {x1: 1, y1: 1, x2: 2, y2: 1},
-            {x1: 2, y1: 1, x2: 2, y2: 2}
-        ],
+        testData.expectedX,
+        testData.expectedY,
+        testData.direction,
+        testData.expectedPath,
         null);
-});
-
-test('When Backward is retracing the last path segment, no path segment should be added', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 5);
-    const customBackground = new CustomBackground(dimensions);
-    (expect(
-        new CharacterState(2, 1, 2, [{x1: 1, y1: 1, x2: 2, y2: 1}], dimensions)
-            .backward(1, true, customBackground)
-    ): any).toBeCharacterUpdate(1, 1, 2, [{x1: 1, y1: 1, x2: 2, y2: 1}], null);
-});
-
-test('Forward move should not create a path segment, when drawingEnabled is false', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 5);
-    const customBackground = new CustomBackground(dimensions);
-
-    (expect(new CharacterState(1, 1, 2, [], dimensions)
-        .forward(1, false, customBackground)
-    ): any).toBeCharacterUpdate(2, 1, 2, [], null);
-
-    (expect(
-        new CharacterState(2, 1, 2, [{x1: 1, y1: 1, x2: 2, y2: 1}], dimensions)
-            .forward(2, false, customBackground)
-    ): any).toBeCharacterUpdate(4, 1, 2, [{x1: 1, y1: 1, x2: 2, y2: 1}], null);
-});
-
-test('Backward move should not create a path segment, when drawingEnabled is false', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 5);
-    const customBackground = new CustomBackground(dimensions);
-
-    (expect(new CharacterState(2, 1, 2, [], dimensions)
-        .backward(1, false, customBackground)
-    ): any).toBeCharacterUpdate(1, 1, 2, [], null);
-
-    (expect(
-        new CharacterState(3, 1, 2, [{x1: 4, y1: 1, x2: 3, y2: 1}], dimensions)
-            .backward(2, false, customBackground)
-    ): any).toBeCharacterUpdate(1, 1, 2, [{x1: 4, y1: 1, x2: 3, y2: 1}], null);
 });
 
 test('Forward move is limited to the sceneDimensions', () => {
