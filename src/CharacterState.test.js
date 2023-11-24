@@ -7,8 +7,6 @@ import CustomBackground from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
 import type { PathSegment } from './types';
 
-// TODO: Test forward() and backward() with CustomBackground behaviour
-
 // TODO: Figure out a better mechanism for using Jest expect.extend()
 //       with Flow than casting the expect() result to 'any'.
 
@@ -270,7 +268,8 @@ type MovementTestCase = {|
     drawingEnabled: boolean,
     expectedX: number,
     expectedY: number,
-    expectedPath: Array<PathSegment>
+    expectedPath: Array<PathSegment>,
+    expectedEvent: ?CharacterEvent
 |};
 
 const movementTestCases: Array<MovementTestCase> = [
@@ -284,7 +283,8 @@ const movementTestCases: Array<MovementTestCase> = [
         drawingEnabled: true,
         expectedX: 2,
         expectedY: 1,
-        expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}]
+        expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}],
+        expectedEvent: null
     },
     {
         name: 'Empty path, drawingEnabled=true, distance=3: adds a new path segment',
@@ -296,7 +296,8 @@ const movementTestCases: Array<MovementTestCase> = [
         drawingEnabled: true,
         expectedX: 4,
         expectedY: 1,
-        expectedPath: [{x1: 1, y1: 1, x2: 4, y2: 1}]
+        expectedPath: [{x1: 1, y1: 1, x2: 4, y2: 1}],
+        expectedEvent: null
     },
     {
         name: 'Non-empty path, drawing in the same direction, distance=1: the path segment is extended',
@@ -308,7 +309,8 @@ const movementTestCases: Array<MovementTestCase> = [
         drawingEnabled: true,
         expectedX: 3,
         expectedY: 1,
-        expectedPath: [{x1: 1, y1: 1, x2: 3, y2: 1}]
+        expectedPath: [{x1: 1, y1: 1, x2: 3, y2: 1}],
+        expectedEvent: null
     },
     {
         name: 'Non-empty path, drawing in the same direction, distance=3: the path segment is extended',
@@ -320,7 +322,8 @@ const movementTestCases: Array<MovementTestCase> = [
         drawingEnabled: true,
         expectedX: 5,
         expectedY: 1,
-        expectedPath: [{x1: 1, y1: 1, x2: 5, y2: 1}]
+        expectedPath: [{x1: 1, y1: 1, x2: 5, y2: 1}],
+        expectedEvent: null
     },
     {
         name: 'Non-empty path, drawing in a different direction: a new path segment is added',
@@ -335,7 +338,8 @@ const movementTestCases: Array<MovementTestCase> = [
         expectedPath: [
             {x1: 1, y1: 1, x2: 2, y2: 1},
             {x1: 2, y1: 1, x2: 2, y2: 2}
-        ]
+        ],
+        expectedEvent: null
     },
     {
         name: 'When drawing is retracing the last path segment, no path segment is added',
@@ -347,7 +351,8 @@ const movementTestCases: Array<MovementTestCase> = [
         drawingEnabled: true,
         expectedX: 1,
         expectedY: 1,
-        expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}]
+        expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}],
+        expectedEvent: null
     },
     {
         name: 'Empty path, drawingEnabled=false, distance=1: no path segment is added',
@@ -359,7 +364,8 @@ const movementTestCases: Array<MovementTestCase> = [
         drawingEnabled: false,
         expectedX: 2,
         expectedY: 1,
-        expectedPath: []
+        expectedPath: [],
+        expectedEvent: null
     },
     {
         name: 'Empty path, drawingEnabled=false, distance=3: no path segment is added',
@@ -371,7 +377,8 @@ const movementTestCases: Array<MovementTestCase> = [
         drawingEnabled: false,
         expectedX: 4,
         expectedY: 1,
-        expectedPath: []
+        expectedPath: [],
+        expectedEvent: null
     },
     {
         name: 'Non-empty path, drawingEnabled=false: no path segment is added',
@@ -383,13 +390,88 @@ const movementTestCases: Array<MovementTestCase> = [
         drawingEnabled: false,
         expectedX: 3,
         expectedY: 1,
-        expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}]
+        expectedPath: [{x1: 1, y1: 1, x2: 2, y2: 1}],
+        expectedEvent: null
+    },
+    {
+        name: 'Empty path, drawingEnabled=true, distance=1, hit a wall: the character is stopped by the wall and no path is drawn',
+        x: 3,
+        y: 5,
+        direction: 2,
+        path: [],
+        distance: 1,
+        drawingEnabled: true,
+        expectedX: 3,
+        expectedY: 5,
+        expectedPath: [],
+        expectedEvent: {
+            type: 'hitWall',
+            x: 4,
+            y: 5
+        }
+    },
+    {
+        name: 'Empty path, drawingEnabled=true, distance=3, hit a wall immediately: the character is stopped by the wall and no path is drawn',
+        x: 3,
+        y: 5,
+        direction: 2,
+        path: [],
+        distance: 3,
+        drawingEnabled: true,
+        expectedX: 3,
+        expectedY: 5,
+        expectedPath: [],
+        expectedEvent: {
+            type: 'hitWall',
+            x: 4,
+            y: 5
+        }
+    },
+    {
+        name: 'Empty path, drawingEnabled=true, distance=3, hit a wall during movement: the character is stopped by the wall and the path is partially drawn',
+        x: 1,
+        y: 5,
+        direction: 2,
+        path: [],
+        distance: 3,
+        drawingEnabled: true,
+        expectedX: 3,
+        expectedY: 5,
+        expectedPath: [{x1: 1, y1: 5, x2: 3, y2: 5}],
+        expectedEvent: {
+            type: 'hitWall',
+            x: 4,
+            y: 5
+        }
+    },
+    {
+        name: 'Empty path, drawingEnabled=false, distance=3, hit a wall during movement: the character is stopped by the wall',
+        x: 1,
+        y: 5,
+        direction: 2,
+        path: [],
+        distance: 3,
+        drawingEnabled: false,
+        expectedX: 3,
+        expectedY: 5,
+        expectedPath: [],
+        expectedEvent: {
+            type: 'hitWall',
+            x: 4,
+            y: 5
+        }
     }
 ];
 
 test.each(movementTestCases)('Forward: $name', (testData: MovementTestCase) => {
     const dimensions = new SceneDimensions(1, 5, 1, 5);
-    const customBackground = new CustomBackground(dimensions);
+    const customBackground = new CustomBackground(dimensions, [
+        '0', '0', '0', '0', '0',
+        '0', '0', '0', '0', '0',
+        '0', '0', '0', '0', '0',
+        '0', '0', '0', '0', '0',
+        '0', '0', '0', '1', '0'
+    ]);
 
     (expect(
         new CharacterState(
@@ -404,7 +486,7 @@ test.each(movementTestCases)('Forward: $name', (testData: MovementTestCase) => {
         testData.expectedY,
         testData.direction,
         testData.expectedPath,
-        null);
+        testData.expectedEvent);
 });
 
 test.each(movementTestCases)('Backward: $name', (testData: MovementTestCase) => {
@@ -413,7 +495,13 @@ test.each(movementTestCases)('Backward: $name', (testData: MovementTestCase) => 
     const direction = (testData.direction + 4) % 8;
 
     const dimensions = new SceneDimensions(1, 5, 1, 5);
-    const customBackground = new CustomBackground(dimensions);
+    const customBackground = new CustomBackground(dimensions, [
+        '0', '0', '0', '0', '0',
+        '0', '0', '0', '0', '0',
+        '0', '0', '0', '0', '0',
+        '0', '0', '0', '0', '0',
+        '0', '0', '0', '1', '0'
+    ]);
 
     (expect(
         new CharacterState(
@@ -428,7 +516,7 @@ test.each(movementTestCases)('Backward: $name', (testData: MovementTestCase) => 
         testData.expectedY,
         direction,
         testData.expectedPath,
-        null);
+        testData.expectedEvent);
 });
 
 test('Forward move is limited to the sceneDimensions', () => {

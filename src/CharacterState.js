@@ -262,7 +262,11 @@ export default class CharacterState {
             if (drawingEnabled) {
                 Array.prototype.push.apply(pathSegments, movementResult.pathSegments);
             }
-            event = movementResult.event;
+            // Stop on the first event
+            if (movementResult.event != null) {
+                event = movementResult.event;
+                break;
+            }
         }
 
         return {
