@@ -205,6 +205,7 @@ class Scene extends React.Component<SceneProps, {}> {
                     {(this.props.message != null && !(this.props.message.dismissed)) &&
                         <div className='Scene__SceneMessage'>
                             <SceneMessage
+                                intl={this.props.intl}
                                 message={this.props.message}
                                 onDismiss={this.props.onDismissMessage}
                             />

@@ -203,7 +203,7 @@ test.each(([
         expectedX: 4,
         expectedY: 1,
         expectedDirection: 2,
-        expectedMessage: new Message('Your character hit a wall on E1'),
+        expectedMessage: new Message('Your character hit a wall on E1. Program is paused.'),
         expectedActionResult: 'movementBlocked'
     },
     {
@@ -215,7 +215,7 @@ test.each(([
         expectedX: 6,
         expectedY: 1,
         expectedDirection: 2,
-        expectedMessage: new Message('Your character hit a wall on E1'),
+        expectedMessage: new Message('Your character hit a wall on E1. Program is paused.'),
         expectedActionResult: 'movementBlocked'
     }
 ]: Array<MovementTestCase>))('doAction', (testData: MovementTestCase, done) => {

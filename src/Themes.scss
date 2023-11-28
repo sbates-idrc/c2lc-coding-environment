@@ -1243,6 +1243,14 @@ body.gray-theme {
         fill: #FFFFFF;
     }
 
+    .SceneMessage__closeButton:hover .close-scene-message-background {
+        fill: #818A98;
+    }
+
+    .SceneMessage__closeButton:hover .close-scene-message-x {
+        stroke: #FFFFFF;
+    }
+
     .PenDownToggleSwitch.ToggleSwitch {
         background-color: #B9BEC6;
 
@@ -2338,6 +2346,14 @@ body.contrast-theme {
 
     .Scene__startIndicator .start-indicator-pin {
         fill: #1E1E1E;
+    }
+
+    .SceneMessage__closeButton:hover .close-scene-message-background {
+        fill: #1E1E1E;
+    }
+
+    .SceneMessage__closeButton:hover .close-scene-message-x {
+        stroke: #FFFFFF;
     }
 
     .PenDownToggleSwitch, .PenDownToggleSwitch.ToggleSwitch--checked:hover {

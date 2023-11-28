@@ -1,0 +1,42 @@
+@import 'variables';
+
+.SceneMessage {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    grid-column-gap: 45px;
+    align-items: start;
+    padding: 0;
+    border: 2px solid #D5D8DD;
+    background-color: #FFFFFF;
+    color: #1E1E1E;
+}
+
+.SceneMessage__text {
+    margin: 16px 0 16px 25px;
+}
+
+.SceneMessage__closeButton {
+    display: block;
+    margin: 10px 14px 10px 0;
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+    background: none;
+}
+
+.SceneMessage__closeButton:focus {
+    box-shadow: 0 0 0 $c2lc-focus-indicator-width #000000;
+    outline: none;
+}
+
+.SceneMessage__closeButton svg {
+    display: block;
+}
+
+.SceneMessage__closeButton:hover .close-scene-message-background {
+    fill: #F1AE5B;
+}
+
+.close-scene-message-x {
+    stroke: #000000;
+}

@@ -22,5 +22,5 @@ test('Hit wall Message', () => {
         y: 2
     });
     expect(message != null).toBe(true);
-    expect(((message: any): Message).text).toBe('Your character hit a wall on C2');
+    expect(((message: any): Message).text).toBe('Your character hit a wall on C2. Program is paused.');
 });

@@ -20,9 +20,11 @@ $c2lc-scene-top-offset: 20px;
 .Scene__SceneMessage {
     position: absolute;
     z-index: 1;
+    display: flex;
+    justify-content: center;
     left: calc(#{$c2lc-scene-row-header-width} + #{$c2lc-scene-left-offset});
     top: calc(#{$c2lc-scene-col-header-height} + #{$c2lc-scene-top-offset});
-    max-width: calc(
+    width: calc(
         100%
         - #{$c2lc-scene-row-header-width}
         - #{$c2lc-scene-space-for-scrollbar}
