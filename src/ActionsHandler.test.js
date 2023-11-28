@@ -6,7 +6,6 @@ import { App } from './App';
 import AudioManagerImpl from './AudioManagerImpl';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
-import Message from './Message';
 import { createIntl } from 'react-intl';
 import SceneDimensions from './SceneDimensions';
 import type { BlockName } from './types';
@@ -57,7 +56,7 @@ type MovementTestCase = {|
     expectedX: number,
     expectedY: number,
     expectedDirection: number,
-    expectedMessage: ?Message,
+    expectedMessage: ?string,
     expectedActionResult: ActionResult
 |};
 
@@ -203,7 +202,7 @@ test.each(([
         expectedX: 4,
         expectedY: 1,
         expectedDirection: 2,
-        expectedMessage: new Message('Your character hit a wall on E1. Program is paused.'),
+        expectedMessage: 'Your character hit a wall on E1. Program is paused.',
         expectedActionResult: 'movementBlocked'
     },
     {
@@ -215,7 +214,7 @@ test.each(([
         expectedX: 6,
         expectedY: 1,
         expectedDirection: 2,
-        expectedMessage: new Message('Your character hit a wall on E1. Program is paused.'),
+        expectedMessage: 'Your character hit a wall on E1. Program is paused.',
         expectedActionResult: 'movementBlocked'
     }
 ]: Array<MovementTestCase>))('doAction', (testData: MovementTestCase, done) => {
@@ -244,7 +243,7 @@ test.each(([
         expect(newState.characterState.xPos).toBe(testData.expectedX);
         expect(newState.characterState.yPos).toBe(testData.expectedY);
         expect(newState.characterState.direction).toBe(testData.expectedDirection);
-        expect(newState.message).toStrictEqual(testData.expectedMessage);
+        expect(newState.message).toBe(testData.expectedMessage);
     });
 
     actionsHandler.doAction(testData.action, 0).then((result) => {

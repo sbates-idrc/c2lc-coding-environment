@@ -5,7 +5,6 @@ import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
 import CustomBackgroundSceneLayer from './CustomBackgroundSceneLayer';
-import Message from './Message';
 import SceneBackground from './SceneBackground';
 import SceneCharacter from './SceneCharacter';
 import SceneCharacterPath from './SceneCharacterPath';
@@ -41,9 +40,9 @@ export type SceneProps = {
     startingX: number,
     startingY: number,
     runningState: RunningState,
-    message: ?Message,
+    message: ?string,
     characterDescriptionBuilder: CharacterDescriptionBuilder,
-    onDismissMessage: () => void,
+    onCloseMessage: () => void,
     onPaintScene: (x: number, y: number) => void,
     intl: IntlShape
 };
@@ -202,12 +201,12 @@ class Scene extends React.Component<SceneProps, {}> {
         return (
             <React.Fragment>
                 <div className='Scene__container'>
-                    {(this.props.message != null && !(this.props.message.dismissed)) &&
+                    {this.props.message != null &&
                         <div className='Scene__SceneMessage'>
                             <SceneMessage
                                 intl={this.props.intl}
                                 message={this.props.message}
-                                onDismiss={this.props.onDismissMessage}
+                                onClose={this.props.onCloseMessage}
                             />
                         </div>
                     }

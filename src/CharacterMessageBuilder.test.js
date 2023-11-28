@@ -1,7 +1,6 @@
 // @flow
 
 import CharacterMessageBuilder from './CharacterMessageBuilder';
-import Message from './Message';
 import messages from './messages.json';
 import { createIntl } from 'react-intl';
 import SceneDimensions from './SceneDimensions';
@@ -21,6 +20,5 @@ test('Hit wall Message', () => {
         x: 3,
         y: 2
     });
-    expect(message != null).toBe(true);
-    expect(((message: any): Message).text).toBe('Your character hit a wall on C2. Program is paused.');
+    expect(message).toBe('Your character hit a wall on C2. Program is paused.');
 });

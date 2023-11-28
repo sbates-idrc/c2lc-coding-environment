@@ -1,7 +1,6 @@
 // @flow
 
 import type { CharacterEvent } from './CharacterState';
-import Message from './Message';
 import type { IntlShape } from 'react-intl';
 import SceneDimensions from './SceneDimensions';
 
@@ -14,10 +13,10 @@ export default class CharacterMessageBuilder {
         this.intl = intl;
     }
 
-    buildMessage(event: CharacterEvent): ?Message {
+    buildMessage(event: CharacterEvent): ?string {
         switch(event.type) {
             case 'hitWall':
-                return new Message(this.buildHitWallMessage(event.x, event.y));
+                return this.buildHitWallMessage(event.x, event.y);
             default:
                 return null;
         }

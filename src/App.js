@@ -26,7 +26,6 @@ import FakeAudioManager from './FakeAudioManager';
 import FocusTrapManager from './FocusTrapManager';
 import IconButton from './IconButton';
 import Interpreter from './Interpreter';
-import Message from './Message';
 import PlayButton from './PlayButton';
 import ProgramBlockEditor from './ProgramBlockEditor';
 import RefreshButton from './RefreshButton';
@@ -137,7 +136,7 @@ export type AppState = {
     customBackground: CustomBackground,
     customBackgroundDesignMode: boolean,
     selectedCustomBackgroundTile: ?TileCode,
-    message: ?Message
+    message: ?string
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -1155,15 +1154,9 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ selectedCustomBackgroundTile: tileCode });
     }
 
-    handleDismissMessage = () => {
-        this.setState((state) => {
-            if (state.message != null) {
-                return {
-                    message: state.message.dismiss()
-                }
-            } else {
-                return {};
-            }
+    handleCloseMessage = () => {
+        this.setState({
+            message: null
         });
     }
 
@@ -1301,7 +1294,7 @@ export class App extends React.Component<AppProps, AppState> {
                     runningState={this.state.runningState}
                     message={this.state.message}
                     characterDescriptionBuilder={this.characterDescriptionBuilder}
-                    onDismissMessage={this.handleDismissMessage}
+                    onCloseMessage={this.handleCloseMessage}
                     onPaintScene={this.handlePaintScene}
                 />
             </React.Fragment>
