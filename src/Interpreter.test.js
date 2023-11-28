@@ -256,8 +256,8 @@ test('Run a program with one action from beginning to end without an error', (do
 
     interpreter.startRun().then(() => {
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(1);
-        expect(appMock.setRunningState.mock.calls.length).toBe(1);
-        expect(appMock.setRunningState.mock.calls[0][0]).toBe('stopped');
+        expect(appMock.setRunningStateForInterpreter.mock.calls.length).toBe(1);
+        expect(appMock.setRunningStateForInterpreter.mock.calls[0][0]).toBe('stopped');
         expect(actionsHandlerMock.doAction.mock.calls.length).toBe(1);
         expect(actionsHandlerMock.doAction.mock.calls[0][0]).toBe('forward1');
         expect(actionsHandlerMock.doAction.mock.calls[0][1]).toBe(1000);
@@ -286,8 +286,8 @@ test('Run a program with three actions from beginning to end without an error', 
 
     interpreter.startRun().then(() => {
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(3);
-        expect(appMock.setRunningState.mock.calls.length).toBe(1);
-        expect(appMock.setRunningState.mock.calls[0][0]).toBe('stopped');
+        expect(appMock.setRunningStateForInterpreter.mock.calls.length).toBe(1);
+        expect(appMock.setRunningStateForInterpreter.mock.calls[0][0]).toBe('stopped');
         expect(actionsHandlerMock.doAction.mock.calls.length).toBe(3);
         expect(actionsHandlerMock.doAction.mock.calls[0][0]).toBe('forward1');
         expect(actionsHandlerMock.doAction.mock.calls[0][1]).toBe(1000);
@@ -330,8 +330,8 @@ test('Run pauses on a "movementBlocked" action', (done) => {
 
     interpreter.startRun().then(() => {
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(0);
-        expect(appMock.setRunningState.mock.calls.length).toBe(1);
-        expect(appMock.setRunningState.mock.calls[0][0]).toBe('paused');
+        expect(appMock.setRunningStateForInterpreter.mock.calls.length).toBe(1);
+        expect(appMock.setRunningStateForInterpreter.mock.calls[0][0]).toBe('paused');
         expect(actionsHandlerMock.doAction.mock.calls.length).toBe(1);
         expect(actionsHandlerMock.doAction.mock.calls[0][0]).toBe('right180');
         expect(actionsHandlerMock.doAction.mock.calls[0][1]).toBe(1000);
@@ -375,22 +375,22 @@ test('ContinueRun will not continue, when continueRunActive property of Interpre
     })
 });
 
-test('When runningState is pauseRequested, call setRunningState in App', (done) => {
+test('When runningState is pauseRequested, call setRunningStateForInterpreter in App', (done) => {
     const { interpreter, appMock } = createInterpreter();
     appMock.getRunningState.mockImplementationOnce(() => {return 'pauseRequested'});
     interpreter.startRun().then(() => {
-        expect(appMock.setRunningState.mock.calls.length).toBe(1);
-        expect(appMock.setRunningState.mock.calls[0][0]).toBe('paused');
+        expect(appMock.setRunningStateForInterpreter.mock.calls.length).toBe(1);
+        expect(appMock.setRunningStateForInterpreter.mock.calls[0][0]).toBe('paused');
         done();
     });
 });
 
-test('When runningState is stopRequested, call setRunningState in App', (done) => {
+test('When runningState is stopRequested, call setRunningStateForInterpreter in App', (done) => {
     const { interpreter, appMock } = createInterpreter();
     appMock.getRunningState.mockImplementationOnce(() => {return 'stopRequested'});
     interpreter.startRun().then(() => {
-        expect(appMock.setRunningState.mock.calls.length).toBe(1);
-        expect(appMock.setRunningState.mock.calls[0][0]).toBe('stopped');
+        expect(appMock.setRunningStateForInterpreter.mock.calls.length).toBe(1);
+        expect(appMock.setRunningStateForInterpreter.mock.calls[0][0]).toBe('stopped');
         done();
     });
 });

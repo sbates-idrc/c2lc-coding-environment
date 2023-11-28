@@ -300,14 +300,21 @@ export class App extends React.Component<AppProps, AppState> {
         return this.state.runningState;
     }
 
-    setRunningState(runningState: RunningState): void {
+    setRunningStateForInterpreter(runningState: RunningState): void {
         this.setState((state) => {
-            // If stop is requested when we are in the 'paused' state,
-            // then go straight to 'stopped'
-            if (runningState === 'stopRequested' && state.runningState === 'paused') {
-                return { runningState: 'stopped' };
+            // If the Interpreter has called this method with 'paused' (for
+            // example due to the character hitting a wall), and the user has
+            // clicked the stop button, go straight to 'stopped'
+            if (runningState === 'paused'
+                    && state.runningState === 'stopRequested') {
+                return {
+                    runningState: 'stopped',
+                    message: null
+                };
             } else {
-                return { runningState };
+                return {
+                    runningState: runningState
+                };
             }
         });
     }
@@ -389,38 +396,50 @@ export class App extends React.Component<AppProps, AppState> {
     };
 
     handlePlay = () => {
-        switch (this.state.runningState) {
-            case 'running':
-                this.setState({
-                    runningState: 'pauseRequested',
-                    actionPanelStepIndex: null
-                });
-                break;
-            case 'pauseRequested': // Fall through
-            case 'paused':
-                this.setState({
-                    runningState: 'running',
-                    actionPanelStepIndex: null
-                });
-                break;
-            case 'stopRequested': // Fall through
-            case 'stopped':
-                this.setState((state) => {
+        this.setState((state) => {
+            switch (state.runningState) {
+                case 'running':
+                    return {
+                        runningState: 'pauseRequested',
+                        actionPanelStepIndex: null
+                    };
+                case 'pauseRequested': // Fall through
+                case 'paused':
+                    return {
+                        runningState: 'running',
+                        actionPanelStepIndex: null,
+                        // Transitioning paused to running, clear the message
+                        message: null
+                    };
+                case 'stopRequested': // Fall through
+                case 'stopped':
                     return {
                         programSequence: state.programSequence.initiateProgramRun(),
                         runningState: 'running',
-                        actionPanelStepIndex: null,
-                        message: null
+                        actionPanelStepIndex: null
                     };
-                });
-                break;
-            default:
-                break;
-        }
+                default:
+                    return null;
+            }
+        });
     };
 
     handleStop = () => {
-        this.setRunningState('stopRequested');
+        this.setState((state) => {
+            if (state.runningState === 'paused') {
+                return {
+                    // If we are paused, then the interpreter isn't running
+                    // and we go straight to stopped
+                    runningState: 'stopped',
+                    // Transitioning paused to stopped, clear the message
+                    message: null
+                };
+            } else {
+                return {
+                    runningState: 'stopRequested'
+                };
+            }
+        });
     };
 
     handleClickConnectDash = () => {
@@ -999,8 +1018,7 @@ export class App extends React.Component<AppProps, AppState> {
                     state.startingX,
                     state.startingY,
                     state.startingDirection
-                ),
-                message: null
+                )
             };
         });
     }

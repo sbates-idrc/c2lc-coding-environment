@@ -39,13 +39,13 @@ export default class Interpreter {
         if (runningState === 'running') {
             const programSequence = this.app.getProgramSequence();
             if (this.atEnd(programSequence)) {
-                this.app.setRunningState('stopped');
+                this.app.setRunningStateForInterpreter('stopped');
                 this.continueRunActive = false;
                 resolve();
             } else {
                 this.step(programSequence).then((result) => {
                     if (result === 'movementBlocked') {
-                        this.app.setRunningState('paused');
+                        this.app.setRunningStateForInterpreter('paused');
                         this.continueRunActive = false;
                         resolve();
                     } else {
@@ -53,7 +53,7 @@ export default class Interpreter {
                     }
                 }, (error: Error) => {
                     // Reject the run Promise when the step Promise is rejected
-                    this.app.setRunningState('stopped');
+                    this.app.setRunningStateForInterpreter('stopped');
                     this.continueRunActive = false;
                     reject(error);
                 });
@@ -64,9 +64,9 @@ export default class Interpreter {
             // then transition to the 'stopped' or 'paused' runningState,
             // as appropriate.
             if (runningState === 'stopRequested') {
-                this.app.setRunningState('stopped');
+                this.app.setRunningStateForInterpreter('stopped');
             } else if (runningState === 'pauseRequested') {
-                this.app.setRunningState('paused');
+                this.app.setRunningStateForInterpreter('paused');
             }
             this.continueRunActive = false;
             resolve();
