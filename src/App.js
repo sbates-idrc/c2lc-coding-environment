@@ -1599,33 +1599,24 @@ export class App extends React.Component<AppProps, AppState> {
                     onKeyDown={this.handleRootKeyDown}
                 >
                     {this.renderNotificationArea()}
-                    {this.state.customBackgroundDesignMode ?
+                    <header className='App__header'>
+                        {this.renderHeaderContents()}
+                    </header>
+                    <div className='App__scene-container'>
+                        {this.renderSceneWithHeading()}
+                        {this.state.customBackgroundDesignMode &&
+                            this.renderTilePanel()
+                        }
+                    </div>
+                    <div className="App__world-container">
+                        {this.renderWorldSelectorWithHeading()}
+                        {!(this.state.customBackgroundDesignMode) &&
+                            this.renderPenDownToggleSwitch()
+                        }
+                        {this.renderCharacterPositionController()}
+                    </div>
+                    {!(this.state.customBackgroundDesignMode) &&
                         <React.Fragment>
-                            <header className='App__header'>
-                                {this.renderHeaderContents()}
-                            </header>
-                            <div className='App__scene-container'>
-                                {this.renderSceneWithHeading()}
-                                {this.renderTilePanel()}
-                            </div>
-                            <div className="App__world-container">
-                                {this.renderWorldSelectorWithHeading()}
-                                {this.renderCharacterPositionController()}
-                            </div>
-                        </React.Fragment>
-                        :
-                        <React.Fragment>
-                            <header className='App__header'>
-                                {this.renderHeaderContents()}
-                            </header>
-                            <div className='App__scene-container'>
-                                {this.renderSceneWithHeading()}
-                            </div>
-                            <div className="App__world-container">
-                                {this.renderWorldSelectorWithHeading()}
-                                {this.renderPenDownToggleSwitch()}
-                                {this.renderCharacterPositionController()}
-                            </div>
                             <div className='App__command-palette'>
                                 {this.renderCommandPaletteContents()}
                             </div>
