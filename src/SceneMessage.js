@@ -16,7 +16,7 @@ class SceneMessage extends React.PureComponent<SceneMessageProps, {}> {
     render() {
         return (
             <div className='SceneMessage'>
-                <div className='SceneMessage__text'>{this.props.message}</div>
+                <div className='SceneMessage__text' role='alert'>{this.props.message}</div>
                 <div>
                     <button
                         className='SceneMessage__closeButton'

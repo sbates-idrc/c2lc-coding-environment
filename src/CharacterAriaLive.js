@@ -73,9 +73,10 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
                 this.updateCharacterPositionAriaLive();
             }
         }  else if (prevProps.runningState !== this.props.runningState) {
-            if (this.props.runningState === 'pauseRequested' ||
-                this.props.runningState === 'stopRequested' ||
-                (prevProps.runningState === 'running' && this.props.runningState === 'stopped')) {
+            if (this.props.runningState === 'stopRequested'
+                || this.props.runningState === 'pauseRequested'
+                || (prevProps.runningState === 'running' && this.props.runningState === 'stopped')
+                || (prevProps.runningState === 'running' && this.props.runningState === 'paused')) {
                 this.updateCharacterPositionAriaLive();
             }
             else if (this.props.runningState === "running") {

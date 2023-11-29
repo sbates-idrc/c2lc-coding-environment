@@ -98,17 +98,22 @@ type RunningStateTestCase = {
 test.each(([
     {
         runningStateBefore: 'running',
-        runningStateAfter: 'pauseRequested',
-        expectedLiveRegion: 'At A 1 facing right'
-    },
-    {
-        runningStateBefore: 'running',
         runningStateAfter: 'stopRequested',
         expectedLiveRegion: 'At A 1 facing right'
     },
     {
         runningStateBefore: 'running',
         runningStateAfter: 'stopped',
+        expectedLiveRegion: 'At A 1 facing right'
+    },
+    {
+        runningStateBefore: 'running',
+        runningStateAfter: 'pauseRequested',
+        expectedLiveRegion: 'At A 1 facing right'
+    },
+    {
+        runningStateBefore: 'running',
+        runningStateAfter: 'paused',
         expectedLiveRegion: 'At A 1 facing right'
     },
     {
