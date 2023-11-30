@@ -17,7 +17,7 @@ import type { PathSegment } from './types';
 
 const characterStateMaxPathLength = 600;
 
-type CharacterEventType = 'hitWall';
+type CharacterEventType = 'endOfScene' | 'hitWall';
 
 export type CharacterEvent = {
     type: CharacterEventType,
@@ -280,51 +280,22 @@ export default class CharacterState {
     // Calculates the movement for one grid unit in the specified direction.
     // Returns the new position and, if movement was possible, a path segment.
     calculateMoveOneGridUnit(x: number, y: number, direction: number, customBackground: CustomBackground): MovementResult {
-        let newX;
-        let newY;
+
         let event: ?CharacterEvent = null;
+        let { newX, newY } = this.calculateNewXAndY(x, y, direction);
 
-        switch(direction) {
-            case 0:
-                newX = x;
-                newY = y - 1;
-                break;
-            case 1:
-                newX = x + 1;
-                newY = y - 1;
-                break;
-            case 2:
-                newX = x + 1;
-                newY = y;
-                break;
-            case 3:
-                newX = x + 1;
-                newY = y + 1;
-                break;
-            case 4:
-                newX = x;
-                newY = y + 1;
-                break;
-            case 5:
-                newX = x - 1;
-                newY = y + 1;
-                break;
-            case 6:
-                newX = x - 1;
-                newY = y;
-                break;
-            case 7:
-                newX = x - 1;
-                newY = y - 1;
-                break;
-            default:
-                throw new Error('CharacterState direction must be an integer in range 0-7 inclusive');
-        }
-
-        newX = C2lcMath.clamp(1, this.sceneDimensions.getWidth(), newX);
-        newY = C2lcMath.clamp(1, this.sceneDimensions.getHeight(), newY);
-
-        if (customBackground.isWall(newX, newY)) {
+        if (newX < this.sceneDimensions.getMinX()
+            || newX > this.sceneDimensions.getMaxX()
+            || newY < this.sceneDimensions.getMinY()
+            || newY > this.sceneDimensions.getMaxY()) {
+            event = {
+                type: 'endOfScene',
+                x: x,
+                y: y
+            };
+            newX = x;
+            newY = y;
+        } else if (customBackground.isWall(newX, newY)) {
             event = {
                 type: 'hitWall',
                 x: newX,
@@ -356,6 +327,29 @@ export default class CharacterState {
                 pathSegments: [pathSegment],
                 event: event
             };
+        }
+    }
+
+    calculateNewXAndY(x: number, y: number, direction: number): { newX: number, newY: number } {
+        switch(direction) {
+            case 0:
+                return { newX: x,     newY: y - 1 };
+            case 1:
+                return { newX: x + 1, newY: y - 1 };
+            case 2:
+                return { newX: x + 1, newY: y     };
+            case 3:
+                return { newX: x + 1, newY: y + 1 };
+            case 4:
+                return { newX: x,     newY: y + 1 };
+            case 5:
+                return { newX: x - 1, newY: y + 1 };
+            case 6:
+                return { newX: x - 1, newY: y     };
+            case 7:
+                return { newX: x - 1, newY: y - 1 };
+            default:
+                throw new Error('CharacterState direction must be an integer in range 0-7 inclusive');
         }
     }
 

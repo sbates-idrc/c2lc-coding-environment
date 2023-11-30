@@ -67,7 +67,7 @@ export default class ActionsHandler {
                     stepTimeMs, characterUpdate.characterState,
                     this.sceneDimensions);
                 setTimeout(() => {
-                    resolve(this.getActionResult(characterUpdate));
+                    resolve(this.getActionResultForCharacterUpdate(characterUpdate));
                 }, stepTimeMs);
                 return this.buildStateUpdate(characterUpdate);
             });
@@ -83,7 +83,7 @@ export default class ActionsHandler {
                     stepTimeMs, characterUpdate.characterState,
                     this.sceneDimensions);
                 setTimeout(() => {
-                    resolve(this.getActionResult(characterUpdate));
+                    resolve(this.getActionResultForCharacterUpdate(characterUpdate));
                 }, stepTimeMs);
                 return this.buildStateUpdate(characterUpdate);
             });
@@ -118,16 +118,18 @@ export default class ActionsHandler {
         });
     }
 
-    getActionResult(characterUpdate: CharacterUpdate): ActionResult {
-        let result = 'success';
-
+    getActionResultForCharacterUpdate(characterUpdate: CharacterUpdate): ActionResult {
         if (characterUpdate.event != null) {
-            if (characterUpdate.event.type === 'hitWall') {
-                result = 'movementBlocked';
+            switch(characterUpdate.event.type) {
+                case 'endOfScene':
+                    return 'movementBlocked';
+                case 'hitWall':
+                    return 'movementBlocked';
+                default:
+                    return 'success';
             }
         }
-
-        return result;
+        return 'success';
     }
 
     buildStateUpdate(characterUpdate: CharacterUpdate): $Shape<AppState> {

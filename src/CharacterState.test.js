@@ -394,6 +394,125 @@ const movementTestCases: Array<MovementTestCase> = [
         expectedEvent: null
     },
     {
+        name: 'Empty path, drawingEnabled=true, distance=1, reach the N end of the scene: the character is stopped at the edge of the scene and no path is drawn',
+        x: 1,
+        y: 1,
+        direction: 0,
+        path: [],
+        distance: 1,
+        drawingEnabled: true,
+        expectedX: 1,
+        expectedY: 1,
+        expectedPath: [],
+        expectedEvent: {
+            type: 'endOfScene',
+            x: 1,
+            y: 1
+        }
+    },
+    {
+        name: 'Empty path, drawingEnabled=true, distance=3, reach the N end of the scene immediately: the character is stopped at the edge of the scene and no path is drawn',
+        x: 1,
+        y: 1,
+        direction: 0,
+        path: [],
+        distance: 3,
+        drawingEnabled: true,
+        expectedX: 1,
+        expectedY: 1,
+        expectedPath: [],
+        expectedEvent: {
+            type: 'endOfScene',
+            x: 1,
+            y: 1
+        }
+    },
+    {
+        name: 'Empty path, drawingEnabled=true, distance=3, reach the N end of the scene during movement: the character is stopped at the edge of the scene and the path is partially drawn',
+        x: 1,
+        y: 3,
+        direction: 0,
+        path: [],
+        distance: 3,
+        drawingEnabled: true,
+        expectedX: 1,
+        expectedY: 1,
+        expectedPath: [{x1: 1, y1: 3, x2: 1, y2: 1}],
+        expectedEvent: {
+            type: 'endOfScene',
+            x: 1,
+            y: 1
+        }
+    },
+    {
+        name: 'Empty path, drawingEnabled=false, distance=3, reach the N end of the scene during movement: the character is stopped at the edge of the scene',
+        x: 1,
+        y: 3,
+        direction: 0,
+        path: [],
+        distance: 3,
+        drawingEnabled: false,
+        expectedX: 1,
+        expectedY: 1,
+        expectedPath: [],
+        expectedEvent: {
+            type: 'endOfScene',
+            x: 1,
+            y: 1
+        }
+    },
+    {
+        name: 'Reach the E end of the scene',
+        x: 5,
+        y: 1,
+        direction: 2,
+        path: [],
+        distance: 1,
+        drawingEnabled: true,
+        expectedX: 5,
+        expectedY: 1,
+        expectedPath: [],
+        expectedEvent: {
+            type: 'endOfScene',
+            x: 5,
+            y: 1
+        }
+    },
+    {
+        name: 'Reach the S end of the scene',
+        x: 1,
+        y: 5,
+        direction: 4,
+        path: [],
+        distance: 1,
+        drawingEnabled: true,
+        expectedX: 1,
+        expectedY: 5,
+        expectedPath: [],
+        expectedEvent: {
+            type: 'endOfScene',
+            x: 1,
+            y: 5
+        }
+    },
+    {
+        name: 'Reach the W end of the scene',
+        x: 1,
+        y: 1,
+        direction: 6,
+        path: [],
+        distance: 1,
+        drawingEnabled: true,
+        expectedX: 1,
+        expectedY: 1,
+        expectedPath: [],
+        expectedEvent: {
+            type: 'endOfScene',
+            x: 1,
+            y: 1
+        }
+    },
+    {
         name: 'Empty path, drawingEnabled=true, distance=1, hit a wall: the character is stopped by the wall and no path is drawn',
         x: 3,
         y: 5,
@@ -518,184 +637,6 @@ test.each(movementTestCases)('Backward: $name', (testData: MovementTestCase) => 
         testData.expectedPath,
         testData.expectedEvent);
 });
-
-test('Forward move is limited to the sceneDimensions', () => {
-    const dimensions = new SceneDimensions(1, 10, 1, 10);
-    const customBackground = new CustomBackground(dimensions);
-
-    (expect(new CharacterState(1, 1, 0, [], dimensions)
-        .forward(2, false, customBackground)
-    ): any).toBeCharacterUpdate(1, 1, 0, [], null);
-
-    (expect(new CharacterState(9, 3, 1, [], dimensions)
-        .forward(3, false, customBackground)
-    ): any).toBeCharacterUpdate(10, 1, 1, [], null);
-
-    (expect(new CharacterState(10, 1, 2, [], dimensions)
-        .forward(2, false, customBackground)
-    ): any).toBeCharacterUpdate(10, 1, 2, [], null);
-
-    (expect(new CharacterState(9, 8, 3, [], dimensions)
-        .forward(3, false, customBackground)
-    ): any).toBeCharacterUpdate(10, 10, 3, [], null);
-
-    (expect(new CharacterState(1, 10, 4, [], dimensions)
-        .forward(2, false, customBackground)
-    ): any).toBeCharacterUpdate(1, 10, 4, [], null);
-
-    (expect(new CharacterState(2, 8, 5, [], dimensions)
-        .forward(3, false, customBackground)
-    ): any).toBeCharacterUpdate(1, 10, 5, [], null);
-
-    (expect(new CharacterState(1, 1, 6, [], dimensions)
-        .forward(2, false, customBackground)
-    ): any).toBeCharacterUpdate(1, 1, 6, [], null);
-
-    (expect(new CharacterState(2, 3, 7, [], dimensions)
-        .forward(3, false, customBackground)
-    ): any).toBeCharacterUpdate(1, 1, 7, [], null);
-});
-
-test('Backward move is limited to the sceneDimensions', () => {
-    const dimensions = new SceneDimensions(1, 10, 1, 10);
-    const customBackground = new CustomBackground(dimensions);
-
-    (expect(new CharacterState(1, 10, 0, [], dimensions)
-        .backward(2, false, customBackground)
-    ): any).toBeCharacterUpdate(1, 10, 0, [], null);
-
-    (expect(new CharacterState(2, 8, 1, [], dimensions)
-        .backward(3, false, customBackground)
-    ): any).toBeCharacterUpdate(1, 10, 1, [], null);
-
-    (expect(new CharacterState(1, 1, 2, [], dimensions)
-        .backward(2, false, customBackground)
-    ): any).toBeCharacterUpdate(1, 1, 2, [], null);
-
-    (expect(new CharacterState(2, 3, 3, [], dimensions)
-        .backward(3, false, customBackground)
-    ): any).toBeCharacterUpdate(1, 1, 3, [], null);
-
-    (expect(new CharacterState(1, 1, 4, [], dimensions)
-        .backward(2, false, customBackground)
-    ): any).toBeCharacterUpdate(1, 1, 4, [], null);
-
-    (expect(new CharacterState(9, 3, 5, [], dimensions)
-        .backward(3, false, customBackground)
-    ): any).toBeCharacterUpdate(10, 1, 5, [], null);
-
-    (expect(new CharacterState(10, 1, 6, [], dimensions)
-        .backward(2, false, customBackground)
-    ): any).toBeCharacterUpdate(10, 1, 6, [], null);
-
-    (expect(new CharacterState(9, 8, 7, [], dimensions)
-        .backward(3, false, customBackground)
-    ): any).toBeCharacterUpdate(10, 10, 7, [], null);
-});
-
-test('Moving diagonally out of the scene will only move parallel to the edges of the scene', () => {
-    const dimensions = new SceneDimensions(1, 10, 1, 10);
-    const customBackground = new CustomBackground(dimensions);
-
-    (expect(new CharacterState(2, 1, 1, [], dimensions)
-        .forward(1, true, customBackground)
-    ): any).toBeCharacterUpdate(3, 1, 1, [{x1: 2, y1: 1, x2: 3, y2: 1}], null);
-
-    (expect(new CharacterState(9, 3, 1, [], dimensions)
-        .forward(2, true, customBackground)
-    ): any).toBeCharacterUpdate(
-        10, 1, 1,
-        [
-            {x1: 9, y1: 3, x2: 10, y2: 2},
-            {x1: 10, y1: 2, x2: 10, y2: 1}
-        ],
-        null);
-
-    (expect(new CharacterState(2, 2, 1, [], dimensions)
-        .backward(2, true, customBackground)
-    ): any).toBeCharacterUpdate(
-        1, 4, 1,
-        [
-            {x1: 2, y1: 2, x2: 1, y2: 3},
-            {x1: 1, y1: 3, x2: 1, y2: 4}
-        ],
-        null);
-
-    (expect(new CharacterState(10, 2, 3, [], dimensions)
-        .forward(1, true, customBackground)
-    ): any)
-        .toBeCharacterUpdate(10, 3, 3, [{x1: 10, y1: 2, x2: 10, y2: 3}], null);
-
-    (expect(new CharacterState(9, 3, 3, [], dimensions)
-        .forward(2, true, customBackground)
-    ): any).toBeCharacterUpdate(
-        10, 5, 3,
-        [
-            {x1: 9, y1: 3, x2: 10, y2: 4},
-            {x1: 10, y1: 4, x2: 10, y2: 5}
-        ],
-        null);
-
-    (expect(new CharacterState(3, 2, 3, [], dimensions)
-        .backward(2, true, customBackground)
-    ): any).toBeCharacterUpdate(
-        1, 1, 3,
-        [
-            {x1: 3, y1: 2, x2: 2, y2: 1},
-            {x1: 2, y1: 1, x2: 1, y2: 1}
-        ],
-        null);
-
-    (expect(new CharacterState(2, 10, 5, [], dimensions)
-        .forward(1, true, customBackground)
-    ): any)
-        .toBeCharacterUpdate(1, 10, 5, [{x1: 2, y1: 10, x2: 1, y2: 10}], null);
-
-    (expect(new CharacterState(2, 2, 5, [], dimensions)
-        .forward(2, true, customBackground)
-    ): any).toBeCharacterUpdate(
-        1, 4, 5,
-        [
-            {x1: 2, y1: 2, x2: 1, y2: 3},
-            {x1: 1, y1: 3, x2: 1, y2: 4}
-        ],
-        null);
-
-    (expect(new CharacterState(2, 2, 5, [], dimensions)
-        .backward(2, true, customBackground)
-    ): any).toBeCharacterUpdate(
-        4, 1, 5,
-        [
-            {x1: 2, y1: 2, x2: 3, y2: 1},
-            {x1: 3, y1: 1, x2: 4, y2: 1}
-        ],
-        null);
-
-    (expect(new CharacterState(1, 2, 7, [], dimensions)
-        .forward(1, true, customBackground)
-    ): any).toBeCharacterUpdate(1, 1, 7, [{x1: 1, y1: 2, x2: 1, y2: 1}], null);
-
-    (expect(new CharacterState(3, 2, 7, [], dimensions)
-        .forward(2, true, customBackground)
-    ): any).toBeCharacterUpdate(
-        1, 1, 7,
-        [
-            {x1: 3, y1: 2, x2: 2, y2: 1},
-            {x1: 2, y1: 1, x2: 1, y2: 1}
-        ],
-        null);
-
-    (expect(new CharacterState(9, 3, 7, [], dimensions)
-        .backward(2, true, customBackground)
-    ): any).toBeCharacterUpdate(
-        10, 5, 7,
-        [
-            {x1: 9, y1: 3, x2: 10, y2: 4},
-            {x1: 10, y1: 4, x2: 10, y2: 5}
-        ],
-        null);
-})
-
 
 test('When direction is not an integer in range 0-7, forward() and backward() should throw an Error', () => {
     expect.assertions(6);

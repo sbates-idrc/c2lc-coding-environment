@@ -107,6 +107,7 @@
         "CharacterDescriptionBuilder.positionAndDirection": "At {columnLabel} {rowLabel} facing {direction}",
         "CharacterDescriptionBuilder.positionAndDirectionAndItem": "At {columnLabel} {rowLabel} on {item} facing {direction}",
         "CharacterMessageBuilder.hitWall": "Your character hit a wall on {columnLabel}{rowLabel}. Program is paused.",
+        "CharacterMessageBuilder.endOfScene": "Your character has reached the end of the scene. Program is paused.",
         "Command.backward1": "backward 1 square",
         "Command.backward2": "backward 2 squares",
         "Command.backward3": "backward 3 squares",

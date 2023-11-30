@@ -13,7 +13,17 @@ const intl = createIntl({
 
 const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
 
-test('Hit wall Message', () => {
+test('End of scene', () => {
+    const builder = new CharacterMessageBuilder(sceneDimensions, intl);
+    const message = builder.buildMessage({
+        type: 'endOfScene',
+        x: 1,
+        y: 1
+    });
+    expect(message).toBe('Your character has reached the end of the scene. Program is paused.');
+});
+
+test('Hit wall', () => {
     const builder = new CharacterMessageBuilder(sceneDimensions, intl);
     const message = builder.buildMessage({
         type: 'hitWall',

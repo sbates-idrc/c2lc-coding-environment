@@ -194,7 +194,31 @@ test.each(([
         expectedActionResult: 'success'
     },
     {
-        // Bump into a wall, going forward
+        // Reach the end of the scene, going forward
+        action: 'forward1',
+        x: 1,
+        y: 1,
+        direction: 0,
+        expectedX: 1,
+        expectedY: 1,
+        expectedDirection: 0,
+        expectedMessage: 'Your character has reached the end of the scene. Program is paused.',
+        expectedActionResult: 'movementBlocked'
+    },
+    {
+        // Reach the end of the scene, going backward
+        action: 'backward1',
+        x: 1,
+        y: 1,
+        direction: 2,
+        expectedX: 1,
+        expectedY: 1,
+        expectedDirection: 2,
+        expectedMessage: 'Your character has reached the end of the scene. Program is paused.',
+        expectedActionResult: 'movementBlocked'
+    },
+    {
+        // Hit a wall, going forward
         action: 'forward1',
         x: 4,
         y: 1,
@@ -206,7 +230,7 @@ test.each(([
         expectedActionResult: 'movementBlocked'
     },
     {
-        // Bump into a wall, going backward
+        // Hit a wall, going backward
         action: 'backward1',
         x: 6,
         y: 1,

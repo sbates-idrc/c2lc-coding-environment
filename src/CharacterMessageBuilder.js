@@ -15,11 +15,21 @@ export default class CharacterMessageBuilder {
 
     buildMessage(event: CharacterEvent): ?string {
         switch(event.type) {
+            case 'endOfScene':
+                return this.buildEndOfSceneMessage();
             case 'hitWall':
                 return this.buildHitWallMessage(event.x, event.y);
             default:
                 return null;
         }
+    }
+
+    buildEndOfSceneMessage(): string {
+        return this.intl.formatMessage(
+            {
+                id:'CharacterMessageBuilder.endOfScene'
+            }
+        );
     }
 
     buildHitWallMessage(x: number, y: number): string {
