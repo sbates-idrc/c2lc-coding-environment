@@ -18,31 +18,37 @@ type CharacterAriaLiveProps = {
     world: WorldName,
     customBackground: CustomBackground,
     customBackgroundDesignMode: boolean,
-    characterDescriptionBuilder: CharacterDescriptionBuilder
+    characterDescriptionBuilder: CharacterDescriptionBuilder,
+    message: ?string
 };
 
 class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
-    setCharacterMovingAriaLive() {
+    appendToLog(text: string) {
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
         if (ariaLiveRegion) {
-            const characterLabel = this.props.intl.formatMessage({id: `${this.props.world}.character`});
-            ariaLiveRegion.innerText = this.props.intl.formatMessage(
-                {id:'CharacterAriaLive.movementAriaLabel'},
-                {character: characterLabel}
-            );
+            const newDiv = document.createElement("div");
+            newDiv.appendChild(document.createTextNode(text));
+            ariaLiveRegion.appendChild(newDiv);
         }
     }
 
-    updateCharacterPositionAriaLive() {
-        const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
-        if (ariaLiveRegion) {
-            ariaLiveRegion.innerText = this.props.characterDescriptionBuilder.buildCharacterDescription(
-                this.props.characterState,
-                this.props.world,
-                this.props.customBackground,
-                this.props.customBackgroundDesignMode
-            );
-        }
+    appendCharacterDescription() {
+        const description = this.props.characterDescriptionBuilder.buildCharacterDescription(
+            this.props.characterState,
+            this.props.world,
+            this.props.customBackground,
+            this.props.customBackgroundDesignMode
+        );
+        this.appendToLog(description);
+    }
+
+    appendCharacterMoving() {
+        const characterLabel = this.props.intl.formatMessage({id: `${this.props.world}.character`});
+        const description = this.props.intl.formatMessage(
+            {id:'CharacterAriaLive.movementAriaLabel'},
+            {character: characterLabel}
+        );
+        this.appendToLog(description);
     }
 
     render() {
@@ -67,23 +73,26 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
                 ariaLiveRegion.setAttribute('aria-hidden', this.props.ariaHidden.toString());
             }
         }
-        // Ensure updateCharacterPositionAriaLive gets called only once
+
+        // Append the message if there is a new one
+        if (prevProps.message !== this.props.message && this.props.message != null) {
+            this.appendToLog(this.props.message);
+        }
+
+        // Append the character description, if appropriate
         if (prevProps.characterState !== this.props.characterState) {
             if (this.props.runningState !== 'running') {
-                this.updateCharacterPositionAriaLive();
+                this.appendCharacterDescription();
             }
         }  else if (prevProps.runningState !== this.props.runningState) {
             if (this.props.runningState === 'stopRequested'
                 || this.props.runningState === 'pauseRequested'
                 || (prevProps.runningState === 'running' && this.props.runningState === 'stopped')
                 || (prevProps.runningState === 'running' && this.props.runningState === 'paused')) {
-                this.updateCharacterPositionAriaLive();
-            }
-            else if (this.props.runningState === "running") {
-                this.setCharacterMovingAriaLive();
+                this.appendCharacterDescription();
             }
         } else if (prevProps.world !== this.props.world) {
-            this.updateCharacterPositionAriaLive();
+            this.appendCharacterDescription();
         }
     }
 

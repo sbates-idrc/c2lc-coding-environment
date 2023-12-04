@@ -1525,6 +1525,7 @@ export class App extends React.Component<AppProps, AppState> {
                 customBackground={this.state.customBackground}
                 customBackgroundDesignMode={this.state.customBackgroundDesignMode}
                 characterDescriptionBuilder={this.characterDescriptionBuilder}
+                message={this.state.message}
             />
         );
     }
