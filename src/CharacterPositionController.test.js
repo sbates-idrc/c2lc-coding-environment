@@ -18,7 +18,6 @@ const defaultCharacterPositionControllerProps = {
     interpreterIsRunning: false,
     characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
     editingDisabled: false,
-    runningState: 'stopped',
     customBackgroundDesignMode: false,
     selectedCustomBackgroundTile: null
 };

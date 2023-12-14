@@ -16,14 +16,12 @@ import { ReactComponent as PaintbrushIcon } from './svg/PaintbrushIcon.svg';
 import { ReactComponent as SetStartIcon } from './svg/SetStartIcon.svg';
 import { getTileName, isEraser } from './TileData';
 import type { TileCode } from './TileData';
-import type { RunningState } from './types';
 import './CharacterPositionController.scss';
 
 type CharacterPositionControllerProps = {
     intl: IntlShape,
     characterState: CharacterState,
     editingDisabled: boolean,
-    runningState: RunningState,
     customBackgroundDesignMode: boolean,
     selectedCustomBackgroundTile: ?TileCode,
     onChangeCharacterPosition: (direction: ?string) => void,
@@ -151,11 +149,6 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
             this.props.editingDisabled && 'ProgramBlock__character-position-coordinate-box--disabled'
         );
 
-        // Set aria-hidden=true while the program is running to stop VoiceOver
-        // on Mac with Firefox and Chrome from speaking changes to the text
-        // input values
-        const ariaHiddenTextInputs = (this.props.runningState === 'running');
-
         return (
             <div className='CharacterPositionController'>
                 {!(this.props.customBackgroundDesignMode) &&
@@ -256,7 +249,6 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         className={characterPositionColumnTextInputClassName}
                         aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.columnPosition'})}
                         aria-disabled={this.props.editingDisabled}
-                        aria-hidden={ariaHiddenTextInputs}
                         maxLength='1'
                         size='2'
                         type='text'
@@ -270,7 +262,6 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         className={characterPositionRowTextInputClassName}
                         aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.rowPosition'})}
                         aria-disabled={this.props.editingDisabled}
-                        aria-hidden={ariaHiddenTextInputs}
                         maxLength='2'
                         size='2'
                         type='text'

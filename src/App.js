@@ -1368,7 +1368,6 @@ export class App extends React.Component<AppProps, AppState> {
             <CharacterPositionController
                 characterState={this.state.characterState}
                 editingDisabled={this.editingIsDisabled()}
-                runningState={this.state.runningState}
                 customBackgroundDesignMode={this.state.customBackgroundDesignMode}
                 selectedCustomBackgroundTile={this.state.selectedCustomBackgroundTile}
                 onChangeCharacterPosition={this.handleChangeCharacterPosition}
