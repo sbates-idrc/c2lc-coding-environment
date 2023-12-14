@@ -23,32 +23,57 @@ type CharacterAriaLiveProps = {
 };
 
 class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
-    appendToLog(text: string) {
-        const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
-        if (ariaLiveRegion) {
-            const newDiv = document.createElement("div");
-            newDiv.appendChild(document.createTextNode(text));
-            ariaLiveRegion.appendChild(newDiv);
-        }
+    lastMessage: ?string;
+
+    constructor(props: any) {
+        super(props);
+        this.lastMessage = null;
     }
 
-    appendCharacterDescription() {
-        const description = this.props.characterDescriptionBuilder.buildCharacterDescription(
+    setCharacterMoving() {
+        const characterLabel = this.props.intl.formatMessage({
+            id: `${this.props.world}.character`
+        });
+        const text = this.props.intl.formatMessage(
+            { id:'CharacterAriaLive.movementAriaLabel' },
+            { character: characterLabel }
+        );
+        this.setLiveRegion(text);
+    }
+
+    // Combine the most recent message (if there is one) with the character
+    // description in a single update. With 2 separate updates, it was not
+    // possible to have both updates be spoken by VoiceOver on macOS. When
+    // the character description update was made while the message was still
+    // being spoken, either the character description would interrupt the
+    // message, or the character description would be ignored. A number of
+    // different node structures and live region attributes were tried but
+    // none were successful. With this approach, the message and character
+    // description texts are combined into a single live region update.
+    setMessageAndCharacterDescription() {
+        let text = '';
+
+        if (this.props.message != null
+                && this.props.message !== this.lastMessage) {
+            text = `${this.props.message} `;
+            this.lastMessage = this.props.message;
+        }
+
+        text += this.props.characterDescriptionBuilder.buildCharacterDescription(
             this.props.characterState,
             this.props.world,
             this.props.customBackground,
             this.props.customBackgroundDesignMode
         );
-        this.appendToLog(description);
+
+        this.setLiveRegion(text);
     }
 
-    appendCharacterMoving() {
-        const characterLabel = this.props.intl.formatMessage({id: `${this.props.world}.character`});
-        const description = this.props.intl.formatMessage(
-            {id:'CharacterAriaLive.movementAriaLabel'},
-            {character: characterLabel}
-        );
-        this.appendToLog(description);
+    setLiveRegion(text: string) {
+        const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
+        if (ariaLiveRegion) {
+            ariaLiveRegion.textContent = text;
+        }
     }
 
     render() {
@@ -74,28 +99,28 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
             }
         }
 
-        // Append the message if there is a new one
-        if (prevProps.message !== this.props.message && this.props.message != null) {
-            this.appendToLog(this.props.message);
+        if (this.props.message == null) {
+            this.lastMessage = null;
         }
 
-        // Append the character description, if appropriate
+        // Update the live region
         if (prevProps.characterState !== this.props.characterState) {
             if (this.props.runningState !== 'running') {
-                this.appendCharacterDescription();
+                this.setMessageAndCharacterDescription();
             }
-        }  else if (prevProps.runningState !== this.props.runningState) {
+        } else if (prevProps.runningState !== this.props.runningState) {
             if (this.props.runningState === 'stopRequested'
                 || this.props.runningState === 'pauseRequested'
                 || (prevProps.runningState === 'running' && this.props.runningState === 'stopped')
                 || (prevProps.runningState === 'running' && this.props.runningState === 'paused')) {
-                this.appendCharacterDescription();
+                this.setMessageAndCharacterDescription();
+            } else if (this.props.runningState === "running") {
+                this.setCharacterMoving();
             }
         } else if (prevProps.world !== this.props.world) {
-            this.appendCharacterDescription();
+            this.setMessageAndCharacterDescription();
         }
     }
-
 }
 
 export default injectIntl(CharacterAriaLive);

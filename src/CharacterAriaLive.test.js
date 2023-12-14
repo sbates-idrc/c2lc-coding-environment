@@ -12,7 +12,7 @@ import SceneDimensions from './SceneDimensions';
 import type { RunningState } from './types';
 import messages from './messages.json';
 
-configure({ adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 const intl = createIntl({
     locale: 'en',
@@ -69,25 +69,25 @@ function createMountCharacterAriaLive(props) {
     return wrapper;
 }
 
-function getLiveRegionInnerText() {
-    return ((document.getElementById('someAriaLiveRegionId'): any): HTMLElement).innerText;
+function getLiveRegionText() {
+    return ((document.getElementById('someAriaLiveRegionId'): any): HTMLElement).textContent;
 }
 
 function getLiveRegionAriaHidden() {
     return ((document.getElementById('someAriaLiveRegionId'): any): HTMLElement).getAttribute('aria-hidden');
 }
 
-test.skip('The live region is updated when the characterState prop is changed', () => {
+test('The live region is updated when the characterState prop is changed', () => {
     const wrapper = createMountCharacterAriaLive();
-    expect(getLiveRegionInnerText()).toBeUndefined();
+    expect(getLiveRegionText()).toBe('');
     wrapper.setProps({
         characterState: new CharacterState(1, 1, 2, [], sceneDimensions)
     });
-    expect(getLiveRegionInnerText()).toBe('At A 1 facing right');
+    expect(getLiveRegionText()).toBe('At A 1 facing right');
     wrapper.setProps({
         characterState: new CharacterState(3, 1, 2, [], sceneDimensions)
     });
-    expect(getLiveRegionInnerText()).toBe('At C 1 facing right');
+    expect(getLiveRegionText()).toBe('At C 1 facing right');
 });
 
 type RunningStateTestCase = {
@@ -96,8 +96,7 @@ type RunningStateTestCase = {
     expectedLiveRegion: string
 };
 
-// $FlowFixMe: skip
-test.skip.each(([
+test.each(([
     {
         runningStateBefore: 'running',
         runningStateAfter: 'stopRequested',
@@ -128,34 +127,101 @@ test.skip.each(([
     const wrapper = createMountCharacterAriaLive({
         runningState: testData.runningStateBefore
     });
-    expect(getLiveRegionInnerText()).toBeUndefined();
+    expect(getLiveRegionText()).toBe('');
     wrapper.setProps({
         runningState: testData.runningStateAfter
     });
-    expect(getLiveRegionInnerText()).toBe(testData.expectedLiveRegion);
+    expect(getLiveRegionText()).toBe(testData.expectedLiveRegion);
 });
 
-test.skip('The live region is updated when the world prop is changed', () => {
+test('When a message is included in the props change, it is included in the live region update', () => {
+    const wrapper = createMountCharacterAriaLive({
+        runningState: 'running'
+    });
+    expect(getLiveRegionText()).toBe('');
+    wrapper.setProps({
+        message: 'Example message.',
+        runningState: 'paused'
+    });
+    expect(getLiveRegionText()).toBe('Example message. At A 1 facing right');
+});
+
+test('When a message is in a previous props change, it is included in the live region update', () => {
+    const wrapper = createMountCharacterAriaLive({
+        runningState: 'running'
+    });
+    expect(getLiveRegionText()).toBe('');
+    wrapper.setProps({
+        message: 'Example message.'
+    });
+    expect(getLiveRegionText()).toBe('');
+    wrapper.setProps({
+        runningState: 'paused'
+    });
+    expect(getLiveRegionText()).toBe('Example message. At A 1 facing right');
+});
+
+test('A message is only added to the live region once', () => {
+    const wrapper = createMountCharacterAriaLive({
+        runningState: 'running'
+    });
+    wrapper.setProps({
+        message: 'Example message.'
+    });
+    wrapper.setProps({
+        runningState: 'paused'
+    });
+    expect(getLiveRegionText()).toBe('Example message. At A 1 facing right');
+    wrapper.setProps({
+        characterState: new CharacterState(2, 1, 2, [], sceneDimensions)
+    });
+    expect(getLiveRegionText()).toBe('At B 1 facing right');
+});
+
+test('If a message is set, then set to null, then set to the same text again, it is included the 2nd time', () => {
+    const wrapper = createMountCharacterAriaLive({
+        runningState: 'running'
+    });
+    wrapper.setProps({
+        message: 'Example message.'
+    });
+    wrapper.setProps({
+        runningState: 'paused'
+    });
+    expect(getLiveRegionText()).toBe('Example message. At A 1 facing right');
+    wrapper.setProps({
+        message: null
+    });
+    wrapper.setProps({
+        message: 'Example message.'
+    });
+    wrapper.setProps({
+        characterState: new CharacterState(2, 1, 2, [], sceneDimensions)
+    });
+    expect(getLiveRegionText()).toBe('Example message. At B 1 facing right');
+});
+
+test('The live region is updated when the world prop is changed', () => {
     const wrapper = createMountCharacterAriaLive();
-    expect(getLiveRegionInnerText()).toBeUndefined();
+    expect(getLiveRegionText()).toBe('');
     wrapper.setProps({
         world: 'Savannah'
     });
-    expect(getLiveRegionInnerText()).toBe('At A 1 facing right');
+    expect(getLiveRegionText()).toBe('At A 1 facing right');
     wrapper.setProps({
         world: 'Space'
     });
-    expect(getLiveRegionInnerText()).toBe('At A 1 on the Earth facing right');
+    expect(getLiveRegionText()).toBe('At A 1 on the Earth facing right');
 });
 
-test.skip('Custom background design mode', () => {
+test('Custom background design mode', () => {
     const wrapper = createMountCharacterAriaLive({
         customBackgroundDesignMode: true
     });
     wrapper.setProps({
         characterState: new CharacterState(3, 1, 2, [], sceneDimensions)
     });
-    expect(getLiveRegionInnerText()).toBe('At C 1');
+    expect(getLiveRegionText()).toBe('At C 1');
 });
 
 test('The live region has aria-hidden false when the ariaHidden prop is false', () => {
