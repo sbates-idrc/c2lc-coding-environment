@@ -70,6 +70,7 @@ Those key bindings are as follows.
  | Select the turn left 90 degrees action block | Ctrl + Alt + x, m, l, 2 | ![Select turn left 90 icon](board-imgs/SelectTurnLeft90Block.png) |
  | Select the turn right 45 degrees action block | Ctrl + Alt + x, m, r, 1 | ![Select turn right 45 icon](board-imgs/SelectTurnRight45Block.png) |
  | Select the turn right 90 degrees action block | Ctrl + Alt + x, m, r, 2 | ![Select turn right 90 icon](board-imgs/SelectTurnRight90Block.png) |
+ | Set the character starting position | Ctrl + Alt + x, p, s | ![Set the character starting position icon](board-imgs/SetCharacterStartingPosition.png) |
  | Turn the audio feedback announcements on or off | Ctrl + Alt + x, x | Not available |
  | Turn the character left 45 degrees | Ctrl + Alt + x, p, t, l | ![Turn character left icon](board-imgs/TurnCharacterLeft.png) |
  | Turn the character right 45 degrees | Ctrl + Alt + x, p, t, r | ![Turn character right icon](board-imgs/TurnCharacterRight.png) |
@@ -127,6 +128,7 @@ Those key bindings are as follows:
  | Select the turn left 90 degrees action block | Alt + x, m, l, 2 | ![Select turn left 90 icon](board-imgs/SelectTurnLeft90Block.png) |
  | Select the turn right 45 degrees action block | Alt + x, m, r, 1 | ![Select turn right 45 icon](board-imgs/SelectTurnRight45Block.png) |
  | Select the turn right 90 degrees action block | Alt + x, m, r, 2 | ![Select turn right 90 icon](board-imgs/SelectTurnRight90Block.png) |
+ | Set the character starting position | Alt + x, p, s | ![Set the character starting position icon](board-imgs/SetCharacterStartingPosition.png) |
  | Turn the audio feedback announcements on or off | Alt + x, x | Not available |
  | Turn the character left 45 degrees | Alt + x, p, t, l | ![Turn character left icon](board-imgs/TurnCharacterLeft.png) |
  | Turn the character right 45 degrees | Alt + x, p, t, r | ![Turn character right icon](board-imgs/TurnCharacterRight.png) |

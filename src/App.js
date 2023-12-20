@@ -809,6 +809,9 @@ export class App extends React.Component<AppProps, AppState> {
                                 this.handleChangeCharacterPosition('turnRight');
                             }
                             break;
+                        case("setCharacterStartingPosition"):
+                            this.setStartingPositionToCurrentPosition();
+                            break;
                         case("changeToDefaultTheme"):
                             this.setStateSettings({theme: "default"});
                             break;
@@ -1196,7 +1199,7 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleClickPositionControllerSetStartButton = () => {
+    setStartingPositionToCurrentPosition = () => {
         this.setState((state) => {
             return {
                 startingX: state.characterState.xPos,
@@ -1373,7 +1376,7 @@ export class App extends React.Component<AppProps, AppState> {
                 onChangeCharacterPosition={this.handleChangeCharacterPosition}
                 onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
                 onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
-                onClickSetStartButton={this.handleClickPositionControllerSetStartButton}
+                onClickSetStartButton={this.setStartingPositionToCurrentPosition}
                 onClickPaintbrushButton={this.handleClickPositionControllerPaintbrushButton}
             />
         );
