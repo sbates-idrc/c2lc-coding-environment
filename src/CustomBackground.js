@@ -1,10 +1,9 @@
 // @flow
 
+import * as C2lcMath from './C2lcMath';
 import SceneDimensions from './SceneDimensions';
 import { isWall } from './TileData';
 import type { TileCode } from './TileData';
-
-// TODO: Decide what to do if x or y or index is out of range
 
 export default class CustomBackground {
     sceneDimensions: SceneDimensions;
@@ -27,11 +26,6 @@ export default class CustomBackground {
         }
     }
 
-    calculateIndex(x: number, y: number): number {
-        return ((y - this.sceneDimensions.getMinY()) * this.sceneDimensions.getWidth())
-            + (x - this.sceneDimensions.getMinX());
-    }
-
     getTile(x: number, y: number): TileCode {
         return this.tiles[this.calculateIndex(x, y)];
     }
@@ -44,5 +38,14 @@ export default class CustomBackground {
 
     isWall(x: number, y: number): boolean {
         return isWall(this.tiles[this.calculateIndex(x, y)]);
+    }
+
+    // Internal
+
+    calculateIndex(x: number, y: number): number {
+        x = C2lcMath.clamp(this.sceneDimensions.getMinX(), this.sceneDimensions.getMaxX(), x);
+        y = C2lcMath.clamp(this.sceneDimensions.getMinY(), this.sceneDimensions.getMaxY(), y);
+        return ((y - this.sceneDimensions.getMinY()) * this.sceneDimensions.getWidth())
+            + (x - this.sceneDimensions.getMinX());
     }
 }
