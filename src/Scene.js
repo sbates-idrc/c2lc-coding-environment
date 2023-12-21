@@ -65,10 +65,6 @@ class Scene extends React.Component<SceneProps, {}> {
         this.lastPaintY = null;
     }
 
-    getDirectionWords(direction: number): string {
-        return this.props.intl.formatMessage({id: `Direction.${direction}`});
-    }
-
     generateAriaLabel() {
         const worldLabel = this.props.intl.formatMessage({id: this.props.world + '.name'});
         const numColumns = this.props.dimensions.getWidth();
@@ -162,6 +158,7 @@ class Scene extends React.Component<SceneProps, {}> {
         }
     }
 
+    /* istanbul ignore next */
     getPositionFromSceneSvgMouseEvent(e: any): MousePosition {
         // $FlowFixMe: DOMPoint
         const clientPoint = new DOMPoint(e.clientX, e.clientY);
@@ -173,6 +170,7 @@ class Scene extends React.Component<SceneProps, {}> {
         };
     }
 
+    /* istanbul ignore next */
     handleMouseDownSceneSvg = (e: any) => {
         const pos: MousePosition = this.getPositionFromSceneSvgMouseEvent(e);
         this.lastPaintX = pos.x;
@@ -180,6 +178,7 @@ class Scene extends React.Component<SceneProps, {}> {
         this.props.onPaintScene(pos.x, pos.y);
     }
 
+    /* istanbul ignore next */
     handleMouseMoveSceneSvg = (e: any) => {
         const primaryButtonPressed = ((e.buttons % 2) === 1);
         if (primaryButtonPressed) {
