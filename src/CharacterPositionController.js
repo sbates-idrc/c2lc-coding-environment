@@ -5,26 +5,30 @@ import type {IntlShape} from 'react-intl';
 import React from 'react';
 import CharacterState from './CharacterState';
 import classNames from 'classnames';
-import { getWorldCharacter, getWorldProperties } from './Worlds';
+import IconButton from './IconButton';
 import { ReactComponent as MovePositionUp } from './svg/MovePositionUp.svg';
 import { ReactComponent as MovePositionRight } from './svg/MovePositionRight.svg';
 import { ReactComponent as MovePositionDown } from './svg/MovePositionDown.svg';
 import { ReactComponent as MovePositionLeft } from './svg/MovePositionLeft.svg';
 import { ReactComponent as TurnPositionRight } from './svg/TurnPositionRight.svg';
 import { ReactComponent as TurnPositionLeft } from './svg/TurnPositionLeft.svg';
-import type { ThemeName } from './types';
-import type { WorldName } from './Worlds';
+import { ReactComponent as PaintbrushIcon } from './svg/PaintbrushIcon.svg';
+import { ReactComponent as SetStartIcon } from './svg/SetStartIcon.svg';
+import { getTileName, isEraser } from './TileData';
+import type { TileCode } from './TileData';
 import './CharacterPositionController.scss';
 
 type CharacterPositionControllerProps = {
     intl: IntlShape,
     characterState: CharacterState,
     editingDisabled: boolean,
-    theme: ThemeName,
-    world: WorldName,
+    customBackgroundDesignMode: boolean,
+    selectedCustomBackgroundTile: ?TileCode,
     onChangeCharacterPosition: (direction: ?string) => void,
     onChangeCharacterXPosition: (columnLabel: string) => void,
-    onChangeCharacterYPosition: (rowLabel: string) => void
+    onChangeCharacterYPosition: (rowLabel: string) => void,
+    onClickSetStartButton: () => void,
+    onClickPaintbrushButton: () => void
 };
 
 type CharacterPositionControllerState = {
@@ -99,25 +103,31 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         }
     }
 
-    getWorldEnableFlipCharacter(): boolean {
-        return getWorldProperties(this.props.world).enableFlipCharacter;
-    }
+    getPaintbrushButtonAriaLabel() {
+        if (this.props.selectedCustomBackgroundTile == null) {
+            return this.props.intl.formatMessage({
+                id: 'CharacterPositionController.paintbrushButtonNoSelection'
+            });
+        } else {
+            if (isEraser(this.props.selectedCustomBackgroundTile)) {
+                return this.props.intl.formatMessage({
+                    id: 'CharacterPositionController.paintbrushButtonEraserSelected'
+                });
+            } else {
+                const tileDescription = this.props.intl.formatMessage({
+                    id: `TileDescription.${getTileName(this.props.selectedCustomBackgroundTile)}`
+                });
 
-    getWorldCharacter() {
-        // We use a CSS approach because Safari doesn't support scale transforms whole svgs (and ignores the rotation
-        // if you include scaling in the transform).  See:
-        // https://stackoverflow.com/questions/48248512/svg-transform-rotate180-does-not-work-in-safari-11
-        const worldCharacterClassName = classNames(
-            'CharacterPositionController__character-column-character',
-            'CharacterPositionController__character-column-character--angle' + this.props.characterState.direction,
-            this.getWorldEnableFlipCharacter() && 'CharacterPositionController__character-column-character--enable-flip'
-        );
-
-        const character = getWorldCharacter(this.props.theme, this.props.world);
-        return React.createElement(character, {
-            className: worldCharacterClassName,
-            transform: ""
-        });
+                return this.props.intl.formatMessage(
+                    {
+                        id: 'CharacterPositionController.paintbrushButtonTileSelected'
+                    },
+                    {
+                        tile: tileDescription
+                    }
+                );
+            }
+        }
     }
 
     render() {
@@ -140,27 +150,31 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
         );
 
         return (
-            <div className='CharacterPositionController__character-column'>
-                <div className='CharacterPositionController__character-turn-positions'>
-                    <TurnPositionLeft
-                        className={characterPositionButtonClassName}
-                        aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.turnLeft'})}
-                        aria-disabled={this.props.editingDisabled}
-                        role='button'
-                        tabIndex='0'
-                        value='turnLeft'
-                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
-                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined} />
-                    <TurnPositionRight
-                        className={characterPositionButtonClassName}
-                        aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.turnRight'})}
-                        aria-disabled={this.props.editingDisabled}
-                        role='button'
-                        tabIndex='0'
-                        value='turnRight'
-                        onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
-                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined} />
-                </div>
+            <div className='CharacterPositionController'>
+                {!(this.props.customBackgroundDesignMode) &&
+                    <div className='CharacterPositionController__character-turn-positions'>
+                        <TurnPositionLeft
+                            className={characterPositionButtonClassName}
+                            aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.turnLeft'})}
+                            aria-disabled={this.props.editingDisabled}
+                            role='button'
+                            tabIndex='0'
+                            value='turnLeft'
+                            onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
+                            onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined}
+                        />
+                        <TurnPositionRight
+                            className={characterPositionButtonClassName}
+                            aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.turnRight'})}
+                            aria-disabled={this.props.editingDisabled}
+                            role='button'
+                            tabIndex='0'
+                            value='turnRight'
+                            onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
+                            onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined}
+                        />
+                    </div>
+                }
                 <div className='CharacterPositionController__character-move-position-top'>
                     <MovePositionUp
                         className={characterPositionButtonClassName}
@@ -170,7 +184,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         tabIndex='0'
                         value='up'
                         onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
-                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined} />
+                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined}
+                    />
                 </div>
                 <div className='CharacterPositionController__character-move-position-sides'>
                     <MovePositionLeft
@@ -181,14 +196,30 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         tabIndex='0'
                         value='left'
                         onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
-                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined} />
-                    <div
-                        aria-hidden='true'
-                        className={`CharacterPositionController__character-column-character-container
-                            CharacterPositionController__character-column-character-container--${this.props.world}`}
-                        role='img'>
-                        {this.getWorldCharacter()}
-                    </div>
+                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined}
+                    />
+                    {this.props.customBackgroundDesignMode ?
+                        <IconButton
+                            className='CharacterPositionController__paintbrushButton'
+                            disabled={this.props.selectedCustomBackgroundTile == null}
+                            ariaLabel={this.getPaintbrushButtonAriaLabel()}
+                            onClick={this.props.onClickPaintbrushButton}
+                        >
+                            <PaintbrushIcon
+                                className='CharacterPositionController__centerButtonIcon'
+                            />
+                        </IconButton>
+                        :
+                        <IconButton
+                            className='CharacterPositionController__setStartButton'
+                            ariaLabel={this.props.intl.formatMessage({id:'CharacterPositionController.setStartButton'})}
+                            onClick={this.props.onClickSetStartButton}
+                        >
+                            <SetStartIcon
+                                className='CharacterPositionController__centerButtonIcon'
+                            />
+                        </IconButton>
+                    }
                     <MovePositionRight
                         className={characterPositionButtonClassName}
                         aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.moveRight'})}
@@ -197,7 +228,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         tabIndex='0'
                         value='right'
                         onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
-                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined} />
+                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined}
+                    />
                 </div>
                 <div className='CharacterPositionController__character-move-position-bottom'>
                     <MovePositionDown
@@ -208,7 +240,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         tabIndex='0'
                         value='down'
                         onKeyDown={!this.props.editingDisabled ? this.handleKeyDownCharacterPositionButton : undefined}
-                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined} />
+                        onClick={!this.props.editingDisabled ? this.handleClickCharacterPositionButton : undefined}
+                    />
                 </div>
                 <div className='CharacterPositionController__character-move-position-coordinate'>
                     <input
@@ -222,7 +255,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         value={this.state.characterColumnLabel}
                         onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : () => {}}
                         onKeyDown={this.handleKeyDownCharacterPositionLabel}
-                        onBlur={this.handleBlurCharacterPositionLabel} />
+                        onBlur={this.handleBlurCharacterPositionLabel}
+                    />
                     <input
                         name='yPosition'
                         className={characterPositionRowTextInputClassName}
@@ -234,7 +268,8 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         value={this.state.characterRowLabel}
                         onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : () => {}}
                         onKeyDown={this.handleKeyDownCharacterPositionLabel}
-                        onBlur={this.handleBlurCharacterPositionLabel} />
+                        onBlur={this.handleBlurCharacterPositionLabel}
+                    />
                 </div>
             </div>
         )

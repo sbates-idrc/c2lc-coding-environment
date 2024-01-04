@@ -3,22 +3,34 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount } from 'enzyme';
-import { IntlProvider } from 'react-intl';
+import { createIntl, IntlProvider } from 'react-intl';
 import messages from './messages.json';
 import Scene from './Scene';
 import type {SceneProps} from './Scene';
 import SceneDimensions from './SceneDimensions';
+import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
+import CustomBackground from './CustomBackground';
 
 configure({ adapter: new Adapter() });
 
+const intl = createIntl({
+    locale: 'en',
+    defaultLocale: 'en',
+    messages: messages.en
+});
+
+const defaultDimensions = new SceneDimensions(1, 1, 1, 1);
+
 const defaultSceneProps = {
-    dimensions: new SceneDimensions(1, 1, 1, 1),
-    characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 1, 1, 1)),
+    dimensions: defaultDimensions,
+    characterState: new CharacterState(1, 1, 2, [], defaultDimensions),
     theme: 'default',
     world: 'Sketchpad',
+    customBackground: new CustomBackground(defaultDimensions),
     startingX: 1,
-    startingY: 2
+    startingY: 2,
+    characterDescriptionBuilder: new CharacterDescriptionBuilder(intl)
 };
 
 function createMountScene(props) {
@@ -56,12 +68,12 @@ function findGridLabels(sceneWrapper) {
     return sceneWrapper.find('.Scene__grid-label');
 }
 
-function findCharacter(sceneWrapper) {
-    return sceneWrapper.find('.Character');
+function findSceneCharacter(sceneWrapper) {
+    return sceneWrapper.find('.SceneCharacter');
 }
 
-function findCharacterIcon(sceneWrapper) {
-    return sceneWrapper.find('.Character__icon');
+function findSceneCharacterIcon(sceneWrapper) {
+    return sceneWrapper.find('.SceneCharacter__icon');
 }
 
 function findCharacterPath(sceneWrapper) {
@@ -80,8 +92,8 @@ function findSceneBackground(sceneWrapper) {
     return sceneWrapper.find('.Scene__background');
 }
 
-function findStartingPositionGridCellPoint(sceneWrapper) {
-    return sceneWrapper.find('.Scene__starting-grid-cell-point');
+function findStartIndicator(sceneWrapper) {
+    return sceneWrapper.find('svg.Scene__startIndicator');
 }
 
 function findCharacterOutline(sceneWrapper) {
@@ -106,7 +118,8 @@ describe('When the Scene renders', () => {
         expect.assertions(7);
         const dimensions = new SceneDimensions(1, 1, 1, 1);
         const sceneWrapper = createMountScene({
-            dimensions: dimensions
+            dimensions: dimensions,
+            customBackground: new CustomBackground(dimensions)
         });
 
         // Scene viewbox
@@ -137,7 +150,8 @@ describe('When the Scene renders', () => {
         expect.assertions(25);
         const dimensions = new SceneDimensions(1, 3, 1, 2);
         const sceneWrapper = createMountScene({
-            dimensions: dimensions
+            dimensions: dimensions,
+            customBackground: new CustomBackground(dimensions)
         });
 
         // Scene viewbox
@@ -191,19 +205,20 @@ describe('When the Scene renders', () => {
 
 describe('The ARIA label should tell there is a character with its position', () => {
     test.each([
-        [1, 2, 0, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing up'],
-        [2, 3, 1, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column B, row 3 facing upper right'],
-        [1, 2, 2, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing right'],
-        [1, 2, 3, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing lower right'],
-        [1, 2, 4, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing down'],
-        [1, 2, 5, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing lower left'],
-        [1, 2, 6, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing left'],
-        [1, 2, 7, 'Scene, in Sketchpad, 17 by 9 grid with the robot at column A, row 2 facing upper left']
+        [1, 2, 0, 'Scene, in Sketchpad, 17 by 9 grid. At A 2 facing up'],
+        [2, 3, 1, 'Scene, in Sketchpad, 17 by 9 grid. At B 3 facing upper right'],
+        [1, 2, 2, 'Scene, in Sketchpad, 17 by 9 grid. At A 2 facing right'],
+        [1, 2, 3, 'Scene, in Sketchpad, 17 by 9 grid. At A 2 facing lower right'],
+        [1, 2, 4, 'Scene, in Sketchpad, 17 by 9 grid. At A 2 facing down'],
+        [1, 2, 5, 'Scene, in Sketchpad, 17 by 9 grid. At A 2 facing lower left'],
+        [1, 2, 6, 'Scene, in Sketchpad, 17 by 9 grid. At A 2 facing left'],
+        [1, 2, 7, 'Scene, in Sketchpad, 17 by 9 grid. At A 2 facing upper left']
     ])('x=%f, y=%f, direction=%i', (x, y, direction, expectedLabel) => {
         const sceneDimensions = new SceneDimensions(1, 17, 1, 9);
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
-            characterState: new CharacterState(x, y, direction, [], sceneDimensions)
+            characterState: new CharacterState(x, y, direction, [], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
         expect(findScene(sceneWrapper).get(0).props['aria-label']).toBe(expectedLabel);
     });
@@ -212,38 +227,41 @@ describe('The ARIA label should tell there is a character with its position', ()
 describe('When the Scene renders', () => {
     test('Should render the character component', () => {
         expect.assertions(5);
+        const sceneDimensions = new SceneDimensions(1, 1, 1, 1);
         const sceneWrapper = createMountScene({
-            dimensions: new SceneDimensions(1, 1, 1, 1)
+            dimensions: sceneDimensions,
+            customBackground: new CustomBackground(sceneDimensions)
         });
         const expectedCharacterDimensions = calculateCharacterDimensions();
-        expect(findCharacterIcon(sceneWrapper).hostNodes().length).toBe(1);
-        expect(findCharacterIcon(sceneWrapper).get(0).props.x)
+        expect(findSceneCharacterIcon(sceneWrapper).hostNodes().length).toBe(1);
+        expect(findSceneCharacterIcon(sceneWrapper).get(0).props.x)
             .toBeCloseTo(expectedCharacterDimensions.x, 5);
-        expect(findCharacterIcon(sceneWrapper).get(0).props.y)
+        expect(findSceneCharacterIcon(sceneWrapper).get(0).props.y)
             .toBeCloseTo(expectedCharacterDimensions.y, 5);
-        expect(findCharacterIcon(sceneWrapper).get(0).props.width)
+        expect(findSceneCharacterIcon(sceneWrapper).get(0).props.width)
             .toBeCloseTo(expectedCharacterDimensions.width, 5);
-        expect(findCharacterIcon(sceneWrapper).get(0).props.height)
+        expect(findSceneCharacterIcon(sceneWrapper).get(0).props.height)
             .toBeCloseTo(expectedCharacterDimensions.height, 5);
     });
-    test('Should mark starting position cell', () => {
+    test('Should render the start indicator', () => {
+        const sceneDimensions = new SceneDimensions(1, 8, 1, 9);
         const startingX = 3;
         const startingY = 3;
         const sceneWrapper = createMountScene({
-            dimensions: new SceneDimensions(1, 8, 1, 9),
+            dimensions: sceneDimensions,
+            customBackground: new CustomBackground(sceneDimensions),
             startingX,
             startingY
         });
-        const startingPositionGridCellPoint = findStartingPositionGridCellPoint(sceneWrapper);
 
-        // Check starting position indicator is rendered
-        expect(startingPositionGridCellPoint.length).toBe(1);
+        const startIndicator = findStartIndicator(sceneWrapper);
 
-        const expectedStartingPositionGridCellPointX = startingX - startingPositionGridCellPoint.get(0).props.width/2;
-        const expectedStartingPositionGridCellPointY = startingY - startingPositionGridCellPoint.get(0).props.height/2;
+        expect(startIndicator.length).toBe(1);
 
-        expect(startingPositionGridCellPoint.get(0).props.x).toBe(expectedStartingPositionGridCellPointX);
-        expect(startingPositionGridCellPoint.get(0).props.y).toBe(expectedStartingPositionGridCellPointY);
+        const expectedX = startingX - startIndicator.get(0).props.width/2;
+        const expectedY = startingY - startIndicator.get(0).props.height/2;
+        expect(startIndicator.get(0).props.x).toBe(expectedX);
+        expect(startIndicator.get(0).props.y).toBe(expectedY);
     });
     test.each([
         ['default', false],
@@ -258,7 +276,8 @@ describe('When the Scene renders', () => {
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
             characterState: new CharacterState(characterX, characterY, 2, [], sceneDimensions),
-            theme: theme
+            theme: theme,
+            customBackground: new CustomBackground(sceneDimensions)
         });
 
         const characterOutline = findCharacterOutline(sceneWrapper);
@@ -278,9 +297,10 @@ describe('When the character renders, transform should apply', (sceneDimensions 
         expect.assertions(1);
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
-            characterState: new CharacterState(1, 1, 2, [], sceneDimensions)
+            characterState: new CharacterState(1, 1, 2, [], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
-        const character = findCharacter(sceneWrapper);
+        const character = findSceneCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
             .toBe('translate(1 1) rotate(0 0 0)');
     });
@@ -288,9 +308,10 @@ describe('When the character renders, transform should apply', (sceneDimensions 
         expect.assertions(1);
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
-            characterState: new CharacterState(10, 8, 4, [], sceneDimensions)
+            characterState: new CharacterState(10, 8, 4, [], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
-        const character = findCharacter(sceneWrapper);
+        const character = findSceneCharacter(sceneWrapper);
         expect(character.get(0).props.transform)
             .toBe('translate(10 8) rotate(90 0 0) scale(1 -1)');
     });
@@ -299,10 +320,11 @@ describe('When the character renders, transform should apply', (sceneDimensions 
 
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
-            characterState: new CharacterState(1, 1, 2, [], sceneDimensions)
+            characterState: new CharacterState(1, 1, 2, [], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
 
-        const character = findCharacter(sceneWrapper);
+        const character = findSceneCharacter(sceneWrapper);
 
         expect(character.get(0).props.transform).toBe('translate(1 1) rotate(0 0 0)');
 
@@ -320,7 +342,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
 
         for (let direction = 0; direction <= 7; direction++) {
             sceneWrapper.setProps({characterState: new CharacterState(1, 1, direction, [], new SceneDimensions(1, 100, 1, 100))});
-            const rotatedCharacter = findCharacter(sceneWrapper);
+            const rotatedCharacter = findSceneCharacter(sceneWrapper);
             expect(rotatedCharacter.get(0).props.transform).toBe(expectedValues[direction]);
         }
     });
@@ -330,10 +352,11 @@ describe('When the character renders, transform should apply', (sceneDimensions 
         const sceneWrapper = createMountScene({
             dimensions: sceneDimensions,
             characterState: new CharacterState(1, 1, 2, [], sceneDimensions),
-            world: 'Landmarks'
+            world: 'Landmarks',
+            customBackground: new CustomBackground(sceneDimensions)
         });
 
-        const character = findCharacter(sceneWrapper);
+        const character = findSceneCharacter(sceneWrapper);
 
         expect(character.get(0).props.transform).toBe('translate(1 1) rotate(0 0 0)');
 
@@ -351,7 +374,7 @@ describe('When the character renders, transform should apply', (sceneDimensions 
 
         for (let direction = 0; direction <= 7; direction++) {
             sceneWrapper.setProps({characterState: new CharacterState(1, 1, direction, [], new SceneDimensions(1, 100, 1, 100))});
-            const rotatedCharacter = findCharacter(sceneWrapper);
+            const rotatedCharacter = findSceneCharacter(sceneWrapper);
             expect(rotatedCharacter.get(0).props.transform).toBe(expectedValues[direction]);
         }
     });
@@ -362,7 +385,9 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
         expect.assertions(1);
         const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
         const sceneWrapper = createMountScene({
-            characterState: new CharacterState(0, 0, 2, [], sceneDimensions)
+            dimensions: sceneDimensions,
+            characterState: new CharacterState(1, 1, 2, [], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
         const characterPath = findCharacterPath(sceneWrapper);
         expect(characterPath.length).toBe(0);
@@ -372,7 +397,9 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
         expect.assertions(5);
         const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000)
         const sceneWrapper = createMountScene({
-            characterState: new CharacterState(0, 0, 2, [{x1: 100, y1: 200, x2: 300, y2: 400}], sceneDimensions)
+            dimensions: sceneDimensions,
+            characterState: new CharacterState(1, 1, 2, [{x1: 100, y1: 200, x2: 300, y2: 400}], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
         const characterPath = findCharacterPath(sceneWrapper);
         expect(characterPath.length).toBe(1);
@@ -386,11 +413,13 @@ describe('When the Character has a path, it is drawn on the Scene', () => {
         expect.assertions(9);
         const sceneDimensions = new SceneDimensions(1, 1000, 1, 1000);
         const sceneWrapper = createMountScene({
+            dimensions: sceneDimensions,
             characterState:
-                new CharacterState(0, 0, 2, [
+                new CharacterState(1, 1, 2, [
                     {x1: 100, y1: 200, x2: 300, y2: 400},
                     {x1: 500, y1: 600, x2: 700, y2: 800}
-                ], sceneDimensions)
+                ], sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions)
         });
         const characterPath = findCharacterPath(sceneWrapper);
         expect(characterPath.length).toBe(2);

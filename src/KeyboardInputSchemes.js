@@ -62,6 +62,7 @@ export type ActionName =
     | "moveCharacterDown"
     | "turnCharacterLeft"
     | "turnCharacterRight"
+    | "setCharacterStartingPosition"
 
     // Change Theme
     | "changeToDefaultTheme"
@@ -307,6 +308,13 @@ const ExtendedKeyboardSequences: KeyboardInputScheme = {
                     icon: "TurnCharacterRight.png",
                     altText: "Turn character right icon"
                 }
+            },
+            setStartingPosition: {
+                keyDef: { code: "KeyS", key: "s" },
+                actionName: "setCharacterStartingPosition",
+                description: "Set the character starting position",
+                icon: "SetCharacterStartingPosition.png",
+                altText: "Set the character starting position icon"
             }
         },
 

@@ -1,6 +1,7 @@
 // @flow
 
 import * as C2lcMath from './C2lcMath';
+import CustomBackground from './CustomBackground';
 import SceneDimensions from './SceneDimensions';
 import type { PathSegment } from './types';
 
@@ -16,10 +17,24 @@ import type { PathSegment } from './types';
 
 const characterStateMaxPathLength = 600;
 
+type CharacterEventType = 'endOfScene' | 'hitWall';
+
+export type CharacterEvent = {
+    type: CharacterEventType,
+    x: number,
+    y: number
+};
+
+export type CharacterUpdate = {
+    characterState: CharacterState,
+    event: ?CharacterEvent
+};
+
 type MovementResult = {
     x: number,
     y: number,
-    pathSegments: Array<PathSegment>
+    pathSegments: Array<PathSegment>,
+    event: ?CharacterEvent
 };
 
 export default class CharacterState {
@@ -58,27 +73,52 @@ export default class CharacterState {
         return true;
     }
 
-    forward(distance: number, drawingEnabled: boolean): CharacterState {
-        const movementResult = this.calculateMove(distance, this.direction, drawingEnabled);
+    setPosition(x: number, y: number): CharacterState {
         return new CharacterState(
-            movementResult.x,
-            movementResult.y,
+            x,
+            y,
             this.direction,
-            this.mergePathSegments(this.path, movementResult.pathSegments),
+            this.path,
             this.sceneDimensions
         );
     }
 
-    backward(distance: number, drawingEnabled: boolean): CharacterState {
-        const movementResult = this.calculateMove(distance,
-                C2lcMath.wrap(0, 8, this.direction + 4), drawingEnabled);
-        return new CharacterState(
-            movementResult.x,
-            movementResult.y,
+    forward(distance: number, drawingEnabled: boolean, customBackground: CustomBackground): CharacterUpdate {
+        const movementResult = this.calculateMove(
+            distance,
             this.direction,
-            this.mergePathSegments(this.path, movementResult.pathSegments),
-            this.sceneDimensions
+            drawingEnabled,
+            customBackground
         );
+        return {
+            characterState: new CharacterState(
+                movementResult.x,
+                movementResult.y,
+                this.direction,
+                this.mergePathSegments(this.path, movementResult.pathSegments),
+                this.sceneDimensions
+            ),
+            event: movementResult.event
+        };
+    }
+
+    backward(distance: number, drawingEnabled: boolean, customBackground: CustomBackground): CharacterUpdate {
+        const movementResult = this.calculateMove(
+            distance,
+            C2lcMath.wrap(0, 8, this.direction + 4),
+            drawingEnabled,
+            customBackground
+        );
+        return {
+            characterState: new CharacterState(
+                movementResult.x,
+                movementResult.y,
+                this.direction,
+                this.mergePathSegments(this.path, movementResult.pathSegments),
+                this.sceneDimensions
+            ),
+            event: movementResult.event
+        };
     }
 
     turnLeft(amountEighthsOfTurn: number): CharacterState {
@@ -102,7 +142,7 @@ export default class CharacterState {
     }
 
     moveUpPosition(): CharacterState {
-        let yPos = 0;
+        let yPos = this.yPos;
         if (this.sceneDimensions.getBoundsStateY(this.yPos - 1) === 'outOfBoundsBelow') {
             yPos = 1;
         } else {
@@ -118,7 +158,7 @@ export default class CharacterState {
     }
 
     moveRightPosition(): CharacterState {
-        let xPos = 0;
+        let xPos = this.xPos;
         if (this.sceneDimensions.getBoundsStateX(this.xPos + 1) === 'outOfBoundsAbove') {
             xPos = this.sceneDimensions.getWidth();
         } else {
@@ -134,7 +174,7 @@ export default class CharacterState {
     }
 
     moveDownPosition(): CharacterState {
-        let yPos = 0;
+        let yPos = this.yPos;
         if (this.sceneDimensions.getBoundsStateY(this.yPos + 1) === 'outOfBoundsAbove') {
             yPos = this.sceneDimensions.getHeight();
         } else {
@@ -150,7 +190,7 @@ export default class CharacterState {
     }
 
     moveLeftPosition(): CharacterState {
-        let xPos = 0;
+        let xPos = this.xPos;
         if (this.sceneDimensions.getBoundsStateY(this.xPos - 1) === 'outOfBoundsBelow') {
             xPos = 1;
         } else {
@@ -166,121 +206,112 @@ export default class CharacterState {
     }
 
     changeXPosition(columnLabel: string): CharacterState {
-        let newXPos = this.xPos;
-        if (columnLabel <= String.fromCharCode(64 + this.sceneDimensions.getWidth()) && columnLabel >='A') {
-            newXPos = columnLabel.charCodeAt(0) - 64;
-        } else if (columnLabel <= String.fromCharCode(96 + this.sceneDimensions.getWidth()) && columnLabel >='a') {
-            newXPos = columnLabel.charCodeAt(0) - 96;
+        const xFromLabel = this.sceneDimensions.getXFromColumnLabel(columnLabel);
+        if (xFromLabel == null) {
+            return this;
+        } else {
+            return new CharacterState(
+                xFromLabel,
+                this.yPos,
+                this.direction,
+                this.path,
+                this.sceneDimensions
+            );
         }
-        return new CharacterState(
-            newXPos,
-            this.yPos,
-            this.direction,
-            this.path,
-            this.sceneDimensions
-        );
     }
 
-    changeYPosition(rowLabel: number): CharacterState {
-        let newYPos = this.yPos;
-        if (rowLabel <= this.sceneDimensions.getHeight() && rowLabel >= 1) {
-            newYPos = rowLabel;
+    changeYPosition(rowLabel: string): CharacterState {
+        const yFromLabel = this.sceneDimensions.getYFromRowLabel(rowLabel);
+        if (yFromLabel == null) {
+            return this;
+        } else {
+            return new CharacterState(
+                this.xPos,
+                yFromLabel,
+                this.direction,
+                this.path,
+                this.sceneDimensions
+            );
         }
-        return new CharacterState(
-            this.xPos,
-            newYPos,
-            this.direction,
-            this.path,
-            this.sceneDimensions
-        );
     }
-
 
     getRowLabel(): string {
-        return `${this.yPos}`;
+        const label = this.sceneDimensions.getRowLabel(this.yPos);
+        return (label == null ? '' : label);
     }
 
     getColumnLabel(): string {
-        return String.fromCharCode(64 + this.xPos);
+        const label = this.sceneDimensions.getColumnLabel(this.xPos);
+        return (label == null ? '' : label);
     }
 
     // Internal implementation methods
 
     // Calculates the movement for the specified distance in the specified direction.
     // Returns the final position and any generated path segments.
-    calculateMove(distance: number, direction: number, drawingEnabled: boolean): MovementResult {
+    calculateMove(distance: number, direction: number, drawingEnabled: boolean, customBackground: CustomBackground): MovementResult {
         const pathSegments = [];
         let x = this.xPos;
         let y = this.yPos;
+        let event = null;
 
         for (let i = 0; i < distance; i++) {
-            const movementResult = this.calculateMoveOneGridUnit(x, y, direction);
+            const movementResult = this.calculateMoveOneGridUnit(x, y, direction, customBackground);
             x = movementResult.x;
             y = movementResult.y;
             if (drawingEnabled) {
                 Array.prototype.push.apply(pathSegments, movementResult.pathSegments);
+            }
+            // Stop on the first event
+            if (movementResult.event != null) {
+                event = movementResult.event;
+                break;
             }
         }
 
         return {
             x,
             y,
-            pathSegments
+            pathSegments,
+            event
         };
     }
 
     // Calculates the movement for one grid unit in the specified direction.
     // Returns the new position and, if movement was possible, a path segment.
-    calculateMoveOneGridUnit(x: number, y: number, direction: number): MovementResult {
-        let newX;
-        let newY;
+    calculateMoveOneGridUnit(x: number, y: number, direction: number, customBackground: CustomBackground): MovementResult {
 
-        switch(direction) {
-            case 0:
-                newX = x;
-                newY = y - 1;
-                break;
-            case 1:
-                newX = x + 1;
-                newY = y - 1;
-                break;
-            case 2:
-                newX = x + 1;
-                newY = y;
-                break;
-            case 3:
-                newX = x + 1;
-                newY = y + 1;
-                break;
-            case 4:
-                newX = x;
-                newY = y + 1;
-                break;
-            case 5:
-                newX = x - 1;
-                newY = y + 1;
-                break;
-            case 6:
-                newX = x - 1;
-                newY = y;
-                break;
-            case 7:
-                newX = x - 1;
-                newY = y - 1;
-                break;
-            default:
-                throw new Error('CharacterState direction must be an integer in range 0-7 inclusive');
+        let event: ?CharacterEvent = null;
+        let { newX, newY } = this.calculateNewXAndY(x, y, direction);
+
+        if (newX < this.sceneDimensions.getMinX()
+            || newX > this.sceneDimensions.getMaxX()
+            || newY < this.sceneDimensions.getMinY()
+            || newY > this.sceneDimensions.getMaxY()) {
+            event = {
+                type: 'endOfScene',
+                x: x,
+                y: y
+            };
+            newX = x;
+            newY = y;
+        } else if (customBackground.isWall(newX, newY)) {
+            event = {
+                type: 'hitWall',
+                x: newX,
+                y: newY
+            };
+            newX = x;
+            newY = y;
         }
-
-        newX = C2lcMath.clamp(1, this.sceneDimensions.getWidth(), newX);
-        newY = C2lcMath.clamp(1, this.sceneDimensions.getHeight(), newY);
 
         if (newX === x && newY === y) {
             // We didn't move, don't return a path segment
             return {
                 x: newX,
                 y: newY,
-                pathSegments: []
+                pathSegments: [],
+                event: event
             };
         } else {
             // We did move, return a path segment
@@ -293,8 +324,32 @@ export default class CharacterState {
             return {
                 x: newX,
                 y: newY,
-                pathSegments: [pathSegment]
+                pathSegments: [pathSegment],
+                event: event
             };
+        }
+    }
+
+    calculateNewXAndY(x: number, y: number, direction: number): { newX: number, newY: number } {
+        switch(direction) {
+            case 0:
+                return { newX: x,     newY: y - 1 };
+            case 1:
+                return { newX: x + 1, newY: y - 1 };
+            case 2:
+                return { newX: x + 1, newY: y     };
+            case 3:
+                return { newX: x + 1, newY: y + 1 };
+            case 4:
+                return { newX: x,     newY: y + 1 };
+            case 5:
+                return { newX: x - 1, newY: y + 1 };
+            case 6:
+                return { newX: x - 1, newY: y     };
+            case 7:
+                return { newX: x - 1, newY: y - 1 };
+            default:
+                throw new Error('CharacterState direction must be an integer in range 0-7 inclusive');
         }
     }
 

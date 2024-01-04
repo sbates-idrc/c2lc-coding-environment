@@ -1,31 +1,22 @@
 // @flow
 
-import {App} from './App';
+import { App } from './App';
+import ActionsHandler from './ActionsHandler';
+import type { ActionResult } from './ActionsHandler';
 import ProgramSequence from './ProgramSequence';
 import type { ProgramBlock } from './types';
 
-export type CommandHandler = { (stepTimeMs: number): Promise<void> };
-
 export default class Interpreter {
-    commands: { [command: string]: { [namespace: string]: CommandHandler } };
     stepTimeMs: number;
     app: App;
+    actionsHandler: ActionsHandler;
     continueRunActive: boolean;
 
-    constructor(stepTimeMs: number, app: App) {
-        this.commands = {};
+    constructor(stepTimeMs: number, app: App, actionsHandler: ActionsHandler) {
         this.stepTimeMs = stepTimeMs;
         this.app = app;
+        this.actionsHandler = actionsHandler;
         this.continueRunActive = false;
-    }
-
-    addCommandHandler(command: string, namespace: string, handler: CommandHandler) {
-        let commandNamespaces = this.commands[command];
-        if (!commandNamespaces) {
-            commandNamespaces = {};
-            this.commands[command] = commandNamespaces;
-        }
-        commandNamespaces[namespace] = handler;
     }
 
     setStepTime(stepTimeMs: number) {
@@ -48,15 +39,21 @@ export default class Interpreter {
         if (runningState === 'running') {
             const programSequence = this.app.getProgramSequence();
             if (this.atEnd(programSequence)) {
-                this.app.setRunningState('stopped');
+                this.app.setRunningStateForInterpreter('stopped');
                 this.continueRunActive = false;
                 resolve();
             } else {
-                this.step(programSequence).then(() => {
-                    this.continueRun(resolve, reject);
+                this.step(programSequence).then((result) => {
+                    if (result === 'movementBlocked') {
+                        this.app.setRunningStateForInterpreter('paused');
+                        this.continueRunActive = false;
+                        resolve();
+                    } else {
+                        this.continueRun(resolve, reject);
+                    }
                 }, (error: Error) => {
                     // Reject the run Promise when the step Promise is rejected
-                    this.app.setRunningState('stopped');
+                    this.app.setRunningStateForInterpreter('stopped');
                     this.continueRunActive = false;
                     reject(error);
                 });
@@ -67,9 +64,9 @@ export default class Interpreter {
             // then transition to the 'stopped' or 'paused' runningState,
             // as appropriate.
             if (runningState === 'stopRequested') {
-                this.app.setRunningState('stopped');
+                this.app.setRunningStateForInterpreter('stopped');
             } else if (runningState === 'pauseRequested') {
-                this.app.setRunningState('paused');
+                this.app.setRunningStateForInterpreter('paused');
             }
             this.continueRunActive = false;
             resolve();
@@ -80,27 +77,38 @@ export default class Interpreter {
         return programSequence.getProgramCounter() >= programSequence.getProgramLength();
     }
 
-    step(programSequence: ProgramSequence): Promise<void> {
+    step(programSequence: ProgramSequence): Promise<ActionResult> {
         return new Promise((resolve, reject) => {
             if (this.atEnd(programSequence)) {
                 // We're at the end, nothing to do
-                resolve();
+                resolve('success');
             } else {
                 const currentProgramStep = programSequence.getCurrentProgramStep();
-                const command = currentProgramStep.block;
-                if (command === 'startLoop') {
+                const block = currentProgramStep.block;
+                if (block === 'startLoop') {
                     this.doStartLoop(programSequence).then(() => {
-                        this.app.advanceProgramCounter(resolve);
+                        this.app.advanceProgramCounter(() => {
+                            resolve('success');
+                        });
                     });
-                } else if (command === 'endLoop') {
+                } else if (block === 'endLoop') {
                     // We don't intend for the programCounter to ever be on an
                     // 'endLoop' block, but we might have a bug that would
                     // cause that case to happen and we want to handle it
                     // gracefully
-                    this.app.advanceProgramCounter(resolve);
+                    this.app.advanceProgramCounter(() => {
+                        resolve('success');
+                    });
                 } else {
-                    this.doCommand(currentProgramStep).then(() => {
-                        this.app.advanceProgramCounter(resolve);
+                    this.doAction(currentProgramStep).then((result) => {
+                        if (result === 'movementBlocked') {
+                            // Don't advance the program counter
+                            resolve(result);
+                        } else {
+                            this.app.advanceProgramCounter(() => {
+                                resolve(result);
+                            });
+                        }
                     }, (error: Error) => {
                         reject(error);
                     });
@@ -109,7 +117,7 @@ export default class Interpreter {
         });
     }
 
-    doStartLoop(programSequence: ProgramSequence): Promise<any> {
+    doStartLoop(programSequence: ProgramSequence): Promise<void> {
         const programCounter = programSequence.getProgramCounter();
         if (programCounter < programSequence.getProgramLength() - 1
                 && programSequence.getProgramStepAt(programCounter + 1).block === 'endLoop') {
@@ -123,35 +131,7 @@ export default class Interpreter {
         }
     }
 
-    doCommand(programStep: ProgramBlock): Promise<any> {
-        const command = programStep.block;
-        const handlers = this.lookUpCommandHandlers(command);
-        if (handlers.length === 0) {
-            return Promise.reject(new Error(`Unknown command: ${command}`));
-        } else {
-            return this.callCommandHandlers(handlers);
-        }
-    }
-
-    callCommandHandlers(handlers: Array<CommandHandler>): Promise<any> {
-        const promises = [];
-        const stepTimeMs = this.stepTimeMs;
-        for (const handler of handlers) {
-            promises.push(handler(stepTimeMs));
-        }
-        return Promise.all(promises);
-    }
-
-    lookUpCommandHandlers(command: string): Array<CommandHandler> {
-        const commandNamespaces = this.commands[command];
-        if (commandNamespaces) {
-            const handlers = [];
-            for (const namespace in commandNamespaces) {
-                handlers.push(commandNamespaces[namespace]);
-            }
-            return handlers;
-        } else {
-            return [];
-        }
+    doAction(programStep: ProgramBlock): Promise<ActionResult> {
+        return this.actionsHandler.doAction(programStep.block, this.stepTimeMs);
     }
 }

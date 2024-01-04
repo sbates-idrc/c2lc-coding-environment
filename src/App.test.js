@@ -15,6 +15,11 @@ jest.mock('./AudioManagerImpl');
 configure({ adapter: new Adapter()});
 
 function mountApp(props) {
+    const characterAriaLiveDiv = document.createElement('div');
+    characterAriaLiveDiv.setAttribute('id', 'character-position');
+    // $FlowFixMe: document.body
+    document.body.appendChild(characterAriaLiveDiv);
+
     // $FlowFixMe: Flow doesn't know about the Jest mock API
     AudioManagerImpl.mockClear();
     const audioManagerInstance = new AudioManagerImpl(true, true, true);
@@ -52,7 +57,7 @@ it('renders without crashing', () => {
 });
 
 it('Should play a sound when selectedCommandName changes', () => {
-    const { app, audioManagerMock} = mountApp({});
+    const { app, audioManagerMock } = mountApp({});
 
     // Update the selectedAction
     app.setState({ selectedAction: "forward1"}, function () {

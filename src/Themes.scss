@@ -404,9 +404,9 @@ body.light-theme {
     .RefreshButton--disabled svg {
         .refresh-icon {
             fill: #505862;
-            stroke: #9DA4AF;        
+            stroke: #9DA4AF;
         }
-    
+
         circle {
             stroke: none;
             fill: #67717E;
@@ -461,18 +461,18 @@ body.light-theme {
                 background-color: #F1AE5B;
                 box-shadow: -8rem 0 0 8rem #F1AE5B;
             }
-        
+
             &::-moz-range-thumb {
                 background-color: #F1AE5B;
                 box-shadow: -8rem 0 0 8rem #F1AE5B;
             }
-           
+
             &::-moz-range-progress {
-                background-color: #F1AE5B; 
+                background-color: #F1AE5B;
             }
-            
+
             &::-ms-fill-lower {
-                background-color: #F1AE5B; 
+                background-color: #F1AE5B;
             }
         }
 
@@ -493,9 +493,9 @@ body.light-theme {
         &::-moz-range-progress {
             background-color: #33717F;
         }
-        
+
         &::-ms-fill-lower {
-            background-color: #33717F; 
+            background-color: #33717F;
         }
     }
 
@@ -609,7 +609,7 @@ body.dark-theme {
         border: 2px solid #33717F;
     }
 
-    .App__world-selector {
+    .App__PenDownToggleSwitch-container {
         border-color: #33717F;
     }
 
@@ -648,7 +648,7 @@ body.dark-theme {
         box-shadow: 0 0 0 $c2lc-focus-indicator-width white;
     }
 
-    .CharacterPositionController__character-column {
+    .CharacterPositionController {
         background-color: #30444E;
         border-top: 1px solid #33717F;
     }
@@ -788,6 +788,14 @@ body.dark-theme {
                 0 0 0 $c2lc-focus-indicator-width white;
         }
     }
+
+    .TilePanel__tile:focus {
+        outline-color: white;
+    }
+
+    .TilePanel__tile--selected {
+        border-color: white;
+    }
 }
 
 /* Grayscale Theme */
@@ -820,7 +828,7 @@ body.gray-theme {
         background-color: #D5D8DD;
     }
 
-    .App__world-selector {
+    .App__PenDownToggleSwitch-container {
         border-color: #9DA4AF;
     }
 
@@ -875,7 +883,7 @@ body.gray-theme {
                 fill: #505862;
             }
         }
-    }    
+    }
 
     .App__header-menu {
         background-color: #D5D8DD;
@@ -915,7 +923,7 @@ body.gray-theme {
                 path {
                     stroke: white;
                 }
-            }    
+            }
         }
 
         &:hover:not(.IconButton--disabled) {
@@ -1078,7 +1086,7 @@ body.gray-theme {
     #command-block--loop, .btn-command-block--loop {
         &.command-block--pressed {
             border: 3px solid #505862;
-        }    
+        }
     }
 
     button.command-block.btn-command-block--startLoop,
@@ -1166,7 +1174,7 @@ body.gray-theme {
         fill: #818A98;
     }
 
-    .CharacterPositionController__character-column {
+    .CharacterPositionController {
         border-top: 1px solid #9DA4AF;
     }
 
@@ -1194,7 +1202,7 @@ body.gray-theme {
         }
     }
 
-    .CharacterPositionController__character-column{
+    .CharacterPositionController {
         background-color: #D5D8DD;
     }
 
@@ -1223,6 +1231,26 @@ body.gray-theme {
         fill: #D5D8DD;
     }
 
+    .Scene__startIndicator .start-indicator-outer-circle {
+        fill: #FFFFFF;
+    }
+
+    .Scene__startIndicator .start-indicator-inner-circle {
+        fill: #818A98;
+    }
+
+    .Scene__startIndicator .start-indicator-pin {
+        fill: #FFFFFF;
+    }
+
+    .SceneMessage__closeButton:hover .close-scene-message-background {
+        fill: #818A98;
+    }
+
+    .SceneMessage__closeButton:hover .close-scene-message-x {
+        stroke: #FFFFFF;
+    }
+
     .PenDownToggleSwitch.ToggleSwitch {
         background-color: #B9BEC6;
 
@@ -1234,7 +1262,6 @@ body.gray-theme {
                 }
             }
         }
-
 
         &:focus {
             box-shadow: 0 0 0 $c2lc-focus-indicator-width #505862;
@@ -1580,7 +1607,7 @@ body.gray-theme {
                 0 0 0 0.2rem #67717E,
                 0 0 0 0.4rem #D5D8DD,
                 0 0 0 0.6rem #67717E;
-        }        
+        }
     }
 
     .StopButton:not(:hover):not(.StopButton--disabled) {
@@ -1713,6 +1740,42 @@ body.gray-theme {
                 0 0 0 0.15rem #d5d8dd,
                 0 0 0 0.25rem #505862;
         }
+    }
+
+    .TilePanel__tile:focus {
+        outline-color: #505862;
+    }
+
+    .TilePanel__tile--selected {
+        border-color: #505862;
+    }
+
+    .TilePanel__tileInner {
+        border-color: #67717E;
+    }
+
+    .CustomBackgroundDesignModeButton svg path {
+        stroke: #FFFFFF;
+    }
+
+    .CustomBackgroundDesignModeButton svg rect {
+        fill: #FFFFFF;
+    }
+
+    .CustomBackgroundDesignModeButton.IconButton.IconButton--pressed {
+        background-color: #937C9C;
+    }
+
+    .CustomBackgroundDesignModeButton.IconButton.IconButton--pressed:hover {
+        background-color: #505862;
+    }
+
+    .CharacterPositionController .set-start-icon-foreground {
+        fill: #FFFFFF;
+    }
+
+    .CharacterPositionController .paintbrush-icon-foreground {
+        stroke: #FFFFFF;
     }
 }
 
@@ -2016,7 +2079,7 @@ body.contrast-theme {
         background-color: black;
     }
 
-    .App__world-selector {
+    .App__PenDownToggleSwitch-container {
         border-color: #FFFFFF;
     }
 
@@ -2194,7 +2257,7 @@ body.contrast-theme {
         border: 2px solid white;
     }
 
-    .CharacterPositionController__character-column {
+    .CharacterPositionController {
         background-color: black;
         border-top: 1px solid white;
     }
@@ -2271,6 +2334,26 @@ body.contrast-theme {
 
     .Scene__column-header, .Scene__row-header {
         fill: white;
+    }
+
+    .Scene__startIndicator .start-indicator-outer-circle {
+        fill: #FF0000;
+    }
+
+    .Scene__startIndicator .start-indicator-inner-circle {
+        fill: #FFFFFF;
+    }
+
+    .Scene__startIndicator .start-indicator-pin {
+        fill: #1E1E1E;
+    }
+
+    .SceneMessage__closeButton:hover .close-scene-message-background {
+        fill: #1E1E1E;
+    }
+
+    .SceneMessage__closeButton:hover .close-scene-message-x {
+        stroke: #FFFFFF;
     }
 
     .PenDownToggleSwitch, .PenDownToggleSwitch.ToggleSwitch--checked:hover {
@@ -2632,7 +2715,7 @@ body.contrast-theme {
         svg {
             path.inner-circle {
                 fill: white;
-            }    
+            }
         }
     }
 
@@ -2713,7 +2796,7 @@ body.contrast-theme {
                 0 0 0 0.2rem #1E1E1E,
                 0 0 0 0.4rem #FFFFFF,
                 0 0 0 0.6rem #1E1E1E;
-        }        
+        }
     }
 
     .StopButton:not(:hover):not(.StopButton--disabled) {
@@ -2765,7 +2848,7 @@ body.contrast-theme {
             }
         }
         &:focus {
-            box-shadow: 
+            box-shadow:
                 0 0 0 0.1rem #1E1E1E,
                 0 0 0 0.3rem #FFFFFF,
                 0 0 0 0.5rem #1E1E1E
@@ -2786,7 +2869,7 @@ body.contrast-theme {
             }
         }
         &:focus {
-            box-shadow: 
+            box-shadow:
                 0 0 0 0.1rem #1E1E1E,
                 0 0 0 0.3rem #FFFFFF,
                 0 0 0 0.5rem #1E1E1E
@@ -2900,5 +2983,45 @@ body.contrast-theme {
         &:hover:focus {
             box-shadow: 0 0 0 0.2rem black;
         }
+    }
+
+    .TilePanel__tile:focus {
+        outline-color: white;
+    }
+
+    .TilePanel__tile--selected {
+        border-color: white;
+    }
+
+    .TilePanel__tileInner {
+        border-color: #FFFFFF;
+    }
+
+    .CustomBackgroundDesignModeButton:hover svg path {
+        stroke: #FFFFFF;
+    }
+
+    .CustomBackgroundDesignModeButton:hover svg rect {
+        fill: #FFFFFF;
+    }
+
+    .CustomBackgroundDesignModeButton.IconButton.IconButton--pressed {
+        background-color: #4998F0;
+    }
+
+    .CustomBackgroundDesignModeButton.IconButton.IconButton--pressed:hover {
+        background-color: #1E1E1E;
+    }
+
+    .CharacterPositionController .IconButton:hover .set-start-icon-foreground {
+        fill: #FFFFFF;
+    }
+
+    .CharacterPositionController .IconButton:hover .paintbrush-icon-foreground {
+        stroke: #FFFFFF;
+    }
+
+    .paintbrush-cursor-brush-outline {
+        stroke: #ff0000;
     }
 }

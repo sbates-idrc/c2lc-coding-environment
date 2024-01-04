@@ -4,15 +4,21 @@ import { FormattedMessage } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import DisallowedActionsSerializer from './DisallowedActionsSerializer';
+import ActionsHandler from './ActionsHandler';
 import AnnouncementBuilder from './AnnouncementBuilder';
 import AudioManagerImpl from './AudioManagerImpl';
 import CharacterAriaLive from './CharacterAriaLive';
+import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CharacterStateSerializer from './CharacterStateSerializer';
 import CharacterPositionController from './CharacterPositionController';
+import classNames from 'classnames';
 import CommandPaletteCommand from './CommandPaletteCommand';
 import CookieNotification from './CookieNotification';
 import C2lcURLParams from './C2lcURLParams';
+import CustomBackground from './CustomBackground';
+import CustomBackgroundDesignModeButton from './CustomBackgroundDesignModeButton';
+import CustomBackgroundSerializer from './CustomBackgroundSerializer';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
 import DashDriver from './DashDriver';
 import * as FeatureDetection from './FeatureDetection';
@@ -32,15 +38,18 @@ import ProgramSequence from './ProgramSequence';
 import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
-import type { ActionToggleRegister, AudioManager, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
+import type { TileCode } from './TileData';
+import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
 import * as Utils from './Utils';
 import './App.scss';
+import './AppCustomBackgroundDesignMode.css';
 import './Themes.scss';
 import './vendor/dragdroptouch/DragDropTouch.js';
 import ThemeSelector from './ThemeSelector';
+import TilePanel from './TilePanel';
 import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
 import KeyboardInputModal from './KeyboardInputModal';
 import ShareModal from './ShareModal';
@@ -99,7 +108,7 @@ export type AppState = {
     settings: AppSettings,
     dashConnectionStatus: DeviceConnectionStatus,
     showDashConnectionError: boolean,
-    selectedAction: ?string,
+    selectedAction: ?CommandName,
     isDraggingCommand: boolean,
     audioEnabled: boolean,
     announcementsEnabled: boolean,
@@ -123,7 +132,11 @@ export type AppState = {
     focusOnClosePrivacyModalSelector: string,
     startingX: number,
     startingY: number,
-    startingDirection: number
+    startingDirection: number,
+    customBackground: CustomBackground,
+    customBackgroundDesignMode: boolean,
+    selectedCustomBackgroundTile: ?TileCode,
+    message: ?string
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -137,12 +150,14 @@ export class App extends React.Component<AppProps, AppState> {
     programSerializer: ProgramSerializer;
     characterStateSerializer: CharacterStateSerializer;
     disallowedActionsSerializer: DisallowedActionsSerializer;
+    customBackgroundSerializer: CustomBackgroundSerializer;
     speedLookUp: Array<number>;
     pushStateTimeoutID: ?TimeoutID;
     speedControlRef: { current: null | HTMLElement };
     programBlockEditorRef: { current: any };
     sequenceInProgress: Array<KeyboardEvent>;
     announcementBuilder: AnnouncementBuilder;
+    characterDescriptionBuilder: CharacterDescriptionBuilder;
     programChangeController: ProgramChangeController;
     defaultWorld: WorldName;
 
@@ -157,8 +172,6 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.sceneDimensions = new SceneDimensions(1, 12, 1, 8);
 
-        this.interpreter = new Interpreter(1000, this);
-
         this.speedLookUp = [2000, 1500, 1000, 500, 250];
 
         this.programSerializer = new ProgramSerializer();
@@ -167,247 +180,13 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.disallowedActionsSerializer = new DisallowedActionsSerializer();
 
+        this.customBackgroundSerializer = new CustomBackgroundSerializer(this.sceneDimensions);
+
         this.pushStateTimeoutID = null;
 
         this.sequenceInProgress = [];
 
         this.defaultWorld = 'Sketchpad';
-
-        this.interpreter.addCommandHandler(
-            'forward1',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('forward1', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.forward(1, state.drawingEnabled);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward1", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'forward2',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('forward2', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.forward(2, state.drawingEnabled);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward2", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'forward3',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('forward3', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.forward(3, state.drawingEnabled);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("forward3", stepTimeMs, newCharacterState, this.sceneDimensions);
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'backward1',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('backward1');
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.backward(1, state.drawingEnabled);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward1", stepTimeMs, newCharacterState, this.sceneDimensions);
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'backward2',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('backward2');
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.backward(2, state.drawingEnabled);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward2", stepTimeMs, newCharacterState, this.sceneDimensions);
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'backward3',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('backward3');
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.backward(3, state.drawingEnabled);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("backward3", stepTimeMs, newCharacterState, this.sceneDimensions);
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'left45',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('left45', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.turnLeft(1);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left45", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'left90',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('left90', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.turnLeft(2);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left90", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'left180',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('left180', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.turnLeft(4);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("left180", stepTimeMs,  newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'right45',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('right45', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.turnRight(1);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right45", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'right90',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('right90', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.turnRight(2);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right90", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
-
-        this.interpreter.addCommandHandler(
-            'right180',
-            'moveCharacter',
-            (stepTimeMs) => {
-                // TODO: Enable announcements again.
-                // this.audioManager.playAnnouncement('right180', this.props.intl);
-                this.setState((state) => {
-                    const newCharacterState = state.characterState.turnRight(4);
-
-                    // We have to start the sound here because this is where we know the new character state.
-                    this.audioManager.playSoundForCharacterState("right180", stepTimeMs, newCharacterState, this.sceneDimensions);
-
-                    return {
-                        characterState: newCharacterState
-                    };
-                });
-                return Utils.makeDelayedPromise(stepTimeMs);
-            }
-        );
 
         // Cookie Notification
         const showCookieNotification = !(window.localStorage.getItem('c2lc-hasDismissedCookieNotification'));
@@ -452,6 +231,10 @@ export class App extends React.Component<AppProps, AppState> {
             startingX: startingX,
             startingY: startingY,
             startingDirection: startingDirection,
+            customBackground: new CustomBackground(this.sceneDimensions),
+            customBackgroundDesignMode: false,
+            selectedCustomBackgroundTile: null,
+            message: null,
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -473,11 +256,17 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.announcementBuilder = new AnnouncementBuilder(this.props.intl);
 
+        this.characterDescriptionBuilder = new CharacterDescriptionBuilder(this.props.intl);
+
         this.programChangeController = new ProgramChangeController(this,
             this.props.intl, this.audioManager);
 
         this.speedControlRef = React.createRef();
         this.programBlockEditorRef = React.createRef();
+
+        const actionsHandler = new ActionsHandler(this, this.audioManager,
+            this.sceneDimensions, this.props.intl);
+        this.interpreter = new Interpreter(1000, this, actionsHandler);
     }
 
     setStateSettings(settings: $Shape<AppSettings>) {
@@ -511,14 +300,21 @@ export class App extends React.Component<AppProps, AppState> {
         return this.state.runningState;
     }
 
-    setRunningState(runningState: RunningState): void {
+    setRunningStateForInterpreter(runningState: RunningState): void {
         this.setState((state) => {
-            // If stop is requested when we are in the 'paused' state,
-            // then go straight to 'stopped'
-            if (runningState === 'stopRequested' && state.runningState === 'paused') {
-                return { runningState: 'stopped' };
+            // If the Interpreter has called this method with 'paused' (for
+            // example due to the character hitting a wall), and the user has
+            // clicked the stop button, go straight to 'stopped'
+            if (runningState === 'paused'
+                    && state.runningState === 'stopRequested') {
+                return {
+                    runningState: 'stopped',
+                    message: null
+                };
             } else {
-                return { runningState };
+                return {
+                    runningState: runningState
+                };
             }
         });
     }
@@ -557,7 +353,7 @@ export class App extends React.Component<AppProps, AppState> {
         });
     };
 
-    handleProgramBlockEditorInsertSelectedAction = (index: number, selectedAction: ?string) => {
+    handleProgramBlockEditorInsertSelectedAction = (index: number, selectedAction: ?CommandName) => {
         this.programChangeController.insertSelectedActionIntoProgram(
             this.programBlockEditorRef.current,
             index,
@@ -573,7 +369,7 @@ export class App extends React.Component<AppProps, AppState> {
         );
     };
 
-    handleProgramBlockEditorReplaceStep = (index: number, selectedAction: ?string) => {
+    handleProgramBlockEditorReplaceStep = (index: number, selectedAction: ?CommandName) => {
         this.programChangeController.replaceProgramStep(
             this.programBlockEditorRef.current,
             index,
@@ -600,37 +396,50 @@ export class App extends React.Component<AppProps, AppState> {
     };
 
     handlePlay = () => {
-        switch (this.state.runningState) {
-            case 'running':
-                this.setState({
-                    runningState: 'pauseRequested',
-                    actionPanelStepIndex: null
-                });
-                break;
-            case 'pauseRequested': // Fall through
-            case 'paused':
-                this.setState({
-                    runningState: 'running',
-                    actionPanelStepIndex: null
-                });
-                break;
-            case 'stopRequested': // Fall through
-            case 'stopped':
-                this.setState((state) => {
+        this.setState((state) => {
+            switch (state.runningState) {
+                case 'running':
+                    return {
+                        runningState: 'pauseRequested',
+                        actionPanelStepIndex: null
+                    };
+                case 'pauseRequested': // Fall through
+                case 'paused':
+                    return {
+                        runningState: 'running',
+                        actionPanelStepIndex: null,
+                        // Transitioning paused to running, clear the message
+                        message: null
+                    };
+                case 'stopRequested': // Fall through
+                case 'stopped':
                     return {
                         programSequence: state.programSequence.initiateProgramRun(),
                         runningState: 'running',
                         actionPanelStepIndex: null
                     };
-                });
-                break;
-            default:
-                break;
-        }
+                default:
+                    return null;
+            }
+        });
     };
 
     handleStop = () => {
-        this.setRunningState('stopRequested');
+        this.setState((state) => {
+            if (state.runningState === 'paused') {
+                return {
+                    // If we are paused, then the interpreter isn't running
+                    // and we go straight to stopped
+                    runningState: 'stopped',
+                    // Transitioning paused to stopped, clear the message
+                    message: null
+                };
+            } else {
+                return {
+                    runningState: 'stopRequested'
+                };
+            }
+        });
     };
 
     handleClickConnectDash = () => {
@@ -667,13 +476,13 @@ export class App extends React.Component<AppProps, AppState> {
         });
     };
 
-    handleCommandFromCommandPalette = (command: string) => {
+    handleCommandFromCommandPalette = (command: CommandName) => {
         this.setState({
             selectedAction: command
         });
     };
 
-    handleDragStartCommand = (command: string) => {
+    handleDragStartCommand = (command: CommandName) => {
         this.setState({
             isDraggingCommand: true,
             selectedAction: command,
@@ -1000,6 +809,9 @@ export class App extends React.Component<AppProps, AppState> {
                                 this.handleChangeCharacterPosition('turnRight');
                             }
                             break;
+                        case("setCharacterStartingPosition"):
+                            this.setStartingPositionToCurrentPosition();
+                            break;
                         case("changeToDefaultTheme"):
                             this.setStateSettings({theme: "default"});
                             break;
@@ -1138,6 +950,12 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
+    handleChangeCustomBackgroundDesignMode = (customBackgroundDesignMode: boolean) => {
+        this.setState({
+            customBackgroundDesignMode: customBackgroundDesignMode
+        });
+    }
+
     changeProgramSpeedIndex = (newSpeedIndex: number) => {
         if (newSpeedIndex >= 0 && newSpeedIndex <= (this.speedLookUp.length - 1)) {
             this.interpreter.setStepTime(this.speedLookUp[newSpeedIndex]);
@@ -1223,68 +1041,44 @@ export class App extends React.Component<AppProps, AppState> {
         switch(positionName) {
             case 'turnLeft':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.turnLeft(1);
                     return {
-                        characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos,
-                        startingDirection: updatedCharacterState.direction,
-                    }
+                        characterState: state.characterState.turnLeft(1)
+                    };
                 });
                 break;
             case 'turnRight':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.turnRight(1);
                     return {
-                        characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos,
-                        startingDirection: updatedCharacterState.direction,
-                    }
+                        characterState: state.characterState.turnRight(1)
+                    };
                 });
                 break;
             case 'up':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveUpPosition();
                     return {
-                        characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos,
-                        startingDirection: updatedCharacterState.direction,
-                    }
+                        characterState: state.characterState.moveUpPosition()
+                    };
                 });
                 break;
             case 'right':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveRightPosition();
                     return {
-                        characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos,
-                        startingDirection: updatedCharacterState.direction,
-                    }
+                        characterState: state.characterState.moveRightPosition()
+                    };
                 });
                 break;
             case 'down':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveDownPosition();
                     return {
-                        characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos,
-                        startingDirection: updatedCharacterState.direction,
-                    }
+                        characterState: state.characterState.moveDownPosition()
+                    };
                 });
                 break;
             case 'left':
                 this.setState((state) => {
-                    const updatedCharacterState = state.characterState.moveLeftPosition();
                     return {
-                        characterState: updatedCharacterState,
-                        startingX: updatedCharacterState.xPos,
-                        startingY: updatedCharacterState.yPos,
-                        startingDirection: updatedCharacterState.direction,
-                    }
+                        characterState: state.characterState.moveLeftPosition()
+                    };
                 });
                 break;
             default:
@@ -1293,22 +1087,18 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleChangeCharacterXPosition = (columnLabel: string) => {
-        const updatedCharacterState = this.state.characterState.changeXPosition(columnLabel);
-        this.setState({
-            characterState: updatedCharacterState,
-            startingX: updatedCharacterState.xPos,
-            startingY: updatedCharacterState.yPos,
-            startingDirection: updatedCharacterState.direction,
+        this.setState((state) => {
+            return {
+                characterState: state.characterState.changeXPosition(columnLabel)
+            };
         });
     }
 
     handleChangeCharacterYPosition = (rowLabel: string) => {
-        const updatedCharacterState = this.state.characterState.changeYPosition(parseInt(rowLabel, 10));
-        this.setState({
-            characterState: updatedCharacterState,
-            startingX: updatedCharacterState.xPos,
-            startingY: updatedCharacterState.yPos,
-            startingDirection: updatedCharacterState.direction,
+        this.setState((state) => {
+            return {
+                characterState: state.characterState.changeYPosition(rowLabel)
+            };
         });
     }
 
@@ -1381,271 +1171,371 @@ export class App extends React.Component<AppProps, AppState> {
         this.setState({ showPrivacyModal: false });
     }
 
-    render() {
+    handleSelectTile = (tileCode: TileCode) => {
+        this.setState({ selectedCustomBackgroundTile: tileCode });
+    }
+
+    handleCloseMessage = () => {
+        this.setState({
+            message: null
+        });
+    }
+
+    handlePaintScene = (x: number, y: number) => {
+        this.setState((state) => {
+            const stateUpdate: $Shape<AppState> = {};
+
+            if (state.customBackgroundDesignMode) {
+                stateUpdate.characterState = state.characterState.setPosition(x, y);
+
+                if (state.selectedCustomBackgroundTile != null) {
+                    stateUpdate.customBackground = state.customBackground.setTile(
+                        x, y, state.selectedCustomBackgroundTile
+                    );
+                }
+            }
+
+            return stateUpdate;
+        });
+    }
+
+    setStartingPositionToCurrentPosition = () => {
+        this.setState((state) => {
+            return {
+                startingX: state.characterState.xPos,
+                startingY: state.characterState.yPos,
+                startingDirection: state.characterState.direction
+            };
+        });
+    }
+
+    handleClickPositionControllerPaintbrushButton = () => {
+        this.setState((state) => {
+            if (state.selectedCustomBackgroundTile != null) {
+                return {
+                    customBackground: state.customBackground.setTile(
+                        state.characterState.xPos,
+                        state.characterState.yPos,
+                        state.selectedCustomBackgroundTile
+                    )
+                };
+            } else {
+                return {};
+            }
+        });
+    }
+
+    renderNotificationArea() {
+        return (
+            <div className='App__notificationArea'>
+                {this.state.showCookieNotification &&
+                    <CookieNotification
+                        onDismiss={this.handleCookieNotificationDismiss}
+                        onLearnMore={this.handleCookieNotificationLearnMore}
+                    />
+                }
+            </div>
+        );
+    }
+
+    renderHeaderContents() {
         const Logo = getThemeLogo(this.state.settings.theme);
+
+        return (
+            <div className='App__header-row'>
+                <h1 className='App__logo-container'>
+                    <a
+                        className='keyboard-shortcut-focus__app-header'
+                        href='https://weavly.org/learn/resources/facilitating-a-weavly-coding-workshop-beginners/'
+                        aria-label={this.props.intl.formatMessage({id: 'App.appHeading.link'})}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
+                        <Logo alt={this.props.intl.formatMessage({id: 'App.appHeading.link'})}/>
+                    </a>
+                </h1>
+                <div className='App__PrivacyButtonContainer'>
+                    <button
+                        aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
+                        className="App__PrivacyModal__toggle-button"
+                        onClick={this.handleClickPrivacyButton}
+                    >
+                        <FormattedMessage id='App.privacyModalToggle'/>
+                    </button>
+                </div>
+                <div className='App__header-menu'>
+                    <IconButton
+                        className="App__header-soundOptions"
+                        ariaLabel={this.props.intl.formatMessage({ id: 'SoundOptionsModal.title' })}
+                        onClick={this.handleClickSoundIcon}
+                    >
+                        <AudioIcon className='App__header-soundOptions-icon'/>
+                    </IconButton>
+                    <IconButton
+                        className="App__header-themeSelectorIcon"
+                        ariaLabel={this.props.intl.formatMessage({ id: 'ThemeSelector.iconButton' })}
+                        onClick={this.handleClickThemeSelectorIcon}
+                    >
+                        <ThemeIcon className='App__header-theme-icon'/>
+                    </IconButton>
+                    <IconButton
+                        className="App__header-keyboardMenuIcon"
+                        ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
+                        onClick={this.handleClickKeyboardIcon}
+                    >
+                        <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
+                    </IconButton>
+                    <IconButton className="App__ActionsMenu__toggle-button"
+                        ariaLabel={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
+                        disabled={this.editingIsDisabled()}
+                        onClick={this.handleClickActionsSimplificationIcon}
+                    >
+                        <ActionsMenuToggleIcon className='App__header-actionsMenu-icon'/>
+                    </IconButton>
+                </div>
+            </div>
+        );
+    }
+
+    renderSceneWithHeading() {
         return (
             <React.Fragment>
-                <div
-                    className='App__container'
-                    role='main'
-                    onClick={this.handleRootClick}
-                    onKeyDown={this.handleRootKeyDown}>
-                    <div className='App__notificationArea'>
-                        {this.state.showCookieNotification &&
-                            <CookieNotification
-                                onDismiss={this.handleCookieNotificationDismiss}
-                                onLearnMore={this.handleCookieNotificationLearnMore}
-                            />
-                        }
-                    </div>
-                    <header className='App__header'>
-                        <div className='App__header-row'>
-                            <h1 className='App__logo-container'>
-                                <a
-                                    className='keyboard-shortcut-focus__app-header'
-                                    href='https://weavly.org/learn/resources/facilitating-a-weavly-coding-workshop-beginners/'
-                                    aria-label={this.props.intl.formatMessage({id: 'App.appHeading.link'})}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                >
-                                    <Logo alt={this.props.intl.formatMessage({id: 'App.appHeading.link'})}/>
-                                </a>
-                            </h1>
-                            <div className='App__PrivacyButtonContainer'>
-                                <button
-                                    aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
-                                    className="App__PrivacyModal__toggle-button"
-                                    onClick={this.handleClickPrivacyButton}
-                                >
-                                    <FormattedMessage id='App.privacyModalToggle'/>
-                                </button>
+                <h2 className='sr-only' >
+                    <FormattedMessage id='Scene.heading' />
+                </h2>
+                <Scene
+                    dimensions={this.state.sceneDimensions}
+                    characterState={this.state.characterState}
+                    theme={this.state.settings.theme}
+                    world={this.state.settings.world}
+                    customBackground={this.state.customBackground}
+                    customBackgroundDesignMode={this.state.customBackgroundDesignMode}
+                    startingX={this.state.startingX}
+                    startingY={this.state.startingY}
+                    runningState={this.state.runningState}
+                    message={this.state.message}
+                    characterDescriptionBuilder={this.characterDescriptionBuilder}
+                    onCloseMessage={this.handleCloseMessage}
+                    onPaintScene={this.handlePaintScene}
+                />
+            </React.Fragment>
+        );
+    }
+
+    renderTilePanel() {
+        return (
+            <TilePanel
+                selectedTile={this.state.selectedCustomBackgroundTile}
+                theme={this.state.settings.theme}
+                onSelectTile={this.handleSelectTile}
+            />
+        );
+    }
+
+    renderWorldSelectorWithHeading() {
+        return (
+            <React.Fragment>
+                <h2 className='sr-only' >
+                    <FormattedMessage id='WorldSelectorButton.heading' />
+                </h2>
+                <div className="App__world-selector">
+                    <IconButton
+                        className='keyboard-shortcut-focus__world-selector'
+                        ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelectorButton.label' })}
+                        onClick={this.handleClickWorldIcon}
+                    >
+                        <WorldIcon className='App__world-selector-icon'/>
+                    </IconButton>
+                    <CustomBackgroundDesignModeButton
+                        customBackgroundDesignMode={this.state.customBackgroundDesignMode}
+                        onChange={this.handleChangeCustomBackgroundDesignMode}
+                    />
+                </div>
+            </React.Fragment>
+        );
+    }
+
+    renderPenDownToggleSwitch() {
+        return (
+            <div className='App__PenDownToggleSwitch-container'>
+                <PenDownToggleSwitch
+                    value={this.state.drawingEnabled}
+                    onChange={this.handleTogglePenDown}
+                />
+            </div>
+        );
+    }
+
+    renderCharacterPositionController() {
+        return (
+            <CharacterPositionController
+                characterState={this.state.characterState}
+                editingDisabled={this.editingIsDisabled()}
+                customBackgroundDesignMode={this.state.customBackgroundDesignMode}
+                selectedCustomBackgroundTile={this.state.selectedCustomBackgroundTile}
+                onChangeCharacterPosition={this.handleChangeCharacterPosition}
+                onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
+                onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
+                onClickSetStartButton={this.setStartingPositionToCurrentPosition}
+                onClickPaintbrushButton={this.handleClickPositionControllerPaintbrushButton}
+            />
+        );
+    }
+
+    renderCommandPaletteContents() {
+        return (
+            <React.Fragment>
+                <div className='App__ActionsMenu__header'>
+                    <h2 className='App__ActionsMenu__header-heading'>
+                        <FormattedMessage id='ActionsMenu.title' />
+                    </h2>
+                </div>
+                <div className='App__command-palette-command-container'>
+                    <div className='App__command-palette-section'>
+                        <div className='App__command-palette-section-heading-container'>
+                            <h3 className='App__command-palette-section-heading'>
+                                <FormattedMessage id='CommandPalette.movementsTitle'/>
+                            </h3>
+                        </div>
+                        <div className='App__command-palette-section-body'>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks(['forward1'])}
                             </div>
-                            <div className='App__header-menu'>
-                                <IconButton
-                                    className="App__header-soundOptions"
-                                    ariaLabel={this.props.intl.formatMessage({ id: 'SoundOptionsModal.title' })}
-                                    onClick={this.handleClickSoundIcon}
-                                >
-                                    <AudioIcon className='App__header-soundOptions-icon'/>
-                                </IconButton>
-                                <IconButton
-                                    className="App__header-themeSelectorIcon"
-                                    ariaLabel={this.props.intl.formatMessage({ id: 'ThemeSelector.iconButton' })}
-                                    onClick={this.handleClickThemeSelectorIcon}
-                                >
-                                    <ThemeIcon className='App__header-theme-icon'/>
-                                </IconButton>
-                                <IconButton
-                                    className="App__header-keyboardMenuIcon"
-                                    ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
-                                    onClick={this.handleClickKeyboardIcon}
-                                >
-                                    <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
-                                </IconButton>
-
-                                <IconButton className="App__ActionsMenu__toggle-button"
-                                    ariaLabel={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
-                                    disabled={this.editingIsDisabled()}
-                                    onClick={this.handleClickActionsSimplificationIcon}
-                                >
-                                    <ActionsMenuToggleIcon className='App__header-actionsMenu-icon'/>
-                                </IconButton>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks(['backward1'])}
                             </div>
-                            {/* Dash connection removed for version 0.5
-                            <DeviceConnectControl
-                                disabled={
-                                    !this.appContext.bluetoothApiIsAvailable ||
-                                    this.state.dashConnectionStatus === 'connected' }
-                                connectionStatus={this.state.dashConnectionStatus}
-                                onClickConnect={this.handleClickConnectDash}>
-                                <FormattedMessage id='App.connectToDash' />
-                            </DeviceConnectControl>
-                            */}
-                        </div>
-                    </header>
-                    {/* Dash connection removed for version 0.5
-                    {!this.appContext.bluetoothApiIsAvailable &&
-                        <Row className='App__bluetooth-api-warning-section'>
-                            <Col>
-                                <BluetoothApiWarning/>
-                            </Col>
-                        </Row>
-                    }
-                    */}
-                    <div className='App__scene-container'>
-                        <h2 className='sr-only' >
-                            <FormattedMessage id='Scene.heading' />
-                        </h2>
-                        <Scene
-                            dimensions={this.state.sceneDimensions}
-                            characterState={this.state.characterState}
-                            theme={this.state.settings.theme}
-                            world={this.state.settings.world}
-                            startingX={this.state.startingX}
-                            startingY={this.state.startingY}
-                            runningState={this.state.runningState}
-                        />
-                    </div>
-                    <div className="App__world-container">
-                        <h2 className='sr-only' >
-                            <FormattedMessage id='WorldSelectorButton.heading' />
-                        </h2>
-                        <div className="App__world-selector">
-                            <IconButton
-                                className='keyboard-shortcut-focus__world-selector'
-                                ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelectorButton.label' })}
-                                onClick={this.handleClickWorldIcon}
-                            >
-                                <WorldIcon className='App__world-selector-icon'/>
-                            </IconButton>
-                        </div>
-
-                        <div className='App__PenDownToggleSwitch-container'>
-                            <PenDownToggleSwitch
-                                className='App__penDown-toggle-switch'
-                                value={this.state.drawingEnabled}
-                                onChange={this.handleTogglePenDown}/>
-                        </div>
-
-                        <CharacterPositionController
-                            characterState={this.state.characterState}
-                            editingDisabled={this.editingIsDisabled()}
-                            theme={this.state.settings.theme}
-                            world={this.state.settings.world}
-                            onChangeCharacterPosition={this.handleChangeCharacterPosition}
-                            onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
-                            onChangeCharacterYPosition={this.handleChangeCharacterYPosition} />
-                    </div>
-                    <div className='App__command-palette'>
-                        <div className='App__ActionsMenu__header'>
-                            <h2 className='App__ActionsMenu__header-heading'>
-                                <FormattedMessage id='ActionsMenu.title' />
-                            </h2>
-                        </div>
-                        <div className='App__command-palette-command-container'>
-                            <div className='App__command-palette-section'>
-                                <div className='App__command-palette-section-heading-container'>
-                                    <h3 className='App__command-palette-section-heading'>
-                                        <FormattedMessage id='CommandPalette.movementsTitle'/>
-                                    </h3>
-                                </div>
-                                <div className='App__command-palette-section-body'>
-                                    <div className='App__command-palette-commands'>
-                                        {this.renderCommandBlocks(['forward1'])}
-                                    </div>
-                                    <div className='App__command-palette-commands'>
-                                        {this.renderCommandBlocks(['backward1'])}
-                                    </div>
-                                    <div className='App__command-palette-commands'>
-                                        {this.renderCommandBlocks([
-                                            'left45', 'left90'
-                                        ])}
-                                    </div>
-                                    <div className='App__command-palette-commands'>
-                                        {this.renderCommandBlocks([
-                                            'right45', 'right90'
-                                        ])}
-                                    </div>
-                                </div>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks([
+                                    'left45', 'left90'
+                                ])}
                             </div>
-
-                            <div className='App__command-palette-section'>
-                                <div className='App__command-palette-section-heading-container'>
-                                    <h3 className='App__command-palette-section-heading'>
-                                        <FormattedMessage id='CommandPalette.controlsTitle'/>
-                                    </h3>
-                                </div>
-
-                                <div className='App__command-palette-section-body'>
-                                    <div className='App__command-palette-controls'>
-                                        {this.renderCommandBlocks([
-                                            'loop'
-                                        ])}
-                                    </div>
-                                </div>
+                            <div className='App__command-palette-commands'>
+                                {this.renderCommandBlocks([
+                                    'right45', 'right90'
+                                ])}
                             </div>
                         </div>
                     </div>
-                    <div className='App__program-block-editor'>
-                        <ProgramBlockEditor
-                            ref={this.programBlockEditorRef}
-                            actionPanelStepIndex={this.state.actionPanelStepIndex}
-                            actionPanelFocusedOptionName={this.state.actionPanelFocusedOptionName}
-                            characterState={this.state.characterState}
-                            editingDisabled={this.editingIsDisabled()}
-                            programSequence={this.state.programSequence}
-                            runningState={this.state.runningState}
-                            keyboardInputSchemeName={this.state.keyboardInputSchemeName}
-                            selectedAction={this.state.selectedAction}
-                            isDraggingCommand={this.state.isDraggingCommand}
-                            audioManager={this.audioManager}
-                            focusTrapManager={this.focusTrapManager}
-                            addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
-                            theme={this.state.settings.theme}
-                            world={this.state.settings.world}
-                            scrollRightPaddingPx={256}
-                            scrollLeftPaddingPx={128}
-                            scrollTimeThresholdMs={400}
-                            onChangeProgramSequence={this.handleProgramSequenceChange}
-                            onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
-                            onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
-                            onReplaceProgramStep={this.handleProgramBlockEditorReplaceStep}
-                            onMoveProgramStepNext={this.handleProgramBlockEditorMoveStepNext}
-                            onMoveProgramStepPrevious={this.handleProgramBlockEditorMoveStepPrevious}
-                            onChangeActionPanelStepIndexAndOption={this.handleChangeActionPanelStepIndexAndOption}
-                            onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
-                        />
-                    </div>
-                    <div className='App__playAndShare-background' />
-                    <div className='App__playAndShare-container'>
-                        <h2 className='sr-only' >
-                            <FormattedMessage id='PlayControls.heading' />
-                        </h2>
-                        <div className='App__playControl-container'>
-                            <div className='App__playButton-container'>
-                                <RefreshButton
-                                    className='App__playControlButton'
-                                    disabled={this.refreshIsDisabled()}
-                                    onClick={this.handleRefresh}
-                                />
-                                <PlayButton
-                                    className='App__playControlButton'
-                                    interpreterIsRunning={this.state.runningState === 'running'}
-                                    disabled={this.state.programSequence.getProgramLength() === 0}
-                                    onClick={this.handlePlay}
-                                />
-                                <StopButton
-                                    className='App__playControlButton'
-                                    disabled={
-                                        this.state.runningState === 'stopped'
-                                        || this.state.runningState === 'stopRequested'}
-                                    onClick={this.handleStop}/>
-                                <ProgramSpeedController
-                                    rangeControlRef={this.speedControlRef}
-                                    values={this.speedLookUp}
-                                    onChange={this.handleChangeProgramSpeed}
-                                />
-                            </div>
+                    <div className='App__command-palette-section'>
+                        <div className='App__command-palette-section-heading-container'>
+                            <h3 className='App__command-palette-section-heading'>
+                                <FormattedMessage id='CommandPalette.controlsTitle'/>
+                            </h3>
                         </div>
-                        <div className='App__shareButton-container'>
-                            <button
-                                className='App__ShareButton'
-                                onClick={this.handleShareButtonClick}
-                            >
-                                <ShareIcon className='App__ShareButton__icon'/>
-                                <div className='App__ShareButton__label'>
-                                    {this.props.intl.formatMessage({id:'ShareButton'})}
-                                </div>
-                            </button>
+
+                        <div className='App__command-palette-section-body'>
+                            <div className='App__command-palette-controls'>
+                                {this.renderCommandBlocks([
+                                    'loop'
+                                ])}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <CharacterAriaLive
-                    ariaLiveRegionId='character-position'
-                    ariaHidden={this.state.showWorldSelector}
-                    characterState={this.state.characterState}
-                    runningState={this.state.runningState}
-                    world={this.state.settings.world}/>
+            </React.Fragment>
+        );
+    }
+
+    renderProgramBlockEditor() {
+        return (
+            <ProgramBlockEditor
+                ref={this.programBlockEditorRef}
+                actionPanelStepIndex={this.state.actionPanelStepIndex}
+                actionPanelFocusedOptionName={this.state.actionPanelFocusedOptionName}
+                characterState={this.state.characterState}
+                editingDisabled={this.editingIsDisabled()}
+                programSequence={this.state.programSequence}
+                runningState={this.state.runningState}
+                keyboardInputSchemeName={this.state.keyboardInputSchemeName}
+                selectedAction={this.state.selectedAction}
+                isDraggingCommand={this.state.isDraggingCommand}
+                audioManager={this.audioManager}
+                focusTrapManager={this.focusTrapManager}
+                addNodeExpandedMode={this.state.settings.addNodeExpandedMode}
+                theme={this.state.settings.theme}
+                world={this.state.settings.world}
+                scrollRightPaddingPx={256}
+                scrollLeftPaddingPx={128}
+                scrollTimeThresholdMs={400}
+                onChangeProgramSequence={this.handleProgramSequenceChange}
+                onInsertSelectedActionIntoProgram={this.handleProgramBlockEditorInsertSelectedAction}
+                onDeleteProgramStep={this.handleProgramBlockEditorDeleteStep}
+                onReplaceProgramStep={this.handleProgramBlockEditorReplaceStep}
+                onMoveProgramStepNext={this.handleProgramBlockEditorMoveStepNext}
+                onMoveProgramStepPrevious={this.handleProgramBlockEditorMoveStepPrevious}
+                onChangeActionPanelStepIndexAndOption={this.handleChangeActionPanelStepIndexAndOption}
+                onChangeAddNodeExpandedMode={this.handleChangeAddNodeExpandedMode}
+            />
+        );
+    }
+
+    renderPlayAndShareContents() {
+        return (
+            <React.Fragment>
+                <h2 className='sr-only' >
+                    <FormattedMessage id='PlayControls.heading' />
+                </h2>
+                <div className='App__playControl-container'>
+                    <div className='App__playButton-container'>
+                        <RefreshButton
+                            className='App__playControlButton'
+                            disabled={this.refreshIsDisabled()}
+                            onClick={this.handleRefresh}
+                        />
+                        <PlayButton
+                            className='App__playControlButton'
+                            interpreterIsRunning={this.state.runningState === 'running'}
+                            disabled={this.state.programSequence.getProgramLength() === 0}
+                            onClick={this.handlePlay}
+                        />
+                        <StopButton
+                            className='App__playControlButton'
+                            disabled={
+                                this.state.runningState === 'stopped'
+                                || this.state.runningState === 'stopRequested'}
+                            onClick={this.handleStop}
+                        />
+                        <ProgramSpeedController
+                            rangeControlRef={this.speedControlRef}
+                            values={this.speedLookUp}
+                            onChange={this.handleChangeProgramSpeed}
+                        />
+                    </div>
+                </div>
+                <div className='App__shareButton-container'>
+                    <button
+                        className='App__ShareButton'
+                        onClick={this.handleShareButtonClick}
+                    >
+                        <ShareIcon className='App__ShareButton__icon'/>
+                        <div className='App__ShareButton__label'>
+                            {this.props.intl.formatMessage({id:'ShareButton'})}
+                        </div>
+                    </button>
+                </div>
+            </React.Fragment>
+        );
+    }
+
+    renderCharacterAriaLive() {
+        return (
+            <CharacterAriaLive
+                ariaLiveRegionId='character-position'
+                ariaHidden={this.state.showWorldSelector}
+                characterState={this.state.characterState}
+                runningState={this.state.runningState}
+                world={this.state.settings.world}
+                customBackground={this.state.customBackground}
+                customBackgroundDesignMode={this.state.customBackgroundDesignMode}
+                characterDescriptionBuilder={this.characterDescriptionBuilder}
+                message={this.state.message}
+            />
+        );
+    }
+
+    renderModals() {
+        return (
+            <React.Fragment>
                 <DashConnectionErrorModal
                     show={this.state.showDashConnectionError}
                     onCancel={this.handleCancelDashConnection}
@@ -1697,6 +1587,59 @@ export class App extends React.Component<AppProps, AppState> {
         );
     }
 
+    render() {
+        return (
+            <React.Fragment>
+                <div
+                    className={
+                        classNames(
+                            'App__container',
+                            this.state.customBackgroundDesignMode
+                                && 'App__container--customBackgroundDesignMode'
+                        )
+                    }
+                    role='main'
+                    onClick={this.handleRootClick}
+                    onKeyDown={this.handleRootKeyDown}
+                >
+                    {this.renderNotificationArea()}
+                    <header className='App__header'>
+                        {this.renderHeaderContents()}
+                    </header>
+                    <div className='App__scene-container'>
+                        {this.renderSceneWithHeading()}
+                        {this.state.customBackgroundDesignMode &&
+                            this.renderTilePanel()
+                        }
+                    </div>
+                    <div className="App__world-container">
+                        {this.renderWorldSelectorWithHeading()}
+                        {!(this.state.customBackgroundDesignMode) &&
+                            this.renderPenDownToggleSwitch()
+                        }
+                        {this.renderCharacterPositionController()}
+                    </div>
+                    {!(this.state.customBackgroundDesignMode) &&
+                        <React.Fragment>
+                            <div className='App__command-palette'>
+                                {this.renderCommandPaletteContents()}
+                            </div>
+                            <div className='App__program-block-editor'>
+                                {this.renderProgramBlockEditor()}
+                            </div>
+                            <div className='App__playAndShare-background'/>
+                            <div className='App__playAndShare-container'>
+                                {this.renderPlayAndShareContents()}
+                            </div>
+                        </React.Fragment>
+                    }
+                </div>
+                {this.renderCharacterAriaLive()}
+                {this.renderModals()}
+            </React.Fragment>
+        );
+    }
+
     componentDidMount() {
         // As long as we have no underlying "default" theme styles, we need to always set this to ensure that the default theme is applied on startup.
         if (document.body) {
@@ -1711,6 +1654,7 @@ export class App extends React.Component<AppProps, AppState> {
             const disallowedActionsQuery = params.getDisallowedActions();
             const worldQuery = params.getWorld();
             const startingPositionQuery = params.getStartingPosition();
+            const customBackgroundQuery = params.getCustomBackground();
 
             if (programQuery != null) {
                 try {
@@ -1768,6 +1712,10 @@ export class App extends React.Component<AppProps, AppState> {
                 startingDirection: startingPosition.direction
             });
 
+            this.setState({
+                customBackground: this.customBackgroundSerializer.deserialize(customBackgroundQuery)
+            });
+
             this.setStateSettings({
                 theme: Utils.getThemeFromString(themeQuery, 'default'),
                 world: world
@@ -1779,6 +1727,7 @@ export class App extends React.Component<AppProps, AppState> {
             const localDisallowedActions = window.localStorage.getItem('c2lc-disallowedActions');
             const localWorld = window.localStorage.getItem('c2lc-world');
             const localStartingPosition = window.localStorage.getItem('c2lc-startingPosition');
+            const localCustomBackground = window.localStorage.getItem('c2lc-customBackground');
 
             if (localProgram != null) {
                 try {
@@ -1837,6 +1786,10 @@ export class App extends React.Component<AppProps, AppState> {
                 startingDirection: startingPosition.direction
             });
 
+            this.setState({
+                customBackground: this.customBackgroundSerializer.deserialize(localCustomBackground)
+            });
+
             this.setStateSettings({
                 theme: Utils.getThemeFromString(localTheme, 'default'),
                 world: world
@@ -1878,11 +1831,13 @@ export class App extends React.Component<AppProps, AppState> {
             || this.state.startingX !== prevState.startingX
             || this.state.startingY !== prevState.startingY
             || this.state.startingDirection !== prevState.startingDirection
-            || this.state.settings.world !== prevState.settings.world) {
+            || this.state.settings.world !== prevState.settings.world
+            || this.state.customBackground !== prevState.customBackground) {
             const serializedProgram = this.programSerializer.serialize(this.state.programSequence.getProgram());
             const serializedCharacterState = this.characterStateSerializer.serialize(this.state.characterState);
             const serializedDisallowedActions = this.disallowedActionsSerializer.serialize(this.state.disallowedActions);
             const serializedStartingPosition = `${Utils.encodeCoordinate(this.state.startingX)}${Utils.encodeCoordinate(this.state.startingY)}${Utils.encodeDirection(this.state.startingDirection)}`;
+            const serializedCustomBackground = this.customBackgroundSerializer.serialize(this.state.customBackground);
 
             // Use setTimeout() to limit how often we call history.pushState().
             // Safari will throw an error if calls to history.pushState() are
@@ -1898,10 +1853,11 @@ export class App extends React.Component<AppProps, AppState> {
                         t: this.state.settings.theme,
                         d: serializedDisallowedActions,
                         w: this.state.settings.world,
-                        s: serializedStartingPosition
+                        s: serializedStartingPosition,
+                        b: serializedCustomBackground
                     },
                     '',
-                    Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedDisallowedActions, serializedStartingPosition),
+                    Utils.generateEncodedProgramURL(this.version, this.state.settings.theme, this.state.settings.world, serializedProgram, serializedCharacterState, serializedDisallowedActions, serializedStartingPosition, serializedCustomBackground),
                     '',
                 );
             }, pushStateDelayMs);
@@ -1913,6 +1869,7 @@ export class App extends React.Component<AppProps, AppState> {
             window.localStorage.setItem('c2lc-disallowedActions', serializedDisallowedActions);
             window.localStorage.setItem('c2lc-world', this.state.settings.world);
             window.localStorage.setItem('c2lc-startingPosition', serializedStartingPosition);
+            window.localStorage.setItem('c2lc-customBackground', serializedCustomBackground);
         }
 
         if (this.state.keyBindingsEnabled !== prevState.keyBindingsEnabled

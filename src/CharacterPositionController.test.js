@@ -12,14 +12,14 @@ import * as TestUtils from './TestUtils';
 
 configure({ adapter: new Adapter()});
 
-const characterEnableFlipClassName = 'CharacterPositionController__character-column-character--enable-flip';
+type ButtonName = 'turnLeft' | 'turnRight' | 'up' | 'right' | 'down' | 'left';
 
 const defaultCharacterPositionControllerProps = {
     interpreterIsRunning: false,
     characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
     editingDisabled: false,
-    theme: 'light',
-    world: 'Sketchpad'
+    customBackgroundDesignMode: false,
+    selectedCustomBackgroundTile: null
 };
 
 function createShallowCharacterPositionController(props) {
@@ -32,6 +32,8 @@ function createShallowCharacterPositionController(props) {
     const mockChangeCharacterPosition = jest.fn();
     const mockChangeCharacterXPosition = jest.fn();
     const mockChangeCharacterYPosition = jest.fn();
+    const mockClickSetStartButton = jest.fn();
+    const mockClickPaintbrushButton = jest.fn();
 
     const wrapper: $FlowIgnoreType = shallow(
         React.createElement(
@@ -43,7 +45,9 @@ function createShallowCharacterPositionController(props) {
                     intl: intl,
                     onChangeCharacterPosition: mockChangeCharacterPosition,
                     onChangeCharacterXPosition: mockChangeCharacterXPosition,
-                    onChangeCharacterYPosition: mockChangeCharacterYPosition
+                    onChangeCharacterYPosition: mockChangeCharacterYPosition,
+                    onClickSetStartButton: mockClickSetStartButton,
+                    onClickPaintbrushButton: mockClickPaintbrushButton
                 },
                 props
             )
@@ -55,6 +59,8 @@ function createShallowCharacterPositionController(props) {
         mockChangeCharacterPosition,
         mockChangeCharacterXPosition,
         mockChangeCharacterYPosition,
+        mockClickSetStartButton,
+        mockClickPaintbrushButton
     };
 }
 
@@ -62,6 +68,8 @@ function createMountCharacterPositionController(props) {
     const mockChangeCharacterPosition = jest.fn();
     const mockChangeCharacterXPosition = jest.fn();
     const mockChangeCharacterYPosition = jest.fn();
+    const mockClickSetStartButton = jest.fn();
+    const mockClickPaintbrushButton = jest.fn();
 
     const wrapper = mount(
         React.createElement(
@@ -72,7 +80,9 @@ function createMountCharacterPositionController(props) {
                 {
                     onChangeCharacterPosition: mockChangeCharacterPosition,
                     onChangeCharacterXPosition: mockChangeCharacterXPosition,
-                    onChangeCharacterYPosition: mockChangeCharacterYPosition
+                    onChangeCharacterYPosition: mockChangeCharacterYPosition,
+                    onClickSetStartButton: mockClickSetStartButton,
+                    onClickPaintbrushButton: mockClickPaintbrushButton
                 },
                 props
             )
@@ -91,44 +101,59 @@ function createMountCharacterPositionController(props) {
         wrapper,
         mockChangeCharacterPosition,
         mockChangeCharacterXPosition,
-        mockChangeCharacterYPosition
+        mockChangeCharacterYPosition,
+        mockClickSetStartButton,
+        mockClickPaintbrushButton
     };
 }
 
-function getCharacterPositionButton(characterPositionControllerWrapper: ReactWrapper<HTMLElement>, directionName: string): ReactWrapper<HTMLElement> {
-    return characterPositionControllerWrapper.find('.CharacterPositionController__character-position-button').filter({value: directionName}).at(0);
+function getCharacterPositionButton(wrapper: ReactWrapper<HTMLElement>,
+    buttonName: ButtonName): ReactWrapper<HTMLElement> {
+
+    return wrapper
+        .find('.CharacterPositionController__character-position-button')
+        .filter({value: buttonName})
+        .at(0);
 }
 
-function getCharacterPositionCoordinateBoxes(characterPositionControllerWrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
-    return characterPositionControllerWrapper.find('.ProgramBlock__character-position-coordinate-box');
+function getCharacterPositionCoordinateBoxes(wrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
+    return wrapper.find('.ProgramBlock__character-position-coordinate-box');
 }
 
-function getCharacterIcon(characterPositionControllerWrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
-    return characterPositionControllerWrapper.find('.CharacterPositionController__character-column-character');
+function getCenterButtonIcon(wrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
+    return wrapper.find('.CharacterPositionController__centerButtonIcon');
+}
+
+function getSetStartButton(wrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
+    return wrapper.find('.CharacterPositionController__setStartButton');
+}
+
+function getPaintbrushButton(wrapper: ReactWrapper<HTMLElement>): ReactWrapper<HTMLElement> {
+    return wrapper.find('.CharacterPositionController__paintbrushButton');
 }
 
 describe('Using change character position buttons', () => {
     test.each([
         'turnLeft', 'turnRight', 'up', 'right', 'down', 'left'
-    ])('Click/Press %s button ', (directionName) => {
+    ])('Click/Press %s button ', (buttonName) => {
         expect.assertions(4);
         const { wrapper, mockChangeCharacterPosition } = createMountCharacterPositionController();
-        const characterPositionButton = getCharacterPositionButton(wrapper, directionName);
+        const characterPositionButton = getCharacterPositionButton(wrapper, buttonName);
 
         characterPositionButton.simulate('click');
         expect(mockChangeCharacterPosition.mock.calls.length).toBe(1);
-        expect(mockChangeCharacterPosition.mock.calls[0][0]).toBe(directionName);
+        expect(mockChangeCharacterPosition.mock.calls[0][0]).toBe(buttonName);
 
         characterPositionButton.simulate('keydown', { key: ' ' });
         expect(mockChangeCharacterPosition.mock.calls.length).toBe(2);
-        expect(mockChangeCharacterPosition.mock.calls[1][0]).toBe(directionName);
+        expect(mockChangeCharacterPosition.mock.calls[1][0]).toBe(buttonName);
     });
     test.each([
         'turnLeft', 'turnRight', 'up', 'right', 'down', 'left'
-    ])('Click/Press %s button when editingDisabled Prop is true', (directionName) => {
+    ])('Click/Press %s button when editingDisabled Prop is true', (buttonName) => {
         expect.assertions(3);
         const { wrapper, mockChangeCharacterPosition } = createMountCharacterPositionController({editingDisabled: true});
-        const characterPositionButton = getCharacterPositionButton(wrapper, directionName);
+        const characterPositionButton = getCharacterPositionButton(wrapper, buttonName);
         expect(characterPositionButton.get(0).props.className.includes('--disabled')).toBe(true);
 
         characterPositionButton.simulate('click');
@@ -201,127 +226,94 @@ describe('Using change character position by column/row labels', () => {
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(2);
         expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(secondSampleYPosition);
     });
-    test('Changing world changes the character icon', () => {
-        expect.assertions(9);
-        const { wrapper } = createShallowCharacterPositionController();
-        // DeepOcean World
-        wrapper.setProps({world: 'DeepOcean', theme: 'light'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine.svg');
-        wrapper.setProps({theme: 'gray'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine-gray.svg');
-        wrapper.setProps({theme: 'contrast'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('Submarine-contrast.svg');
-        // Savannah World
-        wrapper.setProps({world: 'Savannah', theme: 'light'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SavannahJeep.svg');
-        wrapper.setProps({theme: 'gray'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SavannahJeep-gray.svg');
-        wrapper.setProps({theme: 'contrast'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SavannahJeep-contrast.svg');
-        // Space World
-        wrapper.setProps({world: 'Space', theme: 'light'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip.svg');
-        wrapper.setProps({theme: 'gray'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip-gray.svg');
-        wrapper.setProps({theme: 'contrast'});
-        expect(getCharacterIcon(wrapper).get(0).type.render().props.children).toBe('SpaceShip-contrast.svg');
+});
+
+test('When in default mode, show the set start button and the turn buttons', () => {
+    const { wrapper } = createShallowCharacterPositionController({
+        customBackgroundDesignMode: false
     });
-    test('When a world has enableFlipCharacter=true, character icon gets class names to rotate and enable flip', () => {
-        expect.assertions(18);
-        const { wrapper } = createShallowCharacterPositionController();
 
-        // With default character facing right, i.e. East
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+    expect(getCenterButtonIcon(wrapper).get(0).type.render().props.children).toBe('SetStartIcon.svg');
 
-        // Set characterState prop to make the character face Southeast
-        wrapper.setProps({characterState: new CharacterState(1, 1, 3, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle3')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+    expect(getCharacterPositionButton(wrapper, 'turnLeft').exists()).toBe(true);
+    expect(getCharacterPositionButton(wrapper, 'turnRight').exists()).toBe(true);
+    expect(getCharacterPositionButton(wrapper, 'up').exists()).toBe(true);
+    expect(getCharacterPositionButton(wrapper, 'right').exists()).toBe(true);
+    expect(getCharacterPositionButton(wrapper, 'down').exists()).toBe(true);
+    expect(getCharacterPositionButton(wrapper, 'left').exists()).toBe(true);
+});
 
-        // Set characterState prop to make the character face South
-        wrapper.setProps({characterState: new CharacterState(1, 1, 4, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle4')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
-
-        // Set characterState prop to make the character face Southwest
-        wrapper.setProps({characterState: new CharacterState(1, 1, 5, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle5')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
-
-        // Set characterState prop to make the character face West
-        wrapper.setProps({characterState: new CharacterState(1, 1, 6, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle6')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
-
-        // Set characterState prop to make the character face Northwest
-        wrapper.setProps({characterState: new CharacterState(1, 1, 7, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle7')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
-
-        // Set characterState prop to make the character face North
-        wrapper.setProps({characterState: new CharacterState(1, 1, 0, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle0')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
-
-        // Set characterState prop to make the character face Northeast
-        wrapper.setProps({characterState: new CharacterState(1, 1, 1, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle1')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
-
-        // Set characterState prop to make the character face East again
-        wrapper.setProps({characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 2, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(true);
+test('When the set start button is clicked, the provided callback is called', () => {
+    const {
+        wrapper,
+        mockClickSetStartButton,
+        mockClickPaintbrushButton
+    } = createShallowCharacterPositionController({
+        customBackgroundDesignMode: false
     });
-    test('When a world has enableFlipCharacter=false, character icon gets class name to rotate only', () => {
-        expect.assertions(18);
-        const { wrapper } = createShallowCharacterPositionController({
-            world: 'Landmarks'
-        });
 
-        // With default character facing right, i.e. East
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
+    getSetStartButton(wrapper).simulate('click');
 
-        // Set characterState prop to make the character face Southeast
-        wrapper.setProps({characterState: new CharacterState(1, 1, 3, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle3')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
+    expect(mockClickSetStartButton.mock.calls.length).toBe(1);
+    expect(mockClickPaintbrushButton.mock.calls.length).toBe(0);
+});
 
-        // Set characterState prop to make the character face South
-        wrapper.setProps({characterState: new CharacterState(1, 1, 4, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle4')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face Southwest
-        wrapper.setProps({characterState: new CharacterState(1, 1, 5, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle5')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face West
-        wrapper.setProps({characterState: new CharacterState(1, 1, 6, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle6')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face Northwest
-        wrapper.setProps({characterState: new CharacterState(1, 1, 7, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle7')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face North
-        wrapper.setProps({characterState: new CharacterState(1, 1, 0, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle0')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face Northeast
-        wrapper.setProps({characterState: new CharacterState(1, 1, 1, [], new SceneDimensions(1, 100, 1, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle1')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
-
-        // Set characterState prop to make the character face East again
-        wrapper.setProps({characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 2, 100))});
-        expect(getCharacterIcon(wrapper).hasClass('CharacterPositionController__character-column-character--angle2')).toBe(true);
-        expect(getCharacterIcon(wrapper).hasClass(characterEnableFlipClassName)).toBe(false);
+test('When in custom background design mode, show the paintbrush button and hide the turn buttons', () => {
+    const { wrapper } = createShallowCharacterPositionController({
+        customBackgroundDesignMode: true
     });
+
+    expect(getCenterButtonIcon(wrapper).get(0).type.render().props.children).toBe('PaintbrushIcon.svg');
+
+    expect(getCharacterPositionButton(wrapper, 'turnLeft').exists()).toBe(false);
+    expect(getCharacterPositionButton(wrapper, 'turnRight').exists()).toBe(false);
+    expect(getCharacterPositionButton(wrapper, 'up').exists()).toBe(true);
+    expect(getCharacterPositionButton(wrapper, 'right').exists()).toBe(true);
+    expect(getCharacterPositionButton(wrapper, 'down').exists()).toBe(true);
+    expect(getCharacterPositionButton(wrapper, 'left').exists()).toBe(true);
+});
+
+test('When no tile is selected, the paintbrush button is disabled', () => {
+    const { wrapper } = createShallowCharacterPositionController({
+        customBackgroundDesignMode: true,
+        selectedCustomBackgroundTile: null
+    });
+
+    expect(getPaintbrushButton(wrapper).prop('disabled')).toBe(true);
+    expect(getPaintbrushButton(wrapper).prop('ariaLabel')).toBe('paint background square');
+});
+
+test('When a tile is selected, the paintbrush button is enbled and its aria-label includes information about the selected tile', () => {
+    const { wrapper } = createShallowCharacterPositionController({
+        customBackgroundDesignMode: true,
+        selectedCustomBackgroundTile: '1'
+    });
+
+    expect(getPaintbrushButton(wrapper).prop('disabled')).toBe(false);
+    expect(getPaintbrushButton(wrapper).prop('ariaLabel')).toBe('paint wall');
+});
+
+test('When the eraser is selected, the paintbrush button is enbled and its aria-label is "erase square"', () => {
+    const { wrapper } = createShallowCharacterPositionController({
+        customBackgroundDesignMode: true,
+        selectedCustomBackgroundTile: '0'
+    });
+
+    expect(getPaintbrushButton(wrapper).prop('disabled')).toBe(false);
+    expect(getPaintbrushButton(wrapper).prop('ariaLabel')).toBe('erase square');
+});
+
+test('When the pintbrush button is clicked, the provided callback is called', () => {
+    const {
+        wrapper,
+        mockClickSetStartButton,
+        mockClickPaintbrushButton
+    } = createShallowCharacterPositionController({
+        customBackgroundDesignMode: true
+    });
+
+    getPaintbrushButton(wrapper).simulate('click');
+
+    expect(mockClickSetStartButton.mock.calls.length).toBe(0);
+    expect(mockClickPaintbrushButton.mock.calls.length).toBe(1);
 });
