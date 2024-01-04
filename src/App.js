@@ -14,7 +14,6 @@ import CharacterStateSerializer from './CharacterStateSerializer';
 import CharacterPositionController from './CharacterPositionController';
 import classNames from 'classnames';
 import CommandPaletteCommand from './CommandPaletteCommand';
-import CookieNotification from './CookieNotification';
 import C2lcURLParams from './C2lcURLParams';
 import CustomBackground from './CustomBackground';
 import CustomBackgroundDesignModeButton from './CustomBackgroundDesignModeButton';
@@ -121,7 +120,6 @@ export type AppState = {
     disallowedActions: ActionToggleRegister,
     keyBindingsEnabled: boolean,
     keyboardInputSchemeName: KeyboardInputSchemeName,
-    showCookieNotification: boolean,
     showKeyboardModal: boolean,
     showSoundOptionsModal: boolean,
     showThemeSelectorModal: boolean,
@@ -188,9 +186,6 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.defaultWorld = 'Sketchpad';
 
-        // Cookie Notification
-        const showCookieNotification = !(window.localStorage.getItem('c2lc-hasDismissedCookieNotification'));
-
         // Initialize startingX, startingY, and startingDirection to the world starting position
         const startingX = getWorldProperties(this.defaultWorld).startingX;
         const startingY = getWorldProperties(this.defaultWorld).startingY;
@@ -219,7 +214,6 @@ export class App extends React.Component<AppProps, AppState> {
             runningState: 'stopped',
             disallowedActions: {},
             keyBindingsEnabled: false,
-            showCookieNotification: showCookieNotification,
             showKeyboardModal: false,
             showSoundOptionsModal: false,
             showThemeSelectorModal: false,
@@ -332,20 +326,6 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     // Handlers
-
-    handleCookieNotificationDismiss = () => {
-        window.localStorage.setItem('c2lc-hasDismissedCookieNotification', true);
-        this.setState({
-            showCookieNotification: false
-        });
-    };
-
-    handleCookieNotificationLearnMore = () => {
-        this.setState({
-            showPrivacyModal: true,
-            focusOnClosePrivacyModalSelector: '.CookieNotification__learnMoreButton'
-        });
-    };
 
     handleProgramSequenceChange = (programSequence: ProgramSequence) => {
         this.setState({
@@ -1228,12 +1208,6 @@ export class App extends React.Component<AppProps, AppState> {
     renderNotificationArea() {
         return (
             <div className='App__notificationArea'>
-                {this.state.showCookieNotification &&
-                    <CookieNotification
-                        onDismiss={this.handleCookieNotificationDismiss}
-                        onLearnMore={this.handleCookieNotificationLearnMore}
-                    />
-                }
             </div>
         );
     }
