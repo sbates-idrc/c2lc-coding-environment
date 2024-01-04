@@ -895,26 +895,6 @@ body.gray-theme {
         }
     }
 
-    .CookieNotification {
-        background-color: #D5D8DD;
-    }
-
-    .CookieNotification__button {
-        background-color: #F1F2F4;
-        color: #1E1E1E;
-
-        &:hover {
-            background: #505862;
-            color: #FFFFFF;
-        }
-
-        &:focus {
-            box-shadow:
-                0 0 0 1px #D5D8DD,
-                0 0 0 $c2lc-focus-indicator-width #505862;
-        }
-    }
-
     .IconButton {
         &:not(.IconButton--disabled) {
             background-color: #818A98;
@@ -1824,35 +1804,6 @@ body.contrast-theme {
 
     .App__PrivacyModal__toggle-button:focus {
         border-color: #ffffff;
-    }
-
-    .CookieNotification {
-        background-color: white;
-    }
-
-    .CookieNotification__message {
-        color: black;
-    }
-
-    .CookieNotification__button {
-        background-color: black;
-        color: white;
-
-        &:hover {
-            background: white;
-            color: black;
-            box-shadow: 0 0 0 1px black;
-        }
-
-        &:focus {
-            box-shadow:
-                0 0 0 1px white,
-                0 0 0 $c2lc-focus-indicator-width black;
-        }
-
-        &:hover:focus {
-            box-shadow: 0 0 0 $c2lc-focus-indicator-width black;
-        }
     }
 
     .IconButton.App__header-soundOptions {
