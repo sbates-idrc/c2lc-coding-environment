@@ -279,13 +279,23 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
+    changeCustomBackgroundDesignModeIsDisabled(): boolean {
+        return this.state.runningState !== 'stopped';
+    }
+
     editingIsDisabled(): boolean {
         return !(this.state.runningState === 'stopped'
             || this.state.runningState === 'paused');
     }
 
+    playPauseIsDisabled(): boolean {
+        return this.state.programSequence.getProgramLength() === 0
+            || this.state.customBackgroundDesignMode;
+    }
+
     refreshIsDisabled(): boolean {
-        return this.state.runningState !== 'stopped';
+        return this.state.runningState !== 'stopped'
+            || this.state.customBackgroundDesignMode;
     }
 
     // API for Interpreter
@@ -631,7 +641,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("playPauseProgram"):
-                            if (this.state.programSequence.getProgramLength() > 0) {
+                            if (!this.playPauseIsDisabled()) {
                                 this.handlePlay();
                             }
                             break;
@@ -1322,6 +1332,7 @@ export class App extends React.Component<AppProps, AppState> {
                     </IconButton>
                     <CustomBackgroundDesignModeButton
                         customBackgroundDesignMode={this.state.customBackgroundDesignMode}
+                        disabled={this.changeCustomBackgroundDesignModeIsDisabled()}
                         onChange={this.handleChangeCustomBackgroundDesignMode}
                     />
                 </div>
@@ -1459,7 +1470,7 @@ export class App extends React.Component<AppProps, AppState> {
                         <PlayButton
                             className='App__playControlButton'
                             interpreterIsRunning={this.state.runningState === 'running'}
-                            disabled={this.state.programSequence.getProgramLength() === 0}
+                            disabled={this.playPauseIsDisabled()}
                             onClick={this.handlePlay}
                         />
                         <StopButton
