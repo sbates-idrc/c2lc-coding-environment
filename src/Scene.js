@@ -41,6 +41,7 @@ export type SceneProps = {
     startingY: number,
     runningState: RunningState,
     message: ?string,
+    designModeCursorState: CharacterState,
     characterDescriptionBuilder: CharacterDescriptionBuilder,
     onCloseMessage: () => void,
     onPaintScene: (x: number, y: number) => void,
@@ -282,18 +283,17 @@ class Scene extends React.Component<SceneProps, {}> {
                                         r={0.51}
                                     />
                                 }
-                                {this.props.customBackgroundDesignMode ?
+                                <SceneCharacter
+                                    characterState={this.props.characterState}
+                                    theme={this.props.theme}
+                                    world={this.props.world}
+                                />
+                                {this.props.customBackgroundDesignMode &&
                                     <PaintbrushCursor
-                                        x={this.props.characterState.xPos - 0.5}
-                                        y={this.props.characterState.yPos - 0.5}
+                                        x={this.props.designModeCursorState.xPos - 0.5}
+                                        y={this.props.designModeCursorState.yPos - 0.5}
                                         width={1}
                                         height={1}
-                                    />
-                                    :
-                                    <SceneCharacter
-                                        characterState={this.props.characterState}
-                                        theme={this.props.theme}
-                                        world={this.props.world}
                                     />
                                 }
                             </g>
