@@ -318,7 +318,7 @@ test('Do not continue through program if runningState changes to stopped', (done
     });
 });
 
-test('Run pauses on a "movementBlocked" action', (done) => {
+test('Run stops on a "movementBlocked" action', (done) => {
     const { interpreter, appMock, actionsHandlerMock } = createInterpreter();
 
     const program = [{block: 'right180'}];
@@ -331,7 +331,7 @@ test('Run pauses on a "movementBlocked" action', (done) => {
     interpreter.startRun().then(() => {
         expect(appMock.advanceProgramCounter.mock.calls.length).toBe(0);
         expect(appMock.setRunningStateForInterpreter.mock.calls.length).toBe(1);
-        expect(appMock.setRunningStateForInterpreter.mock.calls[0][0]).toBe('paused');
+        expect(appMock.setRunningStateForInterpreter.mock.calls[0][0]).toBe('stopped');
         expect(actionsHandlerMock.doAction.mock.calls.length).toBe(1);
         expect(actionsHandlerMock.doAction.mock.calls[0][0]).toBe('right180');
         expect(actionsHandlerMock.doAction.mock.calls[0][1]).toBe(1000);

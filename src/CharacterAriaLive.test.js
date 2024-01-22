@@ -154,10 +154,22 @@ test('When a message is included in the props change, it is included in the live
     });
     expect(getLiveRegionText()).toBe('');
     wrapper.setProps({
-        message: 'Example message.',
-        runningState: 'paused'
+        message: 'Example message',
+        runningState: 'stopped'
     });
     expect(getLiveRegionText()).toBe('Example message. At A 1 facing right');
+});
+
+test('When a message already ends in a period, no extra period is added', () => {
+    const wrapper = createMountCharacterAriaLive({
+        runningState: 'running'
+    });
+    expect(getLiveRegionText()).toBe('');
+    wrapper.setProps({
+        message: 'Message ending in a period.',
+        runningState: 'stopped'
+    });
+    expect(getLiveRegionText()).toBe('Message ending in a period. At A 1 facing right');
 });
 
 test('When a message is in a previous props change, it is included in the live region update', () => {
@@ -166,11 +178,11 @@ test('When a message is in a previous props change, it is included in the live r
     });
     expect(getLiveRegionText()).toBe('');
     wrapper.setProps({
-        message: 'Example message.'
+        message: 'Example message'
     });
     expect(getLiveRegionText()).toBe('');
     wrapper.setProps({
-        runningState: 'paused'
+        runningState: 'stopped'
     });
     expect(getLiveRegionText()).toBe('Example message. At A 1 facing right');
 });
@@ -180,10 +192,10 @@ test('A message is only added to the live region once', () => {
         runningState: 'running'
     });
     wrapper.setProps({
-        message: 'Example message.'
+        message: 'Example message'
     });
     wrapper.setProps({
-        runningState: 'paused'
+        runningState: 'stopped'
     });
     expect(getLiveRegionText()).toBe('Example message. At A 1 facing right');
     wrapper.setProps({
@@ -197,17 +209,17 @@ test('If a message is set, then set to null, then set to the same text again, it
         runningState: 'running'
     });
     wrapper.setProps({
-        message: 'Example message.'
+        message: 'Example message'
     });
     wrapper.setProps({
-        runningState: 'paused'
+        runningState: 'stopped'
     });
     expect(getLiveRegionText()).toBe('Example message. At A 1 facing right');
     wrapper.setProps({
         message: null
     });
     wrapper.setProps({
-        message: 'Example message.'
+        message: 'Example message'
     });
     wrapper.setProps({
         characterState: new CharacterState(2, 1, 2, [], sceneDimensions)

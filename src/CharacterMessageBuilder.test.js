@@ -20,7 +20,7 @@ test('End of scene', () => {
         x: 1,
         y: 1
     });
-    expect(message).toBe('Your character has reached the end of the scene. Program is paused.');
+    expect(message).toBe('Your character has reached the end of the scene');
 });
 
 test('Hit wall', () => {
@@ -30,5 +30,5 @@ test('Hit wall', () => {
         x: 3,
         y: 2
     });
-    expect(message).toBe('Your character hit a wall on C2. Program is paused.');
+    expect(message).toBe('Your character hit a wall on C2');
 });

@@ -59,7 +59,12 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
 
         if (this.props.message != null
                 && this.props.message !== this.lastMessage) {
-            text = `${this.props.message} `;
+            text = this.props.message;
+            if (text.endsWith('.')) {
+                text += ' ';
+            } else {
+                text += '. ';
+            }
             this.lastMessage = this.props.message;
         }
 

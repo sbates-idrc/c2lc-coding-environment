@@ -314,14 +314,13 @@ export class App extends React.Component<AppProps, AppState> {
 
     setRunningStateForInterpreter(runningState: RunningState): void {
         this.setState((state) => {
-            // If the Interpreter has called this method with 'paused' (for
-            // example due to the character hitting a wall), and the user has
-            // clicked the stop button, go straight to 'stopped'
+            // If the Interpreter has called this method with 'paused', and
+            // the user has already clicked the stop button, go straight to
+            // 'stopped'
             if (runningState === 'paused'
                     && state.runningState === 'stopRequested') {
                 return {
-                    runningState: 'stopped',
-                    message: null
+                    runningState: 'stopped'
                 };
             } else {
                 return {
@@ -405,16 +404,15 @@ export class App extends React.Component<AppProps, AppState> {
                 case 'paused':
                     return {
                         runningState: 'running',
-                        actionPanelStepIndex: null,
-                        // Transitioning paused to running, clear the message
-                        message: null
+                        actionPanelStepIndex: null
                     };
                 case 'stopRequested': // Fall through
                 case 'stopped':
                     return {
                         programSequence: state.programSequence.initiateProgramRun(),
                         runningState: 'running',
-                        actionPanelStepIndex: null
+                        actionPanelStepIndex: null,
+                        message: null
                     };
                 default:
                     return null;
@@ -428,9 +426,7 @@ export class App extends React.Component<AppProps, AppState> {
                 return {
                     // If we are paused, then the interpreter isn't running
                     // and we go straight to stopped
-                    runningState: 'stopped',
-                    // Transitioning paused to stopped, clear the message
-                    message: null
+                    runningState: 'stopped'
                 };
             } else {
                 return {
