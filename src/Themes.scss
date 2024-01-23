@@ -2976,7 +2976,7 @@ body.contrast-theme {
         fill: #FFFFFF;
     }
 
-    .CharacterPositionController .IconButton:hover .paintbrush-icon-foreground {
+    .CharacterPositionController .IconButton:hover:not(.IconButton--disabled) .paintbrush-icon-foreground {
         stroke: #FFFFFF;
     }
 
