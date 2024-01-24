@@ -76,12 +76,12 @@ describe('The change handler is called with the inverse of customBackgroundDesig
 
 describe('The disabled property is set on the IconButton', () => {
     test('disabled: false', () => {
-        const { wrapper, changeHandler } = createComponent(false, false);
+        const { wrapper } = createComponent(false, false);
         expect(wrapper.prop('disabled')).toBe(false);
     });
 
     test('disabled: true', () => {
-        const { wrapper, changeHandler } = createComponent(false, true);
+        const { wrapper } = createComponent(false, true);
         expect(wrapper.prop('disabled')).toBe(true);
     });
 });

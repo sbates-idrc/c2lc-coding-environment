@@ -292,8 +292,8 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     isChangeCustomBackgroundDesignModeDisabled(): boolean {
-        // return this.state.runningState !== 'stopped';
-        return false;
+        return !(this.state.runningState === 'stopped'
+            || this.state.runningState === 'paused');
     }
 
     isEditingDisabled(): boolean {
