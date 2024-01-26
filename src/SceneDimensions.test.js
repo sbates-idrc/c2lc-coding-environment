@@ -3,31 +3,41 @@
 import SceneDimensions from './SceneDimensions';
 
 test('SceneDimensions properties', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 3);
-    expect(dimensions.getWidth()).toBe(5);
-    expect(dimensions.getHeight()).toBe(3);
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    expect(dimensions.getWidth()).toBe(8);
+    expect(dimensions.getHeight()).toBe(6);
     expect(dimensions.getMinX()).toBe(1);
-    expect(dimensions.getMinY()).toBe(1);
-    expect(dimensions.getMaxX()).toBe(5);
-    expect(dimensions.getMaxY()).toBe(3);
+    expect(dimensions.getMinY()).toBe(11);
+    expect(dimensions.getMaxX()).toBe(8);
+    expect(dimensions.getMaxY()).toBe(16);
 });
 
-test('SceneDimensions.getBoundsStateX()', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 3);
-    expect(dimensions.getBoundsStateX(1)).toBe('inBounds');
-    expect(dimensions.getBoundsStateX(2.5)).toBe('inBounds');
-    expect(dimensions.getBoundsStateX(3)).toBe('inBounds');
-    expect(dimensions.getBoundsStateX(6.5)).toBe('outOfBoundsAbove');
-    expect(dimensions.getBoundsStateX(-2.51)).toBe('outOfBoundsBelow');
+test('sceneDimensions.moveLeft()', () => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    expect(dimensions.moveLeft(3)).toBe(2);
+    expect(dimensions.moveLeft(2)).toBe(1);
+    expect(dimensions.moveLeft(1)).toBe(1);
 });
 
-test('SceneDimensions.getBoundsStateY()', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 3);
-    expect(dimensions.getBoundsStateY(1)).toBe('inBounds');
-    expect(dimensions.getBoundsStateY(1.5)).toBe('inBounds');
-    expect(dimensions.getBoundsStateY(2.5)).toBe('inBounds');
-    expect(dimensions.getBoundsStateY(4)).toBe('outOfBoundsAbove');
-    expect(dimensions.getBoundsStateY(-1.51)).toBe('outOfBoundsBelow');
+test('sceneDimensions.moveRight()', () => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    expect(dimensions.moveRight(6)).toBe(7);
+    expect(dimensions.moveRight(7)).toBe(8);
+    expect(dimensions.moveRight(8)).toBe(8);
+});
+
+test('sceneDimensions.moveUp()', () => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    expect(dimensions.moveUp(13)).toBe(12);
+    expect(dimensions.moveUp(12)).toBe(11);
+    expect(dimensions.moveUp(11)).toBe(11);
+});
+
+test('sceneDimensions.moveDown()', () => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    expect(dimensions.moveDown(14)).toBe(15);
+    expect(dimensions.moveDown(15)).toBe(16);
+    expect(dimensions.moveDown(16)).toBe(16);
 });
 
 test('SceneDimensions.getXFromColumnLabel()', () => {

@@ -26,6 +26,7 @@ import FocusTrapManager from './FocusTrapManager';
 import IconButton from './IconButton';
 import Interpreter from './Interpreter';
 import PlayButton from './PlayButton';
+import PositionState from './PositionState';
 import ProgramBlockEditor from './ProgramBlockEditor';
 import RefreshButton from './RefreshButton';
 import Scene from './Scene';
@@ -135,7 +136,7 @@ export type AppState = {
     customBackgroundDesignMode: boolean,
     selectedCustomBackgroundTile: ?TileCode,
     message: ?string,
-    designModeCursorState: CharacterState
+    designModeCursorState: PositionState
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -230,7 +231,7 @@ export class App extends React.Component<AppProps, AppState> {
             customBackgroundDesignMode: false,
             selectedCustomBackgroundTile: null,
             message: null,
-            designModeCursorState: this.makeCharacterStateWithPosition(startingX, startingY),
+            designModeCursorState: new PositionState(startingX, startingY, this.sceneDimensions),
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -279,16 +280,6 @@ export class App extends React.Component<AppProps, AppState> {
         } else {
             return null;
         }
-    }
-
-    makeCharacterStateWithPosition(x: number, y: number): CharacterState {
-        return new CharacterState(
-            x,
-            y,
-            0,
-            [],
-            this.sceneDimensions
-        );
     }
 
     isChangeCustomBackgroundDesignModeDisabled(): boolean {
@@ -959,7 +950,7 @@ export class App extends React.Component<AppProps, AppState> {
                 customBackgroundDesignMode: customBackgroundDesignMode,
                 // When changing modes, set the design mode cursor to the
                 // character position
-                designModeCursorState: this.makeCharacterStateWithPosition(
+                designModeCursorState: state.designModeCursorState.setPosition(
                     state.characterState.xPos,
                     state.characterState.yPos
                 )
@@ -1068,7 +1059,7 @@ export class App extends React.Component<AppProps, AppState> {
                 this.setState((state) => {
                     if (state.customBackgroundDesignMode) {
                         return {
-                            designModeCursorState: state.designModeCursorState.moveUpPosition()
+                            designModeCursorState: state.designModeCursorState.moveUp()
                         };
                     } else {
                         return {
@@ -1081,7 +1072,7 @@ export class App extends React.Component<AppProps, AppState> {
                 this.setState((state) => {
                     if (state.customBackgroundDesignMode) {
                         return {
-                            designModeCursorState: state.designModeCursorState.moveRightPosition()
+                            designModeCursorState: state.designModeCursorState.moveRight()
                         };
                     } else {
                         return {
@@ -1094,7 +1085,7 @@ export class App extends React.Component<AppProps, AppState> {
                 this.setState((state) => {
                     if (state.customBackgroundDesignMode) {
                         return {
-                            designModeCursorState: state.designModeCursorState.moveDownPosition()
+                            designModeCursorState: state.designModeCursorState.moveDown()
                         };
                     } else {
                         return {
@@ -1107,7 +1098,7 @@ export class App extends React.Component<AppProps, AppState> {
                 this.setState((state) => {
                     if (state.customBackgroundDesignMode) {
                         return {
-                            designModeCursorState: state.designModeCursorState.moveLeftPosition()
+                            designModeCursorState: state.designModeCursorState.moveLeft()
                         };
                     } else {
                         return {
@@ -1249,8 +1240,8 @@ export class App extends React.Component<AppProps, AppState> {
             if (state.selectedCustomBackgroundTile != null) {
                 return {
                     customBackground: state.customBackground.setTile(
-                        state.designModeCursorState.xPos,
-                        state.designModeCursorState.yPos,
+                        state.designModeCursorState.x,
+                        state.designModeCursorState.y,
                         state.selectedCustomBackgroundTile
                     )
                 };

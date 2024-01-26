@@ -73,16 +73,6 @@ export default class CharacterState {
         return true;
     }
 
-    setPosition(x: number, y: number): CharacterState {
-        return new CharacterState(
-            x,
-            y,
-            this.direction,
-            this.path,
-            this.sceneDimensions
-        );
-    }
-
     forward(distance: number, drawingEnabled: boolean, customBackground: CustomBackground): CharacterUpdate {
         const movementResult = this.calculateMove(
             distance,
@@ -142,15 +132,9 @@ export default class CharacterState {
     }
 
     moveUpPosition(): CharacterState {
-        let yPos = this.yPos;
-        if (this.sceneDimensions.getBoundsStateY(this.yPos - 1) === 'outOfBoundsBelow') {
-            yPos = 1;
-        } else {
-            yPos = this.yPos - 1;
-        }
         return new CharacterState(
             this.xPos,
-            yPos,
+            this.sceneDimensions.moveUp(this.yPos),
             this.direction,
             this.path,
             this.sceneDimensions
@@ -158,14 +142,8 @@ export default class CharacterState {
     }
 
     moveRightPosition(): CharacterState {
-        let xPos = this.xPos;
-        if (this.sceneDimensions.getBoundsStateX(this.xPos + 1) === 'outOfBoundsAbove') {
-            xPos = this.sceneDimensions.getWidth();
-        } else {
-            xPos = this.xPos + 1;
-        }
         return new CharacterState(
-            xPos,
+            this.sceneDimensions.moveRight(this.xPos),
             this.yPos,
             this.direction,
             this.path,
@@ -174,15 +152,9 @@ export default class CharacterState {
     }
 
     moveDownPosition(): CharacterState {
-        let yPos = this.yPos;
-        if (this.sceneDimensions.getBoundsStateY(this.yPos + 1) === 'outOfBoundsAbove') {
-            yPos = this.sceneDimensions.getHeight();
-        } else {
-            yPos = this.yPos + 1;
-        }
         return new CharacterState(
             this.xPos,
-            yPos,
+            this.sceneDimensions.moveDown(this.yPos),
             this.direction,
             this.path,
             this.sceneDimensions
@@ -190,14 +162,8 @@ export default class CharacterState {
     }
 
     moveLeftPosition(): CharacterState {
-        let xPos = this.xPos;
-        if (this.sceneDimensions.getBoundsStateY(this.xPos - 1) === 'outOfBoundsBelow') {
-            xPos = 1;
-        } else {
-            xPos = this.xPos - 1;
-        }
         return new CharacterState(
-            xPos,
+            this.sceneDimensions.moveLeft(this.xPos),
             this.yPos,
             this.direction,
             this.path,

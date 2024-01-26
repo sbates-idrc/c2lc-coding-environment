@@ -1,7 +1,5 @@
 // @flow
 
-type BoundsType = 'inBounds' | 'outOfBoundsAbove' | 'outOfBoundsBelow';
-
 export default class SceneDimensions {
     #width: number;
     #height: number;
@@ -44,22 +42,20 @@ export default class SceneDimensions {
         return this.#maxY;
     }
 
-    getBoundsStateX(x: number): BoundsType {
-        if (x < this.#minX) {
-            return 'outOfBoundsBelow';
-        } else if (x > this.#maxX) {
-            return 'outOfBoundsAbove';
-        }
-        return 'inBounds';
+    moveLeft(x: number): number {
+        return Math.max(x - 1, this.#minX);
     }
 
-    getBoundsStateY(y: number): BoundsType {
-        if (y < this.#minY) {
-            return 'outOfBoundsBelow';
-        } else if (y > this.#maxY) {
-            return 'outOfBoundsAbove';
-        }
-        return 'inBounds';
+    moveRight(x: number): number {
+        return Math.min(x + 1, this.#maxX);
+    }
+
+    moveUp(y: number): number {
+        return Math.max(y - 1, this.#minY);
+    }
+
+    moveDown(y: number): number {
+        return Math.min(y + 1, this.#maxY);
     }
 
     // Returns the X coordinate value for a column label.

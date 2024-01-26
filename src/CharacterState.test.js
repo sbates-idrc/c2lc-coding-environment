@@ -701,52 +701,44 @@ test('The number of path segments should be limited to maxPathLength', () => {
             null);
 });
 
-test('MoveUpPosition moves the character up one unit within the scene', () => {
-    const dimensions = new SceneDimensions(1, 10, 1, 10);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .moveUpPosition()
-    ): any).toBeCharacterState(2, 2, 2, []);
-
-    (expect(new CharacterState(2, 1, 2, [], dimensions)
-        .moveUpPosition()
-    ): any).toBeCharacterState(2, 1, 2, []);
+test.each([
+    [13, 12],
+    [12, 11],
+    [11, 11]
+])('moveUpPosition() with y=%d', (y, expectedY) => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    const result = new CharacterState(1, y, 2, [], dimensions).moveUpPosition();
+    (expect(result): any).toBeCharacterState(1, expectedY, 2, []);
 });
 
-test('MoveRightPosition moves the character right one unit within the scene', () => {
-    const dimensions = new SceneDimensions(1, 10, 1, 10);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .moveRightPosition()
-    ): any).toBeCharacterState(3, 3, 2, []);
-
-    (expect(new CharacterState(10, 1, 2, [], dimensions)
-        .moveRightPosition()
-    ): any).toBeCharacterState(10, 1, 2, []);
+test.each([
+    [6, 7],
+    [7, 8],
+    [8, 8]
+])('moveRightPosition() with x=%d', (x, expectedX) => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    const result = new CharacterState(x, 11, 2, [], dimensions).moveRightPosition();
+    (expect(result): any).toBeCharacterState(expectedX, 11, 2, []);
 });
 
-test('MoveDownPosition moves the character down one unit within the scene', () => {
-    const dimensions = new SceneDimensions(1, 10, 1, 10);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .moveDownPosition()
-    ): any).toBeCharacterState(2, 4, 2, []);
-
-    (expect(new CharacterState(2, 10, 2, [], dimensions)
-        .moveDownPosition()
-    ): any).toBeCharacterState(2, 10, 2, []);
+test.each([
+    [14, 15],
+    [15, 16],
+    [16, 16]
+])('moveDownPosition() with y=%d', (y, expectedY) => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    const result = new CharacterState(1, y, 2, [], dimensions).moveDownPosition();
+    (expect(result): any).toBeCharacterState(1, expectedY, 2, []);
 });
 
-test('MoveLeftPosition moves the character Left one unit within the scene', () => {
-    const dimensions = new SceneDimensions(1, 10, 1, 10);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .moveLeftPosition()
-    ): any).toBeCharacterState(1, 3, 2, []);
-
-    (expect(new CharacterState(1, 1, 2, [], dimensions)
-        .moveLeftPosition()
-    ): any).toBeCharacterState(1, 1, 2, []);
+test.each([
+    [3, 2],
+    [2, 1],
+    [1, 1]
+])('moveLeftPosition() with x=%d', (x, expectedX) => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    const result = new CharacterState(x, 11, 2, [], dimensions).moveLeftPosition();
+    (expect(result): any).toBeCharacterState(expectedX, 11, 2, []);
 });
 
 test('ChangeXPosition gets column label and updates xPosition', () => {

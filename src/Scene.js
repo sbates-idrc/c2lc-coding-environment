@@ -5,6 +5,7 @@ import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
 import CustomBackgroundSceneLayer from './CustomBackgroundSceneLayer';
+import PositionState from './PositionState';
 import SceneBackground from './SceneBackground';
 import SceneCharacter from './SceneCharacter';
 import SceneCharacterPath from './SceneCharacterPath';
@@ -41,7 +42,7 @@ export type SceneProps = {
     startingY: number,
     runningState: RunningState,
     message: ?string,
-    designModeCursorState: CharacterState,
+    designModeCursorState: PositionState,
     characterDescriptionBuilder: CharacterDescriptionBuilder,
     onCloseMessage: () => void,
     onPaintScene: (x: number, y: number) => void,
@@ -290,8 +291,8 @@ class Scene extends React.Component<SceneProps, {}> {
                                 />
                                 {this.props.customBackgroundDesignMode &&
                                     <PaintbrushCursor
-                                        x={this.props.designModeCursorState.xPos - 0.5}
-                                        y={this.props.designModeCursorState.yPos - 0.5}
+                                        x={this.props.designModeCursorState.x - 0.5}
+                                        y={this.props.designModeCursorState.y - 0.5}
                                         width={1}
                                         height={1}
                                     />
