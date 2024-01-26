@@ -1,6 +1,11 @@
 // @flow
 
+import CustomBackground from './CustomBackground';
+import type { IntlShape } from 'react-intl';
+import SceneDimensions from './SceneDimensions';
+import { getTileName, isNone } from './TileData';
 import type { ThemeName } from './types';
+import { getBackgroundInfo } from './Worlds';
 import { isWorldName } from './Worlds';
 import type { WorldName } from './Worlds';
 
@@ -281,6 +286,38 @@ function selectSpeechSynthesisVoice(utteranceLangTag: ?string,
     }
 }
 
+// Returns the description for the background square at the specified
+// position. If there is a custom background tile set for the square,
+// then the description for that is returned. If there is no custom
+// background tile at the specified position, then the description for
+// the world background for that square is returned. Otherwise, null is
+// returned.
+function getBackgroundSquareDescription(x: number, y: number,
+    sceneDimensions: SceneDimensions, world: WorldName,
+    customBackground: CustomBackground, intl: IntlShape): ?string {
+
+    const customBackgroundTile = customBackground.getTile(x, y);
+
+    if (!isNone(customBackgroundTile)) {
+        return intl.formatMessage({
+            id: `TileDescription.${getTileName(customBackgroundTile)}`
+        });
+    } else {
+        const columnLabel = sceneDimensions.getColumnLabel(x);
+        const rowLabel = sceneDimensions.getRowLabel(y);
+        if (columnLabel == null || rowLabel == null) {
+            return null;
+        }
+        const backgroundInfo = getBackgroundInfo(world, columnLabel, rowLabel);
+        if (backgroundInfo == null) {
+            return null;
+        }
+        return intl.formatMessage({
+            id: `${world}.${backgroundInfo}`
+        });
+    }
+}
+
 export {
     decodeCoordinate,
     decodeDirection,
@@ -298,5 +335,6 @@ export {
     getStartingPositionFromString,
     isLoopBlock,
     parseLoopLabel,
-    selectSpeechSynthesisVoice
+    selectSpeechSynthesisVoice,
+    getBackgroundSquareDescription
 };

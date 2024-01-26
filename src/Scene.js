@@ -72,11 +72,10 @@ class Scene extends React.Component<SceneProps, {}> {
         const numColumns = this.props.dimensions.getWidth();
         const numRows = this.props.dimensions.getHeight();
 
-        const characterDescription = this.props.characterDescriptionBuilder.buildCharacterDescription(
+        const characterDescription = this.props.characterDescriptionBuilder.buildDescription(
             this.props.characterState,
             this.props.world,
-            this.props.customBackground,
-            this.props.customBackgroundDesignMode
+            this.props.customBackground
         );
 
         return this.props.intl.formatMessage(

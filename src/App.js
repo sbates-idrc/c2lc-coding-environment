@@ -20,6 +20,7 @@ import CustomBackgroundDesignModeButton from './CustomBackgroundDesignModeButton
 import CustomBackgroundSerializer from './CustomBackgroundSerializer';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
 import DashDriver from './DashDriver';
+import DesignModeCursorDescriptionBuilder from './DesignModeCursorDescriptionBuilder';
 import * as FeatureDetection from './FeatureDetection';
 import FakeAudioManager from './FakeAudioManager';
 import FocusTrapManager from './FocusTrapManager';
@@ -158,6 +159,7 @@ export class App extends React.Component<AppProps, AppState> {
     sequenceInProgress: Array<KeyboardEvent>;
     announcementBuilder: AnnouncementBuilder;
     characterDescriptionBuilder: CharacterDescriptionBuilder;
+    designModeCursorDescriptionBuilder: DesignModeCursorDescriptionBuilder;
     programChangeController: ProgramChangeController;
     defaultWorld: WorldName;
 
@@ -254,6 +256,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.announcementBuilder = new AnnouncementBuilder(this.props.intl);
 
         this.characterDescriptionBuilder = new CharacterDescriptionBuilder(this.props.intl);
+
+        this.designModeCursorDescriptionBuilder = new DesignModeCursorDescriptionBuilder(this.props.intl);
 
         this.programChangeController = new ProgramChangeController(this,
             this.props.intl, this.audioManager);
@@ -946,15 +950,21 @@ export class App extends React.Component<AppProps, AppState> {
 
     setCustomBackgroundDesignMode = (customBackgroundDesignMode: boolean) => {
         this.setState((state) => {
-            return {
-                customBackgroundDesignMode: customBackgroundDesignMode,
-                // When changing modes, set the design mode cursor to the
-                // character position
-                designModeCursorState: state.designModeCursorState.setPosition(
-                    state.characterState.xPos,
-                    state.characterState.yPos
-                )
-            };
+            if (customBackgroundDesignMode) {
+                return {
+                    customBackgroundDesignMode: customBackgroundDesignMode,
+                    // When entering custom background design mode,
+                    // set the design mode cursor to the character position
+                    designModeCursorState: state.designModeCursorState.setPosition(
+                        state.characterState.xPos,
+                        state.characterState.yPos
+                    )
+                };
+            } else {
+                return {
+                    customBackgroundDesignMode: customBackgroundDesignMode
+                };
+            }
         });
     }
 
@@ -1545,11 +1555,13 @@ export class App extends React.Component<AppProps, AppState> {
                 ariaLiveRegionId='character-position'
                 ariaHidden={this.state.showWorldSelector}
                 characterState={this.state.characterState}
+                designModeCursorState={this.state.designModeCursorState}
                 runningState={this.state.runningState}
                 world={this.state.settings.world}
                 customBackground={this.state.customBackground}
                 customBackgroundDesignMode={this.state.customBackgroundDesignMode}
                 characterDescriptionBuilder={this.characterDescriptionBuilder}
+                designModeCursorDescriptionBuilder={this.designModeCursorDescriptionBuilder}
                 message={this.state.message}
             />
         );

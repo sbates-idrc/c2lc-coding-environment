@@ -19,149 +19,92 @@ const emptyCustomBackground = new CustomBackground(sceneDimensions);
 test('All 8 directions', () => {
     const builder = new CharacterDescriptionBuilder(intl);
 
-    expect(builder.buildCharacterDescription(
+    expect(builder.buildDescription(
         new CharacterState(1, 1, 0, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground,
-        false
+        emptyCustomBackground
     )).toBe('At A 1 facing up');
 
-    expect(builder.buildCharacterDescription(
+    expect(builder.buildDescription(
         new CharacterState(1, 1, 1, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground,
-        false
+        emptyCustomBackground
     )).toBe('At A 1 facing upper right');
 
-    expect(builder.buildCharacterDescription(
+    expect(builder.buildDescription(
         new CharacterState(1, 1, 2, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground,
-        false
+        emptyCustomBackground
     )).toBe('At A 1 facing right');
 
-    expect(builder.buildCharacterDescription(
+    expect(builder.buildDescription(
         new CharacterState(1, 1, 3, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground,
-        false
+        emptyCustomBackground
     )).toBe('At A 1 facing lower right');
 
-    expect(builder.buildCharacterDescription(
+    expect(builder.buildDescription(
         new CharacterState(1, 1, 4, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground,
-        false
+        emptyCustomBackground
     )).toBe('At A 1 facing down');
 
-    expect(builder.buildCharacterDescription(
+    expect(builder.buildDescription(
         new CharacterState(1, 1, 5, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground,
-        false
+        emptyCustomBackground
     )).toBe('At A 1 facing lower left');
 
-    expect(builder.buildCharacterDescription(
+    expect(builder.buildDescription(
         new CharacterState(1, 1, 6, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground,
-        false
+        emptyCustomBackground
     )).toBe('At A 1 facing left');
 
-    expect(builder.buildCharacterDescription(
+    expect(builder.buildDescription(
         new CharacterState(1, 1, 7, [], sceneDimensions),
         'Sketchpad',
-        emptyCustomBackground,
-        false
+        emptyCustomBackground
     )).toBe('At A 1 facing upper left');
 });
 
-test('Space, design mode: no, background description: no, custom background tile: no', () => {
+test('Space, background description: no, custom background tile: no', () => {
     const builder = new CharacterDescriptionBuilder(intl);
-    expect(builder.buildCharacterDescription(
+    expect(builder.buildDescription(
         new CharacterState(3, 2, 2, [], sceneDimensions),
         'Space',
-        emptyCustomBackground,
-        false
+        emptyCustomBackground
     )).toBe('At C 2 facing right');
 });
 
-test('Space, design mode: no, background description: no, custom background tile: yes', () => {
+test('Space, background description: no, custom background tile: yes', () => {
     const builder = new CharacterDescriptionBuilder(intl);
-    expect(builder.buildCharacterDescription(
+    expect(builder.buildDescription(
         new CharacterState(3, 2, 2, [], sceneDimensions),
         'Space',
         new CustomBackground(sceneDimensions, [
             '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
             '0', '0', '1'
-        ]),
-        false
+        ])
     )).toBe('At C 2 on wall facing right');
 });
 
-test('Space, design mode: no, background description: yes, custom background tile: no', () => {
+test('Space, background description: yes, custom background tile: no', () => {
     const builder = new CharacterDescriptionBuilder(intl);
-    expect(builder.buildCharacterDescription(
+    expect(builder.buildDescription(
         new CharacterState(3, 1, 2, [], sceneDimensions),
         'Space',
-        emptyCustomBackground,
-        false
+        emptyCustomBackground
     )).toBe('At C 1 on the Moon facing right');
 });
 
-test('Space, design mode: no, background description: yes, custom background tile: yes', () => {
+test('Space, background description: yes, custom background tile: yes', () => {
     const builder = new CharacterDescriptionBuilder(intl);
-    expect(builder.buildCharacterDescription(
+    expect(builder.buildDescription(
         new CharacterState(3, 1, 2, [], sceneDimensions),
         'Space',
         new CustomBackground(sceneDimensions, [
             '0', '0', '1'
-        ]),
-        false
+        ])
     )).toBe('At C 1 on wall facing right');
-});
-
-test('Space, design mode: yes, background description: no, custom background tile: no', () => {
-    const builder = new CharacterDescriptionBuilder(intl);
-    expect(builder.buildCharacterDescription(
-        new CharacterState(3, 2, 2, [], sceneDimensions),
-        'Space',
-        emptyCustomBackground,
-        true
-    )).toBe('At C 2');
-});
-
-test('Space, design mode: yes, background description: no, custom background tile: yes', () => {
-    const builder = new CharacterDescriptionBuilder(intl);
-    expect(builder.buildCharacterDescription(
-        new CharacterState(3, 2, 2, [], sceneDimensions),
-        'Space',
-        new CustomBackground(sceneDimensions, [
-            '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-            '0', '0', '1'
-        ]),
-        true
-    )).toBe('At C 2 on wall');
-});
-
-test('Space, design mode: yes, background description: yes, custom background tile: no', () => {
-    const builder = new CharacterDescriptionBuilder(intl);
-    expect(builder.buildCharacterDescription(
-        new CharacterState(3, 1, 2, [], sceneDimensions),
-        'Space',
-        emptyCustomBackground,
-        true
-    )).toBe('At C 1 on the Moon');
-});
-
-test('Space, design mode: yes, background description: yes, custom background tile: yes', () => {
-    const builder = new CharacterDescriptionBuilder(intl);
-    expect(builder.buildCharacterDescription(
-        new CharacterState(3, 1, 2, [], sceneDimensions),
-        'Space',
-        new CustomBackground(sceneDimensions, [
-            '0', '0', '1'
-        ]),
-        true
-    )).toBe('At C 1 on wall');
 });
