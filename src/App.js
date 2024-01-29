@@ -779,32 +779,32 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         case("moveCharacterLeft"):
                             if (!this.isEditingDisabled()) {
-                                this.handleChangeCharacterPosition('left');
+                                this.handleClickCharacterPositionLeft();
                             }
                             break;
                         case("moveCharacterRight"):
                             if (!this.isEditingDisabled()) {
-                                this.handleChangeCharacterPosition('right');
+                                this.handleClickCharacterPositionRight();
                             }
                             break;
                         case("moveCharacterUp"):
                             if (!this.isEditingDisabled()) {
-                                this.handleChangeCharacterPosition('up');
+                                this.handleClickCharacterPositionUp();
                             }
                             break;
                         case("moveCharacterDown"):
                             if (!this.isEditingDisabled()) {
-                                this.handleChangeCharacterPosition('down');
+                                this.handleClickCharacterPositionDown();
                             }
                             break;
                         case("turnCharacterLeft"):
                             if (!this.isEditingDisabled()) {
-                                this.handleChangeCharacterPosition('turnLeft');
+                                this.handleClickCharacterPositionTurnLeft();
                             }
                             break;
                         case("turnCharacterRight"):
                             if (!this.isEditingDisabled()) {
-                                this.handleChangeCharacterPosition('turnRight');
+                                this.handleClickCharacterPositionTurnRight();
                             }
                             break;
                         case("setCharacterStartingPosition"):
@@ -1049,77 +1049,76 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleChangeCharacterPosition = (positionName: ?string) => {
-        switch(positionName) {
-            case 'turnLeft':
-                this.setState((state) => {
-                    return {
-                        characterState: state.characterState.turnLeft(1)
-                    };
-                });
-                break;
-            case 'turnRight':
-                this.setState((state) => {
-                    return {
-                        characterState: state.characterState.turnRight(1)
-                    };
-                });
-                break;
-            case 'up':
-                this.setState((state) => {
-                    if (state.customBackgroundDesignMode) {
-                        return {
-                            designModeCursorState: state.designModeCursorState.moveUp()
-                        };
-                    } else {
-                        return {
-                            characterState: state.characterState.moveUpPosition()
-                        };
-                    }
-                });
-                break;
-            case 'right':
-                this.setState((state) => {
-                    if (state.customBackgroundDesignMode) {
-                        return {
-                            designModeCursorState: state.designModeCursorState.moveRight()
-                        };
-                    } else {
-                        return {
-                            characterState: state.characterState.moveRightPosition()
-                        };
-                    }
-                });
-                break;
-            case 'down':
-                this.setState((state) => {
-                    if (state.customBackgroundDesignMode) {
-                        return {
-                            designModeCursorState: state.designModeCursorState.moveDown()
-                        };
-                    } else {
-                        return {
-                            characterState: state.characterState.moveDownPosition()
-                        };
-                    }
-                });
-                break;
-            case 'left':
-                this.setState((state) => {
-                    if (state.customBackgroundDesignMode) {
-                        return {
-                            designModeCursorState: state.designModeCursorState.moveLeft()
-                        };
-                    } else {
-                        return {
-                            characterState: state.characterState.moveLeftPosition()
-                        };
-                    }
-                });
-                break;
-            default:
-                break;
-        }
+    handleClickCharacterPositionTurnLeft = () => {
+        this.setState((state) => {
+            return {
+                characterState: state.characterState.turnLeft(1)
+            };
+        });
+    }
+
+    handleClickCharacterPositionTurnRight = () => {
+        this.setState((state) => {
+            return {
+                characterState: state.characterState.turnRight(1)
+            };
+        });
+    }
+
+    handleClickCharacterPositionLeft = () => {
+        this.setState((state) => {
+            if (state.customBackgroundDesignMode) {
+                return {
+                    designModeCursorState: state.designModeCursorState.moveLeft()
+                };
+            } else {
+                return {
+                    characterState: state.characterState.moveLeftPosition()
+                };
+            }
+        });
+    }
+
+    handleClickCharacterPositionRight = () => {
+        this.setState((state) => {
+            if (state.customBackgroundDesignMode) {
+                return {
+                    designModeCursorState: state.designModeCursorState.moveRight()
+                };
+            } else {
+                return {
+                    characterState: state.characterState.moveRightPosition()
+                };
+            }
+        });
+    }
+
+    handleClickCharacterPositionUp = () => {
+        this.setState((state) => {
+            if (state.customBackgroundDesignMode) {
+                return {
+                    designModeCursorState: state.designModeCursorState.moveUp()
+                };
+            } else {
+                return {
+                    characterState: state.characterState.moveUpPosition()
+                };
+            }
+        });
+    }
+
+    handleClickCharacterPositionDown = () => {
+        this.setState((state) => {
+            if (state.customBackgroundDesignMode) {
+                return {
+                    designModeCursorState: state.designModeCursorState.moveDown()
+                };
+            } else {
+                return {
+                    characterState: state.characterState.moveDownPosition()
+                };
+            }
+        });
     }
 
     handleChangeCharacterXPosition = (columnLabel: string) => {
@@ -1405,7 +1404,12 @@ export class App extends React.Component<AppProps, AppState> {
                 editingDisabled={this.isEditingDisabled()}
                 customBackgroundDesignMode={this.state.customBackgroundDesignMode}
                 selectedCustomBackgroundTile={this.state.selectedCustomBackgroundTile}
-                onChangeCharacterPosition={this.handleChangeCharacterPosition}
+                onClickTurnLeft={this.handleClickCharacterPositionTurnLeft}
+                onClickTurnRight={this.handleClickCharacterPositionTurnRight}
+                onClickLeft={this.handleClickCharacterPositionLeft}
+                onClickRight={this.handleClickCharacterPositionRight}
+                onClickUp={this.handleClickCharacterPositionUp}
+                onClickDown={this.handleClickCharacterPositionDown}
                 onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
                 onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
                 onClickSetStartButton={this.setStartingPositionToCurrentPosition}

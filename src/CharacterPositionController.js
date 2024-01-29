@@ -24,7 +24,12 @@ type CharacterPositionControllerProps = {
     editingDisabled: boolean,
     customBackgroundDesignMode: boolean,
     selectedCustomBackgroundTile: ?TileCode,
-    onChangeCharacterPosition: (direction: ?string) => void,
+    onClickTurnLeft: () => void,
+    onClickTurnRight: () => void,
+    onClickLeft: () => void,
+    onClickRight: () => void,
+    onClickUp: () => void,
+    onClickDown: () => void,
     onChangeCharacterXPosition: (columnLabel: string) => void,
     onChangeCharacterYPosition: (rowLabel: string) => void,
     onClickSetStartButton: () => void,
@@ -61,13 +66,40 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
     }
 
     handleClickCharacterPositionButton = (e: SyntheticEvent<HTMLElement>) => {
-        this.props.onChangeCharacterPosition(e.currentTarget.getAttribute('value'));
+        this.doClickCharacterPositionButton(e.currentTarget.getAttribute('value'));
     }
 
     handleKeyDownCharacterPositionButton = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         if (e.key === ' ' || e.key === 'Enter') {
             e.preventDefault();
-            this.props.onChangeCharacterPosition(e.currentTarget.getAttribute('value'));
+            this.doClickCharacterPositionButton(e.currentTarget.getAttribute('value'));
+        }
+    }
+
+    doClickCharacterPositionButton(button: ?string) {
+        if (button != null) {
+            switch(button) {
+                case 'turnLeft':
+                    this.props.onClickTurnLeft();
+                    break;
+                case 'turnRight':
+                    this.props.onClickTurnRight();
+                    break;
+                case 'left':
+                    this.props.onClickLeft();
+                    break;
+                case 'right':
+                    this.props.onClickRight();
+                    break;
+                case 'up':
+                    this.props.onClickUp();
+                    break;
+                case 'down':
+                    this.props.onClickDown();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
