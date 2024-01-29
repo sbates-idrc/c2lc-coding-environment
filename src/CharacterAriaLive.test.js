@@ -215,17 +215,44 @@ test('If a message is set, then set to null, then set to the same text again, it
     expect(getLiveRegionText()).toBe('Example message. At B 1 facing right');
 });
 
-test('The live region is updated when the world prop is changed', () => {
-    const wrapper = createMountCharacterAriaLive();
+test('The live region is updated with the character description when design mode is exited', () => {
+    const wrapper = createMountCharacterAriaLive({
+        customBackgroundDesignMode: true
+    });
     expect(getLiveRegionText()).toBe('');
     wrapper.setProps({
-        world: 'Savannah'
+        customBackgroundDesignMode: false
     });
     expect(getLiveRegionText()).toBe('At A 1 facing right');
-    wrapper.setProps({
-        world: 'Space'
+});
+
+describe('The live region is updated when the world prop is changed', () => {
+    test('Character description in default mode', () => {
+        const wrapper = createMountCharacterAriaLive();
+        expect(getLiveRegionText()).toBe('');
+        wrapper.setProps({
+            world: 'Savannah'
+        });
+        expect(getLiveRegionText()).toBe('At A 1 facing right');
+        wrapper.setProps({
+            world: 'Space'
+        });
+        expect(getLiveRegionText()).toBe('At A 1 on the Earth facing right');
     });
-    expect(getLiveRegionText()).toBe('At A 1 on the Earth facing right');
+    test('Design mode cursor description in design mode', () => {
+        const wrapper = createMountCharacterAriaLive({
+            customBackgroundDesignMode: true
+        });
+        expect(getLiveRegionText()).toBe('');
+        wrapper.setProps({
+            world: 'Savannah'
+        });
+        expect(getLiveRegionText()).toBe('At A 1');
+        wrapper.setProps({
+            world: 'Space'
+        });
+        expect(getLiveRegionText()).toBe('At A 1 on the Earth');
+    });
 });
 
 test('The live region has aria-hidden false when the ariaHidden prop is false', () => {
