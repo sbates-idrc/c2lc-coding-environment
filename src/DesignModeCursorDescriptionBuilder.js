@@ -28,12 +28,10 @@ export default class DesignModeCursorDescriptionBuilder {
             this.intl
         );
 
-        // TODO: Change message ids to DesignModeCursorDescriptionBuilder
-
         if (itemLabel) {
             return this.intl.formatMessage(
                 {
-                    id:'CharacterDescriptionBuilder.customEditModePositionAndItem'
+                    id:'DesignModeCursorDescriptionBuilder.positionAndItem'
                 },
                 {
                     columnLabel: columnLabel,
@@ -44,7 +42,7 @@ export default class DesignModeCursorDescriptionBuilder {
         } else {
             return this.intl.formatMessage(
                 {
-                    id:'CharacterDescriptionBuilder.customEditModePosition'
+                    id:'DesignModeCursorDescriptionBuilder.position'
                 },
                 {
                     columnLabel: columnLabel,
