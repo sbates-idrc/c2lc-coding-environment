@@ -4,7 +4,6 @@ import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount, shallow, ReactWrapper } from 'enzyme';
 import { createIntl, IntlProvider } from 'react-intl';
-import CharacterState from './CharacterState';
 import SceneDimensions from './SceneDimensions';
 import messages from './messages.json';
 import CharacterPositionController from './CharacterPositionController';
@@ -15,8 +14,9 @@ configure({ adapter: new Adapter()});
 type ButtonName = 'turnLeft' | 'turnRight' | 'up' | 'right' | 'down' | 'left';
 
 const defaultCharacterPositionControllerProps = {
-    interpreterIsRunning: false,
-    characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
+    x: 1,
+    y: 1,
+    sceneDimensions: new SceneDimensions(1, 100, 1, 100),
     editingDisabled: false,
     customBackgroundDesignMode: false,
     selectedCustomBackgroundTile: null
@@ -226,7 +226,7 @@ describe('Using change character position by column/row labels', () => {
         characterXPositionCoordinateBox.simulate('blur',
             TestUtils.makeBlurEvent(currentTarget(sampleXPosition)));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(1);
-        expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(sampleXPosition);
+        expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(24);
 
         characterXPositionCoordinateBox.simulate('change',
             TestUtils.makeChangeEvent(currentTarget(secondSampleXPosition)));
@@ -236,7 +236,7 @@ describe('Using change character position by column/row labels', () => {
         characterXPositionCoordinateBox.simulate('keyDown',
             TestUtils.makeKeyDownEvent(currentTarget(secondSampleXPosition), 'Enter'));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(2);
-        expect(mockChangeCharacterXPosition.mock.calls[1][0]).toBe(secondSampleXPosition);
+        expect(mockChangeCharacterXPosition.mock.calls[1][0]).toBe(1);
     });
     test('Changing y position', () => {
         expect.assertions(6);
@@ -257,7 +257,7 @@ describe('Using change character position by column/row labels', () => {
         characterYPositionCoordinateBox.simulate('blur',
             TestUtils.makeBlurEvent(currentTarget(sampleYPosition)));
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(1);
-        expect(mockChangeCharacterYPosition.mock.calls[0][0]).toBe(sampleYPosition);
+        expect(mockChangeCharacterYPosition.mock.calls[0][0]).toBe(2);
 
         characterYPositionCoordinateBox.simulate('change',
             TestUtils.makeChangeEvent(currentTarget(secondSampleYPosition)));
@@ -267,7 +267,7 @@ describe('Using change character position by column/row labels', () => {
         characterYPositionCoordinateBox.simulate('keyDown',
             TestUtils.makeKeyDownEvent(currentTarget(secondSampleYPosition), 'Enter'));
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(2);
-        expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(secondSampleYPosition);
+        expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(8);
     });
 });
 

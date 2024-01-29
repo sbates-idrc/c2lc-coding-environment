@@ -741,52 +741,28 @@ test.each([
     (expect(result): any).toBeCharacterState(expectedX, 11, 2, []);
 });
 
-test('ChangeXPosition gets column label and updates xPosition', () => {
-    const dimensions = new SceneDimensions(1, 26, 1, 16);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .changeXPosition('Z')
-    ): any).toBeCharacterState(26, 3, 2, []);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .changeXPosition('z')
-    ): any).toBeCharacterState(26, 3, 2, []);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .changeXPosition('A')
-    ): any).toBeCharacterState(1, 3, 2, []);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .changeXPosition('a')
-    ): any).toBeCharacterState(1, 3, 2, []);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .changeXPosition('3')
-    ): any).toBeCharacterState(2, 3, 2, []);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .changeXPosition('Zz')
-    ): any).toBeCharacterState(2, 3, 2, []);
+test.each([
+    [1, 2, 1],
+    [2, 1, 2],
+    [8, 1, 8],
+    [0, 1, 1],
+    [9, 1, 1]
+])('changeXPosition(%d) with x=%d intially', (newX, initialX, expectedX) => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    const result = new CharacterState(initialX, 11, 2, [], dimensions).changeXPosition(newX);
+    (expect(result): any).toBeCharacterState(expectedX, 11, 2, []);
 });
 
-test('ChangeYPosition gets row label and updates yPosition', () => {
-    const dimensions = new SceneDimensions(1, 26, 1, 16);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .changeYPosition('16')
-    ): any).toBeCharacterState(2, 16, 2, []);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .changeYPosition('1')
-    ): any).toBeCharacterState(2, 1, 2, []);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .changeYPosition('0')
-    ): any).toBeCharacterState(2, 3, 2, []);
-
-    (expect(new CharacterState(2, 3, 2, [], dimensions)
-        .changeYPosition('17')
-    ): any).toBeCharacterState(2, 3, 2, []);
+test.each([
+    [11, 12, 11],
+    [12, 11, 12],
+    [16, 11, 16],
+    [10, 11, 11],
+    [17, 11, 11]
+])('changeYPosition(%d) with y=%d intially', (newY, initialY, expectedY) => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    const result = new CharacterState(1, initialY, 2, [], dimensions).changeYPosition(newY);
+    (expect(result): any).toBeCharacterState(1, expectedY, 2, []);
 });
 
 test('getRowLabel returns current yPosition in string', () => {

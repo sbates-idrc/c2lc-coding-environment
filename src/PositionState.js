@@ -17,6 +17,24 @@ export default class PositionState {
         return new PositionState(x, y, this.sceneDimensions);
     }
 
+    setX(x: number): PositionState {
+        if (x >= this.sceneDimensions.getMinX()
+                && x <= this.sceneDimensions.getMaxX()) {
+            return new PositionState(x, this.y, this.sceneDimensions);
+        } else {
+            return this;
+        }
+    }
+
+    setY(y: number): PositionState {
+        if (y >= this.sceneDimensions.getMinY()
+                && y <= this.sceneDimensions.getMaxY()) {
+            return new PositionState(this.x, y, this.sceneDimensions);
+        } else {
+            return this;
+        }
+    }
+
     moveLeft(): PositionState {
         return new PositionState(
             this.sceneDimensions.moveLeft(this.x),
@@ -47,32 +65,6 @@ export default class PositionState {
             this.sceneDimensions.moveDown(this.y),
             this.sceneDimensions
         );
-    }
-
-    setXFromColumnLabel(columnLabel: string): PositionState {
-        const xFromLabel = this.sceneDimensions.getXFromColumnLabel(columnLabel);
-        if (xFromLabel == null) {
-            return this;
-        } else {
-            return new PositionState(
-                xFromLabel,
-                this.y,
-                this.sceneDimensions
-            );
-        }
-    }
-
-    setYFromRowLabel(rowLabel: string): PositionState {
-        const yFromLabel = this.sceneDimensions.getYFromRowLabel(rowLabel);
-        if (yFromLabel == null) {
-            return this;
-        } else {
-            return new PositionState(
-                this.x,
-                yFromLabel,
-                this.sceneDimensions
-            );
-        }
     }
 
     getColumnLabel(): string {

@@ -1121,19 +1121,31 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleChangeCharacterXPosition = (columnLabel: string) => {
+    handleChangeCharacterXPosition = (x: number) => {
         this.setState((state) => {
-            return {
-                characterState: state.characterState.changeXPosition(columnLabel)
-            };
+            if (state.customBackgroundDesignMode) {
+                return {
+                    designModeCursorState: state.designModeCursorState.setX(x)
+                };
+            } else {
+                return {
+                    characterState: state.characterState.changeXPosition(x)
+                };
+            }
         });
     }
 
-    handleChangeCharacterYPosition = (rowLabel: string) => {
+    handleChangeCharacterYPosition = (y: number) => {
         this.setState((state) => {
-            return {
-                characterState: state.characterState.changeYPosition(rowLabel)
-            };
+            if (state.customBackgroundDesignMode) {
+                return {
+                    designModeCursorState: state.designModeCursorState.setY(y)
+                };
+            } else {
+                return {
+                    characterState: state.characterState.changeYPosition(y)
+                };
+            }
         });
     }
 
@@ -1400,7 +1412,13 @@ export class App extends React.Component<AppProps, AppState> {
     renderCharacterPositionController() {
         return (
             <CharacterPositionController
-                characterState={this.state.characterState}
+                x={this.state.customBackgroundDesignMode ?
+                    this.state.designModeCursorState.x
+                    : this.state.characterState.xPos}
+                y={this.state.customBackgroundDesignMode ?
+                    this.state.designModeCursorState.y
+                    : this.state.characterState.yPos}
+                sceneDimensions={this.state.sceneDimensions}
                 editingDisabled={this.isEditingDisabled()}
                 customBackgroundDesignMode={this.state.customBackgroundDesignMode}
                 selectedCustomBackgroundTile={this.state.selectedCustomBackgroundTile}

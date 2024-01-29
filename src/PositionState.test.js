@@ -12,6 +12,34 @@ test('setPosition()', () => {
 });
 
 test.each([
+    [1, 2, 1],
+    [2, 1, 2],
+    [8, 1, 8],
+    [0, 1, 1],
+    [9, 1, 1]
+])('setX(%d) with x=%d intially', (newX, initialX, expectedX) => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    const result = new PositionState(initialX, 11, dimensions).setX(newX);
+    expect(result.x).toBe(expectedX);
+    expect(result.y).toBe(11);
+    expect(result.sceneDimensions).toBe(dimensions);
+});
+
+test.each([
+    [11, 12, 11],
+    [12, 11, 12],
+    [16, 11, 16],
+    [10, 11, 11],
+    [17, 11, 11]
+])('setY(%d) with y=%d intially', (newY, initialY, expectedY) => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    const result = new PositionState(1, initialY, dimensions).setY(newY);
+    expect(result.x).toBe(1);
+    expect(result.y).toBe(expectedY);
+    expect(result.sceneDimensions).toBe(dimensions);
+});
+
+test.each([
     [3, 2],
     [2, 1],
     [1, 1]
@@ -54,32 +82,6 @@ test.each([
 ])('moveDown() with y=%d', (y, expectedY) => {
     const dimensions = new SceneDimensions(1, 8, 11, 16);
     const result = new PositionState(1, y, dimensions).moveDown();
-    expect(result.x).toBe(1);
-    expect(result.y).toBe(expectedY);
-    expect(result.sceneDimensions).toBe(dimensions);
-});
-
-test.each([
-    ['A', 8, 1],
-    ['B', 1, 2],
-    ['H', 1, 8],
-    ['I', 1, 1]
-])('setXFromColumnLabel("%s")', (label, x, expectedX) => {
-    const dimensions = new SceneDimensions(1, 8, 11, 16);
-    const result = new PositionState(x, 11, dimensions).setXFromColumnLabel(label);
-    expect(result.x).toBe(expectedX);
-    expect(result.y).toBe(11);
-    expect(result.sceneDimensions).toBe(dimensions);
-});
-
-test.each([
-    ['11', 16, 11],
-    ['12', 11, 12],
-    ['16', 11, 16],
-    ['17', 11, 11]
-])('setYFromRowLabel("%s")', (label, y, expectedY) => {
-    const dimensions = new SceneDimensions(1, 8, 11, 16);
-    const result = new PositionState(1, y, dimensions).setYFromRowLabel(label);
     expect(result.x).toBe(1);
     expect(result.y).toBe(expectedY);
     expect(result.sceneDimensions).toBe(dimensions);

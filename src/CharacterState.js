@@ -171,33 +171,33 @@ export default class CharacterState {
         );
     }
 
-    changeXPosition(columnLabel: string): CharacterState {
-        const xFromLabel = this.sceneDimensions.getXFromColumnLabel(columnLabel);
-        if (xFromLabel == null) {
-            return this;
-        } else {
+    changeXPosition(x: number): CharacterState {
+        if (x >= this.sceneDimensions.getMinX()
+                && x <= this.sceneDimensions.getMaxX()) {
             return new CharacterState(
-                xFromLabel,
+                x,
                 this.yPos,
                 this.direction,
                 this.path,
                 this.sceneDimensions
             );
+        } else {
+            return this;
         }
     }
 
-    changeYPosition(rowLabel: string): CharacterState {
-        const yFromLabel = this.sceneDimensions.getYFromRowLabel(rowLabel);
-        if (yFromLabel == null) {
-            return this;
-        } else {
+    changeYPosition(y: number): CharacterState {
+        if (y >= this.sceneDimensions.getMinY()
+                && y <= this.sceneDimensions.getMaxY()) {
             return new CharacterState(
                 this.xPos,
-                yFromLabel,
+                y,
                 this.direction,
                 this.path,
                 this.sceneDimensions
             );
+        } else {
+            return this;
         }
     }
 
