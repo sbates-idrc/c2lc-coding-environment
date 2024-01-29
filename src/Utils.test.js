@@ -1,12 +1,22 @@
 // @flow
 
-import { decodeCoordinate, decodeDirection, encodeCoordinate, encodeDirection, extend, isLoopBlock, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, focusFirstInNodeList, focusLastInNodeList, generateLoopLabel, parseLoopLabel, selectSpeechSynthesisVoice } from './Utils.js';
-import React from 'react';
-import Adapter from 'enzyme-adapter-react-16';
+import CustomBackground from './CustomBackground';
 import { mount, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import messages from './messages.json';
+import React from 'react';
+import { createIntl } from 'react-intl';
+import SceneDimensions from './SceneDimensions';
 import { makeTestDiv } from './TestUtils';
+import { decodeCoordinate, decodeDirection, encodeCoordinate, encodeDirection, extend, isLoopBlock, generateEncodedProgramURL, getThemeFromString, getWorldFromString, getStartingPositionFromString, focusByQuerySelector, focusFirstInNodeList, focusLastInNodeList, getBackgroundSquareDescription, generateLoopLabel, parseLoopLabel, selectSpeechSynthesisVoice } from './Utils.js';
 
 configure({ adapter: new Adapter()});
+
+const intl = createIntl({
+    locale: 'en',
+    defaultLocale: 'en',
+    messages: messages.en
+});
 
 test('Test URL encoding', () => {
     expect(generateEncodedProgramURL('version=5', 'light', 'default', 'f1=f2=f3', '0ab', 'f1=f2=f3', '1-2', '0 0')).toBe('?v=version%3D5&t=light&w=default&p=f1%3Df2%3Df3&c=0ab&d=f1%3Df2%3Df3&s=1-2&b=0%200');
@@ -435,5 +445,59 @@ describe('selectSpeechSynthesisVoice', () => {
         ]: any): Array<SpeechSynthesisVoice>);
 
         expect(selectSpeechSynthesisVoice('en', 'en-US', voices)).toBe(voices[0]);
+    });
+});
+
+describe('getBackgroundSquareDescription()', () => {
+    const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
+    const emptyCustomBackground = new CustomBackground(sceneDimensions);
+
+    test('Space, background description: no, custom background tile: no', () => {
+        expect(getBackgroundSquareDescription(
+            3,
+            2,
+            sceneDimensions,
+            'Space',
+            emptyCustomBackground,
+            intl
+        )).toBeNull();
+    });
+
+    test('Space, background description: no, custom background tile: yes', () => {
+        expect(getBackgroundSquareDescription(
+            3,
+            2,
+            sceneDimensions,
+            'Space',
+            new CustomBackground(sceneDimensions, [
+                '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
+                '0', '0', '1'
+            ]),
+            intl
+        )).toBe('wall');
+    });
+
+    test('Space, background description: yes, custom background tile: no', () => {
+        expect(getBackgroundSquareDescription(
+            3,
+            1,
+            sceneDimensions,
+            'Space',
+            emptyCustomBackground,
+            intl
+        )).toBe('the Moon');
+    });
+
+    test('Space, background description: yes, custom background tile: yes', () => {
+        expect(getBackgroundSquareDescription(
+            3,
+            1,
+            sceneDimensions,
+            'Space',
+            new CustomBackground(sceneDimensions, [
+                '0', '0', '1'
+            ]),
+            intl
+        )).toBe('wall');
     });
 });
