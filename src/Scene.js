@@ -5,7 +5,7 @@ import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
 import CustomBackgroundSceneLayer from './CustomBackgroundSceneLayer';
-import PositionState from './PositionState';
+import DesignModeCursorState from './DesignModeCursorState';
 import SceneBackground from './SceneBackground';
 import SceneCharacter from './SceneCharacter';
 import SceneCharacterPath from './SceneCharacterPath';
@@ -42,7 +42,7 @@ export type SceneProps = {
     startingY: number,
     runningState: RunningState,
     message: ?string,
-    designModeCursorState: PositionState,
+    designModeCursorState: DesignModeCursorState,
     characterDescriptionBuilder: CharacterDescriptionBuilder,
     onCloseMessage: () => void,
     onPaintScene: (x: number, y: number) => void,

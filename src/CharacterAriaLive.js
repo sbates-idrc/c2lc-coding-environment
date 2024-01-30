@@ -5,7 +5,7 @@ import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
 import DesignModeCursorDescriptionBuilder from './DesignModeCursorDescriptionBuilder';
-import PositionState from './PositionState';
+import DesignModeCursorState from './DesignModeCursorState';
 import { injectIntl } from 'react-intl';
 import type { IntlShape } from 'react-intl';
 import type { RunningState } from './types';
@@ -16,7 +16,7 @@ type CharacterAriaLiveProps = {
     ariaLiveRegionId: string,
     ariaHidden: boolean,
     characterState: CharacterState,
-    designModeCursorState: PositionState,
+    designModeCursorState: DesignModeCursorState,
     runningState: RunningState,
     world: WorldName,
     customBackground: CustomBackground,

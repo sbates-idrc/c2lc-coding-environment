@@ -2,7 +2,7 @@
 
 import SceneDimensions from './SceneDimensions';
 
-export default class PositionState {
+export default class DesignModeCursorState {
     x: number; // Positive x is East
     y: number; // Positive y is South
     sceneDimensions: SceneDimensions;
@@ -13,54 +13,54 @@ export default class PositionState {
         this.sceneDimensions = sceneDimensions;
     }
 
-    setPosition(x: number, y: number): PositionState {
-        return new PositionState(x, y, this.sceneDimensions);
+    setPosition(x: number, y: number): DesignModeCursorState {
+        return new DesignModeCursorState(x, y, this.sceneDimensions);
     }
 
-    setX(x: number): PositionState {
+    setX(x: number): DesignModeCursorState {
         if (x >= this.sceneDimensions.getMinX()
                 && x <= this.sceneDimensions.getMaxX()) {
-            return new PositionState(x, this.y, this.sceneDimensions);
+            return new DesignModeCursorState(x, this.y, this.sceneDimensions);
         } else {
             return this;
         }
     }
 
-    setY(y: number): PositionState {
+    setY(y: number): DesignModeCursorState {
         if (y >= this.sceneDimensions.getMinY()
                 && y <= this.sceneDimensions.getMaxY()) {
-            return new PositionState(this.x, y, this.sceneDimensions);
+            return new DesignModeCursorState(this.x, y, this.sceneDimensions);
         } else {
             return this;
         }
     }
 
-    moveLeft(): PositionState {
-        return new PositionState(
+    moveLeft(): DesignModeCursorState {
+        return new DesignModeCursorState(
             this.sceneDimensions.moveLeft(this.x),
             this.y,
             this.sceneDimensions
         );
     }
 
-    moveRight(): PositionState {
-        return new PositionState(
+    moveRight(): DesignModeCursorState {
+        return new DesignModeCursorState(
             this.sceneDimensions.moveRight(this.x),
             this.y,
             this.sceneDimensions
         );
     }
 
-    moveUp(): PositionState {
-        return new PositionState(
+    moveUp(): DesignModeCursorState {
+        return new DesignModeCursorState(
             this.x,
             this.sceneDimensions.moveUp(this.y),
             this.sceneDimensions
         );
     }
 
-    moveDown(): PositionState {
-        return new PositionState(
+    moveDown(): DesignModeCursorState {
+        return new DesignModeCursorState(
             this.x,
             this.sceneDimensions.moveDown(this.y),
             this.sceneDimensions

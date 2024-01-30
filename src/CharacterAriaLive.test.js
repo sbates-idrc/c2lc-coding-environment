@@ -9,7 +9,7 @@ import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
 import DesignModeCursorDescriptionBuilder from './DesignModeCursorDescriptionBuilder';
-import PositionState from './PositionState';
+import DesignModeCursorState from './DesignModeCursorState';
 import SceneDimensions from './SceneDimensions';
 import type { RunningState } from './types';
 import messages from './messages.json';
@@ -40,7 +40,7 @@ const defaultCharacterAriaLiveProps = {
     ariaLiveRegionId: 'someAriaLiveRegionId',
     ariaHidden: false,
     characterState: new CharacterState(1, 1, 2, [], sceneDimensions),
-    designModeCursorState: new PositionState(1, 1, sceneDimensions),
+    designModeCursorState: new DesignModeCursorState(1, 1, sceneDimensions),
     runningState: 'stopped',
     world: 'Sketchpad',
     customBackground: emptyCustomBackground,
@@ -99,7 +99,7 @@ test('The live region is updated with the design mode cursor prop is changed', (
         customBackgroundDesignMode: true
     });
     wrapper.setProps({
-        designModeCursorState: new PositionState(3, 1, sceneDimensions)
+        designModeCursorState: new DesignModeCursorState(3, 1, sceneDimensions)
     });
     expect(getLiveRegionText()).toBe('At C 1');
 });

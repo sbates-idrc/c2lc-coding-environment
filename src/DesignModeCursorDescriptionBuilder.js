@@ -1,7 +1,7 @@
 // @flow
 
 import CustomBackground from './CustomBackground';
-import PositionState from './PositionState';
+import DesignModeCursorState from './DesignModeCursorState';
 import type { IntlShape } from 'react-intl';
 import { getBackgroundSquareDescription } from './Utils';
 import type { WorldName } from './Worlds';
@@ -13,7 +13,7 @@ export default class DesignModeCursorDescriptionBuilder {
         this.intl = intl;
     }
 
-    buildDescription(designModeCursorState: PositionState,
+    buildDescription(designModeCursorState: DesignModeCursorState,
         world: WorldName, customBackground: CustomBackground): string {
 
         const columnLabel = designModeCursorState.getColumnLabel();
