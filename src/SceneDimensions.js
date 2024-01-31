@@ -42,6 +42,14 @@ export default class SceneDimensions {
         return this.#maxY;
     }
 
+    isXInRange(x: number): boolean {
+        return (x >= this.#minX && x <= this.#maxX);
+    }
+
+    isYInRange(y: number): boolean {
+        return (y >= this.#minY && y <= this.#maxY);
+    }
+
     moveLeft(x: number): number {
         return Math.max(x - 1, this.#minX);
     }

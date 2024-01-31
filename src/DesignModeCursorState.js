@@ -18,8 +18,7 @@ export default class DesignModeCursorState {
     }
 
     setX(x: number): DesignModeCursorState {
-        if (x >= this.sceneDimensions.getMinX()
-                && x <= this.sceneDimensions.getMaxX()) {
+        if (this.sceneDimensions.isXInRange(x)) {
             return new DesignModeCursorState(x, this.y, this.sceneDimensions);
         } else {
             return this;
@@ -27,8 +26,7 @@ export default class DesignModeCursorState {
     }
 
     setY(y: number): DesignModeCursorState {
-        if (y >= this.sceneDimensions.getMinY()
-                && y <= this.sceneDimensions.getMaxY()) {
+        if (this.sceneDimensions.isYInRange(y)) {
             return new DesignModeCursorState(this.x, y, this.sceneDimensions);
         } else {
             return this;

@@ -172,8 +172,7 @@ export default class CharacterState {
     }
 
     changeXPosition(x: number): CharacterState {
-        if (x >= this.sceneDimensions.getMinX()
-                && x <= this.sceneDimensions.getMaxX()) {
+        if (this.sceneDimensions.isXInRange(x)) {
             return new CharacterState(
                 x,
                 this.yPos,
@@ -187,8 +186,7 @@ export default class CharacterState {
     }
 
     changeYPosition(y: number): CharacterState {
-        if (y >= this.sceneDimensions.getMinY()
-                && y <= this.sceneDimensions.getMaxY()) {
+        if (this.sceneDimensions.isYInRange(y)) {
             return new CharacterState(
                 this.xPos,
                 y,
