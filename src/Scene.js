@@ -34,6 +34,7 @@ type MousePosition = {
 export type SceneProps = {
     dimensions: SceneDimensions,
     characterState: CharacterState,
+    designModeCursorState: DesignModeCursorState,
     theme: ThemeName,
     world: WorldName,
     customBackground: CustomBackground,
@@ -42,7 +43,6 @@ export type SceneProps = {
     startingY: number,
     runningState: RunningState,
     message: ?string,
-    designModeCursorState: DesignModeCursorState,
     characterDescriptionBuilder: CharacterDescriptionBuilder,
     onCloseMessage: () => void,
     onPaintScene: (x: number, y: number) => void,
@@ -275,7 +275,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                     width={startIndicatorWidth}
                                     height={startIndicatorWidth}
                                 />
-                                {(!this.props.customBackgroundDesignMode && this.props.theme === 'contrast') &&
+                                {this.props.theme === 'contrast' &&
                                     <circle
                                         className='Scene__characterOutline'
                                         cx={this.props.characterState.xPos}
@@ -290,6 +290,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                 />
                                 {this.props.customBackgroundDesignMode &&
                                     <PaintbrushCursor
+                                        className='Scene__designModeCursor'
                                         x={this.props.designModeCursorState.x - 0.5}
                                         y={this.props.designModeCursorState.y - 0.5}
                                         width={1}

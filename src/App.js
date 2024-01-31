@@ -135,9 +135,9 @@ export type AppState = {
     startingDirection: number,
     customBackground: CustomBackground,
     customBackgroundDesignMode: boolean,
+    designModeCursorState: DesignModeCursorState,
     selectedCustomBackgroundTile: ?TileCode,
-    message: ?string,
-    designModeCursorState: DesignModeCursorState
+    message: ?string
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -231,9 +231,9 @@ export class App extends React.Component<AppProps, AppState> {
             startingDirection: startingDirection,
             customBackground: new CustomBackground(this.sceneDimensions),
             customBackgroundDesignMode: false,
+            designModeCursorState: new DesignModeCursorState(startingX, startingY, this.sceneDimensions),
             selectedCustomBackgroundTile: null,
             message: null,
-            designModeCursorState: new DesignModeCursorState(startingX, startingY, this.sceneDimensions),
             keyboardInputSchemeName: "controlalt"
         };
 
@@ -1347,6 +1347,7 @@ export class App extends React.Component<AppProps, AppState> {
                 <Scene
                     dimensions={this.state.sceneDimensions}
                     characterState={this.state.characterState}
+                    designModeCursorState={this.state.designModeCursorState}
                     theme={this.state.settings.theme}
                     world={this.state.settings.world}
                     customBackground={this.state.customBackground}
@@ -1355,7 +1356,6 @@ export class App extends React.Component<AppProps, AppState> {
                     startingY={this.state.startingY}
                     runningState={this.state.runningState}
                     message={this.state.message}
-                    designModeCursorState={this.state.designModeCursorState}
                     characterDescriptionBuilder={this.characterDescriptionBuilder}
                     onCloseMessage={this.handleCloseMessage}
                     onPaintScene={this.handlePaintScene}
