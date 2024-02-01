@@ -4,7 +4,6 @@ import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount, shallow, ReactWrapper } from 'enzyme';
 import { createIntl, IntlProvider } from 'react-intl';
-import CharacterState from './CharacterState';
 import SceneDimensions from './SceneDimensions';
 import messages from './messages.json';
 import CharacterPositionController from './CharacterPositionController';
@@ -15,8 +14,9 @@ configure({ adapter: new Adapter()});
 type ButtonName = 'turnLeft' | 'turnRight' | 'up' | 'right' | 'down' | 'left';
 
 const defaultCharacterPositionControllerProps = {
-    interpreterIsRunning: false,
-    characterState: new CharacterState(1, 1, 2, [], new SceneDimensions(1, 100, 1, 100)),
+    x: 1,
+    y: 1,
+    sceneDimensions: new SceneDimensions(1, 100, 1, 100),
     editingDisabled: false,
     customBackgroundDesignMode: false,
     selectedCustomBackgroundTile: null
@@ -29,7 +29,6 @@ function createShallowCharacterPositionController(props) {
         messages: messages.en
     });
 
-    const mockChangeCharacterPosition = jest.fn();
     const mockChangeCharacterXPosition = jest.fn();
     const mockChangeCharacterYPosition = jest.fn();
     const mockClickSetStartButton = jest.fn();
@@ -43,7 +42,12 @@ function createShallowCharacterPositionController(props) {
                 defaultCharacterPositionControllerProps,
                 {
                     intl: intl,
-                    onChangeCharacterPosition: mockChangeCharacterPosition,
+                    onClickTurnLeft: () => {},
+                    onClickTurnRight: () => {},
+                    onClickLeft: () => {},
+                    onClickRight: () => {},
+                    onClickUp: () => {},
+                    onClickDown: () => {},
                     onChangeCharacterXPosition: mockChangeCharacterXPosition,
                     onChangeCharacterYPosition: mockChangeCharacterYPosition,
                     onClickSetStartButton: mockClickSetStartButton,
@@ -56,7 +60,6 @@ function createShallowCharacterPositionController(props) {
 
     return {
         wrapper,
-        mockChangeCharacterPosition,
         mockChangeCharacterXPosition,
         mockChangeCharacterYPosition,
         mockClickSetStartButton,
@@ -65,7 +68,12 @@ function createShallowCharacterPositionController(props) {
 }
 
 function createMountCharacterPositionController(props) {
-    const mockChangeCharacterPosition = jest.fn();
+    const mockClickTurnLeft = jest.fn();
+    const mockClickTurnRight = jest.fn();
+    const mockClickLeft = jest.fn();
+    const mockClickRight = jest.fn();
+    const mockClickUp = jest.fn();
+    const mockClickDown = jest.fn();
     const mockChangeCharacterXPosition = jest.fn();
     const mockChangeCharacterYPosition = jest.fn();
     const mockClickSetStartButton = jest.fn();
@@ -78,7 +86,12 @@ function createMountCharacterPositionController(props) {
                 {},
                 defaultCharacterPositionControllerProps,
                 {
-                    onChangeCharacterPosition: mockChangeCharacterPosition,
+                    onClickTurnLeft: mockClickTurnLeft,
+                    onClickTurnRight: mockClickTurnRight,
+                    onClickLeft: mockClickLeft,
+                    onClickRight: mockClickRight,
+                    onClickUp: mockClickUp,
+                    onClickDown: mockClickDown,
                     onChangeCharacterXPosition: mockChangeCharacterXPosition,
                     onChangeCharacterYPosition: mockChangeCharacterYPosition,
                     onClickSetStartButton: mockClickSetStartButton,
@@ -99,7 +112,12 @@ function createMountCharacterPositionController(props) {
 
     return {
         wrapper,
-        mockChangeCharacterPosition,
+        mockClickTurnLeft,
+        mockClickTurnRight,
+        mockClickLeft,
+        mockClickRight,
+        mockClickUp,
+        mockClickDown,
         mockChangeCharacterXPosition,
         mockChangeCharacterYPosition,
         mockClickSetStartButton,
@@ -134,32 +152,57 @@ function getPaintbrushButton(wrapper: ReactWrapper<HTMLElement>): ReactWrapper<H
 
 describe('Using change character position buttons', () => {
     test.each([
-        'turnLeft', 'turnRight', 'up', 'right', 'down', 'left'
-    ])('Click/Press %s button ', (buttonName) => {
-        expect.assertions(4);
-        const { wrapper, mockChangeCharacterPosition } = createMountCharacterPositionController();
-        const characterPositionButton = getCharacterPositionButton(wrapper, buttonName);
+        ['turnLeft', 'mockClickTurnLeft'],
+        ['turnRight', 'mockClickTurnRight'],
+        ['left', 'mockClickLeft'],
+        ['right', 'mockClickRight'],
+        ['up', 'mockClickUp'],
+        ['down', 'mockClickDown']
+    ])('Click/Press "%s" button ', (buttonName, expectedCallback) => {
+        expect.assertions(11);
 
-        characterPositionButton.simulate('click');
-        expect(mockChangeCharacterPosition.mock.calls.length).toBe(1);
-        expect(mockChangeCharacterPosition.mock.calls[0][0]).toBe(buttonName);
+        const obj = createMountCharacterPositionController();
+        const button = getCharacterPositionButton(obj.wrapper, buttonName);
 
-        characterPositionButton.simulate('keydown', { key: ' ' });
-        expect(mockChangeCharacterPosition.mock.calls.length).toBe(2);
-        expect(mockChangeCharacterPosition.mock.calls[1][0]).toBe(buttonName);
+        button.simulate('click');
+        expect(obj[expectedCallback].mock.calls.length).toBe(1);
+        button.simulate('keydown', { key: ' ' });
+        expect(obj[expectedCallback].mock.calls.length).toBe(2);
+
+        // Verify that expectedCallback is the only one that has been called
+        for (const prop in obj) {
+            if (prop.startsWith('mock') && prop !== expectedCallback) {
+                expect(obj[prop].mock.calls.length).toBe(0);
+            }
+        }
     });
-    test.each([
-        'turnLeft', 'turnRight', 'up', 'right', 'down', 'left'
-    ])('Click/Press %s button when editingDisabled Prop is true', (buttonName) => {
-        expect.assertions(3);
-        const { wrapper, mockChangeCharacterPosition } = createMountCharacterPositionController({editingDisabled: true});
-        const characterPositionButton = getCharacterPositionButton(wrapper, buttonName);
-        expect(characterPositionButton.get(0).props.className.includes('--disabled')).toBe(true);
 
-        characterPositionButton.simulate('click');
-        expect(mockChangeCharacterPosition.mock.calls.length).toBe(0);
-        characterPositionButton.simulate('keydown', { key: ' ' });
-        expect(mockChangeCharacterPosition.mock.calls.length).toBe(0);
+    test.each([
+        'turnLeft',
+        'turnRight',
+        'left',
+        'right',
+        'up',
+        'down'
+    ])('Click/Press "%s" button when editingDisabled is true', (buttonName) => {
+        expect.assertions(11);
+
+        const obj = createMountCharacterPositionController({
+            editingDisabled: true
+        });
+        const button = getCharacterPositionButton(obj.wrapper, buttonName);
+
+        expect(button.get(0).props.className.includes('--disabled')).toBe(true);
+
+        button.simulate('click');
+        button.simulate('keydown', { key: ' ' });
+
+        // Verify that no callbacks were called
+        for (const prop in obj) {
+            if (prop.startsWith('mock')) {
+                expect(obj[prop].mock.calls.length).toBe(0);
+            }
+        }
     });
 });
 
@@ -183,7 +226,7 @@ describe('Using change character position by column/row labels', () => {
         characterXPositionCoordinateBox.simulate('blur',
             TestUtils.makeBlurEvent(currentTarget(sampleXPosition)));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(1);
-        expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(sampleXPosition);
+        expect(mockChangeCharacterXPosition.mock.calls[0][0]).toBe(24);
 
         characterXPositionCoordinateBox.simulate('change',
             TestUtils.makeChangeEvent(currentTarget(secondSampleXPosition)));
@@ -193,7 +236,7 @@ describe('Using change character position by column/row labels', () => {
         characterXPositionCoordinateBox.simulate('keyDown',
             TestUtils.makeKeyDownEvent(currentTarget(secondSampleXPosition), 'Enter'));
         expect(mockChangeCharacterXPosition.mock.calls.length).toBe(2);
-        expect(mockChangeCharacterXPosition.mock.calls[1][0]).toBe(secondSampleXPosition);
+        expect(mockChangeCharacterXPosition.mock.calls[1][0]).toBe(1);
     });
     test('Changing y position', () => {
         expect.assertions(6);
@@ -214,7 +257,7 @@ describe('Using change character position by column/row labels', () => {
         characterYPositionCoordinateBox.simulate('blur',
             TestUtils.makeBlurEvent(currentTarget(sampleYPosition)));
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(1);
-        expect(mockChangeCharacterYPosition.mock.calls[0][0]).toBe(sampleYPosition);
+        expect(mockChangeCharacterYPosition.mock.calls[0][0]).toBe(2);
 
         characterYPositionCoordinateBox.simulate('change',
             TestUtils.makeChangeEvent(currentTarget(secondSampleYPosition)));
@@ -224,7 +267,7 @@ describe('Using change character position by column/row labels', () => {
         characterYPositionCoordinateBox.simulate('keyDown',
             TestUtils.makeKeyDownEvent(currentTarget(secondSampleYPosition), 'Enter'));
         expect(mockChangeCharacterYPosition.mock.calls.length).toBe(2);
-        expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(secondSampleYPosition);
+        expect(mockChangeCharacterYPosition.mock.calls[1][0]).toBe(8);
     });
 });
 

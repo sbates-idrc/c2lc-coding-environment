@@ -3,7 +3,6 @@
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import React from 'react';
-import CharacterState from './CharacterState';
 import classNames from 'classnames';
 import IconButton from './IconButton';
 import { ReactComponent as MovePositionUp } from './svg/MovePositionUp.svg';
@@ -14,25 +13,34 @@ import { ReactComponent as TurnPositionRight } from './svg/TurnPositionRight.svg
 import { ReactComponent as TurnPositionLeft } from './svg/TurnPositionLeft.svg';
 import { ReactComponent as PaintbrushIcon } from './svg/PaintbrushIcon.svg';
 import { ReactComponent as SetStartIcon } from './svg/SetStartIcon.svg';
+import SceneDimensions from './SceneDimensions';
 import { getTileName, isEraser } from './TileData';
 import type { TileCode } from './TileData';
 import './CharacterPositionController.scss';
 
 type CharacterPositionControllerProps = {
     intl: IntlShape,
-    characterState: CharacterState,
+    x: number,
+    y: number,
+    sceneDimensions: SceneDimensions,
     editingDisabled: boolean,
     customBackgroundDesignMode: boolean,
     selectedCustomBackgroundTile: ?TileCode,
-    onChangeCharacterPosition: (direction: ?string) => void,
-    onChangeCharacterXPosition: (columnLabel: string) => void,
-    onChangeCharacterYPosition: (rowLabel: string) => void,
+    onClickTurnLeft: () => void,
+    onClickTurnRight: () => void,
+    onClickLeft: () => void,
+    onClickRight: () => void,
+    onClickUp: () => void,
+    onClickDown: () => void,
+    onChangeCharacterXPosition: (x: number) => void,
+    onChangeCharacterYPosition: (y: number) => void,
     onClickSetStartButton: () => void,
     onClickPaintbrushButton: () => void
 };
 
 type CharacterPositionControllerState = {
-    prevPropsCharacterState: CharacterState,
+    prevPropsX: number,
+    prevPropsY: number,
     characterColumnLabel: string,
     characterRowLabel: string
 };
@@ -41,65 +49,129 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
     constructor(props: CharacterPositionControllerProps) {
         super(props);
         this.state = {
-            prevPropsCharacterState: this.props.characterState,
-            characterColumnLabel: this.props.characterState.getColumnLabel(),
-            characterRowLabel: this.props.characterState.getRowLabel()
+            prevPropsX: this.props.x,
+            prevPropsY: this.props.y,
+            characterColumnLabel: CharacterPositionController.getColumnLabel(this.props.x, this.props.sceneDimensions),
+            characterRowLabel: CharacterPositionController.getRowLabel(this.props.y, this.props.sceneDimensions)
         }
     }
 
     static getDerivedStateFromProps(props: CharacterPositionControllerProps, state: CharacterPositionControllerState) {
-        if (props.characterState !== state.prevPropsCharacterState) {
-            const currentCharacterState = props.characterState;
+        if (props.x !== state.prevPropsX || props.y !== state.prevPropsY) {
             return {
-                prevPropsCharacterState: currentCharacterState,
-                characterColumnLabel: currentCharacterState.getColumnLabel(),
-                characterRowLabel: currentCharacterState.getRowLabel()
+                prevPropsX: props.x,
+                prevPropsY: props.y,
+                characterColumnLabel: CharacterPositionController.getColumnLabel(props.x, props.sceneDimensions),
+                characterRowLabel: CharacterPositionController.getRowLabel(props.y, props.sceneDimensions)
             };
         } else {
             return null;
         }
     }
 
+    static getColumnLabel(x: number, sceneDimensions: SceneDimensions): string {
+        const label = sceneDimensions.getColumnLabel(x);
+        return label == null ? '' : label;
+    }
+
+    static getRowLabel(y: number, sceneDimensions: SceneDimensions): string {
+        const label = sceneDimensions.getRowLabel(y);
+        return label == null ? '' : label;
+    }
+
     handleClickCharacterPositionButton = (e: SyntheticEvent<HTMLElement>) => {
-        this.props.onChangeCharacterPosition(e.currentTarget.getAttribute('value'));
+        this.doClickCharacterPositionButton(e.currentTarget.getAttribute('value'));
     }
 
     handleKeyDownCharacterPositionButton = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
         if (e.key === ' ' || e.key === 'Enter') {
             e.preventDefault();
-            this.props.onChangeCharacterPosition(e.currentTarget.getAttribute('value'));
+            this.doClickCharacterPositionButton(e.currentTarget.getAttribute('value'));
         }
     }
 
-    handleChangeCharacterPositionLabel = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        if (e.currentTarget.name === 'xPosition') {
-            this.setState({
-                characterColumnLabel: e.currentTarget.value
-            });
-        } else if (e.currentTarget.name === 'yPosition'){
-            this.setState({
-                characterRowLabel: e.currentTarget.value
-            });
-        }
-    }
-
-    handleBlurCharacterPositionLabel = (e: SyntheticEvent<HTMLInputElement>) => {
-        if (e.currentTarget.name === 'xPosition') {
-            this.props.onChangeCharacterXPosition(this.state.characterColumnLabel);
-        } else if (e.currentTarget.name === 'yPosition'){
-            this.props.onChangeCharacterYPosition(this.state.characterRowLabel);
-        }
-    }
-
-    handleKeyDownCharacterPositionLabel = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        const enterKey = 'Enter';
-        if (e.key === enterKey) {
-            e.preventDefault();
-            if (e.currentTarget.name === 'xPosition') {
-                this.props.onChangeCharacterXPosition(this.state.characterColumnLabel);
-            } else if (e.currentTarget.name === 'yPosition'){
-                this.props.onChangeCharacterYPosition(this.state.characterRowLabel);
+    doClickCharacterPositionButton(button: ?string) {
+        if (button != null) {
+            switch(button) {
+                case 'turnLeft':
+                    this.props.onClickTurnLeft();
+                    break;
+                case 'turnRight':
+                    this.props.onClickTurnRight();
+                    break;
+                case 'left':
+                    this.props.onClickLeft();
+                    break;
+                case 'right':
+                    this.props.onClickRight();
+                    break;
+                case 'up':
+                    this.props.onClickUp();
+                    break;
+                case 'down':
+                    this.props.onClickDown();
+                    break;
+                default:
+                    break;
             }
+        }
+    }
+
+    handleChangeColumn = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+        this.setState({
+            characterColumnLabel: e.currentTarget.value
+        });
+    }
+
+    handleChangeRow = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+        this.setState({
+            characterRowLabel: e.currentTarget.value
+        });
+    }
+
+    handleBlurColumn = () => {
+        this.changeCharacterXPositionIfValid();
+    }
+
+    handleBlurRow = () => {
+        this.changeCharacterYPositionIfValid();
+    }
+
+    handleKeyDownColumn = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.changeCharacterXPositionIfValid();
+        }
+    }
+
+    handleKeyDownRow = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.changeCharacterYPositionIfValid();
+        }
+    }
+
+    changeCharacterXPositionIfValid() {
+        const xFromLabel = this.props.sceneDimensions.getXFromColumnLabel(this.state.characterColumnLabel);
+        if (xFromLabel == null) {
+            // Reset the label
+            this.setState({
+                characterColumnLabel: CharacterPositionController.getColumnLabel(this.props.x, this.props.sceneDimensions)
+            })
+        } else {
+            this.props.onChangeCharacterXPosition(xFromLabel);
+        }
+    }
+
+    changeCharacterYPositionIfValid() {
+        const yFromLabel = this.props.sceneDimensions.getYFromRowLabel(this.state.characterRowLabel);
+        if (yFromLabel == null) {
+            // Reset the label
+            this.setState({
+                characterRowLabel: CharacterPositionController.getRowLabel(this.props.y, this.props.sceneDimensions)
+            })
+        } else {
+            this.props.onChangeCharacterYPosition(yFromLabel);
         }
     }
 
@@ -253,9 +325,9 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         size='2'
                         type='text'
                         value={this.state.characterColumnLabel}
-                        onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : () => {}}
-                        onKeyDown={this.handleKeyDownCharacterPositionLabel}
-                        onBlur={this.handleBlurCharacterPositionLabel}
+                        onChange={!this.props.editingDisabled ? this.handleChangeColumn : () => {}}
+                        onKeyDown={this.handleKeyDownColumn}
+                        onBlur={this.handleBlurColumn}
                     />
                     <input
                         name='yPosition'
@@ -266,9 +338,9 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         size='2'
                         type='text'
                         value={this.state.characterRowLabel}
-                        onChange={!this.props.editingDisabled ? this.handleChangeCharacterPositionLabel : () => {}}
-                        onKeyDown={this.handleKeyDownCharacterPositionLabel}
-                        onBlur={this.handleBlurCharacterPositionLabel}
+                        onChange={!this.props.editingDisabled ? this.handleChangeRow : () => {}}
+                        onKeyDown={this.handleKeyDownRow}
+                        onBlur={this.handleBlurRow}
                     />
                 </div>
             </div>

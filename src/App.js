@@ -20,6 +20,8 @@ import CustomBackgroundDesignModeButton from './CustomBackgroundDesignModeButton
 import CustomBackgroundSerializer from './CustomBackgroundSerializer';
 import DashConnectionErrorModal from './DashConnectionErrorModal';
 import DashDriver from './DashDriver';
+import DesignModeCursorDescriptionBuilder from './DesignModeCursorDescriptionBuilder';
+import DesignModeCursorState from './DesignModeCursorState';
 import * as FeatureDetection from './FeatureDetection';
 import FakeAudioManager from './FakeAudioManager';
 import FocusTrapManager from './FocusTrapManager';
@@ -133,6 +135,7 @@ export type AppState = {
     startingDirection: number,
     customBackground: CustomBackground,
     customBackgroundDesignMode: boolean,
+    designModeCursorState: DesignModeCursorState,
     selectedCustomBackgroundTile: ?TileCode,
     message: ?string
 };
@@ -156,6 +159,7 @@ export class App extends React.Component<AppProps, AppState> {
     sequenceInProgress: Array<KeyboardEvent>;
     announcementBuilder: AnnouncementBuilder;
     characterDescriptionBuilder: CharacterDescriptionBuilder;
+    designModeCursorDescriptionBuilder: DesignModeCursorDescriptionBuilder;
     programChangeController: ProgramChangeController;
     defaultWorld: WorldName;
 
@@ -227,6 +231,7 @@ export class App extends React.Component<AppProps, AppState> {
             startingDirection: startingDirection,
             customBackground: new CustomBackground(this.sceneDimensions),
             customBackgroundDesignMode: false,
+            designModeCursorState: new DesignModeCursorState(startingX, startingY, this.sceneDimensions),
             selectedCustomBackgroundTile: null,
             message: null,
             keyboardInputSchemeName: "controlalt"
@@ -251,6 +256,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.announcementBuilder = new AnnouncementBuilder(this.props.intl);
 
         this.characterDescriptionBuilder = new CharacterDescriptionBuilder(this.props.intl);
+
+        this.designModeCursorDescriptionBuilder = new DesignModeCursorDescriptionBuilder(this.props.intl);
 
         this.programChangeController = new ProgramChangeController(this,
             this.props.intl, this.audioManager);
@@ -279,13 +286,24 @@ export class App extends React.Component<AppProps, AppState> {
         }
     }
 
-    editingIsDisabled(): boolean {
+    isChangeCustomBackgroundDesignModeDisabled(): boolean {
         return !(this.state.runningState === 'stopped'
             || this.state.runningState === 'paused');
     }
 
-    refreshIsDisabled(): boolean {
-        return this.state.runningState !== 'stopped';
+    isEditingDisabled(): boolean {
+        return !(this.state.runningState === 'stopped'
+            || this.state.runningState === 'paused');
+    }
+
+    isPlayPauseDisabled(): boolean {
+        return this.state.programSequence.getProgramLength() === 0
+            || this.state.customBackgroundDesignMode;
+    }
+
+    isRefreshDisabled(): boolean {
+        return this.state.runningState !== 'stopped'
+            || this.state.customBackgroundDesignMode;
     }
 
     // API for Interpreter
@@ -542,7 +560,7 @@ export class App extends React.Component<AppProps, AppState> {
                             });
                             break;
                         case("addCommand"): {
-                            if (!this.editingIsDisabled()) {
+                            if (!this.isEditingDisabled()) {
                                 const currentElement = document.activeElement;
                                 if (currentElement) {
                                     if (currentElement.dataset.controltype === 'programStep' ||
@@ -563,7 +581,7 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         }
                         case("addCommandToBeginning"):
-                            if (!this.editingIsDisabled()) {
+                            if (!this.isEditingDisabled()) {
                                 this.programChangeController.insertSelectedActionIntoProgram(
                                     this.programBlockEditorRef.current,
                                     0,
@@ -572,7 +590,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("addCommandToEnd"):
-                            if (!this.editingIsDisabled()) {
+                            if (!this.isEditingDisabled()) {
                                 this.programChangeController.addSelectedActionToProgramEnd(
                                     this.programBlockEditorRef.current,
                                     this.state.selectedAction
@@ -580,7 +598,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("deleteCurrentStep"):
-                            if (!this.editingIsDisabled()) {
+                            if (!this.isEditingDisabled()) {
                                 const currentElement = document.activeElement;
                                 if (currentElement) {
                                     if (currentElement.dataset.controltype === 'programStep') {
@@ -597,7 +615,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("replaceCurrentStep"):
-                            if (!this.editingIsDisabled()) {
+                            if (!this.isEditingDisabled()) {
                                 const currentElement = document.activeElement;
                                 if (currentElement) {
                                     if (currentElement.dataset.controltype === 'programStep') {
@@ -614,7 +632,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("deleteAll"): {
-                            if (!this.editingIsDisabled()) {
+                            if (!this.isEditingDisabled()) {
                                 const newProgramSequence = this.state.programSequence.updateProgram([]);
                                 this.handleProgramSequenceChange(newProgramSequence);
                             }
@@ -631,12 +649,12 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("playPauseProgram"):
-                            if (this.state.programSequence.getProgramLength() > 0) {
+                            if (!this.isPlayPauseDisabled()) {
                                 this.handlePlay();
                             }
                             break;
                         case("refreshScene"):
-                            if (!this.refreshIsDisabled()) {
+                            if (!this.isRefreshDisabled()) {
                                 this.handleRefresh();
                             }
                             break;
@@ -699,7 +717,7 @@ export class App extends React.Component<AppProps, AppState> {
                             break;
                         }
                         case("focusLoopIterationsInput"):
-                            if (!this.editingIsDisabled()) {
+                            if (!this.isEditingDisabled()) {
                                 const currentElement = document.activeElement;
                                 if (currentElement) {
                                     if (currentElement.dataset.controltype === 'programStep' && currentElement.dataset.command === 'startLoop') {
@@ -724,7 +742,7 @@ export class App extends React.Component<AppProps, AppState> {
                             Utils.focusByQuerySelector(".keyboard-shortcut-focus__world-selector");
                             break;
                         case("moveToPreviousStep"):
-                            if (!this.editingIsDisabled()) {
+                            if (!this.isEditingDisabled()) {
                                 const currentElement = document.activeElement;
                                 if (currentElement) {
                                     if (currentElement.dataset.controltype === 'programStep') {
@@ -742,7 +760,7 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("moveToNextStep"):
-                            if (!this.editingIsDisabled()) {
+                            if (!this.isEditingDisabled()) {
                                 const currentElement = document.activeElement;
                                 if (currentElement) {
                                     if (currentElement.dataset.controltype === 'programStep') {
@@ -760,33 +778,33 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("moveCharacterLeft"):
-                            if (!this.editingIsDisabled()) {
-                                this.handleChangeCharacterPosition('left');
+                            if (!this.isEditingDisabled()) {
+                                this.handleClickCharacterPositionLeft();
                             }
                             break;
                         case("moveCharacterRight"):
-                            if (!this.editingIsDisabled()) {
-                                this.handleChangeCharacterPosition('right');
+                            if (!this.isEditingDisabled()) {
+                                this.handleClickCharacterPositionRight();
                             }
                             break;
                         case("moveCharacterUp"):
-                            if (!this.editingIsDisabled()) {
-                                this.handleChangeCharacterPosition('up');
+                            if (!this.isEditingDisabled()) {
+                                this.handleClickCharacterPositionUp();
                             }
                             break;
                         case("moveCharacterDown"):
-                            if (!this.editingIsDisabled()) {
-                                this.handleChangeCharacterPosition('down');
+                            if (!this.isEditingDisabled()) {
+                                this.handleClickCharacterPositionDown();
                             }
                             break;
                         case("turnCharacterLeft"):
-                            if (!this.editingIsDisabled()) {
-                                this.handleChangeCharacterPosition('turnLeft');
+                            if (!this.isEditingDisabled()) {
+                                this.handleClickCharacterPositionTurnLeft();
                             }
                             break;
                         case("turnCharacterRight"):
-                            if (!this.editingIsDisabled()) {
-                                this.handleChangeCharacterPosition('turnRight');
+                            if (!this.isEditingDisabled()) {
+                                this.handleClickCharacterPositionTurnRight();
                             }
                             break;
                         case("setCharacterStartingPosition"):
@@ -930,9 +948,23 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleChangeCustomBackgroundDesignMode = (customBackgroundDesignMode: boolean) => {
-        this.setState({
-            customBackgroundDesignMode: customBackgroundDesignMode
+    setCustomBackgroundDesignMode = (customBackgroundDesignMode: boolean) => {
+        this.setState((state) => {
+            if (customBackgroundDesignMode) {
+                return {
+                    customBackgroundDesignMode: customBackgroundDesignMode,
+                    // When entering custom background design mode,
+                    // set the design mode cursor to the character position
+                    designModeCursorState: state.designModeCursorState.setPosition(
+                        state.characterState.xPos,
+                        state.characterState.yPos
+                    )
+                };
+            } else {
+                return {
+                    customBackgroundDesignMode: customBackgroundDesignMode
+                };
+            }
         });
     }
 
@@ -1017,68 +1049,111 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    handleChangeCharacterPosition = (positionName: ?string) => {
-        switch(positionName) {
-            case 'turnLeft':
-                this.setState((state) => {
-                    return {
-                        characterState: state.characterState.turnLeft(1)
-                    };
-                });
-                break;
-            case 'turnRight':
-                this.setState((state) => {
-                    return {
-                        characterState: state.characterState.turnRight(1)
-                    };
-                });
-                break;
-            case 'up':
-                this.setState((state) => {
-                    return {
-                        characterState: state.characterState.moveUpPosition()
-                    };
-                });
-                break;
-            case 'right':
-                this.setState((state) => {
-                    return {
-                        characterState: state.characterState.moveRightPosition()
-                    };
-                });
-                break;
-            case 'down':
-                this.setState((state) => {
-                    return {
-                        characterState: state.characterState.moveDownPosition()
-                    };
-                });
-                break;
-            case 'left':
-                this.setState((state) => {
-                    return {
-                        characterState: state.characterState.moveLeftPosition()
-                    };
-                });
-                break;
-            default:
-                break;
-        }
-    }
-
-    handleChangeCharacterXPosition = (columnLabel: string) => {
+    handleClickCharacterPositionTurnLeft = () => {
         this.setState((state) => {
-            return {
-                characterState: state.characterState.changeXPosition(columnLabel)
-            };
+            if (state.customBackgroundDesignMode) {
+                return {};
+            } else {
+                return {
+                    characterState: state.characterState.turnLeft(1)
+                };
+            }
         });
     }
 
-    handleChangeCharacterYPosition = (rowLabel: string) => {
+    handleClickCharacterPositionTurnRight = () => {
         this.setState((state) => {
-            return {
-                characterState: state.characterState.changeYPosition(rowLabel)
-            };
+            if (state.customBackgroundDesignMode) {
+                return {};
+            } else {
+                return {
+                    characterState: state.characterState.turnRight(1)
+                };
+            }
+        });
+    }
+
+    handleClickCharacterPositionLeft = () => {
+        this.setState((state) => {
+            if (state.customBackgroundDesignMode) {
+                return {
+                    designModeCursorState: state.designModeCursorState.moveLeft()
+                };
+            } else {
+                return {
+                    characterState: state.characterState.moveLeftPosition()
+                };
+            }
+        });
+    }
+
+    handleClickCharacterPositionRight = () => {
+        this.setState((state) => {
+            if (state.customBackgroundDesignMode) {
+                return {
+                    designModeCursorState: state.designModeCursorState.moveRight()
+                };
+            } else {
+                return {
+                    characterState: state.characterState.moveRightPosition()
+                };
+            }
+        });
+    }
+
+    handleClickCharacterPositionUp = () => {
+        this.setState((state) => {
+            if (state.customBackgroundDesignMode) {
+                return {
+                    designModeCursorState: state.designModeCursorState.moveUp()
+                };
+            } else {
+                return {
+                    characterState: state.characterState.moveUpPosition()
+                };
+            }
+        });
+    }
+
+    handleClickCharacterPositionDown = () => {
+        this.setState((state) => {
+            if (state.customBackgroundDesignMode) {
+                return {
+                    designModeCursorState: state.designModeCursorState.moveDown()
+                };
+            } else {
+                return {
+                    characterState: state.characterState.moveDownPosition()
+                };
+            }
+        });
+    }
+
+    handleChangeCharacterXPosition = (x: number) => {
+        this.setState((state) => {
+            if (state.customBackgroundDesignMode) {
+                return {
+                    designModeCursorState: state.designModeCursorState.setX(x)
+                };
+            } else {
+                return {
+                    characterState: state.characterState.changeXPosition(x)
+                };
+            }
+        });
+    }
+
+    handleChangeCharacterYPosition = (y: number) => {
+        this.setState((state) => {
+            if (state.customBackgroundDesignMode) {
+                return {
+                    designModeCursorState: state.designModeCursorState.setY(y)
+                };
+            } else {
+                return {
+                    characterState: state.characterState.changeYPosition(y)
+                };
+            }
         });
     }
 
@@ -1091,7 +1166,7 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     handleClickActionsSimplificationIcon = () => {
-        if (!this.editingIsDisabled()) {
+        if (!this.isEditingDisabled()) {
             this.setState({
                 showActionsSimplificationMenu: true
             });
@@ -1166,7 +1241,7 @@ export class App extends React.Component<AppProps, AppState> {
             const stateUpdate: $Shape<AppState> = {};
 
             if (state.customBackgroundDesignMode) {
-                stateUpdate.characterState = state.characterState.setPosition(x, y);
+                stateUpdate.designModeCursorState = state.designModeCursorState.setPosition(x, y);
 
                 if (state.selectedCustomBackgroundTile != null) {
                     stateUpdate.customBackground = state.customBackground.setTile(
@@ -1194,8 +1269,8 @@ export class App extends React.Component<AppProps, AppState> {
             if (state.selectedCustomBackgroundTile != null) {
                 return {
                     customBackground: state.customBackground.setTile(
-                        state.characterState.xPos,
-                        state.characterState.yPos,
+                        state.designModeCursorState.x,
+                        state.designModeCursorState.y,
                         state.selectedCustomBackgroundTile
                     )
                 };
@@ -1261,7 +1336,7 @@ export class App extends React.Component<AppProps, AppState> {
                     </IconButton>
                     <IconButton className="App__ActionsMenu__toggle-button"
                         ariaLabel={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
-                        disabled={this.editingIsDisabled()}
+                        disabled={this.isEditingDisabled()}
                         onClick={this.handleClickActionsSimplificationIcon}
                     >
                         <ActionsMenuToggleIcon className='App__header-actionsMenu-icon'/>
@@ -1280,6 +1355,7 @@ export class App extends React.Component<AppProps, AppState> {
                 <Scene
                     dimensions={this.state.sceneDimensions}
                     characterState={this.state.characterState}
+                    designModeCursorState={this.state.designModeCursorState}
                     theme={this.state.settings.theme}
                     world={this.state.settings.world}
                     customBackground={this.state.customBackground}
@@ -1322,7 +1398,8 @@ export class App extends React.Component<AppProps, AppState> {
                     </IconButton>
                     <CustomBackgroundDesignModeButton
                         customBackgroundDesignMode={this.state.customBackgroundDesignMode}
-                        onChange={this.handleChangeCustomBackgroundDesignMode}
+                        disabled={this.isChangeCustomBackgroundDesignModeDisabled()}
+                        onChange={this.setCustomBackgroundDesignMode}
                     />
                 </div>
             </React.Fragment>
@@ -1343,11 +1420,22 @@ export class App extends React.Component<AppProps, AppState> {
     renderCharacterPositionController() {
         return (
             <CharacterPositionController
-                characterState={this.state.characterState}
-                editingDisabled={this.editingIsDisabled()}
+                x={this.state.customBackgroundDesignMode ?
+                    this.state.designModeCursorState.x
+                    : this.state.characterState.xPos}
+                y={this.state.customBackgroundDesignMode ?
+                    this.state.designModeCursorState.y
+                    : this.state.characterState.yPos}
+                sceneDimensions={this.state.sceneDimensions}
+                editingDisabled={this.isEditingDisabled()}
                 customBackgroundDesignMode={this.state.customBackgroundDesignMode}
                 selectedCustomBackgroundTile={this.state.selectedCustomBackgroundTile}
-                onChangeCharacterPosition={this.handleChangeCharacterPosition}
+                onClickTurnLeft={this.handleClickCharacterPositionTurnLeft}
+                onClickTurnRight={this.handleClickCharacterPositionTurnRight}
+                onClickLeft={this.handleClickCharacterPositionLeft}
+                onClickRight={this.handleClickCharacterPositionRight}
+                onClickUp={this.handleClickCharacterPositionUp}
+                onClickDown={this.handleClickCharacterPositionDown}
                 onChangeCharacterXPosition={this.handleChangeCharacterXPosition}
                 onChangeCharacterYPosition={this.handleChangeCharacterYPosition}
                 onClickSetStartButton={this.setStartingPositionToCurrentPosition}
@@ -1417,7 +1505,7 @@ export class App extends React.Component<AppProps, AppState> {
                 actionPanelStepIndex={this.state.actionPanelStepIndex}
                 actionPanelFocusedOptionName={this.state.actionPanelFocusedOptionName}
                 characterState={this.state.characterState}
-                editingDisabled={this.editingIsDisabled()}
+                editingDisabled={this.isEditingDisabled()}
                 programSequence={this.state.programSequence}
                 runningState={this.state.runningState}
                 keyboardInputSchemeName={this.state.keyboardInputSchemeName}
@@ -1453,13 +1541,13 @@ export class App extends React.Component<AppProps, AppState> {
                     <div className='App__playButton-container'>
                         <RefreshButton
                             className='App__playControlButton'
-                            disabled={this.refreshIsDisabled()}
+                            disabled={this.isRefreshDisabled()}
                             onClick={this.handleRefresh}
                         />
                         <PlayButton
                             className='App__playControlButton'
                             interpreterIsRunning={this.state.runningState === 'running'}
-                            disabled={this.state.programSequence.getProgramLength() === 0}
+                            disabled={this.isPlayPauseDisabled()}
                             onClick={this.handlePlay}
                         />
                         <StopButton
@@ -1497,11 +1585,13 @@ export class App extends React.Component<AppProps, AppState> {
                 ariaLiveRegionId='character-position'
                 ariaHidden={this.state.showWorldSelector}
                 characterState={this.state.characterState}
+                designModeCursorState={this.state.designModeCursorState}
                 runningState={this.state.runningState}
                 world={this.state.settings.world}
                 customBackground={this.state.customBackground}
                 customBackgroundDesignMode={this.state.customBackgroundDesignMode}
                 characterDescriptionBuilder={this.characterDescriptionBuilder}
+                designModeCursorDescriptionBuilder={this.designModeCursorDescriptionBuilder}
                 message={this.state.message}
             />
         );

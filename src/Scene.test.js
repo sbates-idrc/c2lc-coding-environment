@@ -11,6 +11,7 @@ import SceneDimensions from './SceneDimensions';
 import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
+import DesignModeCursorState from './DesignModeCursorState';
 
 configure({ adapter: new Adapter() });
 
@@ -25,9 +26,11 @@ const defaultDimensions = new SceneDimensions(1, 1, 1, 1);
 const defaultSceneProps = {
     dimensions: defaultDimensions,
     characterState: new CharacterState(1, 1, 2, [], defaultDimensions),
+    designModeCursorState: new DesignModeCursorState(1, 1, defaultDimensions),
     theme: 'default',
     world: 'Sketchpad',
     customBackground: new CustomBackground(defaultDimensions),
+    customBackgroundDesignMode: false,
     startingX: 1,
     startingY: 2,
     characterDescriptionBuilder: new CharacterDescriptionBuilder(intl)
@@ -98,6 +101,10 @@ function findStartIndicator(sceneWrapper) {
 
 function findCharacterOutline(sceneWrapper) {
     return sceneWrapper.find('.Scene__characterOutline');
+}
+
+function findDesignModeCursor(sceneWrapper) {
+    return sceneWrapper.find('svg.Scene__designModeCursor');
 }
 
 // TODO: This function is reproducing logic from Scene (the 0.9) and
@@ -242,6 +249,38 @@ describe('When the Scene renders', () => {
             .toBeCloseTo(expectedCharacterDimensions.width, 5);
         expect(findSceneCharacterIcon(sceneWrapper).get(0).props.height)
             .toBeCloseTo(expectedCharacterDimensions.height, 5);
+    });
+    test('Should render the design mode cursor in customBackgroundDesignMode', () => {
+        const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
+        const designModeCursorState = new DesignModeCursorState(3, 2, sceneDimensions);
+
+        const sceneWrapper = createMountScene({
+            dimensions: sceneDimensions,
+            designModeCursorState: designModeCursorState,
+            customBackground: new CustomBackground(sceneDimensions),
+            customBackgroundDesignMode: true
+        });
+
+        const designModeCursor = findDesignModeCursor(sceneWrapper);
+
+        expect(designModeCursor.length).toBe(1);
+
+        const expectedX = designModeCursorState.x
+            - designModeCursor.get(0).props.width/2;
+        const expectedY = designModeCursorState.y
+            - designModeCursor.get(0).props.height/2;
+        expect(designModeCursor.get(0).props.x).toBe(expectedX);
+        expect(designModeCursor.get(0).props.y).toBe(expectedY);
+    });
+    test('Should not render the design mode cursor outside customBackgroundDesignMode', () => {
+        const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
+        const sceneWrapper = createMountScene({
+            dimensions: sceneDimensions,
+            designModeCursorState: new DesignModeCursorState(3, 2, sceneDimensions),
+            customBackground: new CustomBackground(sceneDimensions),
+            customBackgroundDesignMode: false
+        });
+        expect(findDesignModeCursor(sceneWrapper).length).toBe(0);
     });
     test('Should render the start indicator', () => {
         const sceneDimensions = new SceneDimensions(1, 8, 1, 9);

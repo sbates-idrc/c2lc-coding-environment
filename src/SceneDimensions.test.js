@@ -3,34 +3,64 @@
 import SceneDimensions from './SceneDimensions';
 
 test('SceneDimensions properties', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 3);
-    expect(dimensions.getWidth()).toBe(5);
-    expect(dimensions.getHeight()).toBe(3);
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    expect(dimensions.getWidth()).toBe(8);
+    expect(dimensions.getHeight()).toBe(6);
     expect(dimensions.getMinX()).toBe(1);
-    expect(dimensions.getMinY()).toBe(1);
-    expect(dimensions.getMaxX()).toBe(5);
-    expect(dimensions.getMaxY()).toBe(3);
+    expect(dimensions.getMinY()).toBe(11);
+    expect(dimensions.getMaxX()).toBe(8);
+    expect(dimensions.getMaxY()).toBe(16);
 });
 
-test('SceneDimensions.getBoundsStateX()', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 3);
-    expect(dimensions.getBoundsStateX(1)).toBe('inBounds');
-    expect(dimensions.getBoundsStateX(2.5)).toBe('inBounds');
-    expect(dimensions.getBoundsStateX(3)).toBe('inBounds');
-    expect(dimensions.getBoundsStateX(6.5)).toBe('outOfBoundsAbove');
-    expect(dimensions.getBoundsStateX(-2.51)).toBe('outOfBoundsBelow');
+test('isXInRange()', () => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    expect(dimensions.isXInRange(0)).toBe(false);
+    expect(dimensions.isXInRange(1)).toBe(true);
+    expect(dimensions.isXInRange(2)).toBe(true);
+    expect(dimensions.isXInRange(7)).toBe(true);
+    expect(dimensions.isXInRange(8)).toBe(true);
+    expect(dimensions.isXInRange(9)).toBe(false);
 });
 
-test('SceneDimensions.getBoundsStateY()', () => {
-    const dimensions = new SceneDimensions(1, 5, 1, 3);
-    expect(dimensions.getBoundsStateY(1)).toBe('inBounds');
-    expect(dimensions.getBoundsStateY(1.5)).toBe('inBounds');
-    expect(dimensions.getBoundsStateY(2.5)).toBe('inBounds');
-    expect(dimensions.getBoundsStateY(4)).toBe('outOfBoundsAbove');
-    expect(dimensions.getBoundsStateY(-1.51)).toBe('outOfBoundsBelow');
+test('isYInRange()', () => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    expect(dimensions.isYInRange(10)).toBe(false);
+    expect(dimensions.isYInRange(11)).toBe(true);
+    expect(dimensions.isYInRange(12)).toBe(true);
+    expect(dimensions.isYInRange(15)).toBe(true);
+    expect(dimensions.isYInRange(16)).toBe(true);
+    expect(dimensions.isYInRange(17)).toBe(false);
 });
 
-test('SceneDimensions.getXFromColumnLabel()', () => {
+test('moveLeft()', () => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    expect(dimensions.moveLeft(3)).toBe(2);
+    expect(dimensions.moveLeft(2)).toBe(1);
+    expect(dimensions.moveLeft(1)).toBe(1);
+});
+
+test('moveRight()', () => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    expect(dimensions.moveRight(6)).toBe(7);
+    expect(dimensions.moveRight(7)).toBe(8);
+    expect(dimensions.moveRight(8)).toBe(8);
+});
+
+test('moveUp()', () => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    expect(dimensions.moveUp(13)).toBe(12);
+    expect(dimensions.moveUp(12)).toBe(11);
+    expect(dimensions.moveUp(11)).toBe(11);
+});
+
+test('moveDown()', () => {
+    const dimensions = new SceneDimensions(1, 8, 11, 16);
+    expect(dimensions.moveDown(14)).toBe(15);
+    expect(dimensions.moveDown(15)).toBe(16);
+    expect(dimensions.moveDown(16)).toBe(16);
+});
+
+test('getXFromColumnLabel()', () => {
     const dimensions = new SceneDimensions(1, 5, 1, 3);
     (expect(dimensions.getXFromColumnLabel('A')): any).toBe(1);
     (expect(dimensions.getXFromColumnLabel('a')): any).toBe(1);
@@ -44,7 +74,7 @@ test('SceneDimensions.getXFromColumnLabel()', () => {
     (expect(dimensions.getXFromColumnLabel('AA')): any).toBeNull();
 });
 
-test('SceneDimensions.getYFromRowLabel()', () => {
+test('getYFromRowLabel()', () => {
     const dimensions = new SceneDimensions(1, 5, 1, 3);
     (expect(dimensions.getYFromRowLabel('1')): any).toBe(1);
     (expect(dimensions.getYFromRowLabel('2')): any).toBe(2);
@@ -56,7 +86,7 @@ test('SceneDimensions.getYFromRowLabel()', () => {
     (expect(dimensions.getYFromRowLabel('A')): any).toBeNull();
 });
 
-test('SceneDimensions.getColumnLabel()', () => {
+test('getColumnLabel()', () => {
     const dimensions = new SceneDimensions(1, 5, 1, 3);
     expect(dimensions.getColumnLabel(1)).toBe('A');
     expect(dimensions.getColumnLabel(5)).toBe('E');
@@ -64,7 +94,7 @@ test('SceneDimensions.getColumnLabel()', () => {
     expect(dimensions.getColumnLabel(6)).toBeNull();
 });
 
-test('SceneDimensions.getRowLabel()', () => {
+test('getRowLabel()', () => {
     const dimensions = new SceneDimensions(1, 5, 1, 3);
     expect(dimensions.getRowLabel(1)).toBe('1');
     expect(dimensions.getRowLabel(3)).toBe('3');

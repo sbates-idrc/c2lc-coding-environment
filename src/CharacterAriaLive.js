@@ -4,6 +4,8 @@ import React from 'react';
 import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
+import DesignModeCursorDescriptionBuilder from './DesignModeCursorDescriptionBuilder';
+import DesignModeCursorState from './DesignModeCursorState';
 import { injectIntl } from 'react-intl';
 import type { IntlShape } from 'react-intl';
 import type { RunningState } from './types';
@@ -14,11 +16,13 @@ type CharacterAriaLiveProps = {
     ariaLiveRegionId: string,
     ariaHidden: boolean,
     characterState: CharacterState,
+    designModeCursorState: DesignModeCursorState,
     runningState: RunningState,
     world: WorldName,
     customBackground: CustomBackground,
     customBackgroundDesignMode: boolean,
     characterDescriptionBuilder: CharacterDescriptionBuilder,
+    designModeCursorDescriptionBuilder: DesignModeCursorDescriptionBuilder,
     message: ?string
 };
 
@@ -59,14 +63,23 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
             this.lastMessage = this.props.message;
         }
 
-        text += this.props.characterDescriptionBuilder.buildCharacterDescription(
+        text += this.props.characterDescriptionBuilder.buildDescription(
             this.props.characterState,
             this.props.world,
-            this.props.customBackground,
-            this.props.customBackgroundDesignMode
+            this.props.customBackground
         );
 
         this.setLiveRegion(text);
+    }
+
+    setDesignModeCursorDescription() {
+        this.setLiveRegion(
+            this.props.designModeCursorDescriptionBuilder.buildDescription(
+                this.props.designModeCursorState,
+                this.props.world,
+                this.props.customBackground
+            )
+        );
     }
 
     setLiveRegion(text: string) {
@@ -108,6 +121,8 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
             if (this.props.runningState !== 'running') {
                 this.setMessageAndCharacterDescription();
             }
+        } else if (prevProps.designModeCursorState !== this.props.designModeCursorState) {
+            this.setDesignModeCursorDescription();
         } else if (prevProps.runningState !== this.props.runningState) {
             if (this.props.runningState === 'stopRequested'
                 || this.props.runningState === 'pauseRequested'
@@ -117,8 +132,14 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
             } else if (this.props.runningState === "running") {
                 this.setCharacterMoving();
             }
-        } else if (prevProps.world !== this.props.world) {
+        } else if (prevProps.customBackgroundDesignMode && !(this.props.customBackgroundDesignMode)) {
             this.setMessageAndCharacterDescription();
+        } else if (prevProps.world !== this.props.world) {
+            if (this.props.customBackgroundDesignMode) {
+                this.setDesignModeCursorDescription();
+            } else {
+                this.setMessageAndCharacterDescription();
+            }
         }
     }
 }

@@ -1,56 +1,52 @@
 // @flow
 
-import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
+import DesignModeCursorState from './DesignModeCursorState';
 import type { IntlShape } from 'react-intl';
 import { getBackgroundSquareDescription } from './Utils';
 import type { WorldName } from './Worlds';
 
-export default class CharacterDescriptionBuilder {
+export default class DesignModeCursorDescriptionBuilder {
     intl: IntlShape;
 
     constructor(intl: IntlShape) {
         this.intl = intl;
     }
 
-    buildDescription(characterState: CharacterState,
+    buildDescription(designModeCursorState: DesignModeCursorState,
         world: WorldName, customBackground: CustomBackground): string {
 
-        const columnLabel = characterState.getColumnLabel();
-        const rowLabel = characterState.getRowLabel();
+        const columnLabel = designModeCursorState.getColumnLabel();
+        const rowLabel = designModeCursorState.getRowLabel();
 
         const itemLabel = getBackgroundSquareDescription(
-            characterState.xPos,
-            characterState.yPos,
-            characterState.sceneDimensions,
+            designModeCursorState.x,
+            designModeCursorState.y,
+            designModeCursorState.sceneDimensions,
             world,
             customBackground,
             this.intl
         );
 
-        const directionLabel = this.intl.formatMessage({id: `Direction.${characterState.direction}`});
-
         if (itemLabel) {
             return this.intl.formatMessage(
                 {
-                    id:'CharacterDescriptionBuilder.positionAndDirectionAndItem'
+                    id:'DesignModeCursorDescriptionBuilder.positionAndItem'
                 },
                 {
                     columnLabel: columnLabel,
                     rowLabel: rowLabel,
-                    item: itemLabel,
-                    direction: directionLabel
+                    item: itemLabel
                 }
             );
         } else {
             return this.intl.formatMessage(
                 {
-                    id:'CharacterDescriptionBuilder.positionAndDirection'
+                    id:'DesignModeCursorDescriptionBuilder.position'
                 },
                 {
                     columnLabel: columnLabel,
                     rowLabel: rowLabel,
-                    direction: directionLabel
                 }
             );
         }

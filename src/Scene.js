@@ -5,6 +5,7 @@ import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
 import CustomBackgroundSceneLayer from './CustomBackgroundSceneLayer';
+import DesignModeCursorState from './DesignModeCursorState';
 import SceneBackground from './SceneBackground';
 import SceneCharacter from './SceneCharacter';
 import SceneCharacterPath from './SceneCharacterPath';
@@ -33,6 +34,7 @@ type MousePosition = {
 export type SceneProps = {
     dimensions: SceneDimensions,
     characterState: CharacterState,
+    designModeCursorState: DesignModeCursorState,
     theme: ThemeName,
     world: WorldName,
     customBackground: CustomBackground,
@@ -70,11 +72,10 @@ class Scene extends React.Component<SceneProps, {}> {
         const numColumns = this.props.dimensions.getWidth();
         const numRows = this.props.dimensions.getHeight();
 
-        const characterDescription = this.props.characterDescriptionBuilder.buildCharacterDescription(
+        const characterDescription = this.props.characterDescriptionBuilder.buildDescription(
             this.props.characterState,
             this.props.world,
-            this.props.customBackground,
-            this.props.customBackgroundDesignMode
+            this.props.customBackground
         );
 
         return this.props.intl.formatMessage(
@@ -274,7 +275,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                     width={startIndicatorWidth}
                                     height={startIndicatorWidth}
                                 />
-                                {(!this.props.customBackgroundDesignMode && this.props.theme === 'contrast') &&
+                                {this.props.theme === 'contrast' &&
                                     <circle
                                         className='Scene__characterOutline'
                                         cx={this.props.characterState.xPos}
@@ -282,18 +283,18 @@ class Scene extends React.Component<SceneProps, {}> {
                                         r={0.51}
                                     />
                                 }
-                                {this.props.customBackgroundDesignMode ?
+                                <SceneCharacter
+                                    characterState={this.props.characterState}
+                                    theme={this.props.theme}
+                                    world={this.props.world}
+                                />
+                                {this.props.customBackgroundDesignMode &&
                                     <PaintbrushCursor
-                                        x={this.props.characterState.xPos - 0.5}
-                                        y={this.props.characterState.yPos - 0.5}
+                                        className='Scene__designModeCursor'
+                                        x={this.props.designModeCursorState.x - 0.5}
+                                        y={this.props.designModeCursorState.y - 0.5}
                                         width={1}
                                         height={1}
-                                    />
-                                    :
-                                    <SceneCharacter
-                                        characterState={this.props.characterState}
-                                        theme={this.props.theme}
-                                        world={this.props.world}
                                     />
                                 }
                             </g>

@@ -10,6 +10,7 @@ import './CustomBackgroundDesignModeButton.css';
 
 export type CustomBackgroundDesignModeButtonProps = {
     customBackgroundDesignMode: boolean,
+    disabled: boolean,
     intl: IntlShape,
     onChange: (value: boolean) => void
 };
@@ -25,6 +26,7 @@ class CustomBackgroundDesignModeButton extends React.PureComponent<CustomBackgro
                 className='CustomBackgroundDesignModeButton'
                 ariaLabel={this.props.intl.formatMessage({id: 'CustomBackgroundDesignModeButton.customBackgroundDesignMode'})}
                 ariaPressed={this.props.customBackgroundDesignMode}
+                disabled={this.props.disabled}
                 onClick={this.handleClick}
             >
                 {this.props.customBackgroundDesignMode ?

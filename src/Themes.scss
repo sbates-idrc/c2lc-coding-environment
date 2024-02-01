@@ -1742,6 +1742,14 @@ body.gray-theme {
         fill: #FFFFFF;
     }
 
+    .CustomBackgroundDesignModeButton.IconButton--disabled svg path {
+        stroke: #D5D8DD;
+    }
+
+    .CustomBackgroundDesignModeButton.IconButton--disabled svg rect {
+        fill: #D5D8DD;
+    }
+
     .CustomBackgroundDesignModeButton.IconButton.IconButton--pressed {
         background-color: #937C9C;
     }
@@ -2948,11 +2956,11 @@ body.contrast-theme {
         border-color: #FFFFFF;
     }
 
-    .CustomBackgroundDesignModeButton:hover svg path {
+    .CustomBackgroundDesignModeButton:hover:not(.IconButton--disabled) svg path {
         stroke: #FFFFFF;
     }
 
-    .CustomBackgroundDesignModeButton:hover svg rect {
+    .CustomBackgroundDesignModeButton:hover:not(.IconButton--disabled) svg rect {
         fill: #FFFFFF;
     }
 
