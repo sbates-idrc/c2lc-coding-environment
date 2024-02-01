@@ -271,6 +271,30 @@ describe('Using change character position by column/row labels', () => {
     });
 });
 
+test('When in default mode, use "character" in the control labels', () => {
+    const { wrapper } = createShallowCharacterPositionController({
+        customBackgroundDesignMode: false
+    });
+    expect(getCharacterPositionButton(wrapper, 'up').prop('aria-label')).toBe('Move the character up');
+    expect(getCharacterPositionButton(wrapper, 'right').prop('aria-label')).toBe('Move the character right');
+    expect(getCharacterPositionButton(wrapper, 'down').prop('aria-label')).toBe('Move the character down');
+    expect(getCharacterPositionButton(wrapper, 'left').prop('aria-label')).toBe('Move the character left');
+    expect(getCharacterPositionCoordinateBoxes(wrapper).at(0).prop('aria-label')).toBe('Character column position');
+    expect(getCharacterPositionCoordinateBoxes(wrapper).at(1).prop('aria-label')).toBe('Character row position');
+});
+
+test('When in design mode, use "paintbrush" in the control labels', () => {
+    const { wrapper } = createShallowCharacterPositionController({
+        customBackgroundDesignMode: true
+    });
+    expect(getCharacterPositionButton(wrapper, 'up').prop('aria-label')).toBe('Move the paintbrush up');
+    expect(getCharacterPositionButton(wrapper, 'right').prop('aria-label')).toBe('Move the paintbrush right');
+    expect(getCharacterPositionButton(wrapper, 'down').prop('aria-label')).toBe('Move the paintbrush down');
+    expect(getCharacterPositionButton(wrapper, 'left').prop('aria-label')).toBe('Move the paintbrush left');
+    expect(getCharacterPositionCoordinateBoxes(wrapper).at(0).prop('aria-label')).toBe('Paintbrush column position');
+    expect(getCharacterPositionCoordinateBoxes(wrapper).at(1).prop('aria-label')).toBe('Paintbrush row position');
+});
+
 test('When in default mode, show the set start button and the turn buttons', () => {
     const { wrapper } = createShallowCharacterPositionController({
         customBackgroundDesignMode: false
