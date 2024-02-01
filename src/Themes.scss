@@ -1765,6 +1765,10 @@ body.gray-theme {
     .CharacterPositionController .paintbrush-icon-foreground {
         stroke: #FFFFFF;
     }
+
+    .CharacterPositionController .IconButton--disabled .paintbrush-icon-foreground {
+        stroke: #D5D8DD;
+    }
 }
 
 /* High Contrast "Mono" Theme */
@@ -2976,7 +2980,7 @@ body.contrast-theme {
         fill: #FFFFFF;
     }
 
-    .CharacterPositionController .IconButton:hover .paintbrush-icon-foreground {
+    .CharacterPositionController .IconButton:hover:not(.IconButton--disabled) .paintbrush-icon-foreground {
         stroke: #FFFFFF;
     }
 
