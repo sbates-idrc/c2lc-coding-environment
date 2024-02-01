@@ -1051,17 +1051,25 @@ export class App extends React.Component<AppProps, AppState> {
 
     handleClickCharacterPositionTurnLeft = () => {
         this.setState((state) => {
-            return {
-                characterState: state.characterState.turnLeft(1)
-            };
+            if (state.customBackgroundDesignMode) {
+                return {};
+            } else {
+                return {
+                    characterState: state.characterState.turnLeft(1)
+                };
+            }
         });
     }
 
     handleClickCharacterPositionTurnRight = () => {
         this.setState((state) => {
-            return {
-                characterState: state.characterState.turnRight(1)
-            };
+            if (state.customBackgroundDesignMode) {
+                return {};
+            } else {
+                return {
+                    characterState: state.characterState.turnRight(1)
+                };
+            }
         });
     }
 
