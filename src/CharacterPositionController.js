@@ -221,6 +221,42 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
             this.props.editingDisabled && 'ProgramBlock__character-position-coordinate-box--disabled'
         );
 
+        const moveUpLabel = this.props.intl.formatMessage({
+            id: this.props.customBackgroundDesignMode ?
+                'CharacterPositionController.editPosition.designMode.moveUp'
+                : 'CharacterPositionController.editPosition.moveUp'
+        });
+
+        const moveLeftLabel = this.props.intl.formatMessage({
+            id: this.props.customBackgroundDesignMode ?
+                'CharacterPositionController.editPosition.designMode.moveLeft'
+                : 'CharacterPositionController.editPosition.moveLeft'
+        });
+
+        const moveRightLabel = this.props.intl.formatMessage({
+            id: this.props.customBackgroundDesignMode ?
+                'CharacterPositionController.editPosition.designMode.moveRight'
+                : 'CharacterPositionController.editPosition.moveRight'
+        });
+
+        const moveDownLabel = this.props.intl.formatMessage({
+            id: this.props.customBackgroundDesignMode ?
+                'CharacterPositionController.editPosition.designMode.moveDown'
+                : 'CharacterPositionController.editPosition.moveDown'
+        });
+
+        const columnTextBoxLabel = this.props.intl.formatMessage({
+            id: this.props.customBackgroundDesignMode ?
+                'CharacterPositionController.editPosition.designMode.columnPosition'
+                : 'CharacterPositionController.editPosition.columnPosition'
+        });
+
+        const rowTextBoxLabel = this.props.intl.formatMessage({
+            id: this.props.customBackgroundDesignMode ?
+                'CharacterPositionController.editPosition.designMode.rowPosition'
+                : 'CharacterPositionController.editPosition.rowPosition'
+        });
+
         return (
             <div className='CharacterPositionController'>
                 {!(this.props.customBackgroundDesignMode) &&
@@ -250,7 +286,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                 <div className='CharacterPositionController__character-move-position-top'>
                     <MovePositionUp
                         className={characterPositionButtonClassName}
-                        aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.moveUp'})}
+                        aria-label={moveUpLabel}
                         aria-disabled={this.props.editingDisabled}
                         role='button'
                         tabIndex='0'
@@ -262,7 +298,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                 <div className='CharacterPositionController__character-move-position-sides'>
                     <MovePositionLeft
                         className={characterPositionButtonClassName}
-                        aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.moveLeft'})}
+                        aria-label={moveLeftLabel}
                         aria-disabled={this.props.editingDisabled}
                         role='button'
                         tabIndex='0'
@@ -294,7 +330,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                     }
                     <MovePositionRight
                         className={characterPositionButtonClassName}
-                        aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.moveRight'})}
+                        aria-label={moveRightLabel}
                         aria-disabled={this.props.editingDisabled}
                         role='button'
                         tabIndex='0'
@@ -306,7 +342,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                 <div className='CharacterPositionController__character-move-position-bottom'>
                     <MovePositionDown
                         className={characterPositionButtonClassName}
-                        aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.moveDown'})}
+                        aria-label={moveDownLabel}
                         aria-disabled={this.props.editingDisabled}
                         role='button'
                         tabIndex='0'
@@ -319,7 +355,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                     <input
                         name='xPosition'
                         className={characterPositionColumnTextInputClassName}
-                        aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.columnPosition'})}
+                        aria-label={columnTextBoxLabel}
                         aria-disabled={this.props.editingDisabled}
                         maxLength='1'
                         size='2'
@@ -332,7 +368,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                     <input
                         name='yPosition'
                         className={characterPositionRowTextInputClassName}
-                        aria-label={this.props.intl.formatMessage({id:'CharacterPositionController.editPosition.rowPosition'})}
+                        aria-label={rowTextBoxLabel}
                         aria-disabled={this.props.editingDisabled}
                         maxLength='2'
                         size='2'
