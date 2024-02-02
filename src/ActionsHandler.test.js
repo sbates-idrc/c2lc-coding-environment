@@ -202,7 +202,7 @@ test.each(([
         expectedX: 1,
         expectedY: 1,
         expectedDirection: 0,
-        expectedMessage: 'Your character has reached the end of the scene. Program is paused.',
+        expectedMessage: 'Your character has reached the end of the scene',
         expectedActionResult: 'movementBlocked'
     },
     {
@@ -214,7 +214,7 @@ test.each(([
         expectedX: 1,
         expectedY: 1,
         expectedDirection: 2,
-        expectedMessage: 'Your character has reached the end of the scene. Program is paused.',
+        expectedMessage: 'Your character has reached the end of the scene',
         expectedActionResult: 'movementBlocked'
     },
     {
@@ -226,7 +226,7 @@ test.each(([
         expectedX: 4,
         expectedY: 1,
         expectedDirection: 2,
-        expectedMessage: 'Your character hit a wall on E1. Program is paused.',
+        expectedMessage: 'Your character hit a wall on E1',
         expectedActionResult: 'movementBlocked'
     },
     {
@@ -238,7 +238,7 @@ test.each(([
         expectedX: 6,
         expectedY: 1,
         expectedDirection: 2,
-        expectedMessage: 'Your character hit a wall on E1. Program is paused.',
+        expectedMessage: 'Your character hit a wall on E1',
         expectedActionResult: 'movementBlocked'
     }
 ]: Array<MovementTestCase>))('doAction', (testData: MovementTestCase, done) => {

@@ -45,7 +45,7 @@ export default class Interpreter {
             } else {
                 this.step(programSequence).then((result) => {
                     if (result === 'movementBlocked') {
-                        this.app.setRunningStateForInterpreter('paused');
+                        this.app.setRunningStateForInterpreter('stopped');
                         this.continueRunActive = false;
                         resolve();
                     } else {
