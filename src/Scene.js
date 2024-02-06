@@ -26,7 +26,7 @@ import { ReactComponent as StartIndicator } from './svg/StartIndicator.svg';
 
 const startIndicatorWidth = 0.45;
 
-type MousePosition = {
+type PointerPosition = {
     x: number,
     y: number
 };
@@ -160,7 +160,7 @@ class Scene extends React.Component<SceneProps, {}> {
     }
 
     /* istanbul ignore next */
-    getPositionFromSceneSvgMouseEvent(e: any): MousePosition {
+    getPositionFromSceneSvgPointerEvent(e: any): PointerPosition {
         // $FlowFixMe: DOMPoint
         const clientPoint = new DOMPoint(e.clientX, e.clientY);
         const svgElem = e.currentTarget;
@@ -172,23 +172,36 @@ class Scene extends React.Component<SceneProps, {}> {
     }
 
     /* istanbul ignore next */
-    handleMouseDownSceneSvg = (e: any) => {
-        const pos: MousePosition = this.getPositionFromSceneSvgMouseEvent(e);
-        this.lastPaintX = pos.x;
-        this.lastPaintY = pos.y;
-        this.props.onPaintScene(pos.x, pos.y);
+    handlePointerDownSceneSvg = (e: any) => {
+        if (e.button === 0) {
+            e.currentTarget.onpointermove = this.handlePaintMove;
+
+            // Capture the pointer events so that we can handle the case when
+            // the pointerup event happens outside of the scene svg
+            e.currentTarget.setPointerCapture(e.pointerId);
+
+            const pos: PointerPosition = this.getPositionFromSceneSvgPointerEvent(e);
+            this.lastPaintX = pos.x;
+            this.lastPaintY = pos.y;
+            this.props.onPaintScene(pos.x, pos.y);
+        }
     }
 
     /* istanbul ignore next */
-    handleMouseMoveSceneSvg = (e: any) => {
-        const primaryButtonPressed = ((e.buttons % 2) === 1);
-        if (primaryButtonPressed) {
-            const pos: MousePosition = this.getPositionFromSceneSvgMouseEvent(e);
-            if (pos.x !== this.lastPaintX || pos.y !== this.lastPaintY) {
-                this.lastPaintX = pos.x;
-                this.lastPaintY = pos.y;
-                this.props.onPaintScene(pos.x, pos.y);
-            }
+    handlePointerUpSceneSvg = (e: any) => {
+        e.currentTarget.onpointermove = null;
+        e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+
+    /* istanbul ignore next */
+    handlePaintMove = (e: any) => {
+        const pos: PointerPosition = this.getPositionFromSceneSvgPointerEvent(e);
+        if (this.props.dimensions.isXInRange(pos.x)
+                && this.props.dimensions.isYInRange(pos.y)
+                &&  (pos.x !== this.lastPaintX || pos.y !== this.lastPaintY)) {
+            this.lastPaintX = pos.x;
+            this.lastPaintY = pos.y;
+            this.props.onPaintScene(pos.x, pos.y);
         }
     }
 
@@ -238,8 +251,8 @@ class Scene extends React.Component<SceneProps, {}> {
                             xmlns='http://www.w3.org/2000/svg'
                             viewBox={`${minX} ${minY} ${width} ${height}`}
                             ref={this.sceneSvgRef}
-                            onMouseDown={this.handleMouseDownSceneSvg}
-                            onMouseMove={this.handleMouseMoveSceneSvg}
+                            onPointerDown={this.handlePointerDownSceneSvg}
+                            onPointerUp={this.handlePointerUpSceneSvg}
                         >
                             <defs>
                                 <clipPath id='Scene-clippath'>
