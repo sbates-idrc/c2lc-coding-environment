@@ -320,6 +320,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         :
                         <IconButton
                             className='CharacterPositionController__setStartButton'
+                            disabled={this.props.editingDisabled}
                             ariaLabel={this.props.intl.formatMessage({id:'CharacterPositionController.setStartButton'})}
                             onClick={this.props.onClickSetStartButton}
                         >

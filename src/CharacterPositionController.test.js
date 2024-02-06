@@ -316,13 +316,26 @@ test('When the set start button is clicked, the provided callback is called', ()
         mockClickSetStartButton,
         mockClickPaintbrushButton
     } = createShallowCharacterPositionController({
+        editingDisabled: false,
         customBackgroundDesignMode: false
     });
 
-    getSetStartButton(wrapper).simulate('click');
+    const setStartButton = getSetStartButton(wrapper);
+
+    expect(setStartButton.prop('disabled')).toBe(false);
+
+    setStartButton.simulate('click');
 
     expect(mockClickSetStartButton.mock.calls.length).toBe(1);
     expect(mockClickPaintbrushButton.mock.calls.length).toBe(0);
+});
+
+test('When editingDisabled, the set start button is disabled', () => {
+    const { wrapper } = createShallowCharacterPositionController({
+        editingDisabled: true,
+        customBackgroundDesignMode: false
+    });
+    expect(getSetStartButton(wrapper).prop('disabled')).toBe(true);
 });
 
 test('When in custom background design mode, show the paintbrush button and hide the turn buttons', () => {
