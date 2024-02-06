@@ -1762,6 +1762,10 @@ body.gray-theme {
         fill: #FFFFFF;
     }
 
+    .CharacterPositionController .IconButton--disabled .set-start-icon-foreground {
+        fill: #D5D8DD;
+    }
+
     .CharacterPositionController .paintbrush-icon-foreground {
         stroke: #FFFFFF;
     }
@@ -2976,7 +2980,7 @@ body.contrast-theme {
         background-color: #1E1E1E;
     }
 
-    .CharacterPositionController .IconButton:hover .set-start-icon-foreground {
+    .CharacterPositionController .IconButton:hover:not(.IconButton--disabled) .set-start-icon-foreground {
         fill: #FFFFFF;
     }
 
