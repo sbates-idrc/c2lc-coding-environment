@@ -59,3 +59,10 @@ test('Clicking on a tile calls the provided callback', () => {
     expect(selectTileHandler.mock.calls.length).toBe(1);
     expect(selectTileHandler.mock.calls[0][0]).toBe('2');
 });
+
+test('Mouse down on a tile calls the provided callback', () => {
+    const { wrapper, selectTileHandler } = createComponent(null, 'default');
+    wrapper.find('button[data-tilecode="2"]').simulate('mousedown');
+    expect(selectTileHandler.mock.calls.length).toBe(1);
+    expect(selectTileHandler.mock.calls[0][0]).toBe('2');
+});

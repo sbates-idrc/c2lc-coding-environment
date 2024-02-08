@@ -43,11 +43,19 @@ class TilePanel extends React.PureComponent<TilePanelProps, {}> {
     }
 
     handleClickTile = (e: any) => {
-        const tileCode = e.currentTarget.dataset.tilecode;
+        this.selectTile(e.currentTarget);
+    };
+
+    handleMouseDownTile = (e: any) => {
+        this.selectTile(e.currentTarget);
+    };
+
+    selectTile(element: any) {
+        const tileCode = element.dataset.tilecode;
         if (isTileCode(tileCode)) {
             this.props.onSelectTile(((tileCode: any): TileCode));
         }
-    };
+    }
 
     render() {
         const tiles = [];
@@ -74,6 +82,7 @@ class TilePanel extends React.PureComponent<TilePanelProps, {}> {
                     aria-label={ariaLabel}
                     aria-pressed={isSelected}
                     onClick={this.handleClickTile}
+                    onMouseDown={this.handleMouseDownTile}
                 >
                     <div
                         className='TilePanel__tileInner'
