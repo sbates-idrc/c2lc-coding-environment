@@ -1029,7 +1029,8 @@ export class App extends React.Component<AppProps, AppState> {
                     state.startingX,
                     state.startingY,
                     state.startingDirection
-                )
+                ),
+                message: null
             };
         });
     }
