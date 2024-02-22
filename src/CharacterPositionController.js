@@ -315,6 +315,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         >
                             <PaintbrushIcon
                                 className='CharacterPositionController__centerButtonIcon'
+                                aria-hidden={true}
                             />
                         </IconButton>
                         :
@@ -326,6 +327,7 @@ class CharacterPositionController extends React.Component<CharacterPositionContr
                         >
                             <SetStartIcon
                                 className='CharacterPositionController__centerButtonIcon'
+                                aria-hidden={true}
                             />
                         </IconButton>
                     }

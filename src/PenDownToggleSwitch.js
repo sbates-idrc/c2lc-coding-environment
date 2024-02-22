@@ -19,8 +19,8 @@ class PenDownToggleSwitch extends React.Component<PenDownToggleSwitchProps, {}> 
             <ToggleSwitch
                 ariaLabel={this.props.intl.formatMessage({id: 'PenDownToggleSwitch.penDown'})}
                 value={this.props.value}
-                contentsTrue={<PenDownIcon />}
-                contentsFalse={<PenDownIcon />}
+                contentsTrue={<PenDownIcon aria-hidden={true} />}
+                contentsFalse={<PenDownIcon aria-hidden={true} />}
                 onChange={this.props.onChange}
                 className='PenDownToggleSwitch'/>
         );

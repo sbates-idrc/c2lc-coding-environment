@@ -23,7 +23,7 @@ class SceneMessage extends React.PureComponent<SceneMessageProps, {}> {
                         aria-label={this.props.intl.formatMessage({id:'SceneMessage.close'})}
                         onClick={this.props.onClose}
                     >
-                        <CloseSceneMessageIcon/>
+                        <CloseSceneMessageIcon aria-hidden={true} />
                     </button>
                 </div>
             </div>

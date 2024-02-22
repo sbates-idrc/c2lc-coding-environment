@@ -54,22 +54,22 @@ import TilePanel from './TilePanel';
 import { ReactComponent as HiddenBlock } from './svg/Hidden.svg';
 import KeyboardInputModal from './KeyboardInputModal';
 import ShareModal from './ShareModal';
-import { ReactComponent as ShareIcon} from './svg/Share.svg';
+import { ReactComponent as ShareIcon } from './svg/Share.svg';
 
 import type {ActionName, KeyboardInputSchemeName} from './KeyboardInputSchemes';
 import {findKeyboardEventSequenceMatches, isRepeatedEvent, isKeyboardInputSchemeName} from './KeyboardInputSchemes';
 import { ReactComponent as AudioIcon } from './svg/Audio.svg';
-import { ReactComponent as KeyboardModalToggleIcon} from './svg/Keyboard.svg';
+import { ReactComponent as KeyboardModalToggleIcon } from './svg/Keyboard.svg';
 import { ReactComponent as ThemeIcon } from './svg/Theme.svg';
 import { ReactComponent as WorldIcon } from './svg/World.svg';
 import { ReactComponent as ActionsMenuToggleIcon } from './svg/Simplification.svg'
 import ProgramChangeController from './ProgramChangeController';
 import PrivacyModal from './PrivacyModal';
 
-import { ReactComponent as LogoContrast} from './svg/LogoContrast.svg';
-import { ReactComponent as LogoGrayscale} from './svg/LogoGrayscale.svg';
-import { ReactComponent as LogoDark} from './svg/LogoDark.svg';
-import { ReactComponent as LogoMixedAndLight} from './svg/LogoMixedAndLight.svg';
+import { ReactComponent as LogoContrast } from './svg/LogoContrast.svg';
+import { ReactComponent as LogoGrayscale } from './svg/LogoGrayscale.svg';
+import { ReactComponent as LogoDark } from './svg/LogoDark.svg';
+import { ReactComponent as LogoMixedAndLight } from './svg/LogoMixedAndLight.svg';
 
 function getThemeLogo (theme: ThemeName) {
     if (theme === "contrast") { return LogoContrast; }
@@ -989,7 +989,7 @@ export class App extends React.Component<AppProps, AppState> {
                         className='command-block--hidden'
                         key={`CommandBlock-${index}`}
                         aria-hidden='true'>
-                        <HiddenBlock />
+                        <HiddenBlock aria-hidden={true} />
                     </div>
                 );
             }
@@ -1315,28 +1315,40 @@ export class App extends React.Component<AppProps, AppState> {
                         ariaLabel={this.props.intl.formatMessage({ id: 'SoundOptionsModal.title' })}
                         onClick={this.handleClickSoundIcon}
                     >
-                        <AudioIcon className='App__header-soundOptions-icon'/>
+                        <AudioIcon
+                            className='App__header-soundOptions-icon'
+                            aria-hidden={true}
+                        />
                     </IconButton>
                     <IconButton
                         className="App__header-themeSelectorIcon"
                         ariaLabel={this.props.intl.formatMessage({ id: 'ThemeSelector.iconButton' })}
                         onClick={this.handleClickThemeSelectorIcon}
                     >
-                        <ThemeIcon className='App__header-theme-icon'/>
+                        <ThemeIcon
+                            className='App__header-theme-icon'
+                            aria-hidden={true}
+                        />
                     </IconButton>
                     <IconButton
                         className="App__header-keyboardMenuIcon"
                         ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.ShowHide.AriaLabel' })}
                         onClick={this.handleClickKeyboardIcon}
                     >
-                        <KeyboardModalToggleIcon className='App__header-keyboard-icon'/>
+                        <KeyboardModalToggleIcon
+                            className='App__header-keyboard-icon'
+                            aria-hidden={true}
+                        />
                     </IconButton>
                     <IconButton className="App__ActionsMenu__toggle-button"
                         ariaLabel={this.props.intl.formatMessage({ id: 'ActionsMenu.toggleActionsMenu' })}
                         disabled={this.isEditingDisabled()}
                         onClick={this.handleClickActionsSimplificationIcon}
                     >
-                        <ActionsMenuToggleIcon className='App__header-actionsMenu-icon'/>
+                        <ActionsMenuToggleIcon
+                            className='App__header-actionsMenu-icon'
+                            aria-hidden={true}
+                        />
                     </IconButton>
                 </div>
             </div>
@@ -1391,7 +1403,10 @@ export class App extends React.Component<AppProps, AppState> {
                         ariaLabel={this.props.intl.formatMessage({ id: 'WorldSelectorButton.label' })}
                         onClick={this.handleClickWorldIcon}
                     >
-                        <WorldIcon className='App__world-selector-icon'/>
+                        <WorldIcon
+                            className='App__world-selector-icon'
+                            aria-hidden={true}
+                        />
                     </IconButton>
                     <CustomBackgroundDesignModeButton
                         customBackgroundDesignMode={this.state.customBackgroundDesignMode}
@@ -1566,7 +1581,10 @@ export class App extends React.Component<AppProps, AppState> {
                         className='App__ShareButton'
                         onClick={this.handleShareButtonClick}
                     >
-                        <ShareIcon className='App__ShareButton__icon'/>
+                        <ShareIcon
+                            className='App__ShareButton__icon'
+                            aria-hidden={true}
+                        />
                         <div className='App__ShareButton__label'>
                             {this.props.intl.formatMessage({id:'ShareButton'})}
                         </div>

@@ -30,9 +30,9 @@ class CustomBackgroundDesignModeButton extends React.PureComponent<CustomBackgro
                 onClick={this.handleClick}
             >
                 {this.props.customBackgroundDesignMode ?
-                    <ExitDesignModeIcon/>
+                    <ExitDesignModeIcon aria-hidden={true} />
                     :
-                    <EnterDesignModeIcon/>
+                    <EnterDesignModeIcon aria-hidden={true} />
                 }
             </IconButton>
         );

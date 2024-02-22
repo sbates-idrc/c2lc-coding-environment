@@ -17,7 +17,10 @@ class BluetoothApiWarning extends React.Component<BluetoothApiWarningProps, {}> 
                 <span
                     role='img'
                     aria-label={this.props.intl.formatMessage({ id: 'BluetoothApiWarning.errorIconLabel' })}>
-                    <ErrorIcon className='BluetoothApiWarning__error-icon-svg' />
+                    <ErrorIcon
+                        className='BluetoothApiWarning__error-icon-svg'
+                        aria-hidden={true}
+                    />
                 </span>
                 <FormattedMessage id='BluetoothApiWarning.message' />
             </div>

@@ -238,6 +238,7 @@ class Scene extends React.Component<SceneProps, {}> {
                             xmlns='http://www.w3.org/2000/svg'
                             viewBox={`${minX} ${minY} ${width} ${height}`}
                             ref={this.sceneSvgRef}
+                            aria-hidden={true}
                             onMouseDown={this.handleMouseDownSceneSvg}
                             onMouseMove={this.handleMouseMoveSceneSvg}
                         >
@@ -266,6 +267,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                 />
                                 <StartIndicator
                                     className='Scene__startIndicator'
+                                    aria-hidden={true}
                                     // The centre of the starting square is (startingX, startingY).
                                     // Calculate the top left corner of the indicator
                                     // by subtracting half of the indicator width from
@@ -291,6 +293,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                 {this.props.customBackgroundDesignMode &&
                                     <PaintbrushCursor
                                         className='Scene__designModeCursor'
+                                        aria-hidden={true}
                                         x={this.props.designModeCursorState.x - 0.5}
                                         y={this.props.designModeCursorState.y - 0.5}
                                         width={1}

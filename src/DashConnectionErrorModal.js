@@ -26,7 +26,10 @@ class DashConnectionErrorModal extends React.Component<DashConnectionErrorModalP
                 <Modal.Body className='DashConnectionErrorModal__content'>
                     <div className='DashConnectionErrorModal__header'>
                         <span role='img' aria-label={this.props.intl.formatMessage({id:'DashConnectionErrorModal.error'})} >
-                            <ErrorIcon className='DashConnectionErrorModal__error-svg' />
+                            <ErrorIcon
+                                className='DashConnectionErrorModal__error-svg'
+                                aria-hidden={true}
+                            />
                         </span>
                         <FormattedMessage id='DashConnectionErrorModal.title' />
                     </div>
