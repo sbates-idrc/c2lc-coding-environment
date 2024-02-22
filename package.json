@@ -71,11 +71,9 @@
         "collectCoverageFrom": [
             "src/**/*.{js,jsx,ts,tsx}",
             "!src/**/*.test.js",
-            "!src/AddModeImage.js",
             "!src/App.js",
             "!src/AudioManagerImpl.js",
             "!src/DashDriver.js",
-            "!src/DeleteModeImage.js",
             "!src/FakeRobotDriver.js",
             "!src/FakeAudioManager.js",
             "!src/FeatureDetection.js",
