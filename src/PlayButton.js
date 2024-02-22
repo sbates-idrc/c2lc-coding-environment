@@ -37,8 +37,8 @@ class PlayButton extends React.Component<PlayButtonProps, {}> {
                 onClick={this.props.onClick}
             >
                 {this.props.interpreterIsRunning ?
-                    <PauseIcon /> :
-                    <PlayIcon />
+                    <PauseIcon aria-hidden={true} /> :
+                    <PlayIcon aria-hidden={true} />
                 }
             </AriaDisablingButton>
         );

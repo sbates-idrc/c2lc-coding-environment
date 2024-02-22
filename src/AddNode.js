@@ -43,7 +43,7 @@ const AddNode = React.forwardRef<AddNodeProps, HTMLDivElement>(
                         aria-label={props['aria-label']}
                         onClick={handleClick}
                     >
-                        <AddIcon />
+                        <AddIcon aria-hidden={true} />
                     </AriaDisablingButton>
                 </div>
             );
@@ -51,7 +51,7 @@ const AddNode = React.forwardRef<AddNodeProps, HTMLDivElement>(
             return (
                 <div ref={ref} className={addNodeClasses}>
                     <div className='AddNode__collapsed-icon'>
-                        <AddIcon />
+                        <AddIcon aria-hidden={true} />
                     </div>
                 </div>
             );

@@ -23,6 +23,7 @@ export default class SceneBackground extends React.PureComponent<SceneBackground
             if (worldProperties.backgroundGray) {
                 return React.createElement(worldProperties.backgroundGray, {
                     className: 'Scene__background',
+                    'aria-hidden': true,
                     x: x,
                     y: y,
                     width: width,
@@ -36,6 +37,7 @@ export default class SceneBackground extends React.PureComponent<SceneBackground
             if (worldProperties.backgroundContrast) {
                 return React.createElement(worldProperties.backgroundContrast, {
                     className: 'Scene__background',
+                    'aria-hidden': true,
                     x: x,
                     y: y,
                     width: width,
@@ -49,6 +51,7 @@ export default class SceneBackground extends React.PureComponent<SceneBackground
             if (worldProperties.background) {
                 return React.createElement(worldProperties.background, {
                     className: 'Scene__background',
+                    'aria-hidden': true,
                     x: x,
                     y: y,
                     width: width,

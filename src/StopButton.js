@@ -29,7 +29,10 @@ class StopButton extends React.Component<StopButtonProps, {}> {
                 disabled={this.props.disabled}
                 onClick={this.props.onClick}
             >
-                <StopIcon className='StopButton-svg' />
+                <StopIcon
+                    className='StopButton-svg'
+                    aria-hidden={true}
+                />
             </IconButton>
         );
     }

@@ -23,7 +23,10 @@ class RefreshButton extends React.Component<RefreshButtonProps, {}> {
                 disabled={this.props.disabled}
                 onClick={this.props.onClick}
             >
-                <RefreshIcon className='RefreshButton-svg' />
+                <RefreshIcon
+                    className='RefreshButton-svg'
+                    aria-hidden={true}
+                />
             </IconButton>
         );
     }

@@ -767,8 +767,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                             ariaLabel={this.props.intl.formatMessage({id:'ProgramBlockEditor.toggleAddNodeExpandMode'})}
                             value={this.props.addNodeExpandedMode}
                             onChange={this.props.onChangeAddNodeExpandedMode}
-                            contentsTrue={<AddIcon />}
-                            contentsFalse={<AddIcon />}
+                            contentsTrue={<AddIcon aria-hidden={true} />}
+                            contentsFalse={<AddIcon aria-hidden={true} />}
                             className='ProgramBlockEditor__add-node-toggle-switch'
                         />
                         <span className='ProgramBlockEditor__program-deleteAll'>
@@ -780,7 +780,10 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                                 onClick={this.handleClickDeleteAll}
                                 key='deleteButton'
                             >
-                                <DeleteAllIcon className='ProgramBlockEditor__program-deleteAll-button-svg'/>
+                                <DeleteAllIcon
+                                    className='ProgramBlockEditor__program-deleteAll-button-svg'
+                                    aria-hidden={true}
+                                />
                             </IconButton>
                         </span>
                     </div>

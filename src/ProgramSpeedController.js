@@ -22,7 +22,7 @@ class ProgramSpeedController extends React.Component<ProgramSpeedControllerProps
     render() {
         return (
             <div className='ProgramSpeedController__container'>
-                <SlowIcon />
+                <SlowIcon aria-hidden={true} />
                 {
                     /* $FlowFixMe
                         Cannot get Form.Control because property Control is missing in statics of Form
@@ -36,7 +36,7 @@ class ProgramSpeedController extends React.Component<ProgramSpeedControllerProps
                         ref={this.props.rangeControlRef}
                         onChange={this.onChangeInput} />
                 }
-                <FastIcon />
+                <FastIcon aria-hidden={true} />
             </div>
         );
     }

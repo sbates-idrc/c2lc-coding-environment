@@ -89,7 +89,12 @@ class TilePanel extends React.PureComponent<TilePanelProps, {}> {
                         style={{backgroundColor: getTileColor(tileCode, this.props.theme)}}
                     >
                         {tileImage != null &&
-                            React.createElement(tileImage)
+                            React.createElement(
+                                tileImage,
+                                {
+                                    'aria-hidden': true
+                                }
+                            )
                         }
                     </div>
                 </button>

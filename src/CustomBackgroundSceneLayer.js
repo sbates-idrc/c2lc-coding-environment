@@ -34,6 +34,7 @@ export default class CustomBackgroundSceneLayer extends React.PureComponent<Cust
                         tiles.push(React.createElement(tileImage,
                             {
                                 key: `custom-background-tile-${x}-${y}`,
+                                'aria-hidden': true,
                                 x: x - 0.5,
                                 y: y - 0.5,
                                 width: 1,

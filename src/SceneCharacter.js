@@ -32,6 +32,7 @@ export default class SceneCharacter extends React.PureComponent<SceneCharacterPr
                 {React.createElement(characterIcon,
                     {
                         className: 'SceneCharacter__icon',
+                        'aria-hidden': true,
                         x: -width/2,
                         y: -width/2,
                         width: width,
