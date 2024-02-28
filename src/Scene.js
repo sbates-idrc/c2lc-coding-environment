@@ -102,59 +102,72 @@ class Scene extends React.Component<SceneProps, {}> {
         }
     }
 
+    /* istanbul ignore next */
     scrollCharacterIntoView() {
-        // Required to avoid the lack of scrollIntoView on SVG elements in Safari.
-        /* istanbul ignore next */
-        if (this.sceneRef.current != null && this.sceneSvgRef.current != null) {
+        this.scrollSquareIntoView(
+            this.props.characterState.xPos,
+            this.props.characterState.yPos
+        );
+    }
 
+    /* istanbul ignore next */
+    scrollDesignModeCursorIntoView() {
+        this.scrollSquareIntoView(
+            this.props.designModeCursorState.x,
+            this.props.designModeCursorState.y
+        );
+    }
+
+    /* istanbul ignore next */
+    scrollSquareIntoView(x: number, y: number) {
+        // Check to see if the specified square is visible. If not, scroll to
+        // bring it into view. We do this ourselves for two reasons:
+        //
+        // 1. On Safari, scrollIntoView doesn't work on SVG elements (C2LC-347)
+        // 2. On Firefox, scrollIntoView seems to scroll to the centre of
+        //    an element rather than bringing it completely into view (C2LC-343)
+
+        if (this.sceneRef.current != null && this.sceneSvgRef.current != null) {
             const sceneElem = this.sceneRef.current;
             const sceneSvgElem = this.sceneSvgRef.current;
 
             const sceneBounds = sceneElem.getBoundingClientRect();
             const sceneSvgBounds = sceneSvgElem.getBoundingClientRect();
 
-            // Calculate the grid cell width in pixels by dividing the width
+            // Calculate the grid square width in pixels by dividing the width
             // of the scene in pixels by the number of columns in the scene
-            const cellWidth = sceneSvgBounds.width / this.props.dimensions.getWidth();
-            // Calculate the grid cell height in pixels by dividing the height
-            // of the scene in pixels by the number of rows in the scene
-            const cellHeight = sceneSvgBounds.height / this.props.dimensions.getHeight();
+            const squareW = sceneSvgBounds.width / this.props.dimensions.getWidth();
 
-            // Check to see if the character is visible. If not, scroll to
-            // bring it into view. We do this ourselves for two reasons:
-            //
-            // 1. On Safari, scrollIntoView doesn't work on SVG elements
-            //    (C2LC-347)
-            // 2. On Firefox, scrollIntoView seems to scroll to the center of
-            //    the character rather than bringing it completely into view
-            //    (C2LC-343)
+            // Calculate the grid square height in pixels by dividing the height
+            // of the scene in pixels by the number of rows in the scene
+            const squareH = sceneSvgBounds.height / this.props.dimensions.getHeight();
 
             // We add some padding to the position checking to ensure that we
-            // always leave some room between the character and the edge of the
-            // scene (unless we are in the first or last row/col)
-            const paddingH = 0.75 * cellWidth;
-            const paddingV = 0.75 * cellHeight;
+            // always leave some room between the target square and the edge of
+            // the scene (unless we are in the first or last row/col)
+            const paddingH = 0.75 * squareW;
+            const paddingV = 0.75 * squareH;
 
-            // Calculate the location of the grid cell that the character is on
-            const cellLeft = (this.props.characterState.xPos - this.props.dimensions.getMinX()) * cellWidth;
-            const cellRight = cellLeft + cellWidth;
-            const cellTop = (this.props.characterState.yPos - this.props.dimensions.getMinY()) * cellHeight;
-            const cellBottom = cellTop + cellHeight;
+            // Calculate the bounds of the target square to scroll into view
+            const targetSquareLeft = (x - this.props.dimensions.getMinX()) * squareW;
+            const targetSquareRight = targetSquareLeft + squareW;
+            const targetSquareTop = (y - this.props.dimensions.getMinY()) * squareH;
+            const targetSquareBottom = targetSquareTop + squareH;
 
-            if (cellLeft - paddingH < sceneElem.scrollLeft) {
+            if (targetSquareLeft - paddingH < sceneElem.scrollLeft) {
                 // Off screen to the left
-                sceneElem.scrollLeft = cellLeft - paddingH;
-            } else if (cellRight + paddingH > sceneElem.scrollLeft + sceneBounds.width) {
+                sceneElem.scrollLeft = targetSquareLeft - paddingH;
+            } else if (targetSquareRight + paddingH > sceneElem.scrollLeft + sceneBounds.width) {
                 // Off screen to the right
-                sceneElem.scrollLeft = cellRight + paddingH - sceneBounds.width;
+                sceneElem.scrollLeft = targetSquareRight + paddingH - sceneBounds.width;
             }
 
-            if (cellTop - paddingV < sceneElem.scrollTop) {
+            if (targetSquareTop - paddingV < sceneElem.scrollTop) {
                 // Off screen above
-                sceneElem.scrollTop = cellTop - paddingV;
-            } else if (cellBottom + paddingV > sceneElem.scrollTop + sceneBounds.height) {
+                sceneElem.scrollTop = targetSquareTop - paddingV;
+            } else if (targetSquareBottom + paddingV > sceneElem.scrollTop + sceneBounds.height) {
                 // Off screen below
-                sceneElem.scrollTop = cellBottom + paddingV - sceneBounds.height;
+                sceneElem.scrollTop = targetSquareBottom + paddingV - sceneBounds.height;
             }
         }
     }
@@ -308,14 +321,21 @@ class Scene extends React.Component<SceneProps, {}> {
         );
     }
 
+    /* istanbul ignore next */
     componentDidUpdate(prevProps) {
         if (prevProps.characterState.xPos !== this.props.characterState.xPos
                 || prevProps.characterState.yPos !== this.props.characterState.yPos) {
             this.scrollCharacterIntoView();
-        }
-        if (prevProps.runningState !== this.props.runningState
+        } else if (prevProps.runningState !== this.props.runningState
                 && this.props.runningState === 'running') {
             this.scrollCharacterIntoView();
+        } else if (prevProps.customBackgroundDesignMode !== this.props.customBackgroundDesignMode
+                && this.props.customBackgroundDesignMode === false) {
+            this.scrollCharacterIntoView();
+        } else if (this.props.customBackgroundDesignMode === true
+                && (prevProps.designModeCursorState.x !== this.props.designModeCursorState.x
+                    || prevProps.designModeCursorState.y !== this.props.designModeCursorState.y)) {
+            this.scrollDesignModeCursorIntoView();
         }
     }
 }
