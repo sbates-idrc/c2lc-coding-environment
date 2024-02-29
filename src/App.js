@@ -119,6 +119,8 @@ export type AppState = {
     sceneDimensions: SceneDimensions,
     drawingEnabled: boolean,
     runningState: RunningState,
+    // programSpeed is a number in the range 1..(speedLookUp.length)
+    programSpeed: number,
     disallowedActions: ActionToggleRegister,
     keyBindingsEnabled: boolean,
     keyboardInputSchemeName: KeyboardInputSchemeName,
@@ -154,7 +156,6 @@ export class App extends React.Component<AppProps, AppState> {
     customBackgroundSerializer: CustomBackgroundSerializer;
     speedLookUp: Array<number>;
     pushStateTimeoutID: ?TimeoutID;
-    speedControlRef: { current: null | HTMLElement };
     programBlockEditorRef: { current: any };
     sequenceInProgress: Array<KeyboardEvent>;
     announcementBuilder: AnnouncementBuilder;
@@ -216,6 +217,8 @@ export class App extends React.Component<AppProps, AppState> {
             sceneDimensions: this.sceneDimensions,
             drawingEnabled: true,
             runningState: 'stopped',
+            // Default to the middle speed
+            programSpeed: Math.ceil(this.speedLookUp.length / 2),
             disallowedActions: {},
             keyBindingsEnabled: false,
             showKeyboardModal: false,
@@ -262,12 +265,16 @@ export class App extends React.Component<AppProps, AppState> {
         this.programChangeController = new ProgramChangeController(this,
             this.props.intl, this.audioManager);
 
-        this.speedControlRef = React.createRef();
         this.programBlockEditorRef = React.createRef();
 
         const actionsHandler = new ActionsHandler(this, this.audioManager,
             this.sceneDimensions, this.props.intl);
-        this.interpreter = new Interpreter(1000, this, actionsHandler);
+
+        this.interpreter = new Interpreter(
+            this.speedLookUp[this.state.programSpeed - 1],
+            this,
+            actionsHandler
+        );
     }
 
     setStateSettings(settings: $Shape<AppSettings>) {
@@ -660,10 +667,24 @@ export class App extends React.Component<AppProps, AppState> {
                             }
                             break;
                         case("decreaseProgramSpeed"):
-                            this.changeProgramSpeedIndex(this.speedLookUp.indexOf(this.interpreter.stepTimeMs) - 1);
+                            this.setState((state) => {
+                                return {
+                                    programSpeed: Math.max(
+                                        1,
+                                        state.programSpeed - 1
+                                    )
+                                };
+                            });
                             break;
                         case("increaseProgramSpeed"):
-                            this.changeProgramSpeedIndex(this.speedLookUp.indexOf(this.interpreter.stepTimeMs) + 1);
+                            this.setState((state) => {
+                                return {
+                                    programSpeed: Math.min(
+                                        this.speedLookUp.length,
+                                        state.programSpeed + 1
+                                    )
+                                };
+                            });
                             break;
                         case("selectForward1"):
                             this.setState({ "selectedAction": "forward1" });
@@ -964,18 +985,12 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    changeProgramSpeedIndex = (newSpeedIndex: number) => {
-        if (newSpeedIndex >= 0 && newSpeedIndex <= (this.speedLookUp.length - 1)) {
-            this.interpreter.setStepTime(this.speedLookUp[newSpeedIndex]);
-            if (this.speedControlRef.current) {
-                // $FlowFixMe: Flow doesn't believe that we have sufficiently ensured that current !== null.
-                this.speedControlRef.current.value = (newSpeedIndex + 1).toString();
-            }
+    handleChangeProgramSpeed = (value: number) => {
+        if (value >= 1 && value <= this.speedLookUp.length) {
+            this.setState({
+                programSpeed: value
+            });
         }
-    }
-
-    handleChangeProgramSpeed = (stepTimeMs: number) => {
-        this.interpreter.setStepTime(stepTimeMs);
     }
 
     renderCommandBlocks = (commands: Array<DisplayedCommandName>) => {
@@ -1570,8 +1585,8 @@ export class App extends React.Component<AppProps, AppState> {
                             onClick={this.handleStop}
                         />
                         <ProgramSpeedController
-                            rangeControlRef={this.speedControlRef}
-                            values={this.speedLookUp}
+                            numValues={this.speedLookUp.length}
+                            value={this.state.programSpeed}
                             onChange={this.handleChangeProgramSpeed}
                         />
                     </div>
@@ -1991,6 +2006,16 @@ export class App extends React.Component<AppProps, AppState> {
 
         if (this.state.settings.theme !== prevState.settings.theme && document.body) {
             document.body.className = `${this.state.settings.theme}-theme`;
+        }
+
+        if (this.state.programSpeed !== prevState.programSpeed) {
+            if (this.speedLookUp.length > 0
+                    && this.state.programSpeed >= 1
+                    && this.state.programSpeed <= this.speedLookUp.length) {
+                this.interpreter.setStepTime(
+                    this.speedLookUp[this.state.programSpeed - 1]
+                );
+            }
         }
 
         /* Dash connection removed for version 0.5
