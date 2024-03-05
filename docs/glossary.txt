@@ -1,0 +1,48 @@
+Background
+==========
+
+The selected image and its related character.
+
+Custom Background Design Mode Toggle Button
+===========================================
+
+Or "Design Mode Button" for short.
+
+The toggle button used to switch modes.
+
+Paint
+=====
+
+To set a tile on the custom background.
+
+Positioning Controls
+====================
+
+In Program Mode, they move the character and set the starting position.
+
+In Design Mode, they move the paintbrush and paint on the custom background.
+
+Modes
+=====
+
+- Program Mode
+  - Editing and playing the program
+- Custom Background Design Mode ("Design Mode" for short)
+  - Modifying the custom background
+
+Scene
+=====
+
+The grid showing the character, background, starting position, drawing,
+and any custom background tiles.
+
+Tile
+====
+
+The colours and objects that are available to set on custom background
+squares.
+
+- Wall
+- Gem
+- Gold
+- Treats
