@@ -3,7 +3,7 @@
 import { injectIntl, FormattedMessage } from 'react-intl';
 import type {IntlShape} from 'react-intl';
 import type {KeyboardInputSchemeName} from './KeyboardInputSchemes';
-import type {AudioManager, RunningState, ThemeName, ProgramBlock} from './types';
+import type {AudioManager, CommandName, RunningState, ThemeName, ProgramBlock} from './types';
 import type { WorldName } from './Worlds';
 import * as React from 'react';
 import CharacterState from './CharacterState';
@@ -34,7 +34,7 @@ type ProgramBlockEditorProps = {
     programSequence: ProgramSequence,
     runningState: RunningState,
     keyboardInputSchemeName: KeyboardInputSchemeName,
-    selectedAction: ?string,
+    selectedAction: ?CommandName,
     isDraggingCommand: boolean,
     audioManager: AudioManager,
     focusTrapManager: FocusTrapManager,
@@ -47,9 +47,9 @@ type ProgramBlockEditorProps = {
     // TODO: Remove onChangeProgramSequence once we have callbacks
     //       for each specific change
     onChangeProgramSequence: (programSequence: ProgramSequence) => void,
-    onInsertSelectedActionIntoProgram: (index: number, selectedAction: ?string) => void,
+    onInsertSelectedActionIntoProgram: (index: number, selectedAction: ?CommandName) => void,
     onDeleteProgramStep: (index: number, command: string) => void,
-    onReplaceProgramStep: (index: number, selectedAction: ?string) => void,
+    onReplaceProgramStep: (index: number, selectedAction: ?CommandName) => void,
     onMoveProgramStepNext: (indexFrom: number, commandAtIndexFrom: string) => void,
     onMoveProgramStepPrevious: (indexFrom: number, commandAtIndexFrom: string) => void,
     onChangeActionPanelStepIndexAndOption: (index: ?number, focusedOptionName: ?string) => void,
@@ -767,8 +767,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                             ariaLabel={this.props.intl.formatMessage({id:'ProgramBlockEditor.toggleAddNodeExpandMode'})}
                             value={this.props.addNodeExpandedMode}
                             onChange={this.props.onChangeAddNodeExpandedMode}
-                            contentsTrue={<AddIcon />}
-                            contentsFalse={<AddIcon />}
+                            contentsTrue={<AddIcon aria-hidden={true} />}
+                            contentsFalse={<AddIcon aria-hidden={true} />}
                             className='ProgramBlockEditor__add-node-toggle-switch'
                         />
                         <span className='ProgramBlockEditor__program-deleteAll'>
@@ -780,7 +780,10 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                                 onClick={this.handleClickDeleteAll}
                                 key='deleteButton'
                             >
-                                <DeleteAllIcon className='ProgramBlockEditor__program-deleteAll-button-svg'/>
+                                <DeleteAllIcon
+                                    className='ProgramBlockEditor__program-deleteAll-button-svg'
+                                    aria-hidden={true}
+                                />
                             </IconButton>
                         </span>
                     </div>

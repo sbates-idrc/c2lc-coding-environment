@@ -1,10 +1,13 @@
 // @flow
 
 import React from 'react';
+import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
-import { getBackgroundInfo } from './Worlds';
+import CustomBackground from './CustomBackground';
+import DesignModeCursorDescriptionBuilder from './DesignModeCursorDescriptionBuilder';
+import DesignModeCursorState from './DesignModeCursorState';
 import { injectIntl } from 'react-intl';
-import type {IntlShape} from 'react-intl';
+import type { IntlShape } from 'react-intl';
 import type { RunningState } from './types';
 import type { WorldName } from './Worlds';
 
@@ -13,55 +16,81 @@ type CharacterAriaLiveProps = {
     ariaLiveRegionId: string,
     ariaHidden: boolean,
     characterState: CharacterState,
+    designModeCursorState: DesignModeCursorState,
     runningState: RunningState,
-    world: WorldName
+    world: WorldName,
+    customBackground: CustomBackground,
+    customBackgroundDesignMode: boolean,
+    characterDescriptionBuilder: CharacterDescriptionBuilder,
+    designModeCursorDescriptionBuilder: DesignModeCursorDescriptionBuilder,
+    message: ?string
 };
 
 class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
-    setCharacterMovingAriaLive() {
-        const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
+    lastMessage: ?string;
 
-        const characterLabel = this.props.intl.formatMessage({id: this.props.world + ".character"});
+    constructor(props: any) {
+        super(props);
+        this.lastMessage = null;
+    }
 
-        // $FlowFixMe: Flow doesn't know that elements have innerText.
-        ariaLiveRegion.innerText=this.props.intl.formatMessage(
-            {id:'CharacterAriaLive.movementAriaLabel'},
-            {character: characterLabel}
+    setCharacterMoving() {
+        const characterLabel = this.props.intl.formatMessage({
+            id: `${this.props.world}.character`
+        });
+        const text = this.props.intl.formatMessage(
+            { id:'CharacterAriaLive.movementAriaLabel' },
+            { character: characterLabel }
+        );
+        this.setLiveRegion(text);
+    }
+
+    // Combine the most recent message (if there is one) with the character
+    // description in a single update. With 2 separate updates, it was not
+    // possible to have both updates be spoken by VoiceOver on macOS. When
+    // the character description update was made while the message was still
+    // being spoken, either the character description would interrupt the
+    // message, or the character description would be ignored. A number of
+    // different node structures and live region attributes were tried but
+    // none were successful. With this approach, the message and character
+    // description texts are combined into a single live region update.
+    setMessageAndCharacterDescription() {
+        let text = '';
+
+        if (this.props.message != null
+                && this.props.message !== this.lastMessage) {
+            text = this.props.message;
+            if (text.endsWith('.')) {
+                text += ' ';
+            } else {
+                text += '. ';
+            }
+            this.lastMessage = this.props.message;
+        }
+
+        text += this.props.characterDescriptionBuilder.buildDescription(
+            this.props.characterState,
+            this.props.world,
+            this.props.customBackground
+        );
+
+        this.setLiveRegion(text);
+    }
+
+    setDesignModeCursorDescription() {
+        this.setLiveRegion(
+            this.props.designModeCursorDescriptionBuilder.buildDescription(
+                this.props.designModeCursorState,
+                this.props.world,
+                this.props.customBackground
+            )
         );
     }
 
-    updateCharacterPositionAriaLive() {
-        const characterState = this.props.characterState;
-        const columnLabel = characterState.getColumnLabel();
-        const rowLabel = characterState.getRowLabel();
-        const characterLabel = this.props.intl.formatMessage({id: this.props.world + ".character"});
-        const direction = this.props.intl.formatMessage({id: `Direction.${characterState.direction}`});
+    setLiveRegion(text: string) {
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
-        const backgroundInfo = getBackgroundInfo(this.props.world, columnLabel, rowLabel);
-        if (backgroundInfo) {
-            const itemOnGridCell = this.props.intl.formatMessage({ id: `${this.props.world}.${backgroundInfo}` });
-            // $FlowFixMe: Flow doesn't know that elements have innerText.
-            ariaLiveRegion.innerText = this.props.intl.formatMessage(
-                {id:'CharacterAriaLive.positionAriaLabelWithItem'},
-                {
-                    columnLabel,
-                    rowLabel,
-                    direction,
-                    item: itemOnGridCell,
-                    character: characterLabel
-                }
-            )
-        } else {
-            // $FlowFixMe: Flow doesn't know that elements have innerText.
-            ariaLiveRegion.innerText=this.props.intl.formatMessage(
-                {id:'CharacterAriaLive.positionAriaLabel'},
-                {
-                    columnLabel,
-                    rowLabel,
-                    direction,
-                    character: characterLabel
-                }
-            );
+        if (ariaLiveRegion) {
+            ariaLiveRegion.textContent = text;
         }
     }
 
@@ -87,25 +116,37 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
                 ariaLiveRegion.setAttribute('aria-hidden', this.props.ariaHidden.toString());
             }
         }
-        // Ensure updateCharacterPositionAriaLive gets called only once
+
+        if (this.props.message == null) {
+            this.lastMessage = null;
+        }
+
+        // Update the live region
         if (prevProps.characterState !== this.props.characterState) {
             if (this.props.runningState !== 'running') {
-                this.updateCharacterPositionAriaLive();
+                this.setMessageAndCharacterDescription();
             }
-        }  else if (prevProps.runningState !== this.props.runningState) {
-            if (this.props.runningState === 'pauseRequested' ||
-                this.props.runningState === 'stopRequested' ||
-                (prevProps.runningState === 'running' && this.props.runningState === 'stopped')) {
-                this.updateCharacterPositionAriaLive();
+        } else if (prevProps.designModeCursorState !== this.props.designModeCursorState) {
+            this.setDesignModeCursorDescription();
+        } else if (prevProps.runningState !== this.props.runningState) {
+            if (this.props.runningState === 'stopRequested'
+                || this.props.runningState === 'pauseRequested'
+                || (prevProps.runningState === 'running' && this.props.runningState === 'stopped')
+                || (prevProps.runningState === 'running' && this.props.runningState === 'paused')) {
+                this.setMessageAndCharacterDescription();
+            } else if (this.props.runningState === "running") {
+                this.setCharacterMoving();
             }
-            else if (this.props.runningState === "running") {
-                this.setCharacterMovingAriaLive();
-            }
+        } else if (prevProps.customBackgroundDesignMode && !(this.props.customBackgroundDesignMode)) {
+            this.setMessageAndCharacterDescription();
         } else if (prevProps.world !== this.props.world) {
-            this.updateCharacterPositionAriaLive();
+            if (this.props.customBackgroundDesignMode) {
+                this.setDesignModeCursorDescription();
+            } else {
+                this.setMessageAndCharacterDescription();
+            }
         }
     }
-
 }
 
 export default injectIntl(CharacterAriaLive);

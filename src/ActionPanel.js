@@ -5,7 +5,7 @@ import AriaDisablingButton from './AriaDisablingButton';
 import ProgramSequence from './ProgramSequence';
 import { injectIntl } from 'react-intl';
 import type {IntlShape} from 'react-intl';
-import {ReactComponent as ActionPanelBackground} from './svg/ActionPanel.svg';
+import { ReactComponent as ActionPanelBackground } from './svg/ActionPanel.svg';
 import { ReactComponent as MovePreviousIcon } from './svg/MovePrevious.svg';
 import { ReactComponent as MoveNextIcon } from './svg/MoveNext.svg';
 import { ReactComponent as DeleteIcon } from './svg/Delete.svg';
@@ -222,7 +222,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
         return (
             <React.Fragment>
                 <div className="ActionPanel__background">
-                    <ActionPanelBackground/>
+                    <ActionPanelBackground aria-hidden={true} />
                 </div>
                 <div
                     id='ActionPanel'
@@ -235,7 +235,10 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                         aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.delete'}, stepMessageData)}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                         onClick={this.handleClickDelete}>
-                        <DeleteIcon className='ActionPanel__action-button-svg' />
+                        <DeleteIcon
+                            className='ActionPanel__action-button-svg'
+                            aria-hidden={true}
+                        />
                     </AriaDisablingButton>
                     {replaceIsVisible &&
                         <AriaDisablingButton
@@ -245,7 +248,10 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                             aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.replace'}, stepMessageData)}
                             className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                             onClick={this.handleClickReplace}>
-                            <ReplaceIcon className='ActionPanel__action-button-svg' />
+                            <ReplaceIcon
+                                className='ActionPanel__action-button-svg'
+                                aria-hidden={true}
+                            />
                         </AriaDisablingButton>
                     }
                     <AriaDisablingButton
@@ -255,7 +261,10 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                         aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToPreviousStep'}, stepMessageData)}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                         onClick={this.handleClickMoveToPreviousStep}>
-                        <MovePreviousIcon className='ActionPanel__action-button-svg' />
+                        <MovePreviousIcon
+                            className='ActionPanel__action-button-svg'
+                            aria-hidden={true}
+                        />
                     </AriaDisablingButton>
                     <AriaDisablingButton
                         name='moveToNextStep'
@@ -264,7 +273,10 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                         aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToNextStep'}, stepMessageData)}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                         onClick={this.handleClickMoveToNextStep}>
-                        <MoveNextIcon className='ActionPanel__action-button-svg' />
+                        <MoveNextIcon
+                            className='ActionPanel__action-button-svg'
+                            aria-hidden={true}
+                        />
                     </AriaDisablingButton>
                 </div>
             </React.Fragment>

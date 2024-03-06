@@ -108,7 +108,8 @@ export default React.forwardRef<CommandBlockProps, Button>(
                 children = React.createElement(
                     iconType,
                     {
-                        className: 'command-block-svg'
+                        className: 'command-block-svg',
+                        'aria-hidden': true
                     }
                 );
             }

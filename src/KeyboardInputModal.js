@@ -11,7 +11,7 @@ import {KeyboardInputSchemes, getLabelMessageKeyFromKeyDef, getIconMessageKeyFro
 
 import ToggleSwitch from './ToggleSwitch';
 
-import { ReactComponent as KeyboardIcon} from './svg/Keyboard.svg'
+import { ReactComponent as KeyboardIcon } from './svg/Keyboard.svg'
 
 
 import './KeyboardInputModal.scss';

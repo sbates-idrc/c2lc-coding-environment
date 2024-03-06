@@ -12,9 +12,9 @@ type CommandPaletteCommandProps = {
     commandName: CommandName,
     intl: IntlShape,
     isDraggingCommand: boolean,
-    selectedCommandName: ?string,
-    onSelect: (commandName: string) => void,
-    onDragStart: (commandName: string) => void,
+    selectedCommandName: ?CommandName,
+    onSelect: (commandName: CommandName) => void,
+    onDragStart: (commandName: CommandName) => void,
     onDragEnd: () => void
 };
 

@@ -136,12 +136,7 @@ body {
     min-width: 19.5rem; 
 }
 
-.App__PenDownToggleSwitch-container {
-    margin: 1rem auto;
-}
-
 .App__world-container {
-    display: grid;
     grid-column-start: 4;
     grid-column-end: 5;
     grid-row-start: 2;
@@ -150,15 +145,23 @@ body {
     margin-right: 0.5rem;
     margin-top: 0.25rem;
     margin-bottom: 0.25rem;
-    grid-template-rows: 1fr min-content min-content;
     background-color: #CCE6E2;
 }
 
 .App__world-selector {
+    display: grid;
+    grid-template-columns: min-content min-content;
+    justify-content: center;
+    column-gap: 0.7rem;
+    padding: 0.5rem 0;
+}
+
+.App__PenDownToggleSwitch-container {
     display: flex;
-    flex-direction: column;
-    margin-top: 1rem;
-    border-bottom: 1px solid #88C3BC;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0;
+    border-top: 1px solid #88C3BC;
 }
 
 .App__ActionsMenu__header {

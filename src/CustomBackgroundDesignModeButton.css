@@ -1,0 +1,11 @@
+.CustomBackgroundDesignModeButton svg path {
+    stroke: #1E1E1E;
+}
+
+.CustomBackgroundDesignModeButton svg rect {
+    fill: #1E1E1E;
+}
+
+.CustomBackgroundDesignModeButton.IconButton--pressed {
+    background-color: #BD8FB2;
+}

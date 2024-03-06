@@ -1,0 +1,57 @@
+@import 'variables';
+
+.TilePanel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 17px;
+    padding: 17px 0;
+}
+
+.TilePanel__tile {
+    border-width: 4px;
+    border-radius: 6px;
+    border-style: solid;
+    border-color: transparent;
+    padding: 0;
+    background-color: transparent;
+}
+
+/*
+ * The extra "button" selector is used in the rule below to override a
+ * rule in Bootstrap's _reboot.scss:
+ *
+ *     button:focus:not(:focus-visible) {
+ *         outline: 0;
+ *     }
+ *
+ * We override this rule to ensure that the focus outline is visible
+ * when the tile is clicked, to be consistent with other controls in
+ * Weavly.
+ *
+ * TODO: Is this actually what we want? Or should we change instead to
+ *       use focus-visible?
+ */
+button.TilePanel__tile:focus {
+    outline-color: #1E1E1E;
+    outline-style: solid;
+    outline-width: $c2lc-focus-indicator-width;
+}
+
+.TilePanel__tile--selected {
+    border-color: #1E1E1E;
+}
+
+.TilePanel__tileInner {
+    box-sizing: content-box;
+    border-width: 2px;
+    border-radius: 2px;
+    border-style: solid;
+    border-color: #4C9990;
+    width: 45px;
+    height: 45px;
+}
+
+.TilePanel__tileInner > svg {
+    width: 45px;
+    height: 45px;
+}

@@ -1,7 +1,12 @@
 // @flow
 
-import { isWorldName } from './Worlds';
+import CustomBackground from './CustomBackground';
+import type { IntlShape } from 'react-intl';
+import SceneDimensions from './SceneDimensions';
+import { getTileName, isNone } from './TileData';
 import type { ThemeName } from './types';
+import { getBackgroundInfo } from './Worlds';
+import { isWorldName } from './Worlds';
 import type { WorldName } from './Worlds';
 
 let idCounter: number = 0;
@@ -13,17 +18,8 @@ function generateId(prefix: string): string {
     return id;
 }
 
-/* istanbul ignore next */
-function makeDelayedPromise(timeMs: number): Promise<void> {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve();
-        }, timeMs);
-    });
-}
-
-function generateEncodedProgramURL(versionString: string, themeString: string, worldString: string, programString: string, characterStateString: string, disallowedActionsString: string, startingPositionString: string): string {
-    return `?v=${encodeURIComponent(versionString)}&t=${themeString}&w=${worldString}&p=${encodeURIComponent(programString)}&c=${encodeURIComponent(characterStateString)}&d=${encodeURIComponent(disallowedActionsString)}&s=${encodeURIComponent(startingPositionString)}`;
+function generateEncodedProgramURL(versionString: string, themeString: string, worldString: string, programString: string, characterStateString: string, disallowedActionsString: string, startingPositionString: string, customBackgroundString: string): string {
+    return `?v=${encodeURIComponent(versionString)}&t=${themeString}&w=${worldString}&p=${encodeURIComponent(programString)}&c=${encodeURIComponent(characterStateString)}&d=${encodeURIComponent(disallowedActionsString)}&s=${encodeURIComponent(startingPositionString)}&b=${encodeURIComponent(customBackgroundString)}`;
 }
 
 /*
@@ -290,6 +286,38 @@ function selectSpeechSynthesisVoice(utteranceLangTag: ?string,
     }
 }
 
+// Returns the description for the background square at the specified
+// position. If there is a custom background tile set for the square,
+// then the description for that is returned. If there is no custom
+// background tile at the specified position, then the description for
+// the world background for that square is returned. Otherwise, null is
+// returned.
+function getBackgroundSquareDescription(x: number, y: number,
+    sceneDimensions: SceneDimensions, world: WorldName,
+    customBackground: CustomBackground, intl: IntlShape): ?string {
+
+    const customBackgroundTile = customBackground.getTile(x, y);
+
+    if (!isNone(customBackgroundTile)) {
+        return intl.formatMessage({
+            id: `TileDescription.${getTileName(customBackgroundTile)}`
+        });
+    } else {
+        const columnLabel = sceneDimensions.getColumnLabel(x);
+        const rowLabel = sceneDimensions.getRowLabel(y);
+        if (columnLabel == null || rowLabel == null) {
+            return null;
+        }
+        const backgroundInfo = getBackgroundInfo(world, columnLabel, rowLabel);
+        if (backgroundInfo == null) {
+            return null;
+        }
+        return intl.formatMessage({
+            id: `${world}.${backgroundInfo}`
+        });
+    }
+}
+
 export {
     decodeCoordinate,
     decodeDirection,
@@ -306,7 +334,7 @@ export {
     getWorldFromString,
     getStartingPositionFromString,
     isLoopBlock,
-    makeDelayedPromise,
     parseLoopLabel,
-    selectSpeechSynthesisVoice
+    selectSpeechSynthesisVoice,
+    getBackgroundSquareDescription
 };

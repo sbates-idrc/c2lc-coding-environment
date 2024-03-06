@@ -10,19 +10,20 @@ import './ProgramSpeedController.scss';
 
 type ProgramSpeedControllerProps = {
     intl: IntlShape,
-    values: Array<number>,
-    rangeControlRef: { current: null | HTMLElement };
+    numValues: number,
+    value: number,
     onChange: (value: number) => void
 };
 
 class ProgramSpeedController extends React.Component<ProgramSpeedControllerProps, {}> {
-    onChangeInput = (e: SyntheticInputEvent<HTMLInputElement>) => {
-        this.props.onChange(this.props.values[parseInt(e.target.value) - 1]);
+    handleChange = (e: SyntheticInputEvent<HTMLInputElement>) => {
+        this.props.onChange(parseInt(e.target.value));
     }
+
     render() {
         return (
             <div className='ProgramSpeedController__container'>
-                <SlowIcon />
+                <SlowIcon aria-hidden={true} />
                 {
                     /* $FlowFixMe
                         Cannot get Form.Control because property Control is missing in statics of Form
@@ -31,12 +32,13 @@ class ProgramSpeedController extends React.Component<ProgramSpeedControllerProps
                         aria-label={`${this.props.intl.formatMessage({id:'ProgramSpeedController.slider'})}`}
                         className='ProgramSpeedController__slider'
                         type='range'
-                        min='1'
-                        max={this.props.values.length}
-                        ref={this.props.rangeControlRef}
-                        onChange={this.onChangeInput} />
+                        min={1}
+                        max={this.props.numValues}
+                        value={this.props.value}
+                        onChange={this.handleChange}
+                    />
                 }
-                <FastIcon />
+                <FastIcon aria-hidden={true} />
             </div>
         );
     }

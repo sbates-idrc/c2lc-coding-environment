@@ -1,11 +1,11 @@
 // @flow
 
 import ProgramSequence from './ProgramSequence';
-import type { Program } from './types';
+import type { CommandName, Program } from './types';
 
 test('ProgramSequence constructor', () => {
     expect.assertions(3);
-    const program = [{block: 'forward1'}, {block: 'loopStart', label: 'A', iterations: 3}];
+    const program = [{block: 'forward1'}, {block: 'startLoop', label: 'A', iterations: 3}];
     const programCounter = 0;
     const loopIterationsLeft = new Map([[ 'A', 3 ]]);
     const programSequence = new ProgramSequence(program, programCounter, 0, loopIterationsLeft);
@@ -921,7 +921,7 @@ type InsertStepTestCase = {
     loopCounter: number,
     loopIterationsLeft: Map<string, number>,
     index: number,
-    commandName: string,
+    commandName: CommandName,
     expectedProgram: Program,
     expectedProgramCounter: number,
     expectedLoopIterationsLeft: Map<string, number>,
@@ -1060,7 +1060,7 @@ type OverwriteStepTestCase = {
     loopCounter: number,
     loopIterationsLeft: Map<string, number>,
     index: number,
-    overwriteStepName: string,
+    overwriteStepName: CommandName,
     expectedProgram: Program,
     expectedProgramCounter: number,
     expectedLoopIterationsLeft: Map<string, number>,

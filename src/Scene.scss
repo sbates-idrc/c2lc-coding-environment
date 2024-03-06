@@ -1,8 +1,13 @@
 @import 'variables';
 
+$c2lc-scene-left-offset: 20px;
+$c2lc-scene-right-offset: 20px;
+$c2lc-scene-top-offset: 20px;
+
 // Grid for Scene-container is set in App.scss
 .Scene__container {
     position: relative;
+    z-index: 0;
     height: 100%;
     display: grid;
     grid-template-columns: $c2lc-scene-row-header-width auto;
@@ -10,6 +15,22 @@
     background-color: #CCE6E2;
     border: $c2lc-scene-border-width solid #CCE6E2;
     border-radius: 3px;
+}
+
+.Scene__SceneMessage {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    left: calc(#{$c2lc-scene-row-header-width} + #{$c2lc-scene-left-offset});
+    top: calc(#{$c2lc-scene-col-header-height} + #{$c2lc-scene-top-offset});
+    width: calc(
+        100%
+        - #{$c2lc-scene-row-header-width}
+        - #{$c2lc-scene-space-for-scrollbar}
+        - #{$c2lc-scene-left-offset}
+        - #{$c2lc-scene-right-offset}
+    );
 }
 
 .Scene {
@@ -79,6 +100,18 @@
     fill: #555;
     font-weight: 600;
     font-size: 2.2px;
+}
+
+.Scene__startIndicator .start-indicator-outer-circle {
+    fill: #1E1E1E;
+}
+
+.Scene__startIndicator .start-indicator-inner-circle {
+    fill: #4C9990;
+}
+
+.Scene__startIndicator .start-indicator-pin {
+    fill: #1E1E1E;
 }
 
 .Scene__path-line {
