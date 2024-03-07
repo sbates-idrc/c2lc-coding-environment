@@ -82,7 +82,6 @@ class TilePanel extends React.PureComponent<TilePanelProps, {}> {
                     aria-label={ariaLabel}
                     aria-pressed={isSelected}
                     onClick={this.handleClickTile}
-                    onMouseDown={this.handleMouseDownTile}
                 >
                     <div
                         className='TilePanel__tileInner'
