@@ -8,6 +8,7 @@ import type { WorldName } from './Worlds';
 
 type SceneCharacterProps = {
     characterState: CharacterState,
+    opacity: number,
     theme: ThemeName,
     world: WorldName
 };
@@ -28,7 +29,9 @@ export default class SceneCharacter extends React.PureComponent<SceneCharacterPr
         return (
             <g
                 className='SceneCharacter'
-                transform={transform}>
+                transform={transform}
+                opacity={this.props.opacity}
+            >
                 {React.createElement(characterIcon,
                     {
                         className: 'SceneCharacter__icon',

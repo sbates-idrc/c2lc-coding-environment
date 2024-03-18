@@ -14,6 +14,7 @@ const characterState = new CharacterState(1, 1, 2, [], sceneDimensions);
 
 const defaultSceneCharacterProps = {
     characterState: characterState,
+    opacity: 1,
     theme: 'light',
     world: 'Sketchpad'
 };

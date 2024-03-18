@@ -313,6 +313,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                 }
                                 <SceneCharacter
                                     characterState={this.props.characterState}
+                                    opacity={this.props.customBackgroundDesignMode ? 0.3 : 1}
                                     theme={this.props.theme}
                                     world={this.props.world}
                                 />
