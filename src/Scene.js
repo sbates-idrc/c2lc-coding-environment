@@ -311,12 +311,8 @@ class Scene extends React.Component<SceneProps, {}> {
                                         r={0.51}
                                     />
                                 }
-                                <SceneCharacter
-                                    characterState={this.props.characterState}
-                                    theme={this.props.theme}
-                                    world={this.props.world}
-                                />
-                                {this.props.customBackgroundDesignMode &&
+                                {this.props.customBackgroundDesignMode
+                                    ?
                                     <PaintbrushCursor
                                         className='Scene__designModeCursor'
                                         aria-hidden={true}
@@ -324,6 +320,12 @@ class Scene extends React.Component<SceneProps, {}> {
                                         y={this.props.designModeCursorState.y - 0.5}
                                         width={1}
                                         height={1}
+                                    />
+                                    :
+                                    <SceneCharacter
+                                        characterState={this.props.characterState}
+                                        theme={this.props.theme}
+                                        world={this.props.world}
                                     />
                                 }
                             </g>
