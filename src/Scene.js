@@ -224,6 +224,24 @@ class Scene extends React.Component<SceneProps, {}> {
         const width = this.props.dimensions.getWidth();
         const height = this.props.dimensions.getHeight();
 
+        const character = (
+            <React.Fragment>
+                {this.props.theme === 'contrast' &&
+                    <circle
+                        className='Scene__characterOutline'
+                        cx={this.props.characterState.xPos}
+                        cy={this.props.characterState.yPos}
+                        r={0.51}
+                    />
+                }
+                <SceneCharacter
+                    characterState={this.props.characterState}
+                    theme={this.props.theme}
+                    world={this.props.world}
+                />
+            </React.Fragment>
+        );
+
         return (
             <React.Fragment>
                 <div className='Scene__container'>
@@ -303,14 +321,6 @@ class Scene extends React.Component<SceneProps, {}> {
                                     width={startIndicatorWidth}
                                     height={startIndicatorWidth}
                                 />
-                                {this.props.theme === 'contrast' &&
-                                    <circle
-                                        className='Scene__characterOutline'
-                                        cx={this.props.characterState.xPos}
-                                        cy={this.props.characterState.yPos}
-                                        r={0.51}
-                                    />
-                                }
                                 {this.props.customBackgroundDesignMode
                                     ?
                                     <PaintbrushCursor
@@ -322,11 +332,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                         height={1}
                                     />
                                     :
-                                    <SceneCharacter
-                                        characterState={this.props.characterState}
-                                        theme={this.props.theme}
-                                        world={this.props.world}
-                                    />
+                                    character
                                 }
                             </g>
                         </svg>
