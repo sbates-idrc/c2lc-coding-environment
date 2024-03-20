@@ -1,8 +1,9 @@
 // @flow
 
+import * as C2lcMath from './C2lcMath';
 import classNames from 'classnames';
 import React from 'react';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import type { IntlShape } from 'react-intl';
 import { getTileColor, getTileImage, getTileName, isTileCode } from './TileData';
 import type { TileCode } from './TileData';
@@ -18,6 +19,7 @@ type TilePanelProps = {
 
 class TilePanel extends React.PureComponent<TilePanelProps, {}> {
     tileCodes: Array<TileCode>;
+    tileRefs: Map<TileCode, HTMLElement>;
 
     constructor(props: TilePanelProps) {
         super(props);
@@ -40,28 +42,84 @@ class TilePanel extends React.PureComponent<TilePanelProps, {}> {
             'C',
             'D'
         ];
+        this.tileRefs = new Map();
     }
 
-    handleClickTile = (e: any) => {
-        this.selectTile(e.currentTarget);
+    handleKeyDownTile = (event: KeyboardEvent) => {
+        switch(event.key) {
+            case 'ArrowRight':
+            case 'ArrowDown': {
+                event.preventDefault();
+                event.stopPropagation();
+                // $FlowFixMe: dataset
+                const index = this.tileCodes.indexOf(event.currentTarget.dataset.tilecode);
+                if (index !== -1) {
+                    const newIndex = C2lcMath.wrap(
+                        0,
+                        this.tileCodes.length,
+                        index + 1
+                    );
+                    const newTileCode = this.tileCodes[newIndex];
+                    this.focusTile(newTileCode);
+                    this.props.onSelectTile(newTileCode);
+                }
+                break;
+            }
+            case 'ArrowLeft':
+            case 'ArrowUp': {
+                event.preventDefault();
+                event.stopPropagation();
+                // $FlowFixMe: dataset
+                const index = this.tileCodes.indexOf(event.currentTarget.dataset.tilecode);
+                if (index !== -1) {
+                    const newIndex = C2lcMath.wrap(
+                        0,
+                        this.tileCodes.length,
+                        index - 1
+                    );
+                    const newTileCode = this.tileCodes[newIndex];
+                    this.focusTile(newTileCode);
+                    this.props.onSelectTile(newTileCode);
+                }
+                break;
+            }
+            default:
+                break;
+        }
     };
 
-    handleMouseDownTile = (e: any) => {
-        this.selectTile(e.currentTarget);
-    };
-
-    selectTile(element: any) {
-        const tileCode = element.dataset.tilecode;
+    handleClickTile = (event: MouseEvent) => {
+        // $FlowFixMe: dataset
+        const tileCode = event.currentTarget.dataset.tilecode;
         if (isTileCode(tileCode)) {
             this.props.onSelectTile(((tileCode: any): TileCode));
+        }
+    };
+
+    setTileRef(tileCode: TileCode, element: ?HTMLElement) {
+        if (element) {
+            this.tileRefs.set(tileCode, element);
+        }
+    }
+
+    focusTile(tileCode: TileCode) {
+        const element = this.tileRefs.get(tileCode);
+        if (element && element.focus) {
+            element.focus();
         }
     }
 
     render() {
         const tiles = [];
 
-        for (const tileCode of this.tileCodes) {
+        this.tileCodes.forEach((tileCode, i) => {
             const isSelected = (tileCode === this.props.selectedTile);
+
+            const tabIndex = (
+                isSelected
+                || (i === 0 && (this.props.selectedTile == null
+                    || !isTileCode(this.props.selectedTile)))
+            ) ? 0 : -1;
 
             const tileClassName = classNames(
                 'TilePanel__tile',
@@ -77,12 +135,15 @@ class TilePanel extends React.PureComponent<TilePanelProps, {}> {
             tiles.push(
                 <button
                     className={tileClassName}
+                    role='radio'
                     data-tilecode={tileCode}
                     key={tileCode}
+                    ref={ (element) => this.setTileRef(tileCode, element) }
+                    tabIndex={tabIndex}
                     aria-label={ariaLabel}
-                    aria-pressed={isSelected}
+                    aria-checked={isSelected}
+                    onKeyDown={this.handleKeyDownTile}
                     onClick={this.handleClickTile}
-                    onMouseDown={this.handleMouseDownTile}
                 >
                     <div
                         className='TilePanel__tileInner'
@@ -99,13 +160,14 @@ class TilePanel extends React.PureComponent<TilePanelProps, {}> {
                     </div>
                 </button>
             );
-        }
+        });
 
         return (
-            <div className='TilePanel'>
-                <h2 className='sr-only'>
-                    <FormattedMessage id='TilePanel.heading' />
-                </h2>
+            <div
+                className='TilePanel'
+                role='radiogroup'
+                aria-label={this.props.intl.formatMessage({ id: 'TilePanel.heading' })}
+            >
                 {tiles}
             </div>
         );
