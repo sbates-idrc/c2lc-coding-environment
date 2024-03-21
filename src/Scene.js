@@ -303,7 +303,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                     width={startIndicatorWidth}
                                     height={startIndicatorWidth}
                                 />
-                                {this.props.theme === 'contrast' &&
+                                {(!this.props.customBackgroundDesignMode && this.props.theme === 'contrast') &&
                                     <circle
                                         className='Scene__characterOutline'
                                         cx={this.props.characterState.xPos}
@@ -311,11 +311,13 @@ class Scene extends React.Component<SceneProps, {}> {
                                         r={0.51}
                                     />
                                 }
-                                <SceneCharacter
-                                    characterState={this.props.characterState}
-                                    theme={this.props.theme}
-                                    world={this.props.world}
-                                />
+                                {!this.props.customBackgroundDesignMode &&
+                                    <SceneCharacter
+                                        characterState={this.props.characterState}
+                                        theme={this.props.theme}
+                                        world={this.props.world}
+                                    />
+                                }
                                 {this.props.customBackgroundDesignMode &&
                                     <PaintbrushCursor
                                         className='Scene__designModeCursor'
