@@ -231,104 +231,94 @@ describe('The ARIA label should tell there is a character with its position', ()
     });
 });
 
-describe('When the Scene renders', () => {
-    test('Should render the character component', () => {
-        expect.assertions(5);
-        const sceneDimensions = new SceneDimensions(1, 1, 1, 1);
-        const sceneWrapper = createMountScene({
-            dimensions: sceneDimensions,
-            customBackground: new CustomBackground(sceneDimensions)
-        });
+test.each([
+    // Theme,    Design mode, Character, Outline, Design mode cursor
+    ['default',  false,       true,      false,   false],
+    ['light',    false,       true,      false,   false],
+    ['dark',     false,       true,      false,   false],
+    ['gray',     false,       true,      false,   false],
+    ['contrast', false,       true,      true,    false],
+    ['default',  true,        false,     false,   true],
+    ['light',    true,        false,     false,   true],
+    ['dark',     true,        false,     false,   true],
+    ['gray',     true,        false,     false,   true],
+    ['contrast', true,        false,     false,   true]
+])('Start indicator, character, and design mode cursor (theme=%s, customBackgroundDesignMode=%p)', (theme, designMode, expectedCharacter, expectedOutline, expectedDesignModeCursor) => {
+    const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
+    const startingX = 3;
+    const startingY = 2;
+    const characterX = 5;
+    const characterY = 4;
+    const designModeCursorX = 7;
+    const designModeCursorY = 6;
+
+    const sceneWrapper = createMountScene({
+        dimensions: sceneDimensions,
+        characterState: new CharacterState(
+            characterX,
+            characterY,
+            2,
+            [],
+            sceneDimensions
+        ),
+        designModeCursorState: new DesignModeCursorState(
+            designModeCursorX,
+            designModeCursorY,
+            sceneDimensions
+        ),
+        theme: theme,
+        customBackground: new CustomBackground(sceneDimensions),
+        customBackgroundDesignMode: designMode,
+        startingX,
+        startingY
+    });
+
+    // Start indicator
+    const startIndicator = findStartIndicator(sceneWrapper);
+    expect(startIndicator.length).toBe(1);
+    expect(startIndicator.get(0).props.x)
+        .toBe(startingX - startIndicator.get(0).props.width/2);
+    expect(startIndicator.get(0).props.y)
+        .toBe(startingY - startIndicator.get(0).props.height/2);
+
+    // Character
+    const character = findSceneCharacter(sceneWrapper);
+    expect(character.exists()).toBe(expectedCharacter);
+    if (expectedCharacter) {
+        expect(character.get(0).props.transform)
+            .toBe(`translate(${characterX} ${characterY}) rotate(0 0 0)`);
+        const characterIcon = findSceneCharacterIcon(sceneWrapper);
+        expect(characterIcon.hostNodes().length).toBe(1);
         const expectedCharacterDimensions = calculateCharacterDimensions();
-        expect(findSceneCharacterIcon(sceneWrapper).hostNodes().length).toBe(1);
-        expect(findSceneCharacterIcon(sceneWrapper).get(0).props.x)
+        expect(characterIcon.get(0).props.x)
             .toBeCloseTo(expectedCharacterDimensions.x, 5);
-        expect(findSceneCharacterIcon(sceneWrapper).get(0).props.y)
+        expect(characterIcon.get(0).props.y)
             .toBeCloseTo(expectedCharacterDimensions.y, 5);
-        expect(findSceneCharacterIcon(sceneWrapper).get(0).props.width)
+        expect(characterIcon.get(0).props.width)
             .toBeCloseTo(expectedCharacterDimensions.width, 5);
-        expect(findSceneCharacterIcon(sceneWrapper).get(0).props.height)
+        expect(characterIcon.get(0).props.height)
             .toBeCloseTo(expectedCharacterDimensions.height, 5);
-    });
-    test('Should render the design mode cursor in customBackgroundDesignMode', () => {
-        const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
-        const designModeCursorState = new DesignModeCursorState(3, 2, sceneDimensions);
+    }
 
-        const sceneWrapper = createMountScene({
-            dimensions: sceneDimensions,
-            designModeCursorState: designModeCursorState,
-            customBackground: new CustomBackground(sceneDimensions),
-            customBackgroundDesignMode: true
-        });
+    // Character outline
+    const characterOutline = findCharacterOutline(sceneWrapper);
+    expect(characterOutline.exists()).toBe(expectedOutline);
+    if (expectedOutline) {
+        expect(characterOutline.length).toBe(1);
+        expect(characterOutline.get(0).props.cx).toBe(characterX);
+        expect(characterOutline.get(0).props.cy).toBe(characterY);
+    }
 
-        const designModeCursor = findDesignModeCursor(sceneWrapper);
-
+    // Design mode cursor
+    const designModeCursor = findDesignModeCursor(sceneWrapper);
+    expect(designModeCursor.exists()).toBe(expectedDesignModeCursor);
+    if (expectedDesignModeCursor) {
         expect(designModeCursor.length).toBe(1);
-
-        const expectedX = designModeCursorState.x
-            - designModeCursor.get(0).props.width/2;
-        const expectedY = designModeCursorState.y
-            - designModeCursor.get(0).props.height/2;
-        expect(designModeCursor.get(0).props.x).toBe(expectedX);
-        expect(designModeCursor.get(0).props.y).toBe(expectedY);
-    });
-    test('Should not render the design mode cursor outside customBackgroundDesignMode', () => {
-        const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
-        const sceneWrapper = createMountScene({
-            dimensions: sceneDimensions,
-            designModeCursorState: new DesignModeCursorState(3, 2, sceneDimensions),
-            customBackground: new CustomBackground(sceneDimensions),
-            customBackgroundDesignMode: false
-        });
-        expect(findDesignModeCursor(sceneWrapper).length).toBe(0);
-    });
-    test('Should render the start indicator', () => {
-        const sceneDimensions = new SceneDimensions(1, 8, 1, 9);
-        const startingX = 3;
-        const startingY = 3;
-        const sceneWrapper = createMountScene({
-            dimensions: sceneDimensions,
-            customBackground: new CustomBackground(sceneDimensions),
-            startingX,
-            startingY
-        });
-
-        const startIndicator = findStartIndicator(sceneWrapper);
-
-        expect(startIndicator.length).toBe(1);
-
-        const expectedX = startingX - startIndicator.get(0).props.width/2;
-        const expectedY = startingY - startIndicator.get(0).props.height/2;
-        expect(startIndicator.get(0).props.x).toBe(expectedX);
-        expect(startIndicator.get(0).props.y).toBe(expectedY);
-    });
-    test.each([
-        ['default', false],
-        ['light', false],
-        ['dark', false],
-        ['gray', false],
-        ['contrast', true]
-    ])('Should add an outline to the character in high contrast only', (theme, expectedCharacterOutlineExists) => {
-        const sceneDimensions = new SceneDimensions(1, 10, 1, 10);
-        const characterX = 2;
-        const characterY = 3;
-        const sceneWrapper = createMountScene({
-            dimensions: sceneDimensions,
-            characterState: new CharacterState(characterX, characterY, 2, [], sceneDimensions),
-            theme: theme,
-            customBackground: new CustomBackground(sceneDimensions)
-        });
-
-        const characterOutline = findCharacterOutline(sceneWrapper);
-
-        expect(characterOutline.exists()).toBe(expectedCharacterOutlineExists);
-
-        if (expectedCharacterOutlineExists) {
-            expect(characterOutline.length).toBe(1);
-            expect(characterOutline.get(0).props.cx).toBe(characterX);
-            expect(characterOutline.get(0).props.cy).toBe(characterY);
-        }
-    });
+        expect(designModeCursor.get(0).props.x)
+            .toBe(designModeCursorX - designModeCursor.get(0).props.width/2);
+        expect(designModeCursor.get(0).props.y)
+            .toBe(designModeCursorY - designModeCursor.get(0).props.height/2);
+    }
 });
 
 describe('When the character renders, transform should apply', (sceneDimensions = new SceneDimensions(1, 100, 1, 100)) => {
