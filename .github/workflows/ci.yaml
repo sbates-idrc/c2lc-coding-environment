@@ -8,8 +8,8 @@ jobs:
     name: Build
     strategy:
       matrix:
-        os: [ubuntu-20.04]
-        node-version: [16.x, 18.x]
+        os: [ubuntu-22.04]
+        node-version: [18.x, 20.x]
     runs-on: ${{ matrix.os }}
     env:
       CI: true
