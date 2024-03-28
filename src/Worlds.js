@@ -95,6 +95,8 @@ import { ReactComponent as MarbleThumbnail } from './svg/MarbleThumbnail.svg';
 import { ReactComponent as MarbleThumbnailGray } from './svg/MarbleThumbnailGray.svg';
 import { ReactComponent as MarbleThumbnailContrast } from './svg/MarbleThumbnailContrast.svg';
 import { ReactComponent as Marble } from './svg/Marble.svg';
+import { ReactComponent as MarbleGray } from './svg/MarbleGray.svg';
+import { ReactComponent as MarbleContrast } from './svg/MarbleContrast.svg';
 
 // Music Band
 
@@ -842,8 +844,8 @@ const worlds: {|
         thumbnailGray: MarbleThumbnailGray,
         thumbnailContrast: MarbleThumbnailContrast,
         character: Marble,
-        characterGray: Marble,
-        characterContrast: Marble,
+        characterGray: MarbleGray,
+        characterContrast: MarbleContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
