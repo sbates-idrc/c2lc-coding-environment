@@ -149,6 +149,8 @@ import { ReactComponent as SportsThumbnail } from './svg/SportsThumbnail.svg';
 import { ReactComponent as SportsThumbnailGray } from './svg/SportsThumbnailGray.svg';
 import { ReactComponent as SportsThumbnailContrast } from './svg/SportsThumbnailContrast.svg';
 import { ReactComponent as SportsGolfCart } from './svg/SportsGolfCart.svg';
+import { ReactComponent as SportsGolfCartGray } from './svg/SportsGolfCartGray.svg';
+import { ReactComponent as SportsGolfCartContrast } from './svg/SportsGolfCartContrast.svg';
 
 export type WorldProperties = {|
     background: ?React.ComponentType<{}>,
@@ -1068,8 +1070,8 @@ const worlds: {|
         thumbnailGray: SportsThumbnailGray,
         thumbnailContrast: SportsThumbnailContrast,
         character: SportsGolfCart,
-        characterGray: SportsGolfCart,
-        characterContrast: SportsGolfCart,
+        characterGray: SportsGolfCartGray,
+        characterContrast: SportsGolfCartContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
