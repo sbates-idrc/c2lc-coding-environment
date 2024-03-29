@@ -11,6 +11,8 @@ import { ReactComponent as AmusementParkThumbnail } from './svg/AmusementParkThu
 import { ReactComponent as AmusementParkThumbnailGray } from './svg/AmusementParkThumbnailGray.svg';
 import { ReactComponent as AmusementParkThumbnailContrast } from './svg/AmusementParkThumbnailContrast.svg';
 import { ReactComponent as AmusementParkTrain } from './svg/AmusementParkTrain.svg';
+import { ReactComponent as AmusementParkTrainGray } from './svg/AmusementParkTrainGray.svg';
+import { ReactComponent as AmusementParkTrainContrast } from './svg/AmusementParkTrainContrast.svg';
 
 // Atlantic Canada
 import { ReactComponent as AtlanticCanada } from './svg/AtlanticCanada.svg';
@@ -252,8 +254,8 @@ const worlds: {|
         thumbnailGray: AmusementParkThumbnailGray,
         thumbnailContrast: AmusementParkThumbnailContrast,
         character: AmusementParkTrain,
-        characterGray: AmusementParkTrain,
-        characterContrast: AmusementParkTrain,
+        characterGray: AmusementParkTrainGray,
+        characterContrast: AmusementParkTrainContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
