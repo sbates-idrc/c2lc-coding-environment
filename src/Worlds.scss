@@ -903,11 +903,8 @@ body.contrast-theme {
         .thumbnail-background {
             fill: #89D3BD;
         }
-        .thumbnail-top {
-            fill: #ED972C
-        }
-        .thumbnail-bottom {
-            fill: #4C9990;
+        .thumbnail-ball {
+            fill: #4292A4;
         }
     }
 }
@@ -932,10 +929,13 @@ body.gray-theme {
     .WorldSelector__option-image--Marble:hover {
         svg {
             .thumbnail-background {
-                fill: #67717E;
+                fill: #9DA4AF;
             }
             .thumbnail-edge {
                 fill: #3A3F46;
+            }
+            .thumbnail-ball {
+                fill: #67717E;
             }
         }
     }
