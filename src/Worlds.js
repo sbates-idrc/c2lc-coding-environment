@@ -109,6 +109,8 @@ import { ReactComponent as MusicBandThumbnail } from './svg/MusicBandThumbnail.s
 import { ReactComponent as MusicBandThumbnailGray } from './svg/MusicBandThumbnailGray.svg';
 import { ReactComponent as MusicBandThumbnailContrast } from './svg/MusicBandThumbnailContrast.svg';
 import { ReactComponent as MusicBandMusicNote } from './svg/MusicBandMusicNote.svg';
+import { ReactComponent as MusicBandMusicNoteGray } from './svg/MusicBandMusicNoteGray.svg';
+import { ReactComponent as MusicBandMusicNoteContrast } from './svg/MusicBandMusicNoteContrast.svg';
 
 // Savannah
 import { ReactComponent as Savannah } from './svg/Savannah.svg';
@@ -905,8 +907,8 @@ const worlds: {|
         thumbnailGray: MusicBandThumbnailGray,
         thumbnailContrast: MusicBandThumbnailContrast,
         character: MusicBandMusicNote,
-        characterGray: MusicBandMusicNote,
-        characterContrast: MusicBandMusicNote,
+        characterGray: MusicBandMusicNoteGray,
+        characterContrast: MusicBandMusicNoteContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
