@@ -77,6 +77,8 @@ import { ReactComponent as HauntedThumbnail } from './svg/HauntedThumbnail.svg';
 import { ReactComponent as HauntedThumbnailGray } from './svg/HauntedThumbnail-gray.svg';
 import { ReactComponent as HauntedThumbnailContrast } from './svg/HauntedThumbnail-contrast.svg';
 import { ReactComponent as HauntedFlashlight } from './svg/HauntedFlashlight.svg';
+import { ReactComponent as HauntedFlashlightGray } from './svg/HauntedFlashlightGray.svg';
+import { ReactComponent as HauntedFlashlightContrast } from './svg/HauntedFlashlightContrast.svg';
 
 // Landmarks
 import { ReactComponent as LandmarksWorld } from './svg/LandmarksWorld.svg';
@@ -740,8 +742,8 @@ const worlds: {|
         thumbnailGray: HauntedThumbnailGray,
         thumbnailContrast: HauntedThumbnailContrast,
         character: HauntedFlashlight,
-        characterGray: HauntedFlashlight,
-        characterContrast: HauntedFlashlight,
+        characterGray: HauntedFlashlightGray,
+        characterContrast: HauntedFlashlightContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
