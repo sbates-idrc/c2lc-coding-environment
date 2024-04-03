@@ -913,7 +913,7 @@ const worlds: {|
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
-        enableFlipCharacter: true
+        enableFlipCharacter: false
     },
     'Savannah': {
         background: Savannah,
