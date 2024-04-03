@@ -32,9 +32,9 @@ import { ReactComponent as CampingContrast } from './svg/Camping-contrast.svg';
 import { ReactComponent as CampingThumbnail } from './svg/CampingThumbnail.svg';
 import { ReactComponent as CampingThumbnailGray } from './svg/CampingThumbnail-gray.svg';
 import { ReactComponent as CampingThumbnailContrast } from './svg/CampingThumbnail-contrast.svg';
-import { ReactComponent as Squirrel } from './svg/Squirrel.svg';
-import { ReactComponent as SquirrelGray } from './svg/Squirrel-gray.svg';
-import { ReactComponent as SquirrelContrast } from './svg/Squirrel-contrast.svg';
+import { ReactComponent as CampingSquirrel } from './svg/CampingSquirrel.svg';
+import { ReactComponent as CampingSquirrelGray } from './svg/CampingSquirrel-gray.svg';
+import { ReactComponent as CampingSquirrelContrast } from './svg/CampingSquirrel-contrast.svg';
 
 // DeepOcean
 import { ReactComponent as DeepOcean } from './svg/DeepOcean.svg';
@@ -43,9 +43,9 @@ import { ReactComponent as DeepOceanContrast } from './svg/DeepOcean-contrast.sv
 import { ReactComponent as DeepOceanThumbnail } from './svg/DeepOceanThumbnail.svg';
 import { ReactComponent as DeepOceanThumbnailGray } from './svg/DeepOceanThumbnail-gray.svg';
 import { ReactComponent as DeepOceanThumbnailContrast } from './svg/DeepOceanThumbnail-contrast.svg';
-import { ReactComponent as Submarine } from './svg/Submarine.svg';
-import { ReactComponent as SubmarineGray } from './svg/Submarine-gray.svg';
-import { ReactComponent as SubmarineContrast } from './svg/Submarine-contrast.svg';
+import { ReactComponent as DeepOceanSubmarine } from './svg/DeepOceanSubmarine.svg';
+import { ReactComponent as DeepOceanSubmarineGray } from './svg/DeepOceanSubmarine-gray.svg';
+import { ReactComponent as DeepOceanSubmarineContrast } from './svg/DeepOceanSubmarine-contrast.svg';
 
 // Europe Trip
 import { ReactComponent as EuropeTrip } from './svg/EuropeTrip.svg';
@@ -87,9 +87,9 @@ import { ReactComponent as LandmarksWorldContrast } from './svg/LandmarksWorldCo
 import { ReactComponent as LandmarksThumbnail } from './svg/LandmarksThumbnail.svg';
 import { ReactComponent as LandmarksThumbnailGray } from './svg/LandmarksThumbnailGray.svg';
 import { ReactComponent as LandmarksThumbnailContrast } from './svg/LandmarksThumbnailContrast.svg';
-import { ReactComponent as Bot } from './svg/Bot.svg';
-import { ReactComponent as BotGray } from './svg/BotGray.svg';
-import { ReactComponent as BotContrast } from './svg/BotContrast.svg';
+import { ReactComponent as LandmarksBot } from './svg/LandmarksBot.svg';
+import { ReactComponent as LandmarksBotGray } from './svg/LandmarksBotGray.svg';
+import { ReactComponent as LandmarksBotContrast } from './svg/LandmarksBotContrast.svg';
 
 // Marble
 import { ReactComponent as MarbleWorld } from './svg/MarbleWorld.svg';
@@ -103,7 +103,6 @@ import { ReactComponent as MarbleGray } from './svg/MarbleGray.svg';
 import { ReactComponent as MarbleContrast } from './svg/MarbleContrast.svg';
 
 // Music Band
-
 import { ReactComponent as MusicBand } from './svg/MusicBand.svg';
 import { ReactComponent as MusicBandGray } from './svg/MusicBandGray.svg';
 import { ReactComponent as MusicBandContrast } from './svg/MusicBandContrast.svg';
@@ -452,9 +451,9 @@ const worlds: {|
         thumbnailDark: CampingThumbnail,
         thumbnailGray: CampingThumbnailGray,
         thumbnailContrast: CampingThumbnailContrast,
-        character: Squirrel,
-        characterGray: SquirrelGray,
-        characterContrast: SquirrelContrast,
+        character: CampingSquirrel,
+        characterGray: CampingSquirrelGray,
+        characterContrast: CampingSquirrelContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
@@ -504,9 +503,9 @@ const worlds: {|
         thumbnailDark: DeepOceanThumbnail,
         thumbnailGray: DeepOceanThumbnailGray,
         thumbnailContrast: DeepOceanThumbnailContrast,
-        character: Submarine,
-        characterGray: SubmarineGray,
-        characterContrast: SubmarineContrast,
+        character: DeepOceanSubmarine,
+        characterGray: DeepOceanSubmarineGray,
+        characterContrast: DeepOceanSubmarineContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
@@ -784,9 +783,9 @@ const worlds: {|
         thumbnailDark: LandmarksThumbnail,
         thumbnailGray: LandmarksThumbnailGray,
         thumbnailContrast: LandmarksThumbnailContrast,
-        character: Bot,
-        characterGray: BotGray,
-        characterContrast: BotContrast,
+        character: LandmarksBot,
+        characterGray: LandmarksBotGray,
+        characterContrast: LandmarksBotContrast,
         startingX: 1,
         startingY: 2,
         startingDirection: 2, // East
