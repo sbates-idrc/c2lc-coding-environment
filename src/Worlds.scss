@@ -37,7 +37,7 @@
 
 /* Amusement Park */
 
-@include world-colors("AmusementPark", #88C3BC, #FFFFFF)
+@include world-colors("AmusementPark", #88C3BC, #3A3F46)
 @include world-colors("AmusementPark", #B9BEC6, #505862, "gray")
 @include world-colors-std-contrast("AmusementPark")
 
@@ -367,7 +367,7 @@ body.contrast-theme {
 /* Grocery Store */
 
 @include world-colors("GroceryStore", #B7804A, #FFFFFF)
-@include world-colors("GroceryStore", #B9BEC6, #FFFFFF, "gray")
+@include world-colors("GroceryStore", #B9BEC6, #1E1E1E, "gray")
 @include world-colors-std-contrast("GroceryStore")
 
 .WorldSelector__option-image--GroceryStore:hover {
