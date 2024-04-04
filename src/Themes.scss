@@ -266,15 +266,6 @@ body.light-theme {
         color: #1E1E1E;
     }
 
-    .ProgramBlockEditor__character-column {
-        background-color: #EBFAF8;
-        border-right: 2px solid #D3E7EC;
-    }
-
-    .ProgramBlockEditor__character-column-character-container {
-        border: 2px solid #818A98;
-    }
-
     .ProgramBlockEditor__program-sequence-scroll-container {
         background-color: white;
     }
@@ -708,10 +699,6 @@ body.dark-theme {
     .ProgramBlockEditor__container {
         background-color: #33717F;
         border: 2px solid #33717F;
-    }
-
-    .ProgramBlockEditor__character-column {
-        background-color: #30444E;
     }
 
     .ProgramBlockEditor__header {
@@ -1379,10 +1366,6 @@ body.gray-theme {
 
     .ProgramBlockEditor__header {
         background-color: #D5D8DD;
-    }
-
-    .ProgramBlockEditor__character-column {
-        background-color: #F1F2F4;
     }
 
     .ProgramBlockEditor__program-sequence-scroll-container {
@@ -2481,11 +2464,6 @@ body.contrast-theme {
                 color: black;
             }
         }
-    }
-
-    .ProgramBlockEditor__character-column {
-        background-color: black;
-        border-right: 2px solid #9DA4AF;
     }
 
     .ProgramBlockEditor__program-sequence-scroll-container {
