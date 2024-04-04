@@ -292,7 +292,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                     world={this.props.world}
                                 />
                                 <StartIndicator
-                                    className='Scene__startIndicator'
+                                    className={`Scene__startIndicator Scene__startIndicator--${this.props.world}`}
                                     aria-hidden={true}
                                     // The centre of the starting square is (startingX, startingY).
                                     // Calculate the top left corner of the indicator
