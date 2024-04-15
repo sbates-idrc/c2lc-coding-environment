@@ -52,6 +52,34 @@
         .thumbnail-entrance-door-shadow {
             fill: #ED972C;
         }
+        .thumbnail-roof {
+            fill: #EA7362;
+        }
+        .thumbnail-roof-shadow {
+            fill: #C13925;
+        }
+        .thumbnail-train-door {
+            fill: #C13925;
+        }
+        .thumbnail-train-window {
+            fill: #5CBCD1;
+        }
+        .thumbnail-train-engine-shadow {
+            fill: #F75322;
+        }
+        .thumbnail-train-front {
+            fill: #EA462F;
+        }
+        .thumbnail-train-wheel {
+            fill: #818A98;
+            stroke: #1E1E1E;
+        }
+        .thumbnail-train-detail {
+            fill: #1E1E1E;
+        }
+        .thumbnail-smoke {
+            fill: #5CBCD1;
+        }
     }
 }
 
@@ -61,21 +89,36 @@ body.gray-theme {
             .thumbnail-background {
                 fill: #D5D8DD;
             }
+            .thumbnail-entrance-door {
+                fill: #67717E;
+            }
             .thumbnail-entrance-door-shadow {
                 fill: #3A3F46;
             }
-            .thumbnail-dark-grey {
-                fill: #67717E;
-            }
-            .thumbnail-light-grey {
+            .thumbnail-roof {
                 fill: #818A98;
             }
-            .thumbnail-ticket {
-                fill: #B9BEC6;
+            .thumbnail-roof-shadow {
+                fill: #67717E;
             }
-            .thumbnial-ticket-outline {
-                fill: #3A3F46;
-                stroke: #3A3F46;
+            .thumbnail-train {
+                fill: #505862;
+            }
+            .thumbnail-train-engine {
+                fill: #818A98;
+            }
+            .thumbnail-train-engine-shadow {
+                fill: #67717E;
+            }
+            .thumbnail-train-wheel {
+                fill: #9DA4AF;
+                stroke: #22262A;
+            }
+            .thumbnail-train-detail {
+                fill: #22262A;
+            }
+            .thumbnail-smoke {
+                fill: #B9BEC6;
             }
         }
     }
@@ -84,28 +127,14 @@ body.gray-theme {
 body.contrast-theme {
     .WorldSelector__option-image--AmusementPark:hover {
         svg {
-            .thumbnail-background {
-                fill: #000000;
+            .thumbnail-fill-light {
+                fill: #1E1E1E;
             }
-            .thumbnail-entrance-door {
-                fill: #000000;
-                stroke: #FFFFFF;
+            .thumbnail-fill-dark {
+                fill: white;
             }
-            .thumbnail-entrance-door-shadow {
-                fill: #000000;
-            }
-            .thumbnail-entrance-roof {
-                fill: #FFFFFF;
-                stroke: #000000;
-            }
-            .thumbnail-ticket {
-                fill: #FFFFFF;
-            }
-            .thumbnail-ticket-design {
-                fill: #000000;
-            }
-            .thumbnail-ticket-outline {
-                stroke: #000000;
+            .thumbnail-stroke-dark {
+                stroke: white;
             }
         }
     }
@@ -444,13 +473,34 @@ body.contrast-theme {
 .WorldSelector__option-image--Haunted:hover {
     svg {
         .thumbnail-background {
-            fill: #454675;
+            fill: #1B2432;
         }
-        .thumbnail-light {
-            fill: #E2C068;
+        .thumbnail-hand {
+            fill: #6A87AE;
         }
-        .thumbnail-dimlight {
-            fill: #CA9A68;
+        .thumbnail-hand-shadow {
+            fill: #3F5574;
+        }
+        .thumbnail-fingers {
+            fill: #516D95;
+        }
+        .thumbnail-finger-shadows {
+            fill: #2D3D53;
+        }
+        .thumbnail-flashlight {
+            fill: #C8311B;
+        }
+        .thumbnail-flashlight-shadow {
+            fill: #A1200D;
+        }
+        .thumbnail-flashlight-lens {
+            fill: #F1AE5B;
+        }
+        .thumbnail-flashlight-highlight {
+            fill: #6F1507;
+        }
+        .thumbnail-flashlight-light {
+            stop-color: #F1AE5B;
         }
     }
 }
@@ -459,19 +509,34 @@ body.gray-theme {
     .WorldSelector__option-image--Haunted:hover {
         svg {
             .thumbnail-background {
-                fill: #343434;
-            }
-            .thumbnail-light {
-                fill: #CFCFCF
-            }
-            .thumbnail-dimlight {
-                fill: #ABABAB;
-            }
-            .thumbnail-candle {
-                fill: #7D7D7D;
+                fill: #818A98;
             }
             .thumbnail-hand {
-                fill: #7E7E7E;
+                fill: #D5D8DD;
+            }
+            .thumbnail-hand-shadow {
+                fill: #505862;
+            }
+            .thumbnail-fingers {
+                fill: #D5D8DD;
+            }
+            .thumbnail-finger-shadows {
+                fill: #22262A;
+            }
+            .thumbnail-flashlight {
+                fill: #505862;
+            }
+            .thumbnail-flashlight-shadow {
+                fill: #22262A;
+            }
+            .thumbnail-flashlight-bulb {
+                fill: #D5D8DD;
+            }
+            .thumbnail-flashlight-lens {
+                fill: #9DA4AF;
+            }
+            .thumbnail-flashlight-highlight {
+                fill: #505862;
             }
         }
     }
@@ -480,18 +545,20 @@ body.gray-theme {
 body.contrast-theme {
     .WorldSelector__option-image--Haunted:hover {
         svg {
-            .thumbnail-light {
-                fill: black;
+            .thumbnail-fill-light {
+                fill: #1E1E1E;
             }
-            .thumbnail-dark {
+            .thumbnail-stroke-light {
+                stroke: #1E1E1E;
+            }
+            .thumbnail-fill-dark {
                 fill: white;
             }
-            .thumbnail-outline {
+            .thumbnail-stroke-dark {
                 stroke: white;
             }
-            .thumbnail-light-outline {
-                fill: black;
-                stroke: white;
+            .thumbnail-flashlight-light {
+                stop-color: white;
             }
         }
     }
