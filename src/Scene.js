@@ -292,7 +292,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                     world={this.props.world}
                                 />
                                 <StartIndicator
-                                    className='Scene__startIndicator'
+                                    className={`Scene__startIndicator Scene__startIndicator--${this.props.world}`}
                                     aria-hidden={true}
                                     // The centre of the starting square is (startingX, startingY).
                                     // Calculate the top left corner of the indicator
@@ -303,22 +303,7 @@ class Scene extends React.Component<SceneProps, {}> {
                                     width={startIndicatorWidth}
                                     height={startIndicatorWidth}
                                 />
-                                {(!this.props.customBackgroundDesignMode && this.props.theme === 'contrast') &&
-                                    <circle
-                                        className='Scene__characterOutline'
-                                        cx={this.props.characterState.xPos}
-                                        cy={this.props.characterState.yPos}
-                                        r={0.51}
-                                    />
-                                }
-                                {!this.props.customBackgroundDesignMode &&
-                                    <SceneCharacter
-                                        characterState={this.props.characterState}
-                                        theme={this.props.theme}
-                                        world={this.props.world}
-                                    />
-                                }
-                                {this.props.customBackgroundDesignMode &&
+                                {this.props.customBackgroundDesignMode ?
                                     <PaintbrushCursor
                                         className='Scene__designModeCursor'
                                         aria-hidden={true}
@@ -327,6 +312,20 @@ class Scene extends React.Component<SceneProps, {}> {
                                         width={1}
                                         height={1}
                                     />
+                                    :
+                                    <React.Fragment>
+                                        <circle
+                                            className={`Scene__characterOutline Scene__characterOutline--${this.props.world}`}
+                                            cx={this.props.characterState.xPos}
+                                            cy={this.props.characterState.yPos}
+                                            r={0.51}
+                                        />
+                                        <SceneCharacter
+                                            characterState={this.props.characterState}
+                                            theme={this.props.theme}
+                                            world={this.props.world}
+                                        />
+                                    </React.Fragment>
                                 }
                             </g>
                         </svg>

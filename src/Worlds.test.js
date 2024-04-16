@@ -2,9 +2,9 @@
 
 import { getBackgroundInfo, getWorldCharacter, getWorldThumbnail, getWorldProperties, isWorldName } from './Worlds';
 
-import { ReactComponent as Submarine } from './svg/Submarine.svg';
-import { ReactComponent as SubmarineGray } from './svg/Submarine-gray.svg';
-import { ReactComponent as SubmarineContrast } from './svg/Submarine-contrast.svg';
+import { ReactComponent as DeepOceanSubmarine } from './svg/DeepOceanSubmarine.svg';
+import { ReactComponent as DeepOceanSubmarineGray } from './svg/DeepOceanSubmarine-gray.svg';
+import { ReactComponent as DeepOceanSubmarineContrast } from './svg/DeepOceanSubmarine-contrast.svg';
 
 import { ReactComponent as SpaceThumbnail } from './svg/SpaceThumbnail.svg';
 import { ReactComponent as SpaceThumbnailGray } from './svg/SpaceThumbnail-gray.svg';
@@ -33,9 +33,9 @@ test('getWorldProperties', () => {
 
 test('getWorldCharacter', () => {
     expect.assertions(3);
-    expect(getWorldCharacter('light', 'DeepOcean')).toBe(Submarine);
-    expect(getWorldCharacter('gray', 'DeepOcean')).toBe(SubmarineGray);
-    expect(getWorldCharacter('contrast', 'DeepOcean')).toBe(SubmarineContrast);
+    expect(getWorldCharacter('light', 'DeepOcean')).toBe(DeepOceanSubmarine);
+    expect(getWorldCharacter('gray', 'DeepOcean')).toBe(DeepOceanSubmarineGray);
+    expect(getWorldCharacter('contrast', 'DeepOcean')).toBe(DeepOceanSubmarineContrast);
 });
 
 test('getWorldThumbnail', () => {

@@ -19,7 +19,6 @@ import ProgramSequence from './ProgramSequence';
 import ToggleSwitch from './ToggleSwitch';
 import { ReactComponent as AddIcon } from './svg/Add.svg';
 import { ReactComponent as DeleteAllIcon } from './svg/DeleteAll.svg';
-import { getWorldCharacter } from './Worlds';
 import './ProgramBlockEditor.scss';
 
 // TODO: Send focus to Delete toggle button on close of Delete All confirmation
@@ -754,8 +753,6 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         const contents = this.renderProgramSections();
         contents.push(this.makeEndOfProgramAddNodeSection(this.props.programSequence.getProgramLength()));
 
-        const character = getWorldCharacter(this.props.theme, this.props.world);
-
         return (
             <div className='ProgramBlockEditor__container'>
                 <div className='ProgramBlockEditor__header'>
@@ -786,18 +783,6 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                                 />
                             </IconButton>
                         </span>
-                    </div>
-                </div>
-                <div className='ProgramBlockEditor__character-column'>
-                    <div
-                        aria-hidden='true'
-                        className={`ProgramBlockEditor__character-column-character-container
-                            ProgramBlockEditor__character-column-character-container--${this.props.world}`}
-                        role='img'>
-                        {React.createElement(
-                            character,
-                            { className: 'ProgramBlockEditor__character-column-character' }
-                        )}
                     </div>
                 </div>
                 <div

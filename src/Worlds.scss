@@ -1,16 +1,45 @@
+@function theme-selector($theme) {
+    @if $theme {
+        @if $theme != "default"
+                and $theme != "light"
+                and $theme != "dark"
+                and $theme != "gray"
+                and $theme != "contrast" {
+            @error "Bad theme: #{$theme}";
+        }
+        @return "body.#{$theme}-theme";
+    } @else {
+        @return "";
+    }
+}
+
+@mixin world-colors($world, $grid-color, $drawing-color, $theme: false) {
+    #{theme-selector($theme)} .Scene__grid-line--#{$world} {
+        stroke: $grid-color;
+    }
+
+    #{theme-selector($theme)} .Scene__startIndicator--#{$world} .start-indicator-outer-circle {
+        fill: $drawing-color;
+    }
+
+    #{theme-selector($theme)} .Scene__path-line--#{$world} {
+        stroke: $drawing-color;
+    }
+
+    #{theme-selector($theme)} .Scene__characterOutline--#{$world} {
+        fill: $drawing-color;
+    }
+}
+
+@mixin world-colors-std-contrast($world) {
+    @include world-colors($world, #0078FF, #FF0000, "contrast")
+}
+
 /* Amusement Park */
 
-.ProgramBlockEditor__character-column-character-container--AmusementPark {
-    background-color: #FFFFFF;
-}
-
-.Scene__grid-line--AmusementPark {
-    stroke: #88C3BC;
-}
-
-.Scene__path-line--AmusementPark {
-    stroke: #FFFFFF;
-}
+@include world-colors("AmusementPark", #88C3BC, #3A3F46)
+@include world-colors("AmusementPark", #B9BEC6, #505862, "gray")
+@include world-colors-std-contrast("AmusementPark")
 
 .WorldSelector__option-image--AmusementPark:hover {
     svg {
@@ -23,84 +52,89 @@
         .thumbnail-entrance-door-shadow {
             fill: #ED972C;
         }
+        .thumbnail-roof {
+            fill: #EA7362;
+        }
+        .thumbnail-roof-shadow {
+            fill: #C13925;
+        }
+        .thumbnail-train-door {
+            fill: #C13925;
+        }
+        .thumbnail-train-window {
+            fill: #5CBCD1;
+        }
+        .thumbnail-train-engine-shadow {
+            fill: #F75322;
+        }
+        .thumbnail-train-front {
+            fill: #EA462F;
+        }
+        .thumbnail-train-wheel {
+            fill: #818A98;
+            stroke: #1E1E1E;
+        }
+        .thumbnail-train-detail {
+            fill: #1E1E1E;
+        }
+        .thumbnail-smoke {
+            fill: #5CBCD1;
+        }
     }
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--AmusementPark {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--AmusementPark {
-        stroke: #B9BEC6;
-    }
-
-    .Scene__path-line--AmusementPark {
-        stroke: #505862;
-    }
-
     .WorldSelector__option-image--AmusementPark:hover {
         svg {
             .thumbnail-background {
                 fill: #D5D8DD;
             }
+            .thumbnail-entrance-door {
+                fill: #67717E;
+            }
             .thumbnail-entrance-door-shadow {
                 fill: #3A3F46;
             }
-            .thumbnail-dark-grey {
-                fill: #67717E;
-            }
-            .thumbnail-light-grey {
+            .thumbnail-roof {
                 fill: #818A98;
             }
-            .thumbnail-ticket {
-                fill: #B9BEC6;
+            .thumbnail-roof-shadow {
+                fill: #67717E;
             }
-            .thumbnial-ticket-outline {
-                fill: #3A3F46;
-                stroke: #3A3F46;
+            .thumbnail-train {
+                fill: #505862;
+            }
+            .thumbnail-train-engine {
+                fill: #818A98;
+            }
+            .thumbnail-train-engine-shadow {
+                fill: #67717E;
+            }
+            .thumbnail-train-wheel {
+                fill: #9DA4AF;
+                stroke: #22262A;
+            }
+            .thumbnail-train-detail {
+                fill: #22262A;
+            }
+            .thumbnail-smoke {
+                fill: #B9BEC6;
             }
         }
     }
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--AmusementPark {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--AmusementPark {
-        stroke:#0078FF;
-    }
-
-    .Scene__path-line--AmusementPark {
-        stroke:#FF0000;
-    }
-
     .WorldSelector__option-image--AmusementPark:hover {
         svg {
-            .thumbnail-background {
-                fill: #000000;
+            .thumbnail-fill-light {
+                fill: #1E1E1E;
             }
-            .thumbnail-entrance-door {
-                fill: #000000;
-                stroke: #FFFFFF;
+            .thumbnail-fill-dark {
+                fill: white;
             }
-            .thumbnail-entrance-door-shadow {
-                fill: #000000;
-            }
-            .thumbnail-entrance-roof {
-                fill: #FFFFFF;
-                stroke: #000000;
-            }
-            .thumbnail-ticket {
-                fill: #FFFFFF;
-            }
-            .thumbnail-ticket-design {
-                fill: #000000;
-            }
-            .thumbnail-ticket-outline {
-                stroke: #000000;
+            .thumbnail-stroke-dark {
+                stroke: white;
             }
         }
     }
@@ -108,17 +142,9 @@ body.contrast-theme {
 
 /* Atlantic Canada */
 
-.ProgramBlockEditor__character-column-character-container--AtlanticCanada {
-    background-color: #2D849F;
-}
-
-.Scene__grid-line--AtlanticCanada {
-    stroke: #567F88;
-}
-
-.Scene__path-line--AtlanticCanada {
-    stroke: #E5AF5E;
-}
+@include world-colors("AtlanticCanada", #567F88, #E5AF5E)
+@include world-colors("AtlanticCanada", #B9BEC6, #FFFFFF, "gray")
+@include world-colors-std-contrast("AtlanticCanada")
 
 .WorldSelector__option-image--AtlanticCanada:hover {
     svg {
@@ -129,18 +155,6 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--AtlanticCanada {
-        background-color: #B9BEC6;
-    }
-
-    .Scene__grid-line--AtlanticCanada {
-        stroke: #B9BEC6;
-    }
-
-    .Scene__path-line--AtlanticCanada {
-        stroke: #FFFFFF;
-    }
-
     .WorldSelector__option-image--AtlanticCanada:hover {
         svg {
             .thumbnail-background {
@@ -157,18 +171,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--AtlanticCanada {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--AtlanticCanada {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--AtlanticCanada {
-        stroke: #FF0000;
-    }
-
     .WorldSelector__option-image--AtlanticCanada:hover {
         svg {
             .thumbnail-background {
@@ -202,17 +204,9 @@ body.contrast-theme {
 
 /* Camping */
 
-.ProgramBlockEditor__character-column-character-container--Camping {
-    background-color: #A3BA8B;
-}
-
-.Scene__grid-line--Camping {
-    stroke: #8F8F8F;
-}
-
-.Scene__path-line--Camping {
-    stroke: #FFC700;
-}
+@include world-colors("Camping", #8F8F8F, #FFC700)
+@include world-colors("Camping", #8F8F8F, #FFFFFF, "gray")
+@include world-colors-std-contrast("Camping")
 
 .WorldSelector__option-image--Camping:hover {
     svg {
@@ -229,18 +223,6 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--Camping {
-        background-color: #D3D3D3;
-    }
-
-    .Scene__grid-line--Camping {
-        stroke: #8F8F8F;
-    }
-
-    .Scene__path-line--Camping {
-        stroke: #FFFFFF;
-    }
-
     .WorldSelector__option-image--Camping:hover {
         svg {
             .thumbnail-background {
@@ -257,18 +239,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--Camping {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--Camping {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--Camping {
-        stroke: #FF0000;
-    }
-
     .WorldSelector__option-image--Camping:hover {
         svg {
             .thumbnail-background {
@@ -287,17 +257,9 @@ body.contrast-theme {
 
 /* DeepOcean */
 
-.ProgramBlockEditor__character-column-character-container--DeepOcean {
-    background-color: #1B2432;
-}
-
-.Scene__grid-line--DeepOcean {
-    stroke: #8BA2C0;
-}
-
-.Scene__path-line--DeepOcean {
-    stroke: #FFFFFF;
-}
+@include world-colors("DeepOcean", #8BA2C0, #FFFFFF)
+@include world-colors("DeepOcean", #FFFFFF, #22262A, "gray")
+@include world-colors-std-contrast("DeepOcean")
 
 .WorldSelector__option-image--DeepOcean:hover {
     svg {
@@ -308,18 +270,6 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--DeepOcean {
-        background-color: #67717E;
-    }
-
-    .Scene__grid-line--DeepOcean {
-        stroke: #FFFFFF;
-    }
-
-    .Scene__path-line--DeepOcean {
-        stroke: #505862;
-    }
-
     .WorldSelector__option-image--DeepOcean:hover {
         svg {
             .thumbnail-background {
@@ -330,18 +280,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--DeepOcean {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--DeepOcean {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--DeepOcean {
-        stroke: #FF0000;
-    }
-
     .WorldSelector__option-image--DeepOcean:hover {
         svg {
             .thumbnail-background {
@@ -366,17 +304,9 @@ body.contrast-theme {
 
 /* Europe Trip */
 
-.ProgramBlockEditor__character-column-character-container--EuropeTrip {
-    background-color: #FFFFFF;
-}
-
-.Scene__grid-line--EuropeTrip {
-    stroke: #EBFAF8;
-}
-
-.Scene__path-line--EuropeTrip {
-    stroke: #FFFFFF;
-}
+@include world-colors("EuropeTrip", #EBFAF8, #3F5574)
+@include world-colors("EuropeTrip", #818A98, #1E1E1E, "gray")
+@include world-colors-std-contrast("EuropeTrip")
 
 .WorldSelector__option-image--EuropeTrip:hover {
     svg {
@@ -405,18 +335,6 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--EuropeTrip {
-        background-color: #3A3F46;
-    }
-
-    .Scene__grid-line--EuropeTrip {
-        stroke: #818A98;
-    }
-
-    .Scene__path-line--EuropeTrip {
-        stroke: #3A3F46;
-    }
-
     .WorldSelector__option-image--EuropeTrip:hover {
         svg {
             .thumbnail-background {
@@ -448,18 +366,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--EuropeTrip {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--EuropeTrip {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--EuropeTrip {
-        stroke: #FF0000;
-    }
-
     .WorldSelector__option-image--EuropeTrip:hover {
         svg {
             .thumbnail-background {
@@ -489,17 +395,9 @@ body.contrast-theme {
 
 /* Grocery Store */
 
-.ProgramBlockEditor__character-column-character-container--GroceryStore {
-    background-color: #FFFFFF;
-}
-
-.Scene__grid-line--GroceryStore {
-    stroke: #B7804A;
-}
-
-.Scene__path-line--GroceryStore {
-    stroke: #FFFFFF;
-}
+@include world-colors("GroceryStore", #B7804A, #FFFFFF)
+@include world-colors("GroceryStore", #B9BEC6, #1E1E1E, "gray")
+@include world-colors-std-contrast("GroceryStore")
 
 .WorldSelector__option-image--GroceryStore:hover {
     svg {
@@ -522,18 +420,6 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--GroceryStore {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--GroceryStore {
-        stroke: #B9BEC6;
-    }
-
-    .Scene__path-line--GroceryStore {
-        stroke: #FFFFFF;
-    }
-
     .WorldSelector__option-image--GroceryStore:hover {
         svg {
             .thumbnail-background {
@@ -556,18 +442,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--GroceryStore {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--GroceryStore {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--GroceryStore {
-        stroke: #FF0000;
-    }
-
     .WorldSelector__option-image--GroceryStore:hover {
         svg {
             .thumbnail-background {
@@ -592,93 +466,99 @@ body.contrast-theme {
 
 /* Haunted House */
 
-.ProgramBlockEditor__character-column-character-container--Haunted {
-    background-color: #454675;
-}
-
-.Scene__grid-line--Haunted {
-    stroke: #5F607B;
-}
-
-.Scene__path-line--Haunted {
-    stroke: #FFC700;
-}
+@include world-colors("Haunted", #5F607B, #FFC700)
+@include world-colors("Haunted", #7B7B7B, #FFFFFF, "gray")
+@include world-colors-std-contrast("Haunted")
 
 .WorldSelector__option-image--Haunted:hover {
     svg {
         .thumbnail-background {
-            fill: #454675;
+            fill: #020A14;
         }
-        .thumbnail-light {
-            fill: #E2C068;
+        .thumbnail-hand {
+            fill: #6A87AE;
         }
-        .thumbnail-dimlight {
-            fill: #CA9A68;
+        .thumbnail-hand-shadow {
+            fill: #3F5574;
+        }
+        .thumbnail-fingers {
+            fill: #516D95;
+        }
+        .thumbnail-finger-shadows {
+            fill: #2D3D53;
+        }
+        .thumbnail-flashlight {
+            fill: #C8311B;
+        }
+        .thumbnail-flashlight-shadow {
+            fill: #A1200D;
+        }
+        .thumbnail-flashlight-lens {
+            fill: #F1AE5B;
+        }
+        .thumbnail-flashlight-highlight {
+            fill: #6F1507;
+        }
+        .thumbnail-flashlight-light {
+            stop-color: #F1AE5B;
         }
     }
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--Haunted {
-        background-color: #D3D3D3;
-    }
-
-    .Scene__grid-line--Haunted {
-        stroke: #7B7B7B;
-    }
-
-    .Scene__path-line--Haunted {
-        stroke: #FFFFFF;
-    }
-
     .WorldSelector__option-image--Haunted:hover {
         svg {
             .thumbnail-background {
-                fill: #343434;
-            }
-            .thumbnail-light {
-                fill: #CFCFCF
-            }
-            .thumbnail-dimlight {
-                fill: #ABABAB;
-            }
-            .thumbnail-candle {
-                fill: #7D7D7D;
+                fill: #818A98;
             }
             .thumbnail-hand {
-                fill: #7E7E7E;
+                fill: #D5D8DD;
+            }
+            .thumbnail-hand-shadow {
+                fill: #505862;
+            }
+            .thumbnail-fingers {
+                fill: #D5D8DD;
+            }
+            .thumbnail-finger-shadows {
+                fill: #22262A;
+            }
+            .thumbnail-flashlight {
+                fill: #505862;
+            }
+            .thumbnail-flashlight-shadow {
+                fill: #22262A;
+            }
+            .thumbnail-flashlight-bulb {
+                fill: #D5D8DD;
+            }
+            .thumbnail-flashlight-lens {
+                fill: #9DA4AF;
+            }
+            .thumbnail-flashlight-highlight {
+                fill: #505862;
             }
         }
     }
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--Haunted {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--Haunted {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--Haunted {
-        stroke: #FF0000;
-    }
-
     .WorldSelector__option-image--Haunted:hover {
         svg {
-            .thumbnail-light {
-                fill: black;
+            .thumbnail-fill-light {
+                fill: #1E1E1E;
             }
-            .thumbnail-dark {
+            .thumbnail-stroke-light {
+                stroke: #1E1E1E;
+            }
+            .thumbnail-fill-dark {
                 fill: white;
             }
-            .thumbnail-outline {
+            .thumbnail-stroke-dark {
                 stroke: white;
             }
-            .thumbnail-light-outline {
-                fill: black;
-                stroke: white;
+            .thumbnail-flashlight-light {
+                stop-color: white;
             }
         }
     }
@@ -686,17 +566,9 @@ body.contrast-theme {
 
 /* Landmarks */
 
-.ProgramBlockEditor__character-column-character-container--Landmarks {
-    background-color: #FFE5B4;
-}
-
-.Scene__grid-line--Landmarks {
-    stroke: #F9F2EC;
-}
-
-.Scene__path-line--Landmarks {
-    stroke: #784234;
-}
+@include world-colors("Landmarks", #F9F2EC, #784234)
+@include world-colors("Landmarks", #FFFFFF, #505862, "gray")
+@include world-colors-std-contrast("Landmarks")
 
 .WorldSelector__option-image--Landmarks:hover {
     svg {
@@ -713,18 +585,6 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--Landmarks {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--Landmarks {
-        stroke: #FFFFFF;
-    }
-
-    .Scene__path-line--Landmarks {
-        stroke: #505862;
-    }
-
     .WorldSelector__option-image--Landmarks:hover {
         svg {
             .thumbnail-background {
@@ -741,18 +601,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--Landmarks {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--Landmarks {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--Landmarks {
-        stroke: #FF0000;
-    }
-
     .WorldSelector__option-image--Landmarks:hover {
         svg {
             .thumbnail-background {
@@ -786,70 +634,38 @@ body.contrast-theme {
 
 /* Marble */
 
-.ProgramBlockEditor__character-column-character-container--Marble {
-    background-color: #EBFAF8;
-}
-
-.Scene__grid-line--Marble {
-    stroke: #F9F2EC;
-}
-
-.Scene__path-line--Marble {
-    stroke: #3F5574;
-}
+@include world-colors("Marble", #F9F2EC, #3F5574)
+@include world-colors("Marble", #FFFFFF, #22262A, "gray")
+@include world-colors-std-contrast("Marble")
 
 .WorldSelector__option-image--Marble:hover {
     svg {
         .thumbnail-background {
             fill: #89D3BD;
         }
-        .thumbnail-top {
-            fill: #ED972C
-        }
-        .thumbnail-bottom {
-            fill: #4C9990;
+        .thumbnail-ball {
+            fill: #4292A4;
         }
     }
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--Marble {
-        background-color: #67717E;
-    }
-
-    .Scene__grid-line--Marble {
-        stroke: #FFFFFF;
-    }
-
-    .Scene__path-line--Marble {
-        stroke: #22262A;
-    }
-
     .WorldSelector__option-image--Marble:hover {
         svg {
             .thumbnail-background {
-                fill: #67717E;
+                fill: #9DA4AF;
             }
             .thumbnail-edge {
                 fill: #3A3F46;
+            }
+            .thumbnail-ball {
+                fill: #67717E;
             }
         }
     }
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--Marble {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--Marble {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--Marble {
-        stroke: #FF0000;
-    }
-
     .WorldSelector__option-image--Marble:hover {
         svg {
             .thumbnail-dark {
@@ -864,17 +680,9 @@ body.contrast-theme {
 
 /* Music Band */
 
-.ProgramBlockEditor__character-column-character-container--MusicBand {
-    background-color: #FBE6CD;
-}
-
-.Scene__grid-line--MusicBand {
-    stroke: #567F88;
-}
-
-.Scene__path-line--MusicBand {
-    stroke: #E5AF5E;
-}
+@include world-colors("MusicBand", #567F88, #E5AF5E)
+@include world-colors("MusicBand", #7F8898, #FFFFFF, "gray")
+@include world-colors-std-contrast("MusicBand")
 
 .WorldSelector__option-image--MusicBand:hover {
     svg {
@@ -903,18 +711,6 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--MusicBand {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--MusicBand {
-        stroke: #7F8898;
-    }
-
-    .Scene__path-line--MusicBand {
-        stroke: #FFFFFF;
-    }
-
     .WorldSelector__option-image--MusicBand:hover {
         svg {
             .thumbnail-background {
@@ -943,18 +739,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--MusicBand {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--MusicBand {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--MusicBand {
-        stroke: #FF0000;
-    }
-
     .WorldSelector__option-image--MusicBand:hover {
         svg {
             .thumbnail-background {
@@ -973,17 +757,10 @@ body.contrast-theme {
 
 /* Sketchpad */
 
-.ProgramBlockEditor__character-column-character-container--Sketchpad {
-    background-color: #4C9990;
-}
-
-.Scene__grid-line--Sketchpad {
-    stroke: #F1F2F4;
-}
-
-.Scene__path-line--Sketchpad {
-    stroke: #505862;
-}
+@include world-colors("Sketchpad", #F1F2F4, #505862)
+@include world-colors("Sketchpad", #30444E, #FFFFFF, "dark")
+@include world-colors("Sketchpad", #D5D8DD, #505862, "gray")
+@include world-colors-std-contrast("Sketchpad")
 
 .WorldSelector__option-image--Sketchpad:hover {
     svg {
@@ -997,14 +774,6 @@ body.contrast-theme {
 }
 
 body.dark-theme {
-    .Scene__grid-line--Sketchpad {
-        stroke: #30444E;
-    }
-
-    .Scene__path-line--Sketchpad {
-        stroke: #FFFFFF;
-    }
-
     .WorldSelector__option-image--Sketchpad:hover {
         svg {
             .thumbnail-background {
@@ -1015,18 +784,6 @@ body.dark-theme {
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--Sketchpad {
-        background-color: #9DA4AF;
-    }
-
-    .Scene__grid-line--Sketchpad {
-        stroke: #D5D8DD;
-    }
-
-    .Scene__path-line--Sketchpad {
-        stroke: #505862;
-    }
-
     .WorldSelector__option-image--Sketchpad:hover {
         svg {
             .thumbnail-background {
@@ -1037,18 +794,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--Sketchpad {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--Sketchpad {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--Sketchpad {
-        stroke: #FF0000;
-    }
-
     .WorldSelector__option-image--Sketchpad:hover {
         svg {
             .thumbnail-dark {
@@ -1069,17 +814,9 @@ body.contrast-theme {
 
 /* Savannah */
 
-.ProgramBlockEditor__character-column-character-container--Savannah {
-    background-color: #FFE5B4;
-}
-
-.Scene__grid-line--Savannah {
-    stroke: #F9F2EC;
-}
-
-.Scene__path-line--Savannah {
-    stroke: #784234;
-}
+@include world-colors("Savannah", #F9F2EC, #784234)
+@include world-colors("Savannah", #FFFFFF, #505862, "gray")
+@include world-colors-std-contrast("Savannah")
 
 .WorldSelector__option-image--Savannah:hover {
     svg {
@@ -1090,18 +827,6 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--Savannah {
-        background-color: #505862;
-    }
-
-    .Scene__grid-line--Savannah {
-        stroke: #FFFFFF;
-    }
-
-    .Scene__path-line--Savannah {
-        stroke: #505862;
-    }
-
     .WorldSelector__option-image--Savannah:hover {
         svg {
             .thumbnail-background {
@@ -1112,18 +837,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--Savannah {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--Savannah {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--Savannah {
-        stroke: #FF0000;
-    }
-
     .WorldSelector__option-image--Savannah:hover {
         svg {
             .thumbnail-background {
@@ -1158,17 +871,9 @@ body.contrast-theme {
 
 /* Space */
 
-.ProgramBlockEditor__character-column-character-container--Space {
-    background-color: #1B2432;
-}
-
-.Scene__grid-line--Space {
-    stroke: #8BA2C0;
-}
-
-.Scene__path-line--Space {
-    stroke: #F1AE5B;
-}
+@include world-colors("Space", #8BA2C0, #F1AE5B)
+@include world-colors("Space", #FFFFFF, #FFFFFF, "gray")
+@include world-colors-std-contrast("Space")
 
 .WorldSelector__option-image--Space:hover {
     svg {
@@ -1179,18 +884,6 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--Space {
-        background-color: #505862;
-    }
-
-    .Scene__grid-line--Space {
-        stroke: #FFFFFF;
-    }
-
-    .Scene__path-line--Space {
-        stroke: #3A3F46;
-    }
-
     .WorldSelector__option-image--Space:hover {
         svg {
             .thumbnail-background {
@@ -1201,18 +894,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--Space {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--Space {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--Space {
-        stroke: #FF0000;
-    }
-
     .WorldSelector__option-image--Space:hover {
         svg {
             .thumbnail-background {
@@ -1237,17 +918,9 @@ body.contrast-theme {
 
 /* Sports */
 
-.ProgramBlockEditor__character-column-character-container--Sports {
-    background-color: #22343C;
-}
-
-.Scene__grid-line--Sports {
-    stroke: #B0B988;
-}
-
-.Scene__path-line--Sports {
-    stroke: #FFC86F;
-}
+@include world-colors("Sports", #B0B988, #FFC86F)
+@include world-colors("Sports", #B9BEC6, #FFFFFF, "gray")
+@include world-colors-std-contrast("Sports")
 
 .WorldSelector__option-image--Sports:hover {
     svg {
@@ -1279,18 +952,6 @@ body.contrast-theme {
 }
 
 body.gray-theme {
-    .ProgramBlockEditor__character-column-character-container--Sports {
-        background-color: #505862;
-    }
-
-    .Scene__grid-line--Sports {
-        stroke: #B9BEC6;
-    }
-
-    .Scene__path-line--Sports {
-        stroke: #FFFFFF;
-    }
-
     .WorldSelector__option-image--Sports:hover {
         svg {
             .thumbnail-background {
@@ -1322,18 +983,6 @@ body.gray-theme {
 }
 
 body.contrast-theme {
-    .ProgramBlockEditor__character-column-character-container--Sports {
-        background-color: #FFFFFF;
-    }
-
-    .Scene__grid-line--Sports {
-        stroke: #0078FF;
-    }
-
-    .Scene__path-line--Sports {
-        stroke: #FF0000;
-    }
-
     .WorldSelector__option-image--Sports:hover {
         svg {
             .thumbnail-background {
