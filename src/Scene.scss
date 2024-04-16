@@ -102,10 +102,6 @@ $c2lc-scene-top-offset: 20px;
     font-size: 2.2px;
 }
 
-.Scene__startIndicator .start-indicator-outer-circle {
-    fill: #1E1E1E;
-}
-
 .Scene__startIndicator .start-indicator-inner-circle {
     fill: #4C9990;
 }
@@ -117,8 +113,4 @@ $c2lc-scene-top-offset: 20px;
 .Scene__path-line {
     stroke-width: 0.05;
     stroke-linecap: round;
-}
-
-.Scene__characterOutline {
-    fill: #FF0000;
 }

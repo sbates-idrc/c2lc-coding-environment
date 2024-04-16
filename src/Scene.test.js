@@ -233,10 +233,10 @@ describe('The ARIA label should tell there is a character with its position', ()
 
 test.each([
     // Theme,    Design mode, Character, Outline, Design mode cursor
-    ['default',  false,       true,      false,   false],
-    ['light',    false,       true,      false,   false],
-    ['dark',     false,       true,      false,   false],
-    ['gray',     false,       true,      false,   false],
+    ['default',  false,       true,      true,    false],
+    ['light',    false,       true,      true,    false],
+    ['dark',     false,       true,      true,    false],
+    ['gray',     false,       true,      true,    false],
     ['contrast', false,       true,      true,    false],
     ['default',  true,        false,     false,   true],
     ['light',    true,        false,     false,   true],

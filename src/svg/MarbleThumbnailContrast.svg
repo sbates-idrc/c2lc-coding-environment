@@ -2,7 +2,9 @@
 <rect className="thumbnail-light" x="0.5" y="0.5" width="101" height="101" rx="10.5" fill="white" stroke="#1E1E1E"/>
 <path className="thumbnail-dark" d="M1 11V17H47.5C48.6046 17 49.5 16.1046 49.5 15V1H11C5.47715 1 1 5.47715 1 11Z" fill="#1E1E1E"/>
 <path className="thumbnail-dark" d="M101 91L101 85L44 85C42.8954 85 42 85.8954 42 87L42 101L91 101C96.5228 101 101 96.5228 101 91Z" fill="#1E1E1E"/>
-<circle className="thumbnail-dark" cx="51.6583" cy="50.9819" r="30.1039" fill="#1E1E1E" stroke="#1E1E1E" stroke-width="1.73298"/>
-<circle className="thumbnail-light" cx="64.9109" cy="50.9786" r="3.98026" fill="white"/>
-<path className="thumbnail-light" fill-rule="evenodd" clip-rule="evenodd" d="M67.8975 58.1465C67.8975 59.9908 70.1316 60.9095 71.429 59.5987L76.3843 54.592C78.2976 52.6589 78.2976 49.5456 76.3843 47.6125L71.429 42.6058C70.1316 41.295 67.8975 42.2137 67.8975 44.0579C67.8975 45.2016 68.8684 46.0871 69.9099 46.5596C70.4421 46.8011 70.9499 47.1487 71.4089 47.6125C73.3222 49.5456 73.3222 52.6589 71.4089 54.592C70.9499 55.0558 70.4421 55.4034 69.9099 55.6449C68.8684 56.1174 67.8975 57.0029 67.8975 58.1465Z" fill="white"/>
+<circle className="thumbnail-dark" cx="57.7119" cy="51" r="25.8607" fill="#1E1E1E" stroke="#1E1E1E" stroke-width="1.72149"/>
+<rect className="thumbnail-dark" x="19.7046" y="56.3804" width="10.3728" height="4.44547" rx="2.22273" fill="#1E1E1E"/>
+<rect className="thumbnail-dark" x="19.7046" y="41.5591" width="10.3728" height="4.44547" rx="2.22273" fill="#1E1E1E"/>
+<rect className="thumbnail-dark" x="16" y="48.9712" width="11.8546" height="4.44547" rx="2.22273" fill="#1E1E1E"/>
+<path className="thumbnail-light" d="M81.1193 49.8066C81.5513 50.2077 81.5442 50.8936 81.1042 51.2858L66.2853 64.4937C65.4914 65.2013 64.2881 64.3448 64.6967 63.3629L69.3208 52.2523C69.8192 51.0549 69.8327 49.7106 69.3586 48.5034L65.0155 37.4445C64.6267 36.4544 65.8474 35.6224 66.6268 36.3462L81.1193 49.8066Z" fill="white"/>
 </svg>
