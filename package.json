@@ -63,6 +63,7 @@
         "enzyme": "3.11.0",
         "enzyme-adapter-react-16": "1.15.6",
         "flow-bin": "0.142.0",
+        "node-sass": "7.0.3",
         "markdownlint-cli2": "0.4.0",
         "serve": "14.1.2"
     },
