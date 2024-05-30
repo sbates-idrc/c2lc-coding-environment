@@ -64,16 +64,18 @@
         "flow-bin": "0.142.0",
         "node-sass": "7.0.3",
         "markdownlint-cli2": "0.4.0",
-        "serve": "14.1.2"
+        "serve": "14.1.2",
+        "webpack-cli": "5.1.4"
     },
     "scripts": {
         "start": "node scripts/start.js",
         "build": "node scripts/build.js",
+        "new_build": "node scripts/new_build.js",
         "test": "node scripts/test.js",
         "coverage": "node scripts/test.js --watchAll=false --coverage",
         "eslint": "node scripts/eslint.js",
         "flow": "flow",
-        "serve": "serve build",
+        "serve": "serve dist",
         "prenetlify-build": "npm rebuild",
         "netlify-build": "node scripts/build.js",
         "markdownlint": "markdownlint-cli2 \"./**/*.md\" \"#node_modules\" \"#src/vendor\" \"#build\""
@@ -92,6 +94,7 @@
             "config/webpack.config.js",
             "config/webpackDevServer.config.js",
             "config/webpack/persistentCache/createEnvironmentHash.js",
+            "dist/",
             "extras/log_headers.js",
             "flow-typed/npm",
             "node_modules/",
