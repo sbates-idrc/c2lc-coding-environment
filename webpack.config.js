@@ -3,11 +3,8 @@ const path = require('path');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
-const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const webpack = require('webpack');
 
 const getClientEnvironment = require('./config/env');
 const paths = require('./config/paths');
@@ -35,11 +32,8 @@ const postcssOptions = {
 module.exports = {
     mode: 'production',
     target: ['browserslist'],
-    stats: 'errors-warnings',
-    performance: false,
     devtool: 'source-map',
     output: {
-        pathinfo: false,
         filename: 'static/js/[name].[contenthash:8].js',
         assetModuleFilename: 'static/media/[name].[hash][ext]',
         publicPath: '/',
@@ -73,9 +67,6 @@ module.exports = {
                                 options: {
                                     prettier: false,
                                     svgo: false,
-                                    svgoConfig: {
-                                        plugins: [{ removeViewBox: false }]
-                                    },
                                     titleProp: true,
                                     ref: true
                                 }
@@ -86,10 +77,7 @@ module.exports = {
                                     name: 'static/media/[name].[hash].[ext]'
                                 }
                             }
-                        ],
-                        issuer: {
-                            and: [/\.(ts|tsx|js|jsx|md|mdx)$/]
-                        }
+                        ]
                     },
                     {
                         test: /\.js$/,
@@ -141,7 +129,6 @@ module.exports = {
                             {
                                 loader: 'css-loader',
                                 options: {
-                                    importLoaders: 1,
                                     sourceMap: true,
                                     modules: {
                                         mode: 'icss'
@@ -155,8 +142,7 @@ module.exports = {
                                     sourceMap: true
                                 }
                             }
-                        ],
-                        sideEffects: true
+                        ]
                     },
                     {
                         test: /\.scss$/,
@@ -169,7 +155,6 @@ module.exports = {
                             {
                                 loader: 'css-loader',
                                 options: {
-                                    importLoaders: 2,
                                     sourceMap: true,
                                     modules: {
                                         mode: 'icss'
@@ -189,8 +174,7 @@ module.exports = {
                                     sourceMap: true
                                 }
                             }
-                        ],
-                        sideEffects: true
+                        ]
                     },
                     {
                         exclude: [/^$/, /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
@@ -234,10 +218,7 @@ module.exports = {
             template: 'public/index.html',
             inject: true
         }),
-        new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
         new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
-        new ModuleNotFoundPlugin(paths.appPath),
-        new webpack.DefinePlugin(env.stringified),
         new MiniCssExtractPlugin({
             filename: 'static/css/[name].[contenthash:8].css'
         })
