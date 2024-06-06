@@ -3,13 +3,7 @@ const path = require('path');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const TerserPlugin = require('terser-webpack-plugin');
-
-const getClientEnvironment = require('./config/env');
-const paths = require('./config/paths');
-
-const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
 
 const postcssOptions = {
     config: false,
@@ -215,7 +209,6 @@ module.exports = {
             template: 'public/index.html',
             inject: true
         }),
-        new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
         new MiniCssExtractPlugin({
             filename: 'static/css/[name].[contenthash:8].css'
         })
