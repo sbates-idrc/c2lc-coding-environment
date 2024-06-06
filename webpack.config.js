@@ -12,7 +12,6 @@ const paths = require('./config/paths');
 const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
 
 const postcssOptions = {
-    ident: 'postcss',
     config: false,
     plugins: [
         'postcss-flexbugs-fixes',
@@ -120,7 +119,6 @@ module.exports = {
                     },
                     {
                         test: /\.css$/,
-                        exclude: /\.module\.css$/,
                         use: [
                             {
                                 loader: MiniCssExtractPlugin.loader,
@@ -146,7 +144,6 @@ module.exports = {
                     },
                     {
                         test: /\.scss$/,
-                        exclude: /\.module\.(scss|sass)$/,
                         use: [
                             {
                                 loader: MiniCssExtractPlugin.loader,
