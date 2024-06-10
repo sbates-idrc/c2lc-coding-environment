@@ -71,12 +71,11 @@
     "scripts": {
         "start": "node scripts/start.js",
         "build": "node scripts/build.js",
-        "new_build": "node scripts/new_build.js",
         "test": "node scripts/test.js",
         "coverage": "node scripts/test.js --watchAll=false --coverage",
         "eslint": "node scripts/eslint.js",
         "flow": "flow",
-        "serve": "serve dist",
+        "serve": "serve build",
         "prenetlify-build": "npm rebuild",
         "netlify-build": "node scripts/build.js",
         "markdownlint": "markdownlint-cli2 \"./**/*.md\" \"#node_modules\" \"#src/vendor\" \"#build\""

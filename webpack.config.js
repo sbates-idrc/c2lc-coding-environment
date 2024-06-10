@@ -28,6 +28,7 @@ module.exports = {
     target: ['browserslist'],
     devtool: 'source-map',
     output: {
+        path: path.resolve(__dirname, 'build'),
         filename: 'static/js/[name].[contenthash:8].js',
         assetModuleFilename: 'static/media/[name].[hash][ext]',
         publicPath: '/',
