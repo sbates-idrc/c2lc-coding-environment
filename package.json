@@ -70,7 +70,7 @@
     },
     "scripts": {
         "start": "node scripts/start.js",
-        "build": "node scripts/build.js",
+        "build": "webpack --mode=production",
         "test": "node scripts/test.js",
         "coverage": "node scripts/test.js --watchAll=false --coverage",
         "eslint": "node scripts/eslint.js",
