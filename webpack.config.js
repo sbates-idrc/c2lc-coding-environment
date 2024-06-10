@@ -1,5 +1,6 @@
 const path = require('path');
 
+const CopyPlugin = require("copy-webpack-plugin");
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -211,6 +212,17 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({
             filename: 'static/css/[name].[contenthash:8].css'
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: '**/*',
+                    globOptions: {
+                        ignore: ['**/index.html']
+                    },
+                    context: 'public/'
+                }
+            ]
         })
     ]
 };
