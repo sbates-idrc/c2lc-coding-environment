@@ -6,6 +6,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
+function getDevTool(isProduction) {
+    if (isProduction) {
+        return 'source-map';
+    } else {
+        return 'cheap-module-source-map';
+    }
+}
+
 const postcssOptions = {
     config: false,
     plugins: [
@@ -24,16 +32,21 @@ const postcssOptions = {
 };
 
 module.exports = (env, argv) => {
-    if (argv.mode === 'production') {
-        // Required by babel-preset-react-app
+    const isProduction = argv.mode === 'production';
+    const isDevelopment = argv.mode === 'development';
+
+    // Set BABEL_ENV and NODE_ENV as required by babel-preset-react-app
+    if (isProduction) {
         process.env.BABEL_ENV = 'production';
         process.env.NODE_ENV = 'production';
+    } else if (isDevelopment) {
+        process.env.BABEL_ENV = 'development';
+        process.env.NODE_ENV = 'development';
     }
 
     return {
-        mode: 'production',
         target: ['browserslist'],
-        devtool: 'source-map',
+        devtool: getDevTool(isProduction),
         output: {
             path: path.resolve(__dirname, 'build'),
             filename: 'static/js/[name].[contenthash:8].js',
@@ -97,7 +110,7 @@ module.exports = (env, argv) => {
                                         }
                                     ]
                                 ],
-                                compact: true
+                                compact: isProduction
                             }
                         },
                         {
@@ -185,7 +198,7 @@ module.exports = (env, argv) => {
             ]
         },
         optimization: {
-            minimize: true,
+            minimize: isProduction,
             minimizer: [
                 new TerserPlugin({
                     terserOptions: {

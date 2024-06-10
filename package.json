@@ -54,7 +54,6 @@
         "tone": "14.7.77",
         "typeface-roboto": "1.1.13",
         "webpack": "^5.64.4",
-        "webpack-dev-server": "^4.6.0",
         "webpack-manifest-plugin": "^4.0.2",
         "workbox-webpack-plugin": "^6.4.1"
     },
@@ -66,10 +65,11 @@
         "node-sass": "7.0.3",
         "markdownlint-cli2": "0.4.0",
         "serve": "14.1.2",
-        "webpack-cli": "5.1.4"
+        "webpack-cli": "5.1.4",
+        "webpack-dev-server": "^4.6.0"
     },
     "scripts": {
-        "start": "node scripts/start.js",
+        "start": "webpack serve --mode=development --open",
         "build": "webpack --mode=production",
         "test": "node scripts/test.js",
         "coverage": "node scripts/test.js --watchAll=false --coverage",
