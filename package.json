@@ -58,8 +58,6 @@
         "eslint": "node scripts/eslint.js",
         "flow": "flow",
         "serve": "serve build",
-        "prenetlify-build": "npm rebuild",
-        "netlify-build": "node scripts/build.js",
         "markdownlint": "markdownlint-cli2 \"./**/*.md\" \"#node_modules\" \"#src/vendor\" \"#build\""
     },
     "eslintConfig": {
