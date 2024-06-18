@@ -1,9 +1,9 @@
-// This script runs 'eslint' with the BABEL_ENV environment variable
-// set, as needed by babel-preset-react-app
+// Run 'eslint' with the BABEL_ENV and NODE_ENV environment variables set
 
 const spawn = require('child_process').spawn;
 
 process.env.BABEL_ENV = 'development';
+process.env.NODE_ENV = 'development';
 
 spawn(
     'node',

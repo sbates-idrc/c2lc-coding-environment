@@ -35,7 +35,7 @@ module.exports = (env, argv) => {
     const isProduction = argv.mode === 'production';
     const isDevelopment = argv.mode === 'development';
 
-    // Set BABEL_ENV and NODE_ENV as required by babel-preset-react-app
+    // Set BABEL_ENV and NODE_ENV
     if (isProduction) {
         process.env.BABEL_ENV = 'production';
         process.env.NODE_ENV = 'production';
