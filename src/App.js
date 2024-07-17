@@ -27,6 +27,7 @@ import FakeAudioManager from './FakeAudioManager';
 import FocusTrapManager from './FocusTrapManager';
 import IconButton from './IconButton';
 import Interpreter from './Interpreter';
+import LanguageSelector from "./LanguageSelector";
 import PlayButton from './PlayButton';
 import ProgramBlockEditor from './ProgramBlockEditor';
 import RefreshButton from './RefreshButton';
@@ -92,7 +93,6 @@ type AppContext = {
 };
 
 type AppSettings = {
-    language: string,
     addNodeExpandedMode: boolean,
     theme: ThemeName,
     world: WorldName
@@ -100,6 +100,8 @@ type AppSettings = {
 
 type AppProps = {
     intl: IntlShape,
+    language: string,
+    onChangeLanguage: (value: string) => void,
     audioManager?: AudioManager
 };
 
@@ -200,7 +202,6 @@ export class App extends React.Component<AppProps, AppState> {
             programSequence: new ProgramSequence([], 0, 0, new Map()),
             characterState: this.makeStartingCharacterState(startingX, startingY, startingDirection),
             settings: {
-                language: 'en',
                 addNodeExpandedMode: true,
                 theme: 'default',
                 world: this.defaultWorld
@@ -1315,7 +1316,7 @@ export class App extends React.Component<AppProps, AppState> {
                         <Logo alt={this.props.intl.formatMessage({id: 'App.appHeading.link'})}/>
                     </a>
                 </h1>
-                <div className='App__PrivacyButtonContainer'>
+                <div className='App__PrivacyButtonLanguageSelectorRow'>
                     <button
                         aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
                         className="App__PrivacyModal__toggle-button"
@@ -1323,6 +1324,10 @@ export class App extends React.Component<AppProps, AppState> {
                     >
                         <FormattedMessage id='App.privacyModalToggle'/>
                     </button>
+                    <LanguageSelector
+                        value={this.props.language}
+                        onChange={this.props.onChangeLanguage}
+                    />
                 </div>
                 <div className='App__header-menu'>
                     <IconButton

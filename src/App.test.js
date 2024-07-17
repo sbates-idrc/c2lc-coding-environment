@@ -31,7 +31,11 @@ function mountApp(props) {
         React.createElement(
             App,
             Object.assign(
-                { audioManager: audioManagerInstance},
+                {
+                    audioManager: audioManagerInstance,
+                    language: 'en',
+                    onChangeLanguage: () => {}
+                },
                 props
             )
         ),
