@@ -25,6 +25,7 @@ import DesignModeCursorState from './DesignModeCursorState';
 import * as FeatureDetection from './FeatureDetection';
 import FakeAudioManager from './FakeAudioManager';
 import FocusTrapManager from './FocusTrapManager';
+import HtmlLangUpdater from './HtmlLangUpdater';
 import IconButton from './IconButton';
 import Interpreter from './Interpreter';
 import LanguageSelector from "./LanguageSelector";
@@ -1733,6 +1734,7 @@ export class App extends React.Component<AppProps, AppState> {
                         </React.Fragment>
                     }
                 </div>
+                <HtmlLangUpdater lang={this.props.language}/>
                 {this.renderCharacterAriaLive()}
                 {this.renderModals()}
             </React.Fragment>
