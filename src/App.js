@@ -41,7 +41,7 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
 import type { TileCode } from './TileData';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, DisplayedCommandName, LanguageCode, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -100,8 +100,8 @@ type AppSettings = {
 
 type AppProps = {
     intl: IntlShape,
-    language: string,
-    onChangeLanguage: (value: string) => void,
+    language: LanguageCode,
+    onChangeLanguage: (value: LanguageCode) => void,
     audioManager?: AudioManager
 };
 
@@ -1317,6 +1317,10 @@ export class App extends React.Component<AppProps, AppState> {
                     </a>
                 </h1>
                 <div className='App__PrivacyButtonLanguageSelectorRow'>
+                    <LanguageSelector
+                        value={this.props.language}
+                        onChange={this.props.onChangeLanguage}
+                    />
                     <button
                         aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
                         className="App__PrivacyModal__toggle-button"
@@ -1324,10 +1328,6 @@ export class App extends React.Component<AppProps, AppState> {
                     >
                         <FormattedMessage id='App.privacyModalToggle'/>
                     </button>
-                    <LanguageSelector
-                        value={this.props.language}
-                        onChange={this.props.onChangeLanguage}
-                    />
                 </div>
                 <div className='App__header-menu'>
                     <IconButton

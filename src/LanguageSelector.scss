@@ -1,18 +1,16 @@
 @import 'variables';
 
 .LanguageSelector {
-    color: #1E1E1E;
-    background-color: white;
-    font-family: inherit;
+    background-color: inherit;
     font-size: 0.8rem;
-    padding-left: 0.4em;
-    padding-right: 0.4em;
-    border: 1px solid #9DA4AF;
-    border-radius: 3px;
+    text-decoration: underline;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    border-radius: 2px;
+    outline: none;
 }
 
 .LanguageSelector:focus {
-    outline-color: #1E1E1E;
-    outline-style: solid;
-    outline-width: $c2lc-focus-indicator-width;
+    border-color: #000000;
 }

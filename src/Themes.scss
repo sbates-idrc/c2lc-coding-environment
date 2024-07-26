@@ -786,11 +786,10 @@ body.dark-theme {
 
     .LanguageSelector {
         color: white;
-        background-color: #18252C;
     }
 
     .LanguageSelector:focus {
-        outline-color: white;
+        border-color: white;
     }
 }
 
@@ -1760,10 +1759,6 @@ body.gray-theme {
 
     .CharacterPositionController .IconButton--disabled .paintbrush-icon-foreground {
         stroke: #D5D8DD;
-    }
-
-    .LanguageSelector:focus {
-        outline-color: #505862;
     }
 }
 
@@ -2977,10 +2972,9 @@ body.contrast-theme {
 
     .LanguageSelector {
         color: white;
-        background-color: black;
     }
 
     .LanguageSelector:focus {
-        outline-color: white;
+        border-color: white;
     }
 }

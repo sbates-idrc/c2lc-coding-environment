@@ -40,6 +40,8 @@ export type EditorMode = 'text' | 'block';
 */
 export type ThemeName = 'default' | 'light' | 'dark' | 'gray' | 'contrast';
 
+export type LanguageCode = 'en' | 'fr';
+
 export type ProgramBlockCache = Map<string, number | string>;
 
 export type ProgramBlock = {

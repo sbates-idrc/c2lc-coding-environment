@@ -1,33 +1,31 @@
 // @flow
 
 import * as React from 'react';
-import { injectIntl } from 'react-intl';
-import type { IntlShape } from 'react-intl';
+import type { LanguageCode } from './types';
 import './LanguageSelector.scss';
 
 type LanguageSelectorProps = {
-    intl: IntlShape,
-    value: string,
-    onChange: (value: string) => void
+    value: LanguageCode,
+    onChange: (value: LanguageCode) => void
 };
 
-class LanguageSelector extends React.PureComponent<LanguageSelectorProps, {}> {
-    handleChange = (e: SyntheticEvent<HTMLSelectElement>) => {
-        this.props.onChange(e.currentTarget.value);
+export default class LanguageSelector extends React.PureComponent<LanguageSelectorProps, {}> {
+    handleClick = () => {
+        this.props.onChange(this.props.value === 'en' ? 'fr' : 'en');
     };
 
     render() {
+        const label = this.props.value === 'en' ? 'Français' : 'English';
+        const labelLang = this.props.value === 'en' ? 'fr' : 'en';
+
         return (
-            <select
+            <button
                 className='LanguageSelector'
-                value={this.props.value}
-                onChange={this.handleChange}
+                lang={labelLang}
+                onClick={this.handleClick}
             >
-                <option value='en'>EN</option>
-                <option value='fr'>FR</option>
-            </select>
+                {label}
+            </button>
         );
     }
 };
-
-export default injectIntl(LanguageSelector);

@@ -2,10 +2,11 @@
 import React from 'react';
 import { IntlProvider} from 'react-intl';
 import App from './App';
+import type { LanguageCode } from './types';
 import messages from './messages.json';
 
 type IntlContainerState = {
-    language: string
+    language: LanguageCode
 };
 
 export default class IntlContainer extends React.Component<{}, IntlContainerState> {
@@ -16,7 +17,7 @@ export default class IntlContainer extends React.Component<{}, IntlContainerStat
         };
     }
 
-    handleChangeLanguage = (language: string) => {
+    handleChangeLanguage = (language: LanguageCode) => {
         this.setState({
             language: language
         });
