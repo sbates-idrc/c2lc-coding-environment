@@ -4,11 +4,11 @@ import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import HtmlLangUpdater from './HtmlLangUpdater';
 import React from 'react';
-import type { LanguageCode } from './types';
+import type { LanguageTag } from './types';
 
 configure({ adapter: new Adapter() });
 
-function createComponent(lang: LanguageCode) {
+function createComponent(lang: LanguageTag) {
     return mount(
         React.createElement(
             HtmlLangUpdater,

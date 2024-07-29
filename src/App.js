@@ -25,7 +25,6 @@ import DesignModeCursorState from './DesignModeCursorState';
 import * as FeatureDetection from './FeatureDetection';
 import FakeAudioManager from './FakeAudioManager';
 import FocusTrapManager from './FocusTrapManager';
-import HtmlLangUpdater from './HtmlLangUpdater';
 import IconButton from './IconButton';
 import Interpreter from './Interpreter';
 import LanguageSelector from "./LanguageSelector";
@@ -42,7 +41,7 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
 import type { TileCode } from './TileData';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, DisplayedCommandName, LanguageCode, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, DisplayedCommandName, LanguageTag, RobotDriver, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -101,8 +100,8 @@ type AppSettings = {
 
 type AppProps = {
     intl: IntlShape,
-    language: LanguageCode,
-    onChangeLanguage: (value: LanguageCode) => void,
+    language: LanguageTag,
+    onChangeLanguage: (value: LanguageTag) => void,
     audioManager?: AudioManager
 };
 
@@ -1734,7 +1733,6 @@ export class App extends React.Component<AppProps, AppState> {
                         </React.Fragment>
                     }
                 </div>
-                <HtmlLangUpdater lang={this.props.language}/>
                 {this.renderCharacterAriaLive()}
                 {this.renderModals()}
             </React.Fragment>

@@ -1,12 +1,12 @@
 // @flow
 
 import React from 'react';
-import type { LanguageCode } from './types';
+import type { LanguageTag } from './types';
 import './LanguageSelector.scss';
 
 type LanguageSelectorProps = {
-    value: LanguageCode,
-    onChange: (value: LanguageCode) => void
+    value: LanguageTag,
+    onChange: (value: LanguageTag) => void
 };
 
 export default class LanguageSelector extends React.PureComponent<LanguageSelectorProps, {}> {

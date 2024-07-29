@@ -1,13 +1,13 @@
 // @flow
 
 import React from 'react';
-import type { LanguageCode } from './types';
+import type { LanguageTag } from './types';
 
 type HtmlLangUpdaterProps = {
-    lang: LanguageCode
+    lang: LanguageTag
 };
 
-function setHtmlLang(lang: LanguageCode) {
+function setHtmlLang(lang: LanguageTag) {
     const elem = document.documentElement;
     if (elem && elem.tagName === 'HTML') {
         elem.setAttribute('lang', lang);

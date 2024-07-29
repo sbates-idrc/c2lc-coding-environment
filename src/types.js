@@ -40,7 +40,9 @@ export type EditorMode = 'text' | 'block';
 */
 export type ThemeName = 'default' | 'light' | 'dark' | 'gray' | 'contrast';
 
-export type LanguageCode = 'en' | 'fr';
+// BCP 47 language tags for the languages supported by Weavly
+// For details on BCP 47, see: https://datatracker.ietf.org/doc/html/rfc5646
+export type LanguageTag = 'en' | 'fr';
 
 export type ProgramBlockCache = Map<string, number | string>;
 

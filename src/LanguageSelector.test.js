@@ -4,11 +4,11 @@ import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import LanguageSelector from './LanguageSelector';
 import React from 'react';
-import type { LanguageCode } from './types';
+import type { LanguageTag } from './types';
 
 configure({ adapter: new Adapter()});
 
-function createComponent(language: LanguageCode) {
+function createComponent(language: LanguageTag) {
     const changeHandler = jest.fn();
 
     const wrapper = shallow(
