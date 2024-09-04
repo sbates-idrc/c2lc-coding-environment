@@ -51,13 +51,13 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
 
                         <ul>
                             <li>
-                                {this.props.intl.formatMessage({ id: 'PrivacyModal.section010.block030.list010.item010'})}
+                                {this.props.intl.formatMessage({ id: 'PrivacyModal.section010.block030.item010'})}
                             </li>
                             <li>
-                            {this.props.intl.formatMessage({ id: 'PrivacyModal.section010.block030.list010.item020'})}
+                                {this.props.intl.formatMessage({ id: 'PrivacyModal.section010.block030.item020'})}
                             </li>
                             <li>
-                                {this.props.intl.formatMessage({ id: 'PrivacyModal.section010.block030.list010.item030'})}
+                                {this.props.intl.formatMessage({ id: 'PrivacyModal.section010.block030.item030'})}
                             </li>
                         </ul>
 
@@ -68,14 +68,14 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
                         </p>
 
                         <ul>
-                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.list010.item010'})}</li>
-                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.list010.item020'})}</li>
-                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.list010.item030'})}</li>
-                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.list010.item040'})}</li>
-                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.list010.item050'})}</li>
-                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.list010.item060'})}</li>
-                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.list010.item070'})}</li>
-                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.list010.item080'})}</li>
+                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.item010'})}</li>
+                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.item020'})}</li>
+                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.item030'})}</li>
+                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.item040'})}</li>
+                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.item050'})}</li>
+                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.item060'})}</li>
+                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.item070'})}</li>
+                            <li>{this.props.intl.formatMessage({ id: 'PrivacyModal.section020.block020.item080'})}</li>
                         </ul>
 
                         <p>
@@ -90,10 +90,10 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
 
                         <ul>
                             <li>
-                                {this.props.intl.formatMessage({ id: 'PrivacyModal.section030.block020.list010.item010'})}
+                                {this.props.intl.formatMessage({ id: 'PrivacyModal.section030.block020.item010'})}
                             </li>
                             <li>
-                                {this.props.intl.formatMessage({ id: 'PrivacyModal.section030.block020.list010.item020'})}
+                                {this.props.intl.formatMessage({ id: 'PrivacyModal.section030.block020.item020'})}
                             </li>
                         </ul>
 
@@ -128,7 +128,7 @@ class PrivacyModal extends React.Component<PrivacyModalProps, {}> {
                                 { id: 'PrivacyModal.section070.block010'},
                                 { contactLink: `<a href="https://weavly.org/about/" target='_blank' rel='noopener noreferrer'>${this.props.intl.formatMessage({ id: 'PrivacyModal.contactUs' })}</a>` }
                             )}
-                        }> 
+                        }>
                         </p>
                     </div>
                 </ModalBody>
