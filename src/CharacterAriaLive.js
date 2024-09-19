@@ -71,7 +71,8 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
         text += this.props.characterDescriptionBuilder.buildDescription(
             this.props.characterState,
             this.props.world,
-            this.props.customBackground
+            this.props.customBackground,
+            this.props.intl
         );
 
         this.setLiveRegion(text);

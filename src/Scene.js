@@ -75,7 +75,8 @@ class Scene extends React.Component<SceneProps, {}> {
         const characterDescription = this.props.characterDescriptionBuilder.buildDescription(
             this.props.characterState,
             this.props.world,
-            this.props.customBackground
+            this.props.customBackground,
+            this.props.intl
         );
 
         return this.props.intl.formatMessage(

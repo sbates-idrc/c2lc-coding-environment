@@ -3,7 +3,7 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount } from 'enzyme';
-import { createIntl, IntlProvider } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 import messages from './messages.json';
 import Scene from './Scene';
 import type {SceneProps} from './Scene';
@@ -14,12 +14,6 @@ import CustomBackground from './CustomBackground';
 import DesignModeCursorState from './DesignModeCursorState';
 
 configure({ adapter: new Adapter() });
-
-const intl = createIntl({
-    locale: 'en',
-    defaultLocale: 'en',
-    messages: messages.en
-});
 
 const defaultDimensions = new SceneDimensions(1, 1, 1, 1);
 
@@ -33,7 +27,7 @@ const defaultSceneProps = {
     customBackgroundDesignMode: false,
     startingX: 1,
     startingY: 2,
-    characterDescriptionBuilder: new CharacterDescriptionBuilder(intl)
+    characterDescriptionBuilder: new CharacterDescriptionBuilder()
 };
 
 function createMountScene(props) {

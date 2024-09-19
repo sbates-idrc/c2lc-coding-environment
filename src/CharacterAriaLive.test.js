@@ -45,7 +45,7 @@ const defaultCharacterAriaLiveProps = {
     world: 'Sketchpad',
     customBackground: emptyCustomBackground,
     customBackgroundDesignMode: false,
-    characterDescriptionBuilder: new CharacterDescriptionBuilder(intl),
+    characterDescriptionBuilder: new CharacterDescriptionBuilder(),
     designModeCursorDescriptionBuilder: new DesignModeCursorDescriptionBuilder(intl),
     message: null
 };

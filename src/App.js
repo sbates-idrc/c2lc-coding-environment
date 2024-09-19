@@ -259,7 +259,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.announcementBuilder = new AnnouncementBuilder(this.props.intl);
 
-        this.characterDescriptionBuilder = new CharacterDescriptionBuilder(this.props.intl);
+        this.characterDescriptionBuilder = new CharacterDescriptionBuilder();
 
         this.designModeCursorDescriptionBuilder = new DesignModeCursorDescriptionBuilder(this.props.intl);
 
