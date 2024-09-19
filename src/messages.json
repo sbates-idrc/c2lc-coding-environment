@@ -63,7 +63,7 @@
         "Announcement.right90": "turn right 90 degrees",
         "Announcement.startLoop": "loop {loopLabel}",
         "App.appHeading": "Weavly",
-        "App.appHeading.link": "Weavly, learn more about Weavly at Weavly dot org",
+        "App.appHeading.link": "Weavly",
         "App.blockMode": "Block",
         "App.changeMode": "Change Mode",
         "App.connectToDash": "Connect to Dash",
