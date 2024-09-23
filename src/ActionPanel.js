@@ -33,7 +33,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
         this.actionPanelRef = React.createRef();
     }
 
-    makeStepMessageData() {
+    makeAriaLabels() {
         const currentStep = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex);
 
         let stepNumber = this.props.pressedStepIndex + 1;
@@ -54,13 +54,16 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
             );
         }
 
-        const selectedCommandName = this.props.selectedCommandName != null ?
-            this.props.intl.formatMessage({id: `Command.${this.props.selectedCommandName}`}) : '';
+        const replaceStepAriaLabel = this.props.selectedCommandName != null ?
+            this.props.intl.formatMessage(
+                {id:'ActionPanel.action.replace.withAction'},
+                { stepNumber, stepName, selectedCommandName: this.props.intl.formatMessage({id: `Command.${this.props.selectedCommandName}`}) }
+            ) :
+            this.props.intl.formatMessage({id:'ActionPanel.action.replace.noAction'}, { stepNumber, stepName });
 
         return {
-            'stepNumber': stepNumber,
-            'stepName': stepName,
-            'selectedCommandName': selectedCommandName,
+            replaceStepAriaLabel,
+            'deleteStepAriaLabel': this.props.intl.formatMessage({id:'ActionPanel.action.delete'}, { stepNumber, stepName }),
             'previousStepAriaLabel': this.makePreviousStepAriaLabel(stepNumber, stepName),
             'nextStepAriaLabel': this.makeNextStepAriaLabel(stepNumber, stepName)
         }
@@ -237,14 +240,12 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
     };
 
     render() {
-        const stepMessageData = this.makeStepMessageData();
+        const ariaLabels = this.makeAriaLabels();
         const moveToNextStepIsDisabled = this.props.programSequence.moveToNextStepDisabled(this.props.pressedStepIndex);
         const moveToPreviousStepIsDisabled = this.props.programSequence.moveToPreviousStepDisabled(this.props.pressedStepIndex);
         const replaceIsVisible = this.getReplaceIsVisible();
         const replaceIsDisabled = this.props.selectedCommandName == null;
-        const replaceMessage = replaceIsDisabled ?
-            this.props.intl.formatMessage({id:'ActionPanel.action.replace.noAction'}, stepMessageData) :
-            this.props.intl.formatMessage({id:'ActionPanel.action.replace.withAction'}, stepMessageData);
+
         return (
             <React.Fragment>
                 <div className="ActionPanel__background">
@@ -258,7 +259,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     <AriaDisablingButton
                         name='deleteCurrentStep'
                         disabled={false}
-                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.delete'}, stepMessageData)}
+                        aria-label={ariaLabels.deleteStepAriaLabel}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                         onClick={this.handleClickDelete}>
                         <DeleteIcon
@@ -271,7 +272,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                             name='replaceCurrentStep'
                             disabled={replaceIsDisabled}
                             disabledClassName='ActionPanel__action-buttons--disabled'
-                            aria-label={replaceMessage}
+                            aria-label={ariaLabels.replaceStepAriaLabel}
                             className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                             onClick={this.handleClickReplace}>
                             <ReplaceIcon
@@ -284,7 +285,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                         name='moveToPreviousStep'
                         disabled={moveToPreviousStepIsDisabled}
                         disabledClassName='ActionPanel__action-buttons--disabled'
-                        aria-label={stepMessageData.previousStepAriaLabel}
+                        aria-label={ariaLabels.previousStepAriaLabel}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                         onClick={this.handleClickMoveToPreviousStep}>
                         <MovePreviousIcon
@@ -296,7 +297,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                         name='moveToNextStep'
                         disabled={moveToNextStepIsDisabled}
                         disabledClassName='ActionPanel__action-buttons--disabled'
-                        aria-label={stepMessageData.nextStepAriaLabel}
+                        aria-label={ariaLabels.nextStepAriaLabel}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                         onClick={this.handleClickMoveToNextStep}>
                         <MoveNextIcon
