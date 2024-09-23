@@ -423,7 +423,7 @@
         "PrivacyModal.section070.block010": "If you have any questions about this Privacy Policy, please {contactLink}.",
         "PrivacyModal.title": "Weavly Privacy Policy",
         "ProgramBlockEditor.beginningBlock": "Add selected action {command} to the beginning of the program",
-        "ProgramBlockEditor.betweenBlocks": "Add selected action {command} between position {prevCommand} and position {postCommand}",
+        "ProgramBlockEditor.betweenBlocks": "Add selected action {command} between position {prevCommandStepNumber}, {prevCommand} and position {nextCommandStepNumber}, {nextCommand}",
         "ProgramBlockEditor.blocks.noCommandSelected": "Make sure an action is selected",
         "ProgramBlockEditor.command": "{command}, position {index} of current program",
         "ProgramBlockEditor.lastBlock": "Add selected action {command} to the end of the program",

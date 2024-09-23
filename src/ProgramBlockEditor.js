@@ -557,15 +557,17 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 );
             } else {
                 const prevCommand = this.props.programSequence.getProgramStepAt(programStepNumber - 1);
-                const postCommand = this.props.programSequence.getProgramStepAt(programStepNumber);
+                const nextCommand = this.props.programSequence.getProgramStepAt(programStepNumber);
                 const prevCommandLabel = prevCommand.label ? prevCommand.label : null;
-                const postCommandLabel = postCommand.label ? postCommand.label : null;
+                const nextCommandLabel = nextCommand.label ? nextCommand.label : null;
                 return this.props.intl.formatMessage(
                     { id: 'ProgramBlockEditor.betweenBlocks' },
                     {
                         command: this.props.intl.formatMessage({id: `Command.${selectedAction}`}),
-                        prevCommand: `${programStepNumber}, ${this.props.intl.formatMessage({id: `Command.${prevCommand.block}`}, {loopLabel: prevCommandLabel})}`,
-                        postCommand: `${programStepNumber+1}, ${this.props.intl.formatMessage({id: `Command.${postCommand.block}`}, {loopLabel: postCommandLabel})}`
+                        prevCommandStepNumber: programStepNumber,
+                        prevCommand: this.props.intl.formatMessage({id: `Command.${prevCommand.block}`}, {loopLabel: prevCommandLabel}),
+                        nextCommandStepNumber: programStepNumber + 1,
+                        nextCommand: this.props.intl.formatMessage({id: `Command.${nextCommand.block}`}, {loopLabel: nextCommandLabel})
                     }
                 );
             }
