@@ -103,7 +103,7 @@ describe('ActionPanel options', () => {
             selectedCommandName: null
         });
         const replaceButton = getActionPanelOptionButtons(wrapper, 'replaceCurrentStep');
-        const expectedAriaLabel = 'Replace Step 2 turn left 45 degrees ';
+        const expectedAriaLabel = 'Replace Step 2 turn left 45 degrees';
         expect(replaceButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
         expect(replaceButton.get(0).props['disabled']).toBe(true);
     });
@@ -126,7 +126,7 @@ describe('ActionPanel options', () => {
             pressedStepIndex: 0
         });
         const moveToPreviousStepButton = getActionPanelOptionButtons(wrapper, 'moveToPreviousStep');
-        const expectedAriaLabel = 'Move Step 1 forward 1 square ';
+        const expectedAriaLabel = 'Move Step 1 forward 1 square';
         expect(moveToPreviousStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
         expect(moveToPreviousStepButton.get(0).props['disabled']).toBe(true);
         moveToPreviousStepButton.simulate('click');
@@ -149,7 +149,7 @@ describe('ActionPanel options', () => {
             pressedStepIndex: 0
         });
         const moveToPreviousStepButton = getActionPanelOptionButtons(wrapper, 'moveToPreviousStep');
-        const expectedAriaLabel = "Move Step 1 loop A ";
+        const expectedAriaLabel = "Move Step 1 loop A";
         expect(moveToPreviousStepButton.get(0).props['disabled']).toBe(true);
         moveToPreviousStepButton.simulate('click');
         expect(moveToPreviousStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
@@ -172,7 +172,7 @@ describe('ActionPanel options', () => {
             pressedStepIndex: 2
         });
         const moveToPreviousStepButton = getActionPanelOptionButtons(wrapper, 'moveToPreviousStep');
-        const expectedAriaLabel = "Move Step 3 loop A ";
+        const expectedAriaLabel = "Move Step 3 loop A";
         expect(moveToPreviousStepButton.get(0).props['disabled']).toBe(true);
         moveToPreviousStepButton.simulate('click');
         expect(moveToPreviousStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
@@ -336,7 +336,7 @@ describe('ActionPanel options', () => {
             pressedStepIndex: 2
         });
         const moveToNextStepButton = getActionPanelOptionButtons(wrapper, 'moveToNextStep');
-        const expectedAriaLabel = 'Move Step 3 turn right 45 degrees ';
+        const expectedAriaLabel = 'Move Step 3 turn right 45 degrees';
         expect(moveToNextStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
         expect(moveToNextStepButton.get(0).props['disabled']).toBe(true);
         moveToNextStepButton.simulate('click');
@@ -359,7 +359,7 @@ describe('ActionPanel options', () => {
             pressedStepIndex: 0
         });
         const moveToNextStepButton = getActionPanelOptionButtons(wrapper, 'moveToNextStep');
-        const expectedAriaLabel = "Move Step 1 loop A ";
+        const expectedAriaLabel = "Move Step 1 loop A";
         expect(moveToNextStepButton.get(0).props['disabled']).toBe(true);
         moveToNextStepButton.simulate('click');
         expect(moveToNextStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);
@@ -382,7 +382,7 @@ describe('ActionPanel options', () => {
             pressedStepIndex: 2
         });
         const moveToNextStepButton = getActionPanelOptionButtons(wrapper, 'moveToNextStep');
-        const expectedAriaLabel = "Move Step 3 loop A ";
+        const expectedAriaLabel = "Move Step 3 loop A";
         expect(moveToNextStepButton.get(0).props['disabled']).toBe(true);
         moveToNextStepButton.simulate('click');
         expect(moveToNextStepButton.get(0).props['aria-label']).toBe(expectedAriaLabel);

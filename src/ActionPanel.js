@@ -54,26 +54,21 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
             );
         }
 
-        let selectedCommandName = '';
-        if (this.props.selectedCommandName != null) {
-            selectedCommandName = this.props.intl.formatMessage(
-                { id: 'ActionPanel.selectedCommandName' },
-                { selectedCommandName:
-                    this.props.intl.formatMessage({id: `Command.${this.props.selectedCommandName}`})
-                }
-            );
-        }
+        let selectedCommandName = this.props.selectedCommandName != null ?
+            this.props.intl.formatMessage({id: `Command.${this.props.selectedCommandName}`}) : '';
+
+        console.log(this.makePreviousStepAriaLabel(stepNumber, stepName));
 
         return {
             'stepNumber': stepNumber,
             'stepName': stepName,
             'selectedCommandName': selectedCommandName,
-            'previousStepInfo': this.makePreviousStepInfo(),
-            'nextStepInfo': this.makeNextStepInfo()
-        };
+            'previousStepAriaLabel': this.makePreviousStepAriaLabel(stepNumber, stepName),
+            'nextStepAriaLabel': this.makeNextStepAriaLabel(stepNumber, stepName)
+        }
     }
 
-    makePreviousStepInfo(): ?string {
+    makePreviousStepAriaLabel(stepNumber: ?number | string, stepName: string): string {
         const currentStep = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex);
         if (this.props.pressedStepIndex > 0) {
             const prevStep = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex - 1);
@@ -81,15 +76,21 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
             const prevStepName = prevStep.block;
             // When previous step is startLoop, aria-label communicates that movePrevious will move out of the current loop
             if (prevStepName === 'startLoop' && currentStep.block !== 'endLoop') {
-                return this.props.intl.formatMessage(
-                    { id: 'CommandInfo.previousStep.startLoop' },
-                    { loopLabel: prevStep.label }
+                return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToPreviousStep.startLoop'},
+                    { 
+                        stepNumber,
+                        stepName,
+                        loopLabel: prevStep.label
+                    }
                 );
             // When previous step is endLoop, aria-label communicates that movePrevious will move into a loop
             } else if (prevStepName === 'endLoop') {
-                return this.props.intl.formatMessage(
-                    { id: 'CommandInfo.previousStep.endLoop'},
-                    { loopLabel: prevStep.label }
+                return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToPreviousStep.endLoop'},
+                    {
+                        stepNumber,
+                        stepName,
+                        loopLabel: prevStep.label
+                    }
                 );
             } else {
                 // When previous step is not loops and current step is endLoop, calculate the index the loop will move by
@@ -98,11 +99,12 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     const startLoopIndex = this.props.programSequence.getMatchingLoopBlockIndex(this.props.pressedStepIndex);
                     const program = this.props.programSequence.getProgram();
                     if (startLoopIndex != null && program[startLoopIndex - 1] != null) {
-                        return this.props.intl.formatMessage(
-                            { id: 'CommandInfo.previousStep.loop' },
+                        return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToPreviousStep.command'},
                             {
+                                stepNumber,
+                                stepName,
                                 previousStepNumber: startLoopIndex,
-                                command: this.props.intl.formatMessage({id: `Command.${program[startLoopIndex - 1].block}`})
+                                command: this.props.intl.formatMessage({id: `Command.${program[startLoopIndex - 1].block}`}),
                             }
                         )
                     }
@@ -110,19 +112,21 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                 } else if (cachedPreviousStepLoopData != null &&
                     cachedPreviousStepLoopData.get('containingLoopPosition') != null &&
                     cachedPreviousStepLoopData.get('containingLoopLabel') != null) {
-                    return this.props.intl.formatMessage(
-                        { id: 'CommandInfo.previousStep.inLoop'},
+                    return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToPreviousStep.inLoop'},
                         {
+                            stepNumber,
+                            stepName,
                             previousStepNumber: cachedPreviousStepLoopData.get('containingLoopPosition'),
                             command: this.props.intl.formatMessage({id: `Command.${prevStepName}`}),
-                            loopLabel: cachedPreviousStepLoopData.get('containingLoopLabel')
+                            loopLabel: cachedPreviousStepLoopData.get('containingLoopLabel'),
                         }
                     )
                 // When previous step is a movements step and not in a loop, aria-label communicates position within the program
                 } else {
-                    return this.props.intl.formatMessage(
-                        { id: 'CommandInfo.previousStep'},
+                    return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToPreviousStep.command'},
                         {
+                            stepNumber,
+                            stepName,
                             previousStepNumber: this.props.pressedStepIndex,
                             command: this.props.intl.formatMessage({id: `Command.${prevStepName}`})
                         }
@@ -130,9 +134,15 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                 }
             }
         }
+        return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToPreviousStep'},
+            {
+                stepNumber,
+                stepName
+            }
+        );
     }
 
-    makeNextStepInfo(): ?string {
+    makeNextStepAriaLabel(stepNumber: ?number | string, stepName: string): string {
         const currentStep = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex);
         if (this.props.pressedStepIndex < (this.props.programSequence.getProgramLength() - 1)) {
             const nextStep = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex + 1);
@@ -140,15 +150,21 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
             const nextStepName = nextStep.block;
             // When next step is startLoop, aria-label communicates that moveNext will move into a loop
             if (nextStepName === 'startLoop') {
-                return this.props.intl.formatMessage(
-                    { id: 'CommandInfo.nextStep.startLoop'},
-                    { loopLabel: nextStep.label }
+                return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToNextStep.startLoop'},
+                    {
+                        stepNumber,
+                        stepName,
+                        loopLabel: nextStep.label
+                    }
                 );
             // When next step is endLoop, aria-label communicates that moveNext will move out of the current loop
             } else if (nextStepName === 'endLoop' && currentStep.block !== 'startLoop') {
-                return this.props.intl.formatMessage(
-                    { id: 'CommandInfo.nextStep.endLoop'},
-                    { loopLabel: nextStep.label }
+                return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToNextStep.endLoop'},
+                    {
+                        stepNumber,
+                        stepName,
+                        loopLabel: nextStep.label
+                    }
                 );
             } else {
                 // When next step is not loops and current step is startLoop, calculate the index the loop will move by
@@ -157,11 +173,12 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     const endLoopIndex = this.props.programSequence.getMatchingLoopBlockIndex(this.props.pressedStepIndex);
                     const program = this.props.programSequence.getProgram();
                     if (endLoopIndex != null && program[endLoopIndex + 1] != null) {
-                        return this.props.intl.formatMessage(
-                            { id: 'CommandInfo.nextStep.loop' },
+                        return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToNextStep.command'},
                             {
+                                stepNumber,
+                                stepName,
                                 nextStepNumber: endLoopIndex + 2,
-                                command: this.props.intl.formatMessage({id: `Command.${program[endLoopIndex + 1].block}`})
+                                command: this.props.intl.formatMessage({id: `Command.${program[endLoopIndex + 1].block}`}),
                             }
                         );
                     }
@@ -169,9 +186,10 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                 } else if (cachedNextStepLoopData != null &&
                     cachedNextStepLoopData.get('containingLoopPosition') != null &&
                     cachedNextStepLoopData.get('containingLoopLabel') != null) {
-                    return this.props.intl.formatMessage(
-                        { id: 'CommandInfo.nextStep.inLoop'},
+                    return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToNextStep.inLoop'},
                         {
+                            stepNumber,
+                            stepName,
                             nextStepNumber: cachedNextStepLoopData.get('containingLoopPosition'),
                             command: this.props.intl.formatMessage({id: `Command.${nextStepName}`}),
                             loopLabel: cachedNextStepLoopData.get('containingLoopLabel')
@@ -179,9 +197,10 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     );
                 // When next step is a movements step and not in a loop, aria-label communicates position within the program
                 } else {
-                    return this.props.intl.formatMessage(
-                        { id: 'CommandInfo.nextStep'},
+                    return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToNextStep.command'},
                         {
+                            stepNumber,
+                            stepName,
                             nextStepNumber: this.props.pressedStepIndex + 2,
                             command: this.props.intl.formatMessage({id: `Command.${nextStep.block}`})
                         }
@@ -189,6 +208,12 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                 }
             }
         }
+        return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToNextStep'},
+            {
+                stepNumber,
+                stepName
+            }
+        );
     }
 
     getReplaceIsVisible(): boolean {
@@ -219,6 +244,9 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
         const moveToPreviousStepIsDisabled = this.props.programSequence.moveToPreviousStepDisabled(this.props.pressedStepIndex);
         const replaceIsVisible = this.getReplaceIsVisible();
         const replaceIsDisabled = this.props.selectedCommandName == null;
+        const replaceMessage = replaceIsDisabled ? 
+            this.props.intl.formatMessage({id:'ActionPanel.action.replace.noAction'}, stepMessageData) :
+            this.props.intl.formatMessage({id:'ActionPanel.action.replace.withAction'}, stepMessageData);
         return (
             <React.Fragment>
                 <div className="ActionPanel__background">
@@ -245,7 +273,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                             name='replaceCurrentStep'
                             disabled={replaceIsDisabled}
                             disabledClassName='ActionPanel__action-buttons--disabled'
-                            aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.replace'}, stepMessageData)}
+                            aria-label={replaceMessage}
                             className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                             onClick={this.handleClickReplace}>
                             <ReplaceIcon
@@ -258,7 +286,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                         name='moveToPreviousStep'
                         disabled={moveToPreviousStepIsDisabled}
                         disabledClassName='ActionPanel__action-buttons--disabled'
-                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToPreviousStep'}, stepMessageData)}
+                        aria-label={stepMessageData.previousStepAriaLabel}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                         onClick={this.handleClickMoveToPreviousStep}>
                         <MovePreviousIcon
@@ -270,7 +298,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                         name='moveToNextStep'
                         disabled={moveToNextStepIsDisabled}
                         disabledClassName='ActionPanel__action-buttons--disabled'
-                        aria-label={this.props.intl.formatMessage({id:'ActionPanel.action.moveToNextStep'}, stepMessageData)}
+                        aria-label={stepMessageData.nextStepAriaLabel}
                         className='ActionPanel__action-buttons focus-trap-action-panel__action-panel-button'
                         onClick={this.handleClickMoveToNextStep}>
                         <MoveNextIcon
