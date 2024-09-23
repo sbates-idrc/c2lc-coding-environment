@@ -54,10 +54,8 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
             );
         }
 
-        let selectedCommandName = this.props.selectedCommandName != null ?
+        const selectedCommandName = this.props.selectedCommandName != null ?
             this.props.intl.formatMessage({id: `Command.${this.props.selectedCommandName}`}) : '';
-
-        console.log(this.makePreviousStepAriaLabel(stepNumber, stepName));
 
         return {
             'stepNumber': stepNumber,
@@ -77,7 +75,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
             // When previous step is startLoop, aria-label communicates that movePrevious will move out of the current loop
             if (prevStepName === 'startLoop' && currentStep.block !== 'endLoop') {
                 return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToPreviousStep.startLoop'},
-                    { 
+                    {
                         stepNumber,
                         stepName,
                         loopLabel: prevStep.label
@@ -244,7 +242,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
         const moveToPreviousStepIsDisabled = this.props.programSequence.moveToPreviousStepDisabled(this.props.pressedStepIndex);
         const replaceIsVisible = this.getReplaceIsVisible();
         const replaceIsDisabled = this.props.selectedCommandName == null;
-        const replaceMessage = replaceIsDisabled ? 
+        const replaceMessage = replaceIsDisabled ?
             this.props.intl.formatMessage({id:'ActionPanel.action.replace.noAction'}, stepMessageData) :
             this.props.intl.formatMessage({id:'ActionPanel.action.replace.withAction'}, stepMessageData);
         return (
