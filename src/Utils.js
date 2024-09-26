@@ -4,7 +4,7 @@ import CustomBackground from './CustomBackground';
 import type { IntlShape } from 'react-intl';
 import SceneDimensions from './SceneDimensions';
 import { getTileName, isNone } from './TileData';
-import type { ThemeName } from './types';
+import type { ProgramBlock, ThemeName } from './types';
 import { getBackgroundInfo } from './Worlds';
 import { isWorldName } from './Worlds';
 import type { WorldName } from './Worlds';
@@ -318,7 +318,15 @@ function getBackgroundSquareDescription(x: number, y: number,
     }
 }
 
+function copyProgramBlock(block: ProgramBlock): ProgramBlock {
+    return ((Object.assign(
+        {},
+        block,
+    ): any): ProgramBlock);
+}
+
 export {
+    copyProgramBlock,
     decodeCoordinate,
     decodeDirection,
     encodeCoordinate,
@@ -330,11 +338,11 @@ export {
     generateEncodedProgramURL,
     generateId,
     generateLoopLabel,
+    getBackgroundSquareDescription,
     getThemeFromString,
     getWorldFromString,
     getStartingPositionFromString,
     isLoopBlock,
     parseLoopLabel,
-    selectSpeechSynthesisVoice,
-    getBackgroundSquareDescription
+    selectSpeechSynthesisVoice
 };

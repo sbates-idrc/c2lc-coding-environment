@@ -12,6 +12,7 @@ import AriaDisablingButton from './AriaDisablingButton';
 import CharacterState from './CharacterState';
 import CommandBlock from './CommandBlock';
 import FocusTrapManager from './FocusTrapManager';
+import ProgramBlockCache from './ProgramBlockCache';
 import ProgramSequence from './ProgramSequence';
 import SceneDimensions from './SceneDimensions';
 import messages from './messages.json';
@@ -150,7 +151,7 @@ function getProgramBlockLoopIterationsInput(programBlockEditorWrapper, index: nu
         .find('.command-block-loop-iterations');
 }
 
-function getProgramBlockLoopIterations(programBlockEditorWrapper, index: number) {
+function getProgramBlockLoopIterationsInputValue(programBlockEditorWrapper, index: number) {
     return ((getProgramBlocks(programBlockEditorWrapper).at(index)
         .find('.command-block-loop-iterations')
         .getDOMNode(): any): HTMLInputElement).value;
@@ -205,35 +206,47 @@ describe('Program rendering', () => {
         expect(getProgramBlocks(wrapper).length).toBe(2);
         expect(getProgramBlocks(wrapper).at(0).prop('data-command')).toBe('startLoop');
         expect(getProgramBlockLoopLabel(wrapper, 0)).toBe('A');
-        expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('1');
+        expect(getProgramBlockLoopIterationsInputValue(wrapper, 0)).toBe('1');
         expect(getProgramBlocks(wrapper).at(1).prop('data-command')).toBe('endLoop');
         expect(getProgramBlockLoopLabel(wrapper, 1)).toBe('A');
         wrapper.setProps({ runningState: 'stopped' });
-        expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('2');
+        expect(getProgramBlockLoopIterationsInputValue(wrapper, 0)).toBe('2');
     });
     test('Loop blocks should be wrapped in a container', () => {
         const { wrapper } = createMountProgramBlockEditor({
             programSequence: new ProgramSequence(
                 [
-                    {block: 'startLoop', label: 'A', iterations: 2},
-                    {block: 'forward1', cache: new Map([
-                        ['containingLoopLabel', 'A'],
-                        ['containingLoopPosition', 1]
-                    ])},
-                    {block: 'startLoop', label: 'B', iterations: 2, cache: new Map([
-                        ['containingLoopLabel', 'A'],
-                        ['containingLoopPosition', 2]
-                    ])},
-                    {block: 'left45', cache: new Map([
-                        ['containingLoopLabel', 'B'],
-                        ['containingLoopPosition', 3]
-                    ])},
-                    {block: 'endLoop', label: 'B', cache: new Map([
-                        ['containingLoopLabel', 'A'],
-                        ['containingLoopPosition', 4]
-                    ])},
-                    {block: 'endLoop', label: 'A'},
-                    {block: 'right45'}
+                    {
+                        block: 'startLoop',
+                        label: 'A',
+                        iterations: 2
+                    },
+                    {
+                        block: 'forward1',
+                        cache: new ProgramBlockCache('A', 1)
+                    },
+                    {
+                        block: 'startLoop',
+                        label: 'B',
+                        iterations: 2,
+                        cache: new ProgramBlockCache('A', 2)
+                    },
+                    {
+                        block: 'left45',
+                        cache: new ProgramBlockCache('B', 3)
+                    },
+                    {
+                        block: 'endLoop',
+                        label: 'B',
+                        cache: new ProgramBlockCache('A', 4)
+                    },
+                    {
+                        block: 'endLoop',
+                        label: 'A'
+                    },
+                    {
+                        block: 'right45'
+                    }
                 ],
                 0,
                 0,

@@ -1,5 +1,6 @@
 // @flow
 import CharacterState from './CharacterState';
+import ProgramBlockCache from './ProgramBlockCache';
 import type {IntlShape} from 'react-intl';
 import SceneDimensions from './SceneDimensions';
 
@@ -16,12 +17,11 @@ export type CommandName =
     'right45' | 'right90' | 'right180' |
     'loop';
 
-export type BlockName =
+export type MovementBlockName =
     'forward1' | 'forward2' | 'forward3' |
     'backward1' | 'backward2' | 'backward3' |
     'left45' | 'left90' | 'left180' |
-    'right45' | 'right90' | 'right180' |
-    'startLoop' | 'endLoop';
+    'right45' | 'right90' | 'right180';
 
 export type DeviceConnectionStatus = 'notConnected' | 'connecting' | 'connected';
 
@@ -40,14 +40,25 @@ export type EditorMode = 'text' | 'block';
 */
 export type ThemeName = 'default' | 'light' | 'dark' | 'gray' | 'contrast';
 
-export type ProgramBlockCache = Map<string, number | string>;
-
-export type ProgramBlock = {
-    block: BlockName,
-    iterations?: number,
-    label?: string,
+export type MovementProgramBlock = {
+    block: MovementBlockName,
     cache?: ProgramBlockCache;
 };
+
+export type StartLoopProgramBlock = {
+    block: 'startLoop',
+    label: string,
+    iterations: number,
+    cache?: ProgramBlockCache;
+};
+
+export type EndLoopProgramBlock = {
+    block: 'endLoop',
+    label: string,
+    cache?: ProgramBlockCache;
+};
+
+export type ProgramBlock = MovementProgramBlock | StartLoopProgramBlock | EndLoopProgramBlock;
 
 export type Program = Array<ProgramBlock>;
 

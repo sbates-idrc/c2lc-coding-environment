@@ -6,7 +6,7 @@ import CharacterMessageBuilder from './CharacterMessageBuilder';
 import type { CharacterUpdate } from './CharacterState';
 import type { IntlShape } from 'react-intl';
 import SceneDimensions from './SceneDimensions';
-import type { AudioManager, BlockName } from './types';
+import type { AudioManager, MovementBlockName } from './types';
 
 // The ActionsHandler is called by the Interpreter for each program
 // step action as the program is running, and is responsible for
@@ -27,7 +27,7 @@ export default class ActionsHandler {
         this.characterMessageBuilder = new CharacterMessageBuilder(sceneDimensions, intl);
     }
 
-    doAction(action: BlockName, stepTimeMs: number): Promise<ActionResult> {
+    doAction(action: MovementBlockName, stepTimeMs: number): Promise<ActionResult> {
         switch(action) {
             case 'forward1':
                 return this.forward(1, action, stepTimeMs);

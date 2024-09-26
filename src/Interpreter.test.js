@@ -6,7 +6,7 @@ import Interpreter from './Interpreter';
 import ProgramSequence from './ProgramSequence';
 import type { IntlShape } from 'react-intl';
 import SceneDimensions from './SceneDimensions';
-import type { AudioManager, BlockName } from './types';
+import type { AudioManager, MovementBlockName } from './types';
 
 jest.mock('./ActionsHandler');
 jest.mock('./App');
@@ -30,7 +30,7 @@ function createInterpreter() {
         ((null: any): IntlShape)
     );
 
-    actionsHandlerMock.doAction.mockImplementation((action: BlockName) => {
+    actionsHandlerMock.doAction.mockImplementation((action: MovementBlockName) => {
         // Mock ActionsHandler behaviour to test handling of different
         // Promise results
         switch(action) {
