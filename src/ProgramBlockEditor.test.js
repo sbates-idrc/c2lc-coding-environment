@@ -145,6 +145,11 @@ function getProgramBlockLoopLabel(programBlockEditorWrapper, index: number) {
         .find('.command-block-loop-label-container').getDOMNode().textContent;
 }
 
+function getProgramBlockLoopIterationsInput(programBlockEditorWrapper, index: number) {
+    return getProgramBlocks(programBlockEditorWrapper).at(index)
+        .find('.command-block-loop-iterations');
+}
+
 function getProgramBlockLoopIterations(programBlockEditorWrapper, index: number) {
     return ((getProgramBlocks(programBlockEditorWrapper).at(index)
         .find('.command-block-loop-iterations')
@@ -470,6 +475,87 @@ describe('Active loop container highlight', () => {
         expect(loopContainers.length).toBe(1);
         expect(hasLoopContainerActiveClass(loopContainers.at(0))).toBe(false);
         expect(hasLoopContainerActiveOutlineClass(loopContainers.at(0))).toBe(false);
+    });
+});
+
+describe('Change loop iterations', () => {
+    test('The ProgramSequence should be updated when the loop iterations are changed when the program is stopped', () => {
+        const { wrapper, mockChangeProgramSequenceHandler } = createMountProgramBlockEditor({
+            runningState: 'stopped',
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'endLoop', label: 'A'}
+                ],
+                0,
+                0,
+                new Map([['A', 2]])
+            )
+        });
+
+        const input = getProgramBlockLoopIterationsInput(wrapper, 0);
+        ((input.getDOMNode(): any): HTMLInputElement).value = '4';
+        input.simulate('change');
+        input.getDOMNode().dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}));
+
+        expect(mockChangeProgramSequenceHandler.mock.calls.length).toBe(1);
+        expect(mockChangeProgramSequenceHandler.mock.calls[0][0]).toStrictEqual(
+            new ProgramSequence(
+                [
+                    {
+                        block: 'startLoop',
+                        label: 'A',
+                        iterations: 4
+                    },
+                    {
+                        block: 'endLoop',
+                        label: 'A'
+                    }
+                ],
+                0,
+                0,
+                new Map([['A', 2]])
+            )
+        );
+    });
+    test('The ProgramSequence and loopIterationsLeft should be updated when the loop iterations are changed when the program is paused', () => {
+        const { wrapper, mockChangeProgramSequenceHandler } = createMountProgramBlockEditor({
+            runningState: 'paused',
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'endLoop', label: 'A'}
+                ],
+                0,
+                0,
+                new Map([['A', 1]])
+            )
+        });
+
+        const input = getProgramBlockLoopIterationsInput(wrapper, 0);
+        ((input.getDOMNode(): any): HTMLInputElement).value = '4';
+        input.simulate('change');
+        input.getDOMNode().dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}));
+
+        expect(mockChangeProgramSequenceHandler.mock.calls.length).toBe(1);
+        expect(mockChangeProgramSequenceHandler.mock.calls[0][0]).toStrictEqual(
+            new ProgramSequence(
+                [
+                    {
+                        block: 'startLoop',
+                        label: 'A',
+                        iterations: 4
+                    },
+                    {
+                        block: 'endLoop',
+                        label: 'A'
+                    }
+                ],
+                0,
+                0,
+                new Map([['A', 4]])
+            )
+        );
     });
 });
 
