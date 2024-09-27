@@ -38,8 +38,8 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
 
         let stepNumber = this.props.pressedStepIndex + 1;
         const cachedCurrentStepLoopData = currentStep.cache;
-        if (cachedCurrentStepLoopData != null && cachedCurrentStepLoopData.get('containingLoopPosition') != null) {
-            stepNumber = cachedCurrentStepLoopData.get('containingLoopPosition');
+        if (cachedCurrentStepLoopData != null) {
+            stepNumber = cachedCurrentStepLoopData.getContainingLoopPosition();
         }
 
         let stepName = '';
@@ -74,9 +74,8 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
         if (this.props.pressedStepIndex > 0) {
             const prevStep = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex - 1);
             const cachedPreviousStepLoopData = prevStep.cache;
-            const prevStepName = prevStep.block;
             // When previous step is startLoop, aria-label communicates that movePrevious will move out of the current loop
-            if (prevStepName === 'startLoop' && currentStep.block !== 'endLoop') {
+            if (prevStep.block === 'startLoop' && currentStep.block !== 'endLoop') {
                 return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToPreviousStep.startLoop'},
                     {
                         stepNumber,
@@ -85,7 +84,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     }
                 );
             // When previous step is endLoop, aria-label communicates that movePrevious will move into a loop
-            } else if (prevStepName === 'endLoop') {
+            } else if (prevStep.block === 'endLoop') {
                 return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToPreviousStep.endLoop'},
                     {
                         stepNumber,
@@ -110,16 +109,14 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                         )
                     }
                 // When previous step is wrapped in a loop, aria-label communicates position within a loop
-                } else if (cachedPreviousStepLoopData != null &&
-                    cachedPreviousStepLoopData.get('containingLoopPosition') != null &&
-                    cachedPreviousStepLoopData.get('containingLoopLabel') != null) {
+                } else if (cachedPreviousStepLoopData != null) {
                     return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToPreviousStep.inLoop'},
                         {
                             stepNumber,
                             stepName,
-                            previousStepNumber: cachedPreviousStepLoopData.get('containingLoopPosition'),
-                            command: this.props.intl.formatMessage({id: `Command.${prevStepName}`}),
-                            loopLabel: cachedPreviousStepLoopData.get('containingLoopLabel'),
+                            previousStepNumber: cachedPreviousStepLoopData.getContainingLoopPosition(),
+                            command: this.props.intl.formatMessage({id: `Command.${prevStep.block}`}),
+                            loopLabel: cachedPreviousStepLoopData.getContainingLoopLabel(),
                         }
                     )
                 // When previous step is a movements step and not in a loop, aria-label communicates position within the program
@@ -129,7 +126,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                             stepNumber,
                             stepName,
                             previousStepNumber: this.props.pressedStepIndex,
-                            command: this.props.intl.formatMessage({id: `Command.${prevStepName}`})
+                            command: this.props.intl.formatMessage({id: `Command.${prevStep.block}`})
                         }
                     );
                 }
@@ -148,9 +145,8 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
         if (this.props.pressedStepIndex < (this.props.programSequence.getProgramLength() - 1)) {
             const nextStep = this.props.programSequence.getProgramStepAt(this.props.pressedStepIndex + 1);
             const cachedNextStepLoopData = nextStep.cache;
-            const nextStepName = nextStep.block;
             // When next step is startLoop, aria-label communicates that moveNext will move into a loop
-            if (nextStepName === 'startLoop') {
+            if (nextStep.block === 'startLoop') {
                 return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToNextStep.startLoop'},
                     {
                         stepNumber,
@@ -159,7 +155,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     }
                 );
             // When next step is endLoop, aria-label communicates that moveNext will move out of the current loop
-            } else if (nextStepName === 'endLoop' && currentStep.block !== 'startLoop') {
+            } else if (nextStep.block === 'endLoop' && currentStep.block !== 'startLoop') {
                 return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToNextStep.endLoop'},
                     {
                         stepNumber,
@@ -184,16 +180,14 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                         );
                     }
                 // When next step is wrapped in a loop, aria-label communicates position within a loop
-                } else if (cachedNextStepLoopData != null &&
-                    cachedNextStepLoopData.get('containingLoopPosition') != null &&
-                    cachedNextStepLoopData.get('containingLoopLabel') != null) {
+                } else if (cachedNextStepLoopData != null) {
                     return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToNextStep.inLoop'},
                         {
                             stepNumber,
                             stepName,
-                            nextStepNumber: cachedNextStepLoopData.get('containingLoopPosition'),
-                            command: this.props.intl.formatMessage({id: `Command.${nextStepName}`}),
-                            loopLabel: cachedNextStepLoopData.get('containingLoopLabel')
+                            nextStepNumber: cachedNextStepLoopData.getContainingLoopPosition(),
+                            command: this.props.intl.formatMessage({id: `Command.${nextStep.block}`}),
+                            loopLabel: cachedNextStepLoopData.getContainingLoopLabel()
                         }
                     );
                 // When next step is a movements step and not in a loop, aria-label communicates position within the program
