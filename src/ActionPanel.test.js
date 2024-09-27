@@ -5,6 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount } from 'enzyme';
 import { IntlProvider } from 'react-intl';
 import ActionPanel from './ActionPanel';
+import ProgramBlockCache from './ProgramBlockCache';
 import ProgramSequence from './ProgramSequence';
 import messages from './messages.json';
 
@@ -233,10 +234,7 @@ describe('ActionPanel options', () => {
                     },
                     {
                         block: 'forward1',
-                        cache: new Map([
-                            ['containingLoopPosition', 1],
-                            ['containingLoopLabel', 'A']
-                        ])
+                        cache: new ProgramBlockCache('A', 1)
                     },
                     {
                         block: 'endLoop',
@@ -288,17 +286,11 @@ describe('ActionPanel options', () => {
                     },
                     {
                         block: 'forward1',
-                        cache: new Map([
-                            ['containingLoopPosition', 1],
-                            ['containingLoopLabel', 'A']
-                        ])
+                        cache: new ProgramBlockCache('A', 1)
                     },
                     {
                         block: 'forward2',
-                        cache: new Map([
-                            ['containingLoopPosition', 2],
-                            ['containingLoopLabel', 'A']
-                        ])
+                        cache: new ProgramBlockCache('A', 2)
                     },
                     {
                         block: 'endLoop',
@@ -443,10 +435,7 @@ describe('ActionPanel options', () => {
                     },
                     {
                         block: 'forward1',
-                        cache: new Map([
-                            ['containingLoopPosition', 1],
-                            ['containingLoopLabel', 'A']
-                        ])
+                        cache: new ProgramBlockCache('A', 1)
                     },
                     {
                         block: 'endLoop',
@@ -498,17 +487,11 @@ describe('ActionPanel options', () => {
                     },
                     {
                         block: 'forward1',
-                        cache: new Map([
-                            ['containingLoopPosition', 1],
-                            ['containingLoopLabel', 'A']
-                        ])
+                        cache: new ProgramBlockCache('A', 1)
                     },
                     {
                         block: 'forward2',
-                        cache: new Map([
-                            ['containingLoopPosition', 2],
-                            ['containingLoopLabel', 'A']
-                        ])
+                        cache: new ProgramBlockCache('A', 2)
                     },
                     {
                         block: 'endLoop',

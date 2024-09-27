@@ -1,5 +1,6 @@
 // @flow
 
+import ProgramBlockCache from './ProgramBlockCache';
 import ProgramSequence from './ProgramSequence';
 import type { CommandName, Program } from './types';
 
@@ -143,63 +144,39 @@ test('calculateCachedLoopData returns a program with additional loop data', () =
             block: 'startLoop',
             iterations: 2,
             label: 'B',
-            cache: new Map([
-                ['containingLoopPosition', 1],
-                ['containingLoopLabel', 'A']
-            ])
+            cache: new ProgramBlockCache('A', 1)
         },
         {
             block: 'forward3',
-            cache: new Map([
-                ['containingLoopPosition', 1],
-                ['containingLoopLabel', 'B']
-            ])
+            cache: new ProgramBlockCache('B', 1)
         },
         {
             block: 'startLoop',
             iterations: 1,
             label: 'C',
-            cache: new Map([
-                ['containingLoopPosition', 2],
-                ['containingLoopLabel', 'B']
-            ])
+            cache: new ProgramBlockCache('B', 2)
         },
         {
             block: 'forward1',
-            cache: new Map([
-                ['containingLoopPosition', 1],
-                ['containingLoopLabel', 'C']
-            ])
+            cache: new ProgramBlockCache('C', 1)
         },
         {
             block: 'forward2',
-            cache: new Map([
-                ['containingLoopPosition', 2],
-                ['containingLoopLabel', 'C']
-            ])
+            cache: new ProgramBlockCache('C', 2)
         },
         {
             block: 'endLoop',
             label: 'C',
-            cache: new Map([
-                ['containingLoopPosition', 5],
-                ['containingLoopLabel', 'B']
-            ])
+            cache: new ProgramBlockCache('B', 5)
         },
         {
             block: 'forward3',
-            cache: new Map([
-                ['containingLoopPosition', 6],
-                ['containingLoopLabel', 'B']
-            ])
+            cache: new ProgramBlockCache('B', 6)
         },
         {
             block: 'endLoop',
             label: 'B',
-            cache: new Map([
-                ['containingLoopPosition', 8],
-                ['containingLoopLabel', 'A']
-            ])
+            cache: new ProgramBlockCache('A', 8)
         },
         {
             block: 'endLoop',
@@ -220,10 +197,7 @@ test('calculateCachedLoopData replaces existing cached loop data and removes cac
         },
         {
             block: 'forward1',
-            cache: new Map([
-                ['containingLoopPosition', 2],
-                ['containingLoopLabel', 'B']
-            ])
+            cache: new ProgramBlockCache('B', 2)
         },
         {
             block: 'endLoop',
@@ -231,10 +205,7 @@ test('calculateCachedLoopData replaces existing cached loop data and removes cac
         },
         {
             block: 'forward2',
-            cache: new Map([
-                ['containingLoopPosition', 2],
-                ['containingLoopLabel', 'B']
-            ])
+            cache: new ProgramBlockCache('B', 2)
         }
     ];
 
@@ -246,10 +217,7 @@ test('calculateCachedLoopData replaces existing cached loop data and removes cac
         },
         {
             block: 'forward1',
-            cache: new Map([
-                ['containingLoopPosition', 1],
-                ['containingLoopLabel', 'A']
-            ])
+            cache: new ProgramBlockCache('A', 1)
         },
         {
             block: 'endLoop',
@@ -314,7 +282,7 @@ test.each(([
     },
     {
         program: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'endLoop', label: 'A' }
         ],
         programCounter: 0,
@@ -325,7 +293,7 @@ test.each(([
     },
     {
         program: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'endLoop', label: 'A' }
         ],
         programCounter: 0,
@@ -336,7 +304,7 @@ test.each(([
     },
     {
         program: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'endLoop', label: 'A' }
         ],
         programCounter: 0,
@@ -347,7 +315,7 @@ test.each(([
     },
     {
         program: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'forward1' },
             { block: 'endLoop', label: 'A' }
         ],
@@ -359,7 +327,7 @@ test.each(([
     },
     {
         program: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'forward1' },
             { block: 'endLoop', label: 'A' }
         ],
@@ -371,7 +339,7 @@ test.each(([
     },
     {
         program: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'forward1' },
             { block: 'endLoop', label: 'A' }
         ],
@@ -383,7 +351,7 @@ test.each(([
     },
     {
         program: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'forward1' },
             { block: 'endLoop', label: 'A' }
         ],
@@ -1161,18 +1129,12 @@ test.each(([
                 block: 'startLoop',
                 iterations: 1,
                 label: 'B',
-                cache: new Map([
-                    ['containingLoopLabel', 'A'],
-                    ['containingLoopPosition', 1]
-                ]),
+                cache: new ProgramBlockCache('A', 1)
             },
             {
                 block: 'endLoop',
                 label: 'B',
-                cache: new Map([
-                    ['containingLoopLabel', 'A'],
-                    ['containingLoopPosition', 2]
-                ]),
+                cache: new ProgramBlockCache('A', 2)
             },
             {
                 block: 'endLoop',
@@ -1341,26 +1303,20 @@ test.each(([
         // Move a block into a loop
         program: [
             { block: 'forward1' },
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'forward2' },
             { block: 'endLoop', label: 'A' }
         ],
         indexFrom: 0,
         expectedProgram: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             {
                 block: 'forward1',
-                cache: new Map([
-                    ['containingLoopLabel', 'A'],
-                    ['containingLoopPosition', 1]
-                ])
+                cache: new ProgramBlockCache('A', 1)
             },
             {
                 block: 'forward2',
-                cache: new Map([
-                    ['containingLoopLabel', 'A'],
-                    ['containingLoopPosition', 2]
-                ])
+                cache: new ProgramBlockCache('A', 2)
             },
             { block: 'endLoop', label: 'A' }
         ]
@@ -1369,14 +1325,14 @@ test.each(([
         // Move a block out of a loop
         program: [
             { block: 'forward1' },
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'forward2' },
             { block: 'endLoop', label: 'A' }
         ],
         indexFrom: 2,
         expectedProgram: [
             { block: 'forward1' },
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'endLoop', label: 'A' },
             { block: 'forward2' }
         ]
@@ -1384,7 +1340,7 @@ test.each(([
     {
         // Move a loop using startLoop
         program: [
-            { block: 'startLoop', label: 'A'},
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'forward1' },
             { block: 'endLoop', label: 'A' },
             { block: 'forward2' }
@@ -1392,13 +1348,10 @@ test.each(([
         indexFrom: 0,
         expectedProgram: [
             { block: 'forward2' },
-            { block: 'startLoop', label: 'A'},
+            { block: 'startLoop', label: 'A', iterations: 10 },
             {
                 block: 'forward1',
-                cache: new Map([
-                    ['containingLoopLabel', 'A'],
-                    ['containingLoopPosition', 1]
-                ])
+                cache: new ProgramBlockCache('A', 1)
             },
             { block: 'endLoop', label: 'A' }
         ]
@@ -1406,7 +1359,7 @@ test.each(([
     {
         // Move a loop using endLoop
         program: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'forward1' },
             { block: 'endLoop', label: 'A' },
             { block: 'forward2' }
@@ -1414,13 +1367,10 @@ test.each(([
         indexFrom: 2,
         expectedProgram: [
             { block: 'forward2' },
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             {
                 block: 'forward1',
-                cache: new Map([
-                    ['containingLoopLabel', 'A'],
-                    ['containingLoopPosition', 1]
-                ])
+                cache: new ProgramBlockCache('A', 1)
             },
             { block: 'endLoop', label: 'A' }
         ]
@@ -1428,37 +1378,29 @@ test.each(([
     {
         // Move a loop into another loop
         program: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'forward1' },
             { block: 'endLoop', label: 'A' },
-            { block: 'startLoop', label: 'B' },
+            { block: 'startLoop', label: 'B', iterations: 20 },
             { block: 'endLoop', label: 'B' }
         ],
         indexFrom: 0,
         expectedProgram: [
-            { block: 'startLoop', label: 'B' },
+            { block: 'startLoop', label: 'B', iterations: 20 },
             {
                 block: 'startLoop',
                 label: 'A',
-                cache: new Map([
-                    ['containingLoopLabel', 'B'],
-                    ['containingLoopPosition', 1]
-                ])
+                iterations: 10,
+                cache: new ProgramBlockCache('B', 1)
             },
             {
                 block: 'forward1',
-                cache: new Map([
-                    ['containingLoopLabel', 'A'],
-                    ['containingLoopPosition', 1]
-                ])
+                cache: new ProgramBlockCache('A', 1)
             },
             {
                 block: 'endLoop',
                 label: 'A',
-                cache: new Map([
-                    ['containingLoopLabel', 'B'],
-                    ['containingLoopPosition', 3]
-                ])
+                cache: new ProgramBlockCache('B', 3)
             },
             { block: 'endLoop', label: 'B' }
         ]
@@ -1466,23 +1408,20 @@ test.each(([
     {
         // Move a loop out of another loop
         program: [
-            { block: 'startLoop', label: 'A' },
-            { block: 'startLoop', label: 'B' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
+            { block: 'startLoop', label: 'B', iterations: 20 },
             { block: 'forward1' },
             { block: 'endLoop', label: 'B' },
             { block: 'endLoop', label: 'A' }
         ],
         indexFrom: 1,
         expectedProgram: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'endLoop', label: 'A' },
-            { block: 'startLoop', label: 'B' },
+            { block: 'startLoop', label: 'B' , iterations: 20 },
             {
                 block: 'forward1',
-                cache: new Map([
-                    ['containingLoopLabel', 'B'],
-                    ['containingLoopPosition', 1]
-                ])
+                cache: new ProgramBlockCache('B', 1)
             },
             { block: 'endLoop', label: 'B' }
         ]
@@ -1521,27 +1460,21 @@ test.each(([
     {
         // Move a block into a loop
         program: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'forward1' },
             { block: 'endLoop', label: 'A' },
             { block: 'forward2' }
         ],
         indexFrom: 3,
         expectedProgram: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             {
                 block: 'forward1',
-                cache: new Map([
-                    ['containingLoopLabel', 'A'],
-                    ['containingLoopPosition', 1]
-                ])
+                cache: new ProgramBlockCache('A', 1)
             },
             {
                 block: 'forward2',
-                cache: new Map([
-                    ['containingLoopLabel', 'A'],
-                    ['containingLoopPosition', 2]
-                ])
+                cache: new ProgramBlockCache('A', 2)
             },
             { block: 'endLoop', label: 'A' }
         ]
@@ -1550,7 +1483,7 @@ test.each(([
         // Move a block out of a loop
         program: [
             { block: 'forward1' },
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'forward2' },
             { block: 'endLoop', label: 'A' }
         ],
@@ -1558,7 +1491,7 @@ test.each(([
         expectedProgram: [
             { block: 'forward1' },
             { block: 'forward2' },
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'endLoop', label: 'A' }
         ]
     },
@@ -1566,19 +1499,16 @@ test.each(([
         // Move a loop using startLoop
         program: [
             { block: 'forward1' },
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'forward2' },
             { block: 'endLoop', label: 'A' }
         ],
         indexFrom: 1,
         expectedProgram: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             {
                 block: 'forward2',
-                cache: new Map([
-                    ['containingLoopLabel', 'A'],
-                    ['containingLoopPosition', 1]
-                ])
+                cache: new ProgramBlockCache('A', 1)
             },
             { block: 'endLoop', label: 'A' },
             { block: 'forward1' }
@@ -1588,18 +1518,16 @@ test.each(([
         // Move a loop using endLoop
         program: [
             { block: 'forward1' },
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'forward2' },
             { block: 'endLoop', label: 'A' }
         ],
         indexFrom: 3,
         expectedProgram: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             {
                 block: 'forward2',
-                cache: new Map([
-                    ['containingLoopLabel', 'A'], ['containingLoopPosition', 1]
-                ])
+                cache: new ProgramBlockCache('A', 1)
             },
             { block: 'endLoop', label: 'A' },
             { block: 'forward1' }
@@ -1608,37 +1536,33 @@ test.each(([
     {
         // Move a loop into another loop
         program: [
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'endLoop', label: 'A' },
-            { block: 'startLoop', label: 'B' },
+            { block: 'startLoop', label: 'B', iterations: 20 },
             { block: 'forward1' },
             { block: 'endLoop', label: 'B' }
         ],
         indexFrom: 2,
         expectedProgram: [
-            { block: 'startLoop', label: 'A' },
+            {
+                block: 'startLoop',
+                label: 'A',
+                iterations: 10
+            },
             {
                 block: 'startLoop',
                 label: 'B',
-                cache: new Map([
-                    ['containingLoopLabel', 'A'],
-                    ['containingLoopPosition', 1]
-                ])
+                iterations: 20,
+                cache: new ProgramBlockCache('A', 1)
             },
             {
                 block: 'forward1',
-                cache: new Map([
-                    ['containingLoopLabel', 'B'],
-                    ['containingLoopPosition', 1]
-                ])
+                cache: new ProgramBlockCache('B', 1)
             },
             {
                 block: 'endLoop',
                 label: 'B',
-                cache: new Map([
-                    ['containingLoopLabel', 'A'],
-                    ['containingLoopPosition', 3]
-                ])
+                cache: new ProgramBlockCache('A', 3)
             },
             { block: 'endLoop', label: 'A' }
         ]
@@ -1646,24 +1570,21 @@ test.each(([
     {
         // Move a loop out of another loop
         program: [
-            { block: 'startLoop', label: 'A' },
-            { block: 'startLoop', label: 'B' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
+            { block: 'startLoop', label: 'B', iterations: 20 },
             { block: 'forward1' },
             { block: 'endLoop', label: 'B' },
             { block: 'endLoop', label: 'A' }
         ],
         indexFrom: 1,
         expectedProgram: [
-            { block: 'startLoop', label: 'B' },
+            { block: 'startLoop', label: 'B', iterations: 20 },
             {
                 block: 'forward1',
-                cache: new Map([
-                    ['containingLoopLabel', 'B'],
-                    ['containingLoopPosition', 1]
-                ])
+                cache: new ProgramBlockCache('B', 1)
             },
             { block: 'endLoop', label: 'B' },
-            { block: 'startLoop', label: 'A' },
+            { block: 'startLoop', label: 'A', iterations: 10 },
             { block: 'endLoop', label: 'A' }
         ]
     }

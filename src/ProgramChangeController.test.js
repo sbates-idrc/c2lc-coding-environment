@@ -411,7 +411,22 @@ describe('Test replaceProgramStep()', () => {
 
         appMock.setState.mockImplementation((updater) => {
             const newState = updater({
-                programSequence: new ProgramSequence([{block: 'startLoop'}, {block: 'endLoop'}], 0, 0, new Map())
+                programSequence: new ProgramSequence(
+                    [
+                        {
+                            block: 'startLoop',
+                            label: 'A',
+                            iterations: 1
+                        },
+                        {
+                            block: 'endLoop',
+                            label: 'A'
+                        }
+                    ],
+                    0,
+                    0,
+                    new Map()
+                )
             });
 
             // The program should not be updated

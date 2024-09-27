@@ -64,7 +64,8 @@ describe('Test buildDeleteStepAnnouncement()', () => {
 
         const startLoopBlock = {
             block: 'startLoop',
-            label: 'A'
+            label: 'A',
+            iterations: 1
         };
 
         expect(announcementBuilder.buildDeleteStepAnnouncement(startLoopBlock)).toStrictEqual({

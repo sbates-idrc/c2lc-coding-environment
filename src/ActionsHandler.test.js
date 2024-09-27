@@ -8,7 +8,7 @@ import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
 import { createIntl } from 'react-intl';
 import SceneDimensions from './SceneDimensions';
-import type { BlockName } from './types';
+import type { MovementBlockName } from './types';
 
 import messages from './messages.json';
 
@@ -49,7 +49,7 @@ function createActionsHandler() {
 }
 
 type MovementTestCase = {|
-    action: BlockName,
+    action: MovementBlockName,
     x: number,
     y: number,
     direction: number,
