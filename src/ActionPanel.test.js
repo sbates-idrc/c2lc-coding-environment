@@ -24,7 +24,7 @@ function createMountActionPanel(props) {
                 {},
                 {
                     focusedOptionName: null,
-                    selectedCommandName: 'right45',
+                    selectedActionName: 'right45',
                     programSequence: new ProgramSequence(
                         [
                             {block: 'forward1'},
@@ -101,7 +101,7 @@ describe('ActionPanel options', () => {
     test('Given that there is no selected action, then the Replace button should be disabled', () => {
         const { wrapper } = createMountActionPanel({
             pressedStepIndex: 1,
-            selectedCommandName: null
+            selectedActionName: null
         });
         const replaceButton = getActionPanelOptionButtons(wrapper, 'replaceCurrentStep');
         const expectedAriaLabel = 'Replace Step 2 turn left 45 degrees';

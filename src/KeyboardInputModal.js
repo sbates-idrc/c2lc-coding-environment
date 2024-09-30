@@ -152,7 +152,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
                         <FormattedMessage
                             className="KeyboardInputModal__binding__label" id={descriptionMessageKey}
                             values={{
-                                key: labelKeyString
+                                keyboardShortcut: labelKeyString
                             }}
                         />
                     </div>

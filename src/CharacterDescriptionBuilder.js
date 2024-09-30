@@ -38,7 +38,7 @@ export default class CharacterDescriptionBuilder {
                 {
                     columnLabel: columnLabel,
                     rowLabel: rowLabel,
-                    item: itemLabel,
+                    backgroundItem: itemLabel,
                     direction: directionLabel
                 }
             );

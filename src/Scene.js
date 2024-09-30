@@ -68,7 +68,7 @@ class Scene extends React.Component<SceneProps, {}> {
     }
 
     generateAriaLabel() {
-        const worldLabel = this.props.intl.formatMessage({id: this.props.world + '.name'});
+        const backgroundName = this.props.intl.formatMessage({id: this.props.world + '.name'});
         const numColumns = this.props.dimensions.getWidth();
         const numRows = this.props.dimensions.getHeight();
 
@@ -81,10 +81,10 @@ class Scene extends React.Component<SceneProps, {}> {
         return this.props.intl.formatMessage(
             { id: 'Scene.description' },
             {
-                world: worldLabel,
-                numColumns: numColumns,
-                numRows: numRows,
-                characterDescription: characterDescription
+                backgroundName,
+                numColumns,
+                numRows,
+                characterDescription
             }
         );
     }

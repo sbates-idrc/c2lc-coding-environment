@@ -285,7 +285,7 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    getSelectedCommandName() {
+    getSelectedActionName() {
         if (this.state.selectedAction !== null) {
             return this.state.selectedAction;
         } else {
@@ -1013,7 +1013,7 @@ export class App extends React.Component<AppProps, AppState> {
                     <CommandPaletteCommand
                         key={`CommandBlock-${index}`}
                         commandName={value}
-                        selectedCommandName={this.getSelectedCommandName()}
+                        selectedActionName={this.getSelectedActionName()}
                         audioManager={this.audioManager}
                         isDraggingCommand={this.state.isDraggingCommand}
                         onSelect={this.handleCommandFromCommandPalette}
