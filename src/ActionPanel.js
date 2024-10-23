@@ -110,7 +110,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     }
                 // When previous step is wrapped in a loop, aria-label communicates position within a loop
                 } else if (cachedPreviousStepLoopData != null) {
-                    return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToPreviousStep.withInLoop'},
+                    return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToPreviousStep.withinLoop'},
                         {
                             stepNumber,
                             stepActionName,
@@ -181,7 +181,7 @@ class ActionPanel extends React.Component<ActionPanelProps, {}> {
                     }
                 // When next step is wrapped in a loop, aria-label communicates position within a loop
                 } else if (cachedNextStepLoopData != null) {
-                    return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToNextStep.withInLoop'},
+                    return this.props.intl.formatMessage({id: 'ActionPanel.action.moveToNextStep.withinLoop'},
                         {
                             stepNumber,
                             stepActionName,
