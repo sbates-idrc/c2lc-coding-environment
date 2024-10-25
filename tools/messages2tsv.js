@@ -1,8 +1,9 @@
 const fs = require('fs');
+const messagesUtils = require('./messagesUtils.js');
 
 function writeTSV(messages, stream) {
-    const langCodes = getLangCodes(messages);
-    const messageKeys = getAllMessageKeys(messages, langCodes);
+    const langCodes = messagesUtils.getLangCodes(messages);
+    const messageKeys = messagesUtils.getAllMessageKeys(messages, langCodes);
     // Header
     stream.write("keys");
     for (const lang of langCodes) {
@@ -24,20 +25,6 @@ function writeTSV(messages, stream) {
     }
 }
 
-function getLangCodes(messages) {
-    return Object.keys(messages).sort();
-}
-
-function getAllMessageKeys(messages, langCodes) {
-    const messageKeys = new Set();
-    for (const lang of langCodes) {
-        for (const key of Object.keys(messages[lang])) {
-            messageKeys.add(key);
-        }
-    }
-    return Array.from(messageKeys).sort();
-}
-
 if (process.argv.length !== 4) {
     process.stderr.write("usage: messages2tsv.js output-file input-file\n");
     process.exit(2);
@@ -46,7 +33,7 @@ if (process.argv.length !== 4) {
 const outputFilename = process.argv[2];
 const inputFilename = process.argv[3];
 
-const messages = JSON.parse(fs.readFileSync(inputFilename, {encoding: 'utf8'}));
+const messages = messagesUtils.loadMessages(inputFilename);
 const outStream = fs.createWriteStream(outputFilename, {encoding: 'utf8'});
 
 writeTSV(messages, outStream);
