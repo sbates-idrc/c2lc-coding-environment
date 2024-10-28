@@ -23,24 +23,24 @@ class ConfirmDeleteAllModal extends React.Component<ConfirmDeleteAllModalProps, 
                 show={this.props.show}
                 focusOnOpenSelector={'#ConformDeleteAllModal-confirm'}
                 focusOnCloseSelector={'.ProgramBlockEditor__program-deleteAll-button'}
-                ariaLabel={this.props.intl.formatMessage({ id: 'ConfirmDeleteAllModal.title' })}
+                ariaLabel={this.props.intl.formatMessage({ id: 'UI.ConfirmDeleteAllModal.title' })}
                 onClose={this.props.onCancel}
                 buttonProperties={
                     [
-                        {label: this.props.intl.formatMessage({id: 'Cancel'}), onClick: this.props.onCancel},
-                        {id: 'ConformDeleteAllModal-confirm', label: this.props.intl.formatMessage({id: 'ConfirmDeleteAllModal.confirmButton'}), onClick: this.props.onConfirm, isPrimary: true}
+                        {label: this.props.intl.formatMessage({id: 'UI.Cancel'}), onClick: this.props.onCancel},
+                        {id: 'ConformDeleteAllModal-confirm', label: this.props.intl.formatMessage({id: 'UI.ConfirmDeleteAllModal.confirmButton'}), onClick: this.props.onConfirm, isPrimary: true}
                     ]
                 }>
                 <ModalHeader
                     id='ConfirmDeleteAllModal'
                     title={this.props.intl.formatMessage({
-                        id: 'ConfirmDeleteAllModal.title'
+                        id: 'UI.ConfirmDeleteAllModal.title'
                     })}>
                     <DeleteIcon aria-hidden='true' />
                 </ModalHeader>
                 <ModalBody>
                     <div className='ConfirmDeleteAllModal__content'>
-                        <FormattedMessage id='ConfirmDeleteAllModal.content' />
+                        <FormattedMessage id='UI.ConfirmDeleteAllModal.content' />
                     </div>
                 </ModalBody>
             </ModalWithFooter>

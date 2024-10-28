@@ -1321,13 +1321,13 @@ export class App extends React.Component<AppProps, AppState> {
                         className="App__PrivacyModal__toggle-button"
                         onClick={this.handleClickPrivacyButton}
                     >
-                        <FormattedMessage id='App.privacyModalToggle'/>
+                        <FormattedMessage id='UI.App.privacyModalToggle'/>
                     </button>
                 </div>
                 <div className='App__header-menu'>
                     <IconButton
                         className="App__header-soundOptions"
-                        ariaLabel={this.props.intl.formatMessage({ id: 'SoundOptionsModal.title' })}
+                        ariaLabel={this.props.intl.formatMessage({ id: 'UI.SoundOptionsModal.title' })}
                         onClick={this.handleClickSoundIcon}
                     >
                         <AudioIcon
@@ -1476,14 +1476,14 @@ export class App extends React.Component<AppProps, AppState> {
             <React.Fragment>
                 <div className='App__ActionsMenu__header'>
                     <h2 className='App__ActionsMenu__header-heading'>
-                        <FormattedMessage id='ActionsMenu.title' />
+                        <FormattedMessage id='UI.ActionsMenu.title' />
                     </h2>
                 </div>
                 <div className='App__command-palette-command-container'>
                     <div className='App__command-palette-section'>
                         <div className='App__command-palette-section-heading-container'>
                             <h3 className='App__command-palette-section-heading'>
-                                <FormattedMessage id='CommandPalette.movementsTitle'/>
+                                <FormattedMessage id='UI.CommandPalette.movementsTitle'/>
                             </h3>
                         </div>
                         <div className='App__command-palette-section-body'>
@@ -1508,7 +1508,7 @@ export class App extends React.Component<AppProps, AppState> {
                     <div className='App__command-palette-section'>
                         <div className='App__command-palette-section-heading-container'>
                             <h3 className='App__command-palette-section-heading'>
-                                <FormattedMessage id='CommandPalette.controlsTitle'/>
+                                <FormattedMessage id='UI.CommandPalette.controlsTitle'/>
                             </h3>
                         </div>
 
@@ -1601,7 +1601,7 @@ export class App extends React.Component<AppProps, AppState> {
                             aria-hidden={true}
                         />
                         <div className='App__ShareButton__label'>
-                            {this.props.intl.formatMessage({id:'ShareButton'})}
+                            {this.props.intl.formatMessage({id:'UI.ShareButton'})}
                         </div>
                     </button>
                 </div>

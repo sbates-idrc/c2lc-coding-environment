@@ -757,7 +757,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             <div className='ProgramBlockEditor__container'>
                 <div className='ProgramBlockEditor__header'>
                     <h2 className='ProgramBlockEditor__heading'>
-                        <FormattedMessage id='ProgramBlockEditor.programHeading' />
+                        <FormattedMessage id='UI.ProgramBlockEditor.programHeading' />
                     </h2>
                     <div className='ProgramBlockEditor__options'>
                         <ToggleSwitch

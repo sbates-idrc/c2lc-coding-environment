@@ -68,7 +68,7 @@ class Scene extends React.Component<SceneProps, {}> {
     }
 
     generateAriaLabel() {
-        const backgroundName = this.props.intl.formatMessage({id: this.props.world + '.name'});
+        const backgroundName = this.props.intl.formatMessage({id: `UI.${this.props.world}.name`});
         const numColumns = this.props.dimensions.getWidth();
         const numRows = this.props.dimensions.getHeight();
 

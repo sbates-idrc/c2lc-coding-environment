@@ -62,19 +62,19 @@ class SoundOptionsModal extends React.Component<SoundOptionsModalProps, SoundOpt
         const soundOptionsProps = [
             {
                 id:'sound-options-allsounds',
-                label: this.props.intl.formatMessage({ id: 'SoundOptionsModal.allSounds' }),
+                label: this.props.intl.formatMessage({ id: 'UI.SoundOptionsModal.allSounds' }),
                 toggleState: this.state.audioEnabled,
                 onChange: this.handleToggleAudioEnabled
             },
             {
                 id:'sound-options-musicalSounds',
-                label: this.props.intl.formatMessage({ id: 'SoundOptionsModal.musicalSounds' }),
+                label: this.props.intl.formatMessage({ id: 'UI.SoundOptionsModal.musicalSounds' }),
                 toggleState: this.state.sonificationEnabled,
                 onChange: this.handleToggleSonificationEnabled
             },
             {
                 id:'sound-options-announcements',
-                label: this.props.intl.formatMessage({ id: 'SoundOptionsModal.announcements' }),
+                label: this.props.intl.formatMessage({ id: 'UI.SoundOptionsModal.announcements' }),
                 toggleState: this.state.announcementsEnabled,
                 onChange: this.handleToggleAnnouncementsEnabled
             }
@@ -94,7 +94,7 @@ class SoundOptionsModal extends React.Component<SoundOptionsModalProps, SoundOpt
                     </div>
                     <div className='SoundOptions__toggle-container'>
                         <div aria-hidden={true}>
-                            {this.props.intl.formatMessage({ id: 'Off' })}
+                            {this.props.intl.formatMessage({ id: 'UI.Off' })}
                         </div>
                         <ToggleSwitch
                             disabled={isDisabled}
@@ -107,7 +107,7 @@ class SoundOptionsModal extends React.Component<SoundOptionsModalProps, SoundOpt
                             onChange={soundOptionProps.onChange}
                         />
                         <div aria-hidden={true}>
-                            {this.props.intl.formatMessage({ id: 'On' })}
+                            {this.props.intl.formatMessage({ id: 'UI.On' })}
                         </div>
                     </div>
                 </div>
@@ -126,14 +126,14 @@ class SoundOptionsModal extends React.Component<SoundOptionsModalProps, SoundOpt
                 onClose={this.handleOnCancel}
                 buttonProperties={
                     [
-                        {label: this.props.intl.formatMessage({id: 'Cancel'}), onClick: this.handleOnCancel},
-                        {id: 'SoundOptionsModal-save', label: this.props.intl.formatMessage({id: 'Save'}), onClick: this.handleOnSave, isPrimary: true}
+                        {label: this.props.intl.formatMessage({id: 'UI.Cancel'}), onClick: this.handleOnCancel},
+                        {id: 'SoundOptionsModal-save', label: this.props.intl.formatMessage({id: 'UI.Save'}), onClick: this.handleOnSave, isPrimary: true}
                     ]
                 }>
                 <ModalHeader
                     id='SoundOptionsModal'
                     title={this.props.intl.formatMessage({
-                        id: 'SoundOptionsModal.title'
+                        id: 'UI.SoundOptionsModal.title'
                     })}>
                     <AudioIcon aria-hidden='true' />
                 </ModalHeader>

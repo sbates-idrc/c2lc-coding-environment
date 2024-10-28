@@ -27,7 +27,7 @@ export default class CharacterMessageBuilder {
     buildEndOfSceneMessage(): string {
         return this.intl.formatMessage(
             {
-                id:'CharacterMessageBuilder.endOfScene'
+                id:'UI.CharacterMessageBuilder.endOfScene'
             }
         );
     }
@@ -37,7 +37,7 @@ export default class CharacterMessageBuilder {
         const rowLabel = this.dimensions.getRowLabel(y);
         return this.intl.formatMessage(
             {
-                id:'CharacterMessageBuilder.hitWall'
+                id:'UI.CharacterMessageBuilder.hitWall'
             },
             {
                 columnLabel: columnLabel == null ? '' : columnLabel,

@@ -106,7 +106,7 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
                         checked={isChecked}
                         readOnly={true}
                         tabIndex={-1}/>
-                    <FormattedMessage id={`ThemeSelector.option.${theme}`} />
+                    <FormattedMessage id={`UI.ThemeSelector.option.${theme}`} />
                 </div>
             );
         }
@@ -131,13 +131,13 @@ class ThemeSelector extends React.Component<ThemeSelectorProps, ThemeSelectorSta
                 ariaLabelledById='ThemeSelector'
                 onClose={this.handleCancel}
                 buttonProperties={[
-                    {label: this.props.intl.formatMessage({id: 'Cancel'}), onClick: this.handleCancel},
-                    {label: this.props.intl.formatMessage({id: 'Save'}), onClick: this.handleSave, isPrimary: true}
+                    {label: this.props.intl.formatMessage({id: 'UI.Cancel'}), onClick: this.handleCancel},
+                    {label: this.props.intl.formatMessage({id: 'UI.Save'}), onClick: this.handleSave, isPrimary: true}
                 ]}>
                 <ModalHeader
                     id='ThemeSelector'
                     title={this.props.intl.formatMessage({
-                        id: 'ThemeSelector.title'
+                        id: 'UI.ThemeSelector.title'
                     })}>
                     <ThemeIcon aria-hidden='true' />
                 </ModalHeader>

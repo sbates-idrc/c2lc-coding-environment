@@ -127,7 +127,7 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                             &nbsp;
                         </div>
                         <label htmlFor={`WorldSelector__input-world-${world}`}>
-                            <FormattedMessage id={`${world}.name`} />
+                            <FormattedMessage id={`UI.${world}.name`} />
                         </label>
                     </div>
                 </div>
@@ -166,20 +166,20 @@ class WorldSelector extends React.Component<WorldSelectorProps, WorldSelectorSta
                 ariaDescribedById='WorldSelectorDesc'
                 onClose={this.handleCancel}
                 buttonProperties={[
-                    {label: this.props.intl.formatMessage({id: 'Cancel'}), onClick: this.handleCancel},
-                    {label: this.props.intl.formatMessage({id: 'Save'}), onClick: this.handleDone, isPrimary: true}
+                    {label: this.props.intl.formatMessage({id: 'UI.Cancel'}), onClick: this.handleCancel},
+                    {label: this.props.intl.formatMessage({id: 'UI.Save'}), onClick: this.handleDone, isPrimary: true}
                 ]}>
                 <ModalHeader
                     id='WorldSelector'
                     title={this.props.intl.formatMessage({
-                        id: 'WorldSelector.Title'
+                        id: 'UI.WorldSelector.Title'
                     })}>
                     <WorldIcon aria-hidden='true' />
                 </ModalHeader>
                 <ModalBody alwaysShowVerticalScrollbar={true}>
                     <div className='WorldSelector__content'>
                         <div id='WorldSelectorDesc'className='WorldSelector__prompt'>
-                            <FormattedMessage id={'WorldSelector.Prompt'} />
+                            <FormattedMessage id={'UI.WorldSelector.Prompt'} />
                         </div>
                         {this.renderWorldOptions()}
                     </div>

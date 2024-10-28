@@ -115,12 +115,12 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
 
                 if (keyDef.altKey) {
                     const altKeyLabel = this.props.intl.formatMessage(
-                        { id: "KeyboardInputModal.KeyLabels.Alt" }
+                        { id: "UI.KeyboardInputModal.KeyLabels.Alt" }
                     );
                     labelKeySegments.unshift(altKeyLabel);
 
                     const altKeyIcon = this.props.intl.formatMessage(
-                        { id: "KeyboardInputModal.KeyIcons.Alt" }
+                        { id: "UI.KeyboardInputModal.KeyIcons.Alt" }
                     );
                     icons.unshift(<div key="alt-modifier" className="KeyboardInputModal__binding__icon">
                         {altKeyIcon}
@@ -129,12 +129,12 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
 
                 if (keyDef.ctrlKey) {
                     const controlKeyLabel = this.props.intl.formatMessage(
-                        { id: "KeyboardInputModal.KeyLabels.Control" }
+                        { id: "UI.KeyboardInputModal.KeyLabels.Control" }
                     );
                     labelKeySegments.unshift(controlKeyLabel);
 
                     const controlKeyIcon = this.props.intl.formatMessage(
-                        { id: "KeyboardInputModal.KeyIcons.Control" }
+                        { id: "UI.KeyboardInputModal.KeyIcons.Control" }
                     );
                     icons.unshift(<div key="ctrl-modifier" className="KeyboardInputModal__binding__icon">
                         {controlKeyIcon}
@@ -142,7 +142,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
                 }
 
                 const labelKeyString = labelKeySegments.join(" + ")
-                const descriptionMessageKey = "KeyboardInputModal.Description." + key;
+                const descriptionMessageKey = "UI.KeyboardInputModal.Description." + key;
                 const descriptionMessageId = "key-binding-description-" + index;
                 keyBindingElements.push(<li className="KeyboardInputModal__binding" key={itemKey}>
                     <div className="KeyboardInputModal__binding__keyCombo"  aria-hidden={true}  aria-labelledby={descriptionMessageId}>
@@ -165,7 +165,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
     renderKeyboardSchemeMenu () {
         const selectOptionElements = [];
         Object.keys(KeyboardInputSchemes).forEach((schemeName) => {
-            const messageId = "KeyboardInputModal.Scheme.Descriptions." + schemeName;
+            const messageId = "UI.KeyboardInputModal.Scheme.Descriptions." + schemeName;
             const optionText = this.props.intl.formatMessage({ id: messageId });
             selectOptionElements.push(<option key={schemeName} value={schemeName}>
                 {optionText}
@@ -182,20 +182,20 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
 
     render () {
         const cancelButtonProperties = {
-            label: this.props.intl.formatMessage({id: 'Cancel'}),
+            label: this.props.intl.formatMessage({id: 'UI.Cancel'}),
             onClick: this.cancelChanges
         };
 
         const doneButtonProperties = {
             id: 'KeyboardInputModal-done',
-            label: this.props.intl.formatMessage({id: 'Save'}),
+            label: this.props.intl.formatMessage({id: 'UI.Save'}),
             onClick: this.saveChanges,
             isPrimary: true
         };
 
         return(
             <ModalWithFooter
-                ariaLabel={this.props.intl.formatMessage({ id: 'KeyboardInputModal.Title' })}
+                ariaLabel={this.props.intl.formatMessage({ id: 'UI.KeyboardInputModal.Title' })}
                 onClose={this.cancelChanges}
                 show={this.props.show}
                 focusOnOpenSelector={'#keyboardInputModal__toggle'}
@@ -204,7 +204,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
             >
                 <ModalHeader
                     id='KeyboardInputModal'
-                    title={this.props.intl.formatMessage({ id: 'KeyboardInputModal.Title' })}>
+                    title={this.props.intl.formatMessage({ id: 'UI.KeyboardInputModal.Title' })}>
                     <KeyboardIcon aria-hidden='true'/>
                 </ModalHeader>
 
@@ -216,7 +216,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
                             </div>
                             <div className="KeyboardInputModal__content__toggleBar__toggle">
                                 <div aria-hidden='true'>
-                                    <FormattedMessage id='Off'/>
+                                    <FormattedMessage id='UI.Off'/>
                                 </div>
                                 <ToggleSwitch
                                     id='keyboardInputModal__toggle'
@@ -228,7 +228,7 @@ class KeyboardInputModal extends React.Component<KeyboardInputModalProps, Keyboa
                                     onChange={this.handleChangeKeyBindingsEnabled}
                                 />
                                 <div aria-hidden='true'>
-                                    <FormattedMessage id='On'/>
+                                    <FormattedMessage id='UI.On'/>
                                 </div>
                             </div>
                         </div>
