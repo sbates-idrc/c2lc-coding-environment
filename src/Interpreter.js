@@ -4,7 +4,7 @@ import { App } from './App';
 import ActionsHandler from './ActionsHandler';
 import type { ActionResult } from './ActionsHandler';
 import ProgramSequence from './ProgramSequence';
-import type { ProgramBlock } from './types';
+import type { MovementProgramBlock } from './types';
 
 export default class Interpreter {
     stepTimeMs: number;
@@ -84,14 +84,13 @@ export default class Interpreter {
                 resolve('success');
             } else {
                 const currentProgramStep = programSequence.getCurrentProgramStep();
-                const block = currentProgramStep.block;
-                if (block === 'startLoop') {
+                if (currentProgramStep.block === 'startLoop') {
                     this.doStartLoop(programSequence).then(() => {
                         this.app.advanceProgramCounter(() => {
                             resolve('success');
                         });
                     });
-                } else if (block === 'endLoop') {
+                } else if (currentProgramStep.block === 'endLoop') {
                     // We don't intend for the programCounter to ever be on an
                     // 'endLoop' block, but we might have a bug that would
                     // cause that case to happen and we want to handle it
@@ -131,7 +130,7 @@ export default class Interpreter {
         }
     }
 
-    doAction(programStep: ProgramBlock): Promise<ActionResult> {
+    doAction(programStep: MovementProgramBlock): Promise<ActionResult> {
         return this.actionsHandler.doAction(programStep.block, this.stepTimeMs);
     }
 }

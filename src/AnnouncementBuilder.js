@@ -60,30 +60,38 @@ export default class AnnouncementBuilder {
     }
 
     buildDeleteStepAnnouncement(programBlock: ProgramBlock): AnnouncementData {
-        let commandType = null;
         if (programBlock.block === 'startLoop' || programBlock.block === 'endLoop') {
-            commandType = this.intl.formatMessage({
-                id: "Announcement.control"
-            });
+            return {
+                messageIdSuffix: 'delete',
+                values: {
+                    commandType: this.intl.formatMessage({
+                        id: "Announcement.control"
+                    }),
+                    command: this.intl.formatMessage(
+                        {
+                            id: `Announcement.${programBlock.block}`
+                        },
+                        {
+                            loopLabel: programBlock.label
+                        }
+                    )
+                }
+            };
         } else {
-            commandType = this.intl.formatMessage({
-                id: "Announcement.movement"
-            });
+            return {
+                messageIdSuffix: 'delete',
+                values: {
+                    commandType: this.intl.formatMessage({
+                        id: "Announcement.movement"
+                    }),
+                    command: this.intl.formatMessage(
+                        {
+                            id: `Announcement.${programBlock.block}`
+                        }
+                    )
+                }
+            };
         }
-        return {
-            messageIdSuffix: 'delete',
-            values: {
-                commandType: commandType,
-                command: this.intl.formatMessage(
-                    {
-                        id: `Announcement.${programBlock.block}`
-                    },
-                    {
-                        loopLabel: programBlock.label
-                    }
-                )
-            }
-        };
     }
 
     buildReplaceStepAnnouncement(programBlock: ProgramBlock,
