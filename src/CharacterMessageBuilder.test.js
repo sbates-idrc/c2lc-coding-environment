@@ -14,21 +14,21 @@ const intl = createIntl({
 const sceneDimensions = new SceneDimensions(1, 12, 1, 8);
 
 test('End of scene', () => {
-    const builder = new CharacterMessageBuilder(sceneDimensions, intl);
+    const builder = new CharacterMessageBuilder(sceneDimensions);
     const message = builder.buildMessage({
         type: 'endOfScene',
         x: 1,
         y: 1
-    });
+    }, intl);
     expect(message).toBe('Your character has reached the end of the scene');
 });
 
 test('Hit wall', () => {
-    const builder = new CharacterMessageBuilder(sceneDimensions, intl);
+    const builder = new CharacterMessageBuilder(sceneDimensions);
     const message = builder.buildMessage({
         type: 'hitWall',
         x: 3,
         y: 2
-    });
+    }, intl);
     expect(message).toBe('Your character hit a wall on C2');
 });

@@ -19,12 +19,14 @@ export default class ActionsHandler {
     audioManager: AudioManager;
     sceneDimensions: SceneDimensions;
     characterMessageBuilder: CharacterMessageBuilder;
+    intl: IntlShape;
 
     constructor(app: App, audioManager: AudioManager, sceneDimensions: SceneDimensions, intl: IntlShape) {
         this.app = app;
         this.audioManager = audioManager;
         this.sceneDimensions = sceneDimensions;
-        this.characterMessageBuilder = new CharacterMessageBuilder(sceneDimensions, intl);
+        this.characterMessageBuilder = new CharacterMessageBuilder(sceneDimensions);
+        this.intl = intl;
     }
 
     doAction(action: MovementBlockName, stepTimeMs: number): Promise<ActionResult> {
@@ -138,7 +140,7 @@ export default class ActionsHandler {
         };
 
         if (characterUpdate.event != null) {
-            const message = this.characterMessageBuilder.buildMessage(characterUpdate.event);
+            const message = this.characterMessageBuilder.buildMessage(characterUpdate.event, this.intl);
             if (message != null) {
                 stateUpdate.message = message;
             }

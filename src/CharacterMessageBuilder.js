@@ -6,36 +6,34 @@ import SceneDimensions from './SceneDimensions';
 
 export default class CharacterMessageBuilder {
     dimensions: SceneDimensions;
-    intl: IntlShape;
 
-    constructor(dimensions: SceneDimensions, intl: IntlShape) {
+    constructor(dimensions: SceneDimensions) {
         this.dimensions = dimensions;
-        this.intl = intl;
     }
 
-    buildMessage(event: CharacterEvent): ?string {
+    buildMessage(event: CharacterEvent, intl: IntlShape): ?string {
         switch(event.type) {
             case 'endOfScene':
-                return this.buildEndOfSceneMessage();
+                return this.buildEndOfSceneMessage(intl);
             case 'hitWall':
-                return this.buildHitWallMessage(event.x, event.y);
+                return this.buildHitWallMessage(event.x, event.y, intl);
             default:
                 return null;
         }
     }
 
-    buildEndOfSceneMessage(): string {
-        return this.intl.formatMessage(
+    buildEndOfSceneMessage(intl: IntlShape): string {
+        return intl.formatMessage(
             {
                 id:'CharacterMessageBuilder.endOfScene'
             }
         );
     }
 
-    buildHitWallMessage(x: number, y: number): string {
+    buildHitWallMessage(x: number, y: number, intl: IntlShape): string {
         const columnLabel = this.dimensions.getColumnLabel(x);
         const rowLabel = this.dimensions.getRowLabel(y);
-        return this.intl.formatMessage(
+        return intl.formatMessage(
             {
                 id:'CharacterMessageBuilder.hitWall'
             },
