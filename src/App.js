@@ -261,7 +261,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.characterDescriptionBuilder = new CharacterDescriptionBuilder();
 
-        this.designModeCursorDescriptionBuilder = new DesignModeCursorDescriptionBuilder(this.props.intl);
+        this.designModeCursorDescriptionBuilder = new DesignModeCursorDescriptionBuilder();
 
         this.programChangeController = new ProgramChangeController(this,
             this.props.intl, this.audioManager);

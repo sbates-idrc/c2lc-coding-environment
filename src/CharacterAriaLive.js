@@ -83,7 +83,8 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
             this.props.designModeCursorDescriptionBuilder.buildDescription(
                 this.props.designModeCursorState,
                 this.props.world,
-                this.props.customBackground
+                this.props.customBackground,
+                this.props.intl
             )
         );
     }

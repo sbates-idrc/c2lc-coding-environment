@@ -3,7 +3,7 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount } from 'enzyme';
-import { createIntl, IntlProvider } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 import CharacterAriaLive from './CharacterAriaLive';
 import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
@@ -15,12 +15,6 @@ import type { RunningState } from './types';
 import messages from './messages.json';
 
 configure({ adapter: new Adapter() });
-
-const intl = createIntl({
-    locale: 'en',
-    defaultLocale: 'en',
-    messages: messages.en
-});
 
 beforeEach(() => {
     const liveRegionDiv = document.createElement('div');
@@ -46,7 +40,7 @@ const defaultCharacterAriaLiveProps = {
     customBackground: emptyCustomBackground,
     customBackgroundDesignMode: false,
     characterDescriptionBuilder: new CharacterDescriptionBuilder(),
-    designModeCursorDescriptionBuilder: new DesignModeCursorDescriptionBuilder(intl),
+    designModeCursorDescriptionBuilder: new DesignModeCursorDescriptionBuilder(),
     message: null
 };
 

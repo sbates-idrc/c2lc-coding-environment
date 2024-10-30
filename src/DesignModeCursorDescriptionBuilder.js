@@ -7,14 +7,9 @@ import { getBackgroundSquareDescription } from './Utils';
 import type { WorldName } from './Worlds';
 
 export default class DesignModeCursorDescriptionBuilder {
-    intl: IntlShape;
-
-    constructor(intl: IntlShape) {
-        this.intl = intl;
-    }
-
     buildDescription(designModeCursorState: DesignModeCursorState,
-        world: WorldName, customBackground: CustomBackground): string {
+        world: WorldName, customBackground: CustomBackground,
+        intl: IntlShape): string {
 
         const columnLabel = designModeCursorState.getColumnLabel();
         const rowLabel = designModeCursorState.getRowLabel();
@@ -25,11 +20,11 @@ export default class DesignModeCursorDescriptionBuilder {
             designModeCursorState.sceneDimensions,
             world,
             customBackground,
-            this.intl
+            intl
         );
 
         if (itemLabel) {
-            return this.intl.formatMessage(
+            return intl.formatMessage(
                 {
                     id:'DesignModeCursorDescriptionBuilder.positionAndItem'
                 },
@@ -40,7 +35,7 @@ export default class DesignModeCursorDescriptionBuilder {
                 }
             );
         } else {
-            return this.intl.formatMessage(
+            return intl.formatMessage(
                 {
                     id:'DesignModeCursorDescriptionBuilder.position'
                 },
