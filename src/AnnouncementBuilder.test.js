@@ -10,16 +10,12 @@ const intl = createIntl({
     messages: messages.en
 });
 
-function createAnnouncementBuilder() {
-    return new AnnouncementBuilder(intl);
-}
-
 test('Test buildSelectActionAnnouncement()', () => {
     expect.assertions(2);
 
-    const announcementBuilder = createAnnouncementBuilder();
+    const announcementBuilder = new AnnouncementBuilder();
 
-    expect(announcementBuilder.buildSelectActionAnnouncement('loop')).toStrictEqual({
+    expect(announcementBuilder.buildSelectActionAnnouncement('loop', intl)).toStrictEqual({
         messageIdSuffix: 'actionSelected',
         values: {
             commandType: 'control',
@@ -27,7 +23,7 @@ test('Test buildSelectActionAnnouncement()', () => {
         }
     });
 
-    expect(announcementBuilder.buildSelectActionAnnouncement('forward1')).toStrictEqual({
+    expect(announcementBuilder.buildSelectActionAnnouncement('forward1', intl)).toStrictEqual({
         messageIdSuffix: 'actionSelected',
         values: {
             commandType: 'movement',
@@ -39,9 +35,9 @@ test('Test buildSelectActionAnnouncement()', () => {
 test('Test buildAddStepAnnouncement()', () => {
     expect.assertions(2);
 
-    const announcementBuilder = createAnnouncementBuilder();
+    const announcementBuilder = new AnnouncementBuilder();
 
-    expect(announcementBuilder.buildAddStepAnnouncement('loop')).toStrictEqual({
+    expect(announcementBuilder.buildAddStepAnnouncement('loop', intl)).toStrictEqual({
         messageIdSuffix: 'add',
         values: {
             commandType: 'control',
@@ -49,7 +45,7 @@ test('Test buildAddStepAnnouncement()', () => {
         }
     });
 
-    expect(announcementBuilder.buildAddStepAnnouncement('forward1')).toStrictEqual({
+    expect(announcementBuilder.buildAddStepAnnouncement('forward1', intl)).toStrictEqual({
         messageIdSuffix: 'add',
         values: {
             commandType: 'movement',
@@ -60,7 +56,7 @@ test('Test buildAddStepAnnouncement()', () => {
 
 describe('Test buildDeleteStepAnnouncement()', () => {
     test('startLoop', () => {
-        const announcementBuilder = createAnnouncementBuilder();
+        const announcementBuilder = new AnnouncementBuilder();
 
         const startLoopBlock = {
             block: 'startLoop',
@@ -68,7 +64,7 @@ describe('Test buildDeleteStepAnnouncement()', () => {
             iterations: 1
         };
 
-        expect(announcementBuilder.buildDeleteStepAnnouncement(startLoopBlock)).toStrictEqual({
+        expect(announcementBuilder.buildDeleteStepAnnouncement(startLoopBlock, intl)).toStrictEqual({
             messageIdSuffix: 'delete',
             values: {
                 commandType: 'control',
@@ -78,14 +74,14 @@ describe('Test buildDeleteStepAnnouncement()', () => {
     });
 
     test('endLoop', () => {
-        const announcementBuilder = createAnnouncementBuilder();
+        const announcementBuilder = new AnnouncementBuilder();
 
         const endLoopBlock = {
             block: 'endLoop',
             label: 'A'
         };
 
-        expect(announcementBuilder.buildDeleteStepAnnouncement(endLoopBlock)).toStrictEqual({
+        expect(announcementBuilder.buildDeleteStepAnnouncement(endLoopBlock, intl)).toStrictEqual({
             messageIdSuffix: 'delete',
             values: {
                 commandType: 'control',
@@ -95,13 +91,13 @@ describe('Test buildDeleteStepAnnouncement()', () => {
     });
 
     test('forward1', () => {
-        const announcementBuilder = createAnnouncementBuilder();
+        const announcementBuilder = new AnnouncementBuilder();
 
         const forwardBlock = {
             block: 'forward1'
         };
 
-        expect(announcementBuilder.buildDeleteStepAnnouncement(forwardBlock)).toStrictEqual({
+        expect(announcementBuilder.buildDeleteStepAnnouncement(forwardBlock, intl)).toStrictEqual({
             messageIdSuffix: 'delete',
             values: {
                 commandType: 'movement',
@@ -114,13 +110,13 @@ describe('Test buildDeleteStepAnnouncement()', () => {
 test('Test buildReplaceStepAnnouncement()', () => {
     expect.assertions(1);
 
-    const announcementBuilder = createAnnouncementBuilder();
+    const announcementBuilder = new AnnouncementBuilder();
 
     const forwardBlock = {
         block: 'forward1'
     };
 
-    expect(announcementBuilder.buildReplaceStepAnnouncement(forwardBlock, 'right45')).toStrictEqual({
+    expect(announcementBuilder.buildReplaceStepAnnouncement(forwardBlock, 'right45', intl)).toStrictEqual({
         messageIdSuffix: 'replace',
         values: {
             oldCommand: 'forward 1 square',

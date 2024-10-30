@@ -26,7 +26,7 @@ export default class ProgramChangeController {
         this.app = app;
         this.intl = intl;
         this.audioManager = audioManager;
-        this.announcementBuilder = new AnnouncementBuilder(intl);
+        this.announcementBuilder = new AnnouncementBuilder();
     }
 
     insertSelectedActionIntoProgram(programBlockEditor: ?ProgramBlockEditor,
@@ -73,7 +73,7 @@ export default class ProgramChangeController {
             const currentStep = state.programSequence.getProgramStepAt(index);
             if (command === currentStep.block) {
                 // Play the announcement
-                const announcementData = this.announcementBuilder.buildDeleteStepAnnouncement(currentStep);
+                const announcementData = this.announcementBuilder.buildDeleteStepAnnouncement(currentStep, this.intl);
                 this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
                     this.intl, announcementData.values);
 
@@ -125,7 +125,7 @@ export default class ProgramChangeController {
             } else if (selectedAction) {
                 // Play the announcement
                 const announcementData = this.announcementBuilder.buildReplaceStepAnnouncement(
-                    currentStep, selectedAction);
+                    currentStep, selectedAction, this.intl);
                 this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
                     this.intl, announcementData.values);
 
@@ -215,7 +215,7 @@ export default class ProgramChangeController {
     // Internal methods
 
     playAnnouncementForAdd(action: string) {
-        const announcementData = this.announcementBuilder.buildAddStepAnnouncement(action);
+        const announcementData = this.announcementBuilder.buildAddStepAnnouncement(action, this.intl);
         this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
             this.intl, announcementData.values);
     }

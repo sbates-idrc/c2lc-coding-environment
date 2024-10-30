@@ -9,20 +9,14 @@ type AnnouncementData = {|
 |};
 
 export default class AnnouncementBuilder {
-    intl: IntlShape;
-
-    constructor(intl: IntlShape) {
-        this.intl = intl;
-    }
-
-    buildSelectActionAnnouncement(action: string): AnnouncementData {
+    buildSelectActionAnnouncement(action: string, intl: IntlShape): AnnouncementData {
         let commandType = null;
         if (action === 'loop') {
-            commandType = this.intl.formatMessage({
+            commandType = intl.formatMessage({
                 id: 'Announcement.control'
             });
         } else {
-            commandType = this.intl.formatMessage({
+            commandType = intl.formatMessage({
                 id: 'Announcement.movement'
             });
         }
@@ -30,21 +24,21 @@ export default class AnnouncementBuilder {
             messageIdSuffix: 'actionSelected',
             values: {
                 commandType: commandType,
-                command: this.intl.formatMessage({
+                command: intl.formatMessage({
                     id: `Announcement.${action}`
                 }),
             }
         };
     }
 
-    buildAddStepAnnouncement(action: string): AnnouncementData {
+    buildAddStepAnnouncement(action: string, intl: IntlShape): AnnouncementData {
         let commandType = null;
         if (action === 'loop') {
-            commandType = this.intl.formatMessage({
+            commandType = intl.formatMessage({
                 id: 'Announcement.control'
             });
         } else {
-            commandType = this.intl.formatMessage({
+            commandType = intl.formatMessage({
                 id: 'Announcement.movement'
             });
         }
@@ -52,22 +46,22 @@ export default class AnnouncementBuilder {
             messageIdSuffix: 'add',
             values: {
                 commandType: commandType,
-                command: this.intl.formatMessage({
+                command: intl.formatMessage({
                     id: `Announcement.${action}`
                 }),
             }
         };
     }
 
-    buildDeleteStepAnnouncement(programBlock: ProgramBlock): AnnouncementData {
+    buildDeleteStepAnnouncement(programBlock: ProgramBlock, intl: IntlShape): AnnouncementData {
         if (programBlock.block === 'startLoop' || programBlock.block === 'endLoop') {
             return {
                 messageIdSuffix: 'delete',
                 values: {
-                    commandType: this.intl.formatMessage({
+                    commandType: intl.formatMessage({
                         id: "Announcement.control"
                     }),
-                    command: this.intl.formatMessage(
+                    command: intl.formatMessage(
                         {
                             id: `Announcement.${programBlock.block}`
                         },
@@ -81,10 +75,10 @@ export default class AnnouncementBuilder {
             return {
                 messageIdSuffix: 'delete',
                 values: {
-                    commandType: this.intl.formatMessage({
+                    commandType: intl.formatMessage({
                         id: "Announcement.movement"
                     }),
-                    command: this.intl.formatMessage(
+                    command: intl.formatMessage(
                         {
                             id: `Announcement.${programBlock.block}`
                         }
@@ -95,15 +89,15 @@ export default class AnnouncementBuilder {
     }
 
     buildReplaceStepAnnouncement(programBlock: ProgramBlock,
-        selectedAction: string): AnnouncementData {
+        selectedAction: string, intl: IntlShape): AnnouncementData {
 
         return {
             messageIdSuffix: 'replace',
             values: {
-                oldCommand: this.intl.formatMessage({
+                oldCommand: intl.formatMessage({
                     id: `Announcement.${programBlock.block}`
                 }),
-                newCommand: this.intl.formatMessage({
+                newCommand: intl.formatMessage({
                     id: `Announcement.${selectedAction}`
                 })
             }

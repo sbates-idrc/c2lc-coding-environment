@@ -257,7 +257,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.focusTrapManager = new FocusTrapManager();
 
-        this.announcementBuilder = new AnnouncementBuilder(this.props.intl);
+        this.announcementBuilder = new AnnouncementBuilder();
 
         this.characterDescriptionBuilder = new CharacterDescriptionBuilder();
 
@@ -1997,7 +1997,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         if (this.state.selectedAction !== prevState.selectedAction
                 && this.state.selectedAction != null) {
-            const announcementData = this.announcementBuilder.buildSelectActionAnnouncement(this.state.selectedAction);
+            const announcementData = this.announcementBuilder.buildSelectActionAnnouncement(this.state.selectedAction, this.props.intl);
             this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
                     this.props.intl, announcementData.values);
         }
