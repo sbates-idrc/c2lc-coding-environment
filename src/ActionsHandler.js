@@ -2,9 +2,9 @@
 
 import { App } from './App';
 import type { AppState } from './App';
-import CharacterMessageBuilder from './CharacterMessageBuilder';
 import type { CharacterUpdate } from './CharacterState';
-import type { IntlShape } from 'react-intl';
+import EndOfSceneMessage from './EndOfSceneMessage';
+import HitWallMessage from './HitWallMessage';
 import SceneDimensions from './SceneDimensions';
 import type { AudioManager, MovementBlockName } from './types';
 
@@ -18,15 +18,11 @@ export default class ActionsHandler {
     app: App;
     audioManager: AudioManager;
     sceneDimensions: SceneDimensions;
-    characterMessageBuilder: CharacterMessageBuilder;
-    intl: IntlShape;
 
-    constructor(app: App, audioManager: AudioManager, sceneDimensions: SceneDimensions, intl: IntlShape) {
+    constructor(app: App, audioManager: AudioManager, sceneDimensions: SceneDimensions) {
         this.app = app;
         this.audioManager = audioManager;
         this.sceneDimensions = sceneDimensions;
-        this.characterMessageBuilder = new CharacterMessageBuilder(sceneDimensions);
-        this.intl = intl;
     }
 
     doAction(action: MovementBlockName, stepTimeMs: number): Promise<ActionResult> {
@@ -140,9 +136,16 @@ export default class ActionsHandler {
         };
 
         if (characterUpdate.event != null) {
-            const message = this.characterMessageBuilder.buildMessage(characterUpdate.event, this.intl);
-            if (message != null) {
-                stateUpdate.message = message;
+            switch(characterUpdate.event.type) {
+                case 'endOfScene':
+                    stateUpdate.message = new EndOfSceneMessage();
+                    break;
+                case 'hitWall':
+                    stateUpdate.message = new HitWallMessage(characterUpdate.event.x, characterUpdate.event.y, this.sceneDimensions);
+                    break;
+                default:
+                    // Unhandled event type
+                    break;
             }
         }
 

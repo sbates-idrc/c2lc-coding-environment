@@ -19,7 +19,7 @@ import type { IntlShape } from 'react-intl';
 import './PaintbrushCursor.css';
 import './Scene.scss';
 import './Worlds.scss';
-import type { ThemeName, RunningState } from './types';
+import type { ThemeName, RunningState, UserMessage } from './types';
 import type { WorldName } from './Worlds';
 import { ReactComponent as PaintbrushCursor } from './svg/PaintbrushCursor.svg';
 import { ReactComponent as StartIndicator } from './svg/StartIndicator.svg';
@@ -42,7 +42,7 @@ export type SceneProps = {
     startingX: number,
     startingY: number,
     runningState: RunningState,
-    message: ?string,
+    message: ?UserMessage,
     characterDescriptionBuilder: CharacterDescriptionBuilder,
     onCloseMessage: () => void,
     onPaintScene: (x: number, y: number) => void,
@@ -232,7 +232,7 @@ class Scene extends React.Component<SceneProps, {}> {
                         <div className='Scene__SceneMessage'>
                             <SceneMessage
                                 intl={this.props.intl}
-                                message={this.props.message}
+                                message={this.props.message.getMessage(this.props.intl)}
                                 onClose={this.props.onCloseMessage}
                             />
                         </div>

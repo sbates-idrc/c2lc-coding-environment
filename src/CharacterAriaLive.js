@@ -8,7 +8,7 @@ import DesignModeCursorDescriptionBuilder from './DesignModeCursorDescriptionBui
 import DesignModeCursorState from './DesignModeCursorState';
 import { injectIntl } from 'react-intl';
 import type { IntlShape } from 'react-intl';
-import type { RunningState } from './types';
+import type { RunningState, UserMessage } from './types';
 import type { WorldName } from './Worlds';
 
 type CharacterAriaLiveProps = {
@@ -23,11 +23,11 @@ type CharacterAriaLiveProps = {
     customBackgroundDesignMode: boolean,
     characterDescriptionBuilder: CharacterDescriptionBuilder,
     designModeCursorDescriptionBuilder: DesignModeCursorDescriptionBuilder,
-    message: ?string
+    message: ?UserMessage
 };
 
 class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
-    lastMessage: ?string;
+    lastMessage: ?UserMessage;
 
     constructor(props: any) {
         super(props);
@@ -59,7 +59,7 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
 
         if (this.props.message != null
                 && this.props.message !== this.lastMessage) {
-            text = this.props.message;
+            text = this.props.message.getMessage(this.props.intl);
             if (text.endsWith('.')) {
                 text += ' ';
             } else {

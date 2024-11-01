@@ -41,7 +41,7 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
 import type { TileCode } from './TileData';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, DisplayedCommandName, LanguageTag, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, DisplayedCommandName, LanguageTag, RobotDriver, RunningState, ThemeName, UserMessage } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -141,7 +141,7 @@ export type AppState = {
     customBackgroundDesignMode: boolean,
     designModeCursorState: DesignModeCursorState,
     selectedCustomBackgroundTile: ?TileCode,
-    message: ?string
+    message: ?UserMessage
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -269,7 +269,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.programBlockEditorRef = React.createRef();
 
         const actionsHandler = new ActionsHandler(this, this.audioManager,
-            this.sceneDimensions, this.props.intl);
+            this.sceneDimensions);
 
         this.interpreter = new Interpreter(
             this.speedLookUp[this.state.programSpeed - 1],

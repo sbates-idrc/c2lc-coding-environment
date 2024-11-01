@@ -147,8 +147,11 @@ test('When a message is included in the props change, it is included in the live
         runningState: 'running'
     });
     expect(getLiveRegionText()).toBe('');
+    const message = {
+        getMessage: () => 'Example message'
+    };
     wrapper.setProps({
-        message: 'Example message',
+        message: message,
         runningState: 'stopped'
     });
     expect(getLiveRegionText()).toBe('Example message. At A 1 facing right');
@@ -159,8 +162,11 @@ test('When a message already ends in a period, no extra period is added', () => 
         runningState: 'running'
     });
     expect(getLiveRegionText()).toBe('');
+    const message = {
+        getMessage: () => 'Message ending in a period.'
+    };
     wrapper.setProps({
-        message: 'Message ending in a period.',
+        message: message,
         runningState: 'stopped'
     });
     expect(getLiveRegionText()).toBe('Message ending in a period. At A 1 facing right');
@@ -171,8 +177,11 @@ test('When a message is in a previous props change, it is included in the live r
         runningState: 'running'
     });
     expect(getLiveRegionText()).toBe('');
+    const message = {
+        getMessage: () => 'Example message'
+    };
     wrapper.setProps({
-        message: 'Example message'
+        message: message
     });
     expect(getLiveRegionText()).toBe('');
     wrapper.setProps({
@@ -185,8 +194,11 @@ test('A message is only added to the live region once', () => {
     const wrapper = createMountCharacterAriaLive({
         runningState: 'running'
     });
+    const message = {
+        getMessage: () => 'Example message'
+    };
     wrapper.setProps({
-        message: 'Example message'
+        message: message
     });
     wrapper.setProps({
         runningState: 'stopped'
@@ -202,8 +214,11 @@ test('If a message is set, then set to null, then set to the same text again, it
     const wrapper = createMountCharacterAriaLive({
         runningState: 'running'
     });
+    const message = {
+        getMessage: () => 'Example message'
+    };
     wrapper.setProps({
-        message: 'Example message'
+        message: message
     });
     wrapper.setProps({
         runningState: 'stopped'
@@ -213,7 +228,7 @@ test('If a message is set, then set to null, then set to the same text again, it
         message: null
     });
     wrapper.setProps({
-        message: 'Example message'
+        message: message
     });
     wrapper.setProps({
         characterState: new CharacterState(2, 1, 2, [], sceneDimensions)
