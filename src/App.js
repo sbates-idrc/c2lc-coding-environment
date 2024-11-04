@@ -264,7 +264,7 @@ export class App extends React.Component<AppProps, AppState> {
         this.designModeCursorDescriptionBuilder = new DesignModeCursorDescriptionBuilder();
 
         this.programChangeController = new ProgramChangeController(this,
-            this.props.intl, this.audioManager);
+            this.audioManager);
 
         this.programBlockEditorRef = React.createRef();
 
@@ -362,7 +362,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.programChangeController.insertSelectedActionIntoProgram(
             this.programBlockEditorRef.current,
             index,
-            selectedAction
+            selectedAction,
+            this.props.intl
         );
     };
 
@@ -370,7 +371,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.programChangeController.deleteProgramStep(
             this.programBlockEditorRef.current,
             index,
-            command
+            command,
+            this.props.intl
         );
     };
 
@@ -378,7 +380,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.programChangeController.replaceProgramStep(
             this.programBlockEditorRef.current,
             index,
-            selectedAction
+            selectedAction,
+            this.props.intl
         );
     };
 
@@ -387,7 +390,8 @@ export class App extends React.Component<AppProps, AppState> {
             this.programBlockEditorRef.current,
             indexFrom,
             commandAtIndexFrom,
-            'focusActionPanel'
+            'focusActionPanel',
+            this.props.intl
         )
     };
 
@@ -396,7 +400,8 @@ export class App extends React.Component<AppProps, AppState> {
             this.programBlockEditorRef.current,
             indexFrom,
             commandAtIndexFrom,
-            'focusActionPanel'
+            'focusActionPanel',
+            this.props.intl
         )
     };
 
@@ -576,7 +581,8 @@ export class App extends React.Component<AppProps, AppState> {
                                             this.programChangeController.insertSelectedActionIntoProgram(
                                                 this.programBlockEditorRef.current,
                                                 index,
-                                                this.state.selectedAction
+                                                this.state.selectedAction,
+                                                this.props.intl
                                             );
                                         }
                                     }
@@ -589,7 +595,8 @@ export class App extends React.Component<AppProps, AppState> {
                                 this.programChangeController.insertSelectedActionIntoProgram(
                                     this.programBlockEditorRef.current,
                                     0,
-                                    this.state.selectedAction
+                                    this.state.selectedAction,
+                                    this.props.intl
                                 );
                             }
                             break;
@@ -597,7 +604,8 @@ export class App extends React.Component<AppProps, AppState> {
                             if (!this.isEditingDisabled()) {
                                 this.programChangeController.addSelectedActionToProgramEnd(
                                     this.programBlockEditorRef.current,
-                                    this.state.selectedAction
+                                    this.state.selectedAction,
+                                    this.props.intl
                                 );
                             }
                             break;
@@ -611,7 +619,8 @@ export class App extends React.Component<AppProps, AppState> {
                                             this.programChangeController.deleteProgramStep(
                                                 this.programBlockEditorRef.current,
                                                 index,
-                                                currentElement.dataset.command
+                                                currentElement.dataset.command,
+                                                this.props.intl
                                             );
                                         }
                                     }
@@ -628,7 +637,8 @@ export class App extends React.Component<AppProps, AppState> {
                                             this.programChangeController.replaceProgramStep(
                                                 this.programBlockEditorRef.current,
                                                 index,
-                                                this.state.selectedAction
+                                                this.state.selectedAction,
+                                                this.props.intl
                                             );
                                         }
                                     }
@@ -770,7 +780,8 @@ export class App extends React.Component<AppProps, AppState> {
                                                 this.programBlockEditorRef.current,
                                                 index,
                                                 currentElement.dataset.command,
-                                                'focusBlockMoved'
+                                                'focusBlockMoved',
+                                                this.props.intl
                                             )
                                         }
                                     }
@@ -788,7 +799,8 @@ export class App extends React.Component<AppProps, AppState> {
                                                 this.programBlockEditorRef.current,
                                                 index,
                                                 currentElement.dataset.command,
-                                                'focusBlockMoved'
+                                                'focusBlockMoved',
+                                                this.props.intl
                                             )
                                         }
                                     }
