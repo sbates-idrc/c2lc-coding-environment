@@ -3,7 +3,6 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount, shallow } from 'enzyme';
-import { Button } from 'react-bootstrap';
 import AriaDisablingButton from './AriaDisablingButton';
 
 configure({ adapter: new Adapter()});
@@ -21,7 +20,7 @@ test('Enabled button with no className or extra props', () => {
         </AriaDisablingButton>
     );
 
-    const wrappedButton = wrapper.find(Button).at(0);
+    const wrappedButton = wrapper.find('button').at(0);
 
     expect(wrappedButton.props()['aria-disabled']).toBe(false);
     expect(wrappedButton.props()['children']).toBe('someContent');
@@ -44,7 +43,7 @@ test('Disabled button with no className or extra props', () => {
         </AriaDisablingButton>
     );
 
-    const wrappedButton = wrapper.find(Button).at(0);
+    const wrappedButton = wrapper.find('button').at(0);
 
     expect(wrappedButton.props()['aria-disabled']).toBe(true);
     expect(wrappedButton.props()['children']).toBe('someContent');
@@ -70,7 +69,7 @@ test('Enabled button with className and extra props', () => {
         </AriaDisablingButton>
     );
 
-    const wrappedButton = wrapper.find(Button).at(0);
+    const wrappedButton = wrapper.find('button').at(0);
 
     expect(wrappedButton.props()['aria-disabled']).toBe(false);
     expect(wrappedButton.props()['anotherProp1']).toBe('anotherPropValue1');
@@ -100,7 +99,7 @@ test('Disabled button with className and extra props', () => {
         </AriaDisablingButton>
     );
 
-    const wrappedButton = wrapper.find(Button).at(0);
+    const wrappedButton = wrapper.find('button').at(0);
 
     expect(wrappedButton.props()['aria-disabled']).toBe(true);
     expect(wrappedButton.props()['anotherProp1']).toBe('anotherPropValue1');
