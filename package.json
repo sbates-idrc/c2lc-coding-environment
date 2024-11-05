@@ -107,7 +107,6 @@
             "!src/**/*.test.js",
             "!src/App.js",
             "!src/AudioManagerImpl.js",
-            "!src/DashDriver.js",
             "!src/FakeRobotDriver.js",
             "!src/FakeAudioManager.js",
             "!src/FeatureDetection.js",
