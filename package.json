@@ -3,10 +3,8 @@
     "version": "1.13.0",
     "private": true,
     "dependencies": {
-        "bootstrap": "4.6.1",
         "classnames": "2.3.1",
         "react": "16.14.0",
-        "react-bootstrap": "1.6.4",
         "react-dom": "16.14.0",
         "react-intl": "5.22.0",
         "tone": "14.7.77",

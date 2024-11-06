@@ -2,8 +2,6 @@
 
 /* Bootstrap */
 
-// TODO: Use class name wild card to reduce duplication if possible
-
 $theme-colors: (
     'primary': $c2lc-primary-button-color,
     'command-block--forward1': $c2lc-forward-command-color,
@@ -20,8 +18,6 @@ $theme-colors: (
     'command-block--right180': $c2lc-right-command-color,
     'command-block--none': #F8F8F8
 );
-
-@import '~bootstrap/scss/bootstrap.scss';
 
 /* C2LC Global Styles */
 
