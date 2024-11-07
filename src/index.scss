@@ -19,13 +19,27 @@ $theme-colors: (
     'command-block--none': #F8F8F8
 );
 
-/* Bootstrap Reboot */
+/* Bootstrap reboot */
 
 @import 'vendor/bootstrap-4.6.2/scss/functions';
 @import 'vendor/bootstrap-4.6.2/scss/variables';
 @import 'vendor/bootstrap-4.6.2/scss/vendor/rfs';
 @import 'vendor/bootstrap-4.6.2/scss/mixins/hover';
 @import 'vendor/bootstrap-4.6.2/scss/reboot';
+
+/* Bootstrap type */
+
+@import 'vendor/bootstrap-4.6.2/scss/mixins/lists';
+@import 'vendor/bootstrap-4.6.2/scss/type';
+
+/* Bootstrap buttons */
+
+@import 'vendor/bootstrap-4.6.2/scss/mixins/buttons';
+@import 'vendor/bootstrap-4.6.2/scss/mixins/border-radius';
+@import 'vendor/bootstrap-4.6.2/scss/mixins/box-shadow';
+@import 'vendor/bootstrap-4.6.2/scss/mixins/gradients';
+@import 'vendor/bootstrap-4.6.2/scss/mixins/transition';
+@import 'vendor/bootstrap-4.6.2/scss/buttons';
 
 /* Bootstrap utilities/screenreaders */
 
