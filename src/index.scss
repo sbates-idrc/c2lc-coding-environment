@@ -19,6 +19,19 @@ $theme-colors: (
     'command-block--none': #F8F8F8
 );
 
+/* Bootstrap Reboot */
+
+@import 'vendor/bootstrap-4.6.2/scss/functions';
+@import 'vendor/bootstrap-4.6.2/scss/variables';
+@import 'vendor/bootstrap-4.6.2/scss/vendor/rfs';
+@import 'vendor/bootstrap-4.6.2/scss/mixins/hover';
+@import 'vendor/bootstrap-4.6.2/scss/reboot';
+
+/* Bootstrap utilities/screenreaders */
+
+@import 'vendor/bootstrap-4.6.2/scss/mixins/screen-reader';
+@import 'vendor/bootstrap-4.6.2/scss/utilities/screenreaders';
+
 /* C2LC Global Styles */
 
 html {
