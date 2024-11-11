@@ -42,7 +42,7 @@
         "postcss-preset-env": "^7.0.1",
         "react-app-polyfill": "^3.0.0",
         "sass-loader": "14.2.1",
-        "serve": "14.1.2",
+        "serve": "14.2.4",
         "source-map-loader": "^3.0.0",
         "terser-webpack-plugin": "^5.2.5",
         "webpack": "^5.64.4",
