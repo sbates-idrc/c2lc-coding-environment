@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import { Form } from 'react-bootstrap';
 import type { IntlShape } from 'react-intl';
 import { injectIntl } from 'react-intl';
 import { ReactComponent as SlowIcon } from './svg/Slow.svg';
@@ -25,10 +24,7 @@ class ProgramSpeedController extends React.Component<ProgramSpeedControllerProps
             <div className='ProgramSpeedController__container'>
                 <SlowIcon aria-hidden={true} />
                 {
-                    /* $FlowFixMe
-                        Cannot get Form.Control because property Control is missing in statics of Form
-                    */
-                    <Form.Control
+                    <input
                         aria-label={`${this.props.intl.formatMessage({id:'ProgramSpeedController.slider'})}`}
                         className='ProgramSpeedController__slider'
                         type='range'
