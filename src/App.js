@@ -18,8 +18,6 @@ import C2lcURLParams from './C2lcURLParams';
 import CustomBackground from './CustomBackground';
 import CustomBackgroundDesignModeButton from './CustomBackgroundDesignModeButton';
 import CustomBackgroundSerializer from './CustomBackgroundSerializer';
-import DashConnectionErrorModal from './DashConnectionErrorModal';
-import DashDriver from './DashDriver';
 import DesignModeCursorDescriptionBuilder from './DesignModeCursorDescriptionBuilder';
 import DesignModeCursorState from './DesignModeCursorState';
 import * as FeatureDetection from './FeatureDetection';
@@ -40,7 +38,7 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
 import type { TileCode } from './TileData';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DisplayedCommandName, RunningState, ThemeName } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -79,14 +77,6 @@ function getThemeLogo (theme: ThemeName) {
     return LogoMixedAndLight;
 }
 
-/* Dash connection removed for version 0.5
-import BluetoothApiWarning from './BluetoothApiWarning';
-import DeviceConnectControl from './DeviceConnectControl';
-*/
-
-// Uncomment to use the FakeRobotDriver (see driver construction below also)
-//import FakeRobotDriver from './FakeRobotDriver';
-
 type AppContext = {
     bluetoothApiIsAvailable: boolean
 };
@@ -107,8 +97,6 @@ export type AppState = {
     programSequence: ProgramSequence,
     characterState: CharacterState,
     settings: AppSettings,
-    dashConnectionStatus: DeviceConnectionStatus,
-    showDashConnectionError: boolean,
     selectedAction: ?CommandName,
     isDraggingCommand: boolean,
     audioEnabled: boolean,
@@ -146,7 +134,6 @@ export class App extends React.Component<AppProps, AppState> {
     version: string;
     appContext: AppContext;
     sceneDimensions: SceneDimensions;
-    dashDriver: RobotDriver;
     interpreter: Interpreter;
     audioManager: AudioManager;
     focusTrapManager: FocusTrapManager;
@@ -205,8 +192,6 @@ export class App extends React.Component<AppProps, AppState> {
                 theme: 'default',
                 world: this.defaultWorld
             },
-            dashConnectionStatus: 'notConnected',
-            showDashConnectionError: false,
             selectedAction: null,
             isDraggingCommand: false,
             audioEnabled: true,
@@ -239,10 +224,6 @@ export class App extends React.Component<AppProps, AppState> {
             message: null,
             keyboardInputSchemeName: "controlalt"
         };
-
-        // For FakeRobotDriver, replace with:
-        // this.dashDriver = new FakeRobotDriver();
-        this.dashDriver = new DashDriver();
 
         if (props.audioManager) {
             this.audioManager = props.audioManager
@@ -440,40 +421,6 @@ export class App extends React.Component<AppProps, AppState> {
                     runningState: 'stopRequested'
                 };
             }
-        });
-    };
-
-    handleClickConnectDash = () => {
-        this.setState({
-            dashConnectionStatus: 'connecting',
-            showDashConnectionError: false
-        });
-        this.dashDriver.connect(this.handleDashDisconnect).then(() => {
-            this.setState({
-                dashConnectionStatus: 'connected'
-            });
-        }, (error: Error) => {
-            /* eslint-disable no-console */
-            console.log('ERROR');
-            console.log(error.name);
-            console.log(error.message);
-            /* eslint-enable no-console */
-            this.setState({
-                dashConnectionStatus: 'notConnected',
-                showDashConnectionError: true
-            });
-        });
-    };
-
-    handleCancelDashConnection = () => {
-        this.setState({
-            showDashConnectionError: false
-        });
-    };
-
-    handleDashDisconnect = () => {
-        this.setState({
-            dashConnectionStatus : 'notConnected'
         });
     };
 
@@ -1630,10 +1577,6 @@ export class App extends React.Component<AppProps, AppState> {
     renderModals() {
         return (
             <React.Fragment>
-                <DashConnectionErrorModal
-                    show={this.state.showDashConnectionError}
-                    onCancel={this.handleCancelDashConnection}
-                    onRetry={this.handleClickConnectDash}/>
                 <KeyboardInputModal
                     show={this.state.showKeyboardModal}
                     keyBindingsEnabled={this.state.keyBindingsEnabled}
@@ -2017,27 +1960,6 @@ export class App extends React.Component<AppProps, AppState> {
                 );
             }
         }
-
-        /* Dash connection removed for version 0.5
-        if (this.state.dashConnectionStatus !== prevState.dashConnectionStatus) {
-            console.log(this.state.dashConnectionStatus);
-
-            if (this.state.dashConnectionStatus === 'connected') {
-                this.interpreter.addCommandHandler('forward', 'dash',
-                    this.dashDriver.forward.bind(this.dashDriver));
-                this.interpreter.addCommandHandler('left', 'dash',
-                    this.dashDriver.left.bind(this.dashDriver));
-                this.interpreter.addCommandHandler('right', 'dash',
-                    this.dashDriver.right.bind(this.dashDriver));
-            } else if (this.state.dashConnectionStatus === 'notConnected') {
-                // TODO: Remove Dash handlers
-
-                if (this.state.runningState === 'running) {
-                    this.interpreter.stop();
-                }
-            }
-        }
-        */
     }
 
     componentWillUnmount() {

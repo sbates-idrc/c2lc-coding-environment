@@ -68,7 +68,6 @@ use in Weavly:
 | [github.com/googlefonts/roboto](https://github.com/googlefonts/roboto) | Apache License 2.0 |
 | [github.com/JedWatson/classnames](https://github.com/JedWatson/classnames) | MIT License |
 | [github.com/KyleAMathews/typefaces/tree/master/packages/roboto](https://github.com/KyleAMathews/typefaces/tree/master/packages/roboto) | MIT License |
-| [github.com/react-bootstrap/react-bootstrap](https://github.com/react-bootstrap/react-bootstrap) | MIT License |
 | [github.com/sass/node-sass](https://github.com/sass/node-sass) | MIT License |
 | [github.com/Tonejs/Tone.js](https://github.com/Tonejs/Tone.js) | [MIT License](https://github.com/Tonejs/Tone.js/blob/dev/LICENSE.md)|
 | [loading.io](https://loading.io/) | [Loading.io Free License](https://loading.io/license/#free-license) |

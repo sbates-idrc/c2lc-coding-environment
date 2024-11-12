@@ -45,25 +45,25 @@ function getLoopIterationsInput(wrapper) {
 describe('Rendering commands', () => {
     test('forward1', () => {
         const wrapper = createMountCommandBlock();
-        expect(getCommandBlock(wrapper).get(0).props.variant).toBe('command-block--forward1');
+        expect(getCommandBlock(wrapper).at(0).hasClass('btn-command-block--forward1')).toBe(true);
         expect(getAriaDiabledButton(wrapper).length).toBe(1);
         expect(getLoopIterationsInput(wrapper).length).toBe(0);
     });
     test('backward1', () => {
         const wrapper = createMountCommandBlock({commandName: 'backward1'});
-        expect(getCommandBlock(wrapper).get(0).props.variant).toBe('command-block--backward1');
+        expect(getCommandBlock(wrapper).at(0).hasClass('btn-command-block--backward1')).toBe(true);
         expect(getAriaDiabledButton(wrapper).length).toBe(1);
         expect(getLoopIterationsInput(wrapper).length).toBe(0);
     });
     test('left45', () => {
         const wrapper = createMountCommandBlock({commandName: 'left45'});
-        expect(getCommandBlock(wrapper).get(0).props.variant).toBe('command-block--left45');
+        expect(getCommandBlock(wrapper).at(0).hasClass('btn-command-block--left45')).toBe(true);
         expect(getAriaDiabledButton(wrapper).length).toBe(1);
         expect(getLoopIterationsInput(wrapper).length).toBe(0);
     });
     test('right45', () => {
         const wrapper = createMountCommandBlock({commandName: 'right45'});
-        expect(getCommandBlock(wrapper).get(0).props.variant).toBe('command-block--right45');
+        expect(getCommandBlock(wrapper).at(0).hasClass('btn-command-block--right45')).toBe(true);
         expect(getAriaDiabledButton(wrapper).length).toBe(1);
         expect(getLoopIterationsInput(wrapper).length).toBe(0);
     });
@@ -78,13 +78,13 @@ describe('Rendering commands', () => {
             keyboardInputSchemeName: 'controlalt',
             onChangeLoopIterations: () => {}
         });
-        expect(getCommandBlock(wrapper).get(0).props.variant).toBe('command-block--startLoop');
+        expect(getCommandBlock(wrapper).at(0).hasClass('btn-command-block--startLoop')).toBe(true);
         expect(getAriaDiabledButton(wrapper).length).toBe(1);
         expect(getLoopIterationsInput(wrapper).length).toBe(1);
     });
     test('endLoop', () => {
         const wrapper = createMountCommandBlock({commandName: 'endLoop'});
-        expect(getCommandBlock(wrapper).get(0).props.variant).toBe('command-block--endLoop');
+        expect(getCommandBlock(wrapper).at(0).hasClass('btn-command-block--endLoop')).toBe(true);
         expect(getAriaDiabledButton(wrapper).length).toBe(1);
         expect(getLoopIterationsInput(wrapper).length).toBe(0);
     });
