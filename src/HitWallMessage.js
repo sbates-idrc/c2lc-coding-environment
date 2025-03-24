@@ -21,7 +21,7 @@ export default class HitWallMessage {
         const rowLabel = this.dimensions.getRowLabel(this.y);
         return intl.formatMessage(
             {
-                id:'CharacterMessageBuilder.hitWall'
+                id:'UI.CharacterMessageBuilder.hitWall'
             },
             {
                 columnLabel: columnLabel == null ? '' : columnLabel,

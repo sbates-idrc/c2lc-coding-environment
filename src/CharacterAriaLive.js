@@ -40,7 +40,7 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
         });
         const text = this.props.intl.formatMessage(
             { id:'CharacterAriaLive.movementAriaLabel' },
-            { character: characterLabel }
+            { sceneCharacter: characterLabel }
         );
         this.setLiveRegion(text);
     }

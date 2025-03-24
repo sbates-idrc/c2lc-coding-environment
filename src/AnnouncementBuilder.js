@@ -10,21 +10,21 @@ type AnnouncementData = {|
 
 export default class AnnouncementBuilder {
     buildSelectActionAnnouncement(action: string, intl: IntlShape): AnnouncementData {
-        let commandType = null;
+        let actionType = null;
         if (action === 'loop') {
-            commandType = intl.formatMessage({
+            actionType = intl.formatMessage({
                 id: 'Announcement.control'
             });
         } else {
-            commandType = intl.formatMessage({
+            actionType = intl.formatMessage({
                 id: 'Announcement.movement'
             });
         }
         return {
             messageIdSuffix: 'actionSelected',
             values: {
-                commandType: commandType,
-                command: intl.formatMessage({
+                actionType,
+                actionName: intl.formatMessage({
                     id: `Announcement.${action}`
                 }),
             }
@@ -32,21 +32,21 @@ export default class AnnouncementBuilder {
     }
 
     buildAddStepAnnouncement(action: string, intl: IntlShape): AnnouncementData {
-        let commandType = null;
+        let actionType = null;
         if (action === 'loop') {
-            commandType = intl.formatMessage({
+            actionType = intl.formatMessage({
                 id: 'Announcement.control'
             });
         } else {
-            commandType = intl.formatMessage({
+            actionType = intl.formatMessage({
                 id: 'Announcement.movement'
             });
         }
         return {
             messageIdSuffix: 'add',
             values: {
-                commandType: commandType,
-                command: intl.formatMessage({
+                actionType,
+                actionName: intl.formatMessage({
                     id: `Announcement.${action}`
                 }),
             }
@@ -58,10 +58,10 @@ export default class AnnouncementBuilder {
             return {
                 messageIdSuffix: 'delete',
                 values: {
-                    commandType: intl.formatMessage({
+                    actionType: intl.formatMessage({
                         id: "Announcement.control"
                     }),
-                    command: intl.formatMessage(
+                    actionName: intl.formatMessage(
                         {
                             id: `Announcement.${programBlock.block}`
                         },
@@ -75,10 +75,10 @@ export default class AnnouncementBuilder {
             return {
                 messageIdSuffix: 'delete',
                 values: {
-                    commandType: intl.formatMessage({
+                    actionType: intl.formatMessage({
                         id: "Announcement.movement"
                     }),
-                    command: intl.formatMessage(
+                    actionName: intl.formatMessage(
                         {
                             id: `Announcement.${programBlock.block}`
                         }
@@ -94,10 +94,10 @@ export default class AnnouncementBuilder {
         return {
             messageIdSuffix: 'replace',
             values: {
-                oldCommand: intl.formatMessage({
+                oldActionName: intl.formatMessage({
                     id: `Announcement.${programBlock.block}`
                 }),
-                newCommand: intl.formatMessage({
+                newActionName: intl.formatMessage({
                     id: `Announcement.${selectedAction}`
                 })
             }

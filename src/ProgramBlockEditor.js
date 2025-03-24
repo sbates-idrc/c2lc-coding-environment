@@ -455,7 +455,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             { id: 'ProgramBlockEditor.command' },
             {
                 index: programStepNumber + 1,
-                command: this.props.intl.formatMessage(
+                blockName: this.props.intl.formatMessage(
                     {id: `Command.${command}`},
                     {loopLabel}
                 )
@@ -467,7 +467,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 {
                     index: cachedLoopData.getContainingLoopPosition(),
                     parentLoopLabel: cachedLoopData.getContainingLoopLabel(),
-                    command: this.props.intl.formatMessage(
+                    blockName: this.props.intl.formatMessage(
                         {id: `Command.${command}`},
                         {loopLabel}
                     )
@@ -525,7 +525,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                         <div className='ProgramBlockEditor__action-panel-container-inner'>
                             <ActionPanel
                                 focusedOptionName={this.props.actionPanelFocusedOptionName}
-                                selectedCommandName={this.props.selectedAction}
+                                selectedActionName={this.props.selectedAction}
                                 programSequence={this.props.programSequence}
                                 pressedStepIndex={programStepNumber}
                                 onDelete={this.handleActionPanelDeleteStep}
@@ -546,25 +546,27 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             if (isEndOfProgramAddNode) {
                 return this.props.intl.formatMessage(
                     { id: 'ProgramBlockEditor.lastBlock' },
-                    { command: this.props.intl.formatMessage({id: `Command.${selectedAction}`}) }
+                    { actionName: this.props.intl.formatMessage({id: `Command.${selectedAction}`}) }
                 );
             } else if (programStepNumber === 0) {
-                // The add node before the start of the program
+                // The add node before the first block of the program
                 return this.props.intl.formatMessage(
                     { id: 'ProgramBlockEditor.beginningBlock' },
-                    { command: this.props.intl.formatMessage({id: `Command.${selectedAction}`}) }
+                    { actionName: this.props.intl.formatMessage({id: `Command.${selectedAction}`}) }
                 );
             } else {
-                const prevCommand = this.props.programSequence.getProgramStepAt(programStepNumber - 1);
-                const postCommand = this.props.programSequence.getProgramStepAt(programStepNumber);
-                const prevCommandLabel = prevCommand.label ? prevCommand.label : null;
-                const postCommandLabel = postCommand.label ? postCommand.label : null;
+                const prevAction = this.props.programSequence.getProgramStepAt(programStepNumber - 1);
+                const nextAction = this.props.programSequence.getProgramStepAt(programStepNumber);
+                const prevActionLabel = prevAction.label ? prevAction.label : null;
+                const nextActionLabel = nextAction.label ? nextAction.label : null;
                 return this.props.intl.formatMessage(
                     { id: 'ProgramBlockEditor.betweenBlocks' },
                     {
-                        command: this.props.intl.formatMessage({id: `Command.${selectedAction}`}),
-                        prevCommand: `${programStepNumber}, ${this.props.intl.formatMessage({id: `Command.${prevCommand.block}`}, {loopLabel: prevCommandLabel})}`,
-                        postCommand: `${programStepNumber+1}, ${this.props.intl.formatMessage({id: `Command.${postCommand.block}`}, {loopLabel: postCommandLabel})}`
+                        actionName: this.props.intl.formatMessage({id: `Command.${selectedAction}`}),
+                        previousStepNumber: programStepNumber,
+                        previousStepActionName: this.props.intl.formatMessage({id: `Command.${prevAction.block}`}, {loopLabel: prevActionLabel}),
+                        nextStepNumber: programStepNumber + 1,
+                        nextStepActionName: this.props.intl.formatMessage({id: `Command.${nextAction.block}`}, {loopLabel: nextActionLabel})
                     }
                 );
             }
@@ -755,7 +757,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             <div className='ProgramBlockEditor__container'>
                 <div className='ProgramBlockEditor__header'>
                     <h2 className='ProgramBlockEditor__heading'>
-                        <FormattedMessage id='ProgramBlockEditor.programHeading' />
+                        <FormattedMessage id='UI.ProgramBlockEditor.programHeading' />
                     </h2>
                     <div className='ProgramBlockEditor__options'>
                         <ToggleSwitch

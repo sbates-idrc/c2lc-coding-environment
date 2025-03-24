@@ -62,8 +62,8 @@ describe('Test insertSelectedActionIntoProgram()', () => {
             expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
             expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('add');
             expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
-                commandType: 'movement',
-                command: 'forward 3 squares'
+                actionType: 'movement',
+                actionName: 'forward 3 squares'
             });
 
             // The focus, scrolling, and animation should be set up
@@ -138,8 +138,8 @@ describe('Test addSelectedActionToProgramEnd()', () => {
             expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
             expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('add');
             expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
-                commandType: 'movement',
-                command: 'forward 3 squares'
+                actionType: 'movement',
+                actionName: 'forward 3 squares'
             });
 
             // The focus, scrolling, and animation should be set up
@@ -193,8 +193,8 @@ type DeleteStepTestCase = {
     program: Program,
     deleteStepIndex: number,
     deleteStepName: string,
-    expectedAnnouncementCommandType: string,
-    expectedAnnouncementCommand: string
+    expectedAnnouncementActionType: string,
+    expectedAnnouncementActionName: string
 };
 
 describe('Test deleteProgramStep()', () => {
@@ -206,8 +206,8 @@ describe('Test deleteProgramStep()', () => {
             ],
             deleteStepIndex: 0,
             deleteStepName: 'forward1',
-            expectedAnnouncementCommandType: 'movement',
-            expectedAnnouncementCommand: 'forward 1 square'
+            expectedAnnouncementActionType: 'movement',
+            expectedAnnouncementActionName: 'forward 1 square'
         },
         {
             program: [
@@ -217,8 +217,8 @@ describe('Test deleteProgramStep()', () => {
             ],
             deleteStepIndex: 0,
             deleteStepName: 'startLoop',
-            expectedAnnouncementCommandType: 'control',
-            expectedAnnouncementCommand: 'loop A'
+            expectedAnnouncementActionType: 'control',
+            expectedAnnouncementActionName: 'loop A'
         },
         {
             program: [
@@ -228,8 +228,8 @@ describe('Test deleteProgramStep()', () => {
             ],
             deleteStepIndex: 1,
             deleteStepName: 'endLoop',
-            expectedAnnouncementCommandType: 'control',
-            expectedAnnouncementCommand: 'loop A'
+            expectedAnnouncementActionType: 'control',
+            expectedAnnouncementActionName: 'loop A'
         }
     ]: Array<DeleteStepTestCase>))('When deleting a step not at the end, then focus is set to the step now at the deleted index',
         (testData: DeleteStepTestCase, done) => {
@@ -255,8 +255,8 @@ describe('Test deleteProgramStep()', () => {
                 expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
                 expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('delete');
                 expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
-                    commandType: testData.expectedAnnouncementCommandType,
-                    command: testData.expectedAnnouncementCommand
+                    actionType: testData.expectedAnnouncementActionType,
+                    actionName: testData.expectedAnnouncementActionName
                 });
 
                 // The add-node after the program should be focused
@@ -278,8 +278,8 @@ describe('Test deleteProgramStep()', () => {
             ],
             deleteStepIndex: 1,
             deleteStepName: 'forward2',
-            expectedAnnouncementCommandType: 'movement',
-            expectedAnnouncementCommand: 'forward 2 squares'
+            expectedAnnouncementActionType: 'movement',
+            expectedAnnouncementActionName: 'forward 2 squares'
         },
         {
             program: [
@@ -289,8 +289,8 @@ describe('Test deleteProgramStep()', () => {
             ],
             deleteStepIndex: 1,
             deleteStepName: 'startLoop',
-            expectedAnnouncementCommandType: 'control',
-            expectedAnnouncementCommand: 'loop A'
+            expectedAnnouncementActionType: 'control',
+            expectedAnnouncementActionName: 'loop A'
         },
         {
             program: [
@@ -300,8 +300,8 @@ describe('Test deleteProgramStep()', () => {
             ],
             deleteStepIndex: 2,
             deleteStepName: 'endLoop',
-            expectedAnnouncementCommandType: 'control',
-            expectedAnnouncementCommand: 'loop A'
+            expectedAnnouncementActionType: 'control',
+            expectedAnnouncementActionName: 'loop A'
         }
     ]: Array<DeleteStepTestCase>))('When deleting the step at the end, then focus is set to the add-node after the program',
         (testData: DeleteStepTestCase, done) => {
@@ -327,8 +327,8 @@ describe('Test deleteProgramStep()', () => {
                 expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
                 expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('delete');
                 expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
-                    commandType: testData.expectedAnnouncementCommandType,
-                    command: testData.expectedAnnouncementCommand
+                    actionType: testData.expectedAnnouncementActionType,
+                    actionName: testData.expectedAnnouncementActionName
                 });
 
                 // The add-node after the program should be focused
@@ -470,8 +470,8 @@ describe('Test replaceProgramStep()', () => {
             expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
             expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('replace');
             expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
-                oldCommand: "turn left 45 degrees",
-                newCommand: "turn right 45 degrees"
+                oldActionName: "turn left 45 degrees",
+                newActionName: "turn right 45 degrees"
             });
 
             // The focus, scrolling, and animation should be set up
@@ -503,7 +503,7 @@ describe('Test moveProgramStepNext()', () => {
                 {block: 'forward2'},
                 {block: 'forward1'}
             ],
-            expectedAnnouncementCommand: 'moveToNext',
+            expectedAnnouncementAction: 'moveToNext',
             expectedFocusCommandBlockAfterUpdateCall: 1
         },
         {
@@ -522,7 +522,7 @@ describe('Test moveProgramStepNext()', () => {
                 {block: 'startLoop', label: 'A', iterations: 1},
                 {block: 'endLoop', label: 'A'},
             ],
-            expectedAnnouncementCommand: 'moveToNext',
+            expectedAnnouncementAction: 'moveToNext',
             expectedFocusCommandBlockAfterUpdateCall: 0
         }
     ]))('When movement is possible, then the program should be updated and all expected activities invoked', (testData, done) => {
@@ -543,7 +543,7 @@ describe('Test moveProgramStepNext()', () => {
 
             // The announcement should be made
             expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
-            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe(testData.expectedAnnouncementCommand);
+            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe(testData.expectedAnnouncementAction);
 
             expect(programBlockEditorMock.focusCommandBlockAfterUpdate.mock.calls.length).toBe(testData.expectedFocusCommandBlockAfterUpdateCall);
 
@@ -599,7 +599,7 @@ describe('Test moveProgramStepPrevious()', () => {
                 {block: 'forward2'},
                 {block: 'forward1'}
             ],
-            expectedAnnouncementCommand: 'moveToPrevious',
+            expectedAnnouncementAction: 'moveToPrevious',
             expectedFocusCommandBlockAfterUpdateCall: 1
         },
         {
@@ -618,7 +618,7 @@ describe('Test moveProgramStepPrevious()', () => {
                 {block: 'forward1'},
                 {block: 'forward2'}
             ],
-            expectedAnnouncementCommand: 'moveToPrevious',
+            expectedAnnouncementAction: 'moveToPrevious',
             expectedFocusCommandBlockAfterUpdateCall: 0
         },
     ]))('When movement is possible, then the program should be updated and all expected activities invoked', (testData, done) => {
@@ -639,7 +639,7 @@ describe('Test moveProgramStepPrevious()', () => {
 
             // The announcement should be made
             expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
-            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe(testData.expectedAnnouncementCommand);
+            expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe(testData.expectedAnnouncementAction);
 
             expect(programBlockEditorMock.focusCommandBlockAfterUpdate.mock.calls.length).toBe(testData.expectedFocusCommandBlockAfterUpdateCall);
 

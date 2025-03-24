@@ -34,8 +34,8 @@ export class ActionsMenuItem extends React.Component< ActionsMenuItemProps, {} >
 
     render () {
         // We don't use FormattedMessage as we are working with a complex chain of templates.
-        let commandName = this.props.intl.formatMessage({ id: `ActionsMenuItem.command.${this.props.itemKey}` });
-        const usedLabel = this.props.intl.formatMessage({ id: 'ActionsMenuItem.usedItemToggleLabel' });
+        let commandName = this.props.intl.formatMessage({ id: `UI.ActionsMenuItem.command.${this.props.itemKey}` });
+        const usedLabel = this.props.intl.formatMessage({ id: 'UI.ActionsMenuItem.usedItemToggleLabel' });
         if (this.props.isUsed) {
             commandName += " " + usedLabel;
         }

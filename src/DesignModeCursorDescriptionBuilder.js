@@ -31,7 +31,7 @@ export default class DesignModeCursorDescriptionBuilder {
                 {
                     columnLabel: columnLabel,
                     rowLabel: rowLabel,
-                    item: itemLabel
+                    backgroundItem: itemLabel
                 }
             );
         } else {

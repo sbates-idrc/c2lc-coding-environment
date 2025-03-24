@@ -8,7 +8,7 @@ export default class EndOfSceneMessage {
     getMessage(intl: IntlShape): string {
         return intl.formatMessage(
             {
-                id:'CharacterMessageBuilder.endOfScene'
+                id:'UI.CharacterMessageBuilder.endOfScene'
             }
         );
     }

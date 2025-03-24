@@ -18,16 +18,16 @@ test('Test buildSelectActionAnnouncement()', () => {
     expect(announcementBuilder.buildSelectActionAnnouncement('loop', intl)).toStrictEqual({
         messageIdSuffix: 'actionSelected',
         values: {
-            commandType: 'control',
-            command: 'loop'
+            actionType: 'control',
+            actionName: 'loop'
         }
     });
 
     expect(announcementBuilder.buildSelectActionAnnouncement('forward1', intl)).toStrictEqual({
         messageIdSuffix: 'actionSelected',
         values: {
-            commandType: 'movement',
-            command: 'forward 1 square'
+            actionType: 'movement',
+            actionName: 'forward 1 square'
         }
     });
 });
@@ -40,16 +40,16 @@ test('Test buildAddStepAnnouncement()', () => {
     expect(announcementBuilder.buildAddStepAnnouncement('loop', intl)).toStrictEqual({
         messageIdSuffix: 'add',
         values: {
-            commandType: 'control',
-            command: 'loop'
+            actionType: 'control',
+            actionName: 'loop'
         }
     });
 
     expect(announcementBuilder.buildAddStepAnnouncement('forward1', intl)).toStrictEqual({
         messageIdSuffix: 'add',
         values: {
-            commandType: 'movement',
-            command: 'forward 1 square'
+            actionType: 'movement',
+            actionName: 'forward 1 square'
         }
     });
 });
@@ -67,8 +67,8 @@ describe('Test buildDeleteStepAnnouncement()', () => {
         expect(announcementBuilder.buildDeleteStepAnnouncement(startLoopBlock, intl)).toStrictEqual({
             messageIdSuffix: 'delete',
             values: {
-                commandType: 'control',
-                command: 'loop A'
+                actionType: 'control',
+                actionName: 'loop A'
             }
         });
     });
@@ -84,8 +84,8 @@ describe('Test buildDeleteStepAnnouncement()', () => {
         expect(announcementBuilder.buildDeleteStepAnnouncement(endLoopBlock, intl)).toStrictEqual({
             messageIdSuffix: 'delete',
             values: {
-                commandType: 'control',
-                command: 'loop A'
+                actionType: 'control',
+                actionName: 'loop A'
             }
         });
     });
@@ -100,8 +100,8 @@ describe('Test buildDeleteStepAnnouncement()', () => {
         expect(announcementBuilder.buildDeleteStepAnnouncement(forwardBlock, intl)).toStrictEqual({
             messageIdSuffix: 'delete',
             values: {
-                commandType: 'movement',
-                command: 'forward 1 square'
+                actionType: 'movement',
+                actionName: 'forward 1 square'
             }
         });
     });
@@ -119,8 +119,8 @@ test('Test buildReplaceStepAnnouncement()', () => {
     expect(announcementBuilder.buildReplaceStepAnnouncement(forwardBlock, 'right45', intl)).toStrictEqual({
         messageIdSuffix: 'replace',
         values: {
-            oldCommand: 'forward 1 square',
-            newCommand: 'turn right 45 degrees'
+            oldActionName: 'forward 1 square',
+            newActionName: 'turn right 45 degrees'
         }
     });
 });
