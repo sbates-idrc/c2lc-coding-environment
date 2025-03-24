@@ -31,7 +31,7 @@ test('Pressed state is false when selecedCommandName is null', () => {
         <CommandPaletteCommand.WrappedComponent
             intl={intl}
             commandName='forward1'
-            selectedCommandName={null}
+            selectedActionName={null}
             onSelect={() => {}}/>
     );
     expect(hasPressedClass(wrapper)).toBe(false);
@@ -43,7 +43,7 @@ test('Pressed state is false when selecedCommandName is another command', () => 
         <CommandPaletteCommand.WrappedComponent
             intl={intl}
             commandName='forward1'
-            selectedCommandName='left45'
+            selectedActionName='left45'
             onSelect={() => {}}/>
     );
     expect(hasPressedClass(wrapper)).toBe(false);
@@ -55,7 +55,7 @@ test('Pressed state is true when selecedCommandName is this command', () => {
         <CommandPaletteCommand.WrappedComponent
             intl={intl}
             commandName='forward1'
-            selectedCommandName='forward1'
+            selectedActionName='forward1'
             onSelect={() => {}}/>
     );
     expect(hasPressedClass(wrapper)).toBe(true);
@@ -69,7 +69,7 @@ test('Clicking the button calls the callback onSelect with commandName', () => {
         <CommandPaletteCommand.WrappedComponent
             intl={intl}
             commandName='forward1'
-            selectedCommandName={null}
+            selectedActionName={null}
             onSelect={mockSelectHandler}/>
     );
 
@@ -80,8 +80,8 @@ test('Clicking the button calls the callback onSelect with commandName', () => {
     // Verify that onSelect is called with the commandName
     expect(mockSelectHandler.mock.calls.length).toBe(1);
     expect(mockSelectHandler.mock.calls[0][0]).toBe('forward1');
-    // Update the selectedCommandName
-    wrapper.setProps({selectedCommandName: 'forward1'});
+    // Update the selectedActionName
+    wrapper.setProps({selectedActionName: 'forward1'});
     wrapper.update();
     // Click again
     button.simulate('click');

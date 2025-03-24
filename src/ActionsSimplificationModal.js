@@ -54,14 +54,14 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
 
     render() {
         const cancelButtonProperties = {
-            label: this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.cancel'} ),
+            label: this.props.intl.formatMessage({ id: 'UI.Cancel'} ),
             isPrimary: false,
             onClick: this.handleOnCancel
         };
         const saveButtonProperties = {
             id: 'ActionSimplificationModal-done',
             isPrimary: true,
-            label: this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.save'} ),
+            label: this.props.intl.formatMessage({ id: 'UI.Save'} ),
             onClick: this.saveChanges
         };
         return (
@@ -75,14 +75,14 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
             >
                 <ModalHeader
                     id='ActionsSimplificationModal__header'
-                    title={this.props.intl.formatMessage({ id: 'ActionsSimplificationModal.title'})}
+                    title={this.props.intl.formatMessage({ id: 'UI.ActionsSimplificationModal.title'})}
                 >
                     <SimplificationIcon aria-hidden='true'/>
                 </ModalHeader>
 
                 <ModalBody>
                     <h3 className='ActionsSimplificationModal__section-heading'>
-                        <FormattedMessage id="CommandPalette.movementsTitle"/>
+                        <FormattedMessage id="UI.CommandPalette.movementsTitle"/>
                     </h3>
 
                     <div className='ActionsSimplificationModal__section'>
@@ -91,7 +91,7 @@ class ActionsSimplificationModal extends React.Component<ActionsSimplificationMo
 
 
                     <h3 className='ActionsSimplificationModal__section-heading'>
-                        <FormattedMessage id="CommandPalette.controlsTitle"/>
+                        <FormattedMessage id="UI.CommandPalette.controlsTitle"/>
                     </h3>
 
                     <div className='ActionsSimplificationModal__section'>

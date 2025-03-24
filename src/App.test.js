@@ -56,7 +56,7 @@ it('renders without crashing', () => {
     ReactDOM.unmountComponentAtNode(div);
 });
 
-it('Should play a sound when selectedCommandName changes', () => {
+it('Should play a sound when selectedActionName changes', () => {
     const { app, audioManagerMock } = mountApp({});
 
     // Update the selectedAction
@@ -64,8 +64,8 @@ it('Should play a sound when selectedCommandName changes', () => {
         expect(audioManagerMock.playAnnouncement.mock.calls.length).toBe(1);
         expect(audioManagerMock.playAnnouncement.mock.calls[0][0]).toBe('actionSelected');
         expect(audioManagerMock.playAnnouncement.mock.calls[0][2]).toStrictEqual({
-            "commandType": "movement",
-            "command": "forward 1 square"
+            "actionType": "movement",
+            "actionName": "forward 1 square"
         });
     });
 });

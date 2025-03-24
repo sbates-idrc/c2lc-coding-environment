@@ -23,7 +23,7 @@
   `'All worlds should be displayed as options and only one is checked'`
   test in `WorldSelector.test.js` for the new world
 - Add entries to `messages.json`
-  - `<WorldName>.name`: the name of the world
+  - `UI.<WorldName>.name`: the name of the world
   - `<WorldName>.character`: the name of the character
   - `<WorldName>.label`: the label used for the world in the
     Scene Background dialog

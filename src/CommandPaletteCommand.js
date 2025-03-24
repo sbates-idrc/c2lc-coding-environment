@@ -12,7 +12,7 @@ type CommandPaletteCommandProps = {
     commandName: CommandName,
     intl: IntlShape,
     isDraggingCommand: boolean,
-    selectedCommandName: ?CommandName,
+    selectedActionName: ?CommandName,
     onSelect: (commandName: CommandName) => void,
     onDragStart: (commandName: CommandName) => void,
     onDragEnd: () => void
@@ -34,7 +34,7 @@ class CommandPaletteCommand extends React.Component<CommandPaletteCommandProps, 
     };
 
     render() {
-        const pressed = this.props.commandName === this.props.selectedCommandName && !this.props.isDraggingCommand;
+        const pressed = this.props.commandName === this.props.selectedActionName && !this.props.isDraggingCommand;
 
         const classes = classNames(
             {'command-block--pressed' : pressed},

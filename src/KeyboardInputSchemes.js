@@ -543,20 +543,20 @@ export const KeyboardInputSchemes: KeyboardInputSchemesType = {
 };
 
 const labelMessageKeysByCode = {
-    "KeyA": "KeyboardInputModal.KeyLabels.A",
-    "KeyB": "KeyboardInputModal.KeyLabels.B",
-    "KeyD": "KeyboardInputModal.KeyLabels.D",
-    "KeyE": "KeyboardInputModal.KeyLabels.E",
-    "KeyI": "KeyboardInputModal.KeyLabels.I",
-    "KeyP": "KeyboardInputModal.KeyLabels.P",
-    "KeyS": "KeyboardInputModal.KeyLabels.S",
-    "KeyR": "KeyboardInputModal.KeyLabels.R"
+    "KeyA": "UI.KeyboardInputModal.KeyLabels.A",
+    "KeyB": "UI.KeyboardInputModal.KeyLabels.B",
+    "KeyD": "UI.KeyboardInputModal.KeyLabels.D",
+    "KeyE": "UI.KeyboardInputModal.KeyLabels.E",
+    "KeyI": "UI.KeyboardInputModal.KeyLabels.I",
+    "KeyP": "UI.KeyboardInputModal.KeyLabels.P",
+    "KeyS": "UI.KeyboardInputModal.KeyLabels.S",
+    "KeyR": "UI.KeyboardInputModal.KeyLabels.R"
 };
 
 const labelMessageKeysByKey = {
-    "?": "KeyboardInputModal.KeyLabels.QuestionMark",
-    ">": "KeyboardInputModal.KeyLabels.GreaterThan",
-    "<": "KeyboardInputModal.KeyLabels.LessThan"
+    "?": "UI.KeyboardInputModal.KeyLabels.QuestionMark",
+    ">": "UI.KeyboardInputModal.KeyLabels.GreaterThan",
+    "<": "UI.KeyboardInputModal.KeyLabels.LessThan"
 };
 
 export function getLabelMessageKeyFromKeyDef (keyDef: KeyDef) {
@@ -572,20 +572,20 @@ export function getLabelMessageKeyFromKeyDef (keyDef: KeyDef) {
 };
 
 const iconMessageKeysByCode = {
-    "KeyA": "KeyboardInputModal.KeyIcons.A",
-    "KeyB": "KeyboardInputModal.KeyIcons.B",
-    "KeyD": "KeyboardInputModal.KeyIcons.D",
-    "KeyE": "KeyboardInputModal.KeyIcons.E",
-    "KeyI": "KeyboardInputModal.KeyIcons.I",
-    "KeyP": "KeyboardInputModal.KeyIcons.P",
-    "KeyS": "KeyboardInputModal.KeyIcons.S",
-    "KeyR": "KeyboardInputModal.KeyIcons.R"
+    "KeyA": "UI.KeyboardInputModal.KeyIcons.A",
+    "KeyB": "UI.KeyboardInputModal.KeyIcons.B",
+    "KeyD": "UI.KeyboardInputModal.KeyIcons.D",
+    "KeyE": "UI.KeyboardInputModal.KeyIcons.E",
+    "KeyI": "UI.KeyboardInputModal.KeyIcons.I",
+    "KeyP": "UI.KeyboardInputModal.KeyIcons.P",
+    "KeyS": "UI.KeyboardInputModal.KeyIcons.S",
+    "KeyR": "UI.KeyboardInputModal.KeyIcons.R"
 };
 
 const iconMessageKeysByKey = {
-    "?": "KeyboardInputModal.KeyIcons.QuestionMark",
-    ">": "KeyboardInputModal.KeyIcons.GreaterThan",
-    "<": "KeyboardInputModal.KeyIcons.LessThan"
+    "?": "UI.KeyboardInputModal.KeyIcons.QuestionMark",
+    ">": "UI.KeyboardInputModal.KeyIcons.GreaterThan",
+    "<": "UI.KeyboardInputModal.KeyIcons.LessThan"
 };
 
 export function getIconMessageKeyFromKeyDef (keyDef: KeyDef) {

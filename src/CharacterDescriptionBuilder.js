@@ -28,7 +28,7 @@ export default class CharacterDescriptionBuilder {
             this.intl
         );
 
-        const directionLabel = this.intl.formatMessage({id: `Direction.${characterState.direction}`});
+        const facingDirectionLabel = this.intl.formatMessage({id: `FacingDirection.${characterState.direction}`});
 
         if (itemLabel) {
             return this.intl.formatMessage(
@@ -38,8 +38,8 @@ export default class CharacterDescriptionBuilder {
                 {
                     columnLabel: columnLabel,
                     rowLabel: rowLabel,
-                    item: itemLabel,
-                    direction: directionLabel
+                    backgroundItem: itemLabel,
+                    facingDirection: facingDirectionLabel
                 }
             );
         } else {
@@ -50,7 +50,7 @@ export default class CharacterDescriptionBuilder {
                 {
                     columnLabel: columnLabel,
                     rowLabel: rowLabel,
-                    direction: directionLabel
+                    facingDirection: facingDirectionLabel
                 }
             );
         }
