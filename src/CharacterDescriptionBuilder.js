@@ -7,14 +7,9 @@ import { getBackgroundSquareDescription } from './Utils';
 import type { WorldName } from './Worlds';
 
 export default class CharacterDescriptionBuilder {
-    intl: IntlShape;
-
-    constructor(intl: IntlShape) {
-        this.intl = intl;
-    }
-
     buildDescription(characterState: CharacterState,
-        world: WorldName, customBackground: CustomBackground): string {
+        world: WorldName, customBackground: CustomBackground,
+        intl: IntlShape): string {
 
         const columnLabel = characterState.getColumnLabel();
         const rowLabel = characterState.getRowLabel();
@@ -25,13 +20,13 @@ export default class CharacterDescriptionBuilder {
             characterState.sceneDimensions,
             world,
             customBackground,
-            this.intl
+            intl
         );
 
-        const facingDirectionLabel = this.intl.formatMessage({id: `FacingDirection.${characterState.direction}`});
+        const facingDirectionLabel = intl.formatMessage({id: `FacingDirection.${characterState.direction}`});
 
         if (itemLabel) {
-            return this.intl.formatMessage(
+            return intl.formatMessage(
                 {
                     id:'CharacterDescriptionBuilder.positionAndDirectionAndItem'
                 },
@@ -43,7 +38,7 @@ export default class CharacterDescriptionBuilder {
                 }
             );
         } else {
-            return this.intl.formatMessage(
+            return intl.formatMessage(
                 {
                     id:'CharacterDescriptionBuilder.positionAndDirection'
                 },

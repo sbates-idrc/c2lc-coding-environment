@@ -25,6 +25,7 @@ import FakeAudioManager from './FakeAudioManager';
 import FocusTrapManager from './FocusTrapManager';
 import IconButton from './IconButton';
 import Interpreter from './Interpreter';
+import LanguageSelector from "./LanguageSelector";
 import PlayButton from './PlayButton';
 import ProgramBlockEditor from './ProgramBlockEditor';
 import RefreshButton from './RefreshButton';
@@ -38,7 +39,7 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
 import type { TileCode } from './TileData';
-import type { ActionToggleRegister, AudioManager, CommandName, DisplayedCommandName, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DisplayedCommandName, LanguageTag, RunningState, ThemeName, UserMessage } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -82,7 +83,6 @@ type AppContext = {
 };
 
 type AppSettings = {
-    language: string,
     addNodeExpandedMode: boolean,
     theme: ThemeName,
     world: WorldName
@@ -90,6 +90,8 @@ type AppSettings = {
 
 type AppProps = {
     intl: IntlShape,
+    language: LanguageTag,
+    onChangeLanguage: (value: LanguageTag) => void,
     audioManager?: AudioManager
 };
 
@@ -127,7 +129,7 @@ export type AppState = {
     customBackgroundDesignMode: boolean,
     designModeCursorState: DesignModeCursorState,
     selectedCustomBackgroundTile: ?TileCode,
-    message: ?string
+    message: ?UserMessage
 };
 
 export class App extends React.Component<AppProps, AppState> {
@@ -187,7 +189,6 @@ export class App extends React.Component<AppProps, AppState> {
             programSequence: new ProgramSequence([], 0, 0, new Map()),
             characterState: this.makeStartingCharacterState(startingX, startingY, startingDirection),
             settings: {
-                language: 'en',
                 addNodeExpandedMode: true,
                 theme: 'default',
                 world: this.defaultWorld
@@ -237,19 +238,19 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.focusTrapManager = new FocusTrapManager();
 
-        this.announcementBuilder = new AnnouncementBuilder(this.props.intl);
+        this.announcementBuilder = new AnnouncementBuilder();
 
-        this.characterDescriptionBuilder = new CharacterDescriptionBuilder(this.props.intl);
+        this.characterDescriptionBuilder = new CharacterDescriptionBuilder();
 
-        this.designModeCursorDescriptionBuilder = new DesignModeCursorDescriptionBuilder(this.props.intl);
+        this.designModeCursorDescriptionBuilder = new DesignModeCursorDescriptionBuilder();
 
         this.programChangeController = new ProgramChangeController(this,
-            this.props.intl, this.audioManager);
+            this.audioManager);
 
         this.programBlockEditorRef = React.createRef();
 
         const actionsHandler = new ActionsHandler(this, this.audioManager,
-            this.sceneDimensions, this.props.intl);
+            this.sceneDimensions);
 
         this.interpreter = new Interpreter(
             this.speedLookUp[this.state.programSpeed - 1],
@@ -342,7 +343,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.programChangeController.insertSelectedActionIntoProgram(
             this.programBlockEditorRef.current,
             index,
-            selectedAction
+            selectedAction,
+            this.props.intl
         );
     };
 
@@ -350,7 +352,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.programChangeController.deleteProgramStep(
             this.programBlockEditorRef.current,
             index,
-            command
+            command,
+            this.props.intl
         );
     };
 
@@ -358,7 +361,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.programChangeController.replaceProgramStep(
             this.programBlockEditorRef.current,
             index,
-            selectedAction
+            selectedAction,
+            this.props.intl
         );
     };
 
@@ -367,7 +371,8 @@ export class App extends React.Component<AppProps, AppState> {
             this.programBlockEditorRef.current,
             indexFrom,
             commandAtIndexFrom,
-            'focusActionPanel'
+            'focusActionPanel',
+            this.props.intl
         )
     };
 
@@ -376,7 +381,8 @@ export class App extends React.Component<AppProps, AppState> {
             this.programBlockEditorRef.current,
             indexFrom,
             commandAtIndexFrom,
-            'focusActionPanel'
+            'focusActionPanel',
+            this.props.intl
         )
     };
 
@@ -522,7 +528,8 @@ export class App extends React.Component<AppProps, AppState> {
                                             this.programChangeController.insertSelectedActionIntoProgram(
                                                 this.programBlockEditorRef.current,
                                                 index,
-                                                this.state.selectedAction
+                                                this.state.selectedAction,
+                                                this.props.intl
                                             );
                                         }
                                     }
@@ -535,7 +542,8 @@ export class App extends React.Component<AppProps, AppState> {
                                 this.programChangeController.insertSelectedActionIntoProgram(
                                     this.programBlockEditorRef.current,
                                     0,
-                                    this.state.selectedAction
+                                    this.state.selectedAction,
+                                    this.props.intl
                                 );
                             }
                             break;
@@ -543,7 +551,8 @@ export class App extends React.Component<AppProps, AppState> {
                             if (!this.isEditingDisabled()) {
                                 this.programChangeController.addSelectedActionToProgramEnd(
                                     this.programBlockEditorRef.current,
-                                    this.state.selectedAction
+                                    this.state.selectedAction,
+                                    this.props.intl
                                 );
                             }
                             break;
@@ -557,7 +566,8 @@ export class App extends React.Component<AppProps, AppState> {
                                             this.programChangeController.deleteProgramStep(
                                                 this.programBlockEditorRef.current,
                                                 index,
-                                                currentElement.dataset.command
+                                                currentElement.dataset.command,
+                                                this.props.intl
                                             );
                                         }
                                     }
@@ -574,7 +584,8 @@ export class App extends React.Component<AppProps, AppState> {
                                             this.programChangeController.replaceProgramStep(
                                                 this.programBlockEditorRef.current,
                                                 index,
-                                                this.state.selectedAction
+                                                this.state.selectedAction,
+                                                this.props.intl
                                             );
                                         }
                                     }
@@ -716,7 +727,8 @@ export class App extends React.Component<AppProps, AppState> {
                                                 this.programBlockEditorRef.current,
                                                 index,
                                                 currentElement.dataset.command,
-                                                'focusBlockMoved'
+                                                'focusBlockMoved',
+                                                this.props.intl
                                             )
                                         }
                                     }
@@ -734,7 +746,8 @@ export class App extends React.Component<AppProps, AppState> {
                                                 this.programBlockEditorRef.current,
                                                 index,
                                                 currentElement.dataset.command,
-                                                'focusBlockMoved'
+                                                'focusBlockMoved',
+                                                this.props.intl
                                             )
                                         }
                                     }
@@ -1262,7 +1275,11 @@ export class App extends React.Component<AppProps, AppState> {
                         <Logo alt={this.props.intl.formatMessage({id: 'App.appHeading.link'})}/>
                     </a>
                 </h1>
-                <div className='App__PrivacyButtonContainer'>
+                <div className='App__PrivacyButtonLanguageSelectorRow'>
+                    <LanguageSelector
+                        value={this.props.language}
+                        onChange={this.props.onChangeLanguage}
+                    />
                     <button
                         aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
                         className="App__PrivacyModal__toggle-button"
@@ -1626,7 +1643,11 @@ export class App extends React.Component<AppProps, AppState> {
 
     render() {
         return (
-            <React.Fragment>
+            // Use a 'key' to force rerendering of the whole app when the
+            // language is changed. Rerendering the app ensures that
+            // the correct screen reader voice is used on Firefox after
+            // changing languages.
+            <div key={this.props.language}>
                 <div
                     className={
                         classNames(
@@ -1673,7 +1694,7 @@ export class App extends React.Component<AppProps, AppState> {
                 </div>
                 {this.renderCharacterAriaLive()}
                 {this.renderModals()}
-            </React.Fragment>
+            </div>
         );
     }
 
@@ -1931,7 +1952,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         if (this.state.selectedAction !== prevState.selectedAction
                 && this.state.selectedAction != null) {
-            const announcementData = this.announcementBuilder.buildSelectActionAnnouncement(this.state.selectedAction);
+            const announcementData = this.announcementBuilder.buildSelectActionAnnouncement(this.state.selectedAction, this.props.intl);
             this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
                     this.props.intl, announcementData.values);
         }

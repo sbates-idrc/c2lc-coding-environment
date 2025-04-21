@@ -783,6 +783,14 @@ body.dark-theme {
     .TilePanel__tile--selected {
         border-color: white;
     }
+
+    .LanguageSelector {
+        color: white;
+    }
+
+    .LanguageSelector:focus {
+        border-color: white;
+    }
 }
 
 /* Grayscale Theme */
@@ -2960,5 +2968,13 @@ body.contrast-theme {
 
     .paintbrush-cursor-brush-outline {
         stroke: #ff0000;
+    }
+
+    .LanguageSelector {
+        color: white;
+    }
+
+    .LanguageSelector:focus {
+        border-color: white;
     }
 }

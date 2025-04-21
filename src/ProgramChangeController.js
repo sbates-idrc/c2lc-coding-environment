@@ -18,23 +18,21 @@ type FocusAfterMoveEnum = 'focusBlockMoved' | 'focusActionPanel';
 
 export default class ProgramChangeController {
     app: App;
-    intl: IntlShape;
     audioManager: AudioManager;
     announcementBuilder: AnnouncementBuilder;
 
-    constructor(app: App, intl: IntlShape, audioManager: AudioManager) {
+    constructor(app: App, audioManager: AudioManager) {
         this.app = app;
-        this.intl = intl;
         this.audioManager = audioManager;
-        this.announcementBuilder = new AnnouncementBuilder(intl);
+        this.announcementBuilder = new AnnouncementBuilder();
     }
 
     insertSelectedActionIntoProgram(programBlockEditor: ?ProgramBlockEditor,
-        index: number, selectedAction: ?CommandName) {
+        index: number, selectedAction: ?CommandName, intl: IntlShape) {
 
         this.app.setState((state) => {
             if (selectedAction) {
-                this.playAnnouncementForAdd(selectedAction);
+                this.playAnnouncementForAdd(selectedAction, intl);
                 this.doActivitiesForAdd(programBlockEditor, index);
                 return {
                     programSequence: state.programSequence.insertStep(index,
@@ -47,11 +45,11 @@ export default class ProgramChangeController {
     }
 
     addSelectedActionToProgramEnd(programBlockEditor: ?ProgramBlockEditor,
-        selectedAction: ?CommandName) {
+        selectedAction: ?CommandName, intl: IntlShape) {
 
         this.app.setState((state) => {
             if (selectedAction) {
-                this.playAnnouncementForAdd(selectedAction);
+                this.playAnnouncementForAdd(selectedAction, intl);
                 const index = state.programSequence.getProgramLength();
                 this.doActivitiesForAdd(programBlockEditor, index);
                 return {
@@ -65,7 +63,7 @@ export default class ProgramChangeController {
     }
 
     deleteProgramStep(programBlockEditor: ?ProgramBlockEditor,
-        index: number, command: string) {
+        index: number, command: string, intl: IntlShape) {
 
         this.app.setState((state) => {
             // Check that the step to delete hasn't changed since the
@@ -73,9 +71,9 @@ export default class ProgramChangeController {
             const currentStep = state.programSequence.getProgramStepAt(index);
             if (command === currentStep.block) {
                 // Play the announcement
-                const announcementData = this.announcementBuilder.buildDeleteStepAnnouncement(currentStep);
+                const announcementData = this.announcementBuilder.buildDeleteStepAnnouncement(currentStep, intl);
                 this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
-                    this.intl, announcementData.values);
+                    intl, announcementData.values);
 
                 if (programBlockEditor) {
                     // If there are steps following the one being deleted, focus
@@ -115,19 +113,19 @@ export default class ProgramChangeController {
     }
 
     replaceProgramStep(programBlockEditor: ?ProgramBlockEditor,
-        index: number, selectedAction: ?CommandName) {
+        index: number, selectedAction: ?CommandName, intl: IntlShape) {
 
         this.app.setState((state) => {
             const currentStep = state.programSequence.getProgramStepAt(index);
             if (isLoopBlock(currentStep.block)) {
-                this.audioManager.playAnnouncement('cannotReplaceLoopBlocks', this.intl);
+                this.audioManager.playAnnouncement('cannotReplaceLoopBlocks', intl);
                 return {};
             } else if (selectedAction) {
                 // Play the announcement
                 const announcementData = this.announcementBuilder.buildReplaceStepAnnouncement(
-                    currentStep, selectedAction);
+                    currentStep, selectedAction, intl);
                 this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
-                    this.intl, announcementData.values);
+                    intl, announcementData.values);
 
                 // Set up focus, scrolling, and animation
                 if (programBlockEditor) {
@@ -140,7 +138,7 @@ export default class ProgramChangeController {
                     programSequence: state.programSequence.overwriteStep(index, selectedAction)
                 };
             } else {
-                this.audioManager.playAnnouncement('noActionSelected', this.intl);
+                this.audioManager.playAnnouncement('noActionSelected', intl);
                 return {};
             }
         });
@@ -148,7 +146,7 @@ export default class ProgramChangeController {
 
     moveProgramStepNext(programBlockEditor: ?ProgramBlockEditor,
         indexFrom: number, commandAtIndexFrom: string,
-        focusAfterMove: FocusAfterMoveEnum) {
+        focusAfterMove: FocusAfterMoveEnum, intl: IntlShape) {
 
         this.app.setState((state) => {
             // Check that the step at indexFrom has not changed
@@ -157,11 +155,11 @@ export default class ProgramChangeController {
                 if (state.programSequence.moveToNextStepDisabled(indexFrom)) {
                     // Move next is not possible:
                     // Play an announcement and do not change the program
-                    this.audioManager.playAnnouncement('cannotMoveNext', this.intl);
+                    this.audioManager.playAnnouncement('cannotMoveNext', intl);
                     return {};
                 } else {
                     // Play the announcement
-                    this.audioManager.playAnnouncement('moveToNext', this.intl);
+                    this.audioManager.playAnnouncement('moveToNext', intl);
 
                     return this.doMove(
                         programBlockEditor,
@@ -181,7 +179,7 @@ export default class ProgramChangeController {
 
     moveProgramStepPrevious(programBlockEditor: ?ProgramBlockEditor,
         indexFrom: number, commandAtIndexFrom: string,
-        focusAfterMove: FocusAfterMoveEnum) {
+        focusAfterMove: FocusAfterMoveEnum, intl: IntlShape) {
 
         this.app.setState((state) => {
             // Check that the step at indexFrom has not changed
@@ -190,11 +188,11 @@ export default class ProgramChangeController {
                 if (state.programSequence.moveToPreviousStepDisabled(indexFrom)) {
                     // Move previous is not possible:
                     // Play an announcement and do not change the program
-                    this.audioManager.playAnnouncement('cannotMovePrevious', this.intl);
+                    this.audioManager.playAnnouncement('cannotMovePrevious', intl);
                     return {};
                 } else {
                     // Play the announcement
-                    this.audioManager.playAnnouncement('moveToPrevious', this.intl);
+                    this.audioManager.playAnnouncement('moveToPrevious', intl);
 
                     return this.doMove(
                         programBlockEditor,
@@ -214,10 +212,10 @@ export default class ProgramChangeController {
 
     // Internal methods
 
-    playAnnouncementForAdd(action: string) {
-        const announcementData = this.announcementBuilder.buildAddStepAnnouncement(action);
+    playAnnouncementForAdd(action: string, intl: IntlShape) {
+        const announcementData = this.announcementBuilder.buildAddStepAnnouncement(action, intl);
         this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
-            this.intl, announcementData.values);
+            intl, announcementData.values);
     }
 
     doActivitiesForAdd(programBlockEditor: ?ProgramBlockEditor, index: number) {

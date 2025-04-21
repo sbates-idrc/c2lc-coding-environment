@@ -1,0 +1,16 @@
+@import 'variables';
+
+.LanguageSelector {
+    background-color: inherit;
+    font-size: 0.8rem;
+    text-decoration: underline;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    border-radius: 2px;
+    outline: none;
+}
+
+.LanguageSelector:focus {
+    border-color: #000000;
+}

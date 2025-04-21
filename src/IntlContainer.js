@@ -2,34 +2,72 @@
 import React from 'react';
 import { IntlProvider} from 'react-intl';
 import App from './App';
+import type { LanguageTag } from './types';
 import messages from './messages.json';
 
-type IntlContainerSettings = {
-    language: string
-};
+function getLangFromLocalStorage(): LanguageTag {
+    const defaultLang = 'en';
+
+    if (window.localStorage) {
+        switch (window.localStorage.getItem('c2lc-lang')) {
+            case('en'):
+                return 'en';
+            case('fr'):
+                return 'fr';
+            default:
+                return defaultLang;
+        }
+    }
+
+    return defaultLang;
+}
+
+function setHtmlLang(lang: LanguageTag) {
+    const elem = document.documentElement;
+    if (elem && elem.tagName === 'HTML') {
+        elem.setAttribute('lang', lang);
+    }
+}
 
 type IntlContainerState = {
-    settings: IntlContainerSettings
+    language: LanguageTag
 };
 
-// TODO: Discuss how best to let App control the language.
 export default class IntlContainer extends React.Component<{}, IntlContainerState> {
     constructor(props: any) {
         super(props);
 
+        const language = getLangFromLocalStorage();
+
+        setHtmlLang(language);
+
         this.state = {
-            settings: {
-                language: 'en'
-            },
+            language: language
         };
     }
+
+    handleChangeLanguage = (language: LanguageTag) => {
+        // Remember the language selection in local storage
+        if (window.localStorage) {
+            window.localStorage.setItem('c2lc-lang', language);
+        }
+
+        setHtmlLang(language);
+
+        this.setState({
+            language: language
+        });
+    };
 
     render() {
         return (
             <IntlProvider
-                locale={this.state.settings.language}
-                messages={messages[this.state.settings.language]}>
-                <App/>
+                locale={this.state.language}
+                messages={messages[this.state.language]}>
+                <App
+                    language={this.state.language}
+                    onChangeLanguage={this.handleChangeLanguage}
+                />
             </IntlProvider>
         );
     }

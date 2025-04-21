@@ -241,10 +241,8 @@ export default class AudioManagerImpl implements AudioManager {
             const toAnnounce = intl.formatMessage({ id: messageId}, messagePayload);
             const utterance = new SpeechSynthesisUtterance(toAnnounce);
 
-            // TODO: When we support non-English UI language(s),
-            //       ensure that the language is specified correctly
             utterance.voice = selectSpeechSynthesisVoice(
-                'en',
+                intl.locale,
                 window.navigator.language,
                 this.speechSynthesisVoices
             );

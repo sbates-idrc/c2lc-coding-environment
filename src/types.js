@@ -40,6 +40,10 @@ export type EditorMode = 'text' | 'block';
 */
 export type ThemeName = 'default' | 'light' | 'dark' | 'gray' | 'contrast';
 
+// BCP 47 language tags for the languages supported by Weavly
+// For details on BCP 47, see: https://datatracker.ietf.org/doc/html/rfc5646
+export type LanguageTag = 'en' | 'fr';
+
 export type MovementProgramBlock = {
     block: MovementBlockName,
     cache?: ProgramBlockCache;
@@ -77,6 +81,10 @@ export interface RobotDriver {
     forward(): Promise<void>;
     left(): Promise<void>;
     right(): Promise<void>;
+};
+
+export interface UserMessage {
+    getMessage(intl: IntlShape): string;
 };
 
 // Flow lacks its own types for the Speech Recognition API, so we define our own
