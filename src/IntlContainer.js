@@ -6,6 +6,8 @@ import type { LanguageTag } from './types';
 import messages from './messages.json';
 
 function getLangFromLocalStorage(): LanguageTag {
+    const defaultLang = 'en';
+
     if (window.localStorage) {
         switch (window.localStorage.getItem('c2lc-lang')) {
             case('en'):
@@ -13,10 +15,11 @@ function getLangFromLocalStorage(): LanguageTag {
             case('fr'):
                 return 'fr';
             default:
-                // Fall through
+                return defaultLang;
         }
     }
-    return 'en';
+
+    return defaultLang;
 }
 
 function setHtmlLang(lang: LanguageTag) {
