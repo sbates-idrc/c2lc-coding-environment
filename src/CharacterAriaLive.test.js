@@ -71,9 +71,20 @@ function getLiveRegionText() {
     return ((document.getElementById('someAriaLiveRegionId'): any): HTMLElement).textContent;
 }
 
+function setLiveRegionText(text: string) {
+    ((document.getElementById('someAriaLiveRegionId'): any): HTMLElement).textContent = text;
+}
+
 function getLiveRegionAriaHidden() {
     return ((document.getElementById('someAriaLiveRegionId'): any): HTMLElement).getAttribute('aria-hidden');
 }
+
+test('Existing live region content is cleared when the component is mounted', () => {
+    setLiveRegionText('content before');
+    expect(getLiveRegionText()).toBe('content before');
+    createMountCharacterAriaLive();
+    expect(getLiveRegionText()).toBe('');
+});
 
 test('The live region is updated when the characterState prop is changed', () => {
     const wrapper = createMountCharacterAriaLive();
