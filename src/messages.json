@@ -532,7 +532,7 @@
         "ActionPanel.action.moveToNextStep.intoLoop": "déplacer l'étape {stepNumber} {stepActionName} dans la boucle {loopLabel}",
         "ActionPanel.action.moveToNextStep.outOfLoop": "sortir l’étape {stepNumber} {stepActionName} de la boucle {loopLabel}",
         "ActionPanel.action.moveToNextStep.withinLoop": "déplacer l'étape {stepNumber} {stepActionName} après l'étape {nextStepNumber} {nextStepActionName} de la boucle {loopLabel}",
-        "ActionPanel.action.moveToPreviousStep": "déplacer l'étape {stepNumber} {stepActionName} avant l'étape {nextStepNumber} {nextStepActionName}",
+        "ActionPanel.action.moveToPreviousStep": "déplacer l'étape {stepNumber} {stepActionName} avant l'étape {previousStepNumber} {previousStepActionName}",
         "ActionPanel.action.moveToPreviousStep.disabled": "déplacer l'étape {stepNumber} {stepActionName}",
         "ActionPanel.action.moveToPreviousStep.intoLoop": "déplacer l'étape {stepNumber} {stepActionName} dans la boucle {loopLabel}",
         "ActionPanel.action.moveToPreviousStep.outOfLoop": "sortir l’étape {stepNumber} {stepActionName} de la boucle {loopLabel}",
