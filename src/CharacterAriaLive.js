@@ -103,10 +103,12 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
     }
 
     componentDidMount() {
-        // Set aria-hidden
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
         if (ariaLiveRegion) {
+            // Set aria-hidden
             ariaLiveRegion.setAttribute('aria-hidden', this.props.ariaHidden.toString());
+            // Clear any existing content (such as when we change language)
+            ariaLiveRegion.textContent = '';
         }
     }
 
