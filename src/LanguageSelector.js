@@ -9,23 +9,26 @@ type LanguageSelectorProps = {
     onChange: (value: LanguageTag) => void
 };
 
-export default class LanguageSelector extends React.PureComponent<LanguageSelectorProps, {}> {
-    handleClick = () => {
-        this.props.onChange(this.props.value === 'en' ? 'fr' : 'en');
-    };
+const LanguageSelector = React.forwardRef<LanguageSelectorProps, HTMLButtonElement>(
+    (props, ref) => {
+        const handleClick = () => {
+            props.onChange(props.value === 'en' ? 'fr' : 'en');
+        };
 
-    render() {
-        const label = this.props.value === 'en' ? 'Français' : 'English';
-        const labelLang = this.props.value === 'en' ? 'fr' : 'en';
+        const label = props.value === 'en' ? 'Français' : 'English';
+        const labelLang = props.value === 'en' ? 'fr' : 'en';
 
         return (
             <button
                 className='LanguageSelector'
                 lang={labelLang}
-                onClick={this.handleClick}
+                onClick={handleClick}
+                ref={ref}
             >
                 {label}
             </button>
         );
     }
-};
+);
+
+export default LanguageSelector;

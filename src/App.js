@@ -145,6 +145,7 @@ export class App extends React.Component<AppProps, AppState> {
     customBackgroundSerializer: CustomBackgroundSerializer;
     speedLookUp: Array<number>;
     pushStateTimeoutID: ?TimeoutID;
+    languageSelectorRef: { current: any };
     programBlockEditorRef: { current: any };
     sequenceInProgress: Array<KeyboardEvent>;
     announcementBuilder: AnnouncementBuilder;
@@ -152,6 +153,7 @@ export class App extends React.Component<AppProps, AppState> {
     designModeCursorDescriptionBuilder: DesignModeCursorDescriptionBuilder;
     programChangeController: ProgramChangeController;
     defaultWorld: WorldName;
+    focusLanguageSelector: boolean;
 
     constructor(props: any) {
         super(props);
@@ -179,6 +181,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.sequenceInProgress = [];
 
         this.defaultWorld = 'Sketchpad';
+
+        this.focusLanguageSelector = false;
 
         // Initialize startingX, startingY, and startingDirection to the world starting position
         const startingX = getWorldProperties(this.defaultWorld).startingX;
@@ -246,6 +250,8 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.programChangeController = new ProgramChangeController(this,
             this.audioManager);
+
+        this.languageSelectorRef = React.createRef();
 
         this.programBlockEditorRef = React.createRef();
 
@@ -332,6 +338,15 @@ export class App extends React.Component<AppProps, AppState> {
     }
 
     // Handlers
+
+    handleChangeLanguage = (language: LanguageTag) => {
+        // Changing the language will cause the App to update and for focus to
+        // be lost. Set this.focusLanguageSelector to true to indicate that we
+        // want to set focus back to the language selector after the update.
+        this.focusLanguageSelector = true;
+        // Call the provided handler
+        this.props.onChangeLanguage(language);
+    };
 
     handleProgramSequenceChange = (programSequence: ProgramSequence) => {
         this.setState({
@@ -1278,7 +1293,8 @@ export class App extends React.Component<AppProps, AppState> {
                 <div className='App__PrivacyButtonLanguageSelectorRow'>
                     <LanguageSelector
                         value={this.props.language}
-                        onChange={this.props.onChangeLanguage}
+                        onChange={this.handleChangeLanguage}
+                        ref={this.languageSelectorRef}
                     />
                     <button
                         aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
@@ -1881,7 +1897,7 @@ export class App extends React.Component<AppProps, AppState> {
         document.addEventListener('keydown', this.handleDocumentKeyDown);
     }
 
-    componentDidUpdate(prevProps: {}, prevState: AppState) {
+    componentDidUpdate(prevProps: AppProps, prevState: AppState) {
         if (this.state.programSequence !== prevState.programSequence
             || this.state.characterState !== prevState.characterState
             || this.state.settings.theme !== prevState.settings.theme
@@ -1980,6 +1996,16 @@ export class App extends React.Component<AppProps, AppState> {
                     this.speedLookUp[this.state.programSpeed - 1]
                 );
             }
+        }
+
+        // If the language has been changed and this.focusLanguageSelector is
+        // set, then set focus to the language selector
+        if (this.props.language !== prevProps.language
+                && this.focusLanguageSelector) {
+            if (this.languageSelectorRef.current) {
+                this.languageSelectorRef.current.focus();
+            }
+            this.focusLanguageSelector = false;
         }
     }
 
