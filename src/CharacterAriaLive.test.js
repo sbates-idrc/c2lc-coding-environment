@@ -3,7 +3,7 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount } from 'enzyme';
-import { createIntl, IntlProvider } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 import CharacterAriaLive from './CharacterAriaLive';
 import CharacterDescriptionBuilder from './CharacterDescriptionBuilder';
 import CharacterState from './CharacterState';
@@ -15,12 +15,6 @@ import type { RunningState } from './types';
 import messages from './messages.json';
 
 configure({ adapter: new Adapter() });
-
-const intl = createIntl({
-    locale: 'en',
-    defaultLocale: 'en',
-    messages: messages.en
-});
 
 beforeEach(() => {
     const liveRegionDiv = document.createElement('div');
@@ -45,8 +39,8 @@ const defaultCharacterAriaLiveProps = {
     world: 'Sketchpad',
     customBackground: emptyCustomBackground,
     customBackgroundDesignMode: false,
-    characterDescriptionBuilder: new CharacterDescriptionBuilder(intl),
-    designModeCursorDescriptionBuilder: new DesignModeCursorDescriptionBuilder(intl),
+    characterDescriptionBuilder: new CharacterDescriptionBuilder(),
+    designModeCursorDescriptionBuilder: new DesignModeCursorDescriptionBuilder(),
     message: null
 };
 
@@ -77,9 +71,20 @@ function getLiveRegionText() {
     return ((document.getElementById('someAriaLiveRegionId'): any): HTMLElement).textContent;
 }
 
+function setLiveRegionText(text: string) {
+    ((document.getElementById('someAriaLiveRegionId'): any): HTMLElement).textContent = text;
+}
+
 function getLiveRegionAriaHidden() {
     return ((document.getElementById('someAriaLiveRegionId'): any): HTMLElement).getAttribute('aria-hidden');
 }
+
+test('Existing live region content is cleared when the component is mounted', () => {
+    setLiveRegionText('content before');
+    expect(getLiveRegionText()).toBe('content before');
+    createMountCharacterAriaLive();
+    expect(getLiveRegionText()).toBe('');
+});
 
 test('The live region is updated when the characterState prop is changed', () => {
     const wrapper = createMountCharacterAriaLive();
@@ -153,8 +158,11 @@ test('When a message is included in the props change, it is included in the live
         runningState: 'running'
     });
     expect(getLiveRegionText()).toBe('');
+    const message = {
+        getMessage: () => 'Example message'
+    };
     wrapper.setProps({
-        message: 'Example message',
+        message: message,
         runningState: 'stopped'
     });
     expect(getLiveRegionText()).toBe('Example message. At A 1 facing right');
@@ -165,8 +173,11 @@ test('When a message already ends in a period, no extra period is added', () => 
         runningState: 'running'
     });
     expect(getLiveRegionText()).toBe('');
+    const message = {
+        getMessage: () => 'Message ending in a period.'
+    };
     wrapper.setProps({
-        message: 'Message ending in a period.',
+        message: message,
         runningState: 'stopped'
     });
     expect(getLiveRegionText()).toBe('Message ending in a period. At A 1 facing right');
@@ -177,8 +188,11 @@ test('When a message is in a previous props change, it is included in the live r
         runningState: 'running'
     });
     expect(getLiveRegionText()).toBe('');
+    const message = {
+        getMessage: () => 'Example message'
+    };
     wrapper.setProps({
-        message: 'Example message'
+        message: message
     });
     expect(getLiveRegionText()).toBe('');
     wrapper.setProps({
@@ -191,8 +205,11 @@ test('A message is only added to the live region once', () => {
     const wrapper = createMountCharacterAriaLive({
         runningState: 'running'
     });
+    const message = {
+        getMessage: () => 'Example message'
+    };
     wrapper.setProps({
-        message: 'Example message'
+        message: message
     });
     wrapper.setProps({
         runningState: 'stopped'
@@ -208,8 +225,11 @@ test('If a message is set, then set to null, then set to the same text again, it
     const wrapper = createMountCharacterAriaLive({
         runningState: 'running'
     });
+    const message = {
+        getMessage: () => 'Example message'
+    };
     wrapper.setProps({
-        message: 'Example message'
+        message: message
     });
     wrapper.setProps({
         runningState: 'stopped'
@@ -219,7 +239,7 @@ test('If a message is set, then set to null, then set to the same text again, it
         message: null
     });
     wrapper.setProps({
-        message: 'Example message'
+        message: message
     });
     wrapper.setProps({
         characterState: new CharacterState(2, 1, 2, [], sceneDimensions)

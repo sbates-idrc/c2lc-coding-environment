@@ -19,7 +19,7 @@ import type { IntlShape } from 'react-intl';
 import './PaintbrushCursor.css';
 import './Scene.scss';
 import './Worlds.scss';
-import type { ThemeName, RunningState } from './types';
+import type { ThemeName, RunningState, UserMessage } from './types';
 import type { WorldName } from './Worlds';
 import { ReactComponent as PaintbrushCursor } from './svg/PaintbrushCursor.svg';
 import { ReactComponent as StartIndicator } from './svg/StartIndicator.svg';
@@ -42,7 +42,7 @@ export type SceneProps = {
     startingX: number,
     startingY: number,
     runningState: RunningState,
-    message: ?string,
+    message: ?UserMessage,
     characterDescriptionBuilder: CharacterDescriptionBuilder,
     onCloseMessage: () => void,
     onPaintScene: (x: number, y: number) => void,
@@ -68,23 +68,24 @@ class Scene extends React.Component<SceneProps, {}> {
     }
 
     generateAriaLabel() {
-        const worldLabel = this.props.intl.formatMessage({id: this.props.world + '.name'});
+        const backgroundName = this.props.intl.formatMessage({id: `UI.${this.props.world}.name`});
         const numColumns = this.props.dimensions.getWidth();
         const numRows = this.props.dimensions.getHeight();
 
         const characterDescription = this.props.characterDescriptionBuilder.buildDescription(
             this.props.characterState,
             this.props.world,
-            this.props.customBackground
+            this.props.customBackground,
+            this.props.intl
         );
 
         return this.props.intl.formatMessage(
             { id: 'Scene.description' },
             {
-                world: worldLabel,
-                numColumns: numColumns,
-                numRows: numRows,
-                characterDescription: characterDescription
+                backgroundName,
+                numColumns,
+                numRows,
+                characterDescription
             }
         );
     }
@@ -231,7 +232,7 @@ class Scene extends React.Component<SceneProps, {}> {
                         <div className='Scene__SceneMessage'>
                             <SceneMessage
                                 intl={this.props.intl}
-                                message={this.props.message}
+                                message={this.props.message.getMessage(this.props.intl)}
                                 onClose={this.props.onCloseMessage}
                             />
                         </div>

@@ -3,7 +3,6 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, mount } from 'enzyme';
-import { Button } from 'react-bootstrap';
 import { IntlProvider } from 'react-intl';
 import AudioManagerImpl from './AudioManagerImpl';
 import ActionPanel from './ActionPanel';
@@ -12,6 +11,7 @@ import AriaDisablingButton from './AriaDisablingButton';
 import CharacterState from './CharacterState';
 import CommandBlock from './CommandBlock';
 import FocusTrapManager from './FocusTrapManager';
+import ProgramBlockCache from './ProgramBlockCache';
 import ProgramSequence from './ProgramSequence';
 import SceneDimensions from './SceneDimensions';
 import messages from './messages.json';
@@ -127,7 +127,7 @@ function getProgramBlockWithActionPanel(programBlockEditorWrapper) {
 }
 
 function getActionPanelActionButtons(programBlockEditorWrapper) {
-    return programBlockEditorWrapper.find(Button)
+    return programBlockEditorWrapper.find('button')
         .filter('.ActionPanel__action-buttons');
 }
 
@@ -145,7 +145,12 @@ function getProgramBlockLoopLabel(programBlockEditorWrapper, index: number) {
         .find('.command-block-loop-label-container').getDOMNode().textContent;
 }
 
-function getProgramBlockLoopIterations(programBlockEditorWrapper, index: number) {
+function getProgramBlockLoopIterationsInput(programBlockEditorWrapper, index: number) {
+    return getProgramBlocks(programBlockEditorWrapper).at(index)
+        .find('.command-block-loop-iterations');
+}
+
+function getProgramBlockLoopIterationsInputValue(programBlockEditorWrapper, index: number) {
     return ((getProgramBlocks(programBlockEditorWrapper).at(index)
         .find('.command-block-loop-iterations')
         .getDOMNode(): any): HTMLInputElement).value;
@@ -200,35 +205,47 @@ describe('Program rendering', () => {
         expect(getProgramBlocks(wrapper).length).toBe(2);
         expect(getProgramBlocks(wrapper).at(0).prop('data-command')).toBe('startLoop');
         expect(getProgramBlockLoopLabel(wrapper, 0)).toBe('A');
-        expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('1');
+        expect(getProgramBlockLoopIterationsInputValue(wrapper, 0)).toBe('1');
         expect(getProgramBlocks(wrapper).at(1).prop('data-command')).toBe('endLoop');
         expect(getProgramBlockLoopLabel(wrapper, 1)).toBe('A');
         wrapper.setProps({ runningState: 'stopped' });
-        expect(getProgramBlockLoopIterations(wrapper, 0)).toBe('2');
+        expect(getProgramBlockLoopIterationsInputValue(wrapper, 0)).toBe('2');
     });
     test('Loop blocks should be wrapped in a container', () => {
         const { wrapper } = createMountProgramBlockEditor({
             programSequence: new ProgramSequence(
                 [
-                    {block: 'startLoop', label: 'A', iterations: 2},
-                    {block: 'forward1', cache: new Map([
-                        ['containingLoopLabel', 'A'],
-                        ['containingLoopPosition', 1]
-                    ])},
-                    {block: 'startLoop', label: 'B', iterations: 2, cache: new Map([
-                        ['containingLoopLabel', 'A'],
-                        ['containingLoopPosition', 2]
-                    ])},
-                    {block: 'left45', cache: new Map([
-                        ['containingLoopLabel', 'B'],
-                        ['containingLoopPosition', 3]
-                    ])},
-                    {block: 'endLoop', label: 'B', cache: new Map([
-                        ['containingLoopLabel', 'A'],
-                        ['containingLoopPosition', 4]
-                    ])},
-                    {block: 'endLoop', label: 'A'},
-                    {block: 'right45'}
+                    {
+                        block: 'startLoop',
+                        label: 'A',
+                        iterations: 2
+                    },
+                    {
+                        block: 'forward1',
+                        cache: new ProgramBlockCache('A', 1)
+                    },
+                    {
+                        block: 'startLoop',
+                        label: 'B',
+                        iterations: 2,
+                        cache: new ProgramBlockCache('A', 2)
+                    },
+                    {
+                        block: 'left45',
+                        cache: new ProgramBlockCache('B', 3)
+                    },
+                    {
+                        block: 'endLoop',
+                        label: 'B',
+                        cache: new ProgramBlockCache('A', 4)
+                    },
+                    {
+                        block: 'endLoop',
+                        label: 'A'
+                    },
+                    {
+                        block: 'right45'
+                    }
                 ],
                 0,
                 0,
@@ -470,6 +487,87 @@ describe('Active loop container highlight', () => {
         expect(loopContainers.length).toBe(1);
         expect(hasLoopContainerActiveClass(loopContainers.at(0))).toBe(false);
         expect(hasLoopContainerActiveOutlineClass(loopContainers.at(0))).toBe(false);
+    });
+});
+
+describe('Change loop iterations', () => {
+    test('The ProgramSequence should be updated when the loop iterations are changed when the program is stopped', () => {
+        const { wrapper, mockChangeProgramSequenceHandler } = createMountProgramBlockEditor({
+            runningState: 'stopped',
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'endLoop', label: 'A'}
+                ],
+                0,
+                0,
+                new Map([['A', 2]])
+            )
+        });
+
+        const input = getProgramBlockLoopIterationsInput(wrapper, 0);
+        ((input.getDOMNode(): any): HTMLInputElement).value = '4';
+        input.simulate('change');
+        input.getDOMNode().dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}));
+
+        expect(mockChangeProgramSequenceHandler.mock.calls.length).toBe(1);
+        expect(mockChangeProgramSequenceHandler.mock.calls[0][0]).toStrictEqual(
+            new ProgramSequence(
+                [
+                    {
+                        block: 'startLoop',
+                        label: 'A',
+                        iterations: 4
+                    },
+                    {
+                        block: 'endLoop',
+                        label: 'A'
+                    }
+                ],
+                0,
+                0,
+                new Map([['A', 2]])
+            )
+        );
+    });
+    test('The ProgramSequence and loopIterationsLeft should be updated when the loop iterations are changed when the program is paused', () => {
+        const { wrapper, mockChangeProgramSequenceHandler } = createMountProgramBlockEditor({
+            runningState: 'paused',
+            programSequence: new ProgramSequence(
+                [
+                    {block: 'startLoop', label: 'A', iterations: 2},
+                    {block: 'endLoop', label: 'A'}
+                ],
+                0,
+                0,
+                new Map([['A', 1]])
+            )
+        });
+
+        const input = getProgramBlockLoopIterationsInput(wrapper, 0);
+        ((input.getDOMNode(): any): HTMLInputElement).value = '4';
+        input.simulate('change');
+        input.getDOMNode().dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter'}));
+
+        expect(mockChangeProgramSequenceHandler.mock.calls.length).toBe(1);
+        expect(mockChangeProgramSequenceHandler.mock.calls[0][0]).toStrictEqual(
+            new ProgramSequence(
+                [
+                    {
+                        block: 'startLoop',
+                        label: 'A',
+                        iterations: 4
+                    },
+                    {
+                        block: 'endLoop',
+                        label: 'A'
+                    }
+                ],
+                0,
+                0,
+                new Map([['A', 4]])
+            )
+        );
     });
 });
 

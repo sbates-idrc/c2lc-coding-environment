@@ -3,7 +3,6 @@
 import * as React from 'react';
 import AriaDisablingButton from './AriaDisablingButton';
 import LoopIterationsInput from './LoopIterationsInput';
-import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 import type { KeyboardInputSchemeName } from './KeyboardInputSchemes';
 import type { RunningState } from './types';
@@ -59,7 +58,7 @@ export const commandBlockIconTypes = new Map<string, any>([
     ['endLoop', LoopEnd]
 ]);
 
-export default React.forwardRef<CommandBlockProps, Button>(
+export default React.forwardRef<CommandBlockProps, HTMLElement>(
     (props, ref) => {
         const {
             commandName,
@@ -117,13 +116,13 @@ export default React.forwardRef<CommandBlockProps, Button>(
 
         const classes = classNames(
             'command-block',
+            `btn-command-block--${commandName}`,
             className
         );
 
         return React.createElement(
             AriaDisablingButton,
             Object.assign({
-                'variant': `command-block--${commandName}`,
                 'className': classes,
                 'onClick': onClick,
                 'disabled': disabled,

@@ -13,9 +13,8 @@ export default class ProgramSerializer {
 
     serialize(program: Program): string {
         let programText = '';
-        for (let i=0; i<program.length; i++) {
-            const programCommandBlock = program[i].block;
-            switch(programCommandBlock) {
+        for (const block of program) {
+            switch(block.block) {
                 case ('forward1') :
                     programText += '1';
                     break;
@@ -54,19 +53,15 @@ export default class ProgramSerializer {
                     break;
                 case ('startLoop') :
                     programText += 's';
-                    if (program[i].iterations != null && program[i].label) {
-                        const label = program[i].label;
-                        const iterations = program[i].iterations;
-                        programText += label;
-                        programText += iterations;
-                    }
+                    programText += block.label;
+                    programText += block.iterations;
                     programText += 's';
                     break;
                 case ('endLoop') :
                     programText += 'z';
                     break;
                 default:
-                    throw new Error(`Unrecognized program command when serializing program: ${programCommandBlock}`);
+                    throw new Error(`Unrecognized program command when serializing program: ${block.block}`);
             }
         }
         return programText;

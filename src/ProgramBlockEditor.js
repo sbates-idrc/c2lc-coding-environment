@@ -17,6 +17,7 @@ import IconButton from './IconButton';
 import ProgramIterator from './ProgramIterator';
 import ProgramSequence from './ProgramSequence';
 import ToggleSwitch from './ToggleSwitch';
+import { copyProgramBlock } from './Utils';
 import { ReactComponent as AddIcon } from './svg/Add.svg';
 import { ReactComponent as DeleteAllIcon } from './svg/DeleteAll.svg';
 import './ProgramBlockEditor.scss';
@@ -305,30 +306,28 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
         const programSequence = this.props.programSequence;
         if (programSequence.getProgram()[stepNumber].label === loopLabel) {
             const program = programSequence.getProgram().slice();
-            const loopIterationsLeft = new Map(programSequence.getLoopIterationsLeft());
-            program[stepNumber] = Object.assign(
-                {},
-                program[stepNumber],
-                { iterations: loopIterations }
-            );
-            if (this.props.runningState !== 'stopped') {
-                loopIterationsLeft.set(loopLabel, loopIterations);
+            const block = copyProgramBlock(program[stepNumber]);
+            if (block.block === 'startLoop') {
+                block.iterations = loopIterations;
+                program[stepNumber] = block;
+                const loopIterationsLeft = new Map(programSequence.getLoopIterationsLeft());
+                if (this.props.runningState !== 'stopped') {
+                    loopIterationsLeft.set(loopLabel, loopIterations);
+                }
+                this.props.onChangeProgramSequence(programSequence.updateProgramAndLoopIterationsLeft(program, loopIterationsLeft));
             }
-            this.props.onChangeProgramSequence(programSequence.updateProgramAndLoopIterationsLeft(program, loopIterationsLeft));
         }
     };
 
     handleFocusProgramBlock = (e: Event) => {
-        // $FlowFixMe: property 'dataset' is missing in 'EventTarget'
-        if (e.currentTarget.dataset.command === 'startLoop' || e.currentTarget.dataset.command === 'endLoop') {
-            const loopLabel = this.props.programSequence.getProgramStepAt(
-                parseInt(e.currentTarget.dataset.stepnumber, 10)
-            ).label;
-            if (loopLabel != null) {
-                this.setState({
-                    loopLabelOfFocusedLoopBlock: loopLabel
-                });
-            }
+        const block = this.props.programSequence.getProgramStepAt(
+            // $FlowFixMe: property 'dataset' is missing in 'EventTarget'
+            parseInt(e.currentTarget.dataset.stepnumber, 10)
+        );
+        if (block.block === 'startLoop' || block.block === 'endLoop') {
+            this.setState({
+                loopLabelOfFocusedLoopBlock: block.label
+            });
         }
     };
 
@@ -449,27 +448,26 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             showPausedIndicator && 'ProgramBlockEditor__program-block--paused'
         );
         const command = programBlock.block;
-        const loopLabel = programBlock.label;
+        const loopLabel = (programBlock.block === 'startLoop' || programBlock.block === 'endLoop')
+            ? programBlock.label : null;
         const cachedLoopData = programBlock.cache;
         let ariaLabel = this.props.intl.formatMessage(
             { id: 'ProgramBlockEditor.command' },
             {
                 index: programStepNumber + 1,
-                command: this.props.intl.formatMessage(
+                blockName: this.props.intl.formatMessage(
                     {id: `Command.${command}`},
                     {loopLabel}
                 )
             }
         );
-        if (cachedLoopData != null &&
-            cachedLoopData.get('containingLoopPosition') != null &&
-            cachedLoopData.get('containingLoopLabel')) {
+        if (cachedLoopData != null) {
             ariaLabel = this.props.intl.formatMessage(
                 { id: 'ProgramBlockEditor.nestedCommand' },
                 {
-                    index: cachedLoopData.get('containingLoopPosition'),
-                    parentLoopLabel: cachedLoopData.get('containingLoopLabel'),
-                    command: this.props.intl.formatMessage(
+                    index: cachedLoopData.getContainingLoopPosition(),
+                    parentLoopLabel: cachedLoopData.getContainingLoopLabel(),
+                    blockName: this.props.intl.formatMessage(
                         {id: `Command.${command}`},
                         {loopLabel}
                     )
@@ -477,7 +475,8 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             );
         }
 
-        const loopIterations = programBlock.iterations;
+        const loopIterations = programBlock.block === 'startLoop'
+            ? programBlock.iterations : null;
         const loopIterationsLeft = (loopLabel != null
             ? this.props.programSequence.getLoopIterationsLeft().get(loopLabel)
             : null);
@@ -498,7 +497,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                 data-command={command}
                 data-actionpanelgroup={true}
                 className={classes}
-                loopLabel={programBlock.label}
+                loopLabel={loopLabel == null ? '' : loopLabel}
                 loopIterations={loopIterations}
                 loopIterationsLeft={loopIterationsLeft}
                 stepNumber={programStepNumber}
@@ -526,7 +525,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
                         <div className='ProgramBlockEditor__action-panel-container-inner'>
                             <ActionPanel
                                 focusedOptionName={this.props.actionPanelFocusedOptionName}
-                                selectedCommandName={this.props.selectedAction}
+                                selectedActionName={this.props.selectedAction}
                                 programSequence={this.props.programSequence}
                                 pressedStepIndex={programStepNumber}
                                 onDelete={this.handleActionPanelDeleteStep}
@@ -547,25 +546,27 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             if (isEndOfProgramAddNode) {
                 return this.props.intl.formatMessage(
                     { id: 'ProgramBlockEditor.lastBlock' },
-                    { command: this.props.intl.formatMessage({id: `Command.${selectedAction}`}) }
+                    { actionName: this.props.intl.formatMessage({id: `Command.${selectedAction}`}) }
                 );
             } else if (programStepNumber === 0) {
-                // The add node before the start of the program
+                // The add node before the first block of the program
                 return this.props.intl.formatMessage(
                     { id: 'ProgramBlockEditor.beginningBlock' },
-                    { command: this.props.intl.formatMessage({id: `Command.${selectedAction}`}) }
+                    { actionName: this.props.intl.formatMessage({id: `Command.${selectedAction}`}) }
                 );
             } else {
-                const prevCommand = this.props.programSequence.getProgramStepAt(programStepNumber - 1);
-                const postCommand = this.props.programSequence.getProgramStepAt(programStepNumber);
-                const prevCommandLabel = prevCommand.label ? prevCommand.label : null;
-                const postCommandLabel = postCommand.label ? postCommand.label : null;
+                const prevAction = this.props.programSequence.getProgramStepAt(programStepNumber - 1);
+                const nextAction = this.props.programSequence.getProgramStepAt(programStepNumber);
+                const prevActionLabel = prevAction.label ? prevAction.label : null;
+                const nextActionLabel = nextAction.label ? nextAction.label : null;
                 return this.props.intl.formatMessage(
                     { id: 'ProgramBlockEditor.betweenBlocks' },
                     {
-                        command: this.props.intl.formatMessage({id: `Command.${selectedAction}`}),
-                        prevCommand: `${programStepNumber}, ${this.props.intl.formatMessage({id: `Command.${prevCommand.block}`}, {loopLabel: prevCommandLabel})}`,
-                        postCommand: `${programStepNumber+1}, ${this.props.intl.formatMessage({id: `Command.${postCommand.block}`}, {loopLabel: postCommandLabel})}`
+                        actionName: this.props.intl.formatMessage({id: `Command.${selectedAction}`}),
+                        previousStepNumber: programStepNumber,
+                        previousStepActionName: this.props.intl.formatMessage({id: `Command.${prevAction.block}`}, {loopLabel: prevActionLabel}),
+                        nextStepNumber: programStepNumber + 1,
+                        nextStepActionName: this.props.intl.formatMessage({id: `Command.${nextAction.block}`}, {loopLabel: nextActionLabel})
                     }
                 );
             }
@@ -594,12 +595,12 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
     }
 
     renderLoop(programIterator: ProgramIterator, inLoop: boolean) {
-        if (programIterator.programBlock == null) {
+        const startLoopBlock = programIterator.programBlock;
+        if (startLoopBlock == null || startLoopBlock.block !== 'startLoop') {
             return;
         }
 
         const startLoopIndex = programIterator.stepNumber;
-        const startLoopBlock = programIterator.programBlock;
         const loopLabel = startLoopBlock.label;
 
         // Consume the startLoop block
@@ -687,8 +688,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
 
     renderNextSection(programIterator: ProgramIterator, inLoop: boolean) {
         if (programIterator.programBlock != null) {
-            if (programIterator.programBlock.block === 'startLoop'
-                    && programIterator.programBlock.label != null) {
+            if (programIterator.programBlock.block === 'startLoop') {
                 const stepNumber = programIterator.stepNumber;
                 const loopLabel = programIterator.programBlock.label;
                 return (
@@ -757,7 +757,7 @@ export class ProgramBlockEditor extends React.Component<ProgramBlockEditorProps,
             <div className='ProgramBlockEditor__container'>
                 <div className='ProgramBlockEditor__header'>
                     <h2 className='ProgramBlockEditor__heading'>
-                        <FormattedMessage id='ProgramBlockEditor.programHeading' />
+                        <FormattedMessage id='UI.ProgramBlockEditor.programHeading' />
                     </h2>
                     <div className='ProgramBlockEditor__options'>
                         <ToggleSwitch

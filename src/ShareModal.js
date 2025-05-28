@@ -27,34 +27,34 @@ class ShareModal extends React.Component<ShareModalProps, {}> {
 
     render () {
         const buttonProperties = [{
-            label: this.props.intl.formatMessage({id: 'ShareModal.close'}),
+            label: this.props.intl.formatMessage({id: 'UI.Close'}),
             onClick: this.props.onClose,
             isPrimary: false
         }];
 
-        const copyButtonLabel = this.props.intl.formatMessage({ id: 'ShareModal.copy'});
+        const copyButtonLabel = this.props.intl.formatMessage({ id: 'UI.ShareModal.copy'});
 
         return(
             <ModalWithFooter
                 show={this.props.show}
                 focusOnOpenSelector={'.ShareModal__form__copyButton'}
                 focusOnCloseSelector={'.App__ShareButton'}
-                ariaLabel={this.props.intl.formatMessage({ id: 'ShareModal.title' })}
+                ariaLabel={this.props.intl.formatMessage({ id: 'UI.ShareModal.title' })}
                 onClose={this.props.onClose}
                 buttonProperties={buttonProperties}
             >
                 <ModalHeader
                     id='ShareModal'
                     title={this.props.intl.formatMessage({
-                        id: 'ShareModal.title'
+                        id: 'UI.ShareModal.title'
                     })}
                 >
                     <ShareIcon aria-hidden="true"/>
                 </ModalHeader>
                 <ModalBody>
                     <div className='ShareModal__content'>
-                        <p><FormattedMessage id='ShareModal.description1' /></p>
-                        <p><FormattedMessage id='ShareModal.description2' /></p>
+                        <p><FormattedMessage id='UI.ShareModal.description1' /></p>
+                        <p><FormattedMessage id='UI.ShareModal.description2' /></p>
 
                         <div className='ShareModal__form'>
                             <input

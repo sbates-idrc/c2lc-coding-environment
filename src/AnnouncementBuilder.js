@@ -9,93 +9,95 @@ type AnnouncementData = {|
 |};
 
 export default class AnnouncementBuilder {
-    intl: IntlShape;
-
-    constructor(intl: IntlShape) {
-        this.intl = intl;
-    }
-
-    buildSelectActionAnnouncement(action: string): AnnouncementData {
-        let commandType = null;
+    buildSelectActionAnnouncement(action: string, intl: IntlShape): AnnouncementData {
+        let actionType = null;
         if (action === 'loop') {
-            commandType = this.intl.formatMessage({
+            actionType = intl.formatMessage({
                 id: 'Announcement.control'
             });
         } else {
-            commandType = this.intl.formatMessage({
+            actionType = intl.formatMessage({
                 id: 'Announcement.movement'
             });
         }
         return {
             messageIdSuffix: 'actionSelected',
             values: {
-                commandType: commandType,
-                command: this.intl.formatMessage({
+                actionType,
+                actionName: intl.formatMessage({
                     id: `Announcement.${action}`
                 }),
             }
         };
     }
 
-    buildAddStepAnnouncement(action: string): AnnouncementData {
-        let commandType = null;
+    buildAddStepAnnouncement(action: string, intl: IntlShape): AnnouncementData {
+        let actionType = null;
         if (action === 'loop') {
-            commandType = this.intl.formatMessage({
+            actionType = intl.formatMessage({
                 id: 'Announcement.control'
             });
         } else {
-            commandType = this.intl.formatMessage({
+            actionType = intl.formatMessage({
                 id: 'Announcement.movement'
             });
         }
         return {
             messageIdSuffix: 'add',
             values: {
-                commandType: commandType,
-                command: this.intl.formatMessage({
+                actionType,
+                actionName: intl.formatMessage({
                     id: `Announcement.${action}`
                 }),
             }
         };
     }
 
-    buildDeleteStepAnnouncement(programBlock: ProgramBlock): AnnouncementData {
-        let commandType = null;
+    buildDeleteStepAnnouncement(programBlock: ProgramBlock, intl: IntlShape): AnnouncementData {
         if (programBlock.block === 'startLoop' || programBlock.block === 'endLoop') {
-            commandType = this.intl.formatMessage({
-                id: "Announcement.control"
-            });
+            return {
+                messageIdSuffix: 'delete',
+                values: {
+                    actionType: intl.formatMessage({
+                        id: "Announcement.control"
+                    }),
+                    actionName: intl.formatMessage(
+                        {
+                            id: `Announcement.${programBlock.block}`
+                        },
+                        {
+                            loopLabel: programBlock.label
+                        }
+                    )
+                }
+            };
         } else {
-            commandType = this.intl.formatMessage({
-                id: "Announcement.movement"
-            });
+            return {
+                messageIdSuffix: 'delete',
+                values: {
+                    actionType: intl.formatMessage({
+                        id: "Announcement.movement"
+                    }),
+                    actionName: intl.formatMessage(
+                        {
+                            id: `Announcement.${programBlock.block}`
+                        }
+                    )
+                }
+            };
         }
-        return {
-            messageIdSuffix: 'delete',
-            values: {
-                commandType: commandType,
-                command: this.intl.formatMessage(
-                    {
-                        id: `Announcement.${programBlock.block}`
-                    },
-                    {
-                        loopLabel: programBlock.label
-                    }
-                )
-            }
-        };
     }
 
     buildReplaceStepAnnouncement(programBlock: ProgramBlock,
-        selectedAction: string): AnnouncementData {
+        selectedAction: string, intl: IntlShape): AnnouncementData {
 
         return {
             messageIdSuffix: 'replace',
             values: {
-                oldCommand: this.intl.formatMessage({
+                oldActionName: intl.formatMessage({
                     id: `Announcement.${programBlock.block}`
                 }),
-                newCommand: this.intl.formatMessage({
+                newActionName: intl.formatMessage({
                     id: `Announcement.${selectedAction}`
                 })
             }

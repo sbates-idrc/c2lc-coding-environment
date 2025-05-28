@@ -1,7 +1,6 @@
 // @flow
 
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 
 type AriaDisablingButtonProps = {
@@ -12,7 +11,7 @@ type AriaDisablingButtonProps = {
     children?: React.Node
 };
 
-const AriaDisablingButton = React.forwardRef<AriaDisablingButtonProps, Button>(
+const AriaDisablingButton = React.forwardRef<AriaDisablingButtonProps, HTMLElement>(
     (props, ref) => {
         const {
             onClick,
@@ -25,12 +24,14 @@ const AriaDisablingButton = React.forwardRef<AriaDisablingButtonProps, Button>(
 
         const classes = classNames(
             className,
-            disabled && disabledClassName
+            disabled && disabledClassName,
+            'btn' // For compatibility with Bootstrap
         );
 
         return React.createElement(
-            Button,
+            'button',
             Object.assign({
+                'type': 'button',
                 'onClick': disabled ? undefined : onClick,
                 'aria-disabled': disabled,
                 'className': classes,

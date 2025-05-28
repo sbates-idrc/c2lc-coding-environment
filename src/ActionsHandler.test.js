@@ -8,7 +8,7 @@ import CharacterState from './CharacterState';
 import CustomBackground from './CustomBackground';
 import { createIntl } from 'react-intl';
 import SceneDimensions from './SceneDimensions';
-import type { BlockName } from './types';
+import type { MovementBlockName } from './types';
 
 import messages from './messages.json';
 
@@ -34,7 +34,7 @@ function createActionsHandler() {
     AudioManagerImpl.mockClear();
 
     // $FlowFixMe: Jest mock API
-    const actionsHandler = new ActionsHandler(new App(), new AudioManagerImpl(), sceneDimensions, intl);
+    const actionsHandler = new ActionsHandler(new App(), new AudioManagerImpl(), sceneDimensions);
 
     // $FlowFixMe: Jest mock API
     const appMock = App.mock.instances[0];
@@ -49,7 +49,7 @@ function createActionsHandler() {
 }
 
 type MovementTestCase = {|
-    action: BlockName,
+    action: MovementBlockName,
     x: number,
     y: number,
     direction: number,
@@ -267,7 +267,11 @@ test.each(([
         expect(newState.characterState.xPos).toBe(testData.expectedX);
         expect(newState.characterState.yPos).toBe(testData.expectedY);
         expect(newState.characterState.direction).toBe(testData.expectedDirection);
-        expect(newState.message).toBe(testData.expectedMessage);
+        if (testData.expectedMessage != null) {
+            expect(newState.message.getMessage(intl)).toBe(testData.expectedMessage);
+        } else {
+            expect(newState.message).toBe(testData.expectedMessage);
+        }
     });
 
     actionsHandler.doAction(testData.action, 0).then((result) => {

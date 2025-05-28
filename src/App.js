@@ -18,8 +18,6 @@ import C2lcURLParams from './C2lcURLParams';
 import CustomBackground from './CustomBackground';
 import CustomBackgroundDesignModeButton from './CustomBackgroundDesignModeButton';
 import CustomBackgroundSerializer from './CustomBackgroundSerializer';
-import DashConnectionErrorModal from './DashConnectionErrorModal';
-import DashDriver from './DashDriver';
 import DesignModeCursorDescriptionBuilder from './DesignModeCursorDescriptionBuilder';
 import DesignModeCursorState from './DesignModeCursorState';
 import * as FeatureDetection from './FeatureDetection';
@@ -27,6 +25,7 @@ import FakeAudioManager from './FakeAudioManager';
 import FocusTrapManager from './FocusTrapManager';
 import IconButton from './IconButton';
 import Interpreter from './Interpreter';
+import LanguageSelector from "./LanguageSelector";
 import PlayButton from './PlayButton';
 import ProgramBlockEditor from './ProgramBlockEditor';
 import RefreshButton from './RefreshButton';
@@ -40,7 +39,7 @@ import ProgramSpeedController from './ProgramSpeedController';
 import ProgramSerializer from './ProgramSerializer';
 import ActionsSimplificationModal from './ActionsSimplificationModal';
 import type { TileCode } from './TileData';
-import type { ActionToggleRegister, AudioManager, CommandName, DeviceConnectionStatus, DisplayedCommandName, RobotDriver, RunningState, ThemeName } from './types';
+import type { ActionToggleRegister, AudioManager, CommandName, DisplayedCommandName, LanguageTag, RunningState, ThemeName, UserMessage } from './types';
 import type { WorldName } from './Worlds';
 import { getWorldProperties } from './Worlds';
 import WorldSelector from './WorldSelector';
@@ -79,20 +78,11 @@ function getThemeLogo (theme: ThemeName) {
     return LogoMixedAndLight;
 }
 
-/* Dash connection removed for version 0.5
-import BluetoothApiWarning from './BluetoothApiWarning';
-import DeviceConnectControl from './DeviceConnectControl';
-*/
-
-// Uncomment to use the FakeRobotDriver (see driver construction below also)
-//import FakeRobotDriver from './FakeRobotDriver';
-
 type AppContext = {
     bluetoothApiIsAvailable: boolean
 };
 
 type AppSettings = {
-    language: string,
     addNodeExpandedMode: boolean,
     theme: ThemeName,
     world: WorldName
@@ -100,6 +90,8 @@ type AppSettings = {
 
 type AppProps = {
     intl: IntlShape,
+    language: LanguageTag,
+    onChangeLanguage: (value: LanguageTag) => void,
     audioManager?: AudioManager
 };
 
@@ -107,8 +99,6 @@ export type AppState = {
     programSequence: ProgramSequence,
     characterState: CharacterState,
     settings: AppSettings,
-    dashConnectionStatus: DeviceConnectionStatus,
-    showDashConnectionError: boolean,
     selectedAction: ?CommandName,
     isDraggingCommand: boolean,
     audioEnabled: boolean,
@@ -139,14 +129,13 @@ export type AppState = {
     customBackgroundDesignMode: boolean,
     designModeCursorState: DesignModeCursorState,
     selectedCustomBackgroundTile: ?TileCode,
-    message: ?string
+    message: ?UserMessage
 };
 
 export class App extends React.Component<AppProps, AppState> {
     version: string;
     appContext: AppContext;
     sceneDimensions: SceneDimensions;
-    dashDriver: RobotDriver;
     interpreter: Interpreter;
     audioManager: AudioManager;
     focusTrapManager: FocusTrapManager;
@@ -156,6 +145,7 @@ export class App extends React.Component<AppProps, AppState> {
     customBackgroundSerializer: CustomBackgroundSerializer;
     speedLookUp: Array<number>;
     pushStateTimeoutID: ?TimeoutID;
+    languageSelectorRef: { current: any };
     programBlockEditorRef: { current: any };
     sequenceInProgress: Array<KeyboardEvent>;
     announcementBuilder: AnnouncementBuilder;
@@ -163,11 +153,12 @@ export class App extends React.Component<AppProps, AppState> {
     designModeCursorDescriptionBuilder: DesignModeCursorDescriptionBuilder;
     programChangeController: ProgramChangeController;
     defaultWorld: WorldName;
+    focusLanguageSelector: boolean;
 
     constructor(props: any) {
         super(props);
 
-        this.version = '1.12';
+        this.version = '1.13';
 
         this.appContext = {
             bluetoothApiIsAvailable: FeatureDetection.bluetoothApiIsAvailable()
@@ -191,6 +182,8 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.defaultWorld = 'Sketchpad';
 
+        this.focusLanguageSelector = false;
+
         // Initialize startingX, startingY, and startingDirection to the world starting position
         const startingX = getWorldProperties(this.defaultWorld).startingX;
         const startingY = getWorldProperties(this.defaultWorld).startingY;
@@ -200,13 +193,10 @@ export class App extends React.Component<AppProps, AppState> {
             programSequence: new ProgramSequence([], 0, 0, new Map()),
             characterState: this.makeStartingCharacterState(startingX, startingY, startingDirection),
             settings: {
-                language: 'en',
                 addNodeExpandedMode: true,
                 theme: 'default',
                 world: this.defaultWorld
             },
-            dashConnectionStatus: 'notConnected',
-            showDashConnectionError: false,
             selectedAction: null,
             isDraggingCommand: false,
             audioEnabled: true,
@@ -240,10 +230,6 @@ export class App extends React.Component<AppProps, AppState> {
             keyboardInputSchemeName: "controlalt"
         };
 
-        // For FakeRobotDriver, replace with:
-        // this.dashDriver = new FakeRobotDriver();
-        this.dashDriver = new DashDriver();
-
         if (props.audioManager) {
             this.audioManager = props.audioManager
         }
@@ -256,19 +242,21 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.focusTrapManager = new FocusTrapManager();
 
-        this.announcementBuilder = new AnnouncementBuilder(this.props.intl);
+        this.announcementBuilder = new AnnouncementBuilder();
 
-        this.characterDescriptionBuilder = new CharacterDescriptionBuilder(this.props.intl);
+        this.characterDescriptionBuilder = new CharacterDescriptionBuilder();
 
-        this.designModeCursorDescriptionBuilder = new DesignModeCursorDescriptionBuilder(this.props.intl);
+        this.designModeCursorDescriptionBuilder = new DesignModeCursorDescriptionBuilder();
 
         this.programChangeController = new ProgramChangeController(this,
-            this.props.intl, this.audioManager);
+            this.audioManager);
+
+        this.languageSelectorRef = React.createRef();
 
         this.programBlockEditorRef = React.createRef();
 
         const actionsHandler = new ActionsHandler(this, this.audioManager,
-            this.sceneDimensions, this.props.intl);
+            this.sceneDimensions);
 
         this.interpreter = new Interpreter(
             this.speedLookUp[this.state.programSpeed - 1],
@@ -285,7 +273,7 @@ export class App extends React.Component<AppProps, AppState> {
         });
     }
 
-    getSelectedCommandName() {
+    getSelectedActionName() {
         if (this.state.selectedAction !== null) {
             return this.state.selectedAction;
         } else {
@@ -351,6 +339,15 @@ export class App extends React.Component<AppProps, AppState> {
 
     // Handlers
 
+    handleChangeLanguage = (language: LanguageTag) => {
+        // Changing the language will cause the App to update and for focus to
+        // be lost. Set this.focusLanguageSelector to true to indicate that we
+        // want to set focus back to the language selector after the update.
+        this.focusLanguageSelector = true;
+        // Call the provided handler
+        this.props.onChangeLanguage(language);
+    };
+
     handleProgramSequenceChange = (programSequence: ProgramSequence) => {
         this.setState({
             programSequence: programSequence
@@ -361,7 +358,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.programChangeController.insertSelectedActionIntoProgram(
             this.programBlockEditorRef.current,
             index,
-            selectedAction
+            selectedAction,
+            this.props.intl
         );
     };
 
@@ -369,7 +367,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.programChangeController.deleteProgramStep(
             this.programBlockEditorRef.current,
             index,
-            command
+            command,
+            this.props.intl
         );
     };
 
@@ -377,7 +376,8 @@ export class App extends React.Component<AppProps, AppState> {
         this.programChangeController.replaceProgramStep(
             this.programBlockEditorRef.current,
             index,
-            selectedAction
+            selectedAction,
+            this.props.intl
         );
     };
 
@@ -386,7 +386,8 @@ export class App extends React.Component<AppProps, AppState> {
             this.programBlockEditorRef.current,
             indexFrom,
             commandAtIndexFrom,
-            'focusActionPanel'
+            'focusActionPanel',
+            this.props.intl
         )
     };
 
@@ -395,7 +396,8 @@ export class App extends React.Component<AppProps, AppState> {
             this.programBlockEditorRef.current,
             indexFrom,
             commandAtIndexFrom,
-            'focusActionPanel'
+            'focusActionPanel',
+            this.props.intl
         )
     };
 
@@ -440,40 +442,6 @@ export class App extends React.Component<AppProps, AppState> {
                     runningState: 'stopRequested'
                 };
             }
-        });
-    };
-
-    handleClickConnectDash = () => {
-        this.setState({
-            dashConnectionStatus: 'connecting',
-            showDashConnectionError: false
-        });
-        this.dashDriver.connect(this.handleDashDisconnect).then(() => {
-            this.setState({
-                dashConnectionStatus: 'connected'
-            });
-        }, (error: Error) => {
-            /* eslint-disable no-console */
-            console.log('ERROR');
-            console.log(error.name);
-            console.log(error.message);
-            /* eslint-enable no-console */
-            this.setState({
-                dashConnectionStatus: 'notConnected',
-                showDashConnectionError: true
-            });
-        });
-    };
-
-    handleCancelDashConnection = () => {
-        this.setState({
-            showDashConnectionError: false
-        });
-    };
-
-    handleDashDisconnect = () => {
-        this.setState({
-            dashConnectionStatus : 'notConnected'
         });
     };
 
@@ -575,7 +543,8 @@ export class App extends React.Component<AppProps, AppState> {
                                             this.programChangeController.insertSelectedActionIntoProgram(
                                                 this.programBlockEditorRef.current,
                                                 index,
-                                                this.state.selectedAction
+                                                this.state.selectedAction,
+                                                this.props.intl
                                             );
                                         }
                                     }
@@ -588,7 +557,8 @@ export class App extends React.Component<AppProps, AppState> {
                                 this.programChangeController.insertSelectedActionIntoProgram(
                                     this.programBlockEditorRef.current,
                                     0,
-                                    this.state.selectedAction
+                                    this.state.selectedAction,
+                                    this.props.intl
                                 );
                             }
                             break;
@@ -596,7 +566,8 @@ export class App extends React.Component<AppProps, AppState> {
                             if (!this.isEditingDisabled()) {
                                 this.programChangeController.addSelectedActionToProgramEnd(
                                     this.programBlockEditorRef.current,
-                                    this.state.selectedAction
+                                    this.state.selectedAction,
+                                    this.props.intl
                                 );
                             }
                             break;
@@ -610,7 +581,8 @@ export class App extends React.Component<AppProps, AppState> {
                                             this.programChangeController.deleteProgramStep(
                                                 this.programBlockEditorRef.current,
                                                 index,
-                                                currentElement.dataset.command
+                                                currentElement.dataset.command,
+                                                this.props.intl
                                             );
                                         }
                                     }
@@ -627,7 +599,8 @@ export class App extends React.Component<AppProps, AppState> {
                                             this.programChangeController.replaceProgramStep(
                                                 this.programBlockEditorRef.current,
                                                 index,
-                                                this.state.selectedAction
+                                                this.state.selectedAction,
+                                                this.props.intl
                                             );
                                         }
                                     }
@@ -769,7 +742,8 @@ export class App extends React.Component<AppProps, AppState> {
                                                 this.programBlockEditorRef.current,
                                                 index,
                                                 currentElement.dataset.command,
-                                                'focusBlockMoved'
+                                                'focusBlockMoved',
+                                                this.props.intl
                                             )
                                         }
                                     }
@@ -787,7 +761,8 @@ export class App extends React.Component<AppProps, AppState> {
                                                 this.programBlockEditorRef.current,
                                                 index,
                                                 currentElement.dataset.command,
-                                                'focusBlockMoved'
+                                                'focusBlockMoved',
+                                                this.props.intl
                                             )
                                         }
                                     }
@@ -1013,7 +988,7 @@ export class App extends React.Component<AppProps, AppState> {
                     <CommandPaletteCommand
                         key={`CommandBlock-${index}`}
                         commandName={value}
-                        selectedCommandName={this.getSelectedCommandName()}
+                        selectedActionName={this.getSelectedActionName()}
                         audioManager={this.audioManager}
                         isDraggingCommand={this.state.isDraggingCommand}
                         onSelect={this.handleCommandFromCommandPalette}
@@ -1315,19 +1290,24 @@ export class App extends React.Component<AppProps, AppState> {
                         <Logo alt={this.props.intl.formatMessage({id: 'App.appHeading.link'})}/>
                     </a>
                 </h1>
-                <div className='App__PrivacyButtonContainer'>
+                <div className='App__PrivacyButtonLanguageSelectorRow'>
+                    <LanguageSelector
+                        value={this.props.language}
+                        onChange={this.handleChangeLanguage}
+                        ref={this.languageSelectorRef}
+                    />
                     <button
                         aria-label={this.props.intl.formatMessage({id: 'App.privacyModalToggle.ariaLabel'})}
                         className="App__PrivacyModal__toggle-button"
                         onClick={this.handleClickPrivacyButton}
                     >
-                        <FormattedMessage id='App.privacyModalToggle'/>
+                        <FormattedMessage id='UI.App.privacyModalToggle'/>
                     </button>
                 </div>
                 <div className='App__header-menu'>
                     <IconButton
                         className="App__header-soundOptions"
-                        ariaLabel={this.props.intl.formatMessage({ id: 'SoundOptionsModal.title' })}
+                        ariaLabel={this.props.intl.formatMessage({ id: 'UI.SoundOptionsModal.title' })}
                         onClick={this.handleClickSoundIcon}
                     >
                         <AudioIcon
@@ -1476,14 +1456,14 @@ export class App extends React.Component<AppProps, AppState> {
             <React.Fragment>
                 <div className='App__ActionsMenu__header'>
                     <h2 className='App__ActionsMenu__header-heading'>
-                        <FormattedMessage id='ActionsMenu.title' />
+                        <FormattedMessage id='UI.ActionsMenu.title' />
                     </h2>
                 </div>
                 <div className='App__command-palette-command-container'>
                     <div className='App__command-palette-section'>
                         <div className='App__command-palette-section-heading-container'>
                             <h3 className='App__command-palette-section-heading'>
-                                <FormattedMessage id='CommandPalette.movementsTitle'/>
+                                <FormattedMessage id='UI.CommandPalette.movementsTitle'/>
                             </h3>
                         </div>
                         <div className='App__command-palette-section-body'>
@@ -1508,7 +1488,7 @@ export class App extends React.Component<AppProps, AppState> {
                     <div className='App__command-palette-section'>
                         <div className='App__command-palette-section-heading-container'>
                             <h3 className='App__command-palette-section-heading'>
-                                <FormattedMessage id='CommandPalette.controlsTitle'/>
+                                <FormattedMessage id='UI.CommandPalette.controlsTitle'/>
                             </h3>
                         </div>
 
@@ -1601,7 +1581,7 @@ export class App extends React.Component<AppProps, AppState> {
                             aria-hidden={true}
                         />
                         <div className='App__ShareButton__label'>
-                            {this.props.intl.formatMessage({id:'ShareButton'})}
+                            {this.props.intl.formatMessage({id:'UI.ShareButton'})}
                         </div>
                     </button>
                 </div>
@@ -1630,10 +1610,6 @@ export class App extends React.Component<AppProps, AppState> {
     renderModals() {
         return (
             <React.Fragment>
-                <DashConnectionErrorModal
-                    show={this.state.showDashConnectionError}
-                    onCancel={this.handleCancelDashConnection}
-                    onRetry={this.handleClickConnectDash}/>
                 <KeyboardInputModal
                     show={this.state.showKeyboardModal}
                     keyBindingsEnabled={this.state.keyBindingsEnabled}
@@ -1683,7 +1659,11 @@ export class App extends React.Component<AppProps, AppState> {
 
     render() {
         return (
-            <React.Fragment>
+            // Use a 'key' to force rerendering of the whole app when the
+            // language is changed. Rerendering the app ensures that
+            // the correct screen reader voice is used on Firefox after
+            // changing languages.
+            <div key={this.props.language}>
                 <div
                     className={
                         classNames(
@@ -1730,7 +1710,7 @@ export class App extends React.Component<AppProps, AppState> {
                 </div>
                 {this.renderCharacterAriaLive()}
                 {this.renderModals()}
-            </React.Fragment>
+            </div>
         );
     }
 
@@ -1917,7 +1897,7 @@ export class App extends React.Component<AppProps, AppState> {
         document.addEventListener('keydown', this.handleDocumentKeyDown);
     }
 
-    componentDidUpdate(prevProps: {}, prevState: AppState) {
+    componentDidUpdate(prevProps: AppProps, prevState: AppState) {
         if (this.state.programSequence !== prevState.programSequence
             || this.state.characterState !== prevState.characterState
             || this.state.settings.theme !== prevState.settings.theme
@@ -1988,7 +1968,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         if (this.state.selectedAction !== prevState.selectedAction
                 && this.state.selectedAction != null) {
-            const announcementData = this.announcementBuilder.buildSelectActionAnnouncement(this.state.selectedAction);
+            const announcementData = this.announcementBuilder.buildSelectActionAnnouncement(this.state.selectedAction, this.props.intl);
             this.audioManager.playAnnouncement(announcementData.messageIdSuffix,
                     this.props.intl, announcementData.values);
         }
@@ -2018,26 +1998,15 @@ export class App extends React.Component<AppProps, AppState> {
             }
         }
 
-        /* Dash connection removed for version 0.5
-        if (this.state.dashConnectionStatus !== prevState.dashConnectionStatus) {
-            console.log(this.state.dashConnectionStatus);
-
-            if (this.state.dashConnectionStatus === 'connected') {
-                this.interpreter.addCommandHandler('forward', 'dash',
-                    this.dashDriver.forward.bind(this.dashDriver));
-                this.interpreter.addCommandHandler('left', 'dash',
-                    this.dashDriver.left.bind(this.dashDriver));
-                this.interpreter.addCommandHandler('right', 'dash',
-                    this.dashDriver.right.bind(this.dashDriver));
-            } else if (this.state.dashConnectionStatus === 'notConnected') {
-                // TODO: Remove Dash handlers
-
-                if (this.state.runningState === 'running) {
-                    this.interpreter.stop();
-                }
+        // If the language has been changed and this.focusLanguageSelector is
+        // set, then set focus to the language selector
+        if (this.props.language !== prevProps.language
+                && this.focusLanguageSelector) {
+            if (this.languageSelectorRef.current) {
+                this.languageSelectorRef.current.focus();
             }
+            this.focusLanguageSelector = false;
         }
-        */
     }
 
     componentWillUnmount() {

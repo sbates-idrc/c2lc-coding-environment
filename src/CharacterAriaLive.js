@@ -8,7 +8,7 @@ import DesignModeCursorDescriptionBuilder from './DesignModeCursorDescriptionBui
 import DesignModeCursorState from './DesignModeCursorState';
 import { injectIntl } from 'react-intl';
 import type { IntlShape } from 'react-intl';
-import type { RunningState } from './types';
+import type { RunningState, UserMessage } from './types';
 import type { WorldName } from './Worlds';
 
 type CharacterAriaLiveProps = {
@@ -23,11 +23,11 @@ type CharacterAriaLiveProps = {
     customBackgroundDesignMode: boolean,
     characterDescriptionBuilder: CharacterDescriptionBuilder,
     designModeCursorDescriptionBuilder: DesignModeCursorDescriptionBuilder,
-    message: ?string
+    message: ?UserMessage
 };
 
 class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
-    lastMessage: ?string;
+    lastMessage: ?UserMessage;
 
     constructor(props: any) {
         super(props);
@@ -40,7 +40,7 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
         });
         const text = this.props.intl.formatMessage(
             { id:'CharacterAriaLive.movementAriaLabel' },
-            { character: characterLabel }
+            { sceneCharacter: characterLabel }
         );
         this.setLiveRegion(text);
     }
@@ -59,7 +59,7 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
 
         if (this.props.message != null
                 && this.props.message !== this.lastMessage) {
-            text = this.props.message;
+            text = this.props.message.getMessage(this.props.intl);
             if (text.endsWith('.')) {
                 text += ' ';
             } else {
@@ -71,7 +71,8 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
         text += this.props.characterDescriptionBuilder.buildDescription(
             this.props.characterState,
             this.props.world,
-            this.props.customBackground
+            this.props.customBackground,
+            this.props.intl
         );
 
         this.setLiveRegion(text);
@@ -82,7 +83,8 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
             this.props.designModeCursorDescriptionBuilder.buildDescription(
                 this.props.designModeCursorState,
                 this.props.world,
-                this.props.customBackground
+                this.props.customBackground,
+                this.props.intl
             )
         );
     }
@@ -101,10 +103,12 @@ class CharacterAriaLive extends React.Component<CharacterAriaLiveProps, {}> {
     }
 
     componentDidMount() {
-        // Set aria-hidden
         const ariaLiveRegion = document.getElementById(this.props.ariaLiveRegionId);
         if (ariaLiveRegion) {
+            // Set aria-hidden
             ariaLiveRegion.setAttribute('aria-hidden', this.props.ariaHidden.toString());
+            // Clear any existing content (such as when we change language)
+            ariaLiveRegion.textContent = '';
         }
     }
 

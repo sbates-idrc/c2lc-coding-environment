@@ -2,11 +2,11 @@
 
 import { App } from './App';
 import type { AppState } from './App';
-import CharacterMessageBuilder from './CharacterMessageBuilder';
 import type { CharacterUpdate } from './CharacterState';
-import type { IntlShape } from 'react-intl';
+import EndOfSceneMessage from './EndOfSceneMessage';
+import HitWallMessage from './HitWallMessage';
 import SceneDimensions from './SceneDimensions';
-import type { AudioManager, BlockName } from './types';
+import type { AudioManager, MovementBlockName } from './types';
 
 // The ActionsHandler is called by the Interpreter for each program
 // step action as the program is running, and is responsible for
@@ -18,16 +18,14 @@ export default class ActionsHandler {
     app: App;
     audioManager: AudioManager;
     sceneDimensions: SceneDimensions;
-    characterMessageBuilder: CharacterMessageBuilder;
 
-    constructor(app: App, audioManager: AudioManager, sceneDimensions: SceneDimensions, intl: IntlShape) {
+    constructor(app: App, audioManager: AudioManager, sceneDimensions: SceneDimensions) {
         this.app = app;
         this.audioManager = audioManager;
         this.sceneDimensions = sceneDimensions;
-        this.characterMessageBuilder = new CharacterMessageBuilder(sceneDimensions, intl);
     }
 
-    doAction(action: BlockName, stepTimeMs: number): Promise<ActionResult> {
+    doAction(action: MovementBlockName, stepTimeMs: number): Promise<ActionResult> {
         switch(action) {
             case 'forward1':
                 return this.forward(1, action, stepTimeMs);
@@ -138,9 +136,16 @@ export default class ActionsHandler {
         };
 
         if (characterUpdate.event != null) {
-            const message = this.characterMessageBuilder.buildMessage(characterUpdate.event);
-            if (message != null) {
-                stateUpdate.message = message;
+            switch(characterUpdate.event.type) {
+                case 'endOfScene':
+                    stateUpdate.message = new EndOfSceneMessage();
+                    break;
+                case 'hitWall':
+                    stateUpdate.message = new HitWallMessage(characterUpdate.event.x, characterUpdate.event.y, this.sceneDimensions);
+                    break;
+                default:
+                    // Unhandled event type
+                    break;
             }
         }
 
